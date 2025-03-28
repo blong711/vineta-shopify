@@ -1,0 +1,189 @@
+<section class="flat-spacing-3 overflow-hidden">
+  <div class="container">
+    <div class="flat-title wow fadeInUp">
+      <h4 class="title">Best Sellers</h4>
+    </div>
+    <div class="fl-control-sw2 pos2 wow fadeInUp">
+      <div dir="ltr" class="swiper tf-swiper wrap-sw-over" 
+        data-swiper='{
+          "slidesPerView": 2,
+          "spaceBetween": 12,
+          "speed": 800,
+          "slidesPerGroup": 2,
+          "navigation": {
+            "clickable": true,
+            "nextEl": ".nav-next-seller",
+            "prevEl": ".nav-prev-seller"
+          },
+          "pagination": { 
+            "el": ".sw-pagination-seller", 
+            "clickable": true 
+          },
+          "breakpoints": {
+            "768": { 
+              "slidesPerView": 3, 
+              "spaceBetween": 12, 
+              "slidesPerGroup": 3 
+            },
+            "1200": { 
+              "slidesPerView": 4, 
+              "spaceBetween": 24, 
+              "slidesPerGroup": 4
+            }
+          }
+        }'>
+        <div class="swiper-wrapper">
+          {%- for product in collections.all.products limit: 6 -%}
+            <div class="swiper-slide">
+              <div class="card-product {% if product.available == false %}out-of-stock{% endif %} {% if product.variants.size > 0 %}card-product-size{% endif %}">
+                <div class="card-product-wrapper">
+                  <a href="{{ product.url }}" class="product-img">
+                    <img class="img-product lazyload"
+                      data-src="{{ product.featured_image | img_url: 'master' }}"
+                      src="{{ product.featured_image | img_url: 'master' }}"
+                      alt="{{ product.title | escape }}">
+                    {%- if product.images[1] != blank -%}
+                      <img class="img-hover lazyload"
+                        data-src="{{ product.images[1] | img_url: 'master' }}"
+                        src="{{ product.images[1] | img_url: 'master' }}"
+                        alt="{{ product.title | escape }}">
+                    {%- endif -%}
+                  </a>
+                  {%- if product.compare_at_price > product.price -%}
+                    <div class="on-sale-wrap">
+                      <span class="on-sale-item">{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}% Off</span>
+                    </div>
+                  {%- endif -%}
+                  <ul class="list-product-btn">
+                    <li>
+                      <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
+                        <span class="icon icon-cart2"></span>
+                        <span class="tooltip">Add to Cart</span>
+                      </a>
+                    </li>
+                    <li class="wishlist">
+                      <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
+                        <span class="icon icon-heart2"></span>
+                        <span class="tooltip">Add to Wishlist</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
+                        <span class="icon icon-view"></span>
+                        <span class="tooltip">Quick View</span>
+                      </a>
+                    </li>
+                    <li class="compare">
+                      <a href="#compare" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon">
+                        <span class="icon icon-compare"></span>
+                        <span class="tooltip">Add to Compare</span>
+                      </a>
+                    </li>
+                  </ul>
+                  {%- if product.variants.size > 0 -%}
+                    <ul class="size-box">
+                      {%- for variant in product.variants -%}
+                        {%- if variant.option1 contains 'Size' -%}
+                          <li class="size-item text-xs text-white">{{ variant.option1 }}</li>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+                <div class="card-product-info">
+                  <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
+                  <p class="price-wrap fw-medium">
+                    {%- if product.compare_at_price > product.price -%}
+                      <span class="price-new text-primary">{{ product.price | money }}</span>
+                      <span class="price-old text-dark">{{ product.compare_at_price | money }}</span>
+                    {%- else -%}
+                      <span class="price-new">{{ product.price | money }}</span>
+                    {%- endif -%}
+                  </p>
+                  {%- if product.variants.size > 0 -%}
+                    <ul class="list-color-product">
+                      {%- for variant in product.variants -%}
+                        {%- if variant.option1 contains 'Color' -%}
+                          <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
+                            <span class="tooltip color-filter">{{ variant.option1 }}</span>
+                            <span class="swatch-value bg-{{ variant.option1 | handle }}"></span>
+                            <img class="lazyload" 
+                              data-src="{{ variant.image | img_url: 'master' }}"
+                              src="{{ variant.image | img_url: 'master' }}"
+                              alt="{{ variant.option1 }}">
+                          </li>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-seller justify-content-center"></div>
+      </div>
+      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-seller"></div>
+      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-seller"></div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Best Sellers",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Best Sellers"
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Add to Cart
+  document.querySelectorAll('.js-add-to-cart').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const variantId = this.dataset.variantId;
+      const quantity = parseInt(this.dataset.quantity);
+      
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          items: [{
+            id: variantId,
+            quantity: quantity
+          }]
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Trigger cart update event
+        document.dispatchEvent(new CustomEvent('cart:refresh'));
+      })
+      .catch(error => console.error('Error:', error));
+    });
+  });
+
+  // Quick View
+  document.querySelectorAll('.js-quick-view').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const productHandle = this.dataset.productHandle;
+      
+      fetch(`/products/${productHandle}?view=quick-view`)
+        .then(response => response.text())
+        .then(html => {
+          // Implement your quick view modal logic here
+        })
+        .catch(error => console.error('Error:', error));
+    });
+  });
+});
+{% endjavascript %} 

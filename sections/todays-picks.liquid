@@ -1,0 +1,190 @@
+<section class="flat-spacing-3 pt-0 overflow-hidden">
+  <div class="container">
+    <div class="flat-title wow fadeInUp">
+      <h4 class="title">Today's Picks</h4>
+    </div>
+    <div class="fl-control-sw2 pos2 wow fadeInUp">
+      <div dir="ltr" class="swiper tf-swiper wrap-sw-over" 
+        data-swiper='{
+          "slidesPerView": 2,
+          "spaceBetween": 12,
+          "speed": 800,
+          "observer": true,
+          "observeParents": true,
+          "slidesPerGroup": 2,
+          "navigation": {
+            "clickable": true,
+            "nextEl": ".nav-next-top-pick",
+            "prevEl": ".nav-prev-top-pick"
+          },
+          "pagination": { 
+            "el": ".sw-pagination-top-pick", 
+            "clickable": true 
+          },
+          "breakpoints": {
+            "768": { 
+              "slidesPerView": 3, 
+              "spaceBetween": 12, 
+              "slidesPerGroup": 3 
+            },
+            "1200": { 
+              "slidesPerView": 4, 
+              "spaceBetween": 24, 
+              "slidesPerGroup": 4
+            }
+          }
+        }'>
+        <div class="swiper-wrapper">
+          {%- for product in collections.all.products limit: 6 -%}
+            <div class="swiper-slide">
+              <div class="card-product {% if product.available == false %}out-of-stock{% endif %} {% if product.variants.size > 0 %}card-product-size{% endif %}">
+                <div class="card-product-wrapper">
+                  <a href="{{ product.url }}" class="product-img">
+                    <img class="img-product lazyload"
+                      data-src="{{ product.featured_image | img_url: 'master' }}"
+                      src="{{ product.featured_image | img_url: 'master' }}"
+                      alt="{{ product.title | escape }}">
+                    {%- if product.images[1] != blank -%}
+                      <img class="img-hover lazyload"
+                        data-src="{{ product.images[1] | img_url: 'master' }}"
+                        src="{{ product.images[1] | img_url: 'master' }}"
+                        alt="{{ product.title | escape }}">
+                    {%- endif -%}
+                  </a>
+                  {%- if product.compare_at_price > product.price -%}
+                    <div class="on-sale-wrap">
+                      <span class="on-sale-item">{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}% Off</span>
+                    </div>
+                  {%- endif -%}
+                  <ul class="list-product-btn">
+                    <li>
+                      <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
+                        <span class="icon icon-cart2"></span>
+                        <span class="tooltip">Add to Cart</span>
+                      </a>
+                    </li>
+                    <li class="wishlist">
+                      <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
+                        <span class="icon icon-heart2"></span>
+                        <span class="tooltip">Add to Wishlist</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
+                        <span class="icon icon-view"></span>
+                        <span class="tooltip">Quick View</span>
+                      </a>
+                    </li>
+                    <li class="compare">
+                      <a href="#compare" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon">
+                        <span class="icon icon-compare"></span>
+                        <span class="tooltip">Add to Compare</span>
+                      </a>
+                    </li>
+                  </ul>
+                  {%- if product.variants.size > 0 -%}
+                    <ul class="size-box">
+                      {%- for variant in product.variants -%}
+                        {%- if variant.option1 contains 'Size' -%}
+                          <li class="size-item text-xs text-white">{{ variant.option1 }}</li>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+                <div class="card-product-info">
+                  <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
+                  <p class="price-wrap fw-medium">
+                    {%- if product.compare_at_price > product.price -%}
+                      <span class="price-new text-primary">{{ product.price | money }}</span>
+                      <span class="price-old">{{ product.compare_at_price | money }}</span>
+                    {%- else -%}
+                      <span class="price-new">{{ product.price | money }}</span>
+                    {%- endif -%}
+                  </p>
+                  {%- if product.variants.size > 0 -%}
+                    <ul class="list-color-product">
+                      {%- for variant in product.variants -%}
+                        {%- if variant.option1 contains 'Color' -%}
+                          <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %} {% if variant.option1 == 'White' %}line{% endif %}">
+                            <span class="tooltip color-filter">{{ variant.option1 }}</span>
+                            <span class="swatch-value bg-{{ variant.option1 | handle }}"></span>
+                            <img class="lazyload" 
+                              data-src="{{ variant.image | img_url: 'master' }}"
+                              src="{{ variant.image | img_url: 'master' }}"
+                              alt="{{ variant.option1 }}">
+                          </li>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-top-pick justify-content-center"></div>
+      </div>
+      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-top-pick"></div>
+      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-top-pick"></div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Today's Picks",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Today's Picks"
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize Swiper
+  const swiperElement = document.querySelector('.tf-swiper');
+  if (swiperElement) {
+    const options = JSON.parse(swiperElement.dataset.swiper);
+    new Swiper(swiperElement, options);
+  }
+
+  // Quick view functionality
+  document.querySelectorAll('.quickview').forEach(button => {
+    button.addEventListener('click', function() {
+      const handle = this.dataset.productHandle;
+      // Implement quick view modal logic
+    });
+  });
+
+  // Color swatch functionality
+  document.querySelectorAll('.color-swatch').forEach(swatch => {
+    swatch.addEventListener('click', function() {
+      const variantImage = this.dataset.variantImage;
+      const productCard = this.closest('.card-product');
+      const mainImage = productCard.querySelector('.img-product');
+      
+      // Update active state
+      productCard.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+      this.classList.add('active');
+      
+      // Update image
+      if (variantImage) {
+        mainImage.src = variantImage;
+        mainImage.dataset.src = variantImage;
+      }
+    });
+  });
+
+  // Add to cart functionality
+  document.querySelectorAll('.js-add-to-cart').forEach(button => {
+    button.addEventListener('click', function() {
+      const variantId = this.dataset.variantId;
+      // Implement add to cart logic
+    });
+  });
+});
+{% endjavascript %} 

@@ -1,0 +1,181 @@
+<section>
+  <div class="container">
+    <div class="flat-title wow fadeInUp">
+      <h4 class="title">{{ section.settings.title }}</h4>
+    </div>
+    <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+      "slidesPerView": 1,
+      "spaceBetween": 12,
+      "speed": 800,
+      "observer": true,
+      "observeParents": true,
+      "slidesPerGroup": 1,
+      "pagination": { "el": ".sw-pagination-tes", "clickable": true },
+      "breakpoints": {
+        "768": { "slidesPerView": 2, "spaceBetween": 24, "slidesPerGroup": 2 },
+        "1200": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3}
+      }
+    }'>
+      <div class="swiper-wrapper">
+        {%- for block in section.blocks -%}
+          <div class="swiper-slide" {{ block.shopify_attributes }}>
+            <div class="wg-testimonial wow fadeInLeft"{% if forloop.index > 1 %} data-wow-delay="{{ forloop.index | minus: 1 | times: 0.1 }}s"{% endif %}>
+              <div class="content">
+                <div class="content-top">
+                  <div class="box-author">
+                    <p class="name-author text-sm fw-medium">{{ block.settings.author_name }}</p>
+                    {%- if block.settings.show_verified_badge -%}
+                      <div class="box-verified text-main">
+                        <i class="icon-verifi"></i>
+                        <p class="text-xs fst-italic">Verified Buyer</p>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                  <div class="list-star-default">
+                    {%- assign star_count = block.settings.rating | floor -%}
+                    {%- for i in (1..5) -%}
+                      <i class="icon-star{% if i > star_count %} opacity-50{% endif %}"></i>
+                    {%- endfor -%}
+                  </div>
+                  <p class="text-review text-sm text-main">{{ block.settings.review_text }}</p>
+                </div>
+                <span class="br-line d-block"></span>
+                <div class="box-avt">
+                  {%- if block.settings.author_image != blank -%}
+                    <div class="avatar">
+                      <img src="{{ block.settings.author_image | img_url: '96x96', crop: 'center' }}"
+                           alt="{{ block.settings.author_name }}"
+                           width="48"
+                           height="48"
+                           loading="lazy">
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.product != blank -%}
+                    {%- assign product = all_products[block.settings.product] -%}
+                    <div class="box-price">
+                      <p class="name-item text-xs">
+                        Item purchased: 
+                        <a href="{{ product.url }}" 
+                           class="fw-medium text-sm link text-line-clamp-1">
+                          {{- product.title -}}
+                        </a>
+                      </p>
+                      <p class="price text-md fw-medium">
+                        {{ product.price | money }}
+                      </p>
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+      <span class="sw-dot-default sw-pagination-tes justify-content-center"></span>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Happy Customers"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "John Doe"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_verified_badge",
+          "label": "Show Verified Badge",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Rating",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review Text",
+          "default": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy!"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product Purchased"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Emily T.",
+            "show_verified_badge": true,
+            "rating": 5,
+            "review_text": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy!"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Jessica M.",
+            "show_verified_badge": true,
+            "rating": 5,
+            "review_text": "I love the dress I purchased! The fabric is so soft, and the fit is perfect. I've gotten so many compliments on it!"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Lisa P.",
+            "show_verified_badge": true,
+            "rating": 5,
+            "review_text": "I was pleasantly surprised by how fast my order arrived. The customer service team was helpful and responsive!"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize Swiper
+  const swiperElement = document.querySelector('.tf-swiper');
+  if (swiperElement) {
+    const options = JSON.parse(swiperElement.dataset.swiper);
+    new Swiper(swiperElement, options);
+  }
+});
+{% endjavascript %} 

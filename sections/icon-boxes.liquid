@@ -1,0 +1,168 @@
+<div class="line-top flat-spacing-5">
+  <div class="container">
+    <div class="mw-1 m-auto">
+      <div dir="ltr" class="swiper tf-swiper icon-boxes-slider wow fadeInUp" data-swiper='{
+        "slidesPerView": 1,
+        "spaceBetween": {{ section.settings.space_between_mobile }},
+        "speed": {{ section.settings.animation_speed }},
+        "observer": true,
+        "observeParents": true,
+        "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+        "breakpoints": {
+          "575": { "slidesPerView": 2, "spaceBetween": {{ section.settings.space_between_mobile }}, "slidesPerGroup": 2 },
+          "768": { "slidesPerView": 3, "spaceBetween": {{ section.settings.space_between_tablet }}, "slidesPerGroup": 2 },
+          "1200": { "slidesPerView": {{ section.settings.items_per_row }}, "spaceBetween": {{ section.settings.space_between_desktop }}, "slidesPerGroup": 2 }
+        }
+      }'>
+        <div class="swiper-wrapper">
+          {%- for block in section.blocks -%}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <div class="tf-icon-box style-2">
+                <div class="box-icon">
+                  <i class="icon {{ block.settings.icon }}"></i>
+                </div>
+                <div class="content">
+                  <div class="title">{{ block.settings.title }}</div>
+                  <p class="desc">{{ block.settings.text }}</p>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Icon Boxes",
+  "settings": [
+    {
+      "type": "range",
+      "id": "items_per_row",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Items per row (desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "space_between_mobile",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "label": "Space between items (mobile)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "space_between_tablet",
+      "min": 16,
+      "max": 40,
+      "step": 4,
+      "label": "Space between items (tablet)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "space_between_desktop",
+      "min": 24,
+      "max": 60,
+      "step": 6,
+      "label": "Space between items (desktop)",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "animation_speed",
+      "min": 400,
+      "max": 1200,
+      "step": 100,
+      "label": "Animation speed (ms)",
+      "default": 800
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon_box",
+      "name": "Icon Box",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon class",
+          "info": "Enter the icon class from the theme's icon font (e.g., icon-shipping)",
+          "default": "icon-shipping"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Free Shipping"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Enjoy free shipping on all orders"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icon Boxes",
+      "blocks": [
+        {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-shipping",
+            "title": "Free Shipping",
+            "text": "Enjoy free shipping on all orders"
+          }
+        },
+        {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-gift",
+            "title": "Gift Package",
+            "text": "Perfectly packaged for gifting"
+          }
+        },
+        {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-return",
+            "title": "Free Returns",
+            "text": "Within 14 days for a return"
+          }
+        },
+        {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-support",
+            "title": "Support Online",
+            "text": "We support customers 24/7"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize Swiper
+  if (typeof Swiper !== 'undefined') {
+    const swiperElements = document.querySelectorAll('.icon-boxes-slider');
+    swiperElements.forEach(function(element) {
+      const options = element.dataset.swiper ? JSON.parse(element.dataset.swiper) : {};
+      new Swiper(element, options);
+    });
+  }
+});
+{% endjavascript %} 

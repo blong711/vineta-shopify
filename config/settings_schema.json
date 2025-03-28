@@ -1,0 +1,69 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Vineta",
+    "theme_version": "1.0.0",
+    "theme_author": "Your Name",
+    "theme_documentation_url": "https://www.google.com",
+    "theme_support_url": "https://www.google.com"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "primary_color",
+        "label": "Primary Color",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "secondary_color",
+        "label": "Secondary Color",
+        "default": "#ffffff"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "heading_font",
+        "default": "helvetica_n4",
+        "label": "Heading Font"
+      },
+      {
+        "type": "font_picker",
+        "id": "body_font",
+        "default": "helvetica_n4",
+        "label": "Body Font"
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "select",
+        "id": "container_width",
+        "label": "Container Width",
+        "options": [
+          {
+            "value": "1200px",
+            "label": "1200px"
+          },
+          {
+            "value": "1400px",
+            "label": "1400px"
+          },
+          {
+            "value": "1600px",
+            "label": "1600px"
+          }
+        ],
+        "default": "1200px"
+      }
+    ]
+  }
+] 

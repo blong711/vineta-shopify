@@ -1,0 +1,227 @@
+{%- if section.blocks.size > 0 -%}
+  <section class="tf-slideshow slider-fashion-1 slider-default">
+    <div class="swiper tf-sw-slideshow slider-effect-{{ section.settings.layout }}" 
+      data-effect="{{ section.settings.layout }}" 
+      data-preview="3" 
+      data-tablet="2"
+      data-mobile="1" 
+      data-centered="false" 
+      data-space="30" 
+      data-space-mb="20" 
+      data-loop="true"
+      data-auto-play="{{ section.settings.autoplay }}" 
+      data-speed="{{ section.settings.autoplay_speed }}">
+      <div class="swiper-wrapper">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'slide' -%}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <div class="slider-wrap bg-type-{{ forloop.index }}">
+                <div class="image">
+                  {%- if block.settings.image != blank -%}
+                    <img src="{{ block.settings.image | img_url: 'master' }}"
+                      data-src="{{ block.settings.image | img_url: 'master' }}"
+                      alt="{{ block.settings.heading | escape }}"
+                      class="lazyload">
+                  {%- else -%}
+                    {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </div>
+                <div class="box-content">
+                  <div class="container">
+                    <div class="row">
+                      <div class="{% if forloop.index == 3 %}col-lg-5 offset-lg-7 col-sm-6 offset-sm-6{% else %}col-lg-12 col-sm-6{% endif %} col-12">
+                        <div class="content-slider">
+                          <div class="box-title-slider">
+                            {%- if block.settings.heading != blank -%}
+                              <h2 class="heading fw-medium fade-item fade-item-1 text-dark-5">
+                                {{ block.settings.heading }}
+                              </h2>
+                            {%- endif -%}
+                            {%- if block.settings.subheading != blank -%}
+                              <p class="sub text-md fade-item fade-item-2 text-dark-5">
+                                {{ block.settings.subheading }}
+                              </p>
+                            {%- endif -%}
+                          </div>
+                          {%- if block.settings.button_text != blank -%}
+                            <div class="box-btn-slider fade-item fade-item-3">
+                              <a href="{{ block.settings.button_link }}" class="tf-btn btn-dark2 animate-btn">
+                                {{ block.settings.button_text }}
+                                <i class="icon icon-arr-right"></i>
+                              </a>
+                            </div>
+                          {%- endif -%}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <div class="wrap-pagination">
+        <div class="container">
+          <div class="sw-dots sw-pagination-slider justify-content-center"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+{%- else -%}
+  <section class="tf-slideshow slider-fashion-1 slider-default">
+    <div class="swiper tf-sw-slideshow slider-effect-{{ section.settings.layout }}"
+      data-effect="{{ section.settings.layout }}"
+      data-speed="{{ section.settings.autoplay_speed }}">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <div class="slider-wrap bg-type-1">
+            <div class="image">
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            <div class="box-content">
+              <div class="container">
+                <div class="row">
+                  <div class="col-lg-12 col-sm-6 col-12">
+                    <div class="content-slider">
+                      <div class="box-title-slider">
+                        <h2 class="heading fw-medium fade-item fade-item-1 text-dark-5">
+                          Welcome to Our Store
+                        </h2>
+                        <p class="sub text-md fade-item fade-item-2 text-dark-5">
+                          Discover our latest collection
+                        </p>
+                      </div>
+                      <div class="box-btn-slider fade-item fade-item-3">
+                        <a href="/collections/all" class="tf-btn btn-dark2 animate-btn">
+                          Shop Now
+                          <i class="icon icon-arr-right"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Navigation buttons -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+      <!-- Pagination -->
+      <div class="swiper-pagination sw-pagination-slider"></div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Main Slider",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "fade",
+          "label": "Fade"
+        },
+        {
+          "value": "slide",
+          "label": "Slide"
+        }
+      ],
+      "default": "fade"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 3000,
+      "max": 8000,
+      "step": 500,
+      "unit": "ms",
+      "label": "Autoplay speed",
+      "default": 5000
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Welcome to Vineta"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Discover our latest collection"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link",
+          "default": "/collections/all"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Main Slider",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Style\nRedefined",
+            "subheading": "Discover the latest trends in fashion that speak your style.",
+            "button_text": "Shop Collection",
+            "button_link": "/collections/all"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Elegance\nRedefined",
+            "subheading": "Discover timeless styles for every occasion.",
+            "button_text": "Shop Collection",
+            "button_link": "/collections/new-arrivals"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Elevate Your\nWardrobe",
+            "subheading": "Timeless pieces to refresh your look for every season.",
+            "button_text": "Shop Collection",
+            "button_link": "/collections/featured"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 
