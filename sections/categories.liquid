@@ -22,11 +22,6 @@
               "observer": true,
               "observeParents": true,
               "slidesPerGroup": 2,
-              "navigation": {
-                "clickable": true,
-                "nextEl": ".nav-next-women",
-                "prevEl": ".nav-prev-women"
-              },
               "pagination": { 
                 "el": ".sw-pagination-women", 
                 "clickable": true 
@@ -50,27 +45,108 @@
               }
             }'>
             <div class="swiper-wrapper">
-              {%- for collection in collections limit: 6 -%}
-                {%- if collection.title contains 'Women' or collection.title contains 'women' -%}
-                  <div class="swiper-slide">
-                    <div class="wg-cls style-circle hover-img">
-                      <a href="{{ collection.url }}" class="image img-style d-block">
-                        {%- if collection.image != blank -%}
-                          <img src="{{ collection.image | img_url: 'master' }}"
-                            data-src="{{ collection.image | img_url: 'master' }}"
-                            alt="{{ collection.title | escape }}"
-                            class="lazyload">
-                        {%- else -%}
-                          {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                        {%- endif -%}
-                      </a>
-                      <div class="cls-content text-center">
-                        <a href="{{ collection.url }}" class="link text-md fw-medium">{{ collection.title }}</a>
-                      </div>
-                    </div>
+              <!-- item 1 -->
+              <div class="swiper-slide">
+                <div class="wg-cls style-circle hover-img">
+                  <a href="shop-sub-collection.html" class="image img-style d-block">
+                    {%- if settings.circle_dress != blank -%}
+                      <img src="{{ settings.circle_dress | img_url: 'master' }}"
+                           data-src="{{ settings.circle_dress | img_url: 'master' }}"
+                           alt="Dress" class="lazyload">
+                    {%- else -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="cls-content text-center">
+                    <a href="shop-sub-collection.html" class="link text-md fw-medium">Dress</a>
                   </div>
-                {%- endif -%}
-              {%- endfor -%}
+                </div>
+              </div>
+              <!-- item 2 -->
+              <div class="swiper-slide">
+                <div class="wg-cls style-circle hover-img">
+                  <a href="shop-sub-collection.html" class="image img-style d-block">
+                    {%- if settings.circle_partywear != blank -%}
+                      <img src="{{ settings.circle_partywear | img_url: 'master' }}"
+                           data-src="{{ settings.circle_partywear | img_url: 'master' }}"
+                           alt="Partywear" class="lazyload">
+                    {%- else -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="cls-content text-center">
+                    <a href="shop-sub-collection.html" class="link text-md fw-medium">Partywear</a>
+                  </div>
+                </div>
+              </div>
+              <!-- item 3 -->
+              <div class="swiper-slide">
+                <div class="wg-cls style-circle hover-img">
+                  <a href="shop-sub-collection.html" class="image img-style d-block">
+                    {%- if settings.circle_jewelry != blank -%}
+                      <img src="{{ settings.circle_jewelry | img_url: 'master' }}"
+                           data-src="{{ settings.circle_jewelry | img_url: 'master' }}"
+                           alt="Jewelry" class="lazyload">
+                    {%- else -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="cls-content text-center">
+                    <a href="shop-sub-collection.html" class="link text-md fw-medium">Jewelry</a>
+                  </div>
+                </div>
+              </div>
+              <!-- item 4 -->
+              <div class="swiper-slide">
+                <div class="wg-cls style-circle hover-img">
+                  <a href="shop-sub-collection.html" class="image img-style d-block">
+                    {%- if settings.circle_tops != blank -%}
+                      <img src="{{ settings.circle_tops | img_url: 'master' }}"
+                           data-src="{{ settings.circle_tops | img_url: 'master' }}"
+                           alt="Tops" class="lazyload">
+                    {%- else -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="cls-content text-center">
+                    <a href="shop-sub-collection.html" class="link text-md fw-medium">Tops</a>
+                  </div>
+                </div>
+              </div>
+              <!-- item 5 -->
+              <div class="swiper-slide">
+                <div class="wg-cls style-circle hover-img">
+                  <a href="shop-sub-collection.html" class="image img-style d-block">
+                    {%- if settings.circle_bottoms != blank -%}
+                      <img src="{{ settings.circle_bottoms | img_url: 'master' }}"
+                           data-src="{{ settings.circle_bottoms | img_url: 'master' }}"
+                           alt="Bottoms" class="lazyload">
+                    {%- else -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="cls-content text-center">
+                    <a href="shop-sub-collection.html" class="link text-md fw-medium">Bottoms</a>
+                  </div>
+                </div>
+              </div>
+              <!-- item 6 -->
+              <div class="swiper-slide">
+                <div class="wg-cls style-circle hover-img">
+                  <a href="shop-sub-collection.html" class="image img-style d-block">
+                    {%- if settings.circle_sportwear != blank -%}
+                      <img src="{{ settings.circle_sportwear | img_url: 'master' }}"
+                           data-src="{{ settings.circle_sportwear | img_url: 'master' }}"
+                           alt="Sportwear" class="lazyload">
+                    {%- else -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="cls-content text-center">
+                    <a href="shop-sub-collection.html" class="link text-md fw-medium">Sportwear</a>
+                  </div>
+                </div>
+              </div>
             </div>
             <span class="d-flex d-xl-none sw-dot-default sw-pagination-women justify-content-center"></span>
           </div>
@@ -84,11 +160,6 @@
               "observer": true,
               "observeParents": true,
               "slidesPerGroup": 2,
-              "navigation": {
-                "clickable": true,
-                "nextEl": ".nav-next-men",
-                "prevEl": ".nav-prev-men"
-              },
               "pagination": { 
                 "el": ".sw-pagination-men", 
                 "clickable": true 
@@ -112,27 +183,108 @@
               }
             }'>
             <div class="swiper-wrapper">
-              {%- for collection in collections limit: 6 -%}
-                {%- if collection.title contains 'Men' or collection.title contains 'men' -%}
-                  <div class="swiper-slide">
-                    <div class="wg-cls style-circle hover-img">
-                      <a href="{{ collection.url }}" class="image img-style d-block">
-                        {%- if collection.image != blank -%}
-                          <img src="{{ collection.image | img_url: 'master' }}"
-                            data-src="{{ collection.image | img_url: 'master' }}"
-                            alt="{{ collection.title | escape }}"
-                            class="lazyload">
-                        {%- else -%}
-                          {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                        {%- endif -%}
-                      </a>
-                      <div class="cls-content text-center">
-                        <a href="{{ collection.url }}" class="link text-md fw-medium">{{ collection.title }}</a>
-                      </div>
-                    </div>
+              <!-- item 1 -->
+              <div class="swiper-slide">
+                <div class="wg-cls style-circle hover-img">
+                  <a href="shop-sub-collection.html" class="image img-style d-block">
+                    {%- if settings.circle_sportwear != blank -%}
+                      <img src="{{ settings.circle_sportwear | img_url: 'master' }}"
+                           data-src="{{ settings.circle_sportwear | img_url: 'master' }}"
+                           alt="Sportwear" class="lazyload">
+                    {%- else -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="cls-content text-center">
+                    <a href="shop-sub-collection.html" class="link text-md fw-medium">Sportwear</a>
                   </div>
-                {%- endif -%}
-              {%- endfor -%}
+                </div>
+              </div>
+              <!-- item 2 -->
+              <div class="swiper-slide">
+                <div class="wg-cls style-circle hover-img">
+                  <a href="shop-sub-collection.html" class="image img-style d-block">
+                    {%- if settings.circle_dress != blank -%}
+                      <img src="{{ settings.circle_dress | img_url: 'master' }}"
+                           data-src="{{ settings.circle_dress | img_url: 'master' }}"
+                           alt="Dress" class="lazyload">
+                    {%- else -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="cls-content text-center">
+                    <a href="shop-sub-collection.html" class="link text-md fw-medium">Dress</a>
+                  </div>
+                </div>
+              </div>
+              <!-- item 3 -->
+              <div class="swiper-slide">
+                <div class="wg-cls style-circle hover-img">
+                  <a href="shop-sub-collection.html" class="image img-style d-block">
+                    {%- if settings.circle_partywear != blank -%}
+                      <img src="{{ settings.circle_partywear | img_url: 'master' }}"
+                           data-src="{{ settings.circle_partywear | img_url: 'master' }}"
+                           alt="Partywear" class="lazyload">
+                    {%- else -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="cls-content text-center">
+                    <a href="shop-sub-collection.html" class="link text-md fw-medium">Partywear</a>
+                  </div>
+                </div>
+              </div>
+              <!-- item 4 -->
+              <div class="swiper-slide">
+                <div class="wg-cls style-circle hover-img">
+                  <a href="shop-sub-collection.html" class="image img-style d-block">
+                    {%- if settings.circle_jewelry != blank -%}
+                      <img src="{{ settings.circle_jewelry | img_url: 'master' }}"
+                           data-src="{{ settings.circle_jewelry | img_url: 'master' }}"
+                           alt="Jewelry" class="lazyload">
+                    {%- else -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="cls-content text-center">
+                    <a href="shop-sub-collection.html" class="link text-md fw-medium">Jewelry</a>
+                  </div>
+                </div>
+              </div>
+              <!-- item 5 -->
+              <div class="swiper-slide">
+                <div class="wg-cls style-circle hover-img">
+                  <a href="shop-sub-collection.html" class="image img-style d-block">
+                    {%- if settings.circle_bottoms != blank -%}
+                      <img src="{{ settings.circle_bottoms | img_url: 'master' }}"
+                           data-src="{{ settings.circle_bottoms | img_url: 'master' }}"
+                           alt="Bottoms" class="lazyload">
+                    {%- else -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="cls-content text-center">
+                    <a href="shop-sub-collection.html" class="link text-md fw-medium">Bottoms</a>
+                  </div>
+                </div>
+              </div>
+              <!-- item 6 -->
+              <div class="swiper-slide">
+                <div class="wg-cls style-circle hover-img">
+                  <a href="shop-sub-collection.html" class="image img-style d-block">
+                    {%- if settings.circle_tops != blank -%}
+                      <img src="{{ settings.circle_tops | img_url: 'master' }}"
+                           data-src="{{ settings.circle_tops | img_url: 'master' }}"
+                           alt="Tops" class="lazyload">
+                    {%- else -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="cls-content text-center">
+                    <a href="shop-sub-collection.html" class="link text-md fw-medium">Tops</a>
+                  </div>
+                </div>
+              </div>
             </div>
             <span class="d-flex d-xl-none sw-dot-default sw-pagination-men justify-content-center"></span>
           </div>
@@ -150,71 +302,42 @@
       "type": "text",
       "id": "title",
       "label": "Title",
-      "default": "Shop by Category"
-    }
-  ],
-  "blocks": [
+      "default": "Categories"
+    },
     {
-      "type": "category",
-      "name": "Category",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Category Image"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Category Title",
-          "default": "Fashion"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Category Link",
-          "info": "Link to collection or category page"
-        }
-      ]
+      "type": "image_picker",
+      "id": "circle_dress",
+      "label": "Dress Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "circle_partywear",
+      "label": "Partywear Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "circle_jewelry",
+      "label": "Jewelry Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "circle_tops",
+      "label": "Tops Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "circle_bottoms",
+      "label": "Bottoms Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "circle_sportwear",
+      "label": "Sportwear Image"
     }
   ],
   "presets": [
     {
-      "name": "Categories",
-      "blocks": [
-        {
-          "type": "category",
-          "settings": {
-            "image": "shopify://shop_images/category-1",
-            "title": "Fashion",
-            "link": "/collections/fashion"
-          }
-        },
-        {
-          "type": "category",
-          "settings": {
-            "image": "shopify://shop_images/category-2",
-            "title": "Electronics",
-            "link": "/collections/electronics"
-          }
-        },
-        {
-          "type": "category",
-          "settings": {
-            "image": "shopify://shop_images/category-3",
-            "title": "Home & Living",
-            "link": "/collections/home-living"
-          }
-        },
-        {
-          "type": "category",
-          "settings": {
-            "image": "shopify://shop_images/category-4",
-            "title": "Beauty",
-            "link": "/collections/beauty"
-          }
-        }
-      ]
+      "name": "Categories"
     }
   ]
 }
