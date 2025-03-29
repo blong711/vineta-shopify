@@ -9,7 +9,7 @@
         <span></span>
       </li>
       <li class="item-breadcrumb">
-        <span class="text">Cart</span>
+        <span class="text">{% if template == 'list-collections' %}Collections{% else %}{{ page_title }}{% endif %}</span>
       </li>
     </ul>
   </div>
