@@ -1,0 +1,829 @@
+{%- comment -%}Collection Section{%- endcomment -%}
+<section class="flat-spacing pt-0">
+  <div class="container">
+    <div class="tf-shop-control">
+      <div class="tf-group-filter">
+        <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="filterShop" class="tf-btn-filter">
+          <span class="icon icon-filter"></span>
+          <span class="text">Filter</span>
+        </a>
+        <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
+          <div class="btn-select">
+            <span class="text-sort-value">{{ collection.sort_options | first }}</span>
+            <span class="icon icon-arr-down"></span>
+          </div>
+          <div class="dropdown-menu">
+            {%- for option in collection.sort_options -%}
+              <div class="select-item {% if forloop.first %}active{% endif %}" data-sort-value="{{ option | handle }}">
+                <span class="text-value-item">{{ option }}</span>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+      <ul class="tf-control-layout">
+        <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
+          <div class="item icon-list">
+            <span></span>
+            <span></span>
+          </div>
+        </li>
+        <li class="tf-view-layout-switch sw-layout-2" data-value-layout="tf-col-2">
+          <div class="item icon-grid-2">
+            <span></span>
+            <span></span>
+          </div>
+        </li>
+        <li class="tf-view-layout-switch sw-layout-3" data-value-layout="tf-col-3">
+          <div class="item icon-grid-3">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </li>
+        <li class="tf-view-layout-switch sw-layout-4 active" data-value-layout="tf-col-4">
+          <div class="item icon-grid-4">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="wrapper-control-shop">
+      <div class="meta-filter-shop">
+        <div id="product-count-grid" class="count-text">{{ collection.products_count }} products</div>
+        <div id="product-count-list" class="count-text">{{ collection.products_count }} products</div>
+        <div id="applied-filters"></div>
+        <button id="remove-all" class="remove-all-filters" style="display: none;">
+          <i class="icon icon-close"></i> Clear all filter
+        </button>
+      </div>
+      <div class="tf-list-layout wrapper-shop" id="listLayout" style="display: none;">
+        {%- for product in collection.products -%}
+          <div class="card-product style-list" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
+            <div class="card-product-wrapper">
+              <a href="{{ product.url }}" class="product-img">
+                <img class="img-product lazyload"
+                  data-src="{{ product.featured_image | img_url: '600x' }}"
+                  src="{{ product.featured_image | img_url: '300x' }}"
+                  alt="{{ product.title | escape }}">
+                {%- if product.images[1] -%}
+                  <img class="img-hover lazyload"
+                    data-src="{{ product.images[1] | img_url: '600x' }}"
+                    src="{{ product.images[1] | img_url: '300x' }}"
+                    alt="{{ product.title | escape }}">
+                {%- endif -%}
+              </a>
+            </div>
+            <div class="card-product-info">
+              <div class="info-list">
+                <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
+                <p class="price-wrap fw-medium text-md">
+                  {%- if product.compare_at_price > product.price -%}
+                    <span class="price-new text-primary">{{ product.price | money }}</span>
+                    <span class="price-old">{{ product.compare_at_price | money }}</span>
+                  {%- else -%}
+                    <span class="price-new">{{ product.price | money }}</span>
+                  {%- endif -%}
+                </p>
+                <p class="decs text-sm text-main text-line-clamp-2">{{ product.description | strip_html | truncatewords: 20 }}</p>
+                {%- if product.variants.size > 0 -%}
+                  <ul class="list-color-product">
+                    {%- for variant in product.variants -%}
+                      {%- if variant.option1 contains 'Color' -%}
+                        <li class="list-color-item color-swatch {% if forloop.first %}active{% endif %}">
+                          <span class="d-none color-filter">{{ variant.option1 }}</span>
+                          <span class="swatch-value bg-{{ variant.option1 | handle }}"></span>
+                          {%- if variant.image -%}
+                            <img class="lazyload" data-src="{{ variant.image | img_url: '300x' }}" src="{{ variant.image | img_url: '100x' }}" alt="{{ variant.option1 }}">
+                          {%- endif -%}
+                        </li>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </ul>
+                  <ul class="size-box">
+                    {%- for variant in product.variants -%}
+                      {%- if variant.option1 contains 'Size' -%}
+                        <li class="size-item text-xs">{{ variant.option1 }}</li>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </div>
+              <div class="list-product-btn">
+                <a href="#shoppingCart" data-bs-toggle="offcanvas" class="tf-btn btn-main-product animate-btn">Add To cart</a>
+                <a href="javascript:void(0);" class="box-icon wishlist hover-tooltip">
+                  <span class="icon icon-heart2"></span>
+                  <span class="tooltip">Add to Wishlist</span>
+                </a>
+                <a href="#compare" data-bs-toggle="offcanvas" aria-controls="compare" class="box-icon compare hover-tooltip">
+                  <span class="icon icon-compare3"></span>
+                  <span class="tooltip">Add to Compare</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+        {%- if collection.products_count > 0 -%}
+          <ul class="wg-pagination">
+            {%- if paginate.previous -%}
+              <li>
+                <a href="{{ paginate.previous.url }}" class="pagination-item"><i class="icon-arr-left2"></i></a>
+              </li>
+            {%- endif -%}
+            {%- for part in paginate.parts -%}
+              <li {% if part.is_link == false and part.current %}class="active"{% endif %}>
+                {%- if part.is_link -%}
+                  <a href="{{ part.url }}" class="pagination-item">{{ part.title }}</a>
+                {%- else -%}
+                  <div class="pagination-item">{{ part.title }}</div>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+            {%- if paginate.next -%}
+              <li>
+                <a href="{{ paginate.next.url }}" class="pagination-item"><i class="icon-arr-right2"></i></a>
+              </li>
+            {%- endif -%}
+          </ul>
+        {%- endif -%}
+      </div>
+      <div class="wrapper-shop tf-grid-layout tf-col-4" id="gridLayout">
+        {%- for product in collection.products -%}
+          <div class="card-product grid style-1 {% if product.variants.size > 0 %}card-product-size{% endif %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
+            <div class="card-product-wrapper">
+              <a href="{{ product.url }}" class="product-img">
+                <img class="img-product lazyload"
+                  data-src="{{ product.featured_image | img_url: '600x' }}"
+                  src="{{ product.featured_image | img_url: '300x' }}"
+                  alt="{{ product.title | escape }}">
+                {%- if product.images[1] -%}
+                  <img class="img-hover lazyload"
+                    data-src="{{ product.images[1] | img_url: '600x' }}"
+                    src="{{ product.images[1] | img_url: '300x' }}"
+                    alt="{{ product.title | escape }}">
+                {%- endif -%}
+              </a>
+              {%- if product.compare_at_price > product.price -%}
+                {%- assign discount = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+                <div class="on-sale-wrap">
+                  <span class="on-sale-item">{{ discount }}% Off</span>
+                </div>
+              {%- endif -%}
+              {%- if product.tags contains 'trending' -%}
+                <div class="on-sale-wrap">
+                  <span class="on-sale-item trending">Trending</span>
+                </div>
+              {%- endif -%}
+              {%- if product.tags contains 'new' -%}
+                <div class="on-sale-wrap">
+                  <span class="on-sale-item new">New</span>
+                </div>
+              {%- endif -%}
+              {%- if product.tags contains 'limited' -%}
+                <div class="on-sale-wrap">
+                  <span class="on-sale-item limited">Limited</span>
+                </div>
+              {%- endif -%}
+              <ul class="list-product-btn">
+                <li>
+                  <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
+                    <span class="icon icon-cart2"></span>
+                    <span class="tooltip">Add to Cart</span>
+                  </a>
+                </li>
+                <li class="wishlist">
+                  <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
+                    <span class="icon icon-heart2"></span>
+                    <span class="tooltip">Add to Wishlist</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
+                    <span class="icon icon-view"></span>
+                    <span class="tooltip">Quick View</span>
+                  </a>
+                </li>
+                <li class="compare">
+                  <a href="#compare" data-bs-toggle="modal" aria-controls="compare" class="hover-tooltip tooltip-left box-icon">
+                    <span class="icon icon-compare"></span>
+                    <span class="tooltip">Add to Compare</span>
+                  </a>
+                </li>
+              </ul>
+              {%- if product.variants.size > 0 -%}
+                <ul class="size-box">
+                  {%- for variant in product.variants -%}
+                    {%- if variant.option1 contains 'Size' -%}
+                      <li class="size-item text-xs text-white">{{ variant.option1 }}</li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+            <div class="card-product-info">
+              <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
+              <p class="price-wrap fw-medium">
+                {%- if product.compare_at_price > product.price -%}
+                  <span class="price-new text-primary">{{ product.price | money }}</span>
+                  <span class="price-old">{{ product.compare_at_price | money }}</span>
+                {%- else -%}
+                  <span class="price-new">{{ product.price | money }}</span>
+                {%- endif -%}
+              </p>
+              {%- if product.variants.size > 0 -%}
+                <ul class="list-color-product">
+                  {%- for variant in product.variants -%}
+                    {%- if variant.option1 contains 'Color' -%}
+                      <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
+                        <span class="tooltip color-filter">{{ variant.option1 }}</span>
+                        <span class="swatch-value bg-{{ variant.option1 | handle }}"></span>
+                        {%- if variant.image -%}
+                          <img class="lazyload" data-src="{{ variant.image | img_url: '300x' }}" src="{{ variant.image | img_url: '100x' }}" alt="{{ variant.option1 }}">
+                        {%- endif -%}
+                      </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+        {%- if collection.products_count > 0 -%}
+          <ul class="wg-pagination">
+            {%- if paginate.previous -%}
+              <li>
+                <a href="{{ paginate.previous.url }}" class="pagination-item"><i class="icon-arr-left2"></i></a>
+              </li>
+            {%- endif -%}
+            {%- for part in paginate.parts -%}
+              <li {% if part.is_link == false and part.current %}class="active"{% endif %}>
+                {%- if part.is_link -%}
+                  <a href="{{ part.url }}" class="pagination-item">{{ part.title }}</a>
+                {%- else -%}
+                  <div class="pagination-item">{{ part.title }}</div>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+            {%- if paginate.next -%}
+              <li>
+                <a href="{{ paginate.next.url }}" class="pagination-item"><i class="icon-arr-right2"></i></a>
+              </li>
+            {%- endif -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 24,
+      "step": 4,
+      "default": 12,
+      "label": "Products per page"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.flat-spacing {
+  padding: 60px 0;
+}
+
+.tf-shop-control {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.tf-group-filter {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.tf-btn-filter {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 15px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #222;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.tf-btn-filter:hover {
+  background: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
+}
+
+.tf-dropdown-sort {
+  position: relative;
+}
+
+.btn-select {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 15px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 200px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px 0;
+  display: none;
+  z-index: 100;
+}
+
+.tf-dropdown-sort:hover .dropdown-menu {
+  display: block;
+}
+
+.select-item {
+  padding: 8px 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.select-item:hover,
+.select-item.active {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.tf-control-layout {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tf-view-layout-switch {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.tf-view-layout-switch:hover,
+.tf-view-layout-switch.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+}
+
+.meta-filter-shop {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.count-text {
+  color: #666;
+}
+
+.remove-all-filters {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.remove-all-filters:hover {
+  background: #e5e5e5;
+}
+
+.wrapper-shop {
+  display: grid;
+  gap: 20px;
+}
+
+.tf-col-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.tf-col-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.tf-col-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.card-product {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.card-product-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.product-img {
+  display: block;
+  position: relative;
+  padding-top: 100%;
+}
+
+.product-img img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s;
+}
+
+.product-img .img-hover {
+  opacity: 0;
+}
+
+.card-product:hover .img-hover {
+  opacity: 1;
+}
+
+.list-product-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: all 0.3s;
+}
+
+.card-product:hover .list-product-btn {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.box-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background: #fff;
+  border-radius: 50%;
+  color: #222;
+  transition: all 0.3s;
+}
+
+.box-icon:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.hover-tooltip {
+  position: relative;
+}
+
+.tooltip {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  padding: 5px 10px;
+  background: #222;
+  color: #fff;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+}
+
+.hover-tooltip:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.size-box {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  gap: 5px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s;
+}
+
+.card-product:hover .size-box {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.size-item {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.5);
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.on-sale-wrap {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.on-sale-item {
+  padding: 3px 8px;
+  background: var(--primary-color);
+  color: #fff;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.on-sale-item.trending {
+  background: #ff6b6b;
+}
+
+.on-sale-item.new {
+  background: #4caf50;
+}
+
+.on-sale-item.limited {
+  background: #ff9800;
+}
+
+.card-product-info {
+  padding: 15px;
+}
+
+.name-product {
+  display: block;
+  margin-bottom: 10px;
+  color: #222;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.name-product:hover {
+  color: var(--primary-color);
+}
+
+.price-wrap {
+  margin-bottom: 10px;
+}
+
+.price-new {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.price-old {
+  color: #999;
+  text-decoration: line-through;
+  margin-left: 5px;
+}
+
+.list-color-product {
+  display: flex;
+  gap: 5px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.color-swatch {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.swatch-value {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px #ddd;
+}
+
+.color-swatch img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.color-swatch:hover img {
+  opacity: 1;
+}
+
+.wg-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  list-style: none;
+  padding: 0;
+  margin: 30px 0 0;
+}
+
+.pagination-item {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #222;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.pagination-item:hover,
+.wg-pagination li.active .pagination-item {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+}
+
+@media (max-width: 1200px) {
+  .tf-col-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 991px) {
+  .tf-col-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .flat-spacing {
+    padding: 40px 0;
+  }
+  
+  .tf-shop-control {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .tf-group-filter {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .tf-control-layout {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .tf-col-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 575px) {
+  .tf-col-4 {
+    grid-template-columns: 1fr;
+  }
+}
+{% endstylesheet %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Layout switching
+  const layoutSwitches = document.querySelectorAll('.tf-view-layout-switch');
+  const gridLayout = document.getElementById('gridLayout');
+  const listLayout = document.getElementById('listLayout');
+  
+  layoutSwitches.forEach(switch => {
+    switch.addEventListener('click', function() {
+      const layout = this.dataset.valueLayout;
+      
+      // Update active state
+      layoutSwitches.forEach(s => s.classList.remove('active'));
+      this.classList.add('active');
+      
+      // Show/hide layouts
+      if (layout === 'list') {
+        gridLayout.style.display = 'none';
+        listLayout.style.display = 'block';
+      } else {
+        gridLayout.style.display = 'grid';
+        listLayout.style.display = 'none';
+        gridLayout.className = `wrapper-shop ${layout}`;
+      }
+    });
+  });
+  
+  // Sort dropdown
+  const sortDropdown = document.querySelector('.tf-dropdown-sort');
+  const sortItems = sortDropdown.querySelectorAll('.select-item');
+  
+  sortItems.forEach(item => {
+    item.addEventListener('click', function() {
+      const value = this.dataset.sortValue;
+      
+      // Update active state
+      sortItems.forEach(i => i.classList.remove('active'));
+      this.classList.add('active');
+      
+      // Update display value
+      sortDropdown.querySelector('.text-sort-value').textContent = this.querySelector('.text-value-item').textContent;
+      
+      // Here you would typically trigger a page reload with the new sort parameter
+      // window.location.href = `${window.location.pathname}?sort_by=${value}`;
+    });
+  });
+  
+  // Filter handling
+  const filterBtn = document.querySelector('.tf-btn-filter');
+  const removeAllBtn = document.getElementById('remove-all');
+  const appliedFilters = document.getElementById('applied-filters');
+  
+  // This would be populated based on active filters
+  function updateAppliedFilters() {
+    // Example:
+    // const activeFilters = getActiveFilters();
+    // if (activeFilters.length > 0) {
+    //   removeAllBtn.style.display = 'block';
+    //   appliedFilters.innerHTML = activeFilters.map(filter => `
+    //     <span class="filter-tag">${filter}</span>
+    //   `).join('');
+    // } else {
+    //   removeAllBtn.style.display = 'none';
+    //   appliedFilters.innerHTML = '';
+    // }
+  }
+  
+  removeAllBtn.addEventListener('click', function() {
+    // Clear all filters and reload page
+    // window.location.href = window.location.pathname;
+  });
+});
+{% endjavascript %} 

@@ -1,0 +1,362 @@
+{%- comment -%}Collection List Section{%- endcomment -%}
+<section class="flat-spacing-2 pt-0">
+  <div class="container">
+    <div class="flat-wrap-cls tf-grid-layout tf-col-2 xl-col-3">
+      {%- paginate collections by section.settings.collections_per_page -%}
+        {%- for collection in collections -%}
+          <div class="wg-cls style-abs2 style-lg hover-img">
+            <a href="{{ collection.url }}" class="image-wrap relative">
+              <div class="image img-style">
+                {%- if collection.image -%}
+                  <img src="{{ collection.image | img_url: '600x' }}"
+                    data-src="{{ collection.image | img_url: '600x' }}"
+                    alt="{{ collection.title | escape }}"
+                    class="lazyload">
+                {%- else -%}
+                  {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </div>
+              <div class="cls-btn text-center">
+                <button class="tf-btn btn-white hover-dark">View all</button>
+              </div>
+              <span class="tf-overlay"></span>
+            </a>
+            <div class="cls-content text-center">
+              <a href="{{ collection.url }}" class="text-type text-xl-2 fw-medium link">{{ collection.title }}</a>
+              <span class="count-item body-text-2 text-main">{{ collection.products_count }} items</span>
+            </div>
+          </div>
+        {%- endfor -%}
+
+        {%- if paginate.pages > 1 -%}
+          <ul class="wg-pagination">
+            {%- if paginate.previous -%}
+              <li>
+                <a href="{{ paginate.previous.url }}" class="pagination-item">
+                  <i class="icon-arr-left2"></i>
+                </a>
+              </li>
+            {%- endif -%}
+
+            {%- for part in paginate.parts -%}
+              <li {% if part.is_link == false and part.current %}class="active"{% endif %}>
+                {%- if part.is_link -%}
+                  <a href="{{ part.url }}" class="pagination-item">{{ part.title }}</a>
+                {%- else -%}
+                  <div class="pagination-item">{{ part.title }}</div>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+
+            {%- if paginate.next -%}
+              <li>
+                <a href="{{ paginate.next.url }}" class="pagination-item">
+                  <i class="icon-arr-right2"></i>
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+  </div>
+</section>
+
+<div class="flat-spacing-5 line-top flat-wrap-iconbox">
+  <div class="container">
+    <div dir="ltr" class="swiper tf-swiper wow fadeInUp" data-swiper='{
+      "slidesPerView": 1,
+      "spaceBetween": 12,
+      "speed": 800,
+      "observer": true,
+      "observeParents": true,
+      "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+      "breakpoints": {
+        "575": { "slidesPerView": 2, "spaceBetween": 24}, 
+        "768": { "slidesPerView": 3, "spaceBetween": 24},
+        "1200": { "slidesPerView": 3, "spaceBetween": 100},
+        "1440": { "slidesPerView": 3, "spaceBetween": 205}
+      }
+    }'>
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <div class="tf-icon-box style-2">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M38.9421 14.922L24.328 6.48452C24.2283 6.42685 24.1151 6.39648 23.9999 6.39648C23.8847 6.39648 23.7715 6.42685 23.6717 6.48452L9.05762 14.922C8.95781 14.9795 8.87492 15.0623 8.81731 15.1621C8.75971 15.2618 8.72941 15.375 8.72949 15.4901V32.3651C8.72946 32.4804 8.75977 32.5936 8.81737 32.6934C8.87497 32.7932 8.95783 32.876 9.05762 32.9336L23.6717 41.3711C23.7715 41.4286 23.8847 41.4589 23.9999 41.4589C24.115 41.4589 24.2282 41.4286 24.328 41.3711L38.9421 32.9336C39.0419 32.876 39.1248 32.7932 39.1824 32.6934C39.24 32.5936 39.2703 32.4804 39.2702 32.3651V15.4901C39.2703 15.375 39.24 15.2618 39.1824 15.1621C39.1248 15.0623 39.0419 14.9795 38.9421 14.922ZM23.9999 7.81052L37.3015 15.4901L23.9999 23.1698L10.6982 15.4901L23.9999 7.81052ZM10.042 16.6268L23.3436 24.3064V39.666L10.042 31.9875V16.6268ZM37.9577 31.9875L24.6561 39.666V24.3064L37.9577 16.6268V31.9875Z" fill="#ABABAB"/>
+            </svg>
+            <div class="content">
+              <div class="title">Free Shipping</div>
+              <p class="desc text-grey-2">Enjoy free shipping on all orders over $150</p>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="tf-icon-box style-2">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24.3943 15.1144C24.3216 15.0724 24.239 15.0503 24.155 15.0503C24.071 15.0503 23.9885 15.0724 23.9158 15.1144L16.6187 19.3274C16.5459 19.3694 16.4855 19.4298 16.4435 19.5025C16.4015 19.5753 16.3794 19.6578 16.3794 19.7418V28.1677C16.3794 28.2517 16.4015 28.3342 16.4435 28.407C16.4855 28.4797 16.5459 28.5401 16.6187 28.5821L23.9158 32.7952C23.9885 32.8372 24.071 32.8593 24.155 32.8593C24.239 32.8593 24.3216 32.8372 24.3943 32.7952L31.6915 28.5821C31.7642 28.5401 31.8246 28.4797 31.8666 28.407C31.9086 28.3342 31.9307 28.2517 31.9307 28.1677V19.7418C31.9307 19.6578 31.9086 19.5753 31.8666 19.5025C31.8246 19.4298 31.7642 19.3694 31.6915 19.3274L24.3943 15.1144ZM24.155 16.0813L30.4951 19.7418L24.155 23.4022L17.815 19.7418L24.155 16.0813ZM17.3365 20.5706L23.6765 24.231V31.5523L17.3365 27.8918V20.5706ZM24.6336 31.5519V24.2306L30.9737 20.5702V27.8915L24.6336 31.5519Z" fill="#ABABAB"/>
+            </svg>
+            <div class="content">
+              <div class="title">Gift Package</div>
+              <p class="desc text-grey-2">Hassle-free returns for a worry-free shopping experience.</p>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="tf-icon-box style-2">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.2486 37.718C18.2484 38.0955 18.5544 38.4017 18.932 38.4017C19.0615 38.4018 19.1884 38.365 19.2978 38.2957L29.2659 31.9856H38.0487C39.9538 31.9836 41.4977 30.4398 41.4999 28.5346V13.0492C41.4977 11.1441 39.9538 9.60027 38.0487 9.59814H9.95096C8.04595 9.60034 6.50213 11.1442 6.5 13.0492V28.5345C6.5022 30.4395 8.04595 31.9833 9.95096 31.9855H18.2498L18.2486 37.718ZM9.95096 30.6184C8.80064 30.6171 7.86847 29.6849 7.86719 28.5346V13.0492C7.86854 11.8989 8.80064 10.9667 9.95096 10.9654H38.0487C39.1991 10.9667 40.1313 11.8988 40.1327 13.0492V28.5345C40.1314 29.6848 39.1993 30.617 38.049 30.6183H29.0678C28.9384 30.6183 28.8115 30.6551 28.7021 30.7243L19.6162 36.476L19.6176 31.3021C19.6176 30.9247 19.3115 30.6186 18.934 30.6186L9.95096 30.6184Z" fill="#ABABAB"/>
+            </svg>
+            <div class="content">
+              <div class="title">Free Returns</div>
+              <p class="desc text-grey-2">Shop with confidence, covered by our one-year warranty.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection List",
+  "settings": [
+    {
+      "type": "range",
+      "id": "collections_per_page",
+      "min": 6,
+      "max": 24,
+      "step": 6,
+      "default": 6,
+      "label": "Collections per page"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection List"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.flat-spacing-2 {
+  padding: 60px 0;
+}
+
+.flat-wrap-cls {
+  display: grid;
+  gap: 30px;
+}
+
+.tf-col-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.xl-col-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wg-cls {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.image-wrap {
+  display: block;
+  position: relative;
+  padding-top: 100%;
+}
+
+.image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.wg-cls:hover .image img {
+  transform: scale(1.1);
+}
+
+.cls-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.wg-cls:hover .cls-btn {
+  opacity: 1;
+}
+
+.tf-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.wg-cls:hover .tf-overlay {
+  opacity: 1;
+}
+
+.cls-content {
+  padding: 20px;
+  text-align: center;
+}
+
+.text-type {
+  display: block;
+  margin-bottom: 5px;
+  color: #222;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.text-type:hover {
+  color: var(--primary-color);
+}
+
+.count-item {
+  color: #666;
+}
+
+.wg-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  list-style: none;
+  padding: 0;
+  margin: 30px 0 0;
+}
+
+.pagination-item {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #222;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.pagination-item:hover,
+.wg-pagination li.active .pagination-item {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+}
+
+.flat-spacing-5 {
+  padding: 60px 0;
+  border-top: 1px solid #eee;
+}
+
+.tf-icon-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.tf-icon-box svg {
+  flex-shrink: 0;
+}
+
+.tf-icon-box .content {
+  flex-grow: 1;
+}
+
+.tf-icon-box .title {
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #222;
+}
+
+.tf-icon-box .desc {
+  color: #666;
+  margin: 0;
+}
+
+@media (max-width: 1200px) {
+  .xl-col-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .flat-spacing-2 {
+    padding: 40px 0;
+  }
+  
+  .tf-col-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .xl-col-3 {
+    grid-template-columns: 1fr;
+  }
+}
+{% endstylesheet %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize Swiper
+  const swiper = new Swiper('.tf-swiper', {
+    slidesPerView: 1,
+    spaceBetween: 12,
+    speed: 800,
+    observer: true,
+    observeParents: true,
+    pagination: {
+      el: '.sw-pagination-iconbox',
+      clickable: true
+    },
+    breakpoints: {
+      575: {
+        slidesPerView: 2,
+        spaceBetween: 24
+      },
+      768: {
+        slidesPerView: 3,
+        spaceBetween: 24
+      },
+      1200: {
+        slidesPerView: 3,
+        spaceBetween: 100
+      },
+      1440: {
+        slidesPerView: 3,
+        spaceBetween: 205
+      }
+    }
+  });
+});
+{% endjavascript %} 
