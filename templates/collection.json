@@ -1,0 +1,29 @@
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+      }
+    },
+    "collection-header": {
+      "type": "collection-header",
+      "settings": {
+        "show_collection_image": true,
+        "show_collection_description": true
+      }
+    },
+    "main": {
+      "type": "collection",
+      "settings": {
+        "products_per_page": 16,
+        "default_view": "grid",
+        "default_sort": "best-selling"
+      }
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "collection-header",
+    "main"
+  ]
+} 
