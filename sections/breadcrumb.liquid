@@ -1,0 +1,84 @@
+{%- comment -%}Breadcrumb Section{%- endcomment -%}
+<div class="tf-breadcrumb">
+  <div class="container">
+    <ul class="breadcrumb-list">
+      <li class="item-breadcrumb">
+        <a href="/" class="text">Home</a>
+      </li>
+      <li class="item-breadcrumb dot">
+        <span></span>
+      </li>
+      <li class="item-breadcrumb">
+        <span class="text">Cart</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Breadcrumb",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumb",
+      "label": "Show breadcrumb",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.tf-breadcrumb {
+  padding: 20px 0;
+  background: #f9f9f9;
+  margin-bottom: 40px;
+}
+
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-size: 14px;
+}
+
+.item-breadcrumb {
+  display: flex;
+  align-items: center;
+  color: #666;
+}
+
+.item-breadcrumb.dot {
+  margin: 0 10px;
+}
+
+.item-breadcrumb.dot span {
+  width: 4px;
+  height: 4px;
+  background: #999;
+  border-radius: 50%;
+}
+
+.item-breadcrumb .text {
+  color: #333;
+  text-decoration: none;
+}
+
+.item-breadcrumb .text:hover {
+  color: #000;
+}
+
+@media (max-width: 767px) {
+  .tf-breadcrumb {
+    padding: 15px 0;
+    margin-bottom: 30px;
+  }
+  
+  .breadcrumb-list {
+    font-size: 13px;
+  }
+}
+{% endstylesheet %} 

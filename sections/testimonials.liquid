@@ -160,9 +160,73 @@
       "default": "Happy Customers"
     }
   ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "Emily T."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_verified_badge",
+          "label": "Show Verified Badge",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Rating",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review Text",
+          "default": "I absolutely love the quality of the products. The customer service was exceptional, and I received my order quickly. Will definitely shop here again!"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Testimonials"
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Emily T.",
+            "show_verified_badge": true,
+            "rating": 5,
+            "review_text": "I absolutely love the quality of the products. The customer service was exceptional, and I received my order quickly. Will definitely shop here again!"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Jessica M.",
+            "show_verified_badge": true,
+            "rating": 5,
+            "review_text": "The attention to detail in their products is amazing. I've been a customer for years and they never disappoint. Highly recommended!"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Lisa P.",
+            "show_verified_badge": true,
+            "rating": 5,
+            "review_text": "Their collection is always on-trend and the quality is outstanding. The shipping was fast and the packaging was beautiful."
+          }
+        }
+      ]
     }
   ]
 }
@@ -177,4 +241,4 @@ document.addEventListener('DOMContentLoaded', function() {
     new Swiper(swiperElement, options);
   }
 });
-{% endjavascript %} 
+{% endjavascript %}

@@ -1,0 +1,236 @@
+{%- comment -%}Top Bar Section{%- endcomment -%}
+<div class="tf-topbar bg-dark-5 topbar-bg">
+  <div class="container">
+    <div class="topbar-wraper">
+      <div class="d-none d-xl-block flex-shrink-0">
+        <ul class="tf-social-icon topbar-left">
+          {%- if section.settings.facebook_url != blank -%}
+            <li>
+              <a href="{{ section.settings.facebook_url }}" class="social-item social-facebook" target="_blank" rel="noopener">
+                <i class="icon icon-fb"></i>
+              </a>
+            </li>
+          {%- endif -%}
+          {%- if section.settings.instagram_url != blank -%}
+            <li>
+              <a href="{{ section.settings.instagram_url }}" class="social-item social-instagram" target="_blank" rel="noopener">
+                <i class="icon icon-instagram"></i>
+              </a>
+            </li>
+          {%- endif -%}
+          {%- if section.settings.twitter_url != blank -%}
+            <li>
+              <a href="{{ section.settings.twitter_url }}" class="social-item social-x" target="_blank" rel="noopener">
+                <i class="icon icon-x"></i>
+              </a>
+            </li>
+          {%- endif -%}
+          {%- if section.settings.snapchat_url != blank -%}
+            <li>
+              <a href="{{ section.settings.snapchat_url }}" class="social-item social-snapchat" target="_blank" rel="noopener">
+                <i class="icon icon-snapchat"></i>
+              </a>
+            </li>
+          {%- endif -%}
+        </ul>
+      </div>
+      <div class="overflow-hidden">
+        <div class="topbar-center marquee-wrapper">
+          <div class="initial-child-container">
+            <div class="marquee-child-item">
+              <p>Return extended to 60 days</p>
+            </div>
+            <div class="marquee-child-item"><span class="dot"></span></div>
+            <div class="marquee-child-item">
+              <p>Life-time Guarantees</p>
+            </div>
+            <div class="marquee-child-item"><span class="dot"></span></div>
+            <div class="marquee-child-item">
+              <p>Limited-Time Offer</p>
+            </div>
+            <div class="marquee-child-item"><span class="dot"></span></div>
+            <!-- 2 -->
+            <div class="marquee-child-item">
+              <p>Return extended to 60 days</p>
+            </div>
+            <div class="marquee-child-item"><span class="dot"></span></div>
+            <div class="marquee-child-item">
+              <p>Life-time Guarantees</p>
+            </div>
+            <div class="marquee-child-item"><span class="dot"></span></div>
+            <div class="marquee-child-item">
+              <p>Limited-Time Offer</p>
+            </div>
+            <div class="marquee-child-item"><span class="dot"></span></div>
+            <!-- 3 -->
+            <div class="marquee-child-item">
+              <p>Return extended to 60 days</p>
+            </div>
+            <div class="marquee-child-item"><span class="dot"></span></div>
+            <div class="marquee-child-item">
+              <p>Life-time Guarantees</p>
+            </div>
+            <div class="marquee-child-item"><span class="dot"></span></div>
+            <div class="marquee-child-item">
+              <p>Limited-Time Offer</p>
+            </div>
+            <div class="marquee-child-item"><span class="dot"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="d-none d-xl-block flex-shrink-0">
+        <div class="topbar-right">
+          <div class="tf-languages">
+            <select class="image-select center style-default type-languages">
+              <option>English</option>
+              <option>العربية</option>
+              <option>简体中文</option>
+              <option>اردو</option>
+            </select>
+          </div>
+          <div class="tf-currencies">
+            <select class="image-select center style-default type-currencies">
+              <option selected data-thumbnail="images/country/us.png">United States (USD $)</option>
+              <option data-thumbnail="images/country/fr.png">France (EUR €)</option>
+              <option data-thumbnail="images/country/ger.png">Germany (EUR €)</option>
+              <option data-thumbnail="images/country/vn.png">Vietnam (VND ₫)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Top bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Social Media"
+    },
+    {
+      "type": "text",
+      "id": "facebook_url",
+      "label": "Facebook URL",
+      "info": "https://www.facebook.com/your-page",
+      "default": "https://www.facebook.com/"
+    },
+    {
+      "type": "text",
+      "id": "instagram_url",
+      "label": "Instagram URL",
+      "info": "https://www.instagram.com/your-profile",
+      "default": "https://www.instagram.com/"
+    },
+    {
+      "type": "text",
+      "id": "twitter_url",
+      "label": "Twitter URL",
+      "info": "https://twitter.com/your-profile",
+      "default": "https://x.com/"
+    },
+    {
+      "type": "text",
+      "id": "snapchat_url",
+      "label": "Snapchat URL",
+      "info": "https://www.snapchat.com/add/your-profile",
+      "default": "https://www.snapchat.com/"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Top bar",
+      "settings": {
+        "facebook_url": "https://www.facebook.com/",
+        "instagram_url": "https://www.instagram.com/",
+        "twitter_url": "https://x.com/",
+        "snapchat_url": "https://www.snapchat.com/"
+      }
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize marquee animation
+  const marqueeWrapper = document.querySelector('.marquee-wrapper');
+  if (marqueeWrapper) {
+    const container = marqueeWrapper.querySelector('.initial-child-container');
+    if (container) {
+      container.style.animation = 'marquee 30s linear infinite';
+    }
+  }
+});
+{% endjavascript %}
+
+{% stylesheet %}
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-wrapper {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.initial-child-container {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.marquee-child-item {
+  display: inline-block;
+  padding: 0 15px;
+}
+
+.marquee-child-item .dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background-color: currentColor;
+  border-radius: 50%;
+  margin: 0 5px;
+  vertical-align: middle;
+}
+
+.tf-social-icon {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tf-social-icon li {
+  margin-right: 15px;
+}
+
+.tf-social-icon li:last-child {
+  margin-right: 0;
+}
+
+.tf-social-icon .social-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: currentColor;
+  transition: color 0.3s ease;
+}
+
+.tf-social-icon .social-item:hover {
+  color: var(--primary-color);
+}
+
+.tf-social-icon .icon {
+  font-size: 16px;
+}
+{% endstylesheet %} 

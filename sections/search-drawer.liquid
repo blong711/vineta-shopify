@@ -1,0 +1,532 @@
+{%- comment -%}Search Drawer Section{%- endcomment -%}
+<div class="offcanvas offcanvas-top offcanvas-search" id="search">
+  <div class="offcanvas-content">
+    <div class="header">
+      <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="looking-for-wrap">
+            <div class="heading">What are you looking for?</div>
+            <form action="{{ routes.search_url }}" method="get" class="form-search">
+              <fieldset class="text">
+                <input type="search" name="q" placeholder="Search" class="" tabindex="0" value="{{ search.terms | escape }}" aria-required="true" required>
+              </fieldset>
+              <button type="submit">
+                <i class="icon icon-search"></i>
+              </button>
+            </form>
+            <div class="popular-searches justify-content-md-center">
+              <div class="text fw-medium">Popular searches:</div>
+              <ul>
+                <li><a class="link" href="{{ routes.collections_url }}?sort_by=best-selling">Featured</a></li>
+                <li><a class="link" href="{{ routes.collections_url }}?sort_by=created-descending">New</a></li>
+                <li><a class="link" href="{{ routes.collections_url }}?sort_by=price-ascending">Price: Low to High</a></li>
+                <li><a class="link" href="{{ routes.collections_url }}?sort_by=price-descending">Price: High to Low</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-10">
+          <div class="featured-product">
+            <div class="text-xl-2 fw-medium featured-product-heading">Featured product</div>
+            <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
+              "slidesPerView": 2,
+              "spaceBetween": 12,
+              "speed": 1000,
+              "observer": true,
+              "observeParents": true,
+              "slidesPerGroup": 2,
+              "pagination": { "el": ".sw-pagination-search", "clickable": true },
+              "breakpoints": {
+                "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
+                "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4}
+              }
+            }'>
+              <div class="swiper-wrapper">
+                {%- for product in collections.all.products limit: 4 -%}
+                  <div class="swiper-slide">
+                    <div class="card-product style-3">
+                      <div class="card-product-wrapper">
+                        <a href="{{ product.url }}" class="product-img">
+                          <img class="img-product lazyload" data-src="{{ product.featured_image | img_url: '300x' }}" src="{{ product.featured_image | img_url: '300x' }}" alt="{{ product.title | escape }}">
+                          {%- if product.images[1] != blank -%}
+                            <img class="img-hover lazyload" data-src="{{ product.images[1] | img_url: '300x' }}" src="{{ product.images[1] | img_url: '300x' }}" alt="{{ product.title | escape }}">
+                          {%- endif -%}
+                        </a>
+                        <ul class="list-product-btn">
+                          <li>
+                            <a href="javascript:void(0);" class="box-icon hover-tooltip wishlist" data-product-id="{{ product.id }}">
+                              <span class="icon icon-heart2"></span>
+                              <span class="tooltip">Add to Wishlist</span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#quickView" data-bs-toggle="modal" class="box-icon hover-tooltip quickview" data-product-id="{{ product.id }}">
+                              <span class="icon icon-view"></span>
+                              <span class="tooltip">Quick View</span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#compare" data-bs-toggle="modal" class="box-icon hover-tooltip compare" data-product-id="{{ product.id }}">
+                              <span class="icon icon-compare"></span>
+                              <span class="tooltip">Add to Compare</span>
+                            </a>
+                          </li>
+                        </ul>
+                        <div class="product-btn-main">
+                          <button class="btn-main-product add-to-cart" data-product-id="{{ product.variants.first.id }}">
+                            <span class="icon icon-cart2"></span>
+                            <span class="text-md fw-medium">Add to Cart</span>
+                          </button>
+                        </div>
+                        {%- if product.variants.size > 1 -%}
+                          <ul class="size-box">
+                            {%- for variant in product.variants -%}
+                              {%- if variant.option1 != blank -%}
+                                <li class="size-item text-xs text-white">{{ variant.option1 }}</li>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      </div>
+                      <div class="card-product-info">
+                        <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
+                        <p class="price-wrap fw-medium">
+                          <span class="price-new text-primary">{{ product.price | money }}</span>
+                          {%- if product.compare_at_price > product.price -%}
+                            <span class="price-old">{{ product.compare_at_price | money }}</span>
+                          {%- endif -%}
+                        </p>
+                        {%- if product.variants.size > 1 -%}
+                          <ul class="list-color-product">
+                            {%- for variant in product.variants -%}
+                              {%- if variant.option2 != blank -%}
+                                <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
+                                  <span class="tooltip color-filter">{{ variant.option2 }}</span>
+                                  <span class="swatch-value bg-{{ variant.option2 | handle }}"></span>
+                                  <img class="lazyload" data-src="{{ variant.image | img_url: '300x' }}" src="{{ variant.image | img_url: '300x' }}" alt="{{ variant.title | escape }}">
+                                </li>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </div>
+                {%- endfor -%}
+              </div>
+              <div class="d-flex d-xl-none sw-dot-default sw-pagination-search justify-content-center"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Search Drawer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "What are you looking for?"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.offcanvas-search {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  z-index: 1050;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.offcanvas-search.show {
+  transform: translateY(0);
+}
+
+.offcanvas-search .header {
+  padding: 20px;
+  text-align: right;
+}
+
+.offcanvas-search .icon-close {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.looking-for-wrap {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.looking-for-wrap .heading {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.form-search {
+  display: flex;
+  gap: 10px;
+  max-width: 600px;
+  margin: 0 auto 30px;
+  position: relative;
+}
+
+.form-search fieldset {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.form-search input {
+  width: 100%;
+  padding: 15px 20px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.form-search input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.1);
+}
+
+.form-search button {
+  padding: 0 20px;
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 50px;
+  transition: all 0.3s ease;
+}
+
+.form-search button:hover {
+  background: var(--primary-color-dark);
+}
+
+.form-search button i {
+  font-size: 18px;
+}
+
+.popular-searches {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.popular-searches ul {
+  display: flex;
+  gap: 15px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.popular-searches a {
+  color: #666;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.popular-searches a:hover {
+  color: var(--primary-color);
+}
+
+.featured-product {
+  padding: 40px 0;
+}
+
+.featured-product-heading {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.card-product {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.card-product-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.product-img {
+  display: block;
+  position: relative;
+}
+
+.product-img img {
+  width: 100%;
+  height: auto;
+  transition: opacity 0.3s ease;
+}
+
+.product-img .img-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+.card-product:hover .img-hover {
+  opacity: 1;
+}
+
+.list-product-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.box-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background: #fff;
+  border-radius: 50%;
+  color: #333;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.box-icon:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.product-btn-main {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.card-product:hover .product-btn-main {
+  transform: translateY(0);
+}
+
+.btn-main-product {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 15px;
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.size-box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.5);
+  list-style: none;
+  margin: 0;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.card-product:hover .size-box {
+  transform: translateY(0);
+}
+
+.card-product-info {
+  padding: 15px;
+  text-align: center;
+}
+
+.name-product {
+  display: block;
+  margin-bottom: 10px;
+  color: #333;
+  text-decoration: none;
+}
+
+.price-wrap {
+  margin-bottom: 10px;
+}
+
+.price-new {
+  color: var(--primary-color);
+}
+
+.price-old {
+  color: #999;
+  text-decoration: line-through;
+  margin-left: 10px;
+}
+
+.list-color-product {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.color-swatch {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.swatch-value {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px solid #eee;
+}
+
+.color-swatch img {
+  display: none;
+}
+
+.color-swatch:hover img,
+.color-swatch.active img {
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 1px solid #eee;
+  z-index: 1;
+}
+{% endstylesheet %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize search drawer
+  const searchDrawer = document.getElementById('search');
+  const searchButton = document.querySelector('.search-button');
+  const closeButton = document.querySelector('.icon-close-popup');
+
+  if (searchButton && searchDrawer) {
+    searchButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      searchDrawer.classList.add('show');
+    });
+  }
+
+  if (closeButton && searchDrawer) {
+    closeButton.addEventListener('click', function() {
+      searchDrawer.classList.remove('show');
+    });
+  }
+
+  // Handle add to cart from featured products
+  const addToCartButtons = document.querySelectorAll('.add-to-cart');
+  addToCartButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const productId = this.dataset.productId;
+      addToCart(productId);
+    });
+  });
+
+  // Function to add to cart
+  function addToCart(productId) {
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        items: [{
+          id: productId,
+          quantity: 1
+        }]
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Refresh cart count
+      const cartCount = document.querySelector('.cart-count');
+      if (cartCount) {
+        cartCount.textContent = data.item_count;
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  }
+
+  // Handle wishlist
+  const wishlistButtons = document.querySelectorAll('.wishlist');
+  wishlistButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const productId = this.dataset.productId;
+      // Add wishlist functionality here
+      console.log('Add to wishlist:', productId);
+    });
+  });
+
+  // Handle quick view
+  const quickviewButtons = document.querySelectorAll('.quickview');
+  quickviewButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const productId = this.dataset.productId;
+      // Add quick view functionality here
+      console.log('Quick view:', productId);
+    });
+  });
+
+  // Handle compare
+  const compareButtons = document.querySelectorAll('.compare');
+  compareButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const productId = this.dataset.productId;
+      // Add compare functionality here
+      console.log('Add to compare:', productId);
+    });
+  });
+});
+{% endjavascript %} 

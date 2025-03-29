@@ -1,0 +1,706 @@
+{%- comment -%}Cart Section{%- endcomment -%}
+<div class="flat-spacing-2 pt-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-8">
+        <div class="tf-page-cart-main">
+          {% if cart.item_count > 0 %}
+            <form action="/cart" method="post" id="cart-form" class="form-cart">
+              <table class="table-page-cart">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in cart.items %}
+                    <tr class="tf-cart-item file-delete" data-item-id="{{ item.key }}">
+                      <td class="tf-cart-item_product">
+                        <a href="{{ item.url }}" class="img-box">
+                          <img src="{{ item.image | img_url: '150x' }}" alt="{{ item.title | escape }}" loading="lazy">
+                        </a>
+                        <div class="cart-info">
+                          <a href="{{ item.url }}" class="name text-md link fw-medium">{{ item.product.title }}</a>
+                          {% if item.product.has_only_default_variant == false %}
+                            <div class="variants">{{ item.variant.title }}</div>
+                          {% endif %}
+                          <span class="remove-cart link remove" data-item-id="{{ item.key }}">Remove</span>
+                        </div>
+                      </td>
+                      <td class="tf-cart-item_price text-center" data-cart-title="Price">
+                        <span class="cart-price price-on-sale text-md fw-medium">{{ item.final_price | money }}</span>
+                        {% if item.original_price != item.final_price %}
+                          <span class="compare-price">{{ item.original_price | money }}</span>
+                        {% endif %}
+                      </td>
+                      <td class="tf-cart-item_quantity" data-cart-title="Quantity">
+                        <div class="wg-quantity">
+                          <span class="btn-quantity btn-decrease">-</span>
+                          <input class="quantity-product" type="text" name="updates[]" value="{{ item.quantity }}" min="0">
+                          <span class="btn-quantity btn-increase">+</span>
+                        </div>
+                      </td>
+                      <td class="tf-cart-item_total text-center" data-cart-title="Total">
+                        <div class="cart-total total-price text-md fw-medium">{{ item.final_line_price | money }}</div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+
+              <div class="check-gift">
+                <input type="checkbox" class="tf-check" id="checkGift">
+                <label for="checkGift" class="label text-dark-4">Add gift wrap. Only <span class="fw-medium">$10.00.</span> (You can choose or not)</label>
+              </div>
+
+              <div class="box-ip-discount">
+                <input type="text" placeholder="Discount code" name="discount_code">
+                <button type="button" class="tf-btn radius-6 btn-out-line-dark-2">Apply</button>
+              </div>
+
+              <div class="cart-note">
+                <label for="note" class="text-md fw-medium">Special instructions for seller</label>
+                <textarea id="note" name="note">{{ cart.note }}</textarea>
+              </div>
+            </form>
+
+            <div class="fl-iconbox wow fadeInUp">
+              <div dir="ltr" class="swiper tf-swiper sw-auto" data-swiper='{
+                "slidesPerView": 1,
+                "spaceBetween": 12,
+                "speed": 800,
+                "observer": true,
+                "observeParents": true,
+                "slidesPerGroup": 1,
+                "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+                "breakpoints": {
+                  "575": { "slidesPerView": 2, "spaceBetween": 12, "slidesPerGroup": 2},
+                  "768": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3},
+                  "1200": { "slidesPerView": "auto", "spaceBetween": 24}
+                }
+              }'>
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <div class="tf-icon-box justify-content-center justify-content-sm-start style-3">
+                      <div class="box-icon">
+                        <i class="icon icon-shipping"></i>
+                      </div>
+                      <div class="content">
+                        <div class="title text-uppercase">Free Shipping</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="tf-icon-box justify-content-center justify-content-sm-start style-3">
+                      <div class="box-icon">
+                        <i class="icon icon-gift"></i>
+                      </div>
+                      <div class="content">
+                        <div class="title text-uppercase">Gift Package</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="tf-icon-box justify-content-center justify-content-sm-start style-3">
+                      <div class="box-icon">
+                        <i class="icon icon-return"></i>
+                      </div>
+                      <div class="content">
+                        <div class="title text-uppercase">Ease Returns</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="tf-icon-box justify-content-center justify-content-sm-start style-3">
+                      <div class="box-icon">
+                        <i class="icon icon-support"></i>
+                      </div>
+                      <div class="content">
+                        <div class="title text-uppercase text-nowrap">ONE YEAR WARRANTY</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
+            </div>
+          {% else %}
+            <div class="empty-cart text-center">
+              <p class="text-lg">Your cart is currently empty.</p>
+              <a href="/collections/all" class="tf-btn btn-dark2 animate-btn">Continue shopping</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="col-xl-4">
+        <div class="tf-page-cart-sidebar">
+          <form class="cart-box shipping-cart-box">
+            <div class="text-lg title fw-medium">Shipping estimates</div>
+            <fieldset class="field">
+              <label for="country" class="text-sm">Country</label>
+              <input type="text" id="country" placeholder="United State">
+            </fieldset>
+            <fieldset class="field">
+              <label for="state" class="text-sm">State/Province</label>
+              <input type="text" id="state" placeholder="State/Province">
+            </fieldset>
+            <fieldset class="field">
+              <label for="code" class="text-sm">Zipcode</label>
+              <input type="text" id="code" placeholder="41000">
+            </fieldset>
+            <button type="button" class="tf-btn btn-dark2 animate-btn w-100">Estimate</button>
+          </form>
+
+          <form action="/checkout" method="post" class="cart-box checkout-cart-box">
+            <div class="cart-head">
+              <div class="total-discount text-xl fw-medium">
+                <span>Total:</span>
+                <span class="total">{{ cart.total_price | money }}</span>
+              </div>
+              <p class="text-sm text-dark-4">Taxes and shipping calculated at checkout</p>
+            </div>
+
+            <div class="check-agree">
+              <input type="checkbox" class="tf-check" id="check-agree" required>
+              <label for="check-agree" class="label text-dark-4">I agree with <a href="/pages/terms-and-conditions" class="text-dark-4 fw-medium text-underline link">terms and conditions</a></label>
+            </div>
+
+            <div class="checkout-btn">
+              <button type="submit" class="tf-btn btn-dark2 animate-btn w-100">Checkout</button>
+            </div>
+
+            <div class="cart-imgtrust">
+              <p class="text-center text-sm text-dark-1">We accept</p>
+              <div class="cart-list-social">
+                <div class="payment-card">
+                  <img src="{{ 'Visa.png' | asset_url }}" alt="Visa">
+                </div>
+                <div class="payment-card">
+                  <img src="{{ 'DinersClub.png' | asset_url }}" alt="Diners Club">
+                </div>
+                <div class="payment-card">
+                  <img src="{{ 'Mastercard.png' | asset_url }}" alt="Mastercard">
+                </div>
+                <div class="payment-card">
+                  <img src="{{ 'Stripe.png' | asset_url }}" alt="Stripe">
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div class="cart-box testimonial-cart-box">
+            <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+              "slidesPerView": 1,
+              "spaceBetween": 12,
+              "speed": 800,
+              "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+              "navigation": {
+                "clickable": true,
+                "nextEl": ".nav-next-tes",
+                "prevEl": ".nav-prev-tes"
+              }
+            }'>
+              <div class="swiper-wrapper">
+                {% for block in section.blocks %}
+                  {% if block.type == 'testimonial' %}
+                    <div class="swiper-slide">
+                      <div class="box-testimonial-main">
+                        <span class="quote icon-quote5"></span>
+                        <div class="content">
+                          <div class="list-star-default">
+                            {% for i in (1..5) %}
+                              <i class="icon-star"></i>
+                            {% endfor %}
+                          </div>
+                          <p class="text-review text-md text-main">{{ block.settings.review }}</p>
+                          <div class="box-author">
+                            <div class="img">
+                              <img src="{{ block.settings.author_image | img_url: '100x' }}" alt="{{ block.settings.author_name }}">
+                            </div>
+                            <span class="name text-sm fw-medium">{{ block.settings.author_name }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <div class="box-nav-swiper">
+                <div class="swiper-button-prev nav-swiper nav-prev-tes"></div>
+                <div class="swiper-button-next nav-swiper nav-next-tes"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cart",
+  "tag": "section",
+  "class": "cart-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show product vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quantity_selector",
+      "label": "Show quantity selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart_note",
+      "label": "Show cart note",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart_buttons",
+      "label": "Show cart buttons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_continue_shopping",
+      "label": "Show continue shopping",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "review",
+          "label": "Review text",
+          "default": "Stylish, comfortable, and perfect for any occasion! My new favorite fashion destination."
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author image"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author name",
+          "default": "Customer Name"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.flat-spacing-2 {
+  padding: 60px 0;
+}
+
+.table-page-cart {
+  width: 100%;
+  margin-bottom: 30px;
+  border-collapse: collapse;
+}
+
+.table-page-cart th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 500;
+  border-bottom: 1px solid #eee;
+}
+
+.tf-cart-item {
+  border-bottom: 1px solid #eee;
+}
+
+.tf-cart-item_product {
+  padding: 20px 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.img-box {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.cart-info {
+  flex-grow: 1;
+}
+
+.name {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+  text-decoration: none;
+}
+
+.variants {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.remove-cart {
+  color: #999;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.tf-cart-item_price,
+.tf-cart-item_quantity,
+.tf-cart-item_total {
+  padding: 20px 15px;
+  text-align: center;
+}
+
+.wg-quantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-quantity {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  cursor: pointer;
+  background: #fff;
+}
+
+.quantity-product {
+  width: 50px;
+  text-align: center;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.check-gift {
+  margin-bottom: 20px;
+}
+
+.box-ip-discount {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.box-ip-discount input {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.cart-note {
+  margin-bottom: 30px;
+}
+
+.cart-note textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  min-height: 100px;
+}
+
+.tf-icon-box {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.box-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.box-icon i {
+  font-size: 20px;
+  color: #333;
+}
+
+.cart-box {
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.field {
+  margin-bottom: 20px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.field input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.cart-head {
+  margin-bottom: 20px;
+}
+
+.total-discount {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.check-agree {
+  margin-bottom: 20px;
+}
+
+.cart-list-social {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.payment-card {
+  width: 50px;
+  height: 30px;
+}
+
+.payment-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.box-testimonial-main {
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.quote {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.list-star-default {
+  color: #ffd700;
+  margin-bottom: 10px;
+}
+
+.text-review {
+  margin-bottom: 15px;
+}
+
+.box-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.box-author .img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.box-author .img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 991px) {
+  .flat-spacing-2 {
+    padding: 40px 0;
+  }
+  
+  .tf-cart-item_product {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .img-box {
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .table-page-cart {
+    display: block;
+  }
+  
+  .table-page-cart thead {
+    display: none;
+  }
+  
+  .tf-cart-item {
+    display: block;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+  }
+  
+  .tf-cart-item_product,
+  .tf-cart-item_price,
+  .tf-cart-item_quantity,
+  .tf-cart-item_total {
+    display: block;
+    padding: 10px 0;
+    text-align: center;
+  }
+  
+  .tf-cart-item_price::before,
+  .tf-cart-item_quantity::before,
+  .tf-cart-item_total::before {
+    content: attr(data-cart-title);
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+}
+{% endstylesheet %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  const cartForm = document.getElementById('cart-form');
+  if (!cartForm) return;
+
+  // Handle quantity changes
+  cartForm.querySelectorAll('.btn-quantity').forEach(button => {
+    button.addEventListener('click', function() {
+      const input = this.parentElement.querySelector('.quantity-product');
+      const currentValue = parseInt(input.value);
+      
+      if (this.classList.contains('btn-decrease')) {
+        input.value = Math.max(0, currentValue - 1);
+      } else {
+        input.value = currentValue + 1;
+      }
+      
+      // Update cart
+      updateCart();
+    });
+  });
+
+  // Handle item removal
+  cartForm.querySelectorAll('.remove-cart').forEach(button => {
+    button.addEventListener('click', function() {
+      const itemId = this.dataset.itemId;
+      const input = cartForm.querySelector(`[name="updates[]"][data-item-id="${itemId}"]`);
+      input.value = 0;
+      
+      // Update cart
+      updateCart();
+    });
+  });
+
+  // Update cart function
+  function updateCart() {
+    const formData = new FormData(cartForm);
+    fetch('/cart/update.js', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Refresh page to show updated cart
+      window.location.reload();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  }
+
+  // Initialize Swiper for testimonials
+  const testimonialSwiper = new Swiper('.testimonial-cart-box .tf-swiper', {
+    slidesPerView: 1,
+    spaceBetween: 12,
+    speed: 800,
+    pagination: {
+      el: '.sw-pagination-iconbox',
+      clickable: true
+    },
+    navigation: {
+      nextEl: '.nav-next-tes',
+      prevEl: '.nav-prev-tes'
+    }
+  });
+
+  // Initialize Swiper for features
+  const featuresSwiper = new Swiper('.fl-iconbox .tf-swiper', {
+    slidesPerView: 1,
+    spaceBetween: 12,
+    speed: 800,
+    observer: true,
+    observeParents: true,
+    slidesPerGroup: 1,
+    pagination: {
+      el: '.sw-pagination-iconbox',
+      clickable: true
+    },
+    breakpoints: {
+      575: {
+        slidesPerView: 2,
+        spaceBetween: 12,
+        slidesPerGroup: 2
+      },
+      768: {
+        slidesPerView: 3,
+        spaceBetween: 24,
+        slidesPerGroup: 3
+      },
+      1200: {
+        slidesPerView: 'auto',
+        spaceBetween: 24
+      }
+    }
+  });
+});
+{% endjavascript %} 

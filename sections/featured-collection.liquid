@@ -1,0 +1,99 @@
+{%- if section.settings.collection != blank -%}
+  <div class="pt-24">
+    <div class="container">
+      <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp" 
+        data-swiper='{
+          "slidesPerView": 1,
+          "spaceBetween": 12,
+          "speed": 800,
+          "observer": true,
+          "observeParents": true,
+          "slidesPerGroup": 1,
+          "navigation": {
+            "clickable": true,
+            "nextEl": ".nav-next-cls",
+            "prevEl": ".nav-prev-cls"
+          },
+          "pagination": { 
+            "el": ".sw-pagination-cls", 
+            "clickable": true 
+          },
+          "breakpoints": {
+            "575": { 
+              "slidesPerView": 2, 
+              "spaceBetween": 12,
+              "slidesPerGroup": 2 
+            },
+            "768": { 
+              "slidesPerView": 3, 
+              "spaceBetween": 12, 
+              "slidesPerGroup": 3 
+            },
+            "1200": { 
+              "slidesPerView": 3, 
+              "spaceBetween": 24, 
+              "slidesPerGroup": 3
+            }
+          }
+        }'>
+        <div class="swiper-wrapper">
+          {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
+            <div class="swiper-slide">
+              <div class="wg-cls style-abs asp-1 hover-img">
+                <a href="{{ product.url }}" class="image img-style d-block">
+                  {%- if product.featured_image != blank -%}
+                    <img src="{{ product.featured_image | img_url: 'master' }}"
+                      data-src="{{ product.featured_image | img_url: 'master' }}"
+                      alt="{{ product.title | escape }}"
+                      class="lazyload">
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </a>
+                <div class="cls-btn text-center">
+                  <a href="{{ product.url }}" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                    {{ product.title }}
+                    <i class="icon icon-arrow-top-left"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls justify-content-center"></div>
+        <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls"></div>
+        <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls"></div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "label": "Products to show",
+      "default": 3
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection",
+      "settings": {
+        "products_to_show": 3
+      }
+    }
+  ]
+}
+{% endschema %} 

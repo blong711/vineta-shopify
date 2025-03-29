@@ -1,0 +1,176 @@
+<section class="flat-spacing-4 pt-0">
+  <div class="container">
+    <div class="flat-title wow fadeInUp">
+      <h4 class="title">Shop by @Gram</h4>
+    </div>
+    <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+      "slidesPerView": 2,
+      "spaceBetween": 10,
+      "speed": 800,
+      "observer": true,
+      "observeParents": true,
+      "slidesPerGroup": 2,
+      "pagination": { "el": ".sw-pagination-gallery", "clickable": true },
+      "breakpoints": {
+        "768": { "slidesPerView": 3},
+        "1200": { "slidesPerView": 5}
+      }
+    }'>
+      <div class="swiper-wrapper">
+        <!-- item 1 -->
+        <div class="swiper-slide">
+          <div class="gallery-item hover-img hover-overlay wow fadeInLeft">
+            <div class="image img-style">
+              {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            <a href="#" class="box-icon hover-tooltip">
+              <span class="icon icon-cart2"></span>
+              <span class="tooltip">View Product</span>
+            </a>
+          </div>
+        </div>
+        <!-- item 2 -->
+        <div class="swiper-slide">
+          <div class="gallery-item hover-img hover-overlay wow fadeInLeft" data-wow-delay="0.1s">
+            <div class="image img-style">
+              {{ 'collection-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            <a href="#" class="box-icon hover-tooltip">
+              <span class="icon icon-cart2"></span>
+              <span class="tooltip">View Product</span>
+            </a>
+          </div>
+        </div>
+        <!-- item 3 -->
+        <div class="swiper-slide">
+          <div class="gallery-item hover-img hover-overlay wow fadeInLeft" data-wow-delay="0.2s">
+            <div class="image img-style">
+              {{ 'collection-3' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            <a href="#" class="box-icon hover-tooltip">
+              <span class="icon icon-cart2"></span>
+              <span class="tooltip">View Product</span>
+            </a>
+          </div>
+        </div>
+        <!-- item 4 -->
+        <div class="swiper-slide">
+          <div class="gallery-item hover-img hover-overlay wow fadeInLeft" data-wow-delay="0.3s">
+            <div class="image img-style">
+              {{ 'collection-4' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            <a href="#" class="box-icon hover-tooltip">
+              <span class="icon icon-cart2"></span>
+              <span class="tooltip">View Product</span>
+            </a>
+          </div>
+        </div>
+        <!-- item 5 -->
+        <div class="swiper-slide">
+          <div class="gallery-item hover-img hover-overlay wow fadeInLeft" data-wow-delay="0.4s">
+            <div class="image img-style">
+              {{ 'collection-5' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            <a href="#" class="box-icon hover-tooltip">
+              <span class="icon icon-cart2"></span>
+              <span class="tooltip">View Product</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <span class="d-flex d-xl-none sw-dot-default sw-pagination-gallery justify-content-center"></span>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop by @Gram",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Shop by @Gram"
+    },
+    {
+      "type": "text",
+      "id": "instagram_username",
+      "label": "Instagram Username",
+      "default": "yourstore"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Instagram Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Link to product or collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop by @Gram",
+      "blocks": [
+        {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/collection-1",
+            "link": "/collections/all"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/collection-2",
+            "link": "/collections/all"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/collection-3",
+            "link": "/collections/all"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/collection-4",
+            "link": "/collections/all"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/collection-5",
+            "link": "/collections/all"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize Swiper
+  const swiperElement = document.querySelector('.tf-swiper');
+  if (swiperElement) {
+    const options = JSON.parse(swiperElement.dataset.swiper);
+    new Swiper(swiperElement, options);
+  }
+});
+{% endjavascript %} 

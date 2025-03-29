@@ -1,0 +1,200 @@
+{%- comment -%}Register Drawer Section{%- endcomment -%}
+<div class="offcanvas offcanvas-end popup-style-1 popup-register" id="register">
+  <div class="canvas-wrapper">
+    <div class="canvas-header popup-header">
+      <span class="title">Create account</span>
+      <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="canvas-body popup-inner">
+      {% form 'create_customer', class: 'form-login' %}
+        <div>
+          <fieldset class="text mb_12">
+            <input type="text" name="customer[first_name]" placeholder="First name">
+          </fieldset>
+          <fieldset class="text mb_12">
+            <input type="text" name="customer[last_name]" placeholder="Last name">
+          </fieldset>
+          <fieldset class="email mb_12">
+            <input type="email" name="customer[email]" placeholder="Email*" required>
+          </fieldset>
+          <fieldset class="password">
+            <input type="password" name="customer[password]" placeholder="Password*" required>
+          </fieldset>
+        </div>
+        <div class="bot">
+          <p class="text text-sm text-main-2">Sign up for early Sale access plus tailored new arrivals, trends and promotions. To opt out, click unsubscribe in our emails.</p>
+          <div class="button-wrap">
+            <button class="subscribe-button tf-btn animate-btn bg-dark-2 w-100" type="submit">Sign up</button>
+            <button type="button" data-bs-target="#login" data-bs-toggle="offcanvas" class="tf-btn btn-out-line-dark2 w-100">Sign in</button>
+          </div>
+        </div>
+      {% endform %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Register Drawer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Create account"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.popup-register {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 400px;
+  background: #fff;
+  z-index: 1050;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.popup-register.show {
+  transform: translateX(0);
+}
+
+.canvas-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.canvas-header {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.canvas-header .title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.canvas-header .icon-close {
+  font-size: 24px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.canvas-body {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+.form-login fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.form-login input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.form-login input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.1);
+}
+
+.mb_12 {
+  margin-bottom: 12px;
+}
+
+.bot {
+  margin-top: 20px;
+}
+
+.bot p {
+  margin-bottom: 15px;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.button-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tf-btn {
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.bg-dark-2 {
+  background: #333;
+  color: #fff;
+}
+
+.bg-dark-2:hover {
+  background: #000;
+}
+
+.btn-out-line-dark2 {
+  background: transparent;
+  border: 1px solid #333;
+  color: #333;
+}
+
+.btn-out-line-dark2:hover {
+  background: #333;
+  color: #fff;
+}
+
+@media (max-width: 767px) {
+  .popup-register {
+    width: 100%;
+  }
+}
+{% endstylesheet %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize register drawer
+  const registerDrawer = document.getElementById('register');
+  const registerButton = document.querySelector('.register-button');
+  const closeButton = document.querySelector('.icon-close-popup');
+
+  if (registerButton && registerDrawer) {
+    registerButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      registerDrawer.classList.add('show');
+    });
+  }
+
+  if (closeButton && registerDrawer) {
+    closeButton.addEventListener('click', function() {
+      registerDrawer.classList.remove('show');
+    });
+  }
+});
+{% endjavascript %} 

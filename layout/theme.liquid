@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="{{ page_description | escape }}">
+
+    <title>{{ page_title | escape }}{% if page_title contains shop.name == false %} - {{ shop.name }}{% endif %}</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}">
+    <link rel="apple-touch-icon-precomposed" href="{{ 'favicon.png' | asset_url }}">
+
+    {{ content_for_header }}
+
+    <!-- Fonts -->
+    {{ 'fonts.css' | asset_url | stylesheet_tag }}
+    {{ 'font-icons.css' | asset_url | stylesheet_tag }}
+
+    <!-- Third-party CSS -->
+    {{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}
+    {{ 'bootstrap-select.min.css' | asset_url | stylesheet_tag }}
+    {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+    {{ 'photoswipe.css' | asset_url | stylesheet_tag }}
+    {{ 'drift-basic.min.css' | asset_url | stylesheet_tag }}
+    {{ 'image-compare-viewer.min.css' | asset_url | stylesheet_tag }}
+    {{ 'animate.css' | asset_url | stylesheet_tag }}
+
+    <!-- Theme CSS -->
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    {{ 'styles.css' | asset_url | stylesheet_tag }}
+    {{ 'main-slider.css' | asset_url | stylesheet_tag }}
+
+    <!-- Core JavaScript -->
+    <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'bootstrap.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'bootstrap-select.min.js' | asset_url }}" defer></script>
+
+    <!-- Third-party JavaScript -->
+    <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'photoswipe.esm.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'photoswipe-lightbox.esm.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'drift.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'image-compare-viewer.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'lazysize.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'model-viewer.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'multiple-modal.js' | asset_url }}" defer></script>
+    <script src="{{ 'nouislider.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'simpleParallaxVanilla.umd.js' | asset_url }}" defer></script>
+    <script src="{{ 'wow.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'zoom.js' | asset_url }}" defer></script>
+    <script src="{{ 'carousel.js' | asset_url }}" defer></script>
+    <script src="{{ 'count-down.js' | asset_url }}" defer></script>
+    <script src="{{ 'infinityslide.js' | asset_url }}" defer></script>
+    <script src="{{ 'paralaxei.js' | asset_url }}" defer></script>
+
+    <!-- Theme JavaScript -->
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+    <script src="{{ 'main.js' | asset_url }}" defer></script>
+    <script src="{{ 'shop.js' | asset_url }}" defer></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize jQuery plugins after jQuery is loaded
+        var checkJQuery = setInterval(function() {
+          if (window.jQuery) {
+            clearInterval(checkJQuery);
+            
+            // Initialize bootstrap-select
+            if ($.fn.selectpicker) {
+              $('.selectpicker').selectpicker();
+            }
+            
+            // Initialize other jQuery-dependent features
+            if (typeof selectImages === 'function') {
+              selectImages();
+            }
+            
+            // Initialize any other jQuery plugins
+            if (typeof filterProducts === 'function') {
+              filterProducts();
+            }
+          }
+        }, 100);
+      });
+    </script>
+  </head>
+
+  <body>
+    <!-- Scroll Top -->
+    <button id="goTop">
+      <span class="border-progress"></span>
+      <span class="icon icon-arrow-right"></span>
+    </button>
+
+    <!-- Preload -->
+    <div class="preload preload-container">
+      <div class="preload-logo">
+        <div class="spinner"></div>
+      </div>
+    </div>
+
+    <div id="wrapper">
+      {% section 'top-bar' %}
+      {% section 'header' %}
+      
+      <main role="main">
+        {{ content_for_layout }}
+      </main>
+
+      {% section 'footer' %}
+      {% section 'cart-drawer' %}
+      {% section 'search-drawer' %}
+      {% section 'login-drawer' %}
+      {% section 'register-drawer' %}
+    </div>
+  </body>
+</html> 

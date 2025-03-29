@@ -1,0 +1,420 @@
+{%- comment -%}Cart Drawer Section{%- endcomment -%}
+<div class="offcanvas offcanvas-end popup-style-1 popup-shopping-cart" id="shoppingCart">
+  <div class="canvas-wrapper">
+    <div class="popup-header">
+      <span class="title">Shopping cart</span>
+      <span class="icon-close icon-close-popup" data-bs-dismiss="offcanvas"></span>
+    </div>
+    <div class="wrap">
+      {%- if cart.item_count > 0 -%}
+        <div class="tf-mini-cart-threshold">
+          {%- assign threshold = 100 -%}
+          {%- assign remaining = threshold | minus: cart.total_price | divided_by: 100.0 -%}
+          {%- assign progress = cart.total_price | divided_by: threshold | times: 100 -%}
+          <div class="text">
+            Spend <span class="fw-medium">${{ remaining | round: 2 }}</span> more to get <span class="fw-medium">Free Shipping</span>
+          </div>
+          <div class="tf-progress-bar tf-progress-ship">
+            <div class="value" style="width: {{ progress }}%;" data-progress="{{ progress }}">
+              <i class="icon icon-car"></i>
+            </div>
+          </div>
+        </div>
+        <div class="tf-mini-cart-wrap">
+          <div class="tf-mini-cart-main">
+            <div class="tf-mini-cart-sroll">
+              <div class="tf-mini-cart-items">
+                {%- for item in cart.items -%}
+                  <div class="tf-mini-cart-item file-delete" data-item-id="{{ item.key }}">
+                    <div class="tf-mini-cart-image">
+                      <a href="{{ item.url }}">
+                        <img class="lazyload" data-src="{{ item.image | img_url: '150x' }}" src="{{ item.image | img_url: '150x' }}" alt="{{ item.title | escape }}">
+                      </a>
+                    </div>
+                    <div class="tf-mini-cart-info">
+                      <div class="d-flex justify-content-between">
+                        <a class="title link text-md fw-medium" href="{{ item.url }}">{{ item.title }}</a>
+                        <i class="icon icon-close remove fs-12" data-item-id="{{ item.key }}"></i>
+                      </div>
+                      <div class="d-flex gap-10">
+                        <div class="text-xs">{{ item.variant.title }}</div>
+                        <a href="{{ item.url }}" class="link edit"><i class="icon-pen"></i></a>
+                      </div>
+                      <p class="price-wrap text-sm fw-medium">
+                        <span class="new-price text-primary">{{ item.final_price | money }}</span>
+                        {%- if item.original_price != item.final_price -%}
+                          <span class="old-price text-decoration-line-through text-dark-1">{{ item.original_price | money }}</span>
+                        {%- endif -%}
+                      </p>
+                      <div class="wg-quantity small">
+                        <button class="btn-quantity minus-btn" data-item-id="{{ item.key }}">-</button>
+                        <input class="quantity-product font-4" type="text" name="updates[]" value="{{ item.quantity }}" data-item-id="{{ item.key }}">
+                        <button class="btn-quantity plus-btn" data-item-id="{{ item.key }}">+</button>
+                      </div>
+                    </div>
+                  </div>
+                {%- endfor -%}
+              </div>
+              {%- if section.settings.show_recommendations -%}
+                <div class="tf-minicart-recommendations">
+                  <div class="tf-minicart-recommendations-heading d-flex justify-content-between align-items-end">
+                    <div class="tf-minicart-recommendations-title text-md fw-medium">You may also like</div>
+                    <div class="d-flex gap-10">
+                      <div class="swiper-button-prev nav-swiper arrow-1 size-30 nav-prev-also-product"></div>
+                      <div class="swiper-button-next nav-swiper arrow-1 size-30 nav-next-also-product"></div>
+                    </div>
+                  </div>
+                  <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+                    "slidesPerView": 1,
+                    "spaceBetween": 10,
+                    "speed": 800,
+                    "observer": true,
+                    "observeParents": true,
+                    "slidesPerGroup": 1,
+                    "navigation": {
+                      "clickable": true,
+                      "nextEl": ".nav-next-also-product",
+                      "prevEl": ".nav-prev-also-product"
+                    }
+                  }'>
+                    <div class="swiper-wrapper">
+                      {%- for product in collections.all.products limit: 3 -%}
+                        <div class="swiper-slide">
+                          <div class="tf-mini-cart-item line radius-16">
+                            <div class="tf-mini-cart-image">
+                              <a href="{{ product.url }}">
+                                <img class="lazyload" data-src="{{ product.featured_image | img_url: '150x' }}" src="{{ product.featured_image | img_url: '150x' }}" alt="{{ product.title | escape }}">
+                              </a>
+                            </div>
+                            <div class="tf-mini-cart-info justify-content-center">
+                              <a class="title link text-md fw-medium" href="{{ product.url }}">{{ product.title }}</a>
+                              <p class="price-wrap text-sm fw-medium">
+                                <span class="new-price text-primary">{{ product.price | money }}</span>
+                                {%- if product.compare_at_price > product.price -%}
+                                  <span class="old-price text-decoration-line-through text-dark-1">{{ product.compare_at_price | money }}</span>
+                                {%- endif -%}
+                              </p>
+                              <button class="tf-btn animate-btn d-inline-flex bg-dark-2 w-max-content add-to-cart" data-product-id="{{ product.variants.first.id }}">Add to cart</button>
+                            </div>
+                          </div>
+                        </div>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+          <div class="tf-mini-cart-bottom">
+            <div class="tf-mini-cart-tool">
+              <div class="tf-mini-cart-tool-btn btn-add-gift">
+                <i class="icon icon-gift2"></i>
+                <div class="text-xxs">Add gift wrap</div>
+              </div>
+              <div class="tf-mini-cart-tool-btn btn-add-note">
+                <i class="icon icon-note"></i>
+                <div class="text-xxs">Order note</div>
+              </div>
+              <div class="tf-mini-cart-tool-btn btn-coupon">
+                <i class="icon icon-coupon"></i>
+                <div class="text-xxs">Coupon</div>
+              </div>
+              <div class="tf-mini-cart-tool-btn btn-estimate-shipping">
+                <i class="icon icon-car"></i>
+                <div class="text-xxs">Shipping</div>
+              </div>
+            </div>
+            <div class="tf-mini-cart-bottom-wrap">
+              <div class="tf-cart-totals-discounts">
+                <div class="tf-cart-total text-xl fw-medium">Total:</div>
+                <div class="tf-totals-total-value text-xl fw-medium">{{ cart.total_price | money }}</div>
+              </div>
+              <div class="tf-cart-tax text-sm opacity-8">Taxes and shipping calculated at checkout</div>
+              <div class="tf-cart-checkbox">
+                <div class="tf-checkbox-wrapp">
+                  <input type="checkbox" id="CartDrawer-Form_agree" name="agree_checkbox">
+                  <div>
+                    <i class="icon-check"></i>
+                  </div>
+                </div>
+                <label for="CartDrawer-Form_agree" class="text-sm">
+                  I agree with the
+                  <a href="{{ routes.root_url }}pages/terms-and-conditions" title="Terms of Service" class="fw-medium">terms and conditions</a>
+                </label>
+              </div>
+              <div class="tf-mini-cart-view-checkout">
+                <a href="{{ routes.cart_url }}" class="tf-btn animate-btn d-inline-flex bg-dark-2 w-100 justify-content-center">View cart</a>
+                <a href="{{ routes.checkout_url }}" class="tf-btn btn-out-line-dark2 w-100 justify-content-center"><span>Check out</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- else -%}
+        <div class="empty-cart">
+          <p>Your cart is currently empty.</p>
+          <a href="{{ routes.all_products_collection_url }}" class="tf-btn animate-btn d-inline-flex bg-dark-2">Continue shopping</a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cart Drawer",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_recommendations",
+      "label": "Show product recommendations",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.offcanvas {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  z-index: 1050;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.offcanvas.show {
+  transform: translateX(0);
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.popup-header .title {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.icon-close {
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.tf-mini-cart-threshold {
+  padding: 20px;
+  background: #f8f8f8;
+}
+
+.tf-progress-bar {
+  height: 4px;
+  background: #eee;
+  margin-top: 10px;
+  position: relative;
+}
+
+.tf-progress-bar .value {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--primary-color);
+  transition: width 0.3s ease;
+}
+
+.tf-mini-cart-items {
+  padding: 20px;
+}
+
+.tf-mini-cart-item {
+  display: flex;
+  gap: 15px;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.tf-mini-cart-image img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+
+.tf-mini-cart-info {
+  flex: 1;
+}
+
+.wg-quantity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-quantity {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #eee;
+  background: #fff;
+  cursor: pointer;
+}
+
+.quantity-product {
+  width: 40px;
+  text-align: center;
+  border: 1px solid #eee;
+}
+
+.tf-mini-cart-tool {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  border-top: 1px solid #eee;
+}
+
+.tf-mini-cart-tool-btn {
+  text-align: center;
+  cursor: pointer;
+}
+
+.tf-mini-cart-bottom-wrap {
+  padding: 20px;
+}
+
+.tf-cart-totals-discounts {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.tf-mini-cart-view-checkout {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.empty-cart p {
+  margin-bottom: 20px;
+}
+{% endstylesheet %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize cart drawer
+  const cartDrawer = document.getElementById('shoppingCart');
+  const cartButton = document.querySelector('.cart-button');
+  const closeButton = document.querySelector('.icon-close-popup');
+
+  if (cartButton && cartDrawer) {
+    cartButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      cartDrawer.classList.add('show');
+    });
+  }
+
+  if (closeButton && cartDrawer) {
+    closeButton.addEventListener('click', function() {
+      cartDrawer.classList.remove('show');
+    });
+  }
+
+  // Handle quantity updates
+  const quantityInputs = document.querySelectorAll('.quantity-product');
+  quantityInputs.forEach(input => {
+    input.addEventListener('change', function() {
+      const itemId = this.dataset.itemId;
+      const quantity = parseInt(this.value);
+      updateCartItem(itemId, quantity);
+    });
+  });
+
+  // Handle remove item
+  const removeButtons = document.querySelectorAll('.remove');
+  removeButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const itemId = this.dataset.itemId;
+      updateCartItem(itemId, 0);
+    });
+  });
+
+  // Handle quantity buttons
+  const quantityButtons = document.querySelectorAll('.btn-quantity');
+  quantityButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const itemId = this.dataset.itemId;
+      const input = this.parentElement.querySelector('.quantity-product');
+      const currentValue = parseInt(input.value);
+      const newValue = this.classList.contains('minus-btn') ? currentValue - 1 : currentValue + 1;
+      
+      if (newValue > 0) {
+        input.value = newValue;
+        updateCartItem(itemId, newValue);
+      }
+    });
+  });
+
+  // Function to update cart
+  function updateCartItem(itemId, quantity) {
+    fetch('/cart/change.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: itemId,
+        quantity: quantity
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Refresh cart drawer
+      location.reload();
+    })
+    .catch(error => console.error('Error:', error));
+  }
+
+  // Handle add to cart from recommendations
+  const addToCartButtons = document.querySelectorAll('.add-to-cart');
+  addToCartButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const productId = this.dataset.productId;
+      addToCart(productId);
+    });
+  });
+
+  // Function to add to cart
+  function addToCart(productId) {
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        items: [{
+          id: productId,
+          quantity: 1
+        }]
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Refresh cart drawer
+      location.reload();
+    })
+    .catch(error => console.error('Error:', error));
+  }
+});
+{% endjavascript %} 
