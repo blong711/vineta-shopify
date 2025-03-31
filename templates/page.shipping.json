@@ -1,0 +1,54 @@
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb"
+    },
+    "page_title": {
+      "type": "page-title"
+    },
+    "shipping": {
+      "type": "shipping",
+      "blocks": {
+        "methods": {
+          "type": "shipping_section",
+          "settings": {
+            "title": "1. Shipping Methods",
+            "content": "<p>We offer the following shipping methods for domestic and international orders:</p><p><span>Standard Shipping - USPS:</span> Estimated delivery within 3-5 business days for domestic orders and 7-14 business days for international orders.</p><p><span>Expedited Shipping - DHL:</span> Estimated delivery within 2-3 business days for domestic orders and 3-7 business days for international orders. Additional charges ($5-$10) may apply.</p><p><span>Free Shipping - USPS:</span> Orders over $50 qualify for free standard shipping within the continental United States.</p>"
+          }
+        },
+        "processing": {
+          "type": "shipping_section",
+          "settings": {
+            "title": "2. Processing and Cancellation Time",
+            "content": "<p>Orders are typically processed and shipped within 1-2 business days after payment confirmation. Please note that orders placed on weekends or holidays will be processed on the next business day.</p><p>Please note that <span>once your order is processed for shipping with a tracking number, we are unable to cancel your order.</span></p><p>You can <span>cancel the order within 6 hours</span> after the order was placed by contacting us via email address: support@example.com</p>"
+          }
+        },
+        "costs": {
+          "type": "shipping_section",
+          "settings": {
+            "title": "3. Shipping Costs",
+            "content": "<p>Shipping costs are calculated based on the weight of the package, destination, and selected shipping method. The shipping cost will be displayed at checkout before the final payment.</p>"
+          }
+        },
+        "international": {
+          "type": "shipping_section",
+          "settings": {
+            "title": "4. International Shipping",
+            "content": "<p>For international orders, please note that customs duties, taxes, and any additional fees imposed by the destination country are the responsibility of the customer. We are not responsible for delays due to customs clearance processes.</p><p>We reserve the right to update our shipping policy at any time. Any changes to our shipping policy will be communicated on our website.</p><p>We kindly ask our customers to read and take notes before making a purchase. We will automatically assume that the customer has accepted all the terms outlined above.</p><p>If you have any questions or concerns regarding our shipping policy, please feel free to contact us at support@example.com.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "methods",
+        "processing",
+        "costs",
+        "international"
+      ]
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "page_title",
+    "shipping"
+  ]
+} 

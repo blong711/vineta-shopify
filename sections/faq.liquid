@@ -1,0 +1,223 @@
+<section class="s-faq flat-spacing-25">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="sb-contact">
+          <p class="title">{{ section.settings.contact_title }}</p>
+          <p class="sub">{{ section.settings.contact_text_1 }}</p>
+          <p class="sub">{{ section.settings.contact_text_2 }}</p>
+          <div class="btn-group">
+            <a href="{{ section.settings.contact_button_link }}" class="tf-btn btn-fill hover-primary">
+              {{ section.settings.contact_button_text }}
+            </a>
+            <a href="{{ section.settings.chat_button_link }}" class="tf-btn btn-white hover-primary">
+              {{ section.settings.chat_button_text }}
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <ul class="faq-list">
+          {% for block in section.blocks %}
+            <li class="faq-item" {{ block.shopify_attributes }}>
+              <p class="name-faq">{{ block.settings.category_title }}</p>
+              <div class="faq-wrap" id="accordion{{ forloop.index }}">
+                {% for item in block.settings.faq_items %}
+                  <div class="widget-accordion">
+                    <div class="accordion-title {% unless forloop.first %}collapsed{% endunless %}" 
+                         data-bs-toggle="collapse"
+                         data-bs-target="#collapse{{ forloop.parentloop.index }}{{ forloop.index }}" 
+                         aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+                         aria-controls="collapse{{ forloop.parentloop.index }}{{ forloop.index }}" 
+                         role="button">
+                      <span>{{ item.question }}</span>
+                      <span class="icon icon-arrow-down"></span>
+                    </div>
+                    <div id="collapse{{ forloop.parentloop.index }}{{ forloop.index }}" 
+                         class="accordion-collapse collapse {% if forloop.first %}show{% endif %}"
+                         aria-labelledby="heading{{ forloop.parentloop.index }}{{ forloop.index }}" 
+                         data-bs-parent="#accordion{{ forloop.parentloop.index }}">
+                      <div class="accordion-body">
+                        {{ item.answer }}
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    {
+      "type": "text",
+      "id": "contact_title",
+      "label": "Contact Title",
+      "default": "Contact Us"
+    },
+    {
+      "type": "text",
+      "id": "contact_text_1",
+      "label": "Contact Text 1",
+      "default": "If you have an issue or question that requires immediate assistance, you can click the button below to chat live with a Customer Service representative."
+    },
+    {
+      "type": "text",
+      "id": "contact_text_2",
+      "label": "Contact Text 2",
+      "default": "Please allow 06 - 12 business days from the time your package arrives back to us for a refund to be issued."
+    },
+    {
+      "type": "text",
+      "id": "contact_button_text",
+      "label": "Contact Button Text",
+      "default": "Contact us"
+    },
+    {
+      "type": "url",
+      "id": "contact_button_link",
+      "label": "Contact Button Link"
+    },
+    {
+      "type": "text",
+      "id": "chat_button_text",
+      "label": "Chat Button Text",
+      "default": "Chat with us"
+    },
+    {
+      "type": "url",
+      "id": "chat_button_link",
+      "label": "Chat Button Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_category",
+      "name": "FAQ Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "category_title",
+          "label": "Category Title",
+          "default": "Shopping Information"
+        },
+        {
+          "type": "list",
+          "id": "faq_items",
+          "label": "FAQ Items",
+          "fields": [
+            {
+              "type": "text",
+              "id": "question",
+              "label": "Question",
+              "default": "How long will it take for my order to ship?"
+            },
+            {
+              "type": "richtext",
+              "id": "answer",
+              "label": "Answer",
+              "default": "<p>If you have an issue or question that requires immediate assistance, you can click the button below to chat live with a Customer Service representative.</p>"
+            }
+          ],
+          "default": [
+            {
+              "question": "How long will it take for my order to ship?",
+              "answer": "<p>If you have an issue or question that requires immediate assistance, you can click the button below to chat live with a Customer Service representative.</p>"
+            },
+            {
+              "question": "Do you offer free shipping?",
+              "answer": "<p>If you have an issue or question that requires immediate assistance, you can click the button below to chat live with a Customer Service representative.</p>"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        {
+          "type": "faq_category",
+          "settings": {
+            "category_title": "Shopping Information",
+            "faq_items": [
+              {
+                "question": "How long will it take for my order to ship?",
+                "answer": "<p>If you have an issue or question that requires immediate assistance, you can click the button below to chat live with a Customer Service representative.</p>"
+              },
+              {
+                "question": "Do you offer free shipping?",
+                "answer": "<p>If you have an issue or question that requires immediate assistance, you can click the button below to chat live with a Customer Service representative.</p>"
+              },
+              {
+                "question": "Can I change my shipping address after placing an order?",
+                "answer": "<p>If you have an issue or question that requires immediate assistance, you can click the button below to chat live with a Customer Service representative.</p>"
+              },
+              {
+                "question": "What if my package is delayed or lost?",
+                "answer": "<p>If you have an issue or question that requires immediate assistance, you can click the button below to chat live with a Customer Service representative.</p>"
+              }
+            ]
+          }
+        },
+        {
+          "type": "faq_category",
+          "settings": {
+            "category_title": "Payment Information",
+            "faq_items": [
+              {
+                "question": "What payment methods do you accept?",
+                "answer": "<p>We accept all major credit cards, PayPal, and bank transfers.</p>"
+              },
+              {
+                "question": "Is my payment information secure?",
+                "answer": "<p>Yes, we use industry-standard encryption to protect your payment information.</p>"
+              },
+              {
+                "question": "Do you offer installment payments?",
+                "answer": "<p>Yes, we offer installment payments through our payment partners.</p>"
+              },
+              {
+                "question": "What happens if my payment fails?",
+                "answer": "<p>If your payment fails, we'll notify you and you can try again with a different payment method.</p>"
+              }
+            ]
+          }
+        },
+        {
+          "type": "faq_category",
+          "settings": {
+            "category_title": "Return & Exchange",
+            "faq_items": [
+              {
+                "question": "What is your return policy?",
+                "answer": "<p>We accept returns within 14 days of delivery. Items must be unworn, unwashed, and in their original condition.</p>"
+              },
+              {
+                "question": "How do I return an item?",
+                "answer": "<p>Simply contact our customer service team for a return authorization, and we'll provide instructions for shipping the item back.</p>"
+              },
+              {
+                "question": "Are there any items that cannot be returned?",
+                "answer": "<p>Yes, sale items, personalized products, and undergarments are non-returnable.</p>"
+              },
+              {
+                "question": "When will I receive my refund?",
+                "answer": "<p>Once your return is received and inspected, we will process the refund within 5-7 business days.</p>"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 
