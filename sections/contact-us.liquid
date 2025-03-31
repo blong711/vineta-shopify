@@ -1,0 +1,400 @@
+<section class="s-contact flat-spacing-25">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="wg-map">
+          <iframe
+            src="{{ section.settings.map_url }}"
+            class="map" 
+            style="border:none;" 
+            allowfullscreen="" 
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="content-left">
+          <div class="title fw-medium display-md-2">
+            {{ section.settings.contact_title }}
+          </div>
+          <p class="sub-title text-main">
+            {{ section.settings.contact_subtitle }}
+          </p>
+          <ul class="contact-list">
+            <li>
+              <p>
+                Address:
+                <a class="link" href="{{ section.settings.address_link }}" target="_blank">
+                  {{ section.settings.address }}
+                </a>
+              </p>
+            </li>
+            <li>
+              <p>
+                Phone number:
+                <a class="link" href="tel:{{ section.settings.phone }}">
+                  {{ section.settings.phone }}
+                </a>
+              </p>
+            </li>
+            <li>
+              <p>
+                Email:
+                <a class="link" href="mailto:{{ section.settings.email }}">
+                  {{ section.settings.email }}
+                </a>
+              </p>
+            </li>
+            <li>
+              <p>
+                Open:
+                <span class="text-main">
+                  {{ section.settings.hours }}
+                </span>
+              </p>
+            </li>
+          </ul>
+          <ul class="tf-social-icon style-large">
+            {% if section.settings.facebook_url != blank %}
+              <li>
+                <a href="{{ section.settings.facebook_url }}" class="social-item social-facebook">
+                  <i class="icon icon-fb"></i>
+                </a>
+              </li>
+            {% endif %}
+            {% if section.settings.instagram_url != blank %}
+              <li>
+                <a href="{{ section.settings.instagram_url }}" class="social-item social-instagram">
+                  <i class="icon icon-instagram"></i>
+                </a>
+              </li>
+            {% endif %}
+            {% if section.settings.twitter_url != blank %}
+              <li>
+                <a href="{{ section.settings.twitter_url }}" class="social-item social-x">
+                  <i class="icon icon-x"></i>
+                </a>
+              </li>
+            {% endif %}
+            {% if section.settings.snapchat_url != blank %}
+              <li>
+                <a href="{{ section.settings.snapchat_url }}" class="social-item social-snapchat">
+                  <i class="icon icon-snapchat"></i>
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="content-right">
+          <div class="title fw-medium display-md-2">
+            {{ section.settings.form_title }}
+          </div>
+          <p class="sub-title text-main">
+            {{ section.settings.form_subtitle }}
+          </p>
+          <div class="form-contact-wrap">
+            {% form 'contact' %}
+              <div class="wrap">
+                <div class="cols">
+                  <fieldset>
+                    <label for="ContactFormName">Your name*</label>
+                    <input 
+                      type="text"
+                      name="contact[name]"
+                      id="ContactFormName"
+                      value="{{ form.name }}"
+                      required
+                    >
+                  </fieldset>
+                  <fieldset>
+                    <label for="ContactFormEmail">Your email*</label>
+                    <input
+                      type="email"
+                      name="contact[email]"
+                      id="ContactFormEmail"
+                      value="{{ form.email }}"
+                      required
+                    >
+                  </fieldset>
+                </div>
+                <div class="cols">
+                  <fieldset class="textarea">
+                    <label for="ContactFormMessage">Message</label>
+                    <textarea
+                      name="contact[body]"
+                      id="ContactFormMessage"
+                      required
+                    >{{ form.body }}</textarea>
+                  </fieldset>
+                </div>
+                <div class="button-submit">
+                  <button class="tf-btn animate-btn" type="submit">
+                    {{ section.settings.submit_button_text }}
+                  </button>
+                </div>
+              </div>
+            {% endform %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact Us",
+  "settings": [
+    {
+      "type": "text",
+      "id": "map_url",
+      "label": "Google Maps Embed URL",
+      "default": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27294.62418958524!2d151.25730233429948!3d-33.82005608618041!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12ab8bc95a137f%3A0x358f04a7f6f5f6a6!2sGrotto%20Point%20Lighthouse!5e0!3m2!1sen!2s!4v1733976867160!5m2!1sen!2s"
+    },
+    {
+      "type": "text",
+      "id": "contact_title",
+      "label": "Contact Title",
+      "default": "Contact Us"
+    },
+    {
+      "type": "text",
+      "id": "contact_subtitle",
+      "label": "Contact Subtitle",
+      "default": "Have a question? Please contact us using the customer support channels below."
+    },
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Address",
+      "default": "15 Yarran st, Punchbowl, NSW, Australia"
+    },
+    {
+      "type": "text",
+      "id": "address_link",
+      "label": "Address Link",
+      "default": "https://www.google.com/maps?q=15+Yarran+st,+Punchbowl,+NSW,+Australia"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone Number",
+      "default": "+1 234 567"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "contact@vince.com"
+    },
+    {
+      "type": "text",
+      "id": "hours",
+      "label": "Business Hours",
+      "default": "8am - 7pm, Mon - Sat"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "twitter_url",
+      "label": "Twitter URL"
+    },
+    {
+      "type": "url",
+      "id": "snapchat_url",
+      "label": "Snapchat URL"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form Title",
+      "default": "Get In Touch"
+    },
+    {
+      "type": "text",
+      "id": "form_subtitle",
+      "label": "Form Subtitle",
+      "default": "Please submit all general enquiries in the contact form below and we look forward to hearing from you soon."
+    },
+    {
+      "type": "text",
+      "id": "submit_button_text",
+      "label": "Submit Button Text",
+      "default": "Send"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Us"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.s-contact {
+  padding: 100px 0;
+}
+
+.wg-map {
+  margin-bottom: 60px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.wg-map .map {
+  width: 100%;
+  height: 400px;
+}
+
+.content-left,
+.content-right {
+  padding: 40px;
+}
+
+.title {
+  margin-bottom: 20px;
+}
+
+.sub-title {
+  margin-bottom: 30px;
+}
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px;
+}
+
+.contact-list li {
+  margin-bottom: 15px;
+}
+
+.contact-list li:last-child {
+  margin-bottom: 0;
+}
+
+.contact-list .link {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-list .link:hover {
+  color: var(--secondary-color);
+}
+
+.tf-social-icon {
+  display: flex;
+  gap: 15px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.social-item {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--background-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-item:hover {
+  background: var(--primary-color);
+  color: #fff;
+  transform: translateY(-3px);
+}
+
+.form-contact-wrap {
+  background: var(--background-color);
+  padding: 40px;
+  border-radius: 16px;
+}
+
+.form-default fieldset {
+  margin-bottom: 20px;
+}
+
+.form-default label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-default input,
+.form-default textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.form-default input:focus,
+.form-default textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.form-default textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+.button-submit {
+  margin-top: 30px;
+}
+
+.tf-btn {
+  padding: 12px 30px;
+  border-radius: 8px;
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tf-btn:hover {
+  background: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 991px) {
+  .s-contact {
+    padding: 60px 0;
+  }
+  
+  .wg-map {
+    margin-bottom: 40px;
+  }
+  
+  .content-left,
+  .content-right {
+    padding: 20px;
+  }
+  
+  .form-contact-wrap {
+    padding: 20px;
+  }
+}
+{% endstylesheet %} 
