@@ -264,15 +264,3 @@
   }
 }
 {% endstylesheet %}
-
-{% javascript %}
-document.addEventListener('DOMContentLoaded', function() {
-  // Handle accordion toggle
-  const accordionTitles = document.querySelectorAll('.accordion-title');
-  accordionTitles.forEach(title => {
-    title.addEventListener('click', function() {
-      this.classList.toggle('collapsed');
-    });
-  });
-});
-{% endjavascript %} 

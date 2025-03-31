@@ -106,27 +106,3 @@
   ]
 }
 {% endschema %}
-
-{% javascript %}
-document.addEventListener('DOMContentLoaded', function() {
-  const slider = document.querySelector('.infiniteslide');
-  if (slider) {
-    // Update animation duration from settings
-    const duration = {{ section.settings.animation_speed | default: 20 }};
-    slider.style.animationDuration = `${duration}s`;
-    
-    // Adjust animation based on content width
-    const adjustAnimation = () => {
-      const brandItems = slider.querySelectorAll('.brand-item');
-      const totalWidth = Array.from(brandItems).slice(0, brandItems.length / 2)
-        .reduce((sum, item) => sum + item.offsetWidth, 0);
-      
-      slider.style.width = `${totalWidth}px`;
-    };
-    
-    // Initial adjustment and resize handling
-    adjustAnimation();
-    window.addEventListener('resize', adjustAnimation);
-  }
-});
-{% endjavascript %} 

@@ -139,38 +139,3 @@
   ]
 }
 {% endschema %}
-
-{% javascript %}
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize Swiper
-  const swiper = new Swiper('.tf-swiper', {
-    slidesPerView: 1,
-    spaceBetween: 12,
-    speed: 800,
-    observer: true,
-    observeParents: true,
-    pagination: {
-      el: '.sw-pagination-iconbox',
-      clickable: true
-    },
-    breakpoints: {
-      575: {
-        slidesPerView: 2,
-        spaceBetween: 24
-      },
-      768: {
-        slidesPerView: 3,
-        spaceBetween: 24
-      },
-      1200: {
-        slidesPerView: 3,
-        spaceBetween: 100
-      },
-      1440: {
-        slidesPerView: 3,
-        spaceBetween: 205
-      }
-    }
-  });
-});
-{% endjavascript %} 

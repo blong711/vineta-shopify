@@ -1,0 +1,478 @@
+<!-- Welcome Section -->
+<section class="flat-spacing-3 pb-0">
+  <div class="container">
+    <div class="flat-title-2 d-xl-flex justify-content-xl-between">
+      <div class="box-title">
+        <p class="display-lg-2 fw-medium">
+          {{ section.settings.welcome_title }}
+        </p>
+        <p class="text-xl">
+          {{ section.settings.welcome_subtitle }}
+        </p>
+      </div>
+      <div class="box-text">
+        <p class="text-md">
+          {{ section.settings.welcome_text }}
+        </p>
+      </div>
+    </div>
+    <div class="image radius-16 overflow-hidden">
+      <img src="{{ section.settings.welcome_image | img_url: 'master' }}" 
+           data-src="{{ section.settings.welcome_image | img_url: 'master' }}" 
+           alt="{{ section.settings.welcome_image.alt | escape }}" 
+           class="lazyload">
+    </div>
+  </div>
+</section>
+
+<!-- Why Choose Section -->
+<section class="flat-spacing-3">
+  <div class="container">
+    <div class="flat-title-2 text-center">
+      <p class="display-md-2 fw-medium">
+        {{ section.settings.why_choose_title }}
+      </p>
+      <p class="text-md text-main">
+        {{ section.settings.why_choose_text }}
+      </p>
+    </div>
+    <div class="row">
+      <div class="col-xl-7 col-md-6">
+        <ul class="list-esd d-md-flex flex-md-column justify-content-md-center h-100">
+          {% for block in section.blocks %}
+            {% if block.type == 'feature' %}
+              <li class="item">
+                <h6>
+                  {{ block.settings.title }}
+                </h6>
+                <p class="text-md">
+                  {{ block.settings.text }}
+                </p>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-xl-5 col-md-6">
+        <div class="image radius-16 overflow-hidden w-100 h-100">
+          <img src="{{ section.settings.why_choose_image | img_url: 'master' }}" 
+               data-src="{{ section.settings.why_choose_image | img_url: 'master' }}" 
+               alt="{{ section.settings.why_choose_image.alt | escape }}" 
+               class="lazyload w-100 h-100 object-fit-cover">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Style Curated Section -->
+<section class="flat-spacing-3 pt-0">
+  <div class="container">
+    <div class="flat-title-2 d-xl-flex justify-content-xl-between">
+      <div class="box-title">
+        <p class="display-md-2 fw-medium">
+          {{ section.settings.style_title }}
+        </p>
+        <p class="text-xl">
+          {{ section.settings.style_subtitle }}
+        </p>
+      </div>
+      <div class="box-text">
+        <p class="text-md">
+          {{ section.settings.style_text }}
+        </p>
+      </div>
+    </div>
+    <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+      "slidesPerView": 1,
+      "spaceBetween": 12,
+      "speed": 800,
+      "observer": true,
+      "observeParents": true,
+      "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+      "breakpoints": {
+        "575": { "slidesPerView":2, "spaceBetween": 12}, 
+        "992": { "slidesPerView": 3, "spaceBetween": 24}
+      }
+    }'>
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          {% if block.type == 'style_box' %}
+            <div class="swiper-slide">
+              <div class="tf-icon-box style-border">
+                <div class="box-icon">
+                  <i class="icon {{ block.settings.icon }}"></i>
+                </div>
+                <div class="content">
+                  <h6 class="">{{ block.settings.title }}</h6>
+                  <p class="text-sm text-line-clamp-4">
+                    {{ block.settings.text }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonial Section -->
+<section class="flat-spacing-15 pt-0">
+  <div class="container">
+    <div class="box-testimonial-quote text-center">
+      <div class="list-star-default justify-content-center">
+        {% for i in (1..5) %}
+          <i class="icon-star text-green"></i>
+        {% endfor %}
+      </div>
+      <p class="text-xl-2 lh-xl-32">
+        {{ section.settings.testimonial_text }}
+      </p>
+      <div class="box-author">
+        <div class="avt">
+          <img src="{{ section.settings.testimonial_author_image | img_url: 'master' }}" 
+               alt="{{ section.settings.testimonial_author_name | escape }}">
+        </div>
+        <p class="text-md lh-xl-26 fw-medium">
+          {{ section.settings.testimonial_author_name }}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About Us",
+  "settings": [
+    {
+      "type": "text",
+      "id": "welcome_title",
+      "label": "Welcome Title",
+      "default": "Welcome to Vineta"
+    },
+    {
+      "type": "text",
+      "id": "welcome_subtitle",
+      "label": "Welcome Subtitle",
+      "default": "The Ultimate Fashion Destination"
+    },
+    {
+      "type": "richtext",
+      "id": "welcome_text",
+      "label": "Welcome Text",
+      "default": "<p>At Vineta, we bring you thoughtfully curated collections that blend contemporary designs with timeless elegance. With over 15 years of experience, we cater to fashion enthusiasts who appreciate quality, style, and versatility.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "welcome_image",
+      "label": "Welcome Image"
+    },
+    {
+      "type": "text",
+      "id": "why_choose_title",
+      "label": "Why Choose Title",
+      "default": "Why Choose Vineta"
+    },
+    {
+      "type": "richtext",
+      "id": "why_choose_text",
+      "label": "Why Choose Text",
+      "default": "<p>Our products are crafted with innovation and an eye for the latest trends. We push the boundaries of traditional fashion, delivering bold, fresh designs that inspire confidence and individuality.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "why_choose_image",
+      "label": "Why Choose Image"
+    },
+    {
+      "type": "text",
+      "id": "style_title",
+      "label": "Style Title",
+      "default": "Style Curated Just for You"
+    },
+    {
+      "type": "text",
+      "id": "style_subtitle",
+      "label": "Style Subtitle",
+      "default": "Style Curated Just for You"
+    },
+    {
+      "type": "richtext",
+      "id": "style_text",
+      "label": "Style Text",
+      "default": "<p>Our skilled stylists have thoughtfully assembled seasonal outfits that are both trendy and timeless. With a variety of looks, they're here to inspire your next fashion-forward ensemble.</p>"
+    },
+    {
+      "type": "text",
+      "id": "testimonial_text",
+      "label": "Testimonial Text",
+      "default": "\"I've ordered from many places, but I have to say, this shop offers the best shipping experience ever. Thank you so much for the outstanding service!\""
+    },
+    {
+      "type": "text",
+      "id": "testimonial_author_name",
+      "label": "Testimonial Author Name",
+      "default": "Vincent P"
+    },
+    {
+      "type": "image_picker",
+      "id": "testimonial_author_image",
+      "label": "Testimonial Author Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Feature Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Feature description goes here.</p>"
+        }
+      ]
+    },
+    {
+      "type": "style_box",
+      "name": "Style Box",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon Class",
+          "default": "icon-precision"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Style Box Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Style box description goes here.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Us",
+      "category": "About Us",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Ethics & Responsibility",
+            "text": "<p>At Vineta, we are dedicated to upholding the highest ethical standards in production. We ensure mindful manufacturing through regular audits, training, and a strong focus on responsible sourcing.</p>"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Style Meets Durability",
+            "text": "<p>From classic tailoring to casual staples, our Vineta collections embrace the latest trends while prioritizing comfort and long-lasting quality.</p>"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Express Yourself",
+            "text": "<p>Our designs are crafted with the latest fashion trends in mind, offering flexibility for individual expression, especially for the modern, style-conscious youth.</p>"
+          }
+        },
+        {
+          "type": "style_box",
+          "settings": {
+            "icon": "icon-precision",
+            "title": "Precision in Every Stitch",
+            "text": "<p>At Vineta, we use only premium materials, ensuring our collections offer superior comfort and lasting durability. Every piece is crafted with care and attention to detail.</p>"
+          }
+        },
+        {
+          "type": "style_box",
+          "settings": {
+            "icon": "icon-elegance",
+            "title": "Effortless Elegance",
+            "text": "<p>Our designs embrace simplicity at its finest. Vineta's understated yet refined style captures the essence of modern fashion, making a statement.</p>"
+          }
+        },
+        {
+          "type": "style_box",
+          "settings": {
+            "icon": "icon-fashion-body",
+            "title": "Fashion for Every Body",
+            "text": "<p>We celebrate individuality with a diverse range of sizes, offering clothing that fits and flatters every body type. At Vineta, fashion is for everyone.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+/* About Us Styles */
+.flat-spacing-3 {
+  padding: 80px 0;
+}
+
+.flat-spacing-15 {
+  padding: 120px 0;
+}
+
+.flat-title-2 {
+  margin-bottom: 40px;
+}
+
+.box-title {
+  max-width: 600px;
+}
+
+.box-text {
+  max-width: 500px;
+}
+
+.image {
+  position: relative;
+  overflow: hidden;
+}
+
+.image img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.image:hover img {
+  transform: scale(1.05);
+}
+
+.list-esd {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list-esd .item {
+  margin-bottom: 30px;
+}
+
+.list-esd .item:last-child {
+  margin-bottom: 0;
+}
+
+.list-esd h6 {
+  margin-bottom: 15px;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.tf-icon-box {
+  padding: 30px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.tf-icon-box:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-5px);
+}
+
+.tf-icon-box .box-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--background-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tf-icon-box .box-icon i {
+  font-size: 24px;
+  color: var(--primary-color);
+}
+
+.tf-icon-box .content h6 {
+  margin-bottom: 15px;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.box-testimonial-quote {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.list-star-default {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.list-star-default i {
+  font-size: 20px;
+  color: #FFD700;
+}
+
+.box-author {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.box-author .avt {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.box-author .avt img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 991px) {
+  .flat-spacing-3 {
+    padding: 60px 0;
+  }
+  
+  .flat-spacing-15 {
+    padding: 80px 0;
+  }
+  
+  .flat-title-2 {
+    margin-bottom: 30px;
+  }
+  
+  .box-title,
+  .box-text {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+}
+{% endstylesheet %} 

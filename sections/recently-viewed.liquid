@@ -446,37 +446,3 @@
   }
 }
 {% endstylesheet %}
-
-{% javascript %}
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize Swiper
-  const swiper = new Swiper('.tf-swiper', {
-    slidesPerView: 2,
-    spaceBetween: 12,
-    speed: 800,
-    observer: true,
-    observeParents: true,
-    slidesPerGroup: 2,
-    navigation: {
-      nextEl: '.nav-next-viewed',
-      prevEl: '.nav-prev-viewed',
-    },
-    pagination: {
-      el: '.sw-pagination-viewed',
-      clickable: true,
-    },
-    breakpoints: {
-      768: {
-        slidesPerView: 3,
-        spaceBetween: 12,
-        slidesPerGroup: 3,
-      },
-      1200: {
-        slidesPerView: 4,
-        spaceBetween: 24,
-        slidesPerGroup: 4,
-      }
-    }
-  });
-});
-{% endjavascript %} 

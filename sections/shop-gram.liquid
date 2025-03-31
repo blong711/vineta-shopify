@@ -101,14 +101,3 @@
   ]
 }
 {% endschema %}
-
-{% javascript %}
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize Swiper
-  const swiperElement = document.querySelector('.tf-swiper');
-  if (swiperElement) {
-    const options = JSON.parse(swiperElement.dataset.swiper);
-    new Swiper(swiperElement, options);
-  }
-});
-{% endjavascript %} 

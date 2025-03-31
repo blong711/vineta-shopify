@@ -153,19 +153,6 @@
 }
 {% endschema %}
 
-{% javascript %}
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize marquee animation
-  const marqueeWrapper = document.querySelector('.marquee-wrapper');
-  if (marqueeWrapper) {
-    const container = marqueeWrapper.querySelector('.initial-child-container');
-    if (container) {
-      container.style.animation = 'marquee 30s linear infinite';
-    }
-  }
-});
-{% endjavascript %}
-
 {% stylesheet %}
 @keyframes marquee {
   0% {

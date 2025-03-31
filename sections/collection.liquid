@@ -8,10 +8,191 @@
 {% paginate collection.products by section.settings.products_per_page %}
 <section class="flat-spacing pt-0">
   <div class="container">
+    <!-- Filter Sidebar -->
+    <div class="offcanvas offcanvas-start canvas-sidebar canvas-filter" id="filterShop">
+      <div class="canvas-wrapper">
+        <div class="canvas-header">
+          <span class="title">Filter</span>
+          <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="canvas-body">
+          <!-- Categories -->
+          <div class="widget-facet">
+            <ul class="list-categories current-scrollbar">
+              {% for collection in collections %}
+                <li class="cate-item">
+                  <a class="text-sm link" href="{{ collection.url }}">
+                    <span>{{ collection.title }}</span>
+                    <span class="count">({{ collection.products_count }})</span>
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          <!-- Availability -->
+          <div class="widget-facet">
+            <div class="facet-title text-xl fw-medium" data-bs-target="#availability" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="availability">
+              <span>Availability</span>
+              <span class="icon icon-arrow-up"></span>
+            </div>
+            <div id="availability" class="collapse show">
+              <ul class="collapse-body filter-group-check current-scrollbar">
+                <li class="list-item">
+                  <input type="radio" name="availability" class="tf-check" id="inStock" value="in_stock">
+                  <label for="inStock" class="label">
+                    <span>In stock</span>
+                    <span class="count">({{ collection.products | where: "available", true | size }})</span>
+                  </label>
+                </li>
+                <li class="list-item">
+                  <input type="radio" name="availability" class="tf-check" id="outStock" value="out_of_stock">
+                  <label for="outStock" class="label">
+                    <span>Out of stock</span>
+                    <span class="count">({{ collection.products | where: "available", false | size }})</span>
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Price Range -->
+          <div class="widget-facet">
+            <div class="facet-title text-xl fw-medium" data-bs-target="#price" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="price">
+              <span>Price</span>
+              <span class="icon icon-arrow-up"></span>
+            </div>
+            <div id="price" class="collapse show">
+              <div class="collapse-body widget-price filter-price">
+                <span class="reset-price">Reset</span>
+                <div class="price-val-range" id="price-value-range" data-min="0" data-max="{{ collection.price_max | money_without_currency | round }}"></div>
+                <div class="box-value-price">
+                  <span class="text-sm">Price:</span>
+                  <div class="price-box">
+                    <div class="price-val" id="price-min-value" data-currency="{{ shop.currency.symbol }}">0</div>
+                    <span>-</span>
+                    <div class="price-val" id="price-max-value" data-currency="{{ shop.currency.symbol }}">{{ collection.price_max | money_without_currency | round }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Color -->
+          <div class="widget-facet">
+            <div class="facet-title text-xl fw-medium" data-bs-target="#color" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="color">
+              <span>Color</span>
+              <span class="icon icon-arrow-up"></span>
+            </div>
+            <div id="color" class="collapse show">
+              <div class="collapse-body filter-color-box flat-check-list">
+                {% for filter in collection.filters %}
+                  {% if filter.type == 'list' and filter.label == 'Color' %}
+                    {% for value in filter.values %}
+                      <div class="check-item color-item color-check">
+                        <span class="color bg-{{ value.label | handle }}"></span>
+                        <span class="color-text">{{ value.label }}</span>
+                        <span class="count">({{ value.count }})</span>
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Size -->
+          <div class="widget-facet">
+            <div class="facet-title text-xl fw-medium" data-bs-target="#size" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="size">
+              <span>Size</span>
+              <span class="icon icon-arrow-up"></span>
+            </div>
+            <div id="size" class="collapse show">
+              <div class="collapse-body filter-size-box flat-check-list">
+                {% for filter in collection.filters %}
+                  {% if filter.type == 'list' and filter.label == 'Size' %}
+                    {% for value in filter.values %}
+                      <div class="check-item size-item size-check">
+                        <span class="size">{{ value.label }}</span>
+                        <span class="count">({{ value.count }})</span>
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Brand -->
+          <div class="widget-facet">
+            <div class="facet-title text-xl fw-medium" data-bs-target="#brand" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="brand">
+              <span>Brand</span>
+              <span class="icon icon-arrow-up"></span>
+            </div>
+            <div id="brand" class="collapse show">
+              <ul class="collapse-body filter-group-check current-scrollbar">
+                {% for vendor in collection.all_vendors %}
+                  <li class="list-item">
+                    <input type="radio" name="vendor" class="tf-check" id="vendor-{{ vendor | handle }}" value="{{ vendor }}">
+                    <label for="vendor-{{ vendor | handle }}" class="label">
+                      <span>{{ vendor }}</span>
+                      <span class="count">({{ collection.products | where: "vendor", vendor | size }})</span>
+                    </label>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+
+          <!-- On Sale -->
+          <div class="widget-facet">
+            <div class="facet-title text-xl fw-medium"><span>On sale</span></div>
+            <ul class="collapse-body list-recent">
+              {% for product in collection.products %}
+                {% if product.compare_at_price > product.price %}
+                  <li>
+                    <div class="recent-blog-item">
+                      <a href="{{ product.url }}" class="img-product">
+                        <img src="{{ product.featured_image | img_url: 'small' }}" alt="{{ product.title | escape }}">
+                      </a>
+                      <div class="content">
+                        <a href="{{ product.url }}" class="title text-md link fw-medium">{{ product.title }}</a>
+                        <div class="price text-md fw-medium">
+                          <span class="new-price">{{ product.price | money }}</span>
+                          <span class="old-price">{{ product.compare_at_price | money }}</span>
+                        </div>
+                        <p class="text-sm">{{ product.variants.size }} variant{% if product.variants.size != 1 %}s{% endif %} available</p>
+                      </div>
+                    </div>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+
+          <!-- Banner -->
+          <div class="widget-facet">
+            <div class="sb-banner hover-img">
+              <div class="image img-style">
+                <img src="{{ section.settings.filter_banner | img_url: 'master' }}" data-src="{{ section.settings.filter_banner | img_url: 'master' }}" alt="banner" class="lazyload">
+              </div>
+              <div class="banner-content">
+                <p class="title">
+                  Elevate <br> Your Style
+                </p>
+                <a href="{{ collection.url }}" class="tf-btn btn-white hover-primary">Shop Now</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="tf-shop-control">
       <div class="tf-group-filter">
         <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="filterShop" class="tf-btn-filter">
-          <span class="icon icon-filter"></span><span class="text">Filter</span>
+          <span class="icon icon-filter"></span>
+          <span class="text">Filter</span>
         </a>
         <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
           <div class="btn-select">
@@ -19,11 +200,21 @@
             <span class="icon icon-arr-down"></span>
           </div>
           <div class="dropdown-menu">
-            {% for option in collection.sort_options %}
-              <div class="select-item{% if option.value == collection.sort_by %} active{% endif %}" data-sort-value="{{ option.value }}">
-                <span class="text-value-item">{{ option.label }}</span>
-              </div>
-            {% endfor %}
+            <div class="select-item{% if collection.sort_by == 'best-selling' %} active{% endif %}" data-sort-value="best-selling">
+              <span class="text-value-item">Best selling</span>
+            </div>
+            <div class="select-item{% if collection.sort_by == 'title-ascending' %} active{% endif %}" data-sort-value="title-ascending">
+              <span class="text-value-item">Alphabetically, A-Z</span>
+            </div>
+            <div class="select-item{% if collection.sort_by == 'title-descending' %} active{% endif %}" data-sort-value="title-descending">
+              <span class="text-value-item">Alphabetically, Z-A</span>
+            </div>
+            <div class="select-item{% if collection.sort_by == 'price-ascending' %} active{% endif %}" data-sort-value="price-ascending">
+              <span class="text-value-item">Price, low to high</span>
+            </div>
+            <div class="select-item{% if collection.sort_by == 'price-descending' %} active{% endif %}" data-sort-value="price-descending">
+              <span class="text-value-item">Price, high to low</span>
+            </div>
           </div>
         </div>
       </div>
@@ -336,6 +527,11 @@
         }
       ],
       "default": "best-selling"
+    },
+    {
+      "type": "image_picker",
+      "id": "filter_banner",
+      "label": "Filter Banner Image"
     }
   ],
   "presets": [
@@ -346,287 +542,3 @@
   ]
 }
 {% endschema %}
-
-{% stylesheet %}
-.flat-spacing {
-  padding: 60px 0;
-}
-
-.tf-shop-control {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.tf-group-filter {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.tf-btn-filter {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border: 1px solid #e5e5e5;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.tf-control-layout {
-  display: flex;
-  gap: 0.5rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.tf-view-layout-switch {
-  cursor: pointer;
-  padding: 0.5rem;
-  border: 1px solid #e5e5e5;
-  border-radius: 4px;
-}
-
-.tf-view-layout-switch.active {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
-}
-
-.card-product {
-  position: relative;
-  margin-bottom: 2rem;
-}
-
-.card-product-wrapper {
-  position: relative;
-  overflow: hidden;
-}
-
-.product-img {
-  display: block;
-  position: relative;
-  overflow: hidden;
-}
-
-.img-hover {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.product-img:hover .img-hover {
-  opacity: 1;
-}
-
-.list-product-btn {
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  opacity: 0;
-  transform: translateX(1rem);
-  transition: all 0.3s ease;
-}
-
-.card-product:hover .list-product-btn {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.box-icon {
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  position: relative;
-}
-
-.hover-tooltip .tooltip {
-  position: absolute;
-  background: #333;
-  color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-}
-
-.hover-tooltip:hover .tooltip {
-  opacity: 1;
-  visibility: visible;
-}
-
-.tooltip-left .tooltip {
-  right: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  margin-right: 0.5rem;
-}
-
-.size-box {
-  display: flex;
-  gap: 0.5rem;
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0;
-}
-
-.size-item {
-  padding: 0.25rem 0.5rem;
-  background: #f5f5f5;
-  border-radius: 2px;
-}
-
-.list-color-product {
-  display: flex;
-  gap: 0.5rem;
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0;
-}
-
-.color-swatch {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  overflow: hidden;
-  cursor: pointer;
-  position: relative;
-}
-
-.swatch-value {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.wg-pagination {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  list-style: none;
-  padding: 0;
-  margin: 2rem 0;
-}
-
-.pagination-item {
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #e5e5e5;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.pagination-item.active {
-  background: var(--primary-color);
-  color: white;
-  border-color: var(--primary-color);
-}
-
-@media (max-width: 1200px) {
-  .tf-col-4 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 991px) {
-  .tf-col-4 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 767px) {
-  .flat-spacing {
-    padding: 40px 0;
-  }
-  
-  .tf-shop-control {
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .tf-group-filter {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .tf-control-layout {
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .tf-col-4 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 575px) {
-  .tf-col-4 {
-    grid-template-columns: 1fr;
-  }
-}
-{% endstylesheet %}
-
-{% javascript %}
-document.addEventListener('DOMContentLoaded', function() {
-  // Layout switching
-  const layoutSwitches = document.querySelectorAll('.tf-view-layout-switch');
-  const listLayout = document.getElementById('listLayout');
-  const gridLayout = document.getElementById('gridLayout');
-
-  layoutSwitches.forEach(switch => {
-    switch.addEventListener('click', function() {
-      const layout = this.getAttribute('data-value-layout');
-      
-      layoutSwitches.forEach(s => s.classList.remove('active'));
-      this.classList.add('active');
-
-      if (layout === 'list') {
-        listLayout.style.display = 'block';
-        gridLayout.style.display = 'none';
-      } else {
-        listLayout.style.display = 'none';
-        gridLayout.style.display = 'block';
-      }
-    });
-  });
-
-  // Sort dropdown
-  const sortItems = document.querySelectorAll('.select-item');
-  const sortValue = document.querySelector('.text-sort-value');
-
-  sortItems.forEach(item => {
-    item.addEventListener('click', function() {
-      const value = this.getAttribute('data-sort-value');
-      const text = this.querySelector('.text-value-item').textContent;
-      
-      sortItems.forEach(i => i.classList.remove('active'));
-      this.classList.add('active');
-      sortValue.textContent = text;
-
-      // Update URL with new sort parameter
-      const url = new URL(window.location.href);
-      url.searchParams.set('sort_by', value);
-      window.location.href = url.toString();
-    });
-  });
-});
-{% endjavascript %} 

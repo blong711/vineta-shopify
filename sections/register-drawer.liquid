@@ -176,25 +176,3 @@
   }
 }
 {% endstylesheet %}
-
-{% javascript %}
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize register drawer
-  const registerDrawer = document.getElementById('register');
-  const registerButton = document.querySelector('.register-button');
-  const closeButton = document.querySelector('.icon-close-popup');
-
-  if (registerButton && registerDrawer) {
-    registerButton.addEventListener('click', function(e) {
-      e.preventDefault();
-      registerDrawer.classList.add('show');
-    });
-  }
-
-  if (closeButton && registerDrawer) {
-    closeButton.addEventListener('click', function() {
-      registerDrawer.classList.remove('show');
-    });
-  }
-});
-{% endjavascript %} 
