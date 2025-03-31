@@ -1,0 +1,151 @@
+<section class="s-store-location flat-spacing-2">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="wg-map">
+          <iframe
+            src="{{ section.settings.map_url }}"
+            width="100%" 
+            height="589px" 
+            style="border:none;" 
+            allowfullscreen="" 
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+        <div class="tf-grid-layout lg-col-3 sm-col-2">
+          {% for block in section.blocks %}
+            <div class="box-store" {{ block.shopify_attributes }}>
+              <div class="content">
+                <p class="title">{{ block.settings.store_name }}</p>
+                <ul class="contact-list">
+                  <li>
+                    <p>
+                      Address:
+                      <a class="link" href="{{ block.settings.address_link }}" target="_blank">
+                        {{ block.settings.address }}
+                      </a>
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                      Phone number:
+                      <a class="link" href="tel:{{ block.settings.phone }}">
+                        {{ block.settings.phone }}
+                      </a>
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                      Email:
+                      <a class="link" href="mailto:{{ block.settings.email }}">
+                        {{ block.settings.email }}
+                      </a>
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                      Open:
+                      <span class="text-main">
+                        {{ block.settings.hours }}
+                      </span>
+                    </p>
+                  </li>
+                </ul>
+              </div>
+              <div class="bot">
+                <a href="{{ block.settings.directions_link }}" class="tf-btn btn-line">
+                  Get direction
+                  <i class="icon-arrow-top-left"></i>
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Store Locations",
+  "settings": [
+    {
+      "type": "text",
+      "id": "map_url",
+      "label": "Google Maps Embed URL",
+      "default": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27294.62418958524!2d151.25730233429948!3d-33.82005608618041!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12ab8bc95a137f%3A0x358f04a7f6f5f6a6!2sGrotto%20Point%20Lighthouse!5e0!3m2!1sen!2s!4v1733976867160!5m2!1sen!2s"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "store",
+      "name": "Store",
+      "settings": [
+        {
+          "type": "text",
+          "id": "store_name",
+          "label": "Store Name",
+          "default": "Store Location"
+        },
+        {
+          "type": "text",
+          "id": "address",
+          "label": "Address",
+          "default": "15 Yarran st, Punchbowl, NSW, Australia"
+        },
+        {
+          "type": "text",
+          "id": "address_link",
+          "label": "Address Link",
+          "default": "https://www.google.com/maps?q=15Yarranst,Punchbowl,NSW,Australia"
+        },
+        {
+          "type": "text",
+          "id": "phone",
+          "label": "Phone Number",
+          "default": "+1 234 567"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email",
+          "default": "contact@vince.com"
+        },
+        {
+          "type": "text",
+          "id": "hours",
+          "label": "Opening Hours",
+          "default": "8am - 7pm, Mon - Sat"
+        },
+        {
+          "type": "text",
+          "id": "directions_link",
+          "label": "Directions Link",
+          "default": "#"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Store Locations",
+      "blocks": [
+        {
+          "type": "store",
+          "settings": {
+            "store_name": "Store 1 Sydney",
+            "address": "15 Yarran st, Punchbowl, NSW, Australia",
+            "address_link": "https://www.google.com/maps?q=15Yarranst,Punchbowl,NSW,Australia",
+            "phone": "+1 234 567",
+            "email": "contact@vince.com",
+            "hours": "8am - 7pm, Mon - Sat",
+            "directions_link": "#"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 
