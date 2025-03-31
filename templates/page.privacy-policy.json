@@ -1,5 +1,11 @@
 {
   "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb"
+    },
+    "page_title": {
+      "type": "page-title"
+    },
     "privacy_policy": {
       "type": "privacy-policy",
       "blocks": {
@@ -56,6 +62,8 @@
     }
   },
   "order": [
+    "breadcrumb",
+    "page_title",
     "privacy_policy"
   ]
 } 
