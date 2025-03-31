@@ -7,7 +7,7 @@
             <div class="term-item" {{ block.shopify_attributes }}>
               <p class="term-title">{{ block.settings.title }}</p>
               <div class="text-wrap">
-                {{ block.settings.content }}
+                {{ block.settings.content | newline_to_br }}
               </div>
             </div>
           {% endfor %}
