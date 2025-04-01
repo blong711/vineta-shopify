@@ -317,8 +317,8 @@
                 <a href="#" class="tf-btn btn-main-product animate-btn" data-variant-id="{{ product.selected_or_first_available_variant.id }}" data-product-handle="{{ product.handle }}">
                   {% if product.available %}Add to cart{% else %}Sold out{% endif %}
                 </a>
-                <a href="#" class="box-icon wishlist hover-tooltip" data-product-handle="{{ product.handle }}">
-                  <span class="icon icon-heart2"></span>
+                <a href="#" class="box-icon wishlist hover-tooltip" data-wishlist data-id="{{ product.id }}" data-action="add">
+                  <span class="icon icon-heart"></span>
                   <span class="tooltip">Add to Wishlist</span>
                 </a>
                 <a href="#compare" data-bs-toggle="offcanvas" class="box-icon compare hover-tooltip" data-product-handle="{{ product.handle }}">
@@ -384,8 +384,8 @@
                   </a>
                 </li>
                 <li class="wishlist">
-                  <a href="#" class="box-icon hover-tooltip tooltip-left" data-product-handle="{{ product.handle }}">
-                    <span class="icon icon-heart2"></span>
+                  <a href="#" class="box-icon hover-tooltip tooltip-left" data-wishlist data-id="{{ product.id }}" data-action="add">
+                    <span class="icon icon-heart"></span>
                     <span class="tooltip">Add to Wishlist</span>
                   </a>
                 </li>

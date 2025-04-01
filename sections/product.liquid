@@ -128,19 +128,32 @@
                 <a href="/pages/payment-methods" class="more-choose-payment link">More payment options</a>
               </div>
               <div class="tf-product-info-extra-link">
-                <button type="button" class="product-extra-icon link btn-add-wishlist" data-product-id="{{ product.id }}">
-                  <i class="icon add icon-heart"></i><span class="add">Add to wishlist</span>
-                  <i class="icon added icon-trash"></i><span class="added">Remove from wishlist</span>
-                </button>
-                <button type="button" class="product-extra-icon link" data-bs-toggle="modal" data-bs-target="#compare">
-                  <i class="icon icon-compare2"></i>Compare
-                </button>
-                <button type="button" class="product-extra-icon link" data-bs-toggle="modal" data-bs-target="#askQuestion">
-                  <i class="icon icon-ask"></i>Ask a question
-                </button>
-                <button type="button" class="product-extra-icon link" data-bs-toggle="modal" data-bs-target="#shareSocial">
-                  <i class="icon icon-share"></i>Share
-                </button>
+                <ul class="list-product-btn">
+                  <li>
+                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="box-icon hover-tooltip">
+                      <span class="icon icon-cart2"></span>
+                      <span class="tooltip">Add to Cart</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="javascript:void(0);" class="box-icon hover-tooltip" data-wishlist data-id="{{ product.id }}" data-action="add">
+                      <span class="icon icon-heart"></span>
+                      <span class="tooltip">Add to Wishlist</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#quickView" data-bs-toggle="modal" class="box-icon hover-tooltip quickview">
+                      <span class="icon icon-view"></span>
+                      <span class="tooltip">Quick View</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="javascript:void(0);" class="box-icon hover-tooltip" data-compare data-id="{{ product.id }}" data-action="add">
+                      <span class="icon icon-compare"></span>
+                      <span class="tooltip">Add to Compare</span>
+                    </a>
+                  </li>
+                </ul>
               </div>
               <div class="tf-product-info-trust-seal text-center">
                 <p class="text-md text-dark-2 text-seal fw-medium">Guarantee Safe Checkout:</p>
