@@ -1,69 +1,78 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "main-slider": {
+    "main_slider_qhjehb": {
       "type": "main-slider",
-      "settings": {
-        "layout": "fade",
-        "autoplay": true,
-        "autoplay_speed": 5000
-      },
       "blocks": {
-        "slide_1": {
+        "slide_MXmD4Q": {
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/slider-fashion-1.png",
-            "heading": "Style\nRedefined",
+            "heading": "StyleRedefined",
             "subheading": "Discover the latest trends in fashion that speak your style.",
             "button_text": "Shop Collection",
             "button_link": "/collections/all"
           }
         },
-        "slide_2": {
+        "slide_JxNqNB": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/slider-fashion-2.png",
-            "heading": "Elegance\nRedefined",
+            "heading": "EleganceRedefined",
             "subheading": "Discover timeless styles for every occasion.",
             "button_text": "Shop Collection",
             "button_link": "/collections/new-arrivals"
           }
         },
-        "slide_3": {
+        "slide_PrAeGV": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/slider-fashion-3.png",
             "heading": "Elevate Your\nWardrobe",
             "subheading": "Timeless pieces to refresh your look for every season.",
             "button_text": "Shop Collection",
             "button_link": "/collections/featured"
           }
         }
+      },
+      "block_order": [
+        "slide_MXmD4Q",
+        "slide_JxNqNB",
+        "slide_PrAeGV"
+      ],
+      "settings": {
+        "layout": "fade",
+        "autoplay": true,
+        "autoplay_speed": 5000
       }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Featured Collection",
         "collection": "frontpage",
         "products_to_show": 4
       }
     },
     "best_sellers": {
       "type": "best-sellers",
-      "settings": {
-        "title": "Best Sellers",
-        "collection": "best-sellers",
-        "products_to_show": 4
-      }
+      "settings": {}
     },
     "banner_countdown": {
       "type": "banner-countdown",
       "settings": {
-        "image": "shopify://shop_images/banner-1.jpg",
+        "show_section": true,
+        "season_text": "SUMMER SALE",
         "heading": "Special Offer",
-        "subheading": "Limited time only",
+        "promo_code": "12D34E",
+        "show_countdown": true,
         "end_date": "2024-12-31",
-        "button_text": "Shop Now",
+        "button_label": "Shop Now",
         "button_link": "/collections/special-offer"
       }
     },
@@ -75,78 +84,33 @@
     },
     "todays_picks": {
       "type": "todays-picks",
-      "settings": {
-        "title": "Today's Picks",
-        "collection": "todays-picks",
-        "products_to_show": 4
-      }
+      "settings": {}
     },
     "testimonials": {
       "type": "testimonials",
       "settings": {
         "title": "What Our Customers Say"
-      },
-      "blocks": {
-        "testimonial_1": {
-          "type": "testimonial",
-          "settings": {
-            "author_name": "John Doe",
-            "show_verified_badge": true,
-            "rating": 5,
-            "review_text": "Great products and excellent customer service!"
-          }
-        }
       }
     },
     "brands": {
       "type": "brands",
       "settings": {
-        "title": "Our Brands"
-      },
-      "blocks": {
-        "brand_1": {
-          "type": "brand",
-          "settings": {
-            "image": "shopify://shop_images/brand-1.png",
-            "link": "#"
-          }
-        }
+        "animation_speed": 20
       }
     },
     "shop_gram": {
       "type": "shop-gram",
       "settings": {
-        "title": "Shop by @Gram",
-        "instagram_username": "yourstore"
+        "title": "Shop by @Gram"
       }
     },
     "icon_boxes": {
       "type": "icon-boxes",
-      "settings": {
-        "title": "Why Choose Us"
-      },
-      "blocks": {
-        "icon_box_1": {
-          "type": "icon_box",
-          "settings": {
-            "icon": "icon-shipping",
-            "title": "Free Shipping",
-            "text": "On orders over $50"
-          }
-        },
-        "icon_box_2": {
-          "type": "icon_box",
-          "settings": {
-            "icon": "icon-support",
-            "title": "24/7 Support",
-            "text": "Always here to help"
-          }
-        }
-      }
+      "settings": {}
     }
   },
   "order": [
-    "main-slider",
+    "main_slider_qhjehb",
     "featured_collection",
     "best_sellers",
     "banner_countdown",
@@ -157,4 +121,4 @@
     "shop_gram",
     "icon_boxes"
   ]
-} 
+}
