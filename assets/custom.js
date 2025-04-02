@@ -18,6 +18,7 @@ class WishlistCompare {
     
     // Initialize buttons state
     this.updateButtonsState();
+    this.updateWishlistCount();
   }
 
   getWishlistList() {
@@ -96,6 +97,7 @@ class WishlistCompare {
     
     this.saveWishlistList();
     this.updateButtonsState();
+    this.updateWishlistCount();
     this.showNotification('Added to wishlist');
   }
 
@@ -106,6 +108,7 @@ class WishlistCompare {
     this.wishlistList.splice(index, 1);
     this.saveWishlistList();
     this.updateButtonsState();
+    this.updateWishlistCount();
     this.showNotification('Removed from wishlist');
   }
 
@@ -296,6 +299,15 @@ class WishlistCompare {
     
     // Show only the clear notification
     this.showNotification('Compare list cleared');
+  }
+
+  updateWishlistCount() {
+    const count = this.wishlistList.length;
+    const countElement = document.querySelector('.wishlist-count');
+    if (countElement) {
+      countElement.textContent = count;
+      countElement.style.display = count > 0;
+    }
   }
 }
 

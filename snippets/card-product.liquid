@@ -41,13 +41,19 @@
         </a>
       </li>
       <li class="wishlist">
-        <a href="javascript:void(0);" class="box-icon hover-tooltip tooltip-left" data-wishlist data-id="{{ product.id }}" data-action="add">
+        <a href="javascript:void(0);" 
+           class="box-icon hover-tooltip tooltip-left" 
+           data-wishlist 
+           data-id="{{ product.id }}" 
+           data-action="add"
+           aria-label="Add to wishlist">
           <span class="icon icon-heart2"></span>
           <span class="tooltip">Add to Wishlist</span>
         </a>
       </li>
       <li>
-        <a href="javascript:void(0);" class="box-icon hover-tooltip tooltip-left quickview" 
+        <a href="javascript:void(0);" 
+           class="box-icon hover-tooltip tooltip-left quickview" 
            data-product-handle="{{ product.handle }}"
            data-product-id="{{ product.id }}"
            data-bs-toggle="modal" 
@@ -57,7 +63,12 @@
         </a>
       </li>
       <li class="compare">
-        <a href="javascript:void(0);" class="box-icon hover-tooltip tooltip-left" data-compare data-id="{{ product.id }}" data-action="add">
+        <a href="javascript:void(0);" 
+           class="box-icon hover-tooltip tooltip-left" 
+           data-compare 
+           data-id="{{ product.id }}" 
+           data-action="add"
+           aria-label="Add to compare">
           <span class="icon icon-compare"></span>
           <span class="tooltip">Add to Compare</span>
         </a>
@@ -206,6 +217,11 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+  // Initialize wishlist and compare buttons state
+  if (window.wishlistCompare) {
+    window.wishlistCompare.updateButtonsState();
+  }
 });
 
 // Helper function to format money
@@ -215,4 +231,54 @@ function formatMoney(cents) {
     currency: '{{ shop.currency }}'
   }).format(cents / 100);
 }
-</script> 
+</script>
+
+<style>
+.card-product .list-product-btn .box-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.card-product .list-product-btn .box-icon:hover {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: var(--white);
+}
+
+.card-product .list-product-btn .box-icon .icon {
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.card-product .list-product-btn .box-icon:hover .icon {
+  color: var(--white);
+}
+
+.card-product .list-product-btn .box-icon[data-action="remove"] {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: var(--white);
+}
+
+.card-product .list-product-btn .box-icon[data-action="remove"] .icon {
+  color: var(--white);
+}
+
+.card-product .list-product-btn .box-icon[data-action="remove"]:hover {
+  background-color: var(--white);
+  border-color: var(--line);
+  color: var(--primary);
+}
+
+.card-product .list-product-btn .box-icon[data-action="remove"]:hover .icon {
+  color: var(--primary);
+}
+</style> 

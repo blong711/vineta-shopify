@@ -4,96 +4,58 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="wrapper-shop tf-grid-layout tf-col-2 lg-col-3 xl-col-4 style-1" id="gridLayout">
-          {% assign wishlist_ids = '' %}
-          <script>
-            const wishlistIds = localStorage.getItem('theme:wishlist:id') ? localStorage.getItem('theme:wishlist:id').split(',') : [];
-            document.write(`<script>window.wishlistIds = ${JSON.stringify(wishlistIds)};<\/script>`);
-          </script>
-          
-          {% for product in collections.all.products %}
-            {% if wishlistIds contains product.id %}
-              <div class="card-product grid file-delete style-wishlist style-3 {% if product.available == false %}out-of-stock{% endif %}">
-                <i class="icon icon-close remove" data-wishlist data-id="{{ product.id }}" data-action="remove"></i>
-                <div class="card-product-wrapper">
-                  <a href="{{ product.url }}" class="product-img">
-                    <img class="img-product lazyload"
-                      data-src="{{ product.featured_image | img_url: '400x' }}"
-                      src="{{ product.featured_image | img_url: '400x' }}"
-                      alt="{{ product.title | escape }}">
-                    {% if product.images[1] %}
-                      <img class="img-hover lazyload"
-                        data-src="{{ product.images[1] | img_url: '400x' }}"
-                        src="{{ product.images[1] | img_url: '400x' }}"
-                        alt="{{ product.title | escape }}">
-                    {% endif %}
-                  </a>
-                  <ul class="list-product-btn">
-                    <li>
-                      <a href="#shoppingCart" data-bs-toggle="offcanvas" class="box-icon hover-tooltip">
-                        <span class="icon icon-cart2"></span>
-                        <span class="tooltip">Add to Cart</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#quickView" data-bs-toggle="modal" class="box-icon hover-tooltip quickview">
-                        <span class="icon icon-view"></span>
-                        <span class="tooltip">Quick View</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#compare" data-bs-toggle="modal" class="box-icon hover-tooltip compare">
-                        <span class="icon icon-compare"></span>
-                        <span class="tooltip">Add to Compare</span>
-                      </a>
-                    </li>
-                  </ul>
-                  {% if product.available == false %}
-                    <div class="sold-out-badge">Sold Out</div>
-                  {% endif %}
-                </div>
-                <div class="card-product-info">
-                  <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
-                  <p class="price-wrap fw-medium">
-                    <span class="price-new text-primary">{{ product.price | money }}</span>
-                    {% if product.compare_at_price > product.price %}
-                      <span class="price-old">{{ product.compare_at_price | money }}</span>
-                    {% endif %}
-                  </p>
-                  {% if product.has_only_default_variant == false %}
-                    <ul class="list-color-product">
-                      {% for option in product.options_with_values %}
-                        {% if option.name == 'Color' or option.name == 'Colour' %}
-                          {% for value in option.values %}
-                            <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
-                              <span class="tooltip color-filter">{{ value }}</span>
-                              <span class="swatch-value bg-{{ value | handle }}"></span>
-                              {% for image in product.images %}
-                                {% if image.alt contains value %}
-                                  <img class="lazyload" data-src="{{ image | img_url: '400x' }}" src="{{ image | img_url: '400x' }}" alt="{{ value }}">
-                                {% endif %}
-                              {% endfor %}
-                            </li>
-                          {% endfor %}
-                        {% endif %}
-                      {% endfor %}
-                    </ul>
-                  {% endif %}
-                </div>
-              </div>
-            {% endif %}
-          {% endfor %}
-          
-          {% if wishlistIds.size == 0 %}
-            <div class="col-12 text-center">
-              <p class="empty-wishlist">Your wishlist is empty</p>
-              <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary">Continue Shopping</a>
-            </div>
-          {% endif %}
+          <div class="empty-wishlist" style="display: none; text-align: center; padding: 60px 0;">
+            <span class="icon icon-heart" style="font-size: 48px; color: #999; margin-bottom: 20px; display: block;"></span>
+            <h3 style="font-size: 24px; margin-bottom: 15px; color: #333;">Your wishlist is empty</h3>
+            <p style="color: #666; margin-bottom: 25px;">Add items to your wishlist to see them here</p>
+            <a href="{{ routes.all_products_collection_url }}" class="btn" style="display: inline-block; padding: 12px 30px; background: #333; color: #fff; text-decoration: none; border-radius: 4px; transition: background 0.3s;">Continue Shopping</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+
+.empty-wishlist {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.empty-wishlist .icon-heart {
+  font-size: 48px;
+  color: #999;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.empty-wishlist h3 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.empty-wishlist p {
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.empty-wishlist .btn {
+  display: inline-block;
+  padding: 12px 30px;
+  background: #333;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.empty-wishlist .btn:hover {
+  background: #555;
+}
+</style>
 
 {% schema %}
 {
@@ -112,124 +74,242 @@
 }
 {% endschema %}
 
-{{ 'wishlist.js' | asset_url | script_tag }}
-
-{%- style -%}
-  .empty-wishlist {
-    text-align: center;
-    padding: 40px 0;
-  }
-  .empty-wishlist .icon {
-    font-size: 48px;
-    color: #999;
-    margin-bottom: 20px;
-  }
-  .empty-wishlist h3 {
-    margin-bottom: 15px;
-    font-size: 24px;
-  }
-  .empty-wishlist p {
-    color: #666;
-    margin-bottom: 20px;
-  }
-  .empty-wishlist .btn {
-    display: inline-block;
-    padding: 12px 30px;
-    background: #000;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background 0.3s;
-  }
-  .empty-wishlist .btn:hover {
-    background: #333;
-  }
-{%- endstyle -%}
-
-<div class="container">
-  <div class="row">
-    <div class="col-12">
-      <div id="wishlist-content">
-        <!-- Wishlist items will be dynamically inserted here -->
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  const wishlistContent = document.getElementById('wishlist-content');
-  const wishlistItems = JSON.parse(localStorage.getItem('wishlist')) || [];
-
-  if (wishlistItems.length === 0) {
-    wishlistContent.innerHTML = `
-      <div class="empty-wishlist">
-        <span class="icon icon-heart"></span>
-        <h3>Your wishlist is empty</h3>
-        <p>Add items to your wishlist to see them here</p>
-        <a href="/collections/all" class="btn">Continue Shopping</a>
-      </div>
-    `;
-    return;
+  const gridLayout = document.getElementById('gridLayout');
+  const emptyWishlist = gridLayout.querySelector('.empty-wishlist');
+  
+  function updateWishlistDisplay() {
+    const wishlistIds = localStorage.getItem('theme4:wishlist:id') ? localStorage.getItem('theme4:wishlist:id').split(',') : [];
+    console.log('Wishlist IDs from localStorage:', wishlistIds);
+    
+    if (wishlistIds.length === 0) {
+      emptyWishlist.style.display = 'block';
+      return;
+    }
+    
+    emptyWishlist.style.display = 'none';
+    
+    // Clean up the IDs and ensure they're numbers
+    const cleanWishlistIds = wishlistIds.map(id => id.trim()).filter(id => id);
+    console.log('Cleaned wishlist IDs:', cleanWishlistIds);
+    
+    // Create a map of product IDs for faster lookup
+    const wishlistIdMap = new Set(cleanWishlistIds);
+    console.log('Wishlist ID Map:', Array.from(wishlistIdMap));
+    
+    // Function to fetch all products with pagination
+    function fetchAllProducts(page = 1, limit = 250) {
+      return fetch(`/products.json?page=${page}&limit=${limit}`)
+        .then(response => response.json())
+        .then(data => {
+          const products = data.products;
+          if (products.length === limit) {
+            // If we got a full page, there might be more
+            return fetchAllProducts(page + 1, limit)
+              .then(nextProducts => [...products, ...nextProducts]);
+          }
+          return products;
+        });
+    }
+    
+    // Fetch all products
+    fetchAllProducts()
+      .then(allProducts => {
+        console.log('All fetched products:', allProducts);
+        
+        // Filter to only include wishlist products
+        const products = allProducts.filter(product => {
+          const productId = product.id.toString();
+          const isInWishlist = wishlistIdMap.has(productId);
+          console.log(`Product ${productId} (${product.title}) in wishlist:`, isInWishlist);
+          return isInWishlist;
+        });
+        
+        console.log('Filtered products:', products);
+        console.log('Expected products count:', cleanWishlistIds.length);
+        console.log('Actual products count:', products.length);
+        
+        // Find missing product IDs
+        const missingIds = cleanWishlistIds.filter(id => !products.some(p => p.id.toString() === id));
+        console.log('Missing product IDs:', missingIds);
+        
+        if (missingIds.length > 0) {
+          // Try to fetch missing products individually
+          Promise.all(missingIds.map(id => 
+            fetch(`/products.json?ids=${id}`)
+              .then(response => response.json())
+              .then(data => data.products[0])
+          ))
+          .then(missingProducts => {
+            const allProducts = [...products, ...missingProducts.filter(p => p)];
+            displayProducts(allProducts, cleanWishlistIds);
+          })
+          .catch(error => {
+            console.error('Error fetching missing products:', error);
+            displayProducts(products, cleanWishlistIds);
+          });
+        } else {
+          displayProducts(products, cleanWishlistIds);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching wishlist products:', error);
+        emptyWishlist.style.display = 'block';
+      });
   }
 
-  // Fetch product data for wishlist items
-  fetch('/products.json?ids=' + wishlistItems.join(','))
-    .then(response => response.json())
-    .then(data => {
-      const products = data.products;
-      const wishlistHTML = products.map(product => `
-        <div class="col-6 col-md-4 col-lg-3 mb-4">
-          <div class="card-product" data-product-id="${product.id}">
-            <div class="card-product-wrapper">
-              <a href="${product.url}" class="product-img">
-                <img class="img-product lazyload"
-                  data-src="${product.images[0].src}"
-                  src="${product.images[0].src}"
-                  alt="${product.title}">
-              </a>
-              <ul class="list-product-btn">
-                <li class="wishlist">
-                  <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon" data-wishlist data-id="${product.id}" data-action="remove">
-                    <span class="icon icon-heart-fill"></span>
-                    <span class="tooltip">Remove from Wishlist</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div class="card-product-info">
-              <a href="${product.url}" class="name-product link fw-medium text-md">${product.title}</a>
-              <p class="price-wrap fw-medium">
-                <span class="price-new">${formatMoney(product.variants[0].price)}</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      `).join('');
-
-      wishlistContent.innerHTML = `
-        <div class="row">
-          ${wishlistHTML}
-        </div>
-      `;
-    })
-    .catch(error => {
-      console.error('Error fetching wishlist products:', error);
-      wishlistContent.innerHTML = `
-        <div class="empty-wishlist">
-          <span class="icon icon-heart"></span>
-          <h3>Error loading wishlist</h3>
-          <p>Please try refreshing the page</p>
-          <a href="/collections/all" class="btn">Continue Shopping</a>
-        </div>
-      `;
+  function displayProducts(products, cleanWishlistIds) {
+    if (products.length === 0) {
+      console.log('No matching products found');
+      emptyWishlist.style.display = 'block';
+      return;
+    }
+    
+    // Sort products to match the order in wishlistIds
+    const sortedProducts = products.sort((a, b) => {
+      const aIndex = cleanWishlistIds.indexOf(a.id.toString());
+      const bIndex = cleanWishlistIds.indexOf(b.id.toString());
+      console.log(`Sorting: ${a.id} (${a.title}) at index ${aIndex}, ${b.id} (${b.title}) at index ${bIndex}`);
+      return aIndex - bIndex;
     });
+    
+    console.log('Sorted products:', sortedProducts.map(p => ({ id: p.id, title: p.title })));
+    
+    const wishlistHTML = sortedProducts.map(product => {
+      console.log('Processing product:', product.id, product.title);
+      return `
+      <div class="card-product grid file-delete style-wishlist style-3 ${!product.variants[0].available ? 'out-of-stock' : ''}" data-product-id="${product.id}">
+        <i class="icon icon-close remove" data-wishlist data-id="${product.id}" data-action="remove"></i>
+        <div class="card-product-wrapper">
+          <a href="${product.url}" class="product-img">
+            <img class="img-product lazyload"
+              data-src="${product.featured_image ? product.featured_image.src : product.images[0].src}"
+              src="${product.featured_image ? product.featured_image.src : product.images[0].src}"
+              alt="${product.title}">
+            ${product.images[1] ? `
+              <img class="img-hover lazyload"
+                data-src="${product.images[1].src}"
+                src="${product.images[1].src}"
+                alt="${product.title}">
+            ` : ''}
+          </a>
+          <ul class="list-product-btn">
+            <li>
+              <a href="#shoppingCart" data-bs-toggle="offcanvas" class="box-icon hover-tooltip">
+                <span class="icon icon-cart2"></span>
+                <span class="tooltip">Add to Cart</span>
+              </a>
+            </li>
+            <li>
+              <a href="#quickView" data-bs-toggle="modal" class="box-icon hover-tooltip quickview" 
+                 data-product-handle="${product.handle}"
+                 data-product-id="${product.id}">
+                <span class="icon icon-view"></span>
+                <span class="tooltip">Quick View</span>
+              </a>
+            </li>
+            <li>
+              <a href="#compare" data-bs-toggle="modal" class="box-icon hover-tooltip" 
+                 data-compare data-id="${product.id}" data-action="add">
+                <span class="icon icon-compare"></span>
+                <span class="tooltip">Add to Compare</span>
+              </a>
+            </li>
+          </ul>
+          ${!product.variants[0].available ? '<div class="sold-out-badge">Sold Out</div>' : ''}
+        </div>
+        <div class="card-product-info">
+          <a href="${product.url}" class="name-product link fw-medium text-md">${product.title}</a>
+          <p class="price-wrap fw-medium">
+            <span class="price-new text-primary">${formatMoney(product.variants[0].price)}</span>
+            ${product.variants[0].compare_at_price > product.variants[0].price ? 
+              `<span class="price-old">${formatMoney(product.variants[0].compare_at_price)}</span>` : ''}
+          </p>
+          ${product.variants.length > 1 ? `
+            <ul class="list-color-product">
+              ${product.variants.map(variant => {
+                const colorOption = variant.option1;
+                if (colorOption && (colorOption.toLowerCase().includes('color') || colorOption.toLowerCase().includes('colour'))) {
+                  return `
+                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
+                      <span class="tooltip color-filter">${colorOption}</span>
+                      <span class="swatch-value bg-${colorOption.toLowerCase().replace(/\s+/g, '-')}"></span>
+                    </li>
+                  `;
+                }
+                return '';
+              }).join('')}
+            </ul>
+          ` : ''}
+        </div>
+      </div>
+    `;
+    });
+
+    gridLayout.innerHTML = wishlistHTML.join('') + emptyWishlist.outerHTML;
+    
+    // Add click event listeners to remove buttons
+    const removeButtons = gridLayout.querySelectorAll('[data-wishlist][data-action="remove"]');
+    removeButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const productId = this.getAttribute('data-id');
+        const productCard = this.closest('.card-product');
+        
+        // Remove from localStorage
+        const wishlistIds = localStorage.getItem('theme4:wishlist:id') ? localStorage.getItem('theme4:wishlist:id').split(',') : [];
+        const updatedIds = wishlistIds.filter(id => id !== productId);
+        localStorage.setItem('theme4:wishlist:id', updatedIds.join(','));
+        
+        // Remove the product card from UI
+        productCard.remove();
+        
+        // Update wishlist count if available
+        if (window.wishlistCompare) {
+          window.wishlistCompare.updateWishlistCount();
+        }
+        
+        // Show empty state if no products left
+        if (updatedIds.length === 0) {
+          // Remove all product cards
+          const allProductCards = gridLayout.querySelectorAll('.card-product');
+          allProductCards.forEach(card => card.remove());
+          
+          // Show empty state message
+          emptyWishlist.style.display = 'block';
+          
+          // Remove the event listener to prevent refresh
+          document.removeEventListener('wishlist:updated', updateWishlistDisplay);
+        } else {
+          // Only dispatch event if there are still products
+          document.dispatchEvent(new CustomEvent('wishlist:updated'));
+        }
+      });
+    });
+    
+    // Initialize lazy loading
+    if (typeof LazyLoad !== 'undefined') {
+      new LazyLoad();
+    }
+    
+    // Update buttons state if WishlistCompare is available
+    if (window.wishlistCompare) {
+      window.wishlistCompare.updateButtonsState();
+    }
+  }
+
+  // Initial update
+  updateWishlistDisplay();
+
+  // Listen for wishlist updates
+  document.addEventListener('wishlist:updated', updateWishlistDisplay);
 });
 
 function formatMoney(cents) {
-  return (cents / 100).toLocaleString('en-US', {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD'
-  });
+    currency: '{{ shop.currency }}'
+  }).format(cents / 100);
 }
 </script>
