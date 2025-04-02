@@ -9,6 +9,9 @@
   data-product-url="{{ product.url }}"
   data-product-image="{{ product.featured_image | img_url: '400x' }}"
   data-product-price="{{ product.price | money }}"
+  data-product-available="{{ product.available }}"
+  data-product-vendor="{{ product.vendor | escape }}"
+  data-product-colors="{% for variant in product.variants %}{% if variant.option1 contains 'Color' %}{{ variant.option1 }}{% unless forloop.last %}, {% endunless %}{% endif %}{% endfor %}"
   {% if product.compare_at_price > product.price %}
     data-product-compare-price="{{ product.compare_at_price | money }}"
   {% endif %}>

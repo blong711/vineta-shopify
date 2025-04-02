@@ -1,124 +1,321 @@
 {%- comment -%}Compare Page Section{%- endcomment -%}
+<style>
+.tf-compare-table {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tf-compare-row {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    min-width: fit-content;
+}
+
+.tf-compare-grid {
+    border-bottom: none;
+}
+
+.tf-compare-col {
+    width: 300px;
+    flex: 0 0 300px;
+    padding: 15px;
+    position: relative;
+}
+
+.tf-compare-col.d-md-block {
+    width: 150px;
+    flex: 0 0 150px;
+}
+
+.tf-compare-item {
+    position: relative;
+    text-align: center;
+    padding: 15px;
+}
+
+.tf-compare-image {
+    display: block;
+    margin-bottom: 15px;
+    width: 100%;
+    height: 300px;
+    background: #f8f8f8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.tf-compare-image img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.tf-compare-item .tf-compare-remove .tf-btn-icon {
+    position: absolute;
+    z-index: 5;
+    top: 12px;
+    right: 12px;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--line);
+    background-color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #000;
+    opacity: 1;
+    cursor: pointer;
+    padding: 0;
+}
+
+.tf-compare-btn {
+    margin-top: 15px;
+}
+
+.tf-compare-field {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.tf-compare-stock {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tf-compare-stock .icon {
+    display: flex;
+    align-items: center;
+}
+
+.tf-compare-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.tf-compare-title {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.price-wrap {
+    margin-bottom: 15px;
+}
+
+.price-old {
+    text-decoration: line-through;
+    margin-left: 8px;
+    opacity: 0.7;
+}
+
+.tf-btn-icon.line {
+    position: absolute;
+    z-index: 5;
+    top: 12px;
+    right: 12px;
+    width: 48px;
+    height: 48px;
+    border: 1px solid #eee;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #000;
+    opacity: 1;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+.tf-btn-icon.line:hover {
+    border-color: #000;
+    background-color: #fff;   
+    color: #fff;
+}
+
+@media (max-width: 767px) {
+    .tf-compare-col {
+        width: 250px;
+        flex: 0 0 250px;
+    }
+
+    .tf-compare-image {
+        height: 250px;
+    }
+}
+</style>
+
 <section class="flat-spacing-15 pt-0">
     <div class="container">
-        <div class="tf-compare-table">
-            <div class="tf-compare-row tf-compare-grid">
-                <div class="tf-compare-col d-md-block d-none"></div>
-                {% assign compare_ids = '' %}
-                <script>
-                    const compareIds = localStorage.getItem('theme4:compare:id') ? localStorage.getItem('theme4:compare:id').split(',') : [];
-                    document.write(`<script>window.compareIds = ${JSON.stringify(compareIds)};<\/script>`);
-                </script>
-                
-                {% for product in collections.all.products %}
-                    {% if compareIds contains product.id %}
-                        <div class="tf-compare-col">
-                            <div class="tf-compare-item">
-                                <a class="tf-compare-image" href="{{ product.url }}">
-                                    <img class="lazyload" 
-                                        data-src="{{ product.featured_image | img_url: '400x' }}"
-                                        src="{{ product.featured_image | img_url: '400x' }}" 
-                                        alt="{{ product.title | escape }}">
-                                </a>
-                                <div class="content">
-                                    <a class="tf-compare-title link text-md fw-medium" href="{{ product.url }}">{{ product.title }}</a>
-                                    <p class="price-wrap fw-medium text-md">
-                                        <span class="price-new text-primary">{{ product.price | money }}</span>
-                                        {% if product.compare_at_price > product.price %}
-                                            <span class="price-old text-dark">{{ product.compare_at_price | money }}</span>
-                                        {% endif %}
-                                    </p>
-                                    <div class="tf-compare-btn">
-                                        <button type="button" 
-                                            class="tf-btn animate-btn w-100" 
-                                            data-add-to-cart 
-                                            data-product-id="{{ product.id }}"
-                                            {% unless product.available %}disabled{% endunless %}>
-                                            {% if product.available %}
-                                                Add to Cart
-                                            {% else %}
-                                                Sold Out
-                                            {% endif %}
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="tf-compare-remove">
-                                    <button type="button" 
-                                        class="tf-btn-icon line d-inline-flex" 
-                                        data-compare 
-                                        data-id="{{ product.id }}" 
-                                        data-action="remove">
-                                        <i class="icon-close"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-
-            <div class="tf-compare-row">
-                <div class="tf-compare-col tf-compare-field d-md-block d-none">
-                    <p class="text-md fw-medium">Availability</p>
-                </div>
-                {% for product in collections.all.products %}
-                    {% if compareIds contains product.id %}
-                        <div class="tf-compare-col tf-compare-field tf-compare-stock {% unless product.available %}text-red{% endunless %}">
-                            <div class="icon">
-                                {% if product.available %}
-                                    <i class="icon-fill-check-circle"></i>
-                                {% else %}
-                                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <g clip-path="url(#clip0_1_34903)">
-                                            <path d="M7.5 14.4955C11.366 14.4955 14.5 11.3635 14.5 7.50004C14.5 3.63659 11.366 0.504639 7.5 0.504639C3.63401 0.504639 0.5 3.63659 0.5 7.50004C0.5 11.3635 3.63401 14.4955 7.5 14.4955Z" fill="#E21B1B"/>
-                                            <path d="M5.28008 4.19648L4.19751 5.27905L9.72085 10.8024L10.8034 9.71982L5.28008 4.19648Z" fill="white"/>
-                                            <path d="M9.72036 4.19602L4.19702 9.71936L5.27959 10.8019L10.8029 5.27859L9.72036 4.19602Z" fill="white"/>
-                                        </g>
-                                        <defs>
-                                            <clipPath id="clip0_1_34903">
-                                                <rect width="14" height="14" fill="white" transform="translate(0.5 0.5)"/>
-                                            </clipPath>
-                                        </defs>
-                                    </svg>
-                                {% endif %}
-                            </div>
-                            <span>{% if product.available %}In Stock{% else %}Out of Stock{% endif %}</span>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-
-            <div class="tf-compare-row">
-                <div class="tf-compare-col tf-compare-field d-md-block d-none">
-                    <p class="text-md fw-medium">Vendor</p>
-                </div>
-                {% for product in collections.all.products %}
-                    {% if compareIds contains product.id %}
-                        <div class="tf-compare-col tf-compare-value text-center">
-                            <p class="text-sm">{{ product.vendor }}</p>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-
-            <div class="tf-compare-row">
-                <div class="tf-compare-col tf-compare-field d-md-block d-none">
-                    <p class="text-md fw-medium">Color</p>
-                </div>
-                {% for product in collections.all.products %}
-                    {% if compareIds contains product.id %}
-                        <div class="tf-compare-col tf-compare-value text-center">
-                            <p class="text-sm">
-                                {% assign colors = product.options_by_name['Color'].values | join: ', ' %}
-                                {{ colors | default: 'N/A' }}
-                            </p>
-                        </div>
-                    {% endif %}
-                {% endfor %}
+        <div class="tf-compare-table" id="compareTable">
+            <div id="compareContent">
+                <!-- Content will be loaded via JavaScript -->
             </div>
         </div>
     </div>
 </section>
+
+<template id="compareTemplate">
+    <div class="tf-compare-row tf-compare-grid">
+        <div class="tf-compare-col d-md-block d-none"></div>
+        {% for product in collections.all.products %}
+            <div class="tf-compare-col" data-product-id="{{ product.id }}">
+                <div class="tf-compare-item">
+                    <a class="tf-compare-image" href="{{ product.url }}">
+                        <img class="lazyload" 
+                            data-src="{{ product.featured_image | img_url: '400x' }}"
+                            src="{{ product.featured_image | img_url: '400x' }}" 
+                            alt="{{ product.title | escape }}">
+                    </a>
+                    <div class="content">
+                        <a class="tf-compare-title link text-md fw-medium" href="{{ product.url }}">{{ product.title }}</a>
+                        <p class="price-wrap fw-medium text-md">
+                            <span class="price-new text-primary">{{ product.price | money }}</span>
+                            {% if product.compare_at_price > product.price %}
+                                <span class="price-old text-dark">{{ product.compare_at_price | money }}</span>
+                            {% endif %}
+                        </p>
+                        <div class="tf-compare-btn">
+                            <button type="button" 
+                                class="tf-btn animate-btn w-100" 
+                                data-add-to-cart 
+                                data-product-id="{{ product.id }}"
+                                {% unless product.available %}disabled{% endunless %}>
+                                {% if product.available %}
+                                    Add to Cart
+                                {% else %}
+                                    Sold Out
+                                {% endif %}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tf-compare-remove">
+                        <button type="button" 
+                            class="tf-btn-icon line d-inline-flex" 
+                            data-compare 
+                            data-id="{{ product.id }}" 
+                            data-action="remove">
+                            <i class="icon-close"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="tf-compare-row">
+        <div class="tf-compare-col tf-compare-field d-md-block d-none">
+            <p class="text-md fw-medium">Availability</p>
+        </div>
+        {% for product in collections.all.products %}
+            <div class="tf-compare-col tf-compare-field tf-compare-stock {% unless product.available %}text-red{% endunless %}" data-product-id="{{ product.id }}">
+                <div class="icon">
+                    {% if product.available %}
+                        <i class="icon-fill-check-circle"></i>
+                    {% else %}
+                        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_1_34903)">
+                                <path d="M7.5 14.4955C11.366 14.4955 14.5 11.3635 14.5 7.50004C14.5 3.63659 11.366 0.504639 7.5 0.504639C3.63401 0.504639 0.5 3.63659 0.5 7.50004C0.5 11.3635 3.63401 14.4955 7.5 14.4955Z" fill="#E21B1B"/>
+                                <path d="M5.28008 4.19648L4.19751 5.27905L9.72085 10.8024L10.8034 9.71982L5.28008 4.19648Z" fill="white"/>
+                                <path d="M9.72036 4.19602L4.19702 9.71936L5.27959 10.8019L10.8029 5.27859L9.72036 4.19602Z" fill="white"/>
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_1_34903">
+                                    <rect width="14" height="14" fill="white" transform="translate(0.5 0.5)"/>
+                                </clipPath>
+                            </defs>
+                        </svg>
+                    {% endif %}
+                </div>
+                <span>{% if product.available %}In Stock{% else %}Out of Stock{% endif %}</span>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="tf-compare-row">
+        <div class="tf-compare-col tf-compare-field d-md-block d-none">
+            <p class="text-md fw-medium">Vendor</p>
+        </div>
+        {% for product in collections.all.products %}
+            <div class="tf-compare-col tf-compare-value text-center" data-product-id="{{ product.id }}">
+                <p class="text-sm">{{ product.vendor }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="tf-compare-row">
+        <div class="tf-compare-col tf-compare-field d-md-block d-none">
+            <p class="text-md fw-medium">Color</p>
+        </div>
+        {% for product in collections.all.products %}
+            <div class="tf-compare-col tf-compare-value text-center" data-product-id="{{ product.id }}">
+                <p class="text-sm">
+                    {% assign colors = '' %}
+                    {% for variant in product.variants %}
+                        {% if variant.option1 contains 'Color' %}
+                            {% assign colors = colors | append: variant.option1 %}
+                            {% unless forloop.last %}
+                                {% assign colors = colors | append: ', ' %}
+                            {% endunless %}
+                        {% endif %}
+                    {% endfor %}
+                    {{ colors | default: 'N/A' }}
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+</template>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const compareIds = localStorage.getItem('theme4:compare:id') ? localStorage.getItem('theme4:compare:id').split(',') : [];
+        const compareContent = document.getElementById('compareContent');
+        const compareTemplate = document.getElementById('compareTemplate');
+        
+        if (compareIds.length === 0) {
+            compareContent.innerHTML = '<div class="text-center"><p>No products to compare</p></div>';
+            return;
+        }
+
+        // Clone the template content
+        const content = compareTemplate.content.cloneNode(true);
+
+        // Hide all product columns that are not in the compare list
+        content.querySelectorAll('[data-product-id]').forEach(el => {
+            if (!compareIds.includes(el.dataset.productId)) {
+                el.style.display = 'none';
+            }
+        });
+
+        // Add the content to the page
+        compareContent.appendChild(content);
+
+        // Listen for compare:updated event
+        document.addEventListener('compare:updated', function(event) {
+            const updatedCompareIds = localStorage.getItem('theme4:compare:id') ? localStorage.getItem('theme4:compare:id').split(',') : [];
+            
+            // Hide removed products
+            document.querySelectorAll('[data-product-id]').forEach(el => {
+                if (!updatedCompareIds.includes(el.dataset.productId)) {
+                    el.style.display = 'none';
+                }
+            });
+
+            // Show "No products" message if compare list is empty
+            if (updatedCompareIds.length === 0) {
+                compareContent.innerHTML = '<div class="text-center"><p>No products to compare</p></div>';
+            }
+        });
+    });
+</script>
 
 {% schema %}    
 {

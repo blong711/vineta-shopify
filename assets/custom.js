@@ -132,6 +132,9 @@ class WishlistCompare {
     this.updateButtonsState();
     this.updateCompareDrawer();
     this.showNotification('Removed from compare');
+    
+    // Dispatch event to update the compare page
+    document.dispatchEvent(new CustomEvent('compare:updated'));
   }
 
   updateButtonsState() {
