@@ -3,7 +3,15 @@
   Usage: {% render 'card-product', product: product %}
 {%- endcomment -%}
 
-<div class="card-product {% if product.available == false %}out-of-stock{% endif %} {% if product.variants.size > 0 %}card-product-size{% endif %}">
+<div class="card-product {% if product.available == false %}out-of-stock{% endif %} {% if product.variants.size > 0 %}card-product-size{% endif %}"
+  data-product-id="{{ product.id }}"
+  data-product-title="{{ product.title | escape }}"
+  data-product-url="{{ product.url }}"
+  data-product-image="{{ product.featured_image | img_url: '400x' }}"
+  data-product-price="{{ product.price | money }}"
+  {% if product.compare_at_price > product.price %}
+    data-product-compare-price="{{ product.compare_at_price | money }}"
+  {% endif %}>
   <div class="card-product-wrapper">
     <a href="{{ product.url }}" class="product-img">
       <img class="img-product lazyload"
@@ -30,7 +38,7 @@
         </a>
       </li>
       <li class="wishlist">
-        <a href="javascript:void(0);" class="box-icon hover-tooltip tooltip-left">
+        <a href="javascript:void(0);" class="box-icon hover-tooltip tooltip-left" data-wishlist data-id="{{ product.id }}" data-action="add">
           <span class="icon icon-heart2"></span>
           <span class="tooltip">Add to Wishlist</span>
         </a>
@@ -42,7 +50,7 @@
         </a>
       </li>
       <li class="compare">
-        <a href="#compare" data-bs-toggle="modal" class="box-icon hover-tooltip tooltip-left">
+        <a href="javascript:void(0);" class="box-icon hover-tooltip tooltip-left" data-compare data-id="{{ product.id }}" data-action="add">
           <span class="icon icon-compare"></span>
           <span class="tooltip">Add to Compare</span>
         </a>
