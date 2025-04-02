@@ -1,0 +1,325 @@
+{%- comment -%}Quickview Modal Section{%- endcomment -%}
+
+<div class="modal fade modalCentered modal-quick-view" id="quickView">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
+            <div class="tf-product-media-wrap">
+                <div dir="ltr" class="swiper tf-single-slide">
+                    <div class="swiper-wrapper">
+                        {%- for media in product.media -%}
+                            <div class="swiper-slide" data-media-id="{{ media.id }}">
+                                <div class="item">
+                                    {%- if media.media_type == 'image' -%}
+                                        <img class="lazyload" 
+                                            data-src="{{ media | img_url: 'master' }}"
+                                            src="{{ media | img_url: '400x' }}" 
+                                            alt="{{ media.alt | escape }}">
+                                    {%- elsif media.media_type == 'video' -%}
+                                        {{ media | video_tag: controls: true, class: 'w-100' }}
+                                    {%- endif -%}
+                                </div>
+                            </div>
+                        {%- endfor -%}
+                    </div>
+                    <div class="swiper-button-prev nav-swiper arrow-1 nav-prev-cls single-slide-prev"></div>
+                    <div class="swiper-button-next nav-swiper arrow-1 nav-next-cls single-slide-next"></div>
+                </div>
+            </div>
+            <div class="tf-product-info-wrap">
+                <div class="tf-product-info-inner">
+                    <div class="tf-product-info-heading">
+                        <h6 class="product-info-name">{{ product.title }}</h6>
+                        <div class="product-info-price">
+                            {%- if product.compare_at_price > product.price -%}
+                                <h6 class="price-new price-on-sale">{{ product.price | money }}</h6>
+                                <h6 class="price-old">{{ product.compare_at_price | money }}</h6>
+                            {%- else -%}
+                                <h6 class="price-new">{{ product.price | money }}</h6>
+                            {%- endif -%}
+                        </div>
+                        <p class="text">{{ product.description | strip_html | truncatewords: 30 }}</p>
+                    </div>
+                    <div class="tf-product-info-variant">
+                        {%- unless product.has_only_default_variant -%}
+                            {%- for option in product.options_with_values -%}
+                                <div class="variant-picker-item variant-{{ option.name | handle }}">
+                                    <div class="variant-picker-label">
+                                        {{ option.name }}:<span class="variant-picker-label-value value-current{{ option.name | handle }}">{{ option.selected_value }}</span>
+                                    </div>
+                                    <div class="variant-picker-values">
+                                        {%- for value in option.values -%}
+                                            {%- if option.name == 'Color' or option.name == 'Colour' -%}
+                                                <div class="hover-tooltip color-btn{% if value == option.selected_value %} active{% endif %}" 
+                                                     data-option-name="{{ option.name }}"
+                                                     data-option-value="{{ value | escape }}">
+                                                    <span class="check-color bg-{{ value | handle }}"></span>
+                                                    <span class="tooltip">{{ value }}</span>
+                                                </div>
+                                            {%- else -%}
+                                                <span class="size-btn{% if value == option.selected_value %} active{% endif %}" 
+                                                      data-option-name="{{ option.name }}"
+                                                      data-option-value="{{ value | escape }}">
+                                                    {{ value }}
+                                                </span>
+                                            {%- endif -%}
+                                        {%- endfor -%}
+                                    </div>
+                                </div>
+                            {%- endfor -%}
+                        {%- endunless -%}
+                    </div>
+                    <div class="tf-product-total-quantity">
+                        <div class="group-btn">
+                            <div class="wg-quantity">
+                                <button class="btn-quantity minus-btn">-</button>
+                                <input class="quantity-product font-4" type="text" name="quantity" value="1" min="1">
+                                <button class="btn-quantity plus-btn">+</button>
+                            </div>
+                            <button type="button" class="tf-btn hover-primary add-to-cart-btn" data-product-id="{{ product.id }}">
+                                Add to cart
+                            </button>
+                        </div>
+                        <button type="button" class="tf-btn w-100 animate-btn buy-now-btn btn-primary" data-product-id="{{ product.id }}">
+                            Buy It Now
+                        </button>
+                        <a href="{{ product.url }}" class="more-choose-payment link">More payment options</a>
+                    </div>
+                    <a href="{{ product.url }}" class="view-details link">View full details <i class="icon icon-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.tf-product-media-wrap {
+    position: relative;
+    width: 100%;
+    height: 400px;
+}
+
+.tf-single-slide {
+    width: 100%;
+    height: 100%;
+}
+
+.tf-single-slide .swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tf-single-slide .swiper-slide img,
+.tf-single-slide .swiper-slide video {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+@media (max-width: 767px) {
+    .tf-product-media-wrap {
+        height: 300px;
+    }
+}
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let currentProduct = {{ product | json }};
+        let selectedVariant = null;
+        let swiper = null;
+
+        // Initialize Swiper
+        function initSwiper() {
+            if (swiper) {
+                swiper.destroy();
+            }
+            swiper = new Swiper('.tf-single-slide', {
+                slidesPerView: 1,
+                spaceBetween: 0,
+                loop: true,
+                navigation: {
+                    nextEl: '.single-slide-next',
+                    prevEl: '.single-slide-prev',
+                },
+                on: {
+                    init: function() {
+                        this.update();
+                    }
+                }
+            });
+        }
+
+        // Handle quantity buttons
+        const quantityInput = document.querySelector('.quantity-product');
+        const minusBtn = document.querySelector('.minus-btn');
+        const plusBtn = document.querySelector('.plus-btn');
+
+        if (quantityInput && minusBtn && plusBtn) {
+            minusBtn.addEventListener('click', () => {
+                const currentValue = parseInt(quantityInput.value);
+                if (currentValue > 1) {
+                    quantityInput.value = currentValue - 1;
+                }
+            });
+
+            plusBtn.addEventListener('click', () => {
+                const currentValue = parseInt(quantityInput.value);
+                quantityInput.value = currentValue + 1;
+            });
+        }
+
+        // Handle variant selection
+        document.querySelectorAll('.variant-picker-values .color-btn, .variant-picker-values .size-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const parent = this.closest('.variant-picker-values');
+                parent.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
+                this.classList.add('active');
+                
+                const labelValue = this.closest('.variant-picker-item').querySelector('.variant-picker-label-value');
+                if (labelValue) {
+                    labelValue.textContent = this.textContent.trim();
+                }
+
+                // Update selected variant
+                updateSelectedVariant();
+            });
+        });
+
+        // Update selected variant
+        function updateSelectedVariant() {
+            const selectedOptions = {};
+            document.querySelectorAll('.variant-picker-item').forEach(item => {
+                const optionName = item.querySelector('.variant-picker-label').textContent.replace(':', '');
+                const selectedValue = item.querySelector('.active').dataset.optionValue;
+                selectedOptions[optionName] = selectedValue;
+            });
+
+            selectedVariant = currentProduct.variants.find(variant => {
+                return Object.entries(selectedOptions).every(([option, value]) => {
+                    return variant[option.toLowerCase()] === value;
+                });
+            });
+
+            if (selectedVariant) {
+                updatePrice(selectedVariant);
+                updateAddToCartButton(selectedVariant);
+            }
+        }
+
+        // Update price display
+        function updatePrice(variant) {
+            const priceContainer = document.querySelector('.product-info-price');
+            if (variant.compare_at_price > variant.price) {
+                priceContainer.innerHTML = `
+                    <h6 class="price-new price-on-sale">${formatMoney(variant.price)}</h6>
+                    <h6 class="price-old">${formatMoney(variant.compare_at_price)}</h6>
+                `;
+            } else {
+                priceContainer.innerHTML = `
+                    <h6 class="price-new">${formatMoney(variant.price)}</h6>
+                `;
+            }
+        }
+
+        // Format money
+        function formatMoney(cents) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: '{{ shop.currency }}'
+            }).format(cents / 100);
+        }
+
+        // Update add to cart button state
+        function updateAddToCartButton(variant) {
+            const addToCartBtn = document.querySelector('.add-to-cart-btn');
+            const buyNowBtn = document.querySelector('.buy-now-btn');
+            
+            if (variant.available) {
+                addToCartBtn.disabled = false;
+                buyNowBtn.disabled = false;
+            } else {
+                addToCartBtn.disabled = true;
+                buyNowBtn.disabled = true;
+            }
+        }
+
+        // Handle add to cart
+        document.querySelector('.add-to-cart-btn').addEventListener('click', async function() {
+            if (!selectedVariant) return;
+            
+            const quantity = parseInt(quantityInput.value);
+            const formData = {
+                items: [{
+                    id: selectedVariant.id,
+                    quantity: quantity
+                }]
+            };
+
+            try {
+                const response = await fetch('/cart/add.js', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    // Trigger cart update event
+                    document.dispatchEvent(new CustomEvent('cart:refresh'));
+                    // Close modal
+                    bootstrap.Modal.getInstance(document.getElementById('quickView')).hide();
+                }
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+            }
+        });
+
+        // Handle buy now
+        document.querySelector('.buy-now-btn').addEventListener('click', async function() {
+            if (!selectedVariant) return;
+            
+            const quantity = parseInt(quantityInput.value);
+            const formData = {
+                items: [{
+                    id: selectedVariant.id,
+                    quantity: quantity
+                }]
+            };
+
+            try {
+                const response = await fetch('/cart/add.js', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    window.location.href = '/checkout';
+                }
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+            }
+        });
+
+        // Initialize
+        initSwiper();
+        updateSelectedVariant();
+    });
+</script>
+
+{% schema %}    
+{
+  "name": "Quickview Modal",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Quickview Modal"
+    }
+  ]
+}
+{% endschema %} 

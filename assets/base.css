@@ -45,9 +45,51 @@ input {
 /* Container */
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1488px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 15px;
+}
+
+.container-2 {
+  width: 100%;
+  max-width: 1436px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.container-3 {
+  width: 100%;
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.container-4 {
+  width: 100%;
+  max-width: 1688px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.container-5 {
+  width: 100%;
+  max-width: 1728px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.container-6 {
+  width: 100%;
+  max-width: 1288px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.container-full {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 15px;
 }
 
 /* Typography */
@@ -145,7 +187,12 @@ textarea {
     font-size: 14px;
   }
 
-  .container {
-    padding: 0 0.5rem;
+  .container,
+  .container-2,
+  .container-3,
+  .container-4,
+  .container-5,
+  .container-6 {
+    padding: 0 24px;
   }
 } 
