@@ -16,7 +16,7 @@
                         {% for product in collections.all.products %}
                             {% if compareIds contains product.id %}
                                 <div class="tf-compare-item file-delete" data-product-id="{{ product.id }}">
-                                    <span class="icon-close remove"></span>
+                                    <span class="icon-close remove" data-compare data-id="{{ product.id }}" data-action="remove"></span>
                                     <a href="{{ product.url }}" class="image">
                                         <img class="lazyload" 
                                             data-src="{{ product.featured_image | img_url: '400x' }}"
@@ -41,7 +41,7 @@
                 </div>
                 <div class="tf-compare-buttons justify-content-center">
                     <a href="/pages/compare" class="tf-btn animate-btn justify-content-center">Compare</a>
-                    <div class="tf-btn btn-out-line-dark justify-content-center clear-file-delete" data-compare-clear><span>Clear All</span></div>
+                    <button type="button" class="tf-btn btn-out-line-dark justify-content-center" data-compare data-action="clear">Clear All</button>
                 </div>
             </div>
         </div>

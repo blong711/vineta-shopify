@@ -48,8 +48,12 @@ class WishlistCompare {
 
     if (isWishlist) {
       this.handleWishlist(productId, action);
-    } else {
-      this.handleCompare(productId, action);
+    } else if (action === 'clear') {
+      this.clearCompareList();
+    } else if (action === 'add') {
+      this.addToCompare(productId);
+    } else if (action === 'remove') {
+      this.removeFromCompare(productId);
     }
   }
 
@@ -65,8 +69,12 @@ class WishlistCompare {
 
     if (isWishlist) {
       this.handleWishlist(productId, action);
-    } else {
-      this.handleCompare(productId, action);
+    } else if (action === 'clear') {
+      this.clearCompareList();
+    } else if (action === 'add') {
+      this.addToCompare(productId);
+    } else if (action === 'remove') {
+      this.removeFromCompare(productId);
     }
   }
 
@@ -75,14 +83,6 @@ class WishlistCompare {
       this.addToWishlist(productId);
     } else if (action === 'remove') {
       this.removeFromWishlist(productId);
-    }
-  }
-
-  handleCompare(productId, action) {
-    if (action === 'add') {
-      this.addToCompare(productId);
-    } else if (action === 'remove') {
-      this.removeFromCompare(productId);
     }
   }
 
@@ -146,6 +146,7 @@ class WishlistCompare {
     // Update compare buttons
     document.querySelectorAll('[data-compare]').forEach(button => {
       const productId = button.getAttribute('data-id');
+      if (!productId) return; // Skip buttons without product ID (like Clear All)
       const isInCompare = this.compareList.includes(productId);
       button.setAttribute('data-action', isInCompare ? 'remove' : 'add');
       this.updateButtonText(button, isInCompare, 'compare');
@@ -246,6 +247,28 @@ class WishlistCompare {
   // Remove the addStyles method since we're using the theme's existing styles
   addStyles() {
     // No need to add styles as they're already in the theme
+  }
+
+  clearCompareList() {
+    // Directly clear the compare list
+    this.compareList = [];
+    localStorage.removeItem(this.compareKey);
+    
+    // Update UI without showing notifications
+    this.updateButtonsState();
+    this.updateCompareDrawer();
+    
+    // Close the compare drawer
+    const drawer = document.getElementById('compare');
+    if (drawer) {
+      const modal = bootstrap.Modal.getInstance(drawer);
+      if (modal) {
+        modal.hide();
+      }
+    }
+    
+    // Show only the clear notification
+    this.showNotification('Compare list cleared');
   }
 }
 
