@@ -202,13 +202,12 @@ class WishlistCompare {
   createCompareItem(product) {
     const div = document.createElement('div');
     div.className = 'tf-compare-item file-delete';
+    div.setAttribute('data-product-id', product.id);
+    
     div.innerHTML = `
-      <span class="icon-close remove"></span>
+      <button type="button" class="icon-close remove" data-compare data-id="${product.id}" data-action="remove" aria-label="Remove from compare"></button>
       <a href="${product.url}" class="image">
-        <img class="lazyload" 
-          data-src="${product.image}"
-          src="${product.image}" 
-          alt="${product.title}">
+        <img class="lazyload" data-src="${product.image}" src="${product.image}" alt="${product.title}">
       </a>
       <div class="content">
         <div class="text-title">
@@ -216,10 +215,11 @@ class WishlistCompare {
         </div>
         <p class="price-wrap">
           <span class="new-price text-primary">${product.price}</span>
-          ${product.compare_at_price ? `<span class="old-price text-decoration-line-through text-dark-1">${product.compare_at_price}</span>` : ''}
+          ${product.comparePrice ? `<span class="old-price text-decoration-line-through text-dark-1">${product.comparePrice}</span>` : ''}
         </p>
       </div>
     `;
+    
     return div;
   }
 
@@ -235,7 +235,7 @@ class WishlistCompare {
       url: productElement.getAttribute('data-product-url'),
       image: productElement.getAttribute('data-product-image'),
       price: productElement.getAttribute('data-product-price'),
-      compare_at_price: productElement.getAttribute('data-product-compare-price')
+      comparePrice: productElement.getAttribute('data-product-compare-price')
     };
   }
 
@@ -244,9 +244,33 @@ class WishlistCompare {
     console.log(message);
   }
 
-  // Remove the addStyles method since we're using the theme's existing styles
   addStyles() {
-    // No need to add styles as they're already in the theme
+    const style = document.createElement('style');
+    style.textContent = `
+      .modal-compare .icon-close.remove {
+        position: absolute;
+        z-index: 5;
+        top: 12px;
+        right: 12px;
+        width: 48px;
+        height: 48px;
+        border: 1px solid var(--line);
+        background-color: var(--white);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        color: #000;
+        opacity: 1;
+        cursor: pointer;
+        padding: 0;
+      }
+      .modal-compare .icon-close.remove:hover {
+        color: #ff0000;
+      }
+    `;
+    document.head.appendChild(style);
   }
 
   clearCompareList() {
