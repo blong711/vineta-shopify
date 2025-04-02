@@ -9,7 +9,7 @@
             <h3 style="font-size: 24px; margin-bottom: 15px; color: #333;">Your wishlist is empty</h3>
             <p style="color: #666; margin-bottom: 25px;">Add items to your wishlist to see them here</p>
             <a href="{{ routes.all_products_collection_url }}" class="btn" style="display: inline-block; padding: 12px 30px; background: #333; color: #fff; text-decoration: none; border-radius: 4px; transition: background 0.3s;">Continue Shopping</a>
-          </div>
+            </div>
         </div>
       </div>
     </div>
@@ -85,9 +85,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (wishlistIds.length === 0) {
       emptyWishlist.style.display = 'block';
-      return;
-    }
-    
+    return;
+  }
+
     emptyWishlist.style.display = 'none';
     
     // Clean up the IDs and ensure they're numbers
@@ -101,9 +101,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to fetch all products with pagination
     function fetchAllProducts(page = 1, limit = 250) {
       return fetch(`/products.json?page=${page}&limit=${limit}`)
-        .then(response => response.json())
-        .then(data => {
-          const products = data.products;
+    .then(response => response.json())
+    .then(data => {
+      const products = data.products;
           if (products.length === limit) {
             // If we got a full page, there might be more
             return fetchAllProducts(page + 1, limit)
@@ -181,9 +181,9 @@ document.addEventListener('DOMContentLoaded', function() {
       return `
       <div class="card-product grid file-delete style-wishlist style-3 ${!product.variants[0].available ? 'out-of-stock' : ''}" data-product-id="${product.id}">
         <i class="icon icon-close remove" data-wishlist data-id="${product.id}" data-action="remove"></i>
-        <div class="card-product-wrapper">
-          <a href="${product.url}" class="product-img">
-            <img class="img-product lazyload"
+            <div class="card-product-wrapper">
+              <a href="${product.url}" class="product-img">
+                <img class="img-product lazyload"
               data-src="${product.featured_image ? product.featured_image.src : product.images[0].src}"
               src="${product.featured_image ? product.featured_image.src : product.images[0].src}"
               alt="${product.title}">
@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
               <img class="img-hover lazyload"
                 data-src="${product.images[1].src}"
                 src="${product.images[1].src}"
-                alt="${product.title}">
+                  alt="${product.title}">
             ` : ''}
           </a>
           <ul class="list-product-btn">
@@ -214,14 +214,14 @@ document.addEventListener('DOMContentLoaded', function() {
                  data-compare data-id="${product.id}" data-action="add">
                 <span class="icon icon-compare"></span>
                 <span class="tooltip">Add to Compare</span>
-              </a>
-            </li>
-          </ul>
+                  </a>
+                </li>
+              </ul>
           ${!product.variants[0].available ? '<div class="sold-out-badge">Sold Out</div>' : ''}
-        </div>
-        <div class="card-product-info">
-          <a href="${product.url}" class="name-product link fw-medium text-md">${product.title}</a>
-          <p class="price-wrap fw-medium">
+            </div>
+            <div class="card-product-info">
+              <a href="${product.url}" class="name-product link fw-medium text-md">${product.title}</a>
+              <p class="price-wrap fw-medium">
             <span class="price-new text-primary">${formatMoney(product.variants[0].price)}</span>
             ${product.variants[0].compare_at_price > product.variants[0].price ? 
               `<span class="price-old">${formatMoney(product.variants[0].compare_at_price)}</span>` : ''}
@@ -243,8 +243,8 @@ document.addEventListener('DOMContentLoaded', function() {
             </ul>
           ` : ''}
         </div>
-      </div>
-    `;
+        </div>
+      `;
     });
 
     gridLayout.innerHTML = wishlistHTML.join('') + emptyWishlist.outerHTML;

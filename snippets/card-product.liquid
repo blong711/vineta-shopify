@@ -35,8 +35,12 @@
     {%- endif -%}
     <ul class="list-product-btn">
       <li>
-        <a href="#shoppingCart" data-bs-toggle="offcanvas" class="box-icon hover-tooltip tooltip-left">
-          <span class="icon icon-cart2"></span>
+        <a href="javascript:void(0);" 
+           class="box-icon hover-tooltip tooltip-left add-to-cart" 
+           data-variant-id="{{ product.variants.first.id }}"
+           data-quantity="1"
+           aria-label="Add to cart">
+          <i class="icon icon-cart"></i>
           <span class="tooltip">Add to Cart</span>
         </a>
       </li>
@@ -115,6 +119,131 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  // Clear any existing event listeners on add-to-cart buttons
+  document.querySelectorAll('.add-to-cart').forEach(button => {
+    // Clone the node to remove all event listeners
+    const newButton = button.cloneNode(true);
+    button.parentNode.replaceChild(newButton, button);
+  });
+  
+  // Re-attach event listeners
+  document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', async function(e) {
+      e.preventDefault();
+      e.stopPropagation(); // Stop event propagation
+      
+      // Prevent multiple clicks
+      if (this.classList.contains('loading')) {
+        return;
+      }
+      
+      const variantId = this.dataset.variantId;
+      const quantity = parseInt(this.dataset.quantity || 1);
+      
+      try {
+        // Show loading state
+        this.classList.add('loading');
+        
+        // Add item to cart exactly once
+        if (window.cart) {
+          console.log(`Adding to cart: variant ${variantId}, quantity ${quantity}`);
+          await window.cart.updateQuantity(variantId, quantity, 'add');
+          
+          // Fetch updated cart data
+          const response = await fetch('/cart.js');
+          const cartData = await response.json();
+          
+          // Update cart drawer with all items
+          const cartDrawer = document.getElementById('shoppingCart');
+          if (cartDrawer) {
+            const itemsContainer = cartDrawer.querySelector('.tf-mini-cart-items');
+            if (itemsContainer) {
+              // Clear existing items
+              itemsContainer.innerHTML = '';
+              
+              // Add all items from cart
+              cartData.items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'tf-mini-cart-item';
+                itemElement.style.border = 'none';
+                itemElement.style.borderBottom = 'none';
+                itemElement.innerHTML = `
+                  <div class="tf-mini-cart-image">
+                    <a href="${item.url}">
+                      <img class="lazyload" data-src="${item.image}" src="${item.image}" alt="${item.title}" loading="lazy">
+                    </a>
+                  </div>
+                  <div class="tf-mini-cart-info">
+                    <div class="d-flex justify-content-between">
+                      <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
+                      <i class="icon icon-close remove fs-12" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
+                    </div>
+                    <div class="d-flex gap-10">
+                      <div class="text-xs">${item.variant_title || ''}</div>
+                      <a href="#" class="link edit"><i class="icon-pen"></i></a>
+                    </div>
+                    <div class="tf-mini-cart-item_price">
+                      <p class="price-wrap text-sm fw-medium">
+                        <span class="new-price text-primary">${(item.final_price / 100).toFixed(2)} ${cartData.currency.symbol}</span>
+                      </p>
+                    </div>
+                    <div class="tf-mini-cart-item_quantity">
+                      <div class="wg-quantity small">
+                        <span class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</span>
+                        <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
+                        <span class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</span>
+                      </div>
+                    </div>
+                  </div>
+                `;
+                itemsContainer.appendChild(itemElement);
+              });
+              
+              // Update cart total
+              const totalElement = cartDrawer.querySelector('.cart-total-price');
+              if (totalElement) {
+                totalElement.textContent = `${(cartData.total_price / 100).toFixed(2)} ${cartData.currency.symbol}`;
+              }
+              
+              // Update header cart count
+              const headerCount = document.querySelector('.count-box');
+              if (headerCount) {
+                headerCount.textContent = cartData.item_count;
+              }
+
+              // Update shipping threshold progress bar
+              const progressBar = cartDrawer.querySelector('.tf-progress-bar .value');
+              if (progressBar) {
+                const threshold = 100 * 100; // $100 in cents
+                const progress = Math.min(100, (cartData.total_price / threshold) * 100);
+                progressBar.style.width = `${progress}%`;
+                progressBar.setAttribute('data-progress', progress);
+              }
+
+              // Update shipping threshold text
+              const thresholdText = cartDrawer.querySelector('.tf-mini-cart-threshold .text');
+              if (thresholdText) {
+                const threshold = 100 * 100; // $100 in cents
+                const remaining = Math.max(0, threshold - cartData.total_price) / 100;
+                if (cartData.total_price >= threshold) {
+                  thresholdText.innerHTML = 'Congratulations! You\'ve unlocked <span class="fw-medium">Free Shipping</span>';
+                } else {
+                  thresholdText.innerHTML = `Spend <span class="fw-medium">$${remaining.toFixed(2)}</span> more to get <span class="fw-medium">Free Shipping</span>`;
+                }
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error adding item to cart:', error);
+        alert('Failed to add item to cart. Please try again.');
+      } finally {
+        // Remove loading state
+        this.classList.remove('loading');
+      }
+    }, { once: false }); // Use once:false but with other protections
+  });
+
   // Handle quickview clicks
   document.querySelectorAll('.quickview').forEach(button => {
     button.addEventListener('click', async function(e) {
@@ -280,5 +409,77 @@ function formatMoney(cents) {
 
 .card-product .list-product-btn .box-icon[data-action="remove"]:hover .icon {
   color: var(--primary);
+}
+
+/* Cart Drawer Styles */
+.cart-items {
+  max-height: calc(100vh - 300px);
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.cart-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.cart-item-image {
+  width: 80px;
+  height: 80px;
+}
+
+.cart-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cart-item-details {
+  flex: 1;
+}
+
+.cart-item-title {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.cart-item-price {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.cart-item-quantity input {
+  width: 60px;
+  padding: 0.25rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.cart-total {
+  padding: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.cart-subtotal {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.cart-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.cart-buttons .btn {
+  flex: 1;
+  text-align: center;
 }
 </style> 

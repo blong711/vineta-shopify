@@ -1,21 +1,17 @@
 {%- comment -%}Cart Drawer Section{%- endcomment -%}
-<div class="offcanvas offcanvas-end popup-style-1 popup-shopping-cart" id="shoppingCart">
+<div class="offcanvas offcanvas-end popup-style-1 popup-shopping-cart" id="shoppingCart" data-bs-backdrop="false">
   <div class="canvas-wrapper">
     <div class="popup-header">
       <span class="title">Shopping cart</span>
       <span class="icon-close icon-close-popup" data-bs-dismiss="offcanvas"></span>
     </div>
     <div class="wrap">
-      {%- if cart.item_count > 0 -%}
         <div class="tf-mini-cart-threshold">
-          {%- assign threshold = 100 -%}
-          {%- assign remaining = threshold | minus: cart.total_price | divided_by: 100.0 -%}
-          {%- assign progress = cart.total_price | divided_by: threshold | times: 100 -%}
           <div class="text">
-            Spend <span class="fw-medium">${{ remaining | round: 2 }}</span> more to get <span class="fw-medium">Free Shipping</span>
+          Spend <span class="fw-medium">$100</span> more to get <span class="fw-medium">Free Shipping</span>
           </div>
           <div class="tf-progress-bar tf-progress-ship">
-            <div class="value" style="width: {{ progress }}%;" data-progress="{{ progress }}">
+          <div class="value" style="width: 0%;" data-progress="0">
               <i class="icon icon-car"></i>
             </div>
           </div>
@@ -23,39 +19,16 @@
         <div class="tf-mini-cart-wrap">
           <div class="tf-mini-cart-main">
             <div class="tf-mini-cart-sroll">
-              <div class="tf-mini-cart-items">
-                {%- for item in cart.items -%}
-                  <div class="tf-mini-cart-item file-delete" data-item-id="{{ item.key }}">
-                    <div class="tf-mini-cart-image">
-                      <a href="{{ item.url }}">
-                        <img class="lazyload" data-src="{{ item.image | img_url: '150x' }}" src="{{ item.image | img_url: '150x' }}" alt="{{ item.title | escape }}">
-                      </a>
-                    </div>
-                    <div class="tf-mini-cart-info">
-                      <div class="d-flex justify-content-between">
-                        <a class="title link text-md fw-medium" href="{{ item.url }}">{{ item.title }}</a>
-                        <i class="icon icon-close remove fs-12" data-item-id="{{ item.key }}"></i>
+            <div class="tf-mini-cart-items" style="overflow-y: auto; max-height: calc(100vh - 300px);">
+              <div id="cart-items-placeholder">
+                <div class="empty-cart">
+                  <p>Your cart is currently empty.</p>
+                  <a href="/collections/all" class="tf-btn animate-btn d-inline-flex bg-dark-2">Continue shopping</a>
                       </div>
-                      <div class="d-flex gap-10">
-                        <div class="text-xs">{{ item.variant.title }}</div>
-                        <a href="{{ item.url }}" class="link edit"><i class="icon-pen"></i></a>
-                      </div>
-                      <p class="price-wrap text-sm fw-medium">
-                        <span class="new-price text-primary">{{ item.final_price | money }}</span>
-                        {%- if item.original_price != item.final_price -%}
-                          <span class="old-price text-decoration-line-through text-dark-1">{{ item.original_price | money }}</span>
-                        {%- endif -%}
-                      </p>
-                      <div class="wg-quantity small">
-                        <button class="btn-quantity minus-btn" data-item-id="{{ item.key }}">-</button>
-                        <input class="quantity-product font-4" type="text" name="updates[]" value="{{ item.quantity }}" data-item-id="{{ item.key }}">
-                        <button class="btn-quantity plus-btn" data-item-id="{{ item.key }}">+</button>
                       </div>
                     </div>
                   </div>
-                {%- endfor -%}
               </div>
-              {%- if section.settings.show_recommendations -%}
                 <div class="tf-minicart-recommendations">
                   <div class="tf-minicart-recommendations-heading d-flex justify-content-between align-items-end">
                     <div class="tf-minicart-recommendations-title text-md fw-medium">You may also like</div>
@@ -94,15 +67,12 @@
                                   <span class="old-price text-decoration-line-through text-dark-1">{{ product.compare_at_price | money }}</span>
                                 {%- endif -%}
                               </p>
-                              <button class="tf-btn animate-btn d-inline-flex bg-dark-2 w-max-content add-to-cart" data-product-id="{{ product.variants.first.id }}">Add to cart</button>
+                      <button class="tf-btn animate-btn d-inline-flex bg-dark-2 w-max-content add-to-cart" data-variant-id="{{ product.variants.first.id }}" data-quantity="1">Add to cart</button>
                             </div>
                           </div>
                         </div>
                       {%- endfor -%}
                     </div>
-                  </div>
-                </div>
-              {%- endif -%}
             </div>
           </div>
           <div class="tf-mini-cart-bottom">
@@ -127,7 +97,7 @@
             <div class="tf-mini-cart-bottom-wrap">
               <div class="tf-cart-totals-discounts">
                 <div class="tf-cart-total text-xl fw-medium">Total:</div>
-                <div class="tf-totals-total-value text-xl fw-medium">{{ cart.total_price | money }}</div>
+              <div class="tf-totals-total-value text-xl fw-medium cart-total-price">$0.00</div>
               </div>
               <div class="tf-cart-tax text-sm opacity-8">Taxes and shipping calculated at checkout</div>
               <div class="tf-cart-checkbox">
@@ -139,22 +109,88 @@
                 </div>
                 <label for="CartDrawer-Form_agree" class="text-sm">
                   I agree with the
-                  <a href="{{ routes.root_url }}pages/terms-and-conditions" title="Terms of Service" class="fw-medium">terms and conditions</a>
+                <a href="/pages/terms-and-conditions" title="Terms of Service" class="fw-medium">terms and conditions</a>
                 </label>
               </div>
               <div class="tf-mini-cart-view-checkout">
-                <a href="{{ routes.cart_url }}" class="tf-btn animate-btn d-inline-flex bg-dark-2 w-100 justify-content-center">View cart</a>
-                <a href="{{ routes.checkout_url }}" class="tf-btn btn-out-line-dark2 w-100 justify-content-center"><span>Check out</span></a>
-              </div>
+              <a href="/cart" class="tf-btn animate-btn d-inline-flex bg-dark-2 w-100 justify-content-center">View cart</a>
+              <a href="/checkout" class="tf-btn btn-out-line-dark2 w-100 justify-content-center"><span>Check out</span></a>
             </div>
           </div>
         </div>
-      {%- else -%}
-        <div class="empty-cart">
-          <p>Your cart is currently empty.</p>
-          <a href="{{ routes.all_products_collection_url }}" class="tf-btn animate-btn d-inline-flex bg-dark-2">Continue shopping</a>
+        <div class="tf-mini-cart-tool-openable add-gift">
+          <div class="overplay tf-mini-cart-tool-close"></div>
+          <form action="#" class="tf-mini-cart-tool-content">
+            <div class="tf-mini-cart-tool-text text-sm fw-medium">Add gift wrap</div>
+            <div class="tf-mini-cart-tool-text1 text-dark-1">The product will be wrapped carefully. Free is only <span class="text fw-medium text-dark">$10.00</span>. Do you want a gift wrap?</div>
+            <div class="tf-cart-tool-btns">
+              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Save</button>
+              <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">Close</div>
+            </div>
+          </form>
         </div>
-      {%- endif -%}
+        <div class="tf-mini-cart-tool-openable add-note">
+          <div class="overplay tf-mini-cart-tool-close"></div>
+          <form action="#" class="tf-mini-cart-tool-content">
+            <label for="Cart-note" class="tf-mini-cart-tool-text text-sm fw-medium">Order note</label>
+            <textarea name="note" id="Cart-note" placeholder="Instruction for seller..."></textarea>
+            <div class="tf-cart-tool-btns">
+              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Save</button>
+              <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">Close</div>
+            </div>
+          </form>
+        </div>
+        <div class="tf-mini-cart-tool-openable coupon">
+          <div class="overplay tf-mini-cart-tool-close"></div>
+          <form action="#" class="tf-mini-cart-tool-content">
+            <div class="tf-mini-cart-tool-text text-sm fw-medium">Add coupon</div>
+            <div class="tf-mini-cart-tool-text1 text-dark-1">* Discount will be calculated and applied at checkout</div>
+            <input type="text" name="text" placeholder="">
+            <div class="tf-cart-tool-btns">
+              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Add a Gift Wrap</button>
+              <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">Cancel</div>
+            </div>
+          </form>
+        </div>
+        <div class="tf-mini-cart-tool-openable estimate-shipping">
+          <div class="overplay tf-mini-cart-tool-close"></div>
+          <form id="shipping-form" class="tf-mini-cart-tool-content">
+            <div class="tf-mini-cart-tool-text text-sm fw-medium">Shipping estimates</div>
+            <div class="field">
+              <p class="text-sm">Country</p>
+              <div class="tf-select">
+                <select class="w-100" id="shipping-country-form" name="address[country]" data-default="">
+                  <option value="Australia" data-provinces='[["Australian Capital Territory","Australian Capital Territory"],["New South Wales","New South Wales"],["Northern Territory","Northern Territory"],["Queensland","Queensland"],["South Australia","South Australia"],["Tasmania","Tasmania"],["Victoria","Victoria"],["Western Australia","Western Australia"]]'>Australia</option>
+                  <option value="Canada" data-provinces='[["Ontario","Ontario"],["Quebec","Quebec"]]'>Canada</option>
+                  <option selected value="United States" data-provinces='[["Alabama","Alabama"],["California","California"],["Florida","Florida"]]'>United States</option>
+                  <option value="United Kingdom" data-provinces='[["England","England"],["Scotland","Scotland"],["Wales","Wales"],["Northern Ireland","Northern Ireland"]]'>United Kingdom</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <p class="text-sm">State/Province</p>
+              <div class="tf-select">
+                <select id="shipping-province-form" name="address[province]" data-default=""></select>
+              </div>
+            </div>
+            <div class="field">
+              <p class="text-sm">Zipcode</p>
+              <input type="text" data-opend-focus id="zipcode" name="address[zip]" value="">
+            </div>
+            <div id="zipcode-message" class="error" style="display: none;">
+              We found one shipping rate available for undefined.
+            </div>
+            <div id="zipcode-success" class="success" style="display: none;">
+              <p>We found one shipping rate available for your address:</p>
+              <p class="standard">Standard at <span>$0.00</span> USD</p>
+            </div>
+            <div class="tf-cart-tool-btns">
+              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Save</button>
+              <div class="tf-mini-cart-tool-primary text-center fw-6 w-100 tf-mini-cart-tool-close">Cancel</div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -169,11 +205,20 @@
       "label": "Show product recommendations",
       "default": true
     }
+  ],
+  "presets": [
+    {
+      "name": "Cart Drawer"
+    }
   ]
 }
 {% endschema %}
 
-{% stylesheet %}
+<style>
+.popup-shopping-cart {
+  z-index: 1050;
+}
+
 .offcanvas {
   position: fixed;
   top: 0;
@@ -191,12 +236,21 @@
   transform: translateX(0);
 }
 
+/* Structure for proper scrolling */
+.canvas-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
 .popup-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
   border-bottom: 1px solid #eee;
+  flex-shrink: 0;
 }
 
 .popup-header .title {
@@ -209,9 +263,17 @@
   font-size: 20px;
 }
 
+.wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
 .tf-mini-cart-threshold {
   padding: 20px;
   background: #f8f8f8;
+  flex-shrink: 0;
 }
 
 .tf-progress-bar {
@@ -226,12 +288,48 @@
   left: 0;
   top: 0;
   height: 100%;
-  background: var(--primary-color);
+  background: var(--primary);
   transition: width 0.3s ease;
+}
+
+.tf-mini-cart-wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.tf-mini-cart-main {
+  flex: 1;
+  overflow: hidden;
+}
+
+.tf-mini-cart-sroll {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: var(--primary);
+    }
+
+    &::-webkit-scrollbar-track {
+        background: var(--line);
+    }
 }
 
 .tf-mini-cart-items {
   padding: 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 280px);
 }
 
 .tf-mini-cart-item {
@@ -272,6 +370,10 @@
   border: 1px solid #eee;
 }
 
+.tf-mini-cart-bottom {
+  flex-shrink: 0;
+}
+
 .tf-mini-cart-tool {
   display: flex;
   justify-content: space-between;
@@ -301,6 +403,35 @@
   margin-top: 20px;
 }
 
+.tf-mini-cart-tool-openable {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  z-index: 2;
+}
+
+.tf-mini-cart-tool-openable.active {
+  display: block;
+}
+
+.overplay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+.tf-mini-cart-tool-content {
+  padding: 20px;
+}
+
 .empty-cart {
   text-align: center;
   padding: 40px 20px;
@@ -309,4 +440,229 @@
 .empty-cart p {
   margin-bottom: 20px;
 }
-{% endstylesheet %}
+
+.tf-checkbox-wrapp {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.tf-checkbox-wrapp input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.tf-checkbox-wrapp div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.tf-checkbox-wrapp input:checked ~ div {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.tf-checkbox-wrapp div i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  opacity: 0;
+}
+
+.tf-checkbox-wrapp input:checked ~ div i {
+  opacity: 1;
+}
+
+/* Recommendations styles */
+.tf-minicart-recommendations {
+  padding: 20px;
+  border-top: 1px solid #eee;
+}
+
+.swiper-slide {
+  height: auto;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Cart drawer toggle - using event delegation to avoid duplicate handlers
+  const cartDrawer = document.getElementById('shoppingCart');
+  if (!cartDrawer) return;
+  
+  // Override Bootstrap's offcanvas behavior
+  const originalShowFn = bootstrap.Offcanvas.prototype.show;
+  const originalHideFn = bootstrap.Offcanvas.prototype.hide;
+  
+  // Override show method to prevent full screen backdrop
+  bootstrap.Offcanvas.prototype.show = function() {
+    // Call original method
+    originalShowFn.call(this);
+    
+    // Remove full screen backdrop
+    const fullBackdrop = document.querySelector('.offcanvas-backdrop');
+    if (fullBackdrop) {
+      fullBackdrop.remove();
+    }
+  };
+  
+  // Remove any existing event listeners by cloning elements
+  const closeBtn = cartDrawer.querySelector('.icon-close-popup');
+  if (closeBtn) {
+    const newCloseBtn = closeBtn.cloneNode(true);
+    closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+    
+    // Add event listener to the new button
+    newCloseBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      cartDrawer.classList.remove('show');
+    });
+  }
+  
+  // Custom open/close functions for cart drawer
+  window.openCartDrawer = function() {
+    cartDrawer.classList.add('show');
+    // Remove any existing full-screen backdrop
+    const fullBackdrop = document.querySelector('.offcanvas-backdrop');
+    if (fullBackdrop) {
+      fullBackdrop.remove();
+    }
+  };
+  
+  window.closeCartDrawer = function() {
+    cartDrawer.classList.remove('show');
+  };
+  
+  // Tool button toggle - use event delegation instead of multiple listeners
+  document.addEventListener('click', function(e) {
+    // Handle tool buttons
+    if (e.target.closest('.tf-mini-cart-tool-btn')) {
+      const btn = e.target.closest('.tf-mini-cart-tool-btn');
+      const target = btn.classList[1].replace('btn-', '');
+      
+      document.querySelectorAll('.tf-mini-cart-tool-openable').forEach(panel => {
+        if (panel.classList.contains(target)) {
+          panel.classList.add('active');
+        }
+      });
+    }
+    
+    // Handle close buttons
+    if (e.target.closest('.tf-mini-cart-tool-close')) {
+      document.querySelectorAll('.tf-mini-cart-tool-openable').forEach(panel => {
+        panel.classList.remove('active');
+      });
+    }
+    
+    // Handle quantity buttons and remove
+    if (e.target.classList.contains('plus-btn')) {
+      const input = e.target.previousElementSibling;
+      if (!input) return;
+      
+      const variantId = input.dataset.variantId;
+      let quantity = parseInt(input.value) + 1;
+      input.value = quantity;
+      
+      if (window.cart && !window.cart.processingRequests) {
+        window.cart.updateQuantity(variantId, quantity, 'update');
+      }
+    } else if (e.target.classList.contains('minus-btn')) {
+      const input = e.target.nextElementSibling;
+      if (!input) return;
+      
+      const variantId = input.dataset.variantId;
+      let quantity = parseInt(input.value) - 1;
+      if (quantity < 1) quantity = 1;
+      input.value = quantity;
+      
+      if (window.cart && !window.cart.processingRequests) {
+        window.cart.updateQuantity(variantId, quantity, 'update');
+      }
+    } else if (e.target.classList.contains('remove')) {
+      const item = e.target.closest('.tf-mini-cart-item');
+      if (!item) return;
+      
+      const variantId = item.dataset.variantId;
+      if (window.cart && !window.cart.processingRequests) {
+        window.cart.removeItem(variantId);
+      }
+    }
+  });
+  
+  // Handle recommendations add to cart - with debounce
+  let lastClickTime = 0;
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('add-to-cart')) {
+      // Prevent rapid clicks (debounce)
+      const now = Date.now();
+      if (now - lastClickTime < 1000) {
+        return; // Ignore clicks within 1 second
+      }
+      lastClickTime = now;
+      
+      const variantId = e.target.dataset.variantId;
+      const quantity = parseInt(e.target.dataset.quantity || 1);
+      
+      if (window.cart && !window.cart.processingRequests) {
+        window.cart.updateQuantity(variantId, quantity, 'add');
+      }
+    }
+  });
+  
+  // Update shipping threshold progress bar
+  function updateProgressBar(total) {
+    const threshold = 100 * 100; // $100 in cents
+    const progressBar = document.querySelector('.tf-progress-bar .value');
+    if (!progressBar) return;
+    
+    const progress = Math.min(100, (total / threshold) * 100);
+    progressBar.style.width = progress + '%';
+    progressBar.setAttribute('data-progress', progress);
+    
+    const remaining = Math.max(0, threshold - total) / 100;
+    const thresholdText = document.querySelector('.tf-mini-cart-threshold .text');
+    if (thresholdText) {
+      if (total >= threshold) {
+        thresholdText.innerHTML = 'Congratulations! You\'ve unlocked <span class="fw-medium">Free Shipping</span>';
+      } else {
+        thresholdText.innerHTML = 'Spend <span class="fw-medium">$' + remaining.toFixed(2) + '</span> more to get <span class="fw-medium">Free Shipping</span>';
+      }
+    }
+  }
+  
+  // Listen for cart updates
+  document.addEventListener('cart:change', function(e) {
+    if (e.detail && e.detail.cart) {
+      updateProgressBar(e.detail.cart.total_price);
+    }
+  });
+  
+  // Detect and remove any bootstrap backdrops
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.addedNodes && mutation.addedNodes.length) {
+        for (let i = 0; i < mutation.addedNodes.length; i++) {
+          const node = mutation.addedNodes[i];
+          if (node.classList && node.classList.contains('offcanvas-backdrop')) {
+            node.remove();
+          }
+        }
+      }
+    });
+  });
+  
+  // Start observing the document body for added nodes
+  observer.observe(document.body, { childList: true });
+});
+</script>

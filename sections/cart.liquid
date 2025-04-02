@@ -17,7 +17,7 @@
                 </thead>
                 <tbody>
                   {% for item in cart.items %}
-                    <tr class="tf-cart-item file-delete" data-item-id="{{ item.key }}">
+                    <tr class="tf-cart-item file-delete" data-item-id="{{ item.key }}" data-variant-id="{{ item.variant.id }}">
                       <td class="tf-cart-item_product">
                         <a href="{{ item.url }}" class="img-box">
                           <img src="{{ item.image | img_url: '150x' }}" alt="{{ item.title | escape }}" loading="lazy">
@@ -27,7 +27,7 @@
                           {% if item.product.has_only_default_variant == false %}
                             <div class="variants">{{ item.variant.title }}</div>
                           {% endif %}
-                          <span class="remove-cart link remove" data-item-id="{{ item.key }}">Remove</span>
+                          <span class="remove-cart link remove" data-item-id="{{ item.key }}" data-variant-id="{{ item.variant.id }}">Remove</span>
                         </div>
                       </td>
                       <td class="tf-cart-item_price text-center" data-cart-title="Price">
@@ -606,3 +606,214 @@
   }
 }
 {% endstylesheet %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Function to update header cart count
+  function updateHeaderCartCount() {
+    const headerCount = document.querySelector('.count-box');
+    const cartCount = document.querySelector('.cart-count');
+    if (headerCount && cartCount) {
+      headerCount.textContent = cartCount.textContent;
+    }
+  }
+
+  // Handle remove buttons in cart
+  document.querySelectorAll('.remove-cart').forEach(button => {
+    button.addEventListener('click', async function(e) {
+      e.preventDefault();
+      const variantId = this.dataset.variantId;
+      const itemId = this.dataset.itemId;
+      
+      if (!variantId || !window.cart) return;
+
+      try {
+        // Update UI through Cart class
+        await window.cart.removeItem(variantId);
+        
+        // Remove the item row from the table
+        const itemRow = this.closest('.tf-cart-item');
+        if (itemRow) {
+          itemRow.remove();
+        }
+
+        // Update cart count and total
+        const cartCount = document.querySelector('.cart-count');
+        const cartTotal = document.querySelector('.total');
+        if (cartCount) {
+          const currentCount = parseInt(cartCount.textContent);
+          cartCount.textContent = currentCount - 1;
+        }
+        if (cartTotal) {
+          const itemPrice = parseFloat(itemRow.querySelector('.cart-total').textContent.replace(/[^0-9.-]+/g, ''));
+          const currentTotal = parseFloat(cartTotal.textContent.replace(/[^0-9.-]+/g, ''));
+          cartTotal.textContent = `$${(currentTotal - itemPrice).toFixed(2)}`;
+        }
+
+        // Update header cart count
+        updateHeaderCartCount();
+
+        // If no items left, show empty cart message
+        const tbody = document.querySelector('.table-page-cart tbody');
+        if (tbody && tbody.children.length === 0) {
+          const emptyCart = document.querySelector('.empty-cart');
+          if (emptyCart) {
+            emptyCart.style.display = 'block';
+          }
+        }
+      } catch (error) {
+        console.error('Error removing item:', error);
+        alert('Failed to remove item. Please try again.');
+      }
+    });
+  });
+
+  // Handle quantity buttons in cart
+  document.querySelectorAll('.btn-quantity').forEach(button => {
+    button.addEventListener('click', async function() {
+      const input = this.parentElement.querySelector('.quantity-product');
+      const variantId = input.dataset.variantId;
+      const itemId = this.closest('.tf-cart-item').dataset.itemId;
+      const currentValue = parseInt(input.value);
+      
+      if (!variantId || !itemId || !window.cart) return;
+
+      try {
+        let newQuantity;
+        if (this.classList.contains('btn-decrease')) {
+          newQuantity = currentValue > 1 ? currentValue - 1 : 0;
+        } else if (this.classList.contains('btn-increase')) {
+          newQuantity = currentValue + 1;
+        }
+
+        // Update UI through Cart class
+        if (newQuantity === 0) {
+          await window.cart.removeItem(variantId);
+          // Remove the item row from the table
+          const itemRow = this.closest('.tf-cart-item');
+          if (itemRow) {
+            itemRow.remove();
+          }
+        } else {
+          await window.cart.updateQuantity(variantId, newQuantity, window.cart.actions.update);
+          // Update the item total
+          const itemRow = this.closest('.tf-cart-item');
+          if (itemRow) {
+            const itemPrice = parseFloat(itemRow.querySelector('.cart-price').textContent.replace(/[^0-9.-]+/g, ''));
+            const itemTotal = itemRow.querySelector('.cart-total');
+            if (itemTotal) {
+              itemTotal.textContent = `$${(itemPrice * newQuantity).toFixed(2)}`;
+            }
+          }
+        }
+
+        // Update cart count
+        const cartCount = document.querySelector('.cart-count');
+        if (cartCount) {
+          const currentCount = parseInt(cartCount.textContent);
+          cartCount.textContent = newQuantity === 0 ? currentCount - 1 : currentCount;
+        }
+
+        // Update header cart count
+        updateHeaderCartCount();
+
+        // Update cart total
+        const cartTotal = document.querySelector('.total');
+        if (cartTotal) {
+          const itemRow = this.closest('.tf-cart-item');
+          if (itemRow) {
+            const itemPrice = parseFloat(itemRow.querySelector('.cart-price').textContent.replace(/[^0-9.-]+/g, ''));
+            const currentTotal = parseFloat(cartTotal.textContent.replace(/[^0-9.-]+/g, ''));
+            if (newQuantity === 0) {
+              cartTotal.textContent = `$${(currentTotal - itemPrice).toFixed(2)}`;
+            } else {
+              cartTotal.textContent = `$${(currentTotal + itemPrice).toFixed(2)}`;
+            }
+          }
+        }
+
+        // If no items left, show empty cart message
+        const tbody = document.querySelector('.table-page-cart tbody');
+        if (tbody && tbody.children.length === 0) {
+          const emptyCart = document.querySelector('.empty-cart');
+          if (emptyCart) {
+            emptyCart.style.display = 'block';
+          }
+        }
+      } catch (error) {
+        console.error('Error updating quantity:', error);
+        alert('Failed to update quantity. Please try again.');
+      }
+    });
+  });
+
+  // Handle direct quantity input changes
+  document.querySelectorAll('.quantity-product').forEach(input => {
+    input.addEventListener('change', async function() {
+      const variantId = this.dataset.variantId;
+      const itemId = this.closest('.tf-cart-item').dataset.itemId;
+      const newValue = parseInt(this.value);
+      
+      if (!variantId || !itemId || !window.cart) return;
+
+      try {
+        if (isNaN(newValue) || newValue < 1) {
+          if (newValue <= 0) {
+            // Remove item
+            await window.cart.removeItem(variantId);
+            // Remove the item row from the table
+            const itemRow = this.closest('.tf-cart-item');
+            if (itemRow) {
+              itemRow.remove();
+            }
+          } else {
+            // Reset to 1
+            this.value = 1;
+            await window.cart.updateQuantity(variantId, 1, window.cart.actions.update);
+          }
+        } else {
+          // Update quantity
+          await window.cart.updateQuantity(variantId, newValue, window.cart.actions.update);
+        }
+
+        // Update cart count
+        const cartCount = document.querySelector('.cart-count');
+        if (cartCount) {
+          const currentCount = parseInt(cartCount.textContent);
+          cartCount.textContent = newValue <= 0 ? currentCount - 1 : currentCount;
+        }
+
+        // Update header cart count
+        updateHeaderCartCount();
+
+        // Update cart total
+        const cartTotal = document.querySelector('.total');
+        if (cartTotal) {
+          const itemRow = this.closest('.tf-cart-item');
+          if (itemRow) {
+            const itemPrice = parseFloat(itemRow.querySelector('.cart-price').textContent.replace(/[^0-9.-]+/g, ''));
+            const currentTotal = parseFloat(cartTotal.textContent.replace(/[^0-9.-]+/g, ''));
+            if (newValue <= 0) {
+              cartTotal.textContent = `$${(currentTotal - itemPrice).toFixed(2)}`;
+            } else {
+              cartTotal.textContent = `$${(currentTotal + itemPrice).toFixed(2)}`;
+            }
+          }
+        }
+
+        // If no items left, show empty cart message
+        const tbody = document.querySelector('.table-page-cart tbody');
+        if (tbody && tbody.children.length === 0) {
+          const emptyCart = document.querySelector('.empty-cart');
+          if (emptyCart) {
+            emptyCart.style.display = 'block';
+          }
+        }
+      } catch (error) {
+        console.error('Error updating quantity:', error);
+        alert('Failed to update quantity. Please try again.');
+      }
+    });
+  });
+});
+{% endjavascript %}
