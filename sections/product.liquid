@@ -130,38 +130,27 @@
               <div class="tf-product-info-extra-link">
                 {%- for block in section.blocks -%}
                   {%- if block.type == 'extra_link' -%}
-                    <ul class="list-product-btn">
-                      <li>
-                        <a href="#shoppingCart" data-bs-toggle="offcanvas" class="box-icon hover-tooltip">
-                          <span class="icon icon-cart2"></span>
-                          <span class="tooltip">Add to Cart</span>
-                        </a>
-                      </li>
-                      {%- if block.settings.show_wishlist -%}
-                        <li>
-                          <a href="javascript:void(0);" class="box-icon hover-tooltip" data-wishlist data-id="{{ product.id }}" data-action="add">
-                            <span class="icon icon-heart"></span>
-                            <span class="tooltip">Add to Wishlist</span>
-                          </a>
-                        </li>
-                      {%- endif -%}
-                      {%- if block.settings.show_quickview -%}
-                        <li>
-                          <a href="#quickView" data-bs-toggle="modal" class="box-icon hover-tooltip quickview">
-                            <span class="icon icon-view"></span>
-                            <span class="tooltip">Quick View</span>
-                          </a>
-                        </li>
-                      {%- endif -%}
-                      {%- if block.settings.show_compare -%}
-                        <li>
-                          <a href="javascript:void(0);" class="box-icon hover-tooltip" data-compare data-id="{{ product.id }}" data-action="add">
-                            <span class="icon icon-compare"></span>
-                            <span class="tooltip">Add to Compare</span>
-                          </a>
-                        </li>
-                      {%- endif -%}
-                    </ul>
+                    {%- if block.settings.show_wishlist -%}
+                      <a href="javascript:void(0);" class="product-extra-icon link btn-add-wishlist" data-wishlist data-id="{{ product.id }}" data-action="add">
+                        <i class="icon add icon-heart"></i><span class="add">{{ 'products.product.add_to_wishlist' | t }}</span>
+                        <i class="icon added icon-trash"></i><span class="added">{{ 'products.product.remove_from_wishlist' | t }}</span>
+                      </a>
+                    {%- endif -%}
+                    {%- if block.settings.show_compare -%}
+                      <a href="#compare" data-bs-toggle="modal" class="product-extra-icon link" data-compare data-id="{{ product.id }}" data-action="add">
+                        <i class="icon icon-compare2"></i>{{ 'products.product.compare' | t }}
+                      </a>
+                    {%- endif -%}
+                    {%- if block.settings.show_ask -%}
+                      <a href="#askQuestion" data-bs-toggle="modal" class="product-extra-icon link">
+                        <i class="icon icon-ask"></i>{{ 'products.product.ask_question' | t }}
+                      </a>
+                    {%- endif -%}
+                    {%- if block.settings.show_share -%}
+                      <a href="#shareSocial" data-bs-toggle="modal" class="product-extra-icon link">
+                        <i class="icon icon-share"></i>{{ 'products.product.share' | t }}
+                      </a>
+                    {%- endif -%}
                   {%- endif -%}
                 {%- endfor -%}
               </div>
@@ -307,8 +296,14 @@
         },
         {
           "type": "checkbox",
-          "id": "show_quickview",
-          "label": "Show quick view button",
+          "id": "show_ask",
+          "label": "Show ask question button",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_share",
+          "label": "Show share button",
           "default": true
         }
       ]
