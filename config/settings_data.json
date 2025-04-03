@@ -8,5 +8,134 @@
  * ------------------------------------------------------------
  */
 {
-  "current": {}
+  "current": {
+    "sections": {
+      "top-bar": {
+        "type": "top-bar",
+        "settings": {
+          "facebook_url": "https://www.facebook.com/",
+          "instagram_url": "https://www.instagram.com/",
+          "twitter_url": "https://x.com/",
+          "snapchat_url": "https://www.snapchat.com/"
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo_width": 150,
+          "menu": "main-menu",
+          "show_search": true,
+          "show_account": true,
+          "show_wishlist": true,
+          "show_cart": true
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "facebook_url": "https://www.facebook.com/",
+          "instagram_url": "https://www.instagram.com/",
+          "linkedin_url": "https://www.linkedin.com/",
+          "twitter_url": "https://x.com/",
+          "address": "123 Yarran st, Punchbowl, NSW 2196, Australia",
+          "phone": "(64) 8342 1245",
+          "email": "support@example.com",
+          "map_link": "",
+          "newsletter_text": "We invite you to register to read the latest news, offers and events about our company. We promise not spam your inbox.",
+          "about_menu": "",
+          "resource_menu": "",
+          "show_payment_icons": true
+        }
+      },
+      "cart-drawer": {
+        "type": "cart-drawer",
+        "settings": {
+          "show_recommendations": true
+        }
+      },
+      "search-drawer": {
+        "type": "search-drawer",
+        "settings": {
+          "title": "What are you looking for?"
+        }
+      },
+      "login-drawer": {
+        "type": "login-drawer",
+        "settings": {
+          "title": "Log in"
+        }
+      },
+      "register-drawer": {
+        "type": "register-drawer",
+        "settings": {
+          "title": "Create account"
+        }
+      },
+      "compare-drawer": {
+        "type": "compare-drawer",
+        "settings": {}
+      },
+      "quickview-modal": {
+        "type": "quickview-modal",
+        "settings": {}
+      },
+      "breadcrumb": {
+        "type": "breadcrumb",
+        "settings": {
+          "show_breadcrumb": true
+        }
+      },
+      "page-title": {
+        "type": "page-title",
+        "settings": {
+          "title": "Shopping Cart"
+        }
+      },
+      "product": {
+        "type": "product",
+        "blocks": {
+          "extra_link_m8AVUJ": {
+            "type": "extra_link",
+            "settings": {
+              "show_wishlist": true,
+              "show_compare": true,
+              "show_quickview": true
+            }
+          }
+        },
+        "block_order": [
+          "extra_link_m8AVUJ"
+        ],
+        "settings": {
+          "show_delivery_info": true,
+          "delivery_time": "3-5 days international",
+          "show_shipping_info": true,
+          "free_shipping_threshold": "all orders over $150"
+        }
+      },
+      "product-details": {
+        "type": "product-details",
+        "settings": {
+          "show_description": true,
+          "show_materials": true,
+          "show_return_policies": true
+        }
+      },
+      "people-also-bought": {
+        "type": "people-also-bought",
+        "settings": {
+          "title": "People Also Bought",
+          "products_to_show": 8
+        }
+      },
+      "recently-viewed": {
+        "type": "recently-viewed",
+        "settings": {
+          "title": "Recently Viewed",
+          "products_to_show": 8
+        }
+      }
+    },
+    "content_for_index": []
+  }
 }
