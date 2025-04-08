@@ -1,0 +1,62 @@
+{% comment %}Localization Selector{% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Handle currency selection
+    const currencySelectors = document.querySelectorAll('select[name="currency"]');
+    currencySelectors.forEach(selector => {
+      selector.addEventListener('change', async function(e) {
+        const currency = e.target.value;
+        
+        try {
+          const response = await fetch('/localization/change', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+              currency: currency
+            })
+          });
+          
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            console.error('Failed to change currency');
+          }
+        } catch (error) {
+          console.error('Error changing currency:', error);
+        }
+      });
+    });
+
+    // Handle language selection
+    const languageSelectors = document.querySelectorAll('select[name="language"]');
+    languageSelectors.forEach(selector => {
+      selector.addEventListener('change', async function(e) {
+        const language = e.target.value;
+        
+        try {
+          const response = await fetch('/localization/change', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+              locale: language
+            })
+          });
+          
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            console.error('Failed to change language');
+          }
+        } catch (error) {
+          console.error('Error changing language:', error);
+        }
+      });
+    });
+  });
+</script> 
