@@ -142,13 +142,24 @@
                 {%- for block in section.blocks -%}
                   {%- if block.type == 'extra_link' -%}
                     {%- if block.settings.show_wishlist -%}
-                      <a href="javascript:void(0);" class="product-extra-icon link btn-add-wishlist" data-wishlist data-id="{{ product.id }}" data-action="add">
+                      <a href="javascript:void(0);" 
+                         class="product-extra-icon link btn-add-wishlist" 
+                         data-wishlist 
+                         data-id="{{ product.id }}" 
+                         data-action="add"
+                         aria-label="Add to wishlist">
                         <i class="icon add icon-heart"></i><span class="add">{{ 'products.product.add_to_wishlist' | t }}</span>
                         <i class="icon added icon-trash"></i><span class="added">{{ 'products.product.remove_from_wishlist' | t }}</span>
                       </a>
                     {%- endif -%}
                     {%- if block.settings.show_compare -%}
-                      <a href="#compare" data-bs-toggle="modal" class="product-extra-icon link" data-compare data-id="{{ product.id }}" data-action="add">
+                      <a href="#compare" 
+                         data-bs-toggle="modal" 
+                         class="product-extra-icon link" 
+                         data-compare 
+                         data-id="{{ product.id }}" 
+                         data-action="add"
+                         aria-label="Add to compare">
                         <i class="icon icon-compare2"></i>{{ 'products.product.compare' | t }}
                       </a>
                     {%- endif -%}
@@ -353,392 +364,579 @@
 {% endschema %}
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const productSection = document.querySelector('.tf-product-info-wrap');
-  if (!productSection) return;
+console.log('Script started running');
 
-  // Handle variant selection
-  const variantPicker = productSection.querySelector('.tf-product-info-variant');
-  if (variantPicker) {
-    const colorBtns = variantPicker.querySelectorAll('.color-btn');
-    const sizeBtns = variantPicker.querySelectorAll('.size-btn');
-    const weightBtns = variantPicker.querySelectorAll('.weight-btn');
-    const variants = {{ product.variants | json }};
+// Wait for window to be fully loaded
+window.onload = function() {
+  console.log('Window fully loaded, initializing wishlist functionality');
+  
+  // Initialize wishlistCompare object if it doesn't exist
+  if (typeof window.wishlistCompare === 'undefined') {
+    console.log('Initializing wishlistCompare object');
+    window.wishlistCompare = {
+      // Get items from localStorage
+      getItems: function(type) {
+        const items = localStorage.getItem(`theme4:${type}:id`);
+        console.log(`Getting ${type} items from localStorage:`, items);
+        return items ? JSON.parse(items) : [];
+      },
 
-    // Function to find matching variant based on selected options
-    function findMatchingVariant() {
-      const selectedColor = document.querySelector('.color-btn.active')?.getAttribute('data-color');
-      const selectedSize = document.querySelector('.size-btn.active')?.getAttribute('data-size');
-      const selectedWeight = document.querySelector('.weight-btn.active')?.getAttribute('data-weight');
-      
-      console.log('Selected options:', {
-        color: selectedColor,
-        size: selectedSize,
-        weight: selectedWeight
-      });
+      // Save items to localStorage
+      saveItems: function(type, items) {
+        console.log(`Saving ${type} items to localStorage:`, items);
+        localStorage.setItem(`theme4:${type}:id`, JSON.stringify(items));
+      },
 
-      // Get all variants from the product data
-      const variants = {{ product.variants | json }};
-      console.log('Available variants:', variants);
-
-      const matchingVariant = variants.find(variant => {
-        const variantOptions = variant.title.toLowerCase().split(' / ');
-        console.log('Checking variant:', variant.title, variantOptions);
-        
-        // Handle each option type separately
-        let matchColor = true;
-        let matchSize = true;
-        let matchWeight = true;
-
-        if (selectedColor) {
-          matchColor = variantOptions[0] === selectedColor.toLowerCase();
+      // Add item to wishlist or compare
+      addItem: function(type, productId) {
+        console.log(`Adding item to ${type}:`, productId);
+        const items = this.getItems(type);
+        if (!items.includes(productId)) {
+          items.push(productId);
+          this.saveItems(type, items);
+          this.updateButtonsState();
         }
-        if (selectedSize) {
-          matchSize = variantOptions[1] === selectedSize.toLowerCase();
+      },
+
+      // Remove item from wishlist or compare
+      removeItem: function(type, productId) {
+        console.log(`Removing item from ${type}:`, productId);
+        const items = this.getItems(type);
+        const index = items.indexOf(productId);
+        if (index > -1) {
+          items.splice(index, 1);
+          this.saveItems(type, items);
+          this.updateButtonsState();
         }
-        if (selectedWeight) {
-          matchWeight = variantOptions[2] === selectedWeight.toLowerCase();
-        }
+      },
 
-        console.log('Match results:', { matchColor, matchSize, matchWeight });
-        return matchColor && matchSize && matchWeight;
-      });
+      // Add to wishlist
+      addToWishlist: function(productId) {
+        console.log('Adding to wishlist:', productId);
+        this.addItem('wishlist', productId);
+      },
 
-      console.log('Found matching variant:', matchingVariant);
-      return matchingVariant;
-    }
+      // Remove from wishlist
+      removeFromWishlist: function(productId) {
+        console.log('Removing from wishlist:', productId);
+        this.removeItem('wishlist', productId);
+      },
 
-    // Function to update variant selection
-    function updateVariantSelection(matchingVariant) {
-      if (!matchingVariant) {
-        console.log('No matching variant found');
-        return;
-      }
-      
-      console.log('Updating variant selection:', matchingVariant.id);
-      
-      // Update Add to Cart button variant ID
-      const addToCartBtn = document.querySelector('[data-add-to-cart]');
-      console.log('Add to Cart button:', addToCartBtn);
-      
-      if (addToCartBtn) {
-        addToCartBtn.dataset.variantId = matchingVariant.id.toString();
-        console.log('Updated Add to Cart button variant ID:', addToCartBtn.dataset.variantId);
-      } else {
-        console.log('Add to Cart button not found');
-      }
-      
-      // Update Buy it now form variant ID
-      const buyNowForm = document.querySelector('form[action="/cart/add"]');
-      console.log('Buy now form:', buyNowForm);
-      
-      if (buyNowForm) {
-        const variantInput = buyNowForm.querySelector('input[name="id"]');
-        const quantityInput = buyNowForm.querySelector('input[name="quantity"]');
-        if (variantInput) {
-          variantInput.value = matchingVariant.id.toString();
-          console.log('Updated Buy now form variant ID:', variantInput.value);
-        }
-        if (quantityInput) {
-          const mainQuantity = document.querySelector('.quantity-product');
-          quantityInput.value = mainQuantity ? mainQuantity.value : '1';
-          console.log('Updated Buy now form quantity:', quantityInput.value);
-        }
-      }
+      // Add to compare
+      addToCompare: function(productId) {
+        console.log('Adding to compare:', productId);
+        this.addItem('compare', productId);
+      },
 
-      // Update sticky form variant ID
-      const stickyForm = document.querySelector('.tf-sticky-btn-atc form');
-      if (stickyForm) {
-        const stickyVariantInput = stickyForm.querySelector('input[name="id"]');
-        if (stickyVariantInput) {
-          stickyVariantInput.value = matchingVariant.id.toString();
-          console.log('Updated sticky form variant ID:', stickyVariantInput.value);
-        }
-      }
+      // Remove from compare
+      removeFromCompare: function(productId) {
+        console.log('Removing from compare:', productId);
+        this.removeItem('compare', productId);
+      },
 
-      // Update price
-      const priceElement = document.querySelector('.product-info-price .price-new');
-      if (priceElement && typeof matchingVariant.price !== 'undefined') {
-        priceElement.innerHTML = `${matchingVariant.price / 100}₫`;
-        console.log('Updated price:', matchingVariant.price / 100);
-      }
-    }
+      // Update button states
+      updateButtonsState: function() {
+        console.log('Updating button states');
+        const wishlistItems = this.getItems('wishlist');
+        const compareItems = this.getItems('compare');
+        console.log('Current wishlist items:', wishlistItems);
+        console.log('Current compare items:', compareItems);
 
-    function handleVariantClick(buttons, optionType) {
-      if (!buttons || buttons.length === 0) {
-        console.log(`No ${optionType} buttons found`);
-        return;
-      }
-
-      console.log(`Setting up click handlers for ${optionType} buttons:`, buttons);
-      
-      buttons.forEach(btn => {
-        btn.addEventListener('click', function() {
-          console.log(`${optionType} button clicked:`, this);
-          
-          // Remove active class from all buttons of this type
-          buttons.forEach(b => b.classList.remove('active'));
-          // Add active class to clicked button
-          this.classList.add('active');
-          
-          // Get the value from the correct data attribute
-          const value = this.getAttribute(`data-${optionType.toLowerCase()}`);
-          console.log(`Selected ${optionType}:`, value);
-          
-          const label = document.querySelector(`.value-current${optionType}`);
-          if (label) {
-            label.textContent = value;
-          }
-          
-          // Find and update matching variant
-          const matchingVariant = findMatchingVariant();
-          if (matchingVariant) {
-            updateVariantSelection(matchingVariant);
+        // Update wishlist buttons
+        document.querySelectorAll('[data-wishlist]').forEach(button => {
+          const productId = button.dataset.id;
+          console.log('Checking wishlist button:', productId, 'Current action:', button.dataset.action);
+          if (wishlistItems.includes(productId)) {
+            console.log('Product is in wishlist, setting remove state');
+            button.dataset.action = 'remove';
+            const addElement = button.querySelector('.add');
+            const addedElement = button.querySelector('.added');
+            if (addElement) addElement.style.display = 'none';
+            if (addedElement) addedElement.style.display = 'inline';
           } else {
-            console.log('No matching variant found for selection');
+            console.log('Product is not in wishlist, setting add state');
+            button.dataset.action = 'add';
+            const addElement = button.querySelector('.add');
+            const addedElement = button.querySelector('.added');
+            if (addElement) addElement.style.display = 'inline';
+            if (addedElement) addedElement.style.display = 'none';
           }
         });
-      });
+
+        // Update compare buttons
+        document.querySelectorAll('[data-compare]').forEach(button => {
+          const productId = button.dataset.id;
+          console.log('Checking compare button:', productId, 'Current action:', button.dataset.action);
+          if (compareItems.includes(productId)) {
+            console.log('Product is in compare, setting remove state');
+            button.dataset.action = 'remove';
+          } else {
+            console.log('Product is not in compare, setting add state');
+            button.dataset.action = 'add';
+          }
+        });
+      }
+    };
+  }
+
+  // Function to initialize wishlist state
+  function initializeWishlistState() {
+    console.log('=== Starting wishlist state initialization ===');
+    const productSection = document.querySelector('.tf-product-info-wrap');
+    if (!productSection) {
+      console.error('Product section not found');
+      return;
     }
 
-    // Handle quantity changes
-    const quantityInput = document.querySelector('.quantity-product');
-    if (quantityInput) {
-      const updateBuyNowQuantity = () => {
-        const buyNowForm = document.querySelector('form[action="/cart/add"]');
-        if (buyNowForm) {
-          const quantityInput = buyNowForm.querySelector('input[name="quantity"]');
-          if (quantityInput) {
-            quantityInput.value = document.querySelector('.quantity-product').value || '1';
+    // Check wishlist state
+    const wishlistBtn = productSection.querySelector('.product-extra-icon[data-wishlist]');
+    if (wishlistBtn && window.wishlistCompare) {
+      const productId = wishlistBtn.dataset.id;
+      console.log('Found wishlist button with product ID:', productId);
+      const wishlistItems = window.wishlistCompare.getItems('wishlist');
+      console.log('Current wishlist items:', wishlistItems);
+      console.log('Checking if product is in wishlist:', productId, 'Result:', wishlistItems.includes(productId));
+      
+      // Set initial state
+      if (wishlistItems.includes(productId)) {
+        console.log('Product is in wishlist, setting remove state');
+        wishlistBtn.dataset.action = 'remove';
+        const addElement = wishlistBtn.querySelector('.add');
+        const addedElement = wishlistBtn.querySelector('.added');
+        if (addElement) addElement.style.display = 'none';
+        if (addedElement) addedElement.style.display = 'inline';
+      } else {
+        console.log('Product is not in wishlist, setting add state');
+        wishlistBtn.dataset.action = 'add';
+        const addElement = wishlistBtn.querySelector('.add');
+        const addedElement = wishlistBtn.querySelector('.added');
+        if (addElement) addElement.style.display = 'inline';
+        if (addedElement) addedElement.style.display = 'none';
+      }
+
+      // Set up event listener after initial state is set
+      const newWishlistBtn = wishlistBtn.cloneNode(true);
+      wishlistBtn.parentNode.replaceChild(newWishlistBtn, wishlistBtn);
+
+      newWishlistBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const productId = this.dataset.id;
+        const action = this.dataset.action;
+        console.log('Wishlist button clicked:', { productId, action });
+        
+        if (window.wishlistCompare) {
+          if (action === 'add') {
+            console.log('Adding to wishlist');
+            window.wishlistCompare.addToWishlist(productId);
+            this.dataset.action = 'remove';
+            const addElement = this.querySelector('.add');
+            const addedElement = this.querySelector('.added');
+            if (addElement) addElement.style.display = 'none';
+            if (addedElement) addedElement.style.display = 'inline';
+          } else {
+            console.log('Removing from wishlist');
+            window.wishlistCompare.removeFromWishlist(productId);
+            this.dataset.action = 'add';
+            const addElement = this.querySelector('.add');
+            const addedElement = this.querySelector('.added');
+            if (addElement) addElement.style.display = 'inline';
+            if (addedElement) addedElement.style.display = 'none';
           }
         }
-      };
+      }, { once: false });
+    }
 
-      // Update on direct input
-      quantityInput.addEventListener('change', updateBuyNowQuantity);
-      quantityInput.addEventListener('input', updateBuyNowQuantity);
-
-      // Update on button clicks
-      const decreaseBtn = document.querySelector('.btn-decrease');
-      const increaseBtn = document.querySelector('.btn-increase');
+    // Check compare state
+    const compareBtn = productSection.querySelector('.product-extra-icon[data-compare]');
+    if (compareBtn && window.wishlistCompare) {
+      const productId = compareBtn.dataset.id;
+      console.log('Found compare button with product ID:', productId);
+      const compareItems = window.wishlistCompare.getItems('compare');
+      console.log('Current compare items:', compareItems);
+      console.log('Checking if product is in compare:', productId, 'Result:', compareItems.includes(productId));
       
-      if (decreaseBtn) {
-        decreaseBtn.addEventListener('click', function() {
-          setTimeout(updateBuyNowQuantity, 0);
-        });
+      // Set initial state
+      if (compareItems.includes(productId)) {
+        console.log('Product is in compare, setting remove state');
+        compareBtn.dataset.action = 'remove';
+      } else {
+        console.log('Product is not in compare, setting add state');
+        compareBtn.dataset.action = 'add';
       }
+
+      // Set up event listener after initial state is set
+      const newCompareBtn = compareBtn.cloneNode(true);
+      compareBtn.parentNode.replaceChild(newCompareBtn, compareBtn);
+
+      newCompareBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const productId = this.dataset.id;
+        const action = this.dataset.action;
+        console.log('Compare button clicked:', { productId, action });
+        
+        if (window.wishlistCompare) {
+          if (action === 'add') {
+            console.log('Adding to compare');
+            window.wishlistCompare.addToCompare(productId);
+            this.dataset.action = 'remove';
+          } else {
+            console.log('Removing from compare');
+            window.wishlistCompare.removeFromCompare(productId);
+            this.dataset.action = 'add';
+          }
+        }
+      }, { once: false });
+    }
+    console.log('=== Finished wishlist state initialization ===');
+  }
+
+  // Initialize wishlist state
+  console.log('Initializing wishlist state');
+  initializeWishlistState();
+};
+
+// Also try to initialize immediately if document is already loaded
+if (document.readyState === 'complete') {
+  console.log('Document already loaded, initializing immediately');
+  window.onload();
+}
+
+// Handle variant selection
+const variantPicker = productSection.querySelector('.tf-product-info-variant');
+if (variantPicker) {
+  const colorBtns = variantPicker.querySelectorAll('.color-btn');
+  const sizeBtns = variantPicker.querySelectorAll('.size-btn');
+  const weightBtns = variantPicker.querySelectorAll('.weight-btn');
+  const variants = {{ product.variants | json }};
+
+  // Function to find matching variant based on selected options
+  function findMatchingVariant() {
+    const selectedColor = document.querySelector('.color-btn.active')?.getAttribute('data-color');
+    const selectedSize = document.querySelector('.size-btn.active')?.getAttribute('data-size');
+    const selectedWeight = document.querySelector('.weight-btn.active')?.getAttribute('data-weight');
+    
+    console.log('Selected options:', {
+      color: selectedColor,
+      size: selectedSize,
+      weight: selectedWeight
+    });
+
+    // Get all variants from the product data
+    const variants = {{ product.variants | json }};
+    console.log('Available variants:', variants);
+
+    const matchingVariant = variants.find(variant => {
+      const variantOptions = variant.title.toLowerCase().split(' / ');
+      console.log('Checking variant:', variant.title, variantOptions);
       
-      if (increaseBtn) {
-        increaseBtn.addEventListener('click', function() {
-          setTimeout(updateBuyNowQuantity, 0);
-        });
+      // Handle each option type separately
+      let matchColor = true;
+      let matchSize = true;
+      let matchWeight = true;
+
+      if (selectedColor) {
+        matchColor = variantOptions[0] === selectedColor.toLowerCase();
+      }
+      if (selectedSize) {
+        matchSize = variantOptions[1] === selectedSize.toLowerCase();
+      }
+      if (selectedWeight) {
+        matchWeight = variantOptions[2] === selectedWeight.toLowerCase();
+      }
+
+      console.log('Match results:', { matchColor, matchSize, matchWeight });
+      return matchColor && matchSize && matchWeight;
+    });
+
+    console.log('Found matching variant:', matchingVariant);
+    return matchingVariant;
+  }
+
+  // Function to update variant selection
+  function updateVariantSelection(matchingVariant) {
+    if (!matchingVariant) {
+      console.log('No matching variant found');
+      return;
+    }
+    
+    console.log('Updating variant selection:', matchingVariant.id);
+    
+    // Update Add to Cart button variant ID
+    const addToCartBtn = document.querySelector('[data-add-to-cart]');
+    console.log('Add to Cart button:', addToCartBtn);
+    
+    if (addToCartBtn) {
+      addToCartBtn.dataset.variantId = matchingVariant.id.toString();
+      console.log('Updated Add to Cart button variant ID:', addToCartBtn.dataset.variantId);
+    } else {
+      console.log('Add to Cart button not found');
+    }
+    
+    // Update Buy it now form variant ID
+    const buyNowForm = document.querySelector('form[action="/cart/add"]');
+    console.log('Buy now form:', buyNowForm);
+    
+    if (buyNowForm) {
+      const variantInput = buyNowForm.querySelector('input[name="id"]');
+      const quantityInput = buyNowForm.querySelector('input[name="quantity"]');
+      if (variantInput) {
+        variantInput.value = matchingVariant.id.toString();
+        console.log('Updated Buy now form variant ID:', variantInput.value);
+      }
+      if (quantityInput) {
+        const mainQuantity = document.querySelector('.quantity-product');
+        quantityInput.value = mainQuantity ? mainQuantity.value : '1';
+        console.log('Updated Buy now form quantity:', quantityInput.value);
       }
     }
 
-    // Initialize variant selection
-    handleVariantClick(colorBtns, 'Color');
-    handleVariantClick(sizeBtns, 'Size');
-    handleVariantClick(weightBtns, 'Weight');
-    
-    // Initialize variant selection when the page loads
-    const initialVariant = findMatchingVariant();
-    if (initialVariant) {
-      updateVariantSelection(initialVariant);
+    // Update sticky form variant ID
+    const stickyForm = document.querySelector('.tf-sticky-btn-atc form');
+    if (stickyForm) {
+      const stickyVariantInput = stickyForm.querySelector('input[name="id"]');
+      if (stickyVariantInput) {
+        stickyVariantInput.value = matchingVariant.id.toString();
+        console.log('Updated sticky form variant ID:', stickyVariantInput.value);
+      }
+    }
+
+    // Update price
+    const priceElement = document.querySelector('.product-info-price .price-new');
+    if (priceElement && typeof matchingVariant.price !== 'undefined') {
+      priceElement.innerHTML = `${matchingVariant.price / 100}₫`;
+      console.log('Updated price:', matchingVariant.price / 100);
     }
   }
 
-  // Handle add to cart button
-  const addToCartBtn = productSection.querySelector('.tf-btn[data-add-to-cart]');
-  if (addToCartBtn) {
-    addToCartBtn.addEventListener('click', async function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      if (this.classList.contains('loading')) return;
-      
-      const variantId = this.dataset.variantId;
-      const quantity = parseInt(document.querySelector('.quantity-product')?.value || 1);
-      
-      try {
-        this.classList.add('loading');
+  function handleVariantClick(buttons, optionType) {
+    if (!buttons || buttons.length === 0) {
+      console.log(`No ${optionType} buttons found`);
+      return;
+    }
+
+    console.log(`Setting up click handlers for ${optionType} buttons:`, buttons);
+    
+    buttons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        console.log(`${optionType} button clicked:`, this);
         
-        if (window.cart) {
-          await window.cart.updateQuantity(variantId, quantity, 'add');
-          
-          // Fetch updated cart data
-          const response = await fetch('/cart.js');
-          const cartData = await response.json();
-          
-          // Update cart drawer
-          const cartDrawer = document.getElementById('shoppingCart');
-          if (cartDrawer) {
-            const itemsContainer = cartDrawer.querySelector('.tf-mini-cart-items');
-            if (itemsContainer) {
-              itemsContainer.innerHTML = '';
-              
-              cartData.items.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'tf-mini-cart-item';
-                itemElement.style.border = 'none';
-                itemElement.style.borderBottom = 'none';
-                itemElement.innerHTML = `
-                  <div class="tf-mini-cart-image">
-                    <a href="${item.url}">
-                      <img class="lazyload" data-src="${item.image}" src="${item.image}" alt="${item.title}" loading="lazy">
-                    </a>
-                  </div>
-                  <div class="tf-mini-cart-info">
-                    <div class="d-flex justify-content-between">
-                      <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
-                      <i class="icon icon-close remove fs-12" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
-                    </div>
-                    <div class="d-flex gap-10">
-                      <div class="text-xs">${item.variant_title || ''}</div>
-                      <a href="#" class="link edit"><i class="icon-pen"></i></a>
-                    </div>
-                    <div class="tf-mini-cart-item_price">
-                      <p class="price-wrap text-sm fw-medium">
-                        <span class="new-price text-primary">${(item.final_price / 100).toFixed(2)} ${cartData.currency.symbol}</span>
-                      </p>
-                    </div>
-                    <div class="tf-mini-cart-item_quantity">
-                      <div class="wg-quantity small">
-                        <span class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</span>
-                        <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
-                        <span class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</span>
-                      </div>
-                    </div>
-                  </div>
-                `;
-                itemsContainer.appendChild(itemElement);
-              });
-              
-              // Update cart total
-              const totalElement = cartDrawer.querySelector('.cart-total-price');
-              if (totalElement) {
-                totalElement.textContent = `${(cartData.total_price / 100).toFixed(2)} ${cartData.currency.symbol}`;
-              }
-              
-              // Update header cart count
-              const headerCount = document.querySelector('.count-box');
-              if (headerCount) {
-                headerCount.textContent = cartData.item_count;
-              }
+        // Remove active class from all buttons of this type
+        buttons.forEach(b => b.classList.remove('active'));
+        // Add active class to clicked button
+        this.classList.add('active');
+        
+        // Get the value from the correct data attribute
+        const value = this.getAttribute(`data-${optionType.toLowerCase()}`);
+        console.log(`Selected ${optionType}:`, value);
+        
+        const label = document.querySelector(`.value-current${optionType}`);
+        if (label) {
+          label.textContent = value;
+        }
+        
+        // Find and update matching variant
+        const matchingVariant = findMatchingVariant();
+        if (matchingVariant) {
+          updateVariantSelection(matchingVariant);
+        } else {
+          console.log('No matching variant found for selection');
+        }
+      });
+    });
+  }
 
-              // Update shipping threshold progress bar
-              const progressBar = cartDrawer.querySelector('.tf-progress-bar .value');
-              if (progressBar) {
-                const threshold = 100 * 100; // $100 in cents
-                const progress = Math.min(100, (cartData.total_price / threshold) * 100);
-                progressBar.style.width = `${progress}%`;
-                progressBar.setAttribute('data-progress', progress);
-              }
+  // Handle quantity changes
+  const quantityInput = document.querySelector('.quantity-product');
+  if (quantityInput) {
+    const updateBuyNowQuantity = () => {
+      const buyNowForm = document.querySelector('form[action="/cart/add"]');
+      if (buyNowForm) {
+        const quantityInput = buyNowForm.querySelector('input[name="quantity"]');
+        if (quantityInput) {
+          quantityInput.value = document.querySelector('.quantity-product').value || '1';
+        }
+      }
+    };
 
-              // Update shipping threshold text
-              const thresholdText = cartDrawer.querySelector('.tf-mini-cart-threshold .text');
-              if (thresholdText) {
-                const threshold = 100 * 100; // $100 in cents
-                const remaining = Math.max(0, threshold - cartData.total_price) / 100;
-                if (cartData.total_price >= threshold) {
-                  thresholdText.innerHTML = 'Congratulations! You\'ve unlocked <span class="fw-medium">Free Shipping</span>';
-                } else {
-                  thresholdText.innerHTML = `Spend <span class="fw-medium">$${remaining.toFixed(2)}</span> more to get <span class="fw-medium">Free Shipping</span>`;
-                }
+    // Update on direct input
+    quantityInput.addEventListener('change', updateBuyNowQuantity);
+    quantityInput.addEventListener('input', updateBuyNowQuantity);
+
+    // Update on button clicks
+    const decreaseBtn = document.querySelector('.btn-decrease');
+    const increaseBtn = document.querySelector('.btn-increase');
+    
+    if (decreaseBtn) {
+      decreaseBtn.addEventListener('click', function() {
+        setTimeout(updateBuyNowQuantity, 0);
+      });
+    }
+    
+    if (increaseBtn) {
+      increaseBtn.addEventListener('click', function() {
+        setTimeout(updateBuyNowQuantity, 0);
+      });
+    }
+  }
+
+  // Initialize variant selection
+  handleVariantClick(colorBtns, 'Color');
+  handleVariantClick(sizeBtns, 'Size');
+  handleVariantClick(weightBtns, 'Weight');
+  
+  // Initialize variant selection when the page loads
+  const initialVariant = findMatchingVariant();
+  if (initialVariant) {
+    updateVariantSelection(initialVariant);
+  }
+}
+
+// Handle add to cart button
+const addToCartBtn = productSection.querySelector('.tf-btn[data-add-to-cart]');
+if (addToCartBtn) {
+  addToCartBtn.addEventListener('click', async function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (this.classList.contains('loading')) return;
+    
+    const variantId = this.dataset.variantId;
+    const quantity = parseInt(document.querySelector('.quantity-product')?.value || 1);
+    
+    try {
+      this.classList.add('loading');
+      
+      if (window.cart) {
+        await window.cart.updateQuantity(variantId, quantity, 'add');
+        
+        // Fetch updated cart data
+        const response = await fetch('/cart.js');
+        const cartData = await response.json();
+        
+        // Update cart drawer
+        const cartDrawer = document.getElementById('shoppingCart');
+        if (cartDrawer) {
+          const itemsContainer = cartDrawer.querySelector('.tf-mini-cart-items');
+          if (itemsContainer) {
+            itemsContainer.innerHTML = '';
+            
+            cartData.items.forEach(item => {
+              const itemElement = document.createElement('div');
+              itemElement.className = 'tf-mini-cart-item';
+              itemElement.style.border = 'none';
+              itemElement.style.borderBottom = 'none';
+              itemElement.innerHTML = `
+                <div class="tf-mini-cart-image">
+                  <a href="${item.url}">
+                    <img class="lazyload" data-src="${item.image}" src="${item.image}" alt="${item.title}" loading="lazy">
+                  </a>
+                </div>
+                <div class="tf-mini-cart-info">
+                  <div class="d-flex justify-content-between">
+                    <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
+                    <i class="icon icon-close remove fs-12" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
+                  </div>
+                  <div class="d-flex gap-10">
+                    <div class="text-xs">${item.variant_title || ''}</div>
+                    <a href="#" class="link edit"><i class="icon-pen"></i></a>
+                  </div>
+                  <div class="tf-mini-cart-item_price">
+                    <p class="price-wrap text-sm fw-medium">
+                      <span class="new-price text-primary">${(item.final_price / 100).toFixed(2)} ${cartData.currency.symbol}</span>
+                    </p>
+                  </div>
+                  <div class="tf-mini-cart-item_quantity">
+                    <div class="wg-quantity small">
+                      <span class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</span>
+                      <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
+                      <span class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</span>
+                    </div>
+                  </div>
+                </div>
+              `;
+              itemsContainer.appendChild(itemElement);
+            });
+            
+            // Update cart total
+            const totalElement = cartDrawer.querySelector('.cart-total-price');
+            if (totalElement) {
+              totalElement.textContent = `${(cartData.total_price / 100).toFixed(2)} ${cartData.currency.symbol}`;
+            }
+            
+            // Update header cart count
+            const headerCount = document.querySelector('.count-box');
+            if (headerCount) {
+              headerCount.textContent = cartData.item_count;
+            }
+
+            // Update shipping threshold progress bar
+            const progressBar = cartDrawer.querySelector('.tf-progress-bar .value');
+            if (progressBar) {
+              const threshold = 100 * 100; // $100 in cents
+              const progress = Math.min(100, (cartData.total_price / threshold) * 100);
+              progressBar.style.width = `${progress}%`;
+              progressBar.setAttribute('data-progress', progress);
+            }
+
+            // Update shipping threshold text
+            const thresholdText = cartDrawer.querySelector('.tf-mini-cart-threshold .text');
+            if (thresholdText) {
+              const threshold = 100 * 100; // $100 in cents
+              const remaining = Math.max(0, threshold - cartData.total_price) / 100;
+              if (cartData.total_price >= threshold) {
+                thresholdText.innerHTML = 'Congratulations! You\'ve unlocked <span class="fw-medium">Free Shipping</span>';
+              } else {
+                thresholdText.innerHTML = `Spend <span class="fw-medium">$${remaining.toFixed(2)}</span> more to get <span class="fw-medium">Free Shipping</span>`;
               }
             }
           }
         }
-      } catch (error) {
-        console.error('Error adding item to cart:', error);
-        alert('Failed to add item to cart. Please try again.');
-      } finally {
-        this.classList.remove('loading');
       }
-    });
-  }
-
-  // Handle wishlist button
-  const wishlistBtn = productSection.querySelector('.product-extra-icon[data-wishlist]');
-  if (wishlistBtn) {
-    wishlistBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      const productId = this.dataset.id;
-      const action = this.dataset.action;
-      
-      if (window.wishlistCompare) {
-        if (action === 'add') {
-          window.wishlistCompare.addToWishlist(productId);
-          this.dataset.action = 'remove';
-          this.querySelector('.add').style.display = 'none';
-          this.querySelector('.added').style.display = 'inline';
-        } else {
-          window.wishlistCompare.removeFromWishlist(productId);
-          this.dataset.action = 'add';
-          this.querySelector('.add').style.display = 'inline';
-          this.querySelector('.added').style.display = 'none';
-        }
-      }
-    });
-  }
-
-  // Handle compare button
-  const compareBtn = productSection.querySelector('.product-extra-icon[data-compare]');
-  if (compareBtn) {
-    compareBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      const productId = this.dataset.id;
-      const action = this.dataset.action;
-      
-      if (window.wishlistCompare) {
-        if (action === 'add') {
-          window.wishlistCompare.addToCompare(productId);
-          this.dataset.action = 'remove';
-        } else {
-          window.wishlistCompare.removeFromCompare(productId);
-          this.dataset.action = 'add';
-        }
-      }
-    });
-  }
-
-  // Initialize wishlist and compare buttons state
-  if (window.wishlistCompare) {
-    window.wishlistCompare.updateButtonsState();
-  }
-
-  // Initialize Swiper for product images
-  const thumbsSwiper = new Swiper('.tf-product-media-thumbs', {
-    direction: 'vertical',
-    slidesPerView: 4,
-    spaceBetween: 10,
-    watchSlidesProgress: true,
-    breakpoints: {
-      320: {
-        direction: 'horizontal',
-        slidesPerView: 4,
-      },
-      768: {
-        direction: 'vertical',
-        slidesPerView: 4,
-      }
+    } catch (error) {
+      console.error('Error adding item to cart:', error);
+      alert('Failed to add item to cart. Please try again.');
+    } finally {
+      this.classList.remove('loading');
     }
   });
+}
 
-  const mainSwiper = new Swiper('.tf-product-media-main', {
-    slidesPerView: 1,
-    spaceBetween: 10,
-    thumbs: {
-      swiper: thumbsSwiper
+// Initialize Swiper for product images
+const thumbsSwiper = new Swiper('.tf-product-media-thumbs', {
+  direction: 'vertical',
+  slidesPerView: 4,
+  spaceBetween: 10,
+  watchSlidesProgress: true,
+  breakpoints: {
+    320: {
+      direction: 'horizontal',
+      slidesPerView: 4,
     },
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-    zoom: {
-      maxRatio: 3,
-      minRatio: 1
+    768: {
+      direction: 'vertical',
+      slidesPerView: 4,
     }
-  });
+  }
+});
+
+const mainSwiper = new Swiper('.tf-product-media-main', {
+  slidesPerView: 1,
+  spaceBetween: 10,
+  thumbs: {
+    swiper: thumbsSwiper
+  },
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+  zoom: {
+    maxRatio: 3,
+    minRatio: 1
+  }
 });
 </script>
 
