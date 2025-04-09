@@ -1,11 +1,56 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Vineta",
+    "theme_name": "Shopify Theme",
     "theme_version": "1.0.0",
     "theme_author": "Your Name",
-    "theme_documentation_url": "https://www.google.com",
-    "theme_support_url": "https://www.google.com"
+    "theme_documentation_url": "https://help.shopify.com/en/manual/online-store/themes",
+    "theme_support_url": "https://help.shopify.com/en/manual/online-store/themes/getting-started/theme-support"
+  },
+  {
+    "name": "Feature Settings",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Feature Toggles"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_quickview",
+        "label": "Enable Quick View",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_compare",
+        "label": "Enable Product Comparison",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_wishlist",
+        "label": "Enable Wishlist",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_zoom",
+        "label": "Enable Product Image Zoom",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_parallax",
+        "label": "Enable Parallax Effects",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_animations",
+        "label": "Enable Animations",
+        "default": true
+      }
+    ]
   },
   {
     "name": "Colors",

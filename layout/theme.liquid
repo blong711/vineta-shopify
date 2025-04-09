@@ -15,11 +15,9 @@
     {% render 'currency-selector' %}
     {{ content_for_header }}
 
-    <!-- Fonts -->
+    <!-- Core CSS -->
     {{ 'fonts.css' | asset_url | stylesheet_tag }}
     {{ 'font-icons.css' | asset_url | stylesheet_tag }}
-
-    <!-- Third-party CSS -->
     {{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}
     {{ 'bootstrap-select.min.css' | asset_url | stylesheet_tag }}
     {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
@@ -27,8 +25,6 @@
     {{ 'drift-basic.min.css' | asset_url | stylesheet_tag }}
     {{ 'image-compare-viewer.min.css' | asset_url | stylesheet_tag }}
     {{ 'animate.css' | asset_url | stylesheet_tag }}
-
-    <!-- Theme CSS -->
     {{ 'theme.css' | asset_url | stylesheet_tag }}
     {{ 'styles.css' | asset_url | stylesheet_tag }}
     {{ 'main-slider.css' | asset_url | stylesheet_tag }}
@@ -60,7 +56,7 @@
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
     <script src="{{ 'main.js' | asset_url }}" defer></script>
     <script src="{{ 'shop.js' | asset_url }}" defer></script>
-    <script src="{{ 'custom.js' | asset_url }}" defer></script>
+    <script src="{{ 'global.js' | asset_url }}" defer></script>
 
     <script>
       document.addEventListener('DOMContentLoaded', function() {
@@ -234,8 +230,15 @@
       {% section 'search-drawer' %}
       {% section 'login-drawer' %}
       {% section 'register-drawer' %}
-      {% section 'compare-drawer' %}
-      {% section 'quickview-modal' %}
+      
+      {% if settings.enable_compare %}
+        {% section 'compare-drawer' %}
+      {% endif %}
+      
+      {% if settings.enable_quickview %}
+        {% section 'quickview-modal' %}
+      {% endif %}
+      
       {% section 'ask-question-drawer' %}
       {% section 'share-social-drawer' %}
     </div>
