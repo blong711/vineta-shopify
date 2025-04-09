@@ -512,25 +512,65 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const productId = this.dataset.id;
       const currentAction = this.dataset.action;
+      const compareKey = 'theme4:compare:id';
 
-      // Update visual state immediately
+      // Get current compare list
+      const storedCompare = localStorage.getItem(compareKey);
+      let compareList = [];
+      
+      if (storedCompare) {
+        try {
+          compareList = JSON.parse(storedCompare);
+        } catch (e) {
+          compareList = storedCompare.split(',');
+        }
+      }
+
+      // Update compare list
       if (currentAction === 'add') {
+        if (!compareList.includes(productId)) {
+          compareList.push(productId);
+        }
         this.dataset.action = 'remove';
         this.classList.add('active');
 
-        // Call WishlistCompare's add method
+        // Call WishlistCompare's add method with product ID
         if (window.wishlistCompare) {
           window.wishlistCompare.addToCompare(productId);
         }
       } else {
+        compareList = compareList.filter(id => id !== productId);
         this.dataset.action = 'add';
         this.classList.remove('active');
 
-        // Call WishlistCompare's remove method
+        // Call WishlistCompare's remove method with product ID
         if (window.wishlistCompare) {
           window.wishlistCompare.removeFromCompare(productId);
         }
       }
+
+      // Save to localStorage
+      try {
+        localStorage.setItem(compareKey, JSON.stringify(compareList));
+        console.log('Compare list updated:', compareList); // Debug log
+      } catch (error) {
+        console.error('Error saving to localStorage:', error);
+      }
+
+      // Update header compare count
+      const headerCompareCount = document.querySelector('.compare-count');
+      if (headerCompareCount) {
+        headerCompareCount.textContent = compareList.length;
+      }
+
+      // Dispatch events for other components
+      document.dispatchEvent(new CustomEvent('theme4:compare:update', {
+        detail: {
+          count: compareList.length,
+          productId: productId,
+          action: currentAction
+        }
+      }));
 
       // Remove loading state after a short delay
       setTimeout(() => {

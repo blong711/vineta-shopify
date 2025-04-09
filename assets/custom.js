@@ -13,7 +13,11 @@ class WishlistCompare {
 
   init() {
     // Initialize event listeners
-    document.addEventListener('click', this.handleClick.bind(this));
+    console.log('Initializing WishlistCompare event listeners');
+    document.addEventListener('click', (e) => {
+      console.log('Click event detected:', e.target);
+      this.handleClick(e);
+    });
     document.addEventListener('keydown', this.handleKeydown.bind(this));
     
     // Initialize buttons state
@@ -40,21 +44,41 @@ class WishlistCompare {
   }
 
   handleClick(event) {
+    console.log('handleClick called, checking for target');
     const target = event.target.closest('[data-wishlist], [data-compare]');
-    if (!target) return;
+    console.log('Found target:', target);
+    if (!target) {
+      console.log('No valid target found');
+      return;
+    }
+
+    console.log('Click target:', target);
+    console.log('Target dataset:', target.dataset);
+    console.log('Target attributes:', {
+      'data-id': target.getAttribute('data-id'),
+      'data-action': target.getAttribute('data-action'),
+      'data-compare': target.hasAttribute('data-compare'),
+      'data-wishlist': target.hasAttribute('data-wishlist')
+    });
 
     const isWishlist = target.hasAttribute('data-wishlist');
     const productId = target.getAttribute('data-id');
     const action = target.getAttribute('data-action');
+
+    console.log('Click handler:', { isWishlist, productId, action });
 
     if (isWishlist) {
       this.handleWishlist(productId, action);
     } else if (action === 'clear') {
       this.clearCompareList();
     } else if (action === 'add') {
+      console.log('Adding to compare, product ID:', productId);
       this.addToCompare(productId);
     } else if (action === 'remove') {
+      console.log('Removing from compare, product ID:', productId);
       this.removeFromCompare(productId);
+    } else {
+      console.log('No matching action found');
     }
   }
 
@@ -113,20 +137,47 @@ class WishlistCompare {
   }
 
   addToCompare(productId) {
-    if (this.compareList.includes(productId)) return;
+    console.log('addToCompare called with ID:', productId);
     
+    if (!productId) {
+      console.error('No product ID provided for compare');
+      return;
+    }
+
+    if (this.compareList.includes(productId)) {
+      console.log('Product already in compare list:', productId);
+      return;
+    }
+    
+    console.log('Current compare list:', this.compareList);
     this.compareList.unshift(productId);
+    console.log('Updated compare list:', this.compareList);
+    
     if (this.compareList.length > this.compareLimit) {
       this.compareList.pop();
     }
     
     this.saveCompareList();
     this.updateButtonsState();
-    this.showCompareDrawer();
-    this.showNotification('Added to compare');
+    
+    // Only show drawer if we have valid product data
+    const productData = this.getProductData(productId);
+    console.log('Product data retrieved:', productData);
+    
+    if (productData) {
+      this.showCompareDrawer();
+      this.showNotification('Added to compare');
+    } else {
+      console.error('Could not get product data for compare');
+    }
   }
 
   removeFromCompare(productId) {
+    if (!productId) {
+      console.error('No product ID provided for remove from compare');
+      return;
+    }
+
     const index = this.compareList.indexOf(productId);
     if (index === -1) return;
     
@@ -172,8 +223,22 @@ class WishlistCompare {
     
     // Create and show Bootstrap modal
     const modal = new bootstrap.Modal(drawer);
-    modal.show();
     
+    // Add event listener to remove backdrop and fix body styles when modal is hidden
+    drawer.addEventListener('hidden.bs.modal', () => {
+      // Remove backdrop
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove();
+      }
+      
+      // Fix body styles
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+      document.body.classList.remove('modal-open');
+    }, { once: true }); // Use once:true to avoid memory leaks
+    
+    modal.show();
     this.updateCompareDrawer();
   }
 
@@ -189,8 +254,13 @@ class WishlistCompare {
 
     // Add current compare items
     this.compareList.forEach(productId => {
+      if (!productId) return; // Skip invalid product IDs
+      
       const product = this.getProductData(productId);
-      if (!product) return;
+      if (!product) {
+        console.error(`Could not get product data for ID: ${productId}`);
+        return;
+      }
 
       const item = this.createCompareItem(product);
       compareList.appendChild(item);
@@ -230,19 +300,57 @@ class WishlistCompare {
   }
 
   getProductData(productId) {
-    // This should be implemented to get product data from your theme
-    // You might want to store product data in a data attribute or fetch it from an API
-    const productElement = document.querySelector(`[data-product-id="${productId}"]`);
-    if (!productElement) return null;
+    console.log('getProductData called with ID:', productId);
+    
+    // First try to get data from product section if we're on a product page
+    const productSection = document.querySelector('.tf-product-info-wrap');
+    console.log('Product section found:', !!productSection);
+    
+    if (productSection) {
+      const productName = productSection.querySelector('.product-info-name')?.textContent?.trim();
+      // Try multiple selectors to find the product image
+      const productImage = document.querySelector('.tf-product-media-main .swiper-slide:first-child a')?.getAttribute('href') || 
+                         document.querySelector('.tf-product-media-main .swiper-slide:first-child img')?.getAttribute('data-zoom') || 
+                         document.querySelector('.tf-product-media-main .swiper-slide:first-child img')?.getAttribute('data-src') ||
+                         document.querySelector('.tf-product-media-main .swiper-slide:first-child img')?.src;
+      const productPrice = productSection.querySelector('.price-new')?.textContent?.trim();
+      
+      console.log('Product section data:', { productName, productImage, productPrice });
 
-    return {
+      if (productId && productName) {
+        const productData = {
+          id: productId,
+          title: productName,
+          url: window.location.pathname,
+          image: productImage || '',
+          price: productPrice || '',
+          comparePrice: productSection.querySelector('.price-old')?.textContent?.trim() || ''
+        };
+        console.log('Returning product data from section:', productData);
+        return productData;
+      }
+    }
+
+    // Fallback to looking for product element in the page
+    const productElement = document.querySelector(`[data-product-id="${productId}"]`);
+    console.log('Product element found:', !!productElement);
+    
+    if (!productElement) {
+      console.error('Product data not found for ID:', productId);
+      return null;
+    }
+
+    const productData = {
       id: productId,
-      title: productElement.getAttribute('data-product-title'),
-      url: productElement.getAttribute('data-product-url'),
-      image: productElement.getAttribute('data-product-image'),
-      price: productElement.getAttribute('data-product-price'),
-      comparePrice: productElement.getAttribute('data-product-compare-price')
+      title: productElement.getAttribute('data-product-title') || productElement.querySelector('.title')?.textContent?.trim() || '',
+      url: productElement.getAttribute('data-product-url') || productElement.querySelector('a')?.href || '',
+      image: productElement.getAttribute('data-product-image') || productElement.querySelector('img')?.src || '',
+      price: productElement.getAttribute('data-product-price') || productElement.querySelector('.price')?.textContent?.trim() || '',
+      comparePrice: productElement.getAttribute('data-product-compare-price') || productElement.querySelector('.compare-price')?.textContent?.trim() || ''
     };
+
+    console.log('Returning product data from element:', productData);
+    return productData;
   }
 
   showNotification(message) {
