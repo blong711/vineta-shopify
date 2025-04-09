@@ -38,7 +38,7 @@
                     <div class="mega-menu">
                       <div class="container">
                         <div class="row">
-                          <div class="col-md-9">
+                          <div class="col-md-8">
                             <div class="row">
                               {%- for childlink in link.links -%}
                                 <div class="col-md-4 mega-menu-column">
@@ -60,22 +60,51 @@
                               {%- endfor -%}
                             </div>
                           </div>
-                          <div class="col-md-3">
-                            {%- if section.settings.menu_promo_image != blank -%}
-                              <div class="mega-menu-promo">
-                                <a href="{{ section.settings.menu_promo_url }}" class="mega-menu-image">
-                                  <img src="{{ section.settings.menu_promo_image | image_url: width: 300 }}"
-                                    alt="{{ section.settings.menu_promo_image.alt | default: shop.name }}"
-                                    width="300"
-                                    loading="lazy">
-                                  {%- if section.settings.menu_promo_text != blank -%}
-                                    <div class="mega-menu-promo-text">
-                                      {{ section.settings.menu_promo_text }}
-                                    </div>
-                                  {%- endif -%}
-                                </a>
+                          <div class="col-md-4">
+                            <div class="row">
+                              <div class="col-6">
+                                {%- if section.settings.collection1 != blank -%}
+                                  {%- assign collection1 = collections[section.settings.collection1] -%}
+                                  <div class="mega-menu-collection">
+                                    <a href="{{ collection1.url }}" class="mega-menu-image">
+                                      {%- if collection1.image != blank -%}
+                                        <img src="{{ collection1.image | image_url: width: 300 }}"
+                                          alt="{{ collection1.title }}"
+                                          width="300"
+                                          loading="lazy">
+                                      {%- endif -%}
+                                      <div class="mega-menu-collection-info">
+                                        <h4>{{ collection1.title }}</h4>
+                                        {%- if section.settings.show_product_count -%}
+                                          <p>{{ collection1.products_count }} products</p>
+                                        {%- endif -%}
+                                      </div>
+                                    </a>
+                                  </div>
+                                {%- endif -%}
                               </div>
-                            {%- endif -%}
+                              <div class="col-6">
+                                {%- if section.settings.collection2 != blank -%}
+                                  {%- assign collection2 = collections[section.settings.collection2] -%}
+                                  <div class="mega-menu-collection">
+                                    <a href="{{ collection2.url }}" class="mega-menu-image">
+                                      {%- if collection2.image != blank -%}
+                                        <img src="{{ collection2.image | image_url: width: 300 }}"
+                                          alt="{{ collection2.title }}"
+                                          width="300"
+                                          loading="lazy">
+                                      {%- endif -%}
+                                      <div class="mega-menu-collection-info">
+                                        <h4>{{ collection2.title }}</h4>
+                                        {%- if section.settings.show_product_count -%}
+                                          <p>{{ collection2.products_count }} products</p>
+                                        {%- endif -%}
+                                      </div>
+                                    </a>
+                                  </div>
+                                {%- endif -%}
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -208,6 +237,53 @@
   text-align: center;
   font-weight: 500;
 }
+
+.mega-menu-collection {
+  position: relative;
+  margin-bottom: 20px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.mega-menu-collection .mega-menu-image {
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
+.mega-menu-collection img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.mega-menu-collection:hover img {
+  transform: scale(1.05);
+}
+
+.mega-menu-collection-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  color: #fff;
+  text-align: center;
+}
+
+.mega-menu-collection-info h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.mega-menu-collection-info p {
+  margin: 5px 0 0;
+  font-size: 14px;
+  opacity: 0.8;
+}
 </style>
 
 {% schema %}
@@ -288,6 +364,26 @@
       "type": "checkbox",
       "id": "show_cart",
       "label": "Show cart",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Mega Menu Collections"
+    },
+    {
+      "type": "collection",
+      "id": "collection1",
+      "label": "Collection 1"
+    },
+    {
+      "type": "collection",
+      "id": "collection2",
+      "label": "Collection 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show product count",
       "default": true
     }
   ],
