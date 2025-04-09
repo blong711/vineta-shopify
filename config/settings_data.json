@@ -24,10 +24,15 @@
         "settings": {
           "logo_width": 150,
           "menu": "main-menu",
+          "menu_promo_url": "",
+          "menu_promo_text": "",
           "show_search": true,
           "show_account": true,
           "show_wishlist": true,
-          "show_cart": true
+          "show_cart": true,
+          "collection1": "accessories",
+          "collection2": "houseware",
+          "show_product_count": true
         }
       },
       "footer": {
@@ -98,8 +103,7 @@
             "type": "extra_link",
             "settings": {
               "show_wishlist": true,
-              "show_compare": true,
-              "show_quickview": true
+              "show_compare": true
             }
           }
         },
@@ -133,6 +137,28 @@
         "settings": {
           "title": "Recently Viewed",
           "products_to_show": 8
+        }
+      },
+      "ask-question-drawer": {
+        "type": "ask-question-drawer",
+        "settings": {
+          "title": "Ask a Question",
+          "name_label": "Your name*",
+          "phone_label": "Your phone number",
+          "email_label": "Your email*",
+          "message_label": "Message*",
+          "submit_label": "Send Message"
+        }
+      },
+      "share-social-drawer": {
+        "type": "share-social-drawer",
+        "settings": {
+          "title": "Share",
+          "copy_button_text": "Copy",
+          "show_facebook": true,
+          "show_instagram": true,
+          "show_twitter": true,
+          "show_snapchat": true
         }
       }
     },
