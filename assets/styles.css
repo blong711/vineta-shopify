@@ -17171,6 +17171,39 @@ button.animate-btn::after,
 .tf-product-info-wrap .variant-size .size-btn:not(.select-item).active {
   border-color: var(--dark);
 }
+.tf-product-info-wrap .variant-weight .variant-picker-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tf-product-info-wrap .variant-weight .weight-btn:not(.select-item) {
+  min-width: 60px;
+  height: 40px;
+  border-radius: 8px;  /* Rounded corners but not circular */
+  border: 1px solid var(--line);
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--dark);
+  font-weight: 500;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0 12px;
+}
+
+.tf-product-info-wrap .variant-weight .weight-btn:not(.select-item):hover {
+  border-color: var(--dark);
+}
+
+.tf-product-info-wrap .variant-weight .weight-btn:not(.select-item).active {
+  border-color: var(--dark);
+}
 .tf-product-info-wrap .product-info-countdown {
   padding: 20px;
   display: inline-block;
