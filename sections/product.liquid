@@ -105,6 +105,8 @@
                             <span class="check-color bg-{{ value | handle }}"></span>
                             <span class="tooltip">{{ value }}</span>
                           </div>
+                        {%- elsif option.name == 'Weight' -%}
+                          <span class="weight-btn{% if value == option.selected_value %} active{% endif %}" data-{{ option.name | handle }}="{{ value | handle }}">{{ value }}</span>
                         {%- else -%}
                           <span class="size-btn{% if value == option.selected_value %} active{% endif %}" data-{{ option.name | handle }}="{{ value | handle }}">{{ value }}</span>
                         {%- endif -%}

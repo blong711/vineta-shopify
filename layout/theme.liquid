@@ -89,6 +89,122 @@
     </script>
   
   {% render 'shogun-head' %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
+  <style>
+    /* Filter styles */
+    .canvas-filter {
+      width: 300px;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    
+    .canvas-header {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .canvas-body {
+      padding: 15px;
+      max-height: calc(100vh - 60px);
+      overflow-y: auto;
+    }
+    
+    .widget-facet {
+      margin-bottom: 20px;
+    }
+    
+    .facet-title {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+    }
+    
+    .collapse-body {
+      padding: 10px 0;
+    }
+    
+    /* Price range slider */
+    .price-val-range {
+      margin: 20px 0;
+    }
+    
+    .noUi-connect {
+      background: #007bff;
+    }
+    
+    .noUi-handle {
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    }
+    
+    .noUi-handle:before,
+    .noUi-handle:after {
+      display: none;
+    }
+    
+    /* Filter tags */
+    .filter-tag {
+      display: inline-flex;
+      align-items: center;
+      background: #f8f9fa;
+      padding: 5px 10px;
+      border-radius: 4px;
+      margin: 0 5px 5px 0;
+    }
+    
+    .filter-tag .icon-close {
+      margin-left: 5px;
+      cursor: pointer;
+    }
+    
+    /* Layout switches */
+    .tf-view-layout-switch {
+      cursor: pointer;
+      padding: 5px;
+    }
+    
+    .tf-view-layout-switch.active {
+      color: #007bff;
+    }
+    
+    /* Sort dropdown */
+    .tf-dropdown-sort {
+      position: relative;
+    }
+    
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 4px;
+      padding: 5px 0;
+      min-width: 200px;
+      display: none;
+    }
+    
+    .tf-dropdown-sort.show .dropdown-menu {
+      display: block;
+    }
+    
+    .select-item {
+      padding: 8px 15px;
+      cursor: pointer;
+    }
+    
+    .select-item:hover,
+    .select-item.active {
+      background: #f8f9fa;
+    }
+  </style>
 </head>
 
   <body>
