@@ -379,12 +379,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
 
-      console.log('Checking wishlist state:', {
-        productId,
-        wishlistList,
-        isInWishlist: Array.isArray(wishlistList) && wishlistList.includes(productId)
-      });
-
       // Check if product is in wishlist
       const isInWishlist = Array.isArray(wishlistList) && wishlistList.includes(productId);
 
@@ -418,6 +412,93 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Error checking wishlist state:', error);
     }
   };
+
+  // Add click handler for wishlist button
+  const wishlistBtn = productSection.querySelector('.product-extra-icon[data-wishlist]');
+  if (wishlistBtn) {
+    wishlistBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (this.classList.contains('loading')) return;
+      this.classList.add('loading');
+
+      const productId = this.dataset.id;
+      const currentAction = this.dataset.action;
+      const wishlistKey = 'theme4:wishlist:id';
+
+      // Get current wishlist
+      const storedWishlist = localStorage.getItem(wishlistKey);
+      let wishlistList = [];
+      
+      if (storedWishlist) {
+        try {
+          wishlistList = JSON.parse(storedWishlist);
+        } catch (e) {
+          wishlistList = storedWishlist.split(',');
+        }
+      }
+
+      // Update wishlist
+      if (currentAction === 'add') {
+        if (!wishlistList.includes(productId)) {
+          wishlistList.push(productId);
+        }
+        this.dataset.action = 'remove';
+        this.classList.add('active');
+      } else {
+        wishlistList = wishlistList.filter(id => id !== productId);
+        this.dataset.action = 'add';
+        this.classList.remove('active');
+      }
+
+      // Save to localStorage
+      try {
+        localStorage.setItem(wishlistKey, JSON.stringify(wishlistList));
+        console.log('Wishlist updated:', wishlistList); // Debug log
+      } catch (error) {
+        console.error('Error saving to localStorage:', error);
+      }
+
+      // Update UI
+      const addIcon = this.querySelector('.icon.add.icon-heart');
+      const addedIcon = this.querySelector('.icon.added.icon-trash');
+      const addSpan = this.querySelector('span.add');
+      const addedSpan = this.querySelector('span.added');
+      
+      if (currentAction === 'add') {
+        if (addIcon) addIcon.style.display = 'none';
+        if (addedIcon) addedIcon.style.display = 'inline-block';
+        if (addSpan) addSpan.style.display = 'none';
+        if (addedSpan) addedSpan.style.display = 'inline';
+      } else {
+        if (addIcon) addIcon.style.display = 'inline-block';
+        if (addedIcon) addedIcon.style.display = 'none';
+        if (addSpan) addSpan.style.display = 'inline';
+        if (addedSpan) addedSpan.style.display = 'none';
+      }
+
+      // Update header wishlist count
+      const headerWishlistCount = document.querySelector('.wishlist-count');
+      if (headerWishlistCount) {
+        headerWishlistCount.textContent = wishlistList.length;
+      }
+
+      // Dispatch events for other components
+      document.dispatchEvent(new CustomEvent('theme4:wishlist:update', {
+        detail: {
+          count: wishlistList.length,
+          productId: productId,
+          action: currentAction
+        }
+      }));
+
+      // Remove loading state after a short delay
+      setTimeout(() => {
+        this.classList.remove('loading');
+      }, 300);
+    });
+  }
 
   // Add click handler for compare button
   const compareBtn = productSection.querySelector('.product-extra-icon[data-compare]');
