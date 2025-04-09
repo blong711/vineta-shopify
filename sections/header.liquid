@@ -68,10 +68,11 @@
                                   <div class="mega-menu-collection">
                                     <a href="{{ collection1.url }}" class="mega-menu-image">
                                       {%- if collection1.image != blank -%}
-                                        <img src="{{ collection1.image | image_url: width: 300 }}"
-                                          alt="{{ collection1.title }}"
-                                          width="300"
-                                          loading="lazy">
+                                        {{ collection1.image | image_url: width: 300 | image_tag: loading: 'lazy', alt: collection1.title }}
+                                      {%- elsif collection1.products.first.featured_image -%}
+                                        {{ collection1.products.first.featured_image | image_url: width: 300 | image_tag: loading: 'lazy', alt: collection1.title }}
+                                      {%- else -%}
+                                        {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
                                       {%- endif -%}
                                       <div class="mega-menu-collection-info">
                                         <h4>{{ collection1.title }}</h4>
@@ -89,10 +90,11 @@
                                   <div class="mega-menu-collection">
                                     <a href="{{ collection2.url }}" class="mega-menu-image">
                                       {%- if collection2.image != blank -%}
-                                        <img src="{{ collection2.image | image_url: width: 300 }}"
-                                          alt="{{ collection2.title }}"
-                                          width="300"
-                                          loading="lazy">
+                                        {{ collection2.image | image_url: width: 300 | image_tag: loading: 'lazy', alt: collection2.title }}
+                                      {%- elsif collection2.products.first.featured_image -%}
+                                        {{ collection2.products.first.featured_image | image_url: width: 300 | image_tag: loading: 'lazy', alt: collection2.title }}
+                                      {%- else -%}
+                                        {{ 'collection-2' | placeholder_svg_tag: 'placeholder-svg' }}
                                       {%- endif -%}
                                       <div class="mega-menu-collection-info">
                                         <h4>{{ collection2.title }}</h4>
@@ -244,6 +246,7 @@
   overflow: hidden;
   border-radius: 8px;
   aspect-ratio: 3/4;
+  background-color: #f6f6f6;
 }
 
 .mega-menu-collection .mega-menu-image {
@@ -253,15 +256,18 @@
   height: 100%;
 }
 
-.mega-menu-collection img {
+.mega-menu-collection img,
+.mega-menu-collection .placeholder-svg {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
   transition: transform 0.3s ease;
 }
 
-.mega-menu-collection:hover img {
-  transform: scale(1.05);
+.placeholder-svg {
+  background-color: #f6f6f6;
+  fill: #999;
 }
 
 .mega-menu-collection-info {
