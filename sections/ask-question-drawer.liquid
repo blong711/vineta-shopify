@@ -1,0 +1,102 @@
+{%- comment -%}Ask Question Modal Section{%- endcomment -%}
+<div class="modal modalCentered fade modal-ask-question popup-style-2" id="askQuestion">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="title text-xl-2 fw-medium">{{ section.settings.title | default: 'Ask a Question' }}</span>
+        <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
+      </div>
+      {%- form 'contact', id: 'AskQuestionForm', class: 'form-ask-question' -%}
+        <input type="hidden" name="contact[product]" value="{{ product.title | escape }}">
+        <input type="hidden" name="contact[form_type]" value="ask_question">
+        
+        <div class="cols mb_15 flex-md-nowrap flex-wrap">
+          <fieldset class="">
+            <div class="text">{{ section.settings.name_label | default: 'Your name*' }}</div>
+            <input type="text" 
+              name="contact[name]" 
+              class=""
+              value="{% if customer %}{{ customer.name }}{% endif %}"
+              aria-required="true" 
+              required>
+          </fieldset>
+          <fieldset class="">
+            <div class="text">{{ section.settings.phone_label | default: 'Your phone number' }}</div>
+            <input type="tel" 
+              name="contact[phone]" 
+              class=""
+              value="{% if customer %}{{ customer.phone }}{% endif %}"
+              aria-required="true">
+          </fieldset>
+        </div>
+        <fieldset class="mb_15">
+          <div class="text">{{ section.settings.email_label | default: 'Your email*' }}</div>
+          <input type="email" 
+            name="contact[email]" 
+            class=""
+            value="{% if customer %}{{ customer.email }}{% endif %}"
+            aria-required="true" 
+            required>
+        </fieldset>
+        <fieldset class="">
+          <div class="text">{{ section.settings.message_label | default: 'Message*' }}</div>
+          <textarea 
+            name="contact[body]" 
+            rows="4" 
+            class=""
+            aria-required="true" 
+            required></textarea>
+        </fieldset>
+        <div class="text-center">
+          <button type="submit" class="tf-btn animate-btn d-inline-flex justify-content-center">
+            <span>{{ section.settings.submit_label | default: 'Send Message' }}</span>
+          </button>
+        </div>
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ask Question Modal",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Modal Title",
+      "default": "Ask a Question"
+    },
+    {
+      "type": "text",
+      "id": "name_label",
+      "label": "Name Field Label",
+      "default": "Your name*"
+    },
+    {
+      "type": "text",
+      "id": "phone_label",
+      "label": "Phone Field Label",
+      "default": "Your phone number"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email Field Label",
+      "default": "Your email*"
+    },
+    {
+      "type": "text",
+      "id": "message_label",
+      "label": "Message Field Label",
+      "default": "Message*"
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "Submit Button Label",
+      "default": "Send Message"
+    }
+  ]
+}
+{% endschema %} 

@@ -136,7 +136,7 @@
                   <input type="hidden" name="return_to" value="/checkout">
                   <button type="submit" class="tf-btn btn-primary w-100 animate-btn"{% unless product.available %} disabled{% endunless %}>Buy it now</button>
                 </form>
-                <a href="/pages/payment-methods" class="more-choose-payment link">More payment options</a>
+                <a href="/checkout" class="more-choose-payment link">More payment options</a>
               </div>
               <div class="tf-product-info-extra-link">
                 {%- for block in section.blocks -%}
@@ -419,6 +419,45 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   };
 
+  // Add click handler for compare button
+  const compareBtn = productSection.querySelector('.product-extra-icon[data-compare]');
+  if (compareBtn) {
+    compareBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (this.classList.contains('loading')) return;
+      this.classList.add('loading');
+
+      const productId = this.dataset.id;
+      const currentAction = this.dataset.action;
+
+      // Update visual state immediately
+      if (currentAction === 'add') {
+        this.dataset.action = 'remove';
+        this.classList.add('active');
+
+        // Call WishlistCompare's add method
+        if (window.wishlistCompare) {
+          window.wishlistCompare.addToCompare(productId);
+        }
+      } else {
+        this.dataset.action = 'add';
+        this.classList.remove('active');
+
+        // Call WishlistCompare's remove method
+        if (window.wishlistCompare) {
+          window.wishlistCompare.removeFromCompare(productId);
+        }
+      }
+
+      // Remove loading state after a short delay
+      setTimeout(() => {
+        this.classList.remove('loading');
+      }, 300);
+    });
+  }
+
   // Check compare state from localStorage
   const checkCompareState = () => {
     const compareBtn = productSection.querySelector('.product-extra-icon[data-compare]');
@@ -437,71 +476,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (compareList.includes(productId)) {
       compareBtn.dataset.action = 'remove';
+      compareBtn.classList.add('active');
     } else {
       compareBtn.dataset.action = 'add';
+      compareBtn.classList.remove('active');
     }
   };
 
   // Check states on page load
   checkWishlistState();
   checkCompareState();
-
-  // Add click handler for wishlist button
-  const wishlistBtn = productSection.querySelector('.product-extra-icon[data-wishlist]');
-  if (wishlistBtn) {
-    wishlistBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-
-      if (this.classList.contains('loading')) return;
-      this.classList.add('loading');
-
-      const productId = this.dataset.id;
-      const currentAction = this.dataset.action;
-
-      // Update visual state immediately
-      if (currentAction === 'add') {
-        this.dataset.action = 'remove';
-        this.classList.add('active');
-        const addIcon = this.querySelector('.icon.add.icon-heart');
-        const addedIcon = this.querySelector('.icon.added.icon-trash');
-        const addSpan = this.querySelector('span.add');
-        const addedSpan = this.querySelector('span.added');
-        
-        if (addIcon) addIcon.style.display = 'none';
-        if (addedIcon) addedIcon.style.display = 'inline-block';
-        if (addSpan) addSpan.style.display = 'none';
-        if (addedSpan) addedSpan.style.display = 'inline';
-
-        // Call WishlistCompare's add method
-        if (window.wishlistCompare) {
-          window.wishlistCompare.addToWishlist(productId);
-        }
-      } else {
-        this.dataset.action = 'add';
-        this.classList.remove('active');
-        const addIcon = this.querySelector('.icon.add.icon-heart');
-        const addedIcon = this.querySelector('.icon.added.icon-trash');
-        const addSpan = this.querySelector('span.add');
-        const addedSpan = this.querySelector('span.added');
-        
-        if (addIcon) addIcon.style.display = 'inline-block';
-        if (addedIcon) addedIcon.style.display = 'none';
-        if (addSpan) addSpan.style.display = 'inline';
-        if (addedSpan) addedSpan.style.display = 'none';
-
-        // Call WishlistCompare's remove method
-        if (window.wishlistCompare) {
-          window.wishlistCompare.removeFromWishlist(productId);
-        }
-      }
-
-      // Remove loading state after a short delay
-      setTimeout(() => {
-        this.classList.remove('loading');
-      }, 300);
-    });
-  }
 
   // Listen for wishlist/compare updates
   document.addEventListener('theme4:wishlist:update', checkWishlistState);

@@ -1,0 +1,144 @@
+{%- comment -%}Share Social Modal Section{%- endcomment -%}
+<div class="modal modalCentered fade modal-share-social popup-style-2" id="shareSocial">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="title text-xl-2 fw-medium">{{ section.settings.title | default: 'Share' }}</span>
+        <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
+      </div>
+      <div class="wrap-code style-1">
+        <div class="coppyText" id="coppyText">{{ shop.url }}{{ product.url }}</div>
+        <div class="btn-coppy-text tf-btn animate-btn d-inline-flex w-max-content" id="btn-coppy-text">
+          {{ section.settings.copy_button_text | default: 'Copy' }}
+        </div>
+      </div>
+      <ul class="topbar-left tf-social-icon style-1">
+        {%- if section.settings.show_facebook -%}
+          <li>
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url | append: product.url | url_encode }}" 
+              target="_blank" 
+              class="social-item social-facebook share-link"
+              title="{{ 'general.social.share_on_facebook' | t }}">
+              <i class="icon icon-fb"></i>
+            </a>
+          </li>
+        {%- endif -%}
+        
+        {%- if section.settings.show_instagram -%}
+          <li>
+            <a href="https://www.instagram.com/" 
+              target="_blank" 
+              class="social-item social-instagram"
+              title="{{ 'general.social.follow_on_instagram' | t }}">
+              <i class="icon icon-instagram"></i>
+            </a>
+          </li>
+        {%- endif -%}
+        
+        {%- if section.settings.show_twitter -%}
+          <li>
+            <a href="https://twitter.com/intent/tweet?text={{ product.title | url_encode }}&url={{ shop.url | append: product.url | url_encode }}" 
+              target="_blank" 
+              class="social-item social-x share-link"
+              title="{{ 'general.social.share_on_twitter' | t }}">
+              <i class="icon icon-x"></i>
+            </a>
+          </li>
+        {%- endif -%}
+        
+        {%- if section.settings.show_snapchat -%}
+          <li>
+            <a href="https://www.snapchat.com/" 
+              target="_blank" 
+              class="social-item social-snapchat"
+              title="{{ 'general.social.follow_on_snapchat' | t }}">
+              <i class="icon icon-snapchat"></i>
+            </a>
+          </li>
+        {%- endif -%}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const copyButton = document.getElementById('btn-coppy-text');
+  const textToCopy = document.getElementById('coppyText');
+  
+  if (copyButton && textToCopy) {
+    copyButton.addEventListener('click', function() {
+      navigator.clipboard.writeText(textToCopy.textContent).then(() => {
+        // Show success state
+        const originalText = this.textContent;
+        this.textContent = '{{ 'general.share.copied' | t | default: 'Copied!' }}';
+        this.classList.add('copied');
+        
+        // Reset after 2 seconds
+        setTimeout(() => {
+          this.textContent = originalText;
+          this.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy text:', err);
+      });
+    });
+  }
+  
+  // Handle social share links
+  document.querySelectorAll('.share-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.open(this.href, '', 'width=600,height=460,menubar=no,toolbar=no,resizable=yes,scrollbars=yes');
+    });
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Share Social Modal",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Modal Title",
+      "default": "Share"
+    },
+    {
+      "type": "text",
+      "id": "copy_button_text",
+      "label": "Copy Button Text",
+      "default": "Copy"
+    },
+    {
+      "type": "header",
+      "content": "Social Media Buttons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_facebook",
+      "label": "Show Facebook",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_instagram",
+      "label": "Show Instagram",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_twitter",
+      "label": "Show Twitter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_snapchat",
+      "label": "Show Snapchat",
+      "default": true
+    }
+  ]
+}
+{% endschema %} 

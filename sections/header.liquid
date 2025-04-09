@@ -35,16 +35,50 @@
                     {%- endif -%}
                   </a>
                   {%- if link.links.size > 0 -%}
-                    <div class="sub-menu{% if link.levels == 2 %} mega-menu{% endif %}">
-                      <ul class="menu-list">
-                        {%- for childlink in link.links -%}
-                          <li>
-                            <a href="{{ childlink.url }}" class="menu-link-text link">
-                              {{ childlink.title }}
-                            </a>
-                          </li>
-                        {%- endfor -%}
-                      </ul>
+                    <div class="mega-menu">
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-9">
+                            <div class="row">
+                              {%- for childlink in link.links -%}
+                                <div class="col-md-4 mega-menu-column">
+                                  <div class="mega-menu-title">
+                                    <a href="{{ childlink.url }}" class="menu-link-text">{{ childlink.title }}</a>
+                                  </div>
+                                  {%- if childlink.links.size > 0 -%}
+                                    <ul class="mega-menu-list">
+                                      {%- for grandchildlink in childlink.links -%}
+                                        <li>
+                                          <a href="{{ grandchildlink.url }}" class="menu-link-text">
+                                            {{ grandchildlink.title }}
+                                          </a>
+                                        </li>
+                                      {%- endfor -%}
+                                    </ul>
+                                  {%- endif -%}
+                                </div>
+                              {%- endfor -%}
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            {%- if section.settings.menu_promo_image != blank -%}
+                              <div class="mega-menu-promo">
+                                <a href="{{ section.settings.menu_promo_url }}" class="mega-menu-image">
+                                  <img src="{{ section.settings.menu_promo_image | image_url: width: 300 }}"
+                                    alt="{{ section.settings.menu_promo_image.alt | default: shop.name }}"
+                                    width="300"
+                                    loading="lazy">
+                                  {%- if section.settings.menu_promo_text != blank -%}
+                                    <div class="mega-menu-promo-text">
+                                      {{ section.settings.menu_promo_text }}
+                                    </div>
+                                  {%- endif -%}
+                                </a>
+                              </div>
+                            {%- endif -%}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   {%- endif -%}
                 </li>
@@ -95,6 +129,87 @@
   </div>
 </header>
 
+<style>
+.mega-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  background: #fff;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  padding: 30px 0;
+  z-index: 100;
+}
+
+.has-submenu:hover .mega-menu {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mega-menu-column {
+  padding: 15px;
+}
+
+.mega-menu-title {
+  font-weight: 600;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.mega-menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mega-menu-list li {
+  margin-bottom: 8px;
+}
+
+.mega-menu-list a {
+  color: #666;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.mega-menu-list a:hover {
+  color: var(--primary-color);
+}
+
+.mega-menu-image {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.mega-menu-image img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.mega-menu-image:hover img {
+  transform: scale(1.05);
+}
+
+.mega-menu-promo-text {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: rgba(255,255,255,0.9);
+  padding: 15px;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 500;
+}
+</style>
+
 {% schema %}
 {
   "name": "Header",
@@ -127,6 +242,25 @@
       "id": "menu",
       "label": "Menu",
       "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Mega Menu Promo"
+    },
+    {
+      "type": "image_picker",
+      "id": "menu_promo_image",
+      "label": "Promo image"
+    },
+    {
+      "type": "url",
+      "id": "menu_promo_url",
+      "label": "Promo URL"
+    },
+    {
+      "type": "text",
+      "id": "menu_promo_text",
+      "label": "Promo text"
     },
     {
       "type": "header",
