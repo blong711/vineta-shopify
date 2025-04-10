@@ -1,172 +1,115 @@
 {%- comment -%}Header Section{%- endcomment -%}
 <header id="header" class="header-default">
-  <div class="header-top">
-    <div class="container">
-      <div class="header-top-wrap">
-        <div class="header-top-left">
-          {%- if section.settings.announcement_text != blank -%}
-            <div class="announcement-bar">
-              <p>{{ section.settings.announcement_text }}</p>
-            </div>
-          {%- endif -%}
-        </div>
-        <div class="header-top-right">
-          {%- if section.settings.show_currency_selector -%}
-            <div class="currency-selector">
-              {%- form 'localization', id: 'HeaderCurrencyForm', class: 'localization-form' -%}
-                <div class="disclosure">
-                  <button type="button" class="disclosure__button" aria-expanded="false" aria-controls="HeaderCurrencyList" aria-describedby="HeaderCurrencyLabel">
-                    {{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }}
-                    <i class="icon icon-arr-down"></i>
-                  </button>
-                  <ul id="HeaderCurrencyList" class="disclosure__list" role="list">
-                    {%- for country in localization.available_countries -%}
-                      <li class="disclosure__item" tabindex="-1">
-                        <a href="#"{% if country.iso_code == localization.country.iso_code %} aria-current="true"{% endif %} data-value="{{ country.iso_code }}">
-                          {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
-                        </a>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                </div>
-                <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
-              {%- endform -%}
-            </div>
-          {%- endif -%}
-        </div>
+  <div class="container">
+    <div class="row wrapper-header align-items-center">
+      <div class="col-md-4 col-3 d-xl-none">
+        <a href="#mobileMenu" class="mobile-menu" data-bs-toggle="offcanvas" aria-controls="mobileMenu">
+          <i class="icon icon-categories1"></i>
+        </a>
       </div>
-    </div>
-  </div>
-  <div class="header-main">
-    <div class="container">
-      <div class="header-main-wrap">
-        <div class="header-logo">
-          <a href="{{ routes.root_url }}">
-            {%- if section.settings.logo != blank -%}
-              <img src="{{ section.settings.logo | img_url: 'master' }}" class="logo" alt="{{ section.settings.logo.alt | default: shop.name }}">
-            {%- else -%}
-              <span class="h2">{{ shop.name }}</span>
-            {%- endif -%}
-          </a>
-        </div>
-        <div class="header-navigation">
-          <nav class="main-nav">
-            <ul class="menu">
-              {%- for link in linklists[section.settings.main_menu].links -%}
-                <li class="menu-item">
-                  <a href="{{ link.url }}" class="item-link">
-                    {{ link.title }}
-                    {%- if link.links != blank -%}
-                      <i class="icon icon-arr-down"></i>
-                    {%- endif -%}
-                  </a>
-                  {%- if link.links != blank -%}
-                    <div class="sub-menu mega-menu">
-                      <div class="wrapper-sub-menu">
-                        {%- for block in section.blocks -%}
-                          {%- if block.type == 'menu_column' and block.settings.parent_link == link.title -%}
-                            <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                              {%- if block.settings.heading != blank -%}
-                                <div class="menu-heading">{{ block.settings.heading }}</div>
-                              {%- endif -%}
-                              <ul class="menu-list">
-                                {%- for child_link in link.links -%}
-                                  <li>
-                                    <a href="{{ child_link.url }}" class="menu-link-text link">{{ child_link.title }}</a>
-                                  </li>
-                                {%- endfor -%}
-                              </ul>
-                            </div>
+      
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'logo' -%}
+            <div class="col-xl-2 col-md-4 col-6" {{ block.shopify_attributes }}>
+              <a href="{{ routes.root_url }}" class="logo-header">
+                {%- if block.settings.logo != blank -%}
+                  <img src="{{ block.settings.logo | image_url: width: block.settings.logo_width }}"
+                    alt="{{ block.settings.logo.alt | default: shop.name }}"
+                    width="{{ block.settings.logo_width }}"
+                    height="{{ block.settings.logo_width | divided_by: block.settings.logo.aspect_ratio }}"
+                    class="logo">
+                {%- else -%}
+                  <span class="h4">{{ shop.name }}</span>
+                {%- endif -%}
+              </a>
+            </div>
+          {%- when 'menu' -%}
+            <div class="col-xl-8 d-none d-xl-block" {{ block.shopify_attributes }}>
+              <nav class="box-navigation text-center">
+                {%- if block.settings.menu != blank -%}
+                  <ul class="box-nav-menu">
+                    {%- for link in block.settings.menu.links -%}
+                      <li class="menu-item{% if link.links.size > 0 %} has-submenu{% endif %}">
+                        <a href="{{ link.url }}" class="item-link">
+                          {{ link.title }}
+                          {%- if link.links.size > 0 -%}
+                            <i class="icon icon-arr-down"></i>
                           {%- endif -%}
-                        {%- endfor -%}
-                      </div>
-                      {%- for block in section.blocks -%}
-                        {%- if block.type == 'product_card' and block.settings.parent_link == link.title -%}
-                          <div class="wrapper-sub-collection" {{ block.shopify_attributes }}>
-                            <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
-                              data-swiper='{
-                                "slidesPerView": 2,
-                                "spaceBetween": 24,
-                                "speed": 800,
-                                "observer": true,
-                                "observeParents": true,
-                                "slidesPerGroup": 2,
-                                "navigation": {
-                                  "clickable": true,
-                                  "nextEl": ".nav-next-cls-header",
-                                  "prevEl": ".nav-prev-cls-header"
-                                },
-                                "pagination": { "el": ".sw-pagination-cls-header", "clickable": true }
-                              }'>
-                              <div class="swiper-wrapper">
-                                {%- for i in (1..4) -%}
-                                  {%- assign product_image = 'product_image_' | append: i -%}
-                                  {%- assign product_title = 'product_title_' | append: i -%}
-                                  {%- assign product_url = 'product_url_' | append: i -%}
-                                  {%- if block.settings[product_image] != blank -%}
-                                    <div class="swiper-slide">
-                                      <div class="wg-cls style-abs asp-1 hover-img">
-                                        <a href="{{ block.settings[product_url] }}" class="image img-style d-block">
-                                          <img src="{{ block.settings[product_image] | img_url: 'master' }}"
-                                            alt="{{ block.settings[product_title] }}"
-                                            class="lazyload">
-                                        </a>
-                                        <div class="cls-btn text-center">
-                                          <a href="{{ block.settings[product_url] }}"
-                                            class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                            {{ block.settings[product_title] }}
-                                            <i class="icon icon-arrow-top-left"></i>
+                        </a>
+                        {%- if link.links.size > 0 -%}
+                          <div class="sub-menu mega-menu mega-shop">
+                            <div class="wrapper-sub-menu">
+                              {%- for childlink in link.links -%}
+                                <div class="mega-menu-item">
+                                  <div class="menu-heading">
+                                    <a href="{{ childlink.url }}" class="menu-heading-link">{{ childlink.title }}</a>
+                                  </div>
+                                  {%- if childlink.links.size > 0 -%}
+                                    <ul class="menu-list">
+                                      {%- for grandchildlink in childlink.links -%}
+                                        <li>
+                                          <a href="{{ grandchildlink.url }}" class="menu-link-text link">
+                                            {{ grandchildlink.title }}
+                                            {%- if grandchildlink.title contains 'Hot' -%}
+                                              <span class="demo-label">Hot</span>
+                                            {%- endif -%}
                                           </a>
-                                        </div>
-                                      </div>
-                                    </div>
+                                        </li>
+                                      {%- endfor -%}
+                                    </ul>
                                   {%- endif -%}
-                                {%- endfor -%}
-                              </div>
-                              <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center"></div>
-                              <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls-header"></div>
-                              <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls-header"></div>
+                                </div>
+                              {%- endfor -%}
                             </div>
                           </div>
                         {%- endif -%}
-                      {%- endfor -%}
-                    </div>
-                  {%- endif -%}
-                </li>
-              {%- endfor -%}
-            </ul>
-          </nav>
-        </div>
-        <div class="header-actions">
-          {%- if section.settings.show_search -%}
-            <div class="header-search">
-              <a href="#" class="search-toggle">
-                <i class="icon icon-search"></i>
-              </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </nav>
             </div>
-          {%- endif -%}
-          {%- if section.settings.show_account -%}
-            <div class="header-account">
-              <a href="{{ routes.account_url }}">
-                <i class="icon icon-user"></i>
-              </a>
+          {%- when 'icons' -%}
+            <div class="col-xl-2 col-md-4 col-3" {{ block.shopify_attributes }}>
+              <ul class="nav-icon d-flex justify-content-end align-items-center">
+                {%- if block.settings.show_search -%}
+                  <li class="nav-search">
+                    <a href="#search" data-bs-toggle="offcanvas" class="nav-icon-item">
+                      <i class="icon icon-search"></i>
+                    </a>
+                  </li>
+                {%- endif -%}
+
+                {%- if block.settings.show_account -%}
+                  <li class="nav-account">
+                    <a href="javascript:void(0);" class="nav-icon-item" data-bs-toggle="offcanvas" data-bs-target="#login">
+                      <i class="icon icon-user"></i>
+                    </a>
+                  </li>
+                {%- endif -%}
+
+                {%- if block.settings.show_wishlist -%}
+                  <li class="nav-wishlist">
+                    <a href="/pages/wishlist" class="nav-icon-item">
+                      <i class="icon icon-heart"></i>
+                      <span class="count-box wishlist-count">0</span>
+                    </a>
+                  </li>
+                {%- endif -%}
+
+                {%- if block.settings.show_cart -%}
+                  <li class="nav-cart">
+                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="nav-icon-item">
+                      <i class="icon icon-cart"></i>
+                      <span class="count-box">{{ cart.item_count }}</span>
+                    </a>
+                  </li>
+                {%- endif -%}
+              </ul>
             </div>
-          {%- endif -%}
-          {%- if section.settings.show_wishlist -%}
-            <div class="header-wishlist">
-              <a href="{{ routes.root_url }}pages/wishlist">
-                <i class="icon icon-heart"></i>
-              </a>
-            </div>
-          {%- endif -%}
-          <div class="header-cart">
-            <a href="{{ routes.cart_url }}" class="cart-toggle">
-              <i class="icon icon-cart"></i>
-              <span class="cart-count">{{ cart.item_count }}</span>
-            </a>
-          </div>
-        </div>
-      </div>
+        {%- endcase -%}
+      {%- endfor -%}
     </div>
   </div>
 </header>
@@ -174,152 +117,71 @@
 {% schema %}
 {
   "name": "Header",
-  "settings": [
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo"
-    },
-    {
-      "type": "text",
-      "id": "announcement_text",
-      "label": "Announcement Text",
-      "default": "Free shipping on orders over $100"
-    },
-    {
-      "type": "link_list",
-      "id": "main_menu",
-      "label": "Main Menu",
-      "default": "main-menu"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_currency_selector",
-      "label": "Show currency selector",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_search",
-      "label": "Show search",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_account",
-      "label": "Show account",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_wishlist",
-      "label": "Show wishlist",
-      "default": true
-    }
-  ],
+  "max_blocks": 3,
   "blocks": [
     {
-      "type": "menu_column",
-      "name": "Menu Column",
+      "type": "logo",
+      "name": "Logo",
+      "limit": 1,
       "settings": [
         {
-          "type": "text",
-          "id": "parent_link",
-          "label": "Parent Link Title",
-          "info": "Enter the title of the parent link this column belongs to"
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo image"
         },
         {
-          "type": "text",
-          "id": "heading",
-          "label": "Column Heading"
+          "type": "range",
+          "id": "logo_width",
+          "min": 50,
+          "max": 300,
+          "step": 10,
+          "default": 150,
+          "unit": "px",
+          "label": "Logo width"
         }
       ]
     },
     {
-      "type": "product_card",
-      "name": "Product Card",
+      "type": "menu",
+      "name": "Menu",
+      "limit": 1,
       "settings": [
         {
-          "type": "text",
-          "id": "parent_link",
-          "label": "Parent Link Title",
-          "info": "Enter the title of the parent link this product card belongs to"
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "main-menu"
+        }
+      ]
+    },
+    {
+      "type": "icons",
+      "name": "Header Icons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_search",
+          "label": "Show search",
+          "default": true
         },
         {
-          "type": "header",
-          "content": "Product 1"
+          "type": "checkbox",
+          "id": "show_account",
+          "label": "Show account",
+          "default": true
         },
         {
-          "type": "image_picker",
-          "id": "product_image_1",
-          "label": "Product Image"
+          "type": "checkbox",
+          "id": "show_wishlist",
+          "label": "Show wishlist",
+          "default": true
         },
         {
-          "type": "text",
-          "id": "product_title_1",
-          "label": "Product Title"
-        },
-        {
-          "type": "url",
-          "id": "product_url_1",
-          "label": "Product URL"
-        },
-        {
-          "type": "header",
-          "content": "Product 2"
-        },
-        {
-          "type": "image_picker",
-          "id": "product_image_2",
-          "label": "Product Image"
-        },
-        {
-          "type": "text",
-          "id": "product_title_2",
-          "label": "Product Title"
-        },
-        {
-          "type": "url",
-          "id": "product_url_2",
-          "label": "Product URL"
-        },
-        {
-          "type": "header",
-          "content": "Product 3"
-        },
-        {
-          "type": "image_picker",
-          "id": "product_image_3",
-          "label": "Product Image"
-        },
-        {
-          "type": "text",
-          "id": "product_title_3",
-          "label": "Product Title"
-        },
-        {
-          "type": "url",
-          "id": "product_url_3",
-          "label": "Product URL"
-        },
-        {
-          "type": "header",
-          "content": "Product 4"
-        },
-        {
-          "type": "image_picker",
-          "id": "product_image_4",
-          "label": "Product Image"
-        },
-        {
-          "type": "text",
-          "id": "product_title_4",
-          "label": "Product Title"
-        },
-        {
-          "type": "url",
-          "id": "product_url_4",
-          "label": "Product URL"
+          "type": "checkbox",
+          "id": "show_cart",
+          "label": "Show cart",
+          "default": true
         }
       ]
     }
@@ -329,231 +191,19 @@
       "name": "Header",
       "blocks": [
         {
-          "type": "menu_column",
-          "settings": {
-            "parent_link": "Shop",
-            "heading": "SHOP LAYOUT"
-          }
+          "type": "logo"
         },
         {
-          "type": "menu_column",
-          "settings": {
-            "parent_link": "Shop",
-            "heading": "SHOP LISTS"
-          }
+          "type": "menu"
         },
         {
-          "type": "menu_column",
-          "settings": {
-            "parent_link": "Shop",
-            "heading": "PRODUCT STYLES"
-          }
-        },
-        {
-          "type": "product_card",
-          "settings": {
-            "parent_link": "Shop",
-            "product_title_1": "Men",
-            "product_title_2": "Women",
-            "product_title_3": "Accessories",
-            "product_title_4": "Sportwear"
-          }
+          "type": "icons"
         }
       ]
     }
   ]
 }
 {% endschema %}
-
-{% stylesheet %}
-.header-top {
-  background-color: var(--header-top-bg);
-  padding: 10px 0;
-}
-
-.header-top-wrap {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.announcement-bar p {
-  margin: 0;
-  font-size: 14px;
-}
-
-.header-main {
-  padding: 20px 0;
-}
-
-.header-main-wrap {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.header-logo .logo {
-  max-height: 40px;
-  width: auto;
-}
-
-.main-nav .menu {
-  display: flex;
-  gap: 30px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.menu-item {
-  position: relative;
-}
-
-.item-link {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: var(--header-link-color);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.item-link:hover {
-  color: var(--header-link-hover-color);
-}
-
-.sub-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background-color: #fff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  display: none;
-  z-index: 1000;
-}
-
-.menu-item:hover .sub-menu {
-  display: block;
-}
-
-.wrapper-sub-menu {
-  display: flex;
-  gap: 30px;
-}
-
-.mega-menu-item {
-  min-width: 200px;
-}
-
-.menu-heading {
-  font-weight: 600;
-  margin-bottom: 15px;
-  text-transform: uppercase;
-  font-size: 14px;
-}
-
-.menu-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.menu-list li {
-  margin-bottom: 10px;
-}
-
-.menu-link-text {
-  color: var(--header-link-color);
-  text-decoration: none;
-}
-
-.menu-link-text:hover {
-  color: var(--header-link-hover-color);
-}
-
-.header-actions {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-
-.header-actions a {
-  color: var(--header-link-color);
-  text-decoration: none;
-}
-
-.header-actions a:hover {
-  color: var(--header-link-hover-color);
-}
-
-.cart-count {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background-color: var(--primary-color);
-  color: #fff;
-  font-size: 12px;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.wrapper-sub-collection {
-  margin-top: 20px;
-}
-
-.wg-cls {
-  position: relative;
-  overflow: hidden;
-}
-
-.wg-cls .image {
-  display: block;
-  position: relative;
-  padding-top: 100%;
-}
-
-.wg-cls .image img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.wg-cls:hover .image img {
-  transform: scale(1.1);
-}
-
-.cls-btn {
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  right: 0;
-  text-align: center;
-}
-
-.btn-cls {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 10px 20px;
-  border-radius: 4px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.btn-cls:hover {
-  transform: translateY(-3px);
-}
-{% endstylesheet %}
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -563,4 +213,119 @@ document.addEventListener('DOMContentLoaded', function() {
     new Swiper(element, options);
   });
 });
-</script> 
+</script>
+
+{% stylesheet %}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-right-wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-search {
+  position: relative;
+}
+
+.header-search-form {
+  display: flex;
+  align-items: center;
+}
+
+.header-search-form input {
+  width: 200px;
+  padding: 8px 15px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.header-search-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.header-cart {
+  position: relative;
+}
+
+.cart-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--primary-color);
+  color: #fff;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.menu-heading {
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.menu-heading-link {
+  color: #000;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: block;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.menu-heading-link:hover {
+  color: var(--primary-color);
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-list li {
+  margin-bottom: 8px;
+}
+
+.menu-link-text {
+  color: #666;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-size: 14px;
+  display: block;
+}
+
+.menu-link-text:hover {
+  color: var(--primary-color);
+}
+
+.demo-label {
+  display: inline-block;
+  padding: 2px 6px;
+  background: #ff4444;
+  color: #fff;
+  font-size: 10px;
+  border-radius: 3px;
+  margin-left: 5px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+{% endstylesheet %} 
