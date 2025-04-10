@@ -37,7 +37,7 @@
           }
         }'>
         <div class="swiper-wrapper">
-          {%- for block in section.blocks limit: section.settings.collections_to_show -%}
+          {%- for block in section.blocks -%}
             <div class="swiper-slide" {{ block.shopify_attributes }}>
               <div class="wg-cls style-abs asp-1 hover-img">
                 <a href="{{ block.settings.collection.url }}" class="image img-style d-block">
@@ -83,8 +83,9 @@
       "min": 2,
       "max": 6,
       "step": 1,
-      "label": "Collections to show",
-      "default": 3
+      "label": "Collections to show at once",
+      "default": 3,
+      "info": "Number of collections visible in the slider at the same time"
     }
   ],
   "max_blocks": 12,
