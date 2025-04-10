@@ -12,12 +12,36 @@
     "sections": {
       "top-bar": {
         "type": "top-bar",
-        "settings": {
-          "facebook_url": "https://www.facebook.com/",
-          "instagram_url": "https://www.instagram.com/",
-          "twitter_url": "https://x.com/",
-          "snapchat_url": "https://www.snapchat.com/"
-        }
+        "blocks": {
+          "social_media_MmRpPj": {
+            "type": "social_media",
+            "settings": {
+              "facebook_url": "https://www.facebook.com/",
+              "instagram_url": "https://www.instagram.com/",
+              "twitter_url": "https://x.com/",
+              "snapchat_url": "https://www.snapchat.com/"
+            }
+          },
+          "announcement_jmbKLJ": {
+            "type": "announcement",
+            "settings": {
+              "announcements": "Return extended to 60 days\nLife-time Guarantees\nLimited-Time Offer"
+            }
+          },
+          "language_currency_WBGMYU": {
+            "type": "language_currency",
+            "settings": {
+              "show_language": true,
+              "show_currency": true
+            }
+          }
+        },
+        "block_order": [
+          "social_media_MmRpPj",
+          "announcement_jmbKLJ",
+          "language_currency_WBGMYU"
+        ],
+        "settings": {}
       },
       "header": {
         "type": "header",
