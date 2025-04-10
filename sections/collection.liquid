@@ -39,15 +39,25 @@
             <div id="availability" class="collapse show">
               <ul class="collapse-body filter-group-check current-scrollbar">
                 <li class="list-item">
-                  <input type="radio" name="availability" class="tf-check" id="inStock" value="in_stock">
-                  <label for="inStock" class="label">
+                  <input type="checkbox"
+                    name="filter.v.availability"
+                    value="1"
+                    id="Filter-availability-1"
+                    {% if current_tags contains 'filter.v.availability:1' %}checked{% endif %}
+                    class="tf-check">
+                  <label for="Filter-availability-1" class="label">
                     <span>In stock</span>
                     <span class="count">({{ collection.products | where: "available", true | size }})</span>
                   </label>
                 </li>
                 <li class="list-item">
-                  <input type="radio" name="availability" class="tf-check" id="outStock" value="out_of_stock">
-                  <label for="outStock" class="label">
+                  <input type="checkbox"
+                    name="filter.v.availability"
+                    value="0"
+                    id="Filter-availability-2"
+                    {% if current_tags contains 'filter.v.availability:0' %}checked{% endif %}
+                    class="tf-check">
+                  <label for="Filter-availability-2" class="label">
                     <span>Out of stock</span>
                     <span class="count">({{ collection.products | where: "available", false | size }})</span>
                   </label>
@@ -56,93 +66,60 @@
             </div>
           </div>
 
-          <!-- Price Range -->
-          <div class="widget-facet">
-            <div class="facet-title text-xl fw-medium" data-bs-target="#price" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="price">
-              <span>Price</span>
-              <span class="icon icon-arrow-up"></span>
-            </div>
-            <div id="price" class="collapse show">
-              <div class="collapse-body widget-price filter-price">
-                <span class="reset-price">Reset</span>
-                <div class="price-val-range" id="price-value-range" data-min="0" data-max="{{ collection.price_max | money_without_currency | round }}"></div>
-                <div class="box-value-price">
-                  <span class="text-sm">Price:</span>
-                  <div class="price-box">
-                    <div class="price-val" id="price-min-value" data-currency="{{ shop.currency.symbol }}">0</div>
-                    <span>-</span>
-                    <div class="price-val" id="price-max-value" data-currency="{{ shop.currency.symbol }}">{{ collection.price_max | money_without_currency | round }}</div>
-                  </div>
+          <!-- Shopify Search & Discovery Filters -->
+          {%- for filter in collection.filters -%}
+            {%- if filter.label != 'Availability' -%}
+              <div class="widget-facet">
+                <div class="facet-title text-xl fw-medium" data-bs-target="#filter-{{ filter.label | handle }}" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="filter-{{ filter.label | handle }}">
+                  <span>{{ filter.label }}</span>
+                  <span class="icon icon-arrow-up"></span>
+                </div>
+                <div id="filter-{{ filter.label | handle }}" class="collapse show">
+                  {%- case filter.type -%}
+                    {%- when 'boolean' or 'list' -%}
+                      <ul class="collapse-body filter-group-check current-scrollbar">
+                        {%- for filter_value in filter.values -%}
+                          <li class="list-item">
+                            <input type="checkbox"
+                              name="{{ filter_value.param_name }}"
+                              value="{{ filter_value.value }}"
+                              id="Filter-{{ filter.label | escape }}-{{ forloop.index }}"
+                              {% if filter_value.active -%}checked{%- endif %}
+                              {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
+                              class="tf-check">
+                            <label for="Filter-{{ filter.label | escape }}-{{ forloop.index }}" class="label">
+                              <span>{{ filter_value.label }}</span>
+                              <span class="count">({{ filter_value.count }})</span>
+                            </label>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    {%- when 'price_range' -%}
+                      <div class="collapse-body widget-price filter-price">
+                        <span class="reset-price">Reset</span>
+                        <div class="price-val-range" id="price-value-range" 
+                          data-min="{{ filter.min_value.value | default: 0 | money_without_currency | round }}"
+                          data-max="{{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}"
+                          data-range-min="{{ filter.range_min | money_without_currency | round }}"
+                          data-range-max="{{ filter.range_max | money_without_currency | round }}"></div>
+                        <div class="box-value-price">
+                          <span class="text-sm">Price:</span>
+                          <div class="price-box">
+                            <div class="price-val" id="price-min-value" data-currency="{{ shop.currency.symbol }}">
+                              {{ filter.min_value.value | default: 0 | money_without_currency | round }}
+                            </div>
+                            <span>-</span>
+                            <div class="price-val" id="price-max-value" data-currency="{{ shop.currency.symbol }}">
+                              {{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  {%- endcase -%}
                 </div>
               </div>
-            </div>
-          </div>
-
-          <!-- Color -->
-          <div class="widget-facet">
-            <div class="facet-title text-xl fw-medium" data-bs-target="#color" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="color">
-              <span>Color</span>
-              <span class="icon icon-arrow-up"></span>
-            </div>
-            <div id="color" class="collapse show">
-              <div class="collapse-body filter-color-box flat-check-list">
-                {% for filter in collection.filters %}
-                  {% if filter.type == 'list' and filter.label == 'Color' %}
-                    {% for value in filter.values %}
-                      <div class="check-item color-item color-check">
-                        <span class="color bg-{{ value.label | handle }}"></span>
-                        <span class="color-text">{{ value.label }}</span>
-                        <span class="count">({{ value.count }})</span>
-                      </div>
-                    {% endfor %}
-                  {% endif %}
-                {% endfor %}
-              </div>
-            </div>
-          </div>
-
-          <!-- Size -->
-          <div class="widget-facet">
-            <div class="facet-title text-xl fw-medium" data-bs-target="#size" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="size">
-              <span>Size</span>
-              <span class="icon icon-arrow-up"></span>
-            </div>
-            <div id="size" class="collapse show">
-              <div class="collapse-body filter-size-box flat-check-list">
-                {% for filter in collection.filters %}
-                  {% if filter.type == 'list' and filter.label == 'Size' %}
-                    {% for value in filter.values %}
-                      <div class="check-item size-item size-check">
-                        <span class="size">{{ value.label }}</span>
-                        <span class="count">({{ value.count }})</span>
-                      </div>
-                    {% endfor %}
-                  {% endif %}
-                {% endfor %}
-              </div>
-            </div>
-          </div>
-
-          <!-- Brand -->
-          <div class="widget-facet">
-            <div class="facet-title text-xl fw-medium" data-bs-target="#brand" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="brand">
-              <span>Brand</span>
-              <span class="icon icon-arrow-up"></span>
-            </div>
-            <div id="brand" class="collapse show">
-              <ul class="collapse-body filter-group-check current-scrollbar">
-                {% for vendor in collection.all_vendors %}
-                  <li class="list-item">
-                    <input type="radio" name="vendor" class="tf-check" id="vendor-{{ vendor | handle }}" value="{{ vendor }}">
-                    <label for="vendor-{{ vendor | handle }}" class="label">
-                      <span>{{ vendor }}</span>
-                      <span class="count">({{ collection.products | where: "vendor", vendor | size }})</span>
-                    </label>
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
+            {%- endif -%}
+          {%- endfor -%}
 
           <!-- On Sale -->
           <div class="widget-facet">
