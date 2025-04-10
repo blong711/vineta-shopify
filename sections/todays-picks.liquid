@@ -1,7 +1,7 @@
 <section class="flat-spacing-3 pt-0 overflow-hidden">
   <div class="container">
     <div class="flat-title wow fadeInUp">
-      <h4 class="title">Today's Picks</h4>
+      <h4 class="title">{{ section.settings.title }}</h4>
     </div>
     <div class="fl-control-sw2 pos2 wow fadeInUp">
       <div dir="ltr" class="swiper tf-swiper wrap-sw-over" 
@@ -28,16 +28,16 @@
               "slidesPerGroup": 3 
             },
             "1200": { 
-              "slidesPerView": 4, 
+              "slidesPerView": {{ section.settings.products_to_show }}, 
               "spaceBetween": 24, 
-              "slidesPerGroup": 4
+              "slidesPerGroup": {{ section.settings.products_to_show }}
             }
           }
         }'>
         <div class="swiper-wrapper">
-          {%- for product in collections.all.products limit: 6 -%}
-            <div class="swiper-slide">
-              {% render 'card-product', product: product %}
+          {%- for block in section.blocks -%}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              {% render 'card-product', product: block.settings.product %}
             </div>
           {%- endfor -%}
         </div>
@@ -52,10 +52,59 @@
 {% schema %}
 {
   "name": "Today's Picks",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Today's Picks"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Products to show at once",
+      "default": 4,
+      "info": "Number of products visible in the slider at the same time"
+    }
+  ],
+  "max_blocks": 12,
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Today's Picks"
+      "name": "Today's Picks",
+      "settings": {
+        "title": "Today's Picks",
+        "products_to_show": 4
+      },
+      "blocks": [
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        }
+      ]
     }
   ]
 }
