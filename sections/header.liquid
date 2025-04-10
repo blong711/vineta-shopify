@@ -24,102 +24,94 @@
                 {%- endif -%}
               </a>
             </div>
-          {%- when 'menu_item' -%}
+          {%- when 'menu' -%}
             <div class="col-xl-8 d-none d-xl-block" {{ block.shopify_attributes }}>
               <nav class="box-navigation text-center">
                 <ul class="box-nav-menu">
-                  <li class="menu-item{% if block.settings.has_submenu %} has-submenu{% endif %}">
-                    <a href="{{ block.settings.url }}" class="item-link">
-                      {{ block.settings.title }}
-                      {%- if block.settings.has_submenu -%}
-                        <i class="icon icon-arr-down"></i>
-                      {%- endif -%}
-                    </a>
-                    {%- if block.settings.has_submenu -%}
-                      <div class="sub-menu mega-menu mega-shop">
-                        <div class="wrapper-sub-menu">
-                          {%- for i in (1..3) -%}
-                            {%- assign column_title = 'column_title_' | append: i -%}
-                            {%- assign column_url = 'column_url_' | append: i -%}
-                            {%- if block.settings[column_title] != blank -%}
+                  {%- for link in linklists[block.settings.menu].links -%}
+                    <li class="menu-item{% if link.links != blank %} has-submenu{% endif %}">
+                      <a href="{{ link.url }}" class="item-link">
+                        {{ link.title }}
+                        {%- if link.links != blank -%}
+                          <i class="icon icon-arr-down"></i>
+                        {%- endif -%}
+                      </a>
+                      {%- if link.links != blank -%}
+                        <div class="sub-menu mega-menu mega-shop">
+                          <div class="wrapper-sub-menu">
+                            {%- for childlink in link.links -%}
                               <div class="mega-menu-item">
                                 <div class="menu-heading">
-                                  <a href="{{ block.settings[column_url] }}" class="menu-heading-link">
-                                    {{ block.settings[column_title] }}
+                                  <a href="{{ childlink.url }}" class="menu-heading-link">
+                                    {{ childlink.title }}
                                   </a>
                                 </div>
-                                <ul class="menu-list">
-                                  {%- for j in (1..5) -%}
-                                    {%- assign link_title = 'link_title_' | append: i | append: '_' | append: j -%}
-                                    {%- assign link_url = 'link_url_' | append: i | append: '_' | append: j -%}
-                                    {%- assign link_hot = 'link_hot_' | append: i | append: '_' | append: j -%}
-                                    {%- if block.settings[link_title] != blank -%}
+                                {%- if childlink.links != blank -%}
+                                  <ul class="menu-list">
+                                    {%- for grandchildlink in childlink.links -%}
                                       <li>
-                                        <a href="{{ block.settings[link_url] }}" class="menu-link-text link">
-                                          {{ block.settings[link_title] }}
-                                          {%- if block.settings[link_hot] -%}
-                                            <span class="demo-label">Hot</span>
-                                          {%- endif -%}
+                                        <a href="{{ grandchildlink.url }}" class="menu-link-text link">
+                                          {{ grandchildlink.title }}
                                         </a>
                                       </li>
-                                    {%- endif -%}
-                                  {%- endfor -%}
-                                </ul>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
                               </div>
-                            {%- endif -%}
-                          {%- endfor -%}
-                        </div>
-                        {%- if block.settings.show_product_cards -%}
-                          <div class="wrapper-sub-collection">
-                            <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
-                              data-swiper='{
-                                "slidesPerView": 2,
-                                "spaceBetween": 24,
-                                "speed": 800,
-                                "observer": true,
-                                "observeParents": true,
-                                "slidesPerGroup": 2,
-                                "navigation": {
-                                  "clickable": true,
-                                  "nextEl": ".nav-next-cls-header",
-                                  "prevEl": ".nav-prev-cls-header"
-                                },
-                                "pagination": { "el": ".sw-pagination-cls-header", "clickable": true }
-                              }'>
-                              <div class="swiper-wrapper">
-                                {%- for i in (1..4) -%}
-                                  {%- assign product_image = 'product_image_' | append: i -%}
-                                  {%- assign product_title = 'product_title_' | append: i -%}
-                                  {%- assign product_url = 'product_url_' | append: i -%}
-                                  {%- if block.settings[product_image] != blank -%}
-                                    <div class="swiper-slide">
-                                      <div class="wg-cls style-abs asp-1 hover-img">
-                                        <a href="{{ block.settings[product_url] }}" class="image img-style d-block">
-                                          <img src="{{ block.settings[product_image] | img_url: 'master' }}"
-                                            alt="{{ block.settings[product_title] }}"
-                                            class="lazyload">
-                                        </a>
-                                        <div class="cls-btn text-center">
-                                          <a href="{{ block.settings[product_url] }}"
-                                            class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                            {{ block.settings[product_title] }}
-                                            <i class="icon icon-arrow-top-left"></i>
+                            {%- endfor -%}
+                          </div>
+                          {%- if block.settings.show_product_cards -%}
+                            <div class="wrapper-sub-collection">
+                              <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
+                                data-swiper='{
+                                  "slidesPerView": 2,
+                                  "spaceBetween": 24,
+                                  "speed": 800,
+                                  "observer": true,
+                                  "observeParents": true,
+                                  "slidesPerGroup": 2,
+                                  "navigation": {
+                                    "clickable": true,
+                                    "nextEl": ".nav-next-cls-header",
+                                    "prevEl": ".nav-prev-cls-header"
+                                  },
+                                  "pagination": { "el": ".sw-pagination-cls-header", "clickable": true }
+                                }'>
+                                <div class="swiper-wrapper">
+                                  {%- for i in (1..4) -%}
+                                    {%- assign product_image = 'product_image_' | append: i -%}
+                                    {%- assign product_title = 'product_title_' | append: i -%}
+                                    {%- assign product_url = 'product_url_' | append: i -%}
+                                    {%- if block.settings[product_image] != blank -%}
+                                      <div class="swiper-slide">
+                                        <div class="wg-cls style-abs asp-1 hover-img">
+                                          <a href="{{ block.settings[product_url] }}" class="image img-style d-block">
+                                            <img src="{{ block.settings[product_image] | img_url: 'master' }}"
+                                              alt="{{ block.settings[product_title] }}"
+                                              class="lazyload">
                                           </a>
+                                          <div class="cls-btn text-center">
+                                            <a href="{{ block.settings[product_url] }}"
+                                              class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                                              {{ block.settings[product_title] }}
+                                              <i class="icon icon-arrow-top-left"></i>
+                                            </a>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  {%- endif -%}
-                                {%- endfor -%}
+                                    {%- endif -%}
+                                  {%- endfor -%}
+                                </div>
+                                <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center"></div>
+                                <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls-header"></div>
+                                <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls-header"></div>
                               </div>
-                              <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center"></div>
-                              <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls-header"></div>
-                              <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls-header"></div>
                             </div>
-                          </div>
-                        {%- endif -%}
-                      </div>
-                    {%- endif -%}
-                  </li>
+                          {%- endif -%}
+                        </div>
+                      {%- endif -%}
+                    </li>
+                  {%- endfor -%}
                 </ul>
               </nav>
             </div>
@@ -195,181 +187,20 @@
       ]
     },
     {
-      "type": "menu_item",
-      "name": "Menu Item",
+      "type": "menu",
+      "name": "Menu",
+      "limit": 1,
       "settings": [
         {
-          "type": "text",
-          "id": "title",
-          "label": "Menu Item Title",
-          "default": "Shop"
-        },
-        {
-          "type": "url",
-          "id": "url",
-          "label": "Menu Item URL"
-        },
-        {
-          "type": "checkbox",
-          "id": "has_submenu",
-          "label": "Has Submenu",
-          "default": true
-        },
-        {
-          "type": "header",
-          "content": "Column 1"
-        },
-        {
-          "type": "text",
-          "id": "column_title_1",
-          "label": "Column Title",
-          "default": "SHOP LAYOUT"
-        },
-        {
-          "type": "url",
-          "id": "column_url_1",
-          "label": "Column URL"
-        },
-        {
-          "type": "text",
-          "id": "link_title_1_1",
-          "label": "Link 1 Title",
-          "default": "Default"
-        },
-        {
-          "type": "url",
-          "id": "link_url_1_1",
-          "label": "Link 1 URL"
-        },
-        {
-          "type": "checkbox",
-          "id": "link_hot_1_1",
-          "label": "Show Hot Label",
-          "default": false
-        },
-        {
-          "type": "text",
-          "id": "link_title_1_2",
-          "label": "Link 2 Title",
-          "default": "Filter Left Sidebar"
-        },
-        {
-          "type": "url",
-          "id": "link_url_1_2",
-          "label": "Link 2 URL"
-        },
-        {
-          "type": "checkbox",
-          "id": "link_hot_1_2",
-          "label": "Show Hot Label",
-          "default": false
-        },
-        {
-          "type": "header",
-          "content": "Column 2"
-        },
-        {
-          "type": "text",
-          "id": "column_title_2",
-          "label": "Column Title",
-          "default": "SHOP LISTS"
-        },
-        {
-          "type": "url",
-          "id": "column_url_2",
-          "label": "Column URL"
-        },
-        {
-          "type": "text",
-          "id": "link_title_2_1",
-          "label": "Link 1 Title",
-          "default": "Pagination Links"
-        },
-        {
-          "type": "url",
-          "id": "link_url_2_1",
-          "label": "Link 1 URL"
-        },
-        {
-          "type": "checkbox",
-          "id": "link_hot_2_1",
-          "label": "Show Hot Label",
-          "default": false
-        },
-        {
-          "type": "text",
-          "id": "link_title_2_2",
-          "label": "Link 2 Title",
-          "default": "Load More Button"
-        },
-        {
-          "type": "url",
-          "id": "link_url_2_2",
-          "label": "Link 2 URL"
-        },
-        {
-          "type": "checkbox",
-          "id": "link_hot_2_2",
-          "label": "Show Hot Label",
-          "default": false
-        },
-        {
-          "type": "header",
-          "content": "Column 3"
-        },
-        {
-          "type": "text",
-          "id": "column_title_3",
-          "label": "Column Title",
-          "default": "PRODUCT STYLES"
-        },
-        {
-          "type": "url",
-          "id": "column_url_3",
-          "label": "Column URL"
-        },
-        {
-          "type": "text",
-          "id": "link_title_3_1",
-          "label": "Link 1 Title",
-          "default": "Product Style 1"
-        },
-        {
-          "type": "url",
-          "id": "link_url_3_1",
-          "label": "Link 1 URL"
-        },
-        {
-          "type": "checkbox",
-          "id": "link_hot_3_1",
-          "label": "Show Hot Label",
-          "default": false
-        },
-        {
-          "type": "text",
-          "id": "link_title_3_2",
-          "label": "Link 2 Title",
-          "default": "Product Style 2"
-        },
-        {
-          "type": "url",
-          "id": "link_url_3_2",
-          "label": "Link 2 URL"
-        },
-        {
-          "type": "checkbox",
-          "id": "link_hot_3_2",
-          "label": "Show Hot Label",
-          "default": false
-        },
-        {
-          "type": "header",
-          "content": "Product Cards"
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "main-menu"
         },
         {
           "type": "checkbox",
           "id": "show_product_cards",
-          "label": "Show Product Cards",
+          "label": "Show Product Cards in Submenu",
           "default": true
         },
         {
@@ -494,19 +325,9 @@
           "type": "logo"
         },
         {
-          "type": "menu_item",
+          "type": "menu",
           "settings": {
-            "title": "Shop",
-            "has_submenu": true,
-            "column_title_1": "SHOP LAYOUT",
-            "link_title_1_1": "Default",
-            "link_title_1_2": "Filter Left Sidebar",
-            "column_title_2": "SHOP LISTS",
-            "link_title_2_1": "Pagination Links",
-            "link_title_2_2": "Load More Button",
-            "column_title_3": "PRODUCT STYLES",
-            "link_title_3_1": "Product Style 1",
-            "link_title_3_2": "Product Style 2",
+            "menu": "main-menu",
             "show_product_cards": true,
             "product_title_1": "Men",
             "product_title_2": "Women",
