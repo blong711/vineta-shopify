@@ -155,7 +155,7 @@
                         <a href="/checkout" class="more-choose-payment link">More payment options</a>
                       {%- endif -%}
                     </div>
-                  {%- when 'extra_links' -%}
+                  {%- when 'extra_link' -%}
                     <div class="tf-product-info-extra-link" {{ block.shopify_attributes }}>
                       {%- if block.settings.show_wishlist -%}
                         <a href="javascript:void(0);" class="product-extra-icon link btn-add-wishlist" data-wishlist data-id="{{ product.id }}" data-action="add">
@@ -340,7 +340,7 @@
       ]
     },
     {
-      "type": "extra_links",
+      "type": "extra_link",
       "name": "Extra Links",
       "limit": 1,
       "settings": [
@@ -508,7 +508,7 @@
           "type": "quantity"
         },
         {
-          "type": "extra_links"
+          "type": "extra_link"
         },
         {
           "type": "trust_seal"
