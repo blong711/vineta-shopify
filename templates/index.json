@@ -168,10 +168,28 @@
     },
     "categories": {
       "type": "categories",
+      "blocks": {
+        "collection_VqU973": {
+          "type": "collection",
+          "settings": {
+            "collection": "accessories"
+          }
+        },
+        "collection_mTDzaf": {
+          "type": "collection",
+          "settings": {
+            "collection": "houseware"
+          }
+        }
+      },
+      "block_order": [
+        "collection_VqU973",
+        "collection_mTDzaf"
+      ],
       "settings": {
         "title": "Categories",
-        "collection_1": "accessories",
-        "collection_2": "houseware"
+        "products_to_show": 6,
+        "products_per_collection": 6
       }
     },
     "todays_picks": {
