@@ -1,7 +1,15 @@
 <div class="flat-spacing-2">
   <div class="container">
+    {%- if section.settings.title != blank -%}
+      <div class="flat-title wow fadeInUp">
+        <h4 class="title">{{ section.settings.title }}</h4>
+      </div>
+    {%- endif -%}
     {%- if section.blocks.size > 0 -%}
-      <div class="infiniteslide tf-brand" data-clone="2" data-style="left" data-speed="80">
+      <div class="infiniteslide tf-brand" 
+           data-clone="{{ section.settings.clone_count }}" 
+           data-style="{{ section.settings.animation_direction }}" 
+           data-speed="{{ section.settings.animation_speed }}">
         {%- for block in section.blocks -%}
           {%- if block.settings.logo != blank -%}
             <div class="brand-item" {{ block.shopify_attributes }}>
@@ -9,7 +17,7 @@
                 <a href="{{ block.settings.link }}" target="_blank" rel="noopener">
               {%- endif -%}
                 <img src="{{ block.settings.logo | img_url: 'master' }}"
-                     alt="{{ block.settings.logo.alt | escape | default: shop.name }}"
+                     alt="{{ block.settings.logo.alt | escape | default: block.settings.brand_name }}"
                      loading="lazy"
                      width="{{ block.settings.logo.width }}"
                      height="{{ block.settings.logo.height }}">
@@ -27,7 +35,7 @@
                 <a href="{{ block.settings.link }}" target="_blank" rel="noopener">
               {%- endif -%}
                 <img src="{{ block.settings.logo | img_url: 'master' }}"
-                     alt="{{ block.settings.logo.alt | escape | default: shop.name }}"
+                     alt="{{ block.settings.logo.alt | escape | default: block.settings.brand_name }}"
                      loading="lazy"
                      width="{{ block.settings.logo.width }}"
                      height="{{ block.settings.logo.height }}">
@@ -47,6 +55,12 @@
   "name": "Brands",
   "settings": [
     {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Our Brands"
+    },
+    {
       "type": "header",
       "content": "Animation Settings"
     },
@@ -59,6 +73,32 @@
       "unit": "s",
       "label": "Animation Speed",
       "default": 20
+    },
+    {
+      "type": "select",
+      "id": "animation_direction",
+      "label": "Animation Direction",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left to Right"
+        },
+        {
+          "value": "right",
+          "label": "Right to Left"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "clone_count",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Number of Clones",
+      "default": 2,
+      "info": "Number of times to clone the brand list for infinite scroll"
     }
   ],
   "blocks": [
@@ -66,6 +106,12 @@
       "type": "brand",
       "name": "Brand Logo",
       "settings": [
+        {
+          "type": "text",
+          "id": "brand_name",
+          "label": "Brand Name",
+          "info": "Used for alt text if no logo is uploaded"
+        },
         {
           "type": "image_picker",
           "id": "logo",
@@ -82,6 +128,12 @@
   "presets": [
     {
       "name": "Brand Slider",
+      "settings": {
+        "title": "Our Brands",
+        "animation_speed": 20,
+        "animation_direction": "left",
+        "clone_count": 2
+      },
       "blocks": [
         {
           "type": "brand"
