@@ -21,19 +21,35 @@
       },
       "header": {
         "type": "header",
-        "settings": {
-          "logo_width": 150,
-          "menu": "main-menu",
-          "menu_promo_url": "",
-          "menu_promo_text": "",
-          "show_search": true,
-          "show_account": true,
-          "show_wishlist": true,
-          "show_cart": true,
-          "collection1": "accessories",
-          "collection2": "houseware",
-          "show_product_count": true
-        }
+        "blocks": {
+          "logo_zn66tQ": {
+            "type": "logo",
+            "settings": {
+              "logo_width": 150
+            }
+          },
+          "menu_RHcKpj": {
+            "type": "menu",
+            "settings": {
+              "menu": "main-menu"
+            }
+          },
+          "icons_LgRUqJ": {
+            "type": "icons",
+            "settings": {
+              "show_search": true,
+              "show_account": true,
+              "show_wishlist": true,
+              "show_cart": true
+            }
+          }
+        },
+        "block_order": [
+          "logo_zn66tQ",
+          "menu_RHcKpj",
+          "icons_LgRUqJ"
+        ],
+        "settings": {}
       },
       "footer": {
         "type": "footer",
