@@ -1,4 +1,4 @@
-{%- if section.settings.collection != blank -%}
+{%- if section.blocks.size > 0 -%}
   <div class="pt-24">
     <div class="container">
       <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp" 
@@ -37,22 +37,27 @@
           }
         }'>
         <div class="swiper-wrapper">
-          {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
-            <div class="swiper-slide">
+          {%- for block in section.blocks -%}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
               <div class="wg-cls style-abs asp-1 hover-img">
-                <a href="{{ product.url }}" class="image img-style d-block">
-                  {%- if product.featured_image != blank -%}
-                    <img src="{{ product.featured_image | img_url: 'master' }}"
-                      data-src="{{ product.featured_image | img_url: 'master' }}"
-                      alt="{{ product.title | escape }}"
+                <a href="{{ block.settings.collection.url }}" class="image img-style d-block">
+                  {%- if block.settings.collection.image != blank -%}
+                    <img src="{{ block.settings.collection.image | img_url: 'master' }}"
+                      data-src="{{ block.settings.collection.image | img_url: 'master' }}"
+                      alt="{{ block.settings.collection.title | escape }}"
+                      class="lazyload">
+                  {%- elsif block.settings.collection.products.first.featured_image -%}
+                    <img src="{{ block.settings.collection.products.first.featured_image | img_url: 'master' }}"
+                      data-src="{{ block.settings.collection.products.first.featured_image | img_url: 'master' }}"
+                      alt="{{ block.settings.collection.title | escape }}"
                       class="lazyload">
                   {%- else -%}
-                    {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
                   {%- endif -%}
                 </a>
                 <div class="cls-btn text-center">
-                  <a href="{{ product.url }}" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                    {{ product.title }}
+                  <a href="{{ block.settings.collection.url }}" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                    {{ block.settings.collection.title }}
                     <i class="icon icon-arrow-top-left"></i>
                   </a>
                 </div>
@@ -70,29 +75,35 @@
 
 {% schema %}
 {
-  "name": "Featured Collection",
-  "settings": [
+  "name": "Featured Collections",
+  "max_blocks": 12,
+  "blocks": [
     {
       "type": "collection",
-      "id": "collection",
-      "label": "Collection"
-    },
-    {
-      "type": "range",
-      "id": "products_to_show",
-      "min": 3,
-      "max": 12,
-      "step": 1,
-      "label": "Products to show",
-      "default": 3
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Featured Collection",
-      "settings": {
-        "products_to_show": 3
-      }
+      "name": "Featured Collections",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
     }
   ]
 }
