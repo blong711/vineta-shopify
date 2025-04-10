@@ -203,23 +203,77 @@
       "product": {
         "type": "product",
         "blocks": {
+          "gallery_RtCQY9": {
+            "type": "gallery",
+            "settings": {}
+          },
+          "title_GcyfFP": {
+            "type": "title",
+            "settings": {
+              "show_rating": true,
+              "show_price": true,
+              "show_sold_count": true,
+              "show_inventory": true
+            }
+          },
+          "variants_GHEAgU": {
+            "type": "variants",
+            "settings": {
+              "show_size_guide": true
+            }
+          },
+          "quantity_3eWVMa": {
+            "type": "quantity",
+            "settings": {
+              "show_buy_now": true,
+              "show_payment_options": true
+            }
+          },
+          "trust_seal_NGdP6Q": {
+            "type": "trust_seal",
+            "settings": {
+              "title": "Guarantee Safe Checkout:",
+              "payment_title_1": "",
+              "payment_title_2": "",
+              "payment_title_3": "",
+              "payment_title_4": "",
+              "payment_title_5": ""
+            }
+          },
+          "delivery_info_MwFHDr": {
+            "type": "delivery_info",
+            "settings": {
+              "show_delivery_time": true,
+              "delivery_time": "3-5 days international",
+              "show_shipping_info": true,
+              "free_shipping_threshold": "all orders over $150"
+            }
+          },
+          "sticky_add_to_cart_FQ3V8r": {
+            "type": "sticky_add_to_cart",
+            "settings": {}
+          },
           "extra_link_m8AVUJ": {
             "type": "extra_link",
             "settings": {
               "show_wishlist": true,
-              "show_compare": true
+              "show_compare": true,
+              "show_ask": true,
+              "show_share": true
             }
           }
         },
         "block_order": [
+          "gallery_RtCQY9",
+          "title_GcyfFP",
+          "variants_GHEAgU",
+          "quantity_3eWVMa",
+          "trust_seal_NGdP6Q",
+          "delivery_info_MwFHDr",
+          "sticky_add_to_cart_FQ3V8r",
           "extra_link_m8AVUJ"
         ],
-        "settings": {
-          "show_delivery_info": true,
-          "delivery_time": "3-5 days international",
-          "show_shipping_info": true,
-          "free_shipping_threshold": "all orders over $150"
-        }
+        "settings": {}
       },
       "product-details": {
         "type": "product-details",
