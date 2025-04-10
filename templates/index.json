@@ -56,9 +56,33 @@
     },
     "featured_collection": {
       "type": "featured-collection",
+      "blocks": {
+        "collection_7RRjhP": {
+          "type": "collection",
+          "settings": {
+            "collection": "accessories"
+          }
+        },
+        "collection_xYCj9Y": {
+          "type": "collection",
+          "settings": {
+            "collection": "bike"
+          }
+        },
+        "collection_eXrWLV": {
+          "type": "collection",
+          "settings": {
+            "collection": "fruit"
+          }
+        }
+      },
+      "block_order": [
+        "collection_7RRjhP",
+        "collection_xYCj9Y",
+        "collection_eXrWLV"
+      ],
       "settings": {
-        "collection": "accessories",
-        "products_to_show": 4
+        "collections_to_show": 3
       }
     },
     "best_sellers": {
