@@ -5,43 +5,47 @@
       <div class="row">
         <!-- Product Images -->
         <div class="col-md-6">
-          <div class="tf-product-media-wrap sticky-top">
-            <div class="thumbs-slider">
-              <div dir="ltr" class="swiper tf-product-media-thumbs other-image-zoom" data-preview="4" data-direction="vertical">
-                <div class="swiper-wrapper stagger-wrap">
-                  {%- for image in product.images -%}
-                    <div class="swiper-slide stagger-item" data-color="{{ image.alt | default: 'default' }}">
-                      <div class="item">
-                        <img class="lazyload"
-                          data-src="{{ image | image_url: width: 800 }}"
-                          src="{{ image | image_url: width: 400 }}"
-                          alt="{{ image.alt | default: product.title }}">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'gallery' -%}
+              <div class="tf-product-media-wrap sticky-top" {{ block.shopify_attributes }}>
+                <div class="thumbs-slider">
+                  <div dir="ltr" class="swiper tf-product-media-thumbs other-image-zoom" data-preview="4" data-direction="vertical">
+                    <div class="swiper-wrapper stagger-wrap">
+                      {%- for image in product.images -%}
+                        <div class="swiper-slide stagger-item" data-color="{{ image.alt | default: 'default' }}">
+                          <div class="item">
+                            <img class="lazyload"
+                              data-src="{{ image | image_url: width: 800 }}"
+                              src="{{ image | image_url: width: 400 }}"
+                              alt="{{ image.alt | default: product.title }}">
+                          </div>
+                        </div>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                  <div class="flat-wrap-media-product">
+                    <div dir="ltr" class="swiper tf-product-media-main" id="gallery-swiper-started">
+                      <div class="swiper-wrapper">
+                        {%- for image in product.images -%}
+                          <div class="swiper-slide" data-color="{{ image.alt | default: 'default' }}">
+                            <a href="{{ image | image_url: width: 1200 }}" target="_blank" class="item" data-pswp-width="1200" data-pswp-height="1200">
+                              <img class="tf-image-zoom lazyload"
+                                data-zoom="{{ image | image_url: width: 1200 }}"
+                                data-src="{{ image | image_url: width: 800 }}"
+                                src="{{ image | image_url: width: 400 }}"
+                                alt="{{ image.alt | default: product.title }}">
+                            </a>
+                          </div>
+                        {%- endfor -%}
                       </div>
                     </div>
-                  {%- endfor -%}
-                </div>
-              </div>
-              <div class="flat-wrap-media-product">
-                <div dir="ltr" class="swiper tf-product-media-main" id="gallery-swiper-started">
-                  <div class="swiper-wrapper">
-                    {%- for image in product.images -%}
-                      <div class="swiper-slide" data-color="{{ image.alt | default: 'default' }}">
-                        <a href="{{ image | image_url: width: 1200 }}" target="_blank" class="item" data-pswp-width="1200" data-pswp-height="1200">
-                          <img class="tf-image-zoom lazyload"
-                            data-zoom="{{ image | image_url: width: 1200 }}"
-                            data-src="{{ image | image_url: width: 800 }}"
-                            src="{{ image | image_url: width: 400 }}"
-                            alt="{{ image.alt | default: product.title }}">
-                        </a>
-                      </div>
-                    {%- endfor -%}
+                    <div class="swiper-button-next nav-swiper thumbs-next"></div>
+                    <div class="swiper-button-prev nav-swiper thumbs-prev"></div>
                   </div>
                 </div>
-                <div class="swiper-button-next nav-swiper thumbs-next"></div>
-                <div class="swiper-button-prev nav-swiper thumbs-prev"></div>
               </div>
-            </div>
-          </div>
+            {%- endif -%}
+          {%- endfor -%}
         </div>
         <!-- /Product Images -->
         <!-- Product Info -->
@@ -49,148 +53,164 @@
           <div class="tf-product-info-wrap position-relative">
             <div class="tf-zoom-main"></div>
             <div class="tf-product-info-list other-image-zoom">
-              <div class="tf-product-info-heading">
-                <h5 class="product-info-name fw-medium">{{ product.title }}</h5>
-                <div class="product-info-rate">
-                  <div class="list-star">
-                    {%- for i in (1..5) -%}
-                      <i class="icon icon-star{% if i <= product.metafields.reviews.rating %} active{% endif %}"></i>
-                    {%- endfor -%}
-                  </div>
-                  <span class="count-review">({{ product.metafields.reviews.rating_count | default: 0 }} reviews)</span>
-                </div>
-                <div class="product-info-price">
-                  <div class="display-sm price-new price-on-sale">{{ product.price | money_without_currency }}₫</div>
-                  {%- if product.compare_at_price > product.price -%}
-                    <div class="display-sm price-old">{{ product.compare_at_price | money_without_currency }}₫</div>
-                    <span class="badge-sale">{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}% Off</span>
-                  {%- endif -%}
-                </div>
-                {%- if product.metafields.inventory.sold_count -%}
-                  <div class="product-info-sold">
-                    <svg class="icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M15.2759 10.9242C15.2556 10.6149 14.9236 10.4281 14.6488 10.5714C14.4098 10.6961 13.6603 11.0196 13.0698 11.0196C12.6156 11.0196 12.3132 10.8694 12.3132 10.1362C12.3132 8.12636 15.0124 6.52078 12.6056 3.51218C12.3295 3.16719 11.773 3.41746 11.8469 3.85238C11.8484 3.86145 11.9887 4.77182 11.5632 5.27582C11.3635 5.51218 11.061 5.62711 10.6384 5.62711C9.17454 5.62711 9.27646 1.94027 11.1223 0.795793C11.5328 0.541367 11.2702 -0.0948905 10.8012 0.0119845C10.683 0.0387033 7.88684 0.701328 6.39105 3.62798C5.28035 5.80099 5.88191 7.29977 6.32116 8.39418C6.71371 9.3722 6.89283 9.81857 6.01364 10.4273C5.68251 10.6566 5.42618 10.6328 5.42618 10.6328C4.60384 10.6328 3.82489 9.42402 3.59437 8.95879C3.40712 8.57837 2.83721 8.67311 2.78314 9.09372C2.75993 9.27457 2.24057 13.5513 4.51026 16.1312C5.76076 17.5525 7.50054 18.0581 9.40742 17.9948C11.1702 17.9357 12.5768 17.3395 13.5883 16.2228C15.4639 14.152 15.2844 11.0549 15.2759 10.9242Z" fill="#F2721C"/>
-                      <path d="M4.44845 10.1357C4.04521 9.74669 3.72761 9.22817 3.59412 8.95877C3.40688 8.57834 2.83696 8.67309 2.78289 9.0937C2.75969 9.27454 2.24032 13.5513 4.51001 16.1312C5.2812 17.0077 6.27795 17.5784 7.48458 17.8379C4.95987 16.3506 4.24181 13.0162 4.44845 10.1357Z" fill="#EA5513"/>
-                      <path d="M3.73448 4.51577C3.70506 4.49735 3.66772 4.49735 3.6383 4.51577C2.64745 5.13712 2.64446 6.58633 3.6383 7.20955C3.66723 7.22769 3.70471 7.22825 3.73448 7.20955C4.72533 6.58816 4.72821 5.13898 3.73448 4.51577Z" fill="#F2721C"/>
-                      <path d="M4.12025 4.85809C4.01204 4.72502 3.88239 4.60855 3.73448 4.51577C3.70506 4.49735 3.66772 4.49735 3.6383 4.51577C2.64745 5.13712 2.64446 6.58633 3.6383 7.20955C3.66723 7.22769 3.70471 7.22825 3.73448 7.20955C3.88242 7.11677 4.01208 7.00026 4.12029 6.8672C3.64157 6.28237 3.64072 5.44386 4.12025 4.85809Z" fill="#EA5513"/>
-                      <path d="M10.8011 0.0119845C10.6829 0.0387033 7.88676 0.701328 6.39096 3.62798C4.90723 6.53083 6.48163 8.24741 6.63386 9.34639L6.63403 9.34629C6.69 9.74974 6.54569 10.0588 6.01356 10.4272C5.69392 10.6486 5.40494 10.6816 5.10034 10.5723V10.5727C5.10034 10.5727 6.17507 11.6058 7.26087 10.8972C8.33686 10.1951 8.02601 9.11809 7.85986 8.63131L7.86025 8.63103C7.46365 7.57951 7.11673 6.19027 8.09319 4.27988C8.67292 3.14557 9.44797 2.35153 10.1868 1.80263C10.426 1.38835 10.7395 1.0331 11.1223 0.795758C11.5326 0.541367 11.2701 -0.0948905 10.8011 0.0119845Z" fill="#EA5513"/>
-                    </svg>
-                    <span class="text-dark">{{ product.metafields.inventory.sold_count }} sold in last 24 hours</span>
-                  </div>
-                {%- endif -%}
-                {%- if product.available -%}
-                  <div class="product-info-progress-sale">
-                    <div class="title-hurry-up">
-                      <span class="text-primary fw-medium">HURRY UP!</span> Only <span class="count">{{ product.inventory_quantity }}</span> items left!
-                    </div>
-                    <div class="progress-sold">
-                      <div class="value" style="width: {{ product.inventory_quantity | times: 100.0 | divided_by: product.metafields.inventory.initial_quantity | round }}%;" data-progress="{{ product.inventory_quantity | times: 100.0 | divided_by: product.metafields.inventory.initial_quantity | round }}"></div>
-                    </div>
-                  </div>
-                {%- endif -%}
-              </div>
-              <div class="tf-product-info-variant">
-                {%- for option in product.options_with_values -%}
-                  <div class="variant-picker-item variant-{{ option.name | handle }}">
-                    <div class="variant-picker-label">
-                      <div>{{ option.name }}:<span class="variant-picker-label-value value-current{{ option.name }}">{{ option.selected_value }}</span></div>
-                      {%- if option.name == 'Size' -%}
-                        <a href="#sizeGuide" data-bs-toggle="modal" class="size-guide link">Size Guide</a>
+              {%- for block in section.blocks -%}
+                {%- case block.type -%}
+                  {%- when 'title' -%}
+                    <div class="tf-product-info-heading" {{ block.shopify_attributes }}>
+                      <h5 class="product-info-name fw-medium">{{ product.title }}</h5>
+                      {%- if block.settings.show_rating -%}
+                        <div class="product-info-rate">
+                          <div class="list-star">
+                            {%- for i in (1..5) -%}
+                              <i class="icon icon-star{% if i <= product.metafields.reviews.rating %} active{% endif %}"></i>
+                            {%- endfor -%}
+                          </div>
+                          <span class="count-review">({{ product.metafields.reviews.rating_count | default: 0 }} reviews)</span>
+                        </div>
+                      {%- endif -%}
+                      {%- if block.settings.show_price -%}
+                        <div class="product-info-price">
+                          <div class="display-sm price-new price-on-sale">{{ product.price | money_without_currency }}₫</div>
+                          {%- if product.compare_at_price > product.price -%}
+                            <div class="display-sm price-old">{{ product.compare_at_price | money_without_currency }}₫</div>
+                            <span class="badge-sale">{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}% Off</span>
+                          {%- endif -%}
+                        </div>
+                      {%- endif -%}
+                      {%- if block.settings.show_sold_count and product.metafields.inventory.sold_count -%}
+                        <div class="product-info-sold">
+                          <svg class="icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15.2759 10.9242C15.2556 10.6149 14.9236 10.4281 14.6488 10.5714C14.4098 10.6961 13.6603 11.0196 13.0698 11.0196C12.6156 11.0196 12.3132 10.8694 12.3132 10.1362C12.3132 8.12636 15.0124 6.52078 12.6056 3.51218C12.3295 3.16719 11.773 3.41746 11.8469 3.85238C11.8484 3.86145 11.9887 4.77182 11.5632 5.27582C11.3635 5.51218 11.061 5.62711 10.6384 5.62711C9.17454 5.62711 9.27646 1.94027 11.1223 0.795793C11.5328 0.541367 11.2702 -0.0948905 10.8012 0.0119845C10.683 0.0387033 7.88684 0.701328 6.39105 3.62798C5.28035 5.80099 5.88191 7.29977 6.32116 8.39418C6.71371 9.3722 6.89283 9.81857 6.01364 10.4273C6.68251 10.6566 5.42618 10.6328 5.42618 10.6328C4.60384 10.6328 3.82489 9.42402 3.59437 8.95879C3.40712 8.57837 2.83721 8.67311 2.78314 9.09372C2.75993 9.27457 2.24057 13.5513 4.51026 16.1312C5.76076 17.5525 7.50054 18.0581 9.40742 17.9948C11.1702 17.9357 12.5768 17.3395 13.5883 16.2228C15.4639 14.152 15.2844 11.0549 15.2759 10.9242Z" fill="#F2721C"/>
+                            <path d="M4.44845 10.1357C4.04521 9.74669 3.72761 9.22817 3.59412 8.95877C3.40688 8.57834 2.83696 8.67309 2.78289 9.0937C2.75969 9.27454 2.24032 13.5513 4.51001 16.1312C5.2812 17.0077 6.27795 17.5784 7.48458 17.8379C4.95987 16.3506 4.24181 13.0162 4.44845 10.1357Z" fill="#EA5513"/>
+                            <path d="M3.73448 4.51577C3.70506 4.49735 3.66772 4.49735 3.6383 4.51577C2.64745 5.13712 2.64446 6.58633 3.6383 7.20955C3.66723 7.22769 3.70471 7.22825 3.73448 7.20955C4.72533 6.58816 4.72821 5.13898 3.73448 4.51577Z" fill="#F2721C"/>
+                            <path d="M4.12025 4.85809C4.01204 4.72502 3.88239 4.60855 3.73448 4.51577C3.70506 4.49735 3.66772 4.49735 3.6383 4.51577C2.64745 5.13712 2.64446 6.58633 3.6383 7.20955C3.66723 7.22769 3.70471 7.22825 3.73448 7.20955C3.88242 7.11677 4.01208 7.00026 4.12029 6.8672C3.64157 6.28237 3.64072 5.44386 4.12025 4.85809Z" fill="#EA5513"/>
+                            <path d="M10.8011 0.0119845C10.6829 0.0387033 7.88676 0.701328 6.39096 3.62798C4.90723 6.53083 6.48163 8.24741 6.63386 9.34639L6.63403 9.34629C6.69 9.74974 6.54569 10.0588 6.01356 10.4272C5.69392 10.6486 5.40494 10.6816 5.10034 10.5723V10.5727C5.10034 10.5727 6.17507 11.6058 7.26087 10.8972C8.33686 10.1951 8.02601 9.11809 7.85986 8.63131L7.86025 8.63103C7.46365 7.57951 7.11673 6.19027 8.09319 4.27988C8.67292 3.14557 9.44797 2.35153 10.1868 1.80263C10.426 1.38835 10.7395 1.0331 11.1223 0.795758C11.5326 0.541367 11.2701 -0.0948905 10.8011 0.0119845Z" fill="#EA5513"/>
+                          </svg>
+                          <span class="text-dark">{{ product.metafields.inventory.sold_count }} sold in last 24 hours</span>
+                        </div>
+                      {%- endif -%}
+                      {%- if block.settings.show_inventory and product.available -%}
+                        <div class="product-info-progress-sale">
+                          <div class="title-hurry-up">
+                            <span class="text-primary fw-medium">HURRY UP!</span> Only <span class="count">{{ product.inventory_quantity }}</span> items left!
+                          </div>
+                          <div class="progress-sold">
+                            <div class="value" style="width: {{ product.inventory_quantity | times: 100.0 | divided_by: product.metafields.inventory.initial_quantity | round }}%;" data-progress="{{ product.inventory_quantity | times: 100.0 | divided_by: product.metafields.inventory.initial_quantity | round }}"></div>
+                          </div>
+                        </div>
                       {%- endif -%}
                     </div>
-                    <div class="variant-picker-values">
-                      {%- for value in option.values -%}
-                        {%- if option.name == 'Color' -%}
-                          <div class="hover-tooltip tooltip-bot color-btn{% if value == option.selected_value %} active{% endif %}" data-{{ option.name | handle }}="{{ value | handle }}">
-                            <span class="check-color bg-{{ value | handle }}"></span>
-                            <span class="tooltip">{{ value }}</span>
+                  {%- when 'variants' -%}
+                    <div class="tf-product-info-variant" {{ block.shopify_attributes }}>
+                      {%- for option in product.options_with_values -%}
+                        <div class="variant-picker-item variant-{{ option.name | handle }}">
+                          <div class="variant-picker-label">
+                            <div>{{ option.name }}:<span class="variant-picker-label-value value-current{{ option.name }}">{{ option.selected_value }}</span></div>
+                            {%- if option.name == 'Size' and block.settings.show_size_guide -%}
+                              <a href="#sizeGuide" data-bs-toggle="modal" class="size-guide link">Size Guide</a>
+                            {%- endif -%}
                           </div>
-                        {%- elsif option.name == 'Weight' -%}
-                          <span class="weight-btn{% if value == option.selected_value %} active{% endif %}" data-{{ option.name | handle }}="{{ value | handle }}">{{ value }}</span>
-                        {%- else -%}
-                          <span class="size-btn{% if value == option.selected_value %} active{% endif %}" data-{{ option.name | handle }}="{{ value | handle }}">{{ value }}</span>
-                        {%- endif -%}
+                          <div class="variant-picker-values">
+                            {%- for value in option.values -%}
+                              {%- if option.name == 'Color' -%}
+                                <div class="hover-tooltip tooltip-bot color-btn{% if value == option.selected_value %} active{% endif %}" data-{{ option.name | handle }}="{{ value | handle }}">
+                                  <span class="check-color bg-{{ value | handle }}"></span>
+                                  <span class="tooltip">{{ value }}</span>
+                                </div>
+                              {%- elsif option.name == 'Weight' -%}
+                                <span class="weight-btn{% if value == option.selected_value %} active{% endif %}" data-{{ option.name | handle }}="{{ value | handle }}">{{ value }}</span>
+                              {%- else -%}
+                                <span class="size-btn{% if value == option.selected_value %} active{% endif %}" data-{{ option.name | handle }}="{{ value | handle }}">{{ value }}</span>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          </div>
+                        </div>
                       {%- endfor -%}
                     </div>
-                  </div>
-                {%- endfor -%}
-              </div>
-              <div class="tf-product-total-quantity">
-                <div class="group-btn">
-                  <div class="wg-quantity">
-                    <button class="btn-quantity btn-decrease">-</button>
-                    <input class="quantity-product" type="text" name="quantity" value="1" min="1" max="{{ product.inventory_quantity }}">
-                    <button class="btn-quantity btn-increase">+</button>
-                  </div>
-                  <button type="submit" 
-                    class="tf-btn hover-primary btn-add-to-cart" 
-                    data-add-to-cart 
-                    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-                    {% unless product.available %} disabled{% endunless %}>
-                    {%- if product.available -%}Add to cart{%- else -%}Sold out{%- endif -%}
-                  </button>
-                </div>
-                <form action="/cart/add" method="post">
-                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                  <input type="hidden" name="quantity" value="1">
-                  <input type="hidden" name="return_to" value="/checkout">
-                  <button type="submit" class="tf-btn btn-primary w-100 animate-btn"{% unless product.available %} disabled{% endunless %}>Buy it now</button>
-                </form>
-                <a href="/checkout" class="more-choose-payment link">More payment options</a>
-              </div>
-              <div class="tf-product-info-extra-link">
-                {%- for block in section.blocks -%}
-                  {%- if block.type == 'extra_link' -%}
-                    {%- if block.settings.show_wishlist -%}
-                      <a href="javascript:void(0);" class="product-extra-icon link btn-add-wishlist" data-wishlist data-id="{{ product.id }}" data-action="add">
-                        <i class="icon add icon-heart"></i><span class="add">{{ 'products.product.add_to_wishlist' | t }}</span>
-                        <i class="icon added icon-trash"></i><span class="added">{{ 'products.product.remove_from_wishlist' | t }}</span>
-                      </a>
-                    {%- endif -%}
-                    {%- if block.settings.show_compare -%}
-                      <a href="#compare" data-bs-toggle="modal" class="product-extra-icon link" data-compare data-id="{{ product.id }}" data-action="add">
-                        <i class="icon icon-compare2"></i>{{ 'products.product.compare' | t }}
-                      </a>
-                    {%- endif -%}
-                    {%- if block.settings.show_ask -%}
-                      <a href="#askQuestion" data-bs-toggle="modal" class="product-extra-icon link">
-                        <i class="icon icon-ask"></i>{{ 'products.product.ask_question' | t }}
-                      </a>
-                    {%- endif -%}
-                    {%- if block.settings.show_share -%}
-                      <a href="#shareSocial" data-bs-toggle="modal" class="product-extra-icon link">
-                        <i class="icon icon-share"></i>{{ 'products.product.share' | t }}
-                      </a>
-                    {%- endif -%}
-                  {%- endif -%}
-                {%- endfor -%}
-              </div>
-              <div class="tf-product-info-trust-seal text-center">
-                <p class="text-md text-dark-2 text-seal fw-medium">Guarantee Safe Checkout:</p>
-                <ul class="list-card">
-                  {%- for block in section.blocks -%}
-                    {%- if block.type == 'payment_method' -%}
-                      <li class="card-item">
-                        <img src="{{ block.settings.icon | image_url: width: 100 }}" alt="{{ block.settings.title }}">
-                      </li>
-                    {%- endif -%}
-                  {%- endfor -%}
-                </ul>
-              </div>
-              <div class="tf-product-info-delivery-return">
-                {%- if section.settings.show_delivery_info -%}
-                  <div class="product-delivery">
-                    <div class="icon icon-car2"></div>
-                    <p class="text-md">Estimated delivery time: <span class="fw-medium">{{ section.settings.delivery_time }}</span></p>
-                  </div>
-                {%- endif -%}
-                {%- if section.settings.show_shipping_info -%}
-                  <div class="product-delivery">
-                    <div class="icon icon-shipping3"></div>
-                    <p class="text-md">Free shipping on <span class="fw-medium">{{ section.settings.free_shipping_threshold }}</span></p>
-                  </div>
-                {%- endif -%}
-              </div>
+                  {%- when 'quantity' -%}
+                    <div class="tf-product-total-quantity" {{ block.shopify_attributes }}>
+                      <div class="group-btn">
+                        <div class="wg-quantity">
+                          <button class="btn-quantity btn-decrease">-</button>
+                          <input class="quantity-product" type="text" name="quantity" value="1" min="1" max="{{ product.inventory_quantity }}">
+                          <button class="btn-quantity btn-increase">+</button>
+                        </div>
+                        <button type="submit" 
+                          class="tf-btn hover-primary btn-add-to-cart" 
+                          data-add-to-cart 
+                          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                          {% unless product.available %} disabled{% endunless %}>
+                          {%- if product.available -%}Add to cart{%- else -%}Sold out{%- endif -%}
+                        </button>
+                      </div>
+                      {%- if block.settings.show_buy_now -%}
+                        <form action="/cart/add" method="post">
+                          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                          <input type="hidden" name="quantity" value="1">
+                          <input type="hidden" name="return_to" value="/checkout">
+                          <button type="submit" class="tf-btn btn-primary w-100 animate-btn"{% unless product.available %} disabled{% endunless %}>Buy it now</button>
+                        </form>
+                      {%- endif -%}
+                      {%- if block.settings.show_payment_options -%}
+                        <a href="/checkout" class="more-choose-payment link">More payment options</a>
+                      {%- endif -%}
+                    </div>
+                  {%- when 'extra_links' -%}
+                    <div class="tf-product-info-extra-link" {{ block.shopify_attributes }}>
+                      {%- if block.settings.show_wishlist -%}
+                        <a href="javascript:void(0);" class="product-extra-icon link btn-add-wishlist" data-wishlist data-id="{{ product.id }}" data-action="add">
+                          <i class="icon add icon-heart"></i><span class="add">{{ 'products.product.add_to_wishlist' | t }}</span>
+                          <i class="icon added icon-trash"></i><span class="added">{{ 'products.product.remove_from_wishlist' | t }}</span>
+                        </a>
+                      {%- endif -%}
+                      {%- if block.settings.show_compare -%}
+                        <a href="#compare" data-bs-toggle="modal" class="product-extra-icon link" data-compare data-id="{{ product.id }}" data-action="add">
+                          <i class="icon icon-compare2"></i>{{ 'products.product.compare' | t }}
+                        </a>
+                      {%- endif -%}
+                      {%- if block.settings.show_ask -%}
+                        <a href="#askQuestion" data-bs-toggle="modal" class="product-extra-icon link">
+                          <i class="icon icon-ask"></i>{{ 'products.product.ask_question' | t }}
+                        </a>
+                      {%- endif -%}
+                      {%- if block.settings.show_share -%}
+                        <a href="#shareSocial" data-bs-toggle="modal" class="product-extra-icon link">
+                          <i class="icon icon-share"></i>{{ 'products.product.share' | t }}
+                        </a>
+                      {%- endif -%}
+                    </div>
+                  {%- when 'trust_seal' -%}
+                    <div class="tf-product-info-trust-seal text-center" {{ block.shopify_attributes }}>
+                      <p class="text-md text-dark-2 text-seal fw-medium">{{ block.settings.title }}</p>
+                      <ul class="list-card">
+                        {%- for i in (1..5) -%}
+                          {%- assign payment_icon = 'payment_icon_' | append: i -%}
+                          {%- assign payment_title = 'payment_title_' | append: i -%}
+                          {%- if block.settings[payment_icon] != blank -%}
+                            <li class="card-item">
+                              <img src="{{ block.settings[payment_icon] | image_url: width: 100 }}" alt="{{ block.settings[payment_title] }}">
+                            </li>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  {%- when 'delivery_info' -%}
+                    <div class="tf-product-info-delivery-return" {{ block.shopify_attributes }}>
+                      {%- if block.settings.show_delivery_time -%}
+                        <div class="product-delivery">
+                          <div class="icon icon-car2"></div>
+                          <p class="text-md">Estimated delivery time: <span class="fw-medium">{{ block.settings.delivery_time }}</span></p>
+                        </div>
+                      {%- endif -%}
+                      {%- if block.settings.show_shipping_info -%}
+                        <div class="product-delivery">
+                          <div class="icon icon-shipping3"></div>
+                          <p class="text-md">Free shipping on <span class="fw-medium">{{ block.settings.free_shipping_threshold }}</span></p>
+                        </div>
+                      {%- endif -%}
+                    </div>
+                {%- endcase -%}
+              {%- endfor -%}
             </div>
           </div>
         </div>
@@ -198,102 +218,129 @@
       </div>
     </div>
   </div>
-  <div class="tf-sticky-btn-atc">
-    <div class="container">
-      <div class="tf-height-observer w-100 d-flex align-items-center">
-        <div class="tf-sticky-atc-product d-flex align-items-center">
-          <div class="tf-sticky-atc-img">
-            <img class="lazyload" data-src="{{ product.featured_image | image_url: width: 100 }}" src="{{ product.featured_image | image_url: width: 50 }}" alt="{{ product.title }}">
-          </div>
-          <div class="tf-sticky-atc-title fw-5 d-xl-block d-none">{{ product.title }}</div>
-        </div>
-        <div class="tf-sticky-atc-infos">
-          <form class="product-form" method="post" action="/cart/add">
-            <input type="hidden" name="id" value="{{ product.variants.first.id }}">
-            <div class="tf-sticky-atc-variant-price text-center tf-select">
-              <select name="id" class="variant-selector">
-                {%- for variant in product.variants -%}
-                  <option value="{{ variant.id }}" data-price="{{ variant.price | money_without_currency }}"{% if variant == product.selected_or_first_available_variant %} selected="selected"{% endif %}>
-                    {{ variant.title }} - {{ variant.price | money_without_currency }}₫
-                  </option>
-                {%- endfor -%}
-              </select>
-            </div>
-            <div class="tf-sticky-atc-btns">
-              <div class="tf-product-info-quantity">
-                <div class="wg-quantity">
-                  <button type="button" class="btn-quantity minus-btn">-</button>
-                  <input class="quantity-product font-4" type="text" name="quantity" value="1" min="1" max="{{ product.inventory_quantity }}">
-                  <button type="button" class="btn-quantity plus-btn">+</button>
-                </div>
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'sticky_add_to_cart' -%}
+      <div class="tf-sticky-btn-atc" {{ block.shopify_attributes }}>
+        <div class="container">
+          <div class="tf-height-observer w-100 d-flex align-items-center">
+            <div class="tf-sticky-atc-product d-flex align-items-center">
+              <div class="tf-sticky-atc-img">
+                <img class="lazyload" data-src="{{ product.featured_image | image_url: width: 100 }}" src="{{ product.featured_image | image_url: width: 50 }}" alt="{{ product.title }}">
               </div>
-              <button type="submit" 
-                class="tf-btn animate-btn d-inline-flex justify-content-center" 
-                data-add-to-cart 
-                data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-                {% unless product.available %} disabled{% endunless %}>
-                {%- if product.available -%}Add to cart{%- else -%}Sold out{%- endif -%}
-              </button>
+              <div class="tf-sticky-atc-title fw-5 d-xl-block d-none">{{ product.title }}</div>
             </div>
-          </form>
+            <div class="tf-sticky-atc-infos">
+              <form class="product-form" method="post" action="/cart/add">
+                <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                <div class="tf-sticky-atc-variant-price text-center tf-select">
+                  <select name="id" class="variant-selector">
+                    {%- for variant in product.variants -%}
+                      <option value="{{ variant.id }}" data-price="{{ variant.price | money_without_currency }}"{% if variant == product.selected_or_first_available_variant %} selected="selected"{% endif %}>
+                        {{ variant.title }} - {{ variant.price | money_without_currency }}₫
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                </div>
+                <div class="tf-sticky-atc-btns">
+                  <div class="tf-product-info-quantity">
+                    <div class="wg-quantity">
+                      <button type="button" class="btn-quantity minus-btn">-</button>
+                      <input class="quantity-product font-4" type="text" name="quantity" value="1" min="1" max="{{ product.inventory_quantity }}">
+                      <button type="button" class="btn-quantity plus-btn">+</button>
+                    </div>
+                  </div>
+                  <button type="submit" 
+                    class="tf-btn animate-btn d-inline-flex justify-content-center" 
+                    data-add-to-cart 
+                    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                    {% unless product.available %} disabled{% endunless %}>
+                    {%- if product.available -%}Add to cart{%- else -%}Sold out{%- endif -%}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    {%- endif -%}
+  {%- endfor -%}
 </section>
 
 {% schema %}
 {
   "name": "Product",
-  "settings": [
-    {
-      "type": "header",
-      "content": "Delivery Information"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_delivery_info",
-      "label": "Show delivery time",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "delivery_time",
-      "label": "Delivery time text",
-      "default": "3-5 days international"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_shipping_info",
-      "label": "Show shipping info",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "free_shipping_threshold",
-      "label": "Free shipping threshold",
-      "default": "all orders over $150"
-    }
-  ],
   "blocks": [
     {
-      "type": "payment_method",
-      "name": "Payment Method",
+      "type": "gallery",
+      "name": "Product Gallery",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "title",
+      "name": "Product Title",
+      "limit": 1,
       "settings": [
         {
-          "type": "image_picker",
-          "id": "icon",
-          "label": "Payment icon"
+          "type": "checkbox",
+          "id": "show_rating",
+          "label": "Show rating",
+          "default": true
         },
         {
-          "type": "text",
-          "id": "title",
-          "label": "Payment title"
+          "type": "checkbox",
+          "id": "show_price",
+          "label": "Show price",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_sold_count",
+          "label": "Show sold count",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_inventory",
+          "label": "Show inventory",
+          "default": true
         }
       ]
     },
     {
-      "type": "extra_link",
+      "type": "variants",
+      "name": "Product Variants",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_size_guide",
+          "label": "Show size guide",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "quantity",
+      "name": "Quantity & Buy Buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_buy_now",
+          "label": "Show buy now button",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_payment_options",
+          "label": "Show payment options link",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "extra_links",
       "name": "Extra Links",
       "limit": 1,
       "settings": [
@@ -322,6 +369,126 @@
           "default": true
         }
       ]
+    },
+    {
+      "type": "trust_seal",
+      "name": "Trust Seal",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Guarantee Safe Checkout:"
+        },
+        {
+          "type": "header",
+          "content": "Payment Method 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "payment_icon_1",
+          "label": "Payment icon"
+        },
+        {
+          "type": "text",
+          "id": "payment_title_1",
+          "label": "Payment title"
+        },
+        {
+          "type": "header",
+          "content": "Payment Method 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "payment_icon_2",
+          "label": "Payment icon"
+        },
+        {
+          "type": "text",
+          "id": "payment_title_2",
+          "label": "Payment title"
+        },
+        {
+          "type": "header",
+          "content": "Payment Method 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "payment_icon_3",
+          "label": "Payment icon"
+        },
+        {
+          "type": "text",
+          "id": "payment_title_3",
+          "label": "Payment title"
+        },
+        {
+          "type": "header",
+          "content": "Payment Method 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "payment_icon_4",
+          "label": "Payment icon"
+        },
+        {
+          "type": "text",
+          "id": "payment_title_4",
+          "label": "Payment title"
+        },
+        {
+          "type": "header",
+          "content": "Payment Method 5"
+        },
+        {
+          "type": "image_picker",
+          "id": "payment_icon_5",
+          "label": "Payment icon"
+        },
+        {
+          "type": "text",
+          "id": "payment_title_5",
+          "label": "Payment title"
+        }
+      ]
+    },
+    {
+      "type": "delivery_info",
+      "name": "Delivery Information",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_delivery_time",
+          "label": "Show delivery time",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "delivery_time",
+          "label": "Delivery time text",
+          "default": "3-5 days international"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_shipping_info",
+          "label": "Show shipping info",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "free_shipping_threshold",
+          "label": "Free shipping threshold",
+          "default": "all orders over $150"
+        }
+      ]
+    },
+    {
+      "type": "sticky_add_to_cart",
+      "name": "Sticky Add to Cart",
+      "limit": 1,
+      "settings": []
     }
   ],
   "presets": [
@@ -329,22 +496,28 @@
       "name": "Product",
       "blocks": [
         {
-          "type": "extra_link"
+          "type": "gallery"
         },
         {
-          "type": "payment_method"
+          "type": "title"
         },
         {
-          "type": "payment_method"
+          "type": "variants"
         },
         {
-          "type": "payment_method"
+          "type": "quantity"
         },
         {
-          "type": "payment_method"
+          "type": "extra_links"
         },
         {
-          "type": "payment_method"
+          "type": "trust_seal"
+        },
+        {
+          "type": "delivery_info"
+        },
+        {
+          "type": "sticky_add_to_cart"
         }
       ]
     }
