@@ -42,6 +42,7 @@
   -------------------------------------------------------------------------------------*/
   var filterProducts = function () {
     const priceSlider = document.getElementById("price-value-range");
+    const filterForm = document.getElementById("collection-filters-form");
 
     const minPrice = parseInt(priceSlider.dataset.min, 10) || 0;
     const maxPrice = parseInt(priceSlider.dataset.max, 10) || 500;
@@ -55,6 +56,11 @@
       brands: null,
       sale: false,
     };
+
+    // Handle checkbox changes
+    $('.tf-check').on('change', function() {
+      filterForm.submit();
+    });
 
     priceSlider.noUiSlider.on("update", function (values) {
       filters.minPrice = parseInt(values[0], 10);
