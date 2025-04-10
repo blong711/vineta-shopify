@@ -1,16 +1,41 @@
-// Wishlist and Compare functionality
+/**
+ * WishlistCompare Class
+ * Handles wishlist and product comparison functionality
+ * 
+ * Usage:
+ * - Initialize: new WishlistCompare()
+ * - Add to wishlist: <button data-wishlist data-id="product-id" data-action="add">Add to Wishlist</button>
+ * - Add to compare: <button data-compare data-id="product-id" data-action="add">Add to Compare</button>
+ * 
+ * Features:
+ * - Local storage based wishlist and compare lists
+ * - Maximum 50 items in wishlist
+ * - Maximum 6 items in compare list
+ * - Keyboard navigation support
+ * - Automatic UI updates
+ */
 class WishlistCompare {
   constructor() {
+    // Storage keys for wishlist and compare lists
     this.wishlistKey = 'theme4:wishlist:id';
     this.compareKey = 'theme4:compare:id';
+    
+    // Initialize lists from localStorage
     this.wishlistList = this.getWishlistList();
     this.compareList = this.getCompareList();
+    
+    // Maximum number of items allowed
     this.wishlistLimit = 50;
     this.compareLimit = 6;
     
     this.init();
   }
 
+  /**
+   * Initialize event listeners and UI state
+   * Sets up click and keyboard event handlers
+   * Updates button states and wishlist count
+   */
   init() {
     // Initialize event listeners
     console.log('Initializing WishlistCompare event listeners');
@@ -25,24 +50,42 @@ class WishlistCompare {
     this.updateWishlistCount();
   }
 
+  /**
+   * Get wishlist items from localStorage
+   * @returns {Array} Array of product IDs in wishlist
+   */
   getWishlistList() {
     const stored = localStorage.getItem(this.wishlistKey);
     return stored ? stored.split(',') : [];
   }
 
+  /**
+   * Get compare items from localStorage
+   * @returns {Array} Array of product IDs in compare list
+   */
   getCompareList() {
     const stored = localStorage.getItem(this.compareKey);
     return stored ? stored.split(',') : [];
   }
 
+  /**
+   * Save wishlist items to localStorage
+   */
   saveWishlistList() {
     localStorage.setItem(this.wishlistKey, this.wishlistList.join(','));
   }
 
+  /**
+   * Save compare items to localStorage
+   */
   saveCompareList() {
     localStorage.setItem(this.compareKey, this.compareList.join(','));
   }
 
+  /**
+   * Handle click events on wishlist and compare buttons
+   * @param {Event} event - Click event object
+   */
   handleClick(event) {
     console.log('handleClick called, checking for target');
     const target = event.target.closest('[data-wishlist], [data-compare]');
@@ -82,6 +125,10 @@ class WishlistCompare {
     }
   }
 
+  /**
+   * Handle keyboard events (Enter key) on wishlist and compare buttons
+   * @param {Event} event - Keydown event object
+   */
   handleKeydown(event) {
     if (event.key !== 'Enter') return;
     
@@ -103,6 +150,11 @@ class WishlistCompare {
     }
   }
 
+  /**
+   * Handle wishlist actions (add/remove)
+   * @param {string} productId - Product ID to add/remove
+   * @param {string} action - Action to perform ('add' or 'remove')
+   */
   handleWishlist(productId, action) {
     if (action === 'add') {
       this.addToWishlist(productId);
@@ -111,6 +163,10 @@ class WishlistCompare {
     }
   }
 
+  /**
+   * Add product to wishlist
+   * @param {string} productId - Product ID to add
+   */
   addToWishlist(productId) {
     if (this.wishlistList.includes(productId)) return;
     
@@ -125,6 +181,10 @@ class WishlistCompare {
     this.showNotification('Added to wishlist');
   }
 
+  /**
+   * Remove product from wishlist
+   * @param {string} productId - Product ID to remove
+   */
   removeFromWishlist(productId) {
     const index = this.wishlistList.indexOf(productId);
     if (index === -1) return;
@@ -136,6 +196,10 @@ class WishlistCompare {
     this.showNotification('Removed from wishlist');
   }
 
+  /**
+   * Add product to compare list
+   * @param {string} productId - Product ID to add
+   */
   addToCompare(productId) {
     console.log('addToCompare called with ID:', productId);
     
@@ -172,6 +236,10 @@ class WishlistCompare {
     }
   }
 
+  /**
+   * Remove product from compare list
+   * @param {string} productId - Product ID to remove
+   */
   removeFromCompare(productId) {
     if (!productId) {
       console.error('No product ID provided for remove from compare');
@@ -191,6 +259,10 @@ class WishlistCompare {
     document.dispatchEvent(new CustomEvent('compare:updated'));
   }
 
+  /**
+   * Update state of all wishlist and compare buttons
+   * Updates button text and data-action attributes
+   */
   updateButtonsState() {
     // Update wishlist buttons
     document.querySelectorAll('[data-wishlist]').forEach(button => {
@@ -210,6 +282,12 @@ class WishlistCompare {
     });
   }
 
+  /**
+   * Update button text based on current state
+   * @param {HTMLElement} button - Button element to update
+   * @param {boolean} isActive - Whether the item is in the list
+   * @param {string} type - Type of list ('wishlist' or 'compare')
+   */
   updateButtonText(button, isActive, type) {
     const tooltip = button.querySelector('.tooltip');
     if (tooltip) {
@@ -217,6 +295,10 @@ class WishlistCompare {
     }
   }
 
+  /**
+   * Show the compare drawer modal
+   * Uses Bootstrap modal functionality
+   */
   showCompareDrawer() {
     const drawer = document.getElementById('compare');
     if (!drawer) return;
@@ -242,6 +324,10 @@ class WishlistCompare {
     this.updateCompareDrawer();
   }
 
+  /**
+   * Update the compare drawer content
+   * Populates the drawer with current compare items
+   */
   updateCompareDrawer() {
     const drawer = document.getElementById('compare');
     if (!drawer) return;
@@ -425,20 +511,51 @@ document.addEventListener('DOMContentLoaded', () => {
   window.wishlistCompare.addStyles();
 });
 
-// Cart functionality
+/**
+ * Cart Class
+ * Handles shopping cart functionality including:
+ * - Adding/removing items
+ * - Updating quantities
+ * - Managing cart state
+ * - Displaying cart drawer
+ * - Calculating totals
+ * 
+ * Usage:
+ * - Initialize: new Cart()
+ * - Add to cart: <button data-variant-id="variant-id" data-action="add">Add to Cart</button>
+ * - Update quantity: <input class="quantity-product" data-variant-id="variant-id" value="1">
+ * 
+ * Features:
+ * - Local storage persistence
+ * - Real-time cart updates
+ * - Quantity management
+ * - Cart drawer display
+ * - Shipping threshold calculation
+ */
 class Cart {
   constructor() {
+    // Cart action types
     this.actions = {
       add: 'add',
       update: 'update'
     };
+    
+    // Local storage key for cart data
     this.storageKey = 'shopify_cart';
-    this.processingRequests = false; // Flag to prevent concurrent requests
+    
+    // Flag to prevent concurrent cart updates
+    this.processingRequests = false;
+    
+    // Initialize cart functionality
     this.setupEventListeners();
     this.loadCartFromStorage();
     this.initializeCartDrawer();
   }
 
+  /**
+   * Initialize the cart drawer and its functionality
+   * Sets up event listeners and loads initial cart data
+   */
   initializeCartDrawer() {
     console.log('Initializing cart drawer');
     
@@ -467,6 +584,10 @@ class Cart {
     }, 5000);
   }
 
+  /**
+   * Set up the cart drawer UI and event handlers
+   * @param {HTMLElement} cartDrawer - The cart drawer DOM element
+   */
   setupCartDrawer(cartDrawer) {
     console.log('Setting up cart drawer events');
     
@@ -541,6 +662,10 @@ class Cart {
     });
   }
 
+  /**
+   * Set up event listeners for cart updates
+   * Listens for cart changes and quantity updates
+   */
   setupEventListeners() {
     // Listen for cart updates
     document.addEventListener('cart:change', (event) => {
@@ -559,6 +684,13 @@ class Cart {
     });
   }
 
+  /**
+   * Update product quantity in cart
+   * @param {string} id - Variant ID of the product
+   * @param {number} quantity - New quantity
+   * @param {string} action - Action type ('add' or 'update')
+   * @returns {Promise<Object>} Updated cart data
+   */
   async updateQuantity(id, quantity, action) {
     // Prevent concurrent requests
     if (this.processingRequests) {
@@ -633,6 +765,10 @@ class Cart {
     }
   }
 
+  /**
+   * Show the cart drawer modal
+   * Handles backdrop and body styles
+   */
   showCartDrawer() {
     console.log('Opening cart drawer');
     if (window.openCartDrawer) {
@@ -659,6 +795,12 @@ class Cart {
     }
   }
 
+  /**
+   * Update cart state after changes
+   * @param {Object} cartData - Updated cart data
+   * @param {string} id - Variant ID that was changed
+   * @param {string} action - Action performed
+   */
   updateCartState(cartData, id, action) {
     // Update cart display
     this.updateCartDisplay(cartData);
@@ -672,6 +814,10 @@ class Cart {
     }));
   }
 
+  /**
+   * Update the cart drawer display
+   * @param {Object} cartData - Cart data to display
+   */
   updateCartDisplay(cartData) {
     console.log('Updating cart display with', cartData?.items?.length || 0, 'items');
     
@@ -799,6 +945,10 @@ class Cart {
     console.log(`Cart drawer now contains ${finalItems.length} items after update`);
   }
 
+  /**
+   * Update shipping threshold display
+   * @param {number} totalPrice - Current cart total in cents
+   */
   updateShippingThreshold(totalPrice) {
     const threshold = 100 * 100; // $100 in cents
     const progressBar = document.querySelector('.tf-progress-bar .value');
@@ -819,6 +969,10 @@ class Cart {
     }
   }
 
+  /**
+   * Remove item from cart
+   * @param {string} variantId - Variant ID to remove
+   */
   async removeItem(variantId) {
     try {
       await this.updateQuantity(variantId, 0, this.actions.update);
@@ -828,6 +982,10 @@ class Cart {
     }
   }
 
+  /**
+   * Create a promise to fetch current cart data
+   * @returns {Promise<Object>} Current cart data
+   */
   async createCartPromise() {
     try {
       const response = await fetch('/cart.js');
@@ -861,6 +1019,10 @@ class Cart {
     }
   }
 
+  /**
+   * Save cart data to localStorage
+   * @param {Object} cartData - Cart data to save
+   */
   saveCartToStorage(cartData) {
     try {
       localStorage.setItem(this.storageKey, JSON.stringify(cartData));
@@ -869,6 +1031,10 @@ class Cart {
     }
   }
 
+  /**
+   * Load cart data from localStorage
+   * Also fetches fresh data from server
+   */
   loadCartFromStorage() {
     try {
       // First try to load from storage for immediate display
@@ -891,6 +1057,9 @@ class Cart {
     }
   }
 
+  /**
+   * Clear cart data from localStorage
+   */
   clearCartStorage() {
     try {
       localStorage.removeItem(this.storageKey);
@@ -899,6 +1068,11 @@ class Cart {
     }
   }
 
+  /**
+   * Format price in cents to currency string
+   * @param {number} cents - Price in cents
+   * @returns {string} Formatted price string
+   */
   formatMoney(cents) {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -906,6 +1080,11 @@ class Cart {
     }).format(cents / 100);
   }
 
+  /**
+   * Handle quantity change events
+   * @param {string} variantId - Variant ID to update
+   * @param {number} quantity - New quantity
+   */
   handleQuantityChange(variantId, quantity) {
     if (quantity < 1) {
       this.removeItem(variantId);
@@ -914,7 +1093,10 @@ class Cart {
     }
   }
 
-  // New method to update cart count in header
+  /**
+   * Update cart count in header
+   * @param {number} count - New cart item count
+   */
   updateHeaderCartCount(count) {
     // Update all cart count elements in the header
     const cartCountElements = document.querySelectorAll('.cart-count');
