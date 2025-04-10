@@ -4,38 +4,64 @@
     <div class="flat-title wow fadeInUp">
       <h4 class="title">{{ section.settings.title }}</h4>
     </div>
-    <div class="hover-sw-nav hover-sw-2 wow fadeInUp">
-      <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
-        "slidesPerView": 2,
-        "spaceBetween": 12,
-        "speed": 800,
-        "observer": true,
-        "observeParents": true,
-        "slidesPerGroup": 2,
-        "navigation": {
-          "clickable": true,
-          "nextEl": ".nav-next-viewed",
-          "prevEl": ".nav-prev-viewed"
-        },
-        "pagination": { "el": ".sw-pagination-viewed", "clickable": true },
-        "breakpoints": {
-          "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
-          "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4}
-        }
-      }'>
+    {%- for block in section.blocks -%}
+      <div class="hover-sw-nav hover-sw-2 wow fadeInUp" {{ block.shopify_attributes }}>
+        <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
+          "slidesPerView": {{ block.settings.slides_per_view_mobile }},
+          "spaceBetween": {{ block.settings.space_between }},
+          "speed": 800,
+          "observer": true,
+          "observeParents": true,
+          "slidesPerGroup": {{ block.settings.slides_per_view_mobile }},
+          "navigation": {
+            "clickable": true,
+            "nextEl": ".nav-next-viewed-{{ block.id }}",
+            "prevEl": ".nav-prev-viewed-{{ block.id }}"
+          },
+          "pagination": { "el": ".sw-pagination-viewed-{{ block.id }}", "clickable": true },
+          "breakpoints": {
+            "768": { 
+              "slidesPerView": {{ block.settings.slides_per_view_tablet }}, 
+              "spaceBetween": {{ block.settings.space_between }}, 
+              "slidesPerGroup": {{ block.settings.slides_per_view_tablet }}
+            },
+            "1200": { 
+              "slidesPerView": {{ block.settings.slides_per_view_desktop }}, 
+              "spaceBetween": {{ block.settings.space_between }}, 
+              "slidesPerGroup": {{ block.settings.slides_per_view_desktop }}
+            }
+          }
+        }'>
         <div class="swiper-wrapper">
-          {%- assign recently_viewed_products = product.collections.first.products | where: "id" | is_not: product.id | limit: section.settings.products_to_show -%}
-          {%- for related_product in recently_viewed_products -%}
-            <div class="swiper-slide">
-              {% render 'card-product', product: related_product %}
-            </div>
-          {%- endfor -%}
+          {%- case block.type -%}
+            {%- when 'recently_viewed' -%}
+              {%- assign recently_viewed_products = product.recently_viewed | limit: block.settings.products_to_show -%}
+              {%- for product in recently_viewed_products -%}
+                <div class="swiper-slide">
+                  {% render 'card-product', product: product %}
+                </div>
+              {%- endfor -%}
+            {%- when 'featured_collection' -%}
+              {%- assign collection = collections[block.settings.collection] -%}
+              {%- for product in collection.products limit: block.settings.products_to_show -%}
+                <div class="swiper-slide">
+                  {% render 'card-product', product: product %}
+                </div>
+              {%- endfor -%}
+            {%- when 'related_products' -%}
+              {%- assign related_products = product.collections.first.products | where: "id" | is_not: product.id | limit: block.settings.products_to_show -%}
+              {%- for related_product in related_products -%}
+                <div class="swiper-slide">
+                  {% render 'card-product', product: related_product %}
+                </div>
+              {%- endfor -%}
+          {%- endcase -%}
         </div>
-        <div class="d-flex d-xl-none sw-dot-default sw-pagination-viewed justify-content-center"></div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-viewed-{{ block.id }} justify-content-center"></div>
       </div>
-      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-viewed"></div>
-      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-viewed"></div>
-    </div>
+      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-viewed-{{ block.id }}"></div>
+      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-viewed-{{ block.id }}"></div>
+    {%- endfor -%}
   </div>
 </section>
 
@@ -48,20 +74,179 @@
       "id": "title",
       "label": "Title",
       "default": "Recently Viewed"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "recently_viewed",
+      "name": "Recently Viewed",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "products_to_show",
+          "min": 4,
+          "max": 12,
+          "step": 2,
+          "default": 8,
+          "label": "Number of products to show"
+        },
+        {
+          "type": "range",
+          "id": "slides_per_view_mobile",
+          "min": 1,
+          "max": 3,
+          "step": 1,
+          "default": 2,
+          "label": "Slides per view (mobile)"
+        },
+        {
+          "type": "range",
+          "id": "slides_per_view_tablet",
+          "min": 2,
+          "max": 4,
+          "step": 1,
+          "default": 3,
+          "label": "Slides per view (tablet)"
+        },
+        {
+          "type": "range",
+          "id": "slides_per_view_desktop",
+          "min": 3,
+          "max": 6,
+          "step": 1,
+          "default": 4,
+          "label": "Slides per view (desktop)"
+        },
+        {
+          "type": "range",
+          "id": "space_between",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "default": 12,
+          "label": "Space between slides"
+        }
+      ]
     },
     {
-      "type": "range",
-      "id": "products_to_show",
-      "min": 4,
-      "max": 12,
-      "step": 2,
-      "default": 8,
-      "label": "Number of products to show"
+      "type": "featured_collection",
+      "name": "Featured Collection",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "range",
+          "id": "products_to_show",
+          "min": 4,
+          "max": 12,
+          "step": 2,
+          "default": 8,
+          "label": "Number of products to show"
+        },
+        {
+          "type": "range",
+          "id": "slides_per_view_mobile",
+          "min": 1,
+          "max": 3,
+          "step": 1,
+          "default": 2,
+          "label": "Slides per view (mobile)"
+        },
+        {
+          "type": "range",
+          "id": "slides_per_view_tablet",
+          "min": 2,
+          "max": 4,
+          "step": 1,
+          "default": 3,
+          "label": "Slides per view (tablet)"
+        },
+        {
+          "type": "range",
+          "id": "slides_per_view_desktop",
+          "min": 3,
+          "max": 6,
+          "step": 1,
+          "default": 4,
+          "label": "Slides per view (desktop)"
+        },
+        {
+          "type": "range",
+          "id": "space_between",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "default": 12,
+          "label": "Space between slides"
+        }
+      ]
+    },
+    {
+      "type": "related_products",
+      "name": "Related Products",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "products_to_show",
+          "min": 4,
+          "max": 12,
+          "step": 2,
+          "default": 8,
+          "label": "Number of products to show"
+        },
+        {
+          "type": "range",
+          "id": "slides_per_view_mobile",
+          "min": 1,
+          "max": 3,
+          "step": 1,
+          "default": 2,
+          "label": "Slides per view (mobile)"
+        },
+        {
+          "type": "range",
+          "id": "slides_per_view_tablet",
+          "min": 2,
+          "max": 4,
+          "step": 1,
+          "default": 3,
+          "label": "Slides per view (tablet)"
+        },
+        {
+          "type": "range",
+          "id": "slides_per_view_desktop",
+          "min": 3,
+          "max": 6,
+          "step": 1,
+          "default": 4,
+          "label": "Slides per view (desktop)"
+        },
+        {
+          "type": "range",
+          "id": "space_between",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "default": 12,
+          "label": "Space between slides"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Recently Viewed"
+      "name": "Recently Viewed",
+      "blocks": [
+        {
+          "type": "recently_viewed"
+        }
+      ]
     }
   ]
 }
@@ -84,6 +269,7 @@
 
 .hover-sw-nav {
   position: relative;
+  margin-bottom: 40px;
 }
 
 .card-product {
