@@ -1,0 +1,106 @@
+{
+  "name": "Electronics Page",
+  "sections": {
+    "main_slider": {
+      "type": "main-slider",
+      "settings": {
+        "height": "full",
+        "layout": "fullwidth",
+        "autoplay": true,
+        "autoplay_speed": 5000,
+        "show_arrows": true,
+        "show_dots": true
+      }
+    },
+    "featured_categories": {
+      "type": "categories",
+      "settings": {
+        "title": "Shop by Category",
+        "layout": "grid",
+        "categories_to_show": 4
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Featured Electronics",
+        "collections_to_show": 4,
+        "show_vendor": true,
+        "show_quick_view": true,
+        "show_compare": true,
+        "show_wishlist": true
+      }
+    },
+    "icon_boxes": {
+      "type": "icon-boxes",
+      "settings": {
+        "title": "Why Choose Us",
+        "boxes_to_show": 4
+      },
+      "blocks": {
+        "shipping": {
+          "type": "icon_box",
+          "settings": {
+            "style": "2",
+            "icon": "icon-shipping",
+            "title": "Free Shipping",
+            "text": "Free shipping on orders over $100"
+          }
+        },
+        "warranty": {
+          "type": "icon_box",
+          "settings": {
+            "style": "2",
+            "icon": "icon-shield",
+            "title": "Warranty Protection",
+            "text": "Over 2 years warranty protection"
+          }
+        },
+        "support": {
+          "type": "icon_box",
+          "settings": {
+            "style": "2",
+            "icon": "icon-support",
+            "title": "24/7 Support",
+            "text": "Dedicated support & services"
+          }
+        },
+        "secure": {
+          "type": "icon_box",
+          "settings": {
+            "style": "2",
+            "icon": "icon-lock",
+            "title": "Secure Payments",
+            "text": "100% secure payment methods"
+          }
+        }
+      }
+    },
+    "best_sellers": {
+      "type": "best-sellers",
+      "settings": {
+        "title": "Best Selling Electronics",
+        "products_to_show": 6,
+        "show_vendor": true,
+        "show_quick_view": true,
+        "show_compare": true,
+        "show_wishlist": true
+      }
+    },
+    "brands": {
+      "type": "brands",
+      "settings": {
+        "title": "Popular Brands",
+        "brands_to_show": 6
+      }
+    }
+  },
+  "order": [
+    "main_slider",
+    "featured_categories",
+    "featured_collection",
+    "icon_boxes",
+    "best_sellers",
+    "brands"
+  ]
+} 
