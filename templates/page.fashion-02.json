@@ -9,6 +9,41 @@
  */
 {
   "sections": {
+    "fashion_slide_JJ9RVq": {
+      "type": "fashion-slide",
+      "blocks": {
+        "slide_z8jKEz": {
+          "type": "slide",
+          "settings": {
+            "collection": "men"
+          }
+        },
+        "slide_z3L3UH": {
+          "type": "slide",
+          "settings": {
+            "collection": "women"
+          }
+        },
+        "slide_ePP38K": {
+          "type": "slide",
+          "settings": {
+            "collection": "baby"
+          }
+        }
+      },
+      "block_order": [
+        "slide_z8jKEz",
+        "slide_z3L3UH",
+        "slide_ePP38K"
+      ],
+      "settings": {
+        "slides_per_view": 3,
+        "slides_per_view_tablet": 2,
+        "slides_per_view_mobile": 1.5,
+        "space_between": 15,
+        "space_between_mobile": 5
+      }
+    },
     "top_picks": {
       "type": "top-picks",
       "blocks": {
@@ -39,6 +74,7 @@
     }
   },
   "order": [
+    "fashion_slide_JJ9RVq",
     "top_picks"
   ]
 }
