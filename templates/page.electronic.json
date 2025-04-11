@@ -1,60 +1,121 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-  "name": "Electronics Page",
   "sections": {
     "main_slider": {
       "type": "main-slider",
       "settings": {
-        "height": "full",
         "layout": "fullwidth",
         "autoplay": true,
-        "autoplay_speed": 5000,
-        "show_arrows": true,
-        "show_dots": true
+        "autoplay_speed": 5000
       }
     },
     "marquee_sale": {
       "type": "marquee-sale",
-      "settings": {
-        "background_color": "#E8F5E9"
-      },
       "blocks": {
-        "sale1": {
+        "text_TWEQPh": {
           "type": "text",
           "settings": {
             "text": "50% Off On Selected Items"
           }
         },
-        "sale2": {
+        "text_MbAaUG": {
           "type": "text",
           "settings": {
             "text": "New Arrival"
           }
-        },
-        "sale3": {
-          "type": "text",
-          "settings": {
-            "text": "Free Shipping on Orders Over $100"
-          }
         }
+      },
+      "block_order": [
+        "text_TWEQPh",
+        "text_MbAaUG"
+      ],
+      "settings": {
+        "background_color": "#e8f5e9"
       }
     },
     "featured_categories": {
       "type": "categories",
+      "blocks": {
+        "category_UKGgmN": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/81aajRPmpWL._SL1500.jpg",
+            "title": "Category Name",
+            "description": "",
+            "link": "shopify://collections/accessories"
+          }
+        },
+        "category_hqAWaL": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/body-pastel-1.jpg",
+            "title": "Category Name",
+            "description": "",
+            "link": "shopify://collections/baby"
+          }
+        },
+        "category_dxt7EX": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/305de779-f630-5af4-ac94-414f5609873b_900x_cfe080a3-6460-4dc7-af2f-7ee923eeda7a.jpg",
+            "title": "Category Name",
+            "description": "",
+            "link": "shopify://collections/bike"
+          }
+        },
+        "category_NnWEem": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/yellow-cherry-tomatoes-3.jpg",
+            "title": "Category Name",
+            "description": "",
+            "link": "shopify://collections/fruit"
+          }
+        },
+        "category_neh3Ny": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/288581L100029_L100029_1.jpg",
+            "title": "Category Name",
+            "description": "",
+            "link": "shopify://collections/houseware"
+          }
+        },
+        "category_WEfBHg": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/5713200620_2_6_1.jpg",
+            "title": "Category Name",
+            "description": "",
+            "link": "shopify://collections/women"
+          }
+        }
+      },
+      "block_order": [
+        "category_UKGgmN",
+        "category_hqAWaL",
+        "category_dxt7EX",
+        "category_NnWEem",
+        "category_neh3Ny",
+        "category_WEfBHg"
+      ],
       "settings": {
-        "title": "Shop by Category",
-        "layout": "grid",
-        "categories_to_show": 4
+        "layout": "layout2",
+        "title": "Shop by Category"
       }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Featured Electronics",
-        "collections_to_show": 4,
-        "show_vendor": true,
-        "show_quick_view": true,
-        "show_compare": true,
-        "show_wishlist": true
+        "collections_to_show": 4
       }
     },
     "icon_boxes": {
@@ -62,62 +123,22 @@
       "settings": {
         "title": "Why Choose Us",
         "boxes_to_show": 4
-      },
-      "blocks": {
-        "shipping": {
-          "type": "icon_box",
-          "settings": {
-            "style": "2",
-            "icon": "icon-shipping",
-            "title": "Free Shipping",
-            "text": "Free shipping on orders over $100"
-          }
-        },
-        "warranty": {
-          "type": "icon_box",
-          "settings": {
-            "style": "2",
-            "icon": "icon-shield",
-            "title": "Warranty Protection",
-            "text": "Over 2 years warranty protection"
-          }
-        },
-        "support": {
-          "type": "icon_box",
-          "settings": {
-            "style": "2",
-            "icon": "icon-support",
-            "title": "24/7 Support",
-            "text": "Dedicated support & services"
-          }
-        },
-        "secure": {
-          "type": "icon_box",
-          "settings": {
-            "style": "2",
-            "icon": "icon-lock",
-            "title": "Secure Payments",
-            "text": "100% secure payment methods"
-          }
-        }
       }
     },
     "best_sellers": {
       "type": "best-sellers",
       "settings": {
-        "title": "Best Selling Electronics",
-        "products_to_show": 6,
-        "show_vendor": true,
-        "show_quick_view": true,
-        "show_compare": true,
-        "show_wishlist": true
+        "section_title": "Best Sellers",
+        "products_to_show": 6
       }
     },
     "brands": {
       "type": "brands",
       "settings": {
         "title": "Popular Brands",
-        "brands_to_show": 6
+        "animation_speed": 20,
+        "animation_direction": "left",
+        "clone_count": 2
       }
     }
   },
@@ -130,4 +151,4 @@
     "best_sellers",
     "brands"
   ]
-} 
+}
