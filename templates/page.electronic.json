@@ -101,6 +101,147 @@
         "title": "Categories"
       }
     },
+    "top_picks": {
+      "type": "top-picks",
+      "blocks": {
+        "product_1": {
+          "type": "product",
+          "settings": {
+            "product": "airpods-pro",
+            "show_sale_badge": true,
+            "sale_text": "20% Off",
+            "show_compare_price": true,
+            "show_color_swatches": true,
+            "color_swatches": [
+              {
+                "name": "Black",
+                "class": "bg-dark"
+              },
+              {
+                "name": "Red",
+                "class": "bg-red-2"
+              },
+              {
+                "name": "Pink",
+                "class": "bg-light-pink-10"
+              }
+            ],
+            "progress_bar_class": "bg-orange-3",
+            "progress_value": 90,
+            "available_quantity": 2,
+            "available_text_class": "text-red-2"
+          }
+        },
+        "product_2": {
+          "type": "product",
+          "settings": {
+            "product": "samsung-watch",
+            "show_sale_badge": true,
+            "sale_text": "15% Off",
+            "show_compare_price": true,
+            "show_color_swatches": true,
+            "color_swatches": [
+              {
+                "name": "Grey",
+                "class": "bg-grey-6"
+              },
+              {
+                "name": "White",
+                "class": "bg-white"
+              },
+              {
+                "name": "Black",
+                "class": "bg-dark"
+              }
+            ],
+            "progress_bar_class": "bg-green-2",
+            "progress_value": 40,
+            "available_quantity": 60,
+            "available_text_class": "text-success-5"
+          }
+        }
+      },
+      "block_order": [
+        "product_1",
+        "product_2"
+      ],
+      "settings": {
+        "title": "Top Picks You'll Love",
+        "description": "Discover our most popular products that customers can't get enough of"
+      }
+    },
+    "hot_deals": {
+      "type": "hot-deals",
+      "blocks": {
+        "product_1": {
+          "type": "product",
+          "settings": {
+            "product": "airpods-pro",
+            "show_sale_badge": true,
+            "sale_text": "20% Off",
+            "countdown_timer": "1007500",
+            "show_compare_price": true,
+            "show_color_swatches": true,
+            "color_swatches": [
+              {
+                "name": "Black",
+                "class": "bg-dark"
+              },
+              {
+                "name": "Red",
+                "class": "bg-red-2"
+              },
+              {
+                "name": "Pink",
+                "class": "bg-light-pink-10"
+              }
+            ],
+            "progress_bar_class": "bg-orange-3",
+            "progress_value": 90,
+            "available_quantity": 2,
+            "available_text_class": "text-red-2"
+          }
+        },
+        "product_2": {
+          "type": "product",
+          "settings": {
+            "product": "samsung-watch",
+            "show_sale_badge": true,
+            "sale_text": "15% Off",
+            "countdown_timer": "810549",
+            "show_compare_price": true,
+            "show_color_swatches": true,
+            "color_swatches": [
+              {
+                "name": "Grey",
+                "class": "bg-grey-6"
+              },
+              {
+                "name": "White",
+                "class": "bg-white"
+              },
+              {
+                "name": "Black",
+                "class": "bg-dark"
+              }
+            ],
+            "progress_bar_class": "bg-green-2",
+            "progress_value": 40,
+            "available_quantity": 60,
+            "available_text_class": "text-success-5"
+          }
+        }
+      },
+      "block_order": [
+        "product_1",
+        "product_2"
+      ],
+      "settings": {
+        "title": "Hot Deals",
+        "description": "Explore our most popular pieces that customers can't get enough of",
+        "global_countdown": "46556"
+      }
+    },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
@@ -128,6 +269,8 @@
     "main_slider",
     "marquee_sale",
     "featured_categories",
+    "top_picks",
+    "hot_deals",
     "featured_collection",
     "best_sellers",
     "brands"
