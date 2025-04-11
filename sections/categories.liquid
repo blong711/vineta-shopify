@@ -5,24 +5,25 @@
         <div class="container">
           <div class="row">
             {%- for block in section.blocks -%}
+              {%- assign collection = collections[block.settings.collection] -%}
               <div class="col-lg-3 col-md-4 col-sm-6 col-6" {{ block.shopify_attributes }}>
                 <div class="category-item">
-                  {%- if block.settings.image != blank -%}
-                    <a href="{{ block.settings.link }}" class="category-image">
-                      {{ block.settings.image | image_url: width: 300 | image_tag:
+                  {%- if collection.featured_image != blank -%}
+                    <a href="{{ collection.url }}" class="category-image">
+                      {{ collection.featured_image | image_url: width: 300 | image_tag:
                         loading: 'lazy',
-                        width: block.settings.image.width,
-                        height: block.settings.image.height,
+                        width: collection.featured_image.width,
+                        height: collection.featured_image.height,
                         class: 'img-fluid'
                       }}
                     </a>
                   {%- endif -%}
                   <div class="category-content">
                     <h3 class="category-title">
-                      <a href="{{ block.settings.link }}">{{ block.settings.title }}</a>
+                      <a href="{{ collection.url }}">{{ collection.title }}</a>
                     </h3>
-                    {%- if block.settings.description != blank -%}
-                      <p class="category-description">{{ block.settings.description }}</p>
+                    {%- if collection.description != blank -%}
+                      <p class="category-description">{{ collection.description }}</p>
                     {%- endif -%}
                   </div>
                 </div>
@@ -61,20 +62,21 @@
               }'>
                 <div class="swiper-wrapper">
                   {%- for block in section.blocks -%}
+                    {%- assign collection = collections[block.settings.collection] -%}
                     <div class="swiper-slide" {{ block.shopify_attributes }}>
                       <div class="wg-cls style-square hover-img">
-                        <a href="{{ block.settings.link }}" class="image img-style d-block">
-                          {%- if block.settings.image != blank -%}
-                            {{ block.settings.image | image_url: width: 300 | image_tag:
+                        <a href="{{ collection.url }}" class="image img-style d-block">
+                          {%- if collection.featured_image != blank -%}
+                            {{ collection.featured_image | image_url: width: 300 | image_tag:
                               loading: 'lazy',
-                              width: block.settings.image.width,
-                              height: block.settings.image.height,
+                              width: collection.featured_image.width,
+                              height: collection.featured_image.height,
                               class: 'lazyload'
                             }}
                           {%- endif -%}
                         </a>
                         <div class="cls-content text-center">
-                          <a href="{{ block.settings.link }}" class="link text-md fw-medium">{{ block.settings.title }}</a>
+                          <a href="{{ collection.url }}" class="link text-md fw-medium">{{ collection.title }}</a>
                         </div>
                       </div>
                     </div>
@@ -124,25 +126,9 @@
       "name": "Category",
       "settings": [
         {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Category Name"
-        },
-        {
-          "type": "text",
-          "id": "description",
-          "label": "Description"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
         }
       ]
     }
@@ -154,25 +140,25 @@
         {
           "type": "category",
           "settings": {
-            "title": "Category 1"
+            "collection": "all"
           }
         },
         {
           "type": "category",
           "settings": {
-            "title": "Category 2"
+            "collection": "all"
           }
         },
         {
           "type": "category",
           "settings": {
-            "title": "Category 3"
+            "collection": "all"
           }
         },
         {
           "type": "category",
           "settings": {
-            "title": "Category 4"
+            "collection": "all"
           }
         }
       ]
