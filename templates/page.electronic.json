@@ -158,19 +158,38 @@
         "view_all_link": ""
       }
     },
-    "banner_countdown": {
-      "type": "banner-countdown",
+    "banner_collection": {
+      "type": "banner-collection",
       "settings": {
         "show_section": true,
-        "banner_image": "shopify://shop_images/fashion-1.jpg",
-        "season_text": "SUMMER SALE",
-        "heading": "Special Offer",
-        "promo_code": "12D34E",
-        "show_countdown": true,
-        "end_date": "2025-12-31 00:00:00",
-        "button_label": "Shop Now",
-        "button_link": "/collections/special-offer"
-      }
+        "banner_image": "shopify://shop_images/phone.png"
+      },
+      "blocks": {
+        "title_1": {
+          "type": "title",
+          "settings": {
+            "text": "Unmatched Performance"
+          }
+        },
+        "subtitle_1": {
+          "type": "subtitle",
+          "settings": {
+            "text": "Upgrade your devices with cutting-edge technology."
+          }
+        },
+        "button_1": {
+          "type": "button",
+          "settings": {
+            "label": "Shop Now",
+            "link": "/collections/electronics"
+          }
+        }
+      },
+      "block_order": [
+        "title_1",
+        "subtitle_1",
+        "button_1"
+      ]
     },
     "hot_deals": {
       "type": "hot-deals",
@@ -385,7 +404,7 @@
     "marquee_sale",
     "featured_categories",
     "top_picks",
-    "banner_countdown",
+    "banner_collection",
     "hot_deals",
     "testimonials",
     "brands",

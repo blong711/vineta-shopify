@@ -1,42 +1,21 @@
 {%- if section.settings.show_section -%}
   <section>
     <div class="container">
-      <div class="s-banner-colection banner-cls-electric flat-spacing-3">
-        <div class="banner-content tf-grid-layout tf-col-2 hover-overlay-2">
-          <div class="image">
-            {%- if section.settings.banner_image != blank -%}
-              <img src="{{ section.settings.banner_image | img_url: 'master' }}"
-                data-src="{{ section.settings.banner_image | img_url: 'master' }}"
-                alt="{{ section.settings.heading | escape }}"
-                class="lazyload">
-            {%- else -%}
-              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
-            {%- endif -%}
-          </div>
-          <div class="box-content">
+      <div class="s-banner-countdown banner-cd-fashion">
+        <div class="image">
+          {%- if section.settings.banner_image != blank -%}
+            <img src="{{ section.settings.banner_image | img_url: 'master' }}"
+              data-src="{{ section.settings.banner_image | img_url: 'master' }}"
+              alt="{{ section.settings.heading | escape }}"
+              class="lazyload">
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+        <div class="banner-content text-center">
+          <div class="box-title wow fadeInUp">
             {% for block in section.blocks %}
               {% case block.type %}
-                {% when 'banner_content' %}
-                  <div class="box-title-banner wow fadeInUp" {{ block.shopify_attributes }}>
-                    {%- if block.settings.title != blank -%}
-                      <p class="title display-md fw-medium">
-                        {{ block.settings.title }}
-                      </p>
-                    {%- endif -%}
-                    {%- if block.settings.subtitle != blank -%}
-                      <p class="sub text-md text-main">
-                        {{ block.settings.subtitle }}
-                      </p>
-                    {%- endif -%}
-                  </div>
-                  {%- if block.settings.button_label != blank -%}
-                    <div class="box-btn-banner wow fadeInUp">
-                      <a href="{{ block.settings.button_link }}" class="tf-btn btn-dark2 animate-btn">
-                        {{ block.settings.button_label }}
-                        <i class="icon icon-arr-right"></i>
-                      </a>
-                    </div>
-                  {%- endif -%}
                 {% when 'season_text' %}
                   {%- if block.settings.text != blank -%}
                     <p class="season text-md fw-medium" {{ block.shopify_attributes }}>
@@ -55,6 +34,29 @@
                       WITH PROMOTE CODE: {{ block.settings.text }}
                     </p>
                   {%- endif -%}
+                {% when 'banner_content' %}
+                  <div class="box-content" {{ block.shopify_attributes }}>
+                    <div class="box-title-banner wow fadeInUp">
+                      {%- if block.settings.title != blank -%}
+                        <p class="title display-md fw-medium">
+                          {{ block.settings.title }}
+                        </p>
+                      {%- endif -%}
+                      {%- if block.settings.subtitle != blank -%}
+                        <p class="sub text-md text-main">
+                          {{ block.settings.subtitle }}
+                        </p>
+                      {%- endif -%}
+                    </div>
+                    {%- if block.settings.button_label != blank -%}
+                      <div class="box-btn-banner wow fadeInUp">
+                        <a href="{{ block.settings.button_link }}" class="tf-btn btn-dark2 animate-btn">
+                          {{ block.settings.button_label }}
+                          <i class="icon icon-arr-right"></i>
+                        </a>
+                      </div>
+                    {%- endif -%}
+                  </div>
                 {% when 'countdown' %}
                   {%- if block.settings.show_countdown and block.settings.end_date != blank -%}
                     {%- assign end_date = block.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
