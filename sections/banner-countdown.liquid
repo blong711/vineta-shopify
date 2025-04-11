@@ -13,47 +13,49 @@
           {%- endif -%}
         </div>
         <div class="banner-content text-center">
-          {% for block in section.blocks %}
-            {% case block.type %}
-              {% when 'heading' %}
-                <div class="box-title wow fadeInUp" {{ block.shopify_attributes }}>
-                  {%- if block.settings.season_text != blank -%}
-                    <p class="season text-md fw-medium">
-                      {{ block.settings.season_text }}
+          <div class="box-title wow fadeInUp">
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when 'season_text' %}
+                  {%- if block.settings.text != blank -%}
+                    <p class="season text-md fw-medium" {{ block.shopify_attributes }}>
+                      {{ block.settings.text }}
                     </p>
                   {%- endif -%}
-                  {%- if block.settings.heading != blank -%}
-                    <h2 class="fw-medium">
-                      {{ block.settings.heading }}
+                {% when 'heading' %}
+                  {%- if block.settings.text != blank -%}
+                    <h2 class="fw-medium" {{ block.shopify_attributes }}>
+                      {{ block.settings.text }}
                     </h2>
                   {%- endif -%}
-                  {%- if block.settings.promo_code != blank -%}
-                    <p class="sub text-md fw-medium">
-                      WITH PROMOTE CODE: {{ block.settings.promo_code }}
+                {% when 'promo_code' %}
+                  {%- if block.settings.text != blank -%}
+                    <p class="sub text-md fw-medium" {{ block.shopify_attributes }}>
+                      WITH PROMOTE CODE: {{ block.settings.text }}
                     </p>
                   {%- endif -%}
-                </div>
-              {% when 'countdown' %}
-                {%- if block.settings.show_countdown and block.settings.end_date != blank -%}
-                  {%- assign end_date = block.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
-                  <div class="box-countdown d-flex justify-content-center wow fadeInUp" {{ block.shopify_attributes }}>
-                    <div class="wg-countdown-2">
-                      <div class="js-countdown" 
-                           data-countdown="{{ end_date }}"
-                           data-labels="Days,Hours,Mins,Secs"></div>
+                {% when 'countdown' %}
+                  {%- if block.settings.show_countdown and block.settings.end_date != blank -%}
+                    {%- assign end_date = block.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
+                    <div class="box-countdown d-flex justify-content-center wow fadeInUp" {{ block.shopify_attributes }}>
+                      <div class="wg-countdown-2">
+                        <div class="js-countdown" 
+                             data-countdown="{{ end_date }}"
+                             data-labels="Days,Hours,Mins,Secs"></div>
+                      </div>
                     </div>
-                  </div>
-                {%- endif -%}
-              {% when 'button' %}
-                {%- if block.settings.button_label != blank -%}
-                  <div class="box-btn wow fadeInUp" {{ block.shopify_attributes }}>
-                    <a href="{{ block.settings.button_link }}" class="tf-btn btn-white hover-primary">
-                      {{ block.settings.button_label }}
-                    </a>
-                  </div>
-                {%- endif -%}
-            {% endcase %}
-          {% endfor %}
+                  {%- endif -%}
+                {% when 'button' %}
+                  {%- if block.settings.button_label != blank -%}
+                    <div class="box-btn wow fadeInUp" {{ block.shopify_attributes }}>
+                      <a href="{{ block.settings.button_link }}" class="tf-btn btn-white hover-primary">
+                        {{ block.settings.button_label }}
+                      </a>
+                    </div>
+                  {%- endif -%}
+              {% endcase %}
+            {% endfor %}
+          </div>
         </div>
       </div>
     </div>
@@ -82,26 +84,40 @@
   ],
   "blocks": [
     {
-      "type": "heading",
-      "name": "Content",
+      "type": "season_text",
+      "name": "Season Text",
       "limit": 1,
       "settings": [
         {
           "type": "text",
-          "id": "season_text",
-          "label": "Season text",
+          "id": "text",
+          "label": "Text",
           "default": "SUMMER SALE"
-        },
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 1,
+      "settings": [
         {
           "type": "text",
-          "id": "heading",
-          "label": "Heading",
+          "id": "text",
+          "label": "Text",
           "default": "50% OFF"
-        },
+        }
+      ]
+    },
+    {
+      "type": "promo_code",
+      "name": "Promo Code",
+      "limit": 1,
+      "settings": [
         {
           "type": "text",
-          "id": "promo_code",
-          "label": "Promo code",
+          "id": "text",
+          "label": "Code",
           "default": "12D34E"
         }
       ]
@@ -152,11 +168,21 @@
       },
       "blocks": [
         {
+          "type": "season_text",
+          "settings": {
+            "text": "SUMMER SALE"
+          }
+        },
+        {
           "type": "heading",
           "settings": {
-            "season_text": "SUMMER SALE",
-            "heading": "50% OFF",
-            "promo_code": "12D34E"
+            "text": "50% OFF"
+          }
+        },
+        {
+          "type": "promo_code",
+          "settings": {
+            "text": "12D34E"
           }
         },
         {
