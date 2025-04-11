@@ -189,163 +189,163 @@
       </div>
     </div>
   {%- else -%}
-    <div class="container">
-      <div class="row wrapper-header align-items-center">
-        <div class="col-md-4 col-3 d-xl-none">
-          <a href="#mobileMenu" class="mobile-menu" data-bs-toggle="offcanvas" aria-controls="mobileMenu">
-            <i class="icon icon-categories1"></i>
-          </a>
-        </div>
-        
-        {%- for block in section.blocks -%}
-          {%- case block.type -%}
-            {%- when 'logo' -%}
-              <div class="col-xl-2 col-md-4 col-6" {{ block.shopify_attributes }}>
-                <a href="{{ routes.root_url }}" class="logo-header">
-                  {%- if block.settings.logo != blank -%}
-                    <img src="{{ block.settings.logo | image_url: width: block.settings.logo_width }}"
-                      alt="{{ block.settings.logo.alt | default: shop.name }}"
-                      width="{{ block.settings.logo_width }}"
-                      height="{{ block.settings.logo_width | divided_by: block.settings.logo.aspect_ratio }}"
-                      class="logo">
-                  {%- else -%}
-                    <span class="h4">{{ shop.name }}</span>
-                  {%- endif -%}
-                </a>
-              </div>
-            {%- when 'menu' -%}
-              <div class="col-xl-8 d-none d-xl-block" {{ block.shopify_attributes }}>
-                <nav class="box-navigation text-center">
-                  <ul class="box-nav-menu">
-                    {%- for link in linklists[block.settings.menu].links -%}
-                      <li class="menu-item{% if link.links != blank %} has-submenu{% endif %}">
-                        <a href="{{ link.url }}" class="item-link">
-                          {{ link.title }}
-                          {%- if link.links != blank -%}
-                            <i class="icon icon-arr-down"></i>
-                          {%- endif -%}
-                        </a>
+  <div class="container">
+    <div class="row wrapper-header align-items-center">
+      <div class="col-md-4 col-3 d-xl-none">
+        <a href="#mobileMenu" class="mobile-menu" data-bs-toggle="offcanvas" aria-controls="mobileMenu">
+          <i class="icon icon-categories1"></i>
+        </a>
+      </div>
+      
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'logo' -%}
+            <div class="col-xl-2 col-md-4 col-6" {{ block.shopify_attributes }}>
+              <a href="{{ routes.root_url }}" class="logo-header">
+                {%- if block.settings.logo != blank -%}
+                  <img src="{{ block.settings.logo | image_url: width: block.settings.logo_width }}"
+                    alt="{{ block.settings.logo.alt | default: shop.name }}"
+                    width="{{ block.settings.logo_width }}"
+                    height="{{ block.settings.logo_width | divided_by: block.settings.logo.aspect_ratio }}"
+                    class="logo">
+                {%- else -%}
+                  <span class="h4">{{ shop.name }}</span>
+                {%- endif -%}
+              </a>
+            </div>
+          {%- when 'menu' -%}
+            <div class="col-xl-8 d-none d-xl-block" {{ block.shopify_attributes }}>
+              <nav class="box-navigation text-center">
+                <ul class="box-nav-menu">
+                  {%- for link in linklists[block.settings.menu].links -%}
+                    <li class="menu-item{% if link.links != blank %} has-submenu{% endif %}">
+                      <a href="{{ link.url }}" class="item-link">
+                        {{ link.title }}
                         {%- if link.links != blank -%}
-                          <div class="sub-menu mega-menu mega-shop">
-                            <div class="wrapper-sub-menu">
-                              {%- for childlink in link.links -%}
-                                <div class="mega-menu-item">
-                                  <div class="menu-heading">
-                                    <a href="{{ childlink.url }}" class="menu-heading-link">
-                                      {{ childlink.title }}
-                                    </a>
-                                  </div>
-                                  {%- if childlink.links != blank -%}
-                                    <ul class="menu-list">
-                                      {%- for grandchildlink in childlink.links -%}
-                                        <li>
-                                          <a href="{{ grandchildlink.url }}" class="menu-link-text link">
-                                            {{ grandchildlink.title }}
-                                          </a>
-                                        </li>
-                                      {%- endfor -%}
-                                    </ul>
-                                  {%- endif -%}
+                          <i class="icon icon-arr-down"></i>
+                        {%- endif -%}
+                      </a>
+                      {%- if link.links != blank -%}
+                        <div class="sub-menu mega-menu mega-shop">
+                          <div class="wrapper-sub-menu">
+                            {%- for childlink in link.links -%}
+                              <div class="mega-menu-item">
+                                <div class="menu-heading">
+                                  <a href="{{ childlink.url }}" class="menu-heading-link">
+                                    {{ childlink.title }}
+                                  </a>
                                 </div>
-                              {%- endfor -%}
-                            </div>
-                            {%- if block.settings.show_product_cards -%}
-                              <div class="wrapper-sub-collection">
-                                <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
-                                  data-swiper='{
-                                    "slidesPerView": 2,
-                                    "spaceBetween": 24,
-                                    "speed": 800,
-                                    "observer": true,
-                                    "observeParents": true,
-                                    "slidesPerGroup": 2,
-                                    "navigation": {
-                                      "clickable": true,
-                                      "nextEl": ".nav-next-cls-header",
-                                      "prevEl": ".nav-prev-cls-header"
-                                    },
-                                    "pagination": { "el": ".sw-pagination-cls-header", "clickable": true }
-                                  }'>
-                                  <div class="swiper-wrapper">
-                                    {%- for i in (1..4) -%}
-                                      {%- assign product_image = 'product_image_' | append: i -%}
-                                      {%- assign product_title = 'product_title_' | append: i -%}
-                                      {%- assign product_url = 'product_url_' | append: i -%}
-                                      {%- if block.settings[product_image] != blank -%}
-                                        <div class="swiper-slide">
-                                          <div class="wg-cls style-abs asp-1 hover-img">
-                                            <a href="{{ block.settings[product_url] }}" class="image img-style d-block">
-                                              <img src="{{ block.settings[product_image] | img_url: 'master' }}"
-                                                alt="{{ block.settings[product_title] }}"
-                                                class="lazyload">
+                                {%- if childlink.links != blank -%}
+                                  <ul class="menu-list">
+                                    {%- for grandchildlink in childlink.links -%}
+                                      <li>
+                                        <a href="{{ grandchildlink.url }}" class="menu-link-text link">
+                                          {{ grandchildlink.title }}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                              </div>
+                            {%- endfor -%}
+                          </div>
+                          {%- if block.settings.show_product_cards -%}
+                            <div class="wrapper-sub-collection">
+                              <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
+                                data-swiper='{
+                                  "slidesPerView": 2,
+                                  "spaceBetween": 24,
+                                  "speed": 800,
+                                  "observer": true,
+                                  "observeParents": true,
+                                  "slidesPerGroup": 2,
+                                  "navigation": {
+                                    "clickable": true,
+                                    "nextEl": ".nav-next-cls-header",
+                                    "prevEl": ".nav-prev-cls-header"
+                                  },
+                                  "pagination": { "el": ".sw-pagination-cls-header", "clickable": true }
+                                }'>
+                                <div class="swiper-wrapper">
+                                  {%- for i in (1..4) -%}
+                                    {%- assign product_image = 'product_image_' | append: i -%}
+                                    {%- assign product_title = 'product_title_' | append: i -%}
+                                    {%- assign product_url = 'product_url_' | append: i -%}
+                                    {%- if block.settings[product_image] != blank -%}
+                                      <div class="swiper-slide">
+                                        <div class="wg-cls style-abs asp-1 hover-img">
+                                          <a href="{{ block.settings[product_url] }}" class="image img-style d-block">
+                                            <img src="{{ block.settings[product_image] | img_url: 'master' }}"
+                                              alt="{{ block.settings[product_title] }}"
+                                              class="lazyload">
+                                          </a>
+                                          <div class="cls-btn text-center">
+                                            <a href="{{ block.settings[product_url] }}"
+                                              class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                                              {{ block.settings[product_title] }}
+                                              <i class="icon icon-arrow-top-left"></i>
                                             </a>
-                                            <div class="cls-btn text-center">
-                                              <a href="{{ block.settings[product_url] }}"
-                                                class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                                {{ block.settings[product_title] }}
-                                                <i class="icon icon-arrow-top-left"></i>
-                                              </a>
-                                            </div>
                                           </div>
                                         </div>
-                                      {%- endif -%}
-                                    {%- endfor -%}
-                                  </div>
-                                  <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center"></div>
-                                  <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls-header"></div>
-                                  <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls-header"></div>
+                                      </div>
+                                    {%- endif -%}
+                                  {%- endfor -%}
                                 </div>
+                                <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center"></div>
+                                <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls-header"></div>
+                                <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls-header"></div>
                               </div>
-                            {%- endif -%}
-                          </div>
-                        {%- endif -%}
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                </nav>
-              </div>
-            {%- when 'icons' -%}
-              <div class="col-xl-2 col-md-4 col-3" {{ block.shopify_attributes }}>
-                <ul class="nav-icon d-flex justify-content-end align-items-center">
-                  {%- if block.settings.show_search -%}
-                    <li class="nav-search">
-                      <a href="#search" data-bs-toggle="offcanvas" class="nav-icon-item">
-                        <i class="icon icon-search"></i>
-                      </a>
+                            </div>
+                          {%- endif -%}
+                        </div>
+                      {%- endif -%}
                     </li>
-                  {%- endif -%}
-
-                  {%- if block.settings.show_account -%}
-                    <li class="nav-account">
-                      <a href="javascript:void(0);" class="nav-icon-item" data-bs-toggle="offcanvas" data-bs-target="#login">
-                        <i class="icon icon-user"></i>
-                      </a>
-                    </li>
-                  {%- endif -%}
-
-                  {%- if block.settings.show_wishlist -%}
-                    <li class="nav-wishlist">
-                      <a href="/pages/wishlist" class="nav-icon-item">
-                        <i class="icon icon-heart"></i>
-                        <span class="count-box wishlist-count">0</span>
-                      </a>
-                    </li>
-                  {%- endif -%}
-
-                  {%- if block.settings.show_cart -%}
-                    <li class="nav-cart">
-                      <a href="#shoppingCart" data-bs-toggle="offcanvas" class="nav-icon-item">
-                        <i class="icon icon-cart"></i>
-                        <span class="count-box">{{ cart.item_count }}</span>
-                      </a>
-                    </li>
-                  {%- endif -%}
+                  {%- endfor -%}
                 </ul>
-              </div>
-          {%- endcase -%}
-        {%- endfor -%}
-      </div>
+              </nav>
+            </div>
+          {%- when 'icons' -%}
+            <div class="col-xl-2 col-md-4 col-3" {{ block.shopify_attributes }}>
+              <ul class="nav-icon d-flex justify-content-end align-items-center">
+                {%- if block.settings.show_search -%}
+                  <li class="nav-search">
+                    <a href="#search" data-bs-toggle="offcanvas" class="nav-icon-item">
+                      <i class="icon icon-search"></i>
+                    </a>
+                  </li>
+                {%- endif -%}
+
+                {%- if block.settings.show_account -%}
+                  <li class="nav-account">
+                    <a href="javascript:void(0);" class="nav-icon-item" data-bs-toggle="offcanvas" data-bs-target="#login">
+                      <i class="icon icon-user"></i>
+                    </a>
+                  </li>
+                {%- endif -%}
+
+                {%- if block.settings.show_wishlist -%}
+                  <li class="nav-wishlist">
+                    <a href="/pages/wishlist" class="nav-icon-item">
+                      <i class="icon icon-heart"></i>
+                      <span class="count-box wishlist-count">0</span>
+                    </a>
+                  </li>
+                {%- endif -%}
+
+                {%- if block.settings.show_cart -%}
+                  <li class="nav-cart">
+                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="nav-icon-item">
+                      <i class="icon icon-cart"></i>
+                      <span class="count-box">{{ cart.item_count }}</span>
+                    </a>
+                  </li>
+                {%- endif -%}
+              </ul>
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
     </div>
+  </div>
   {%- endif -%}
 </header>
 
@@ -759,7 +759,7 @@
 .btn-cls:hover {
   transform: translateY(-3px);
 }
-{% endstylesheet %}
+{% endstylesheet %} 
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
