@@ -160,10 +160,6 @@
     },
     "banner_collection": {
       "type": "banner-collection",
-      "settings": {
-        "show_section": true,
-        "banner_image": "shopify://shop_images/phone.png"
-      },
       "blocks": {
         "title_1": {
           "type": "title",
@@ -189,7 +185,11 @@
         "title_1",
         "subtitle_1",
         "button_1"
-      ]
+      ],
+      "settings": {
+        "show_section": true,
+        "banner_image": "shopify://shop_images/phone.png"
+      }
     },
     "hot_deals": {
       "type": "hot-deals",
