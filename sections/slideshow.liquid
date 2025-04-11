@@ -1,0 +1,228 @@
+{%- comment -%}Slideshow Section{%- endcomment -%}
+<div class="tf-slideshow slider-fashion-2">
+  <div class="swiper tf-sw-slideshow" 
+       data-preview="{{ section.settings.slides_per_view }}"
+       data-tablet="{{ section.settings.slides_per_view_tablet }}"
+       data-mobile="{{ section.settings.slides_per_view_mobile }}"
+       data-space="{{ section.settings.space_between }}"
+       data-space-mb="{{ section.settings.space_between_mobile }}">
+    <div class="swiper-wrapper">
+      {%- for block in section.blocks -%}
+        <div class="swiper-slide" {{ block.shopify_attributes }}>
+          <div class="fs-cls hover-img">
+            <div class="img-style image">
+              {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url: width: 2000 }}"
+                     data-src="{{ block.settings.image | image_url: width: 2000 }}"
+                     alt="{{ block.settings.image.alt | escape }}"
+                     class="lazyload"
+                     width="{{ block.settings.image.width }}"
+                     height="{{ block.settings.image.height }}">
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <div class="content">
+              {%- if block.settings.button_text != blank and block.settings.button_link != blank -%}
+                <a href="{{ block.settings.button_link }}" class="tf-btn btn-white hover-icon-2 hover-dark">
+                  {{ block.settings.button_text }}
+                  <i class="icon-arrow-right icon"></i>
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Slideshow",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Slideshow Settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Slides per view (Desktop)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Slides per view (Tablet)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 0.5,
+      "label": "Slides per view (Mobile)",
+      "default": 1.5
+    },
+    {
+      "type": "range",
+      "id": "space_between",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "label": "Space between slides (Desktop)",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "space_between_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 5,
+      "label": "Space between slides (Mobile)",
+      "default": 5
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slideshow",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "button_text": "Shop Men"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "button_text": "Shop Women"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "button_text": "Shop Kids"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.tf-slideshow {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.fs-cls {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.fs-cls .img-style {
+  position: relative;
+  padding-bottom: 100%;
+}
+
+.fs-cls .img-style img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.fs-cls:hover .img-style img {
+  transform: scale(1.05);
+}
+
+.fs-cls .content {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  z-index: 2;
+}
+
+.tf-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 24px;
+  border-radius: 5px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.tf-btn .icon {
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+
+.tf-btn:hover .icon {
+  transform: translateX(5px);
+}
+
+.btn-white {
+  background-color: #fff;
+  color: #000;
+}
+
+.hover-dark:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.swiper {
+  overflow: hidden;
+}
+
+.swiper-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+}
+{% endstylesheet %} 
