@@ -1,5 +1,5 @@
 {%- comment -%}Top Bar Section{%- endcomment -%}
-<div class="tf-topbar bg-dark-5 topbar-bg">
+<div class="tf-topbar topbar-bg" style="background-color: {{ section.settings.background_color }};">
   <div class="container">
     <div class="topbar-wraper">
       {%- for block in section.blocks -%}
@@ -9,28 +9,28 @@
               <ul class="tf-social-icon topbar-left">
                 {%- if block.settings.facebook_url != blank -%}
                   <li>
-                    <a href="{{ block.settings.facebook_url }}" class="social-item social-facebook" target="_blank" rel="noopener">
+                    <a href="{{ block.settings.facebook_url }}" class="social-item social-facebook" target="_blank" rel="noopener" style="color: {{ section.settings.text_color }};">
                       <i class="icon icon-fb"></i>
                     </a>
                   </li>
                 {%- endif -%}
                 {%- if block.settings.instagram_url != blank -%}
                   <li>
-                    <a href="{{ block.settings.instagram_url }}" class="social-item social-instagram" target="_blank" rel="noopener">
+                    <a href="{{ block.settings.instagram_url }}" class="social-item social-instagram" target="_blank" rel="noopener" style="color: {{ section.settings.text_color }};">
                       <i class="icon icon-instagram"></i>
                     </a>
                   </li>
                 {%- endif -%}
                 {%- if block.settings.twitter_url != blank -%}
                   <li>
-                    <a href="{{ block.settings.twitter_url }}" class="social-item social-x" target="_blank" rel="noopener">
+                    <a href="{{ block.settings.twitter_url }}" class="social-item social-x" target="_blank" rel="noopener" style="color: {{ section.settings.text_color }};">
                       <i class="icon icon-x"></i>
                     </a>
                   </li>
                 {%- endif -%}
                 {%- if block.settings.snapchat_url != blank -%}
                   <li>
-                    <a href="{{ block.settings.snapchat_url }}" class="social-item social-snapchat" target="_blank" rel="noopener">
+                    <a href="{{ block.settings.snapchat_url }}" class="social-item social-snapchat" target="_blank" rel="noopener" style="color: {{ section.settings.text_color }};">
                       <i class="icon icon-snapchat"></i>
                     </a>
                   </li>
@@ -45,10 +45,10 @@
                     {%- assign announcements = block.settings.announcements | split: '\n' -%}
                     {%- for announcement in announcements -%}
                       <div class="marquee-child-item">
-                        <p>{{ announcement }}</p>
+                        <p style="color: {{ section.settings.text_color }};">{{ announcement }}</p>
                       </div>
                       {%- unless forloop.last -%}
-                        <div class="marquee-child-item"><span class="dot"></span></div>
+                        <div class="marquee-child-item"><span class="dot" style="background-color: {{ section.settings.text_color }};"></span></div>
                       {%- endunless -%}
                     {%- endfor -%}
                   {%- endfor -%}
@@ -60,7 +60,7 @@
               <div class="topbar-right">
                 {%- if block.settings.show_language -%}
                   <div class="tf-languages">
-                    <select class="image-select center style-default type-languages" name="language">
+                    <select class="image-select center style-default type-languages" name="language" style="color: {{ section.settings.text_color }};">
                       {% for locale in shop.published_locales %}
                         <option value="{{ locale.iso_code }}" {% if locale.primary %}selected{% endif %}>
                           {{ locale.name }}
@@ -71,7 +71,7 @@
                 {%- endif -%}
                 {%- if block.settings.show_currency -%}
                   <div class="tf-currencies">
-                    <select class="image-select center style-default type-currencies" name="currency">
+                    <select class="image-select center style-default type-currencies" name="currency" style="color: {{ section.settings.text_color }};">
                       {% for currency in shop.enabled_currencies %}
                         <option value="{{ currency.iso_code }}" {% if currency == cart.currency %}selected{% endif %}>
                           {{ currency.iso_code }} ({{ currency.symbol }})
@@ -92,6 +92,30 @@
 {
   "name": "Top bar",
   "max_blocks": 3,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "hover_color",
+      "label": "Hover color",
+      "default": "#FF4444"
+    }
+  ],
   "blocks": [
     {
       "type": "social_media",
@@ -169,6 +193,11 @@
   "presets": [
     {
       "name": "Top bar",
+      "settings": {
+        "background_color": "#1A1A1A",
+        "text_color": "#FFFFFF",
+        "hover_color": "#FF4444"
+      },
       "blocks": [
         {
           "type": "social_media",
@@ -194,81 +223,3 @@
 }
 {% endschema %}
 
-{% stylesheet %}
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-.marquee-wrapper {
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.initial-child-container {
-  display: inline-block;
-  white-space: nowrap;
-  animation: marquee 20s linear infinite;
-}
-
-.marquee-child-item {
-  display: inline-block;
-  padding: 0 15px;
-}
-
-.marquee-child-item .dot {
-  display: inline-block;
-  width: 4px;
-  height: 4px;
-  background-color: currentColor;
-  border-radius: 50%;
-  margin: 0 5px;
-  vertical-align: middle;
-}
-
-.tf-social-icon {
-  display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.tf-social-icon li {
-  margin-right: 15px;
-}
-
-.tf-social-icon li:last-child {
-  margin-right: 0;
-}
-
-.social-item {
-  color: #fff;
-  transition: color 0.3s ease;
-}
-
-.social-item:hover {
-  color: var(--primary-color);
-}
-
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.image-select {
-  background: none;
-  border: none;
-  color: #fff;
-  padding: 5px;
-  cursor: pointer;
-}
-
-.image-select option {
-  color: #000;
-}
-{% endstylesheet %} 
