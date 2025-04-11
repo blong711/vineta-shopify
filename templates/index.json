@@ -169,24 +169,25 @@
     "categories": {
       "type": "categories",
       "blocks": {
-        "collection_VqU973": {
-          "type": "collection",
+        "category_dPHiXH": {
+          "type": "category",
           "settings": {
-            "collection": "accessories"
+            "collection": "men"
           }
         },
-        "collection_mTDzaf": {
-          "type": "collection",
+        "category_MRy89F": {
+          "type": "category",
           "settings": {
-            "collection": "houseware"
+            "collection": "women"
           }
         }
       },
       "block_order": [
-        "collection_VqU973",
-        "collection_mTDzaf"
+        "category_dPHiXH",
+        "category_MRy89F"
       ],
       "settings": {
+        "layout": "layout1",
         "title": "Categories",
         "products_to_show": 6,
         "products_per_collection": 6
@@ -313,7 +314,10 @@
     "brands": {
       "type": "brands",
       "settings": {
-        "animation_speed": 20
+        "title": "Our Brands",
+        "animation_speed": 20,
+        "animation_direction": "left",
+        "clone_count": 2
       }
     },
     "shop_gram": {
@@ -324,7 +328,10 @@
     },
     "icon_boxes": {
       "type": "icon-boxes",
-      "settings": {}
+      "settings": {
+        "title": "Our Services",
+        "boxes_to_show": 4
+      }
     }
   },
   "order": [
