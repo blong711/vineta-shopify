@@ -1,9 +1,9 @@
 {%- comment -%}
   Card Product Snippet
-  Usage: {% render 'card-product', product: product %}
+  Usage: {% render 'card-product', product: product, style: 'style-center' %}
 {%- endcomment -%}
 
-<div class="card-product {% if product.available == false %}out-of-stock{% endif %} {% if product.variants.size > 0 %}card-product-size{% endif %}"
+<div class="card-product {% if style %} {{ style }}{% endif %} {% if product.available == false %}out-of-stock{% endif %} {% if product.variants.size > 0 %}card-product-size{% endif %}"
   data-product-id="{{ product.id }}"
   data-product-title="{{ product.title | escape }}"
   data-product-url="{{ product.url }}"
