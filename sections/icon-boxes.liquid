@@ -1,93 +1,231 @@
-<div class="line-top flat-spacing-5">
+<div class="line-top flat-spacing-{{ section.settings.spacing }} section-{{ section.id }}-padding">
   <div class="container">
-    {%- if section.settings.title != blank -%}
-      <div class="flat-title wow fadeInUp">
-        <h4 class="title">{{ section.settings.title }}</h4>
-      </div>
-    {%- endif -%}
-    <div class="mw-1 m-auto">
-      <div dir="ltr" class="swiper tf-swiper wow fadeInUp" data-swiper='{
-        "slidesPerView": 1,
-        "spaceBetween": 12,
-        "speed": 800,
-        "observer": true,
-        "observeParents": true,
-        "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
-        "breakpoints": {
-          "575": { "slidesPerView": 2, "spaceBetween": 12, "slidesPerGroup": 2}, 
-          "768": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 2},
-          "1200": { "slidesPerView": {{ section.settings.boxes_to_show }}, "spaceBetween": 42, "slidesPerGroup": {{ section.settings.boxes_to_show }}}
+    {% if section.settings.layout == 'layout1' %}
+      <div class="mw-1 m-auto">
+    {% endif %}
+    <div dir="ltr" class="swiper tf-swiper {% if section.settings.layout == 'layout2' %}tf-sw-iconbox-row{% endif %} wow fadeInUp" data-swiper='{
+      "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+      "spaceBetween": {{ section.settings.space_between_mobile }},
+      "speed": 800,
+      "observer": true,
+      "observeParents": true,
+      "slidesPerGroup": {{ section.settings.slides_per_view_mobile }},
+      "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+      "breakpoints": {
+        "575": { 
+          "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
+          "spaceBetween": {{ section.settings.space_between_tablet }},
+          "slidesPerGroup": {{ section.settings.slides_per_view_tablet }}
+        },
+        "768": { 
+          "slidesPerView": {{ section.settings.slides_per_view_desktop }}, 
+          "spaceBetween": {{ section.settings.space_between_desktop }},
+          "slidesPerGroup": {{ section.settings.slides_per_view_desktop }}
         }
-      }'>
-        <div class="swiper-wrapper">
-          {% for block in section.blocks %}
-            <div class="swiper-slide" {{ block.shopify_attributes }}>
-              <div class="tf-icon-box style-{{ block.settings.style }}">
-                <div class="box-icon">
-                  <i class="icon {{ block.settings.icon }}"></i>
-                </div>
-                <div class="content">
-                  <div class="title">{{ block.settings.title }}</div>
-                  <p class="desc">{{ block.settings.text }}</p>
-                </div>
+      }
+    }'>
+      <div class="swiper-wrapper">
+        {%- for block in section.blocks -%}
+          <div class="swiper-slide" {{ block.shopify_attributes }}>
+            <div class="tf-icon-box style-{{ section.settings.style }} {% if section.settings.layout == 'layout2' %}wow fadeInLeft{% endif %}" 
+              {% if section.settings.layout == 'layout2' %}data-wow-delay="{{ forloop.index | minus: 1 | times: 0.1 }}s"{% endif %}>
+              <div class="box-icon">
+                <i class="icon icon-{{ block.settings.icon }}"></i>
+              </div>
+              <div class="content">
+                <div class="title {% if section.settings.layout == 'layout2' %}text-uppercase{% endif %}">{{ block.settings.title }}</div>
+                {% if section.settings.layout == 'layout1' %}
+                  <p class="desc">{{ block.settings.description }}</p>
+                {% endif %}
               </div>
             </div>
-          {% endfor %}
-        </div>
-        <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
+          </div>
+        {%- endfor -%}
       </div>
+      <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
     </div>
+    {% if section.settings.layout == 'layout1' %}
+      </div>
+    {% endif %}
   </div>
 </div>
 
 {% schema %}
 {
-  "name": "Icon Boxes",
+  "name": "Icon boxes",
+  "tag": "section",
+  "class": "section",
   "settings": [
     {
-      "type": "text",
-      "id": "title",
-      "label": "Section Title",
-      "default": "Our Services"
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "layout1",
+          "label": "Layout 1 (With description)"
+        },
+        {
+          "value": "layout2",
+          "label": "Layout 2 (Minimal)"
+        }
+      ],
+      "default": "layout1"
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "options": [
+        {
+          "value": "2",
+          "label": "Style 2"
+        },
+        {
+          "value": "3",
+          "label": "Style 3"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "spacing",
+      "label": "Spacing",
+      "options": [
+        {
+          "value": "5",
+          "label": "Spacing 5"
+        },
+        {
+          "value": "7",
+          "label": "Spacing 7"
+        }
+      ],
+      "default": "5"
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
     },
     {
       "type": "range",
-      "id": "boxes_to_show",
-      "min": 2,
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Slides per view",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "space_between_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between slides",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Tablet settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Slides per view",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "space_between_tablet",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between slides",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Desktop settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
+      "min": 1,
       "max": 6,
       "step": 1,
-      "label": "Boxes to show at once",
-      "default": 4,
-      "info": "Number of icon boxes visible in the slider at the same time"
+      "label": "Slides per view",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "space_between_desktop",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between slides",
+      "default": 42
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
     }
   ],
   "blocks": [
     {
       "type": "icon_box",
-      "name": "Icon Box",
+      "name": "Icon box",
       "settings": [
         {
           "type": "select",
-          "id": "style",
-          "label": "Box Style",
+          "id": "icon",
+          "label": "Icon",
           "options": [
             {
-              "value": "1",
-              "label": "Style 1"
+              "value": "shipping",
+              "label": "Shipping"
             },
             {
-              "value": "2",
-              "label": "Style 2"
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "return",
+              "label": "Return"
+            },
+            {
+              "value": "support",
+              "label": "Support"
             }
           ],
-          "default": "2"
-        },
-        {
-          "type": "text",
-          "id": "icon",
-          "label": "Icon Class",
-          "default": "icon-shipping",
-          "info": "Enter the icon class name (e.g., icon-shipping, icon-gift)"
+          "default": "shipping"
         },
         {
           "type": "text",
@@ -97,8 +235,8 @@
         },
         {
           "type": "text",
-          "id": "text",
-          "label": "Text",
+          "id": "description",
+          "label": "Description",
           "default": "Enjoy free shipping on all orders"
         }
       ]
@@ -106,46 +244,38 @@
   ],
   "presets": [
     {
-      "name": "Icon Boxes",
-      "settings": {
-        "title": "Our Services",
-        "boxes_to_show": 4
-      },
+      "name": "Icon boxes",
       "blocks": [
         {
           "type": "icon_box",
           "settings": {
-            "style": "2",
-            "icon": "icon-shipping",
+            "icon": "shipping",
             "title": "Free Shipping",
-            "text": "Enjoy free shipping on all orders"
+            "description": "Enjoy free shipping on all orders"
           }
         },
         {
           "type": "icon_box",
           "settings": {
-            "style": "2",
-            "icon": "icon-gift",
+            "icon": "gift",
             "title": "Gift Package",
-            "text": "Perfectly packaged for gifting"
+            "description": "Perfectly packaged for gifting"
           }
         },
         {
           "type": "icon_box",
           "settings": {
-            "style": "2",
-            "icon": "icon-return",
+            "icon": "return",
             "title": "Free Returns",
-            "text": "Within 14 days for a return"
+            "description": "Within 14 days for a return"
           }
         },
         {
           "type": "icon_box",
           "settings": {
-            "style": "2",
-            "icon": "icon-support",
+            "icon": "support",
             "title": "Support Online",
-            "text": "We support customers 24/7"
+            "description": "We support customers 24/7"
           }
         }
       ]

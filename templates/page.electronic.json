@@ -41,7 +41,6 @@
         "background_color": "#e8f5e9"
       }
     },
-
     "featured_categories": {
       "type": "categories",
       "blocks": {
@@ -216,18 +215,18 @@
       }
     },
     "banner_countdown": {
-        "type": "banner-countdown",
-        "settings": {
-          "show_section": true,
-          "banner_image": "shopify://shop_images/fashion-1.jpg",
-          "season_text": "SUMMER SALE",
-          "heading": "Special Offer",
-          "promo_code": "12D34E",
-          "show_countdown": true,
-          "end_date": "2025-12-31 00:00:00",
-          "button_label": "Shop Now",
-          "button_link": "/collections/special-offer"
-        }
+      "type": "banner-countdown",
+      "settings": {
+        "show_section": true,
+        "banner_image": "shopify://shop_images/fashion-1.jpg",
+        "season_text": "SUMMER SALE",
+        "heading": "Special Offer",
+        "promo_code": "12D34E",
+        "show_countdown": true,
+        "end_date": "2025-12-31 00:00:00",
+        "button_label": "Shop Now",
+        "button_link": "/collections/special-offer"
+      }
     },
     "testimonials": {
       "type": "testimonials",
@@ -286,54 +285,115 @@
       }
     },
     "latest_tips": {
-        "type": "latest-tips",
-        "blocks": {
-          "tip_1": {
-            "type": "tip",
-            "settings": {
-              "image": "shopify:\/\/shop_images\/blog-eletric1.jpg",
-              "title": "Tech Trends 2025: Must-Have Gadgets & Innovations",
-              "link": "\/blogs\/news\/tech-trends-2025",
-              "read_more_text": "Read more"
-            }
-          },
-          "tip_2": {
-            "type": "tip",
-            "settings": {
-              "image": "shopify:\/\/shop_images\/blog-eletric2.jpg",
-              "title": "Cutting-Edge Tech: Top Electronics to Watch This Year",
-              "link": "\/blogs\/news\/cutting-edge-tech",
-              "read_more_text": "Read more"
-            }
-          },
-          "tip_3": {
-            "type": "tip",
-            "settings": {
-              "image": "shopify:\/\/shop_images\/blog-eletric3.jpg",
-              "title": "Next-Gen Gadgets: The Hottest Tech Trends of the Year",
-              "link": "\/blogs\/news\/next-gen-gadgets",
-              "read_more_text": "Read more"
-            }
+      "type": "latest-tips",
+      "blocks": {
+        "tip_1": {
+          "type": "tip",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/blog-eletric1.jpg",
+            "title": "Tech Trends 2025: Must-Have Gadgets & Innovations",
+            "link": "\/blogs\/news\/tech-trends-2025",
+            "read_more_text": "Read more"
           }
         },
-        "block_order": [
-          "tip_1",
-          "tip_2",
-          "tip_3"
-        ],
-        "settings": {
-          "title": "Latest Tips & Trends",
-          "description": "Discover expert advice, style inspiration, and product updates on our blog.",
-          "autoplay": true,
-          "autoplay_speed": 5000,
-          "slides_per_view_mobile": 1,
-          "slides_per_view_tablet": 2,
-          "slides_per_view_desktop": 3,
-          "space_between_mobile": 12,
-          "space_between_tablet": 12,
-          "space_between_desktop": 24
+        "tip_2": {
+          "type": "tip",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/blog-eletric2.jpg",
+            "title": "Cutting-Edge Tech: Top Electronics to Watch This Year",
+            "link": "\/blogs\/news\/cutting-edge-tech",
+            "read_more_text": "Read more"
+          }
+        },
+        "tip_3": {
+          "type": "tip",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/blog-eletric3.jpg",
+            "title": "Next-Gen Gadgets: The Hottest Tech Trends of the Year",
+            "link": "\/blogs\/news\/next-gen-gadgets",
+            "read_more_text": "Read more"
+          }
         }
+      },
+      "block_order": [
+        "tip_1",
+        "tip_2",
+        "tip_3"
+      ],
+      "settings": {
+        "title": "Latest Tips & Trends",
+        "description": "Discover expert advice, style inspiration, and product updates on our blog.",
+        "autoplay": true,
+        "autoplay_speed": 5000,
+        "slides_per_view_mobile": 1,
+        "slides_per_view_tablet": 2,
+        "slides_per_view_desktop": 3,
+        "space_between_mobile": 12,
+        "space_between_tablet": 12,
+        "space_between_desktop": 24
       }
+    },
+    "icon_boxes": {
+      "type": "icon-boxes",
+      "blocks": {
+        "box_1": {
+          "type": "icon_box",
+          "settings": {
+            "icon": "shipping",
+            "title": "Free Shipping",
+            "description": ""
+          }
+        },
+        "box_2": {
+          "type": "icon_box",
+          "settings": {
+            "icon": "gift",
+            "title": "Gift Package",
+            "description": ""
+          }
+        },
+        "box_3": {
+          "type": "icon_box",
+          "settings": {
+            "icon": "return",
+            "title": "Free Returns",
+            "description": ""
+          }
+        },
+        "box_4": {
+          "type": "icon_box",
+          "settings": {
+            "icon": "support",
+            "title": "Support Online",
+            "description": ""
+          }
+        }
+      },
+      "block_order": [
+        "box_1",
+        "box_2",
+        "box_3",
+        "box_4"
+      ],
+      "settings": {
+        "layout": "layout2",
+        "style": "3",
+        "spacing": "7",
+        "slides_per_view_mobile": 1,
+        "slides_per_view_tablet": 2,
+        "slides_per_view_desktop": 4,
+        "space_between_mobile": 12,
+        "space_between_tablet": 12,
+        "space_between_desktop": 24,
+        "slides_per_group_mobile": 1,
+        "slides_per_group_tablet": 2,
+        "slides_per_group_desktop": 2,
+        "speed": 800,
+        "show_pagination": true,
+        "pagination_style": "default",
+        "pagination_position": "center"
+      }
+    }
   },
   "order": [
     "main_slider",
@@ -344,6 +404,7 @@
     "hot_deals",
     "testimonials",
     "brands",
-    "latest_tips"
+    "latest_tips",
+    "icon_boxes"
   ]
 }
