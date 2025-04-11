@@ -11,32 +11,37 @@
   "sections": {
     "slideshow": {
       "type": "slideshow",
+      "blocks": {
+        "slide_fRUjai": {
+          "type": "slide",
+          "settings": {
+            "collection": "men"
+          }
+        },
+        "slide_PHFkRf": {
+          "type": "slide",
+          "settings": {
+            "collection": "women"
+          }
+        },
+        "slide_73Lmtw": {
+          "type": "slide",
+          "settings": {
+            "collection": "baby"
+          }
+        }
+      },
+      "block_order": [
+        "slide_fRUjai",
+        "slide_PHFkRf",
+        "slide_73Lmtw"
+      ],
       "settings": {
         "slides_per_view": 3,
         "slides_per_view_tablet": 2,
         "slides_per_view_mobile": 1.5,
         "space_between": 15,
         "space_between_mobile": 5
-      },
-      "blocks": {
-        "block_1": {
-          "type": "slide",
-          "settings": {
-            "collection": "men"
-          }
-        },
-        "block_2": {
-          "type": "slide",
-          "settings": {
-            "collection": "women"
-          }
-        },
-        "block_3": {
-          "type": "slide",
-          "settings": {
-            "collection": "kids"
-          }
-        }
       }
     }
   },
