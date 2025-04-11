@@ -11,37 +11,23 @@
         <div class="swiper-slide" {{ block.shopify_attributes }}>
           <div class="fs-cls hover-img">
             <div class="img-style image">
-              {%- if block.settings.collection != blank -%}
-                {%- assign collection = collections[block.settings.collection] -%}
-                {%- if collection.featured_image != blank -%}
-                  <img src="{{ collection.featured_image | image_url: width: 2000 }}"
-                       data-src="{{ collection.featured_image | image_url: width: 2000 }}"
-                       alt="{{ collection.title | escape }}"
-                       class="lazyload"
-                       width="{{ collection.featured_image.width }}"
-                       height="{{ collection.featured_image.height }}">
-                {%- else -%}
-                  {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                {%- endif -%}
-              {%- elsif block.settings.image != blank -%}
-                <img src="{{ block.settings.image | image_url: width: 2000 }}"
-                     data-src="{{ block.settings.image | image_url: width: 2000 }}"
-                     alt="{{ block.settings.image.alt | escape }}"
+              {%- assign collection = collections[block.settings.collection] -%}
+              {%- if collection.featured_image != blank -%}
+                <img src="{{ collection.featured_image | image_url: width: 2000 }}"
+                     data-src="{{ collection.featured_image | image_url: width: 2000 }}"
+                     alt="{{ collection.title | escape }}"
                      class="lazyload"
-                     width="{{ block.settings.image.width }}"
-                     height="{{ block.settings.image.height }}">
+                     width="{{ collection.featured_image.width }}"
+                     height="{{ collection.featured_image.height }}">
               {%- else -%}
-                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
               {%- endif -%}
             </div>
             <div class="content">
-              {%- if block.settings.button_text != blank -%}
-                <a href="{% if block.settings.collection != blank %}{{ collections[block.settings.collection].url }}{% else %}{{ block.settings.button_link }}{% endif %}" 
-                   class="tf-btn btn-white hover-icon-2 hover-dark">
-                  {{ block.settings.button_text }}
-                  <i class="icon-arrow-right icon"></i>
-                </a>
-              {%- endif -%}
+              <a href="{{ collection.url }}" class="tf-btn btn-white hover-icon-2 hover-dark">
+                {{ collection.title }}
+                <i class="icon-arrow-right icon"></i>
+              </a>
             </div>
           </div>
         </div>
@@ -108,31 +94,12 @@
   "blocks": [
     {
       "type": "slide",
-      "name": "Slide",
+      "name": "Collection",
       "settings": [
         {
           "type": "collection",
           "id": "collection",
-          "label": "Collection",
-          "info": "Select a collection to use its featured image"
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Custom Image",
-          "info": "Use this if you don't want to use a collection image"
-        },
-        {
-          "type": "text",
-          "id": "button_text",
-          "label": "Button text",
-          "default": "Shop Now"
-        },
-        {
-          "type": "url",
-          "id": "button_link",
-          "label": "Button link",
-          "info": "Only used if no collection is selected"
+          "label": "Collection"
         }
       ]
     }
@@ -144,22 +111,19 @@
         {
           "type": "slide",
           "settings": {
-            "collection": "men",
-            "button_text": "Shop Men"
+            "collection": "men"
           }
         },
         {
           "type": "slide",
           "settings": {
-            "collection": "women",
-            "button_text": "Shop Women"
+            "collection": "women"
           }
         },
         {
           "type": "slide",
           "settings": {
-            "collection": "kids",
-            "button_text": "Shop Kids"
+            "collection": "kids"
           }
         }
       ]
