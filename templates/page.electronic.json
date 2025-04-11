@@ -12,6 +12,32 @@
         "show_dots": true
       }
     },
+    "marquee_sale": {
+      "type": "marquee-sale",
+      "settings": {
+        "background_color": "#E8F5E9"
+      },
+      "blocks": {
+        "sale1": {
+          "type": "text",
+          "settings": {
+            "text": "50% Off On Selected Items"
+          }
+        },
+        "sale2": {
+          "type": "text",
+          "settings": {
+            "text": "New Arrival"
+          }
+        },
+        "sale3": {
+          "type": "text",
+          "settings": {
+            "text": "Free Shipping on Orders Over $100"
+          }
+        }
+      }
+    },
     "featured_categories": {
       "type": "categories",
       "settings": {
@@ -97,6 +123,7 @@
   },
   "order": [
     "main_slider",
+    "marquee_sale",
     "featured_categories",
     "featured_collection",
     "icon_boxes",

@@ -1,0 +1,116 @@
+{%- if section.blocks.size > 0 -%}
+  <div class="marquee-sale bg-light-green-2">
+    <div class="marquee-wrapper">
+      <div class="initial-child-container">
+        {%- for block in section.blocks -%}
+          <div class="marquee-child-item" {{ block.shopify_attributes }}>
+            {%- if block.settings.text != blank -%}
+              <p class="display-xs fw-medium">{{ block.settings.text }}</p>
+            {%- endif -%}
+          </div>
+          {%- unless forloop.last -%}
+            <div class="marquee-child-item">
+              <i class="icon-flash-star"></i>
+            </div>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Marquee Sale",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#E8F5E9"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "50% Off On Selected Items"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee Sale",
+      "blocks": [
+        {
+          "type": "text",
+          "settings": {
+            "text": "50% Off On Selected Items"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "New Arrival"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "50% Off On Selected Items"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "New Arrival"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .marquee-sale {
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 10px 0;
+  }
+
+  .marquee-wrapper {
+    display: flex;
+    animation: marquee {{ section.settings.speed | default: 20 }}s linear infinite;
+  }
+
+  .initial-child-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .marquee-child-item {
+    display: flex;
+    align-items: center;
+    margin: 0 20px;
+  }
+
+  .marquee-child-item i {
+    color: #FFD700;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+</style> 
