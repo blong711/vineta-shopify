@@ -46,18 +46,6 @@
           </div>
 
           <div class="col-xl-5 col-md-4 col-3">
-            <div class="header-search">
-              <form action="{{ routes.search_url }}" method="get" class="tf-form-search">
-                <input type="text" 
-                       name="q" 
-                       placeholder="{{ 'general.search.placeholder' | t }}"
-                       value="{{ search.terms | escape }}"
-                       class="form-control">
-                <button type="submit" class="search-btn">
-                  <i class="icon icon-search"></i>
-                </button>
-              </form>
-            </div>
             <ul class="nav-icon d-flex justify-content-end align-items-center">
               {%- for block in section.blocks -%}
                 {%- if block.type == 'icons' -%}
@@ -586,31 +574,6 @@
 .header-2 {
   .header-top {
     border-bottom: 1px solid var(--line);
-  }
-  .header-search {
-    .tf-form-search {
-      position: relative;
-      max-width: 100%;
-      input {
-        width: 100%;
-        padding: 10px 20px;
-        border: 1px solid var(--line);
-        border-radius: 42px;
-        font-size: 14px;
-        line-height: 21px;
-      }
-      .search-btn {
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        padding: 0;
-        color: var(--dark);
-        font-size: 20px;
-      }
-    }
   }
   .header-bottom {
     .box-nav-menu {
