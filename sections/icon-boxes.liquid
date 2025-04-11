@@ -22,19 +22,19 @@
         {% for block in section.blocks %}
           <div class="swiper-slide" {{ block.shopify_attributes }}>
             {% if block.settings.style == "1" %}
-              <div class="tf-icon-box style-{{ block.settings.style }} wow fadeInLeft" {% if forloop.index > 1 %}data-wow-delay="{{ forloop.index | minus: 1 | times: 0.1 }}s"{% endif %}>
+              <div class="tf-icon-box style-2">
                 <div class="box-icon">
                   <i class="icon {{ block.settings.icon }}"></i>
                 </div>
                 <div class="content">
-                  <div class="title text-uppercase">{{ block.settings.title }}</div>
+                  <div class="title">{{ block.settings.title }}</div>
                   {% if block.settings.text != blank %}
                     <p class="desc">{{ block.settings.text }}</p>
                   {% endif %}
                 </div>
               </div>
             {% else %}
-              <div class="tf-icon-box style-{{ block.settings.style }}">
+              <div class="tf-icon-box style-3 wow fadeInLeft" {% if forloop.index > 1 %}data-wow-delay="{{ forloop.index | minus: 1 | times: 0.1 }}s"{% endif %}>
                 <div class="box-icon">
                   <i class="icon {{ block.settings.icon }}"></i>
                 </div>
@@ -84,14 +84,15 @@
           "options": [
             {
               "value": "1",
-              "label": "Style 1"
+              "label": "Style 1 - With Description"
             },
             {
               "value": "2",
-              "label": "Style 2"
+              "label": "Style 2 - Simple with Animation"
             }
           ],
-          "default": "2"
+          "default": "2",
+          "info": "Style 1: Regular text with description | Style 2: Uppercase text with animation"
         },
         {
           "type": "text",
