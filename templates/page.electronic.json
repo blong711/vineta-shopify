@@ -234,30 +234,18 @@
         "testimonial_1": {
           "type": "testimonial",
           "settings": {
-            "image": "shopify:\/\/shop_images\/testimonial-1.jpg",
-            "name": "John Doe",
-            "position": "Happy Customer",
-            "content": "I'm extremely satisfied with my purchase. The quality is outstanding and the service was excellent!",
             "rating": 5
           }
         },
         "testimonial_2": {
           "type": "testimonial",
           "settings": {
-            "image": "shopify:\/\/shop_images\/testimonial-2.jpg",
-            "name": "Jane Smith",
-            "position": "Loyal Customer",
-            "content": "The products exceeded my expectations. Fast shipping and great customer support!",
             "rating": 5
           }
         },
         "testimonial_3": {
           "type": "testimonial",
           "settings": {
-            "image": "shopify:\/\/shop_images\/testimonial-3.jpg",
-            "name": "Mike Johnson",
-            "position": "Satisfied Shopper",
-            "content": "Best shopping experience ever! Will definitely recommend to friends and family.",
             "rating": 5
           }
         }
@@ -268,11 +256,7 @@
         "testimonial_3"
       ],
       "settings": {
-        "title": "What Our Customers Say",
-        "description": "Read what our satisfied customers have to say about their shopping experience",
-        "layout": "slider",
-        "autoplay": true,
-        "autoplay_speed": 5000
+        "title": "What Our Customers Say"
       }
     },
     "brands": {
@@ -290,27 +274,27 @@
         "tip_1": {
           "type": "tip",
           "settings": {
-            "image": "shopify:\/\/shop_images\/blog-eletric1.jpg",
+            "image": "shopify://shop_images/blog-eletric1.jpg",
             "title": "Tech Trends 2025: Must-Have Gadgets & Innovations",
-            "link": "\/blogs\/news\/tech-trends-2025",
+            "link": "/blogs/news/tech-trends-2025",
             "read_more_text": "Read more"
           }
         },
         "tip_2": {
           "type": "tip",
           "settings": {
-            "image": "shopify:\/\/shop_images\/blog-eletric2.jpg",
+            "image": "shopify://shop_images/blog-eletric2.jpg",
             "title": "Cutting-Edge Tech: Top Electronics to Watch This Year",
-            "link": "\/blogs\/news\/cutting-edge-tech",
+            "link": "/blogs/news/cutting-edge-tech",
             "read_more_text": "Read more"
           }
         },
         "tip_3": {
           "type": "tip",
           "settings": {
-            "image": "shopify:\/\/shop_images\/blog-eletric3.jpg",
+            "image": "shopify://shop_images/blog-eletric3.jpg",
             "title": "Next-Gen Gadgets: The Hottest Tech Trends of the Year",
-            "link": "\/blogs\/news\/next-gen-gadgets",
+            "link": "/blogs/news/next-gen-gadgets",
             "read_more_text": "Read more"
           }
         }
@@ -326,10 +310,10 @@
         "autoplay": true,
         "autoplay_speed": 5000,
         "slides_per_view_mobile": 1,
-        "slides_per_view_tablet": 2,
-        "slides_per_view_desktop": 3,
         "space_between_mobile": 12,
+        "slides_per_view_tablet": 2,
         "space_between_tablet": 12,
+        "slides_per_view_desktop": 3,
         "space_between_desktop": 24
       }
     },
@@ -380,18 +364,11 @@
         "style": "3",
         "spacing": "7",
         "slides_per_view_mobile": 1,
-        "slides_per_view_tablet": 2,
-        "slides_per_view_desktop": 4,
         "space_between_mobile": 12,
+        "slides_per_view_tablet": 2,
         "space_between_tablet": 12,
-        "space_between_desktop": 24,
-        "slides_per_group_mobile": 1,
-        "slides_per_group_tablet": 2,
-        "slides_per_group_desktop": 2,
-        "speed": 800,
-        "show_pagination": true,
-        "pagination_style": "default",
-        "pagination_position": "center"
+        "slides_per_view_desktop": 4,
+        "space_between_desktop": 24
       }
     }
   },
