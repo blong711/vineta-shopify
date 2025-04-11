@@ -1,81 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "slideshow": {
-      "type": "fashion-slide",
-      "blocks": {
-        "slide_fRUjai": {
-          "type": "slide",
-          "settings": {
-            "collection": "men"
-          }
-        },
-        "slide_PHFkRf": {
-          "type": "slide",
-          "settings": {
-            "collection": "women"
-          }
-        },
-        "slide_73Lmtw": {
-          "type": "slide",
-          "settings": {
-            "collection": "baby"
-          }
-        }
-      },
-      "block_order": [
-        "slide_fRUjai",
-        "slide_PHFkRf",
-        "slide_73Lmtw"
-      ],
-      "settings": {
-        "slides_per_view": 3,
-        "slides_per_view_tablet": 2,
-        "slides_per_view_mobile": 1.5,
-        "space_between": 15,
-        "space_between_mobile": 5
-      }
-    },
     "top_picks": {
       "type": "top-picks",
       "blocks": {
         "product_1": {
           "type": "product",
           "settings": {
-            "product": "accurist-mens-accurist-london",
-            "show_sale_badge": true,
-            "sale_text": "20% Off",
-            "show_compare_price": true,
-            "show_color_swatches": true,
-            "color_swatch_1_name": "Black",
-            "color_swatch_1_class": "bg-dark",
-            "color_swatch_2_name": "Red",
-            "color_swatch_2_class": "bg-red-2",
-            "color_swatch_3_name": "Pink",
-            "color_swatch_3_class": "bg-light-pink-10",
-            "progress_bar_class": "bg-orange-3",
-            "progress_value": 90,
-            "available_quantity": 2,
-            "available_text_class": "text-red-2"
+            "product": "accurist-mens-accurist-london"
           }
         },
         "product_2": {
           "type": "product",
           "settings": {
-            "product": "armani-exchange-armani-exchange-watch-ax2707",
-            "show_sale_badge": true,
-            "sale_text": "15% Off",
-            "show_compare_price": true,
-            "show_color_swatches": true,
-            "color_swatch_1_name": "Grey",
-            "color_swatch_1_class": "bg-grey-6",
-            "color_swatch_2_name": "White",
-            "color_swatch_2_class": "bg-white",
-            "color_swatch_3_name": "Black",
-            "color_swatch_3_class": "bg-dark",
-            "progress_bar_class": "bg-green-2",
-            "progress_value": 40,
-            "available_quantity": 60,
-            "available_text_class": "text-success-5"
+            "product": "armani-exchange-armani-exchange-watch-ax2707"
           }
         }
       },
@@ -84,6 +30,7 @@
         "product_2"
       ],
       "settings": {
+        "show_section": true,
         "title": "Top Picks You'll Love",
         "description": "Discover our most popular products that customers can't get enough of",
         "view_all_text": "View all",
@@ -92,7 +39,6 @@
     }
   },
   "order": [
-    "slideshow",
     "top_picks"
   ]
 }
