@@ -141,7 +141,7 @@
       "type": "text",
       "id": "description",
       "label": "Description",
-      "default": "Explore our most popular pieces that customers can't get enough of"
+      "default": "Discover our most popular products that customers can't get enough of"
     },
     {
       "type": "text",
@@ -173,65 +173,102 @@
         {
           "type": "checkbox",
           "id": "show_sale_badge",
-          "label": "Show Sale Badge",
-          "default": false
+          "label": "Show sale badge",
+          "default": true
         },
         {
           "type": "text",
           "id": "sale_text",
-          "label": "Sale Text",
+          "label": "Sale text",
           "default": "20% Off"
         },
         {
           "type": "checkbox",
-          "id": "show_trending_badge",
-          "label": "Show Trending Badge",
-          "default": false
-        },
-        {
-          "type": "text",
-          "id": "trending_text",
-          "label": "Trending Text",
-          "default": "Trending"
-        },
-        {
-          "type": "checkbox",
           "id": "show_compare_price",
-          "label": "Show Compare Price",
-          "default": false
+          "label": "Show compare price",
+          "default": true
         },
         {
           "type": "checkbox",
           "id": "show_color_swatches",
-          "label": "Show Color Swatches",
-          "default": false
+          "label": "Show color swatches",
+          "default": true
         },
         {
           "type": "header",
-          "content": "Color Swatches"
+          "content": "Color Swatch 1"
         },
         {
-          "type": "repeater",
-          "id": "color_swatches",
-          "label": "Color Swatches",
-          "settings": [
-            {
-              "type": "text",
-              "id": "name",
-              "label": "Color Name"
-            },
-            {
-              "type": "text",
-              "id": "class",
-              "label": "Color Class",
-              "info": "e.g. bg-dark, bg-red-2, etc."
-            },
-            {
-              "type": "image_picker",
-              "id": "image",
-              "label": "Color Image"
-            }
-          ]
+          "type": "text",
+          "id": "color_swatch_1_name",
+          "label": "Name",
+          "default": "Black"
+        },
+        {
+          "type": "text",
+          "id": "color_swatch_1_class",
+          "label": "Class",
+          "default": "bg-dark"
+        },
+        {
+          "type": "header",
+          "content": "Color Swatch 2"
+        },
+        {
+          "type": "text",
+          "id": "color_swatch_2_name",
+          "label": "Name",
+          "default": "Red"
+        },
+        {
+          "type": "text",
+          "id": "color_swatch_2_class",
+          "label": "Class",
+          "default": "bg-red-2"
+        },
+        {
+          "type": "header",
+          "content": "Color Swatch 3"
+        },
+        {
+          "type": "text",
+          "id": "color_swatch_3_name",
+          "label": "Name",
+          "default": "Pink"
+        },
+        {
+          "type": "text",
+          "id": "color_swatch_3_class",
+          "label": "Class",
+          "default": "bg-light-pink-10"
+        },
+        {
+          "type": "text",
+          "id": "progress_bar_class",
+          "label": "Progress bar class",
+          "default": "bg-orange-3"
+        },
+        {
+          "type": "range",
+          "id": "progress_value",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Progress value",
+          "default": 90
+        },
+        {
+          "type": "number",
+          "id": "available_quantity",
+          "label": "Available quantity",
+          "default": 2
+        },
+        {
+          "type": "text",
+          "id": "available_text_class",
+          "label": "Available text class",
+          "default": "text-red-2"
         }
       ]
     }
@@ -241,7 +278,7 @@
       "name": "Top Picks",
       "settings": {
         "title": "Top Picks You'll Love",
-        "description": "Explore our most popular pieces that customers can't get enough of",
+        "description": "Discover our most popular products that customers can't get enough of",
         "view_all_text": "View all"
       },
       "blocks": [

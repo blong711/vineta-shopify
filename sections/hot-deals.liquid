@@ -152,9 +152,8 @@
     {
       "type": "text",
       "id": "global_countdown",
-      "label": "Global Countdown Timer",
-      "default": "46556",
-      "info": "Enter the countdown time in seconds"
+      "label": "Global countdown timer",
+      "default": "46556"
     }
   ],
   "blocks": [
@@ -168,90 +167,87 @@
           "label": "Product"
         },
         {
-          "type": "image_picker",
-          "id": "hover_image",
-          "label": "Hover Image"
-        },
-        {
           "type": "checkbox",
           "id": "show_sale_badge",
-          "label": "Show Sale Badge",
-          "default": false
+          "label": "Show sale badge",
+          "default": true
         },
         {
           "type": "text",
           "id": "sale_text",
-          "label": "Sale Text",
+          "label": "Sale text",
           "default": "20% Off"
         },
         {
           "type": "text",
           "id": "countdown_timer",
-          "label": "Countdown Timer",
-          "default": "1007500",
-          "info": "Enter the countdown time in seconds"
+          "label": "Countdown timer",
+          "default": "1007500"
         },
         {
           "type": "checkbox",
           "id": "show_compare_price",
-          "label": "Show Compare Price",
-          "default": false
+          "label": "Show compare price",
+          "default": true
         },
         {
           "type": "checkbox",
           "id": "show_color_swatches",
-          "label": "Show Color Swatches",
-          "default": false
+          "label": "Show color swatches",
+          "default": true
         },
         {
           "type": "header",
-          "content": "Color Swatches"
+          "content": "Color Swatch 1"
         },
         {
-          "type": "repeater",
-          "id": "color_swatches",
-          "label": "Color Swatches",
-          "settings": [
-            {
-              "type": "text",
-              "id": "name",
-              "label": "Color Name"
-            },
-            {
-              "type": "text",
-              "id": "class",
-              "label": "Color Class",
-              "info": "e.g. bg-dark, bg-red-2, etc."
-            },
-            {
-              "type": "image_picker",
-              "id": "image",
-              "label": "Color Image"
-            }
-          ]
+          "type": "text",
+          "id": "color_swatch_1_name",
+          "label": "Name",
+          "default": "Black"
+        },
+        {
+          "type": "text",
+          "id": "color_swatch_1_class",
+          "label": "Class",
+          "default": "bg-dark"
         },
         {
           "type": "header",
-          "content": "Progress Bar"
+          "content": "Color Swatch 2"
         },
         {
-          "type": "select",
+          "type": "text",
+          "id": "color_swatch_2_name",
+          "label": "Name",
+          "default": "Red"
+        },
+        {
+          "type": "text",
+          "id": "color_swatch_2_class",
+          "label": "Class",
+          "default": "bg-red-2"
+        },
+        {
+          "type": "header",
+          "content": "Color Swatch 3"
+        },
+        {
+          "type": "text",
+          "id": "color_swatch_3_name",
+          "label": "Name",
+          "default": "Pink"
+        },
+        {
+          "type": "text",
+          "id": "color_swatch_3_class",
+          "label": "Class",
+          "default": "bg-light-pink-10"
+        },
+        {
+          "type": "text",
           "id": "progress_bar_class",
-          "label": "Progress Bar Color",
-          "options": [
-            {
-              "value": "bg-orange-3",
-              "label": "Orange"
-            },
-            {
-              "value": "bg-green-2",
-              "label": "Green"
-            },
-            {
-              "value": "bg-red-3",
-              "label": "Red"
-            }
-          ],
+          "label": "Progress bar class",
           "default": "bg-orange-3"
         },
         {
@@ -261,29 +257,19 @@
           "max": 100,
           "step": 1,
           "unit": "%",
-          "label": "Progress Value",
-          "default": 50
+          "label": "Progress value",
+          "default": 90
         },
         {
           "type": "number",
           "id": "available_quantity",
-          "label": "Available Quantity",
-          "default": 10
+          "label": "Available quantity",
+          "default": 2
         },
         {
-          "type": "select",
+          "type": "text",
           "id": "available_text_class",
-          "label": "Available Text Color",
-          "options": [
-            {
-              "value": "text-red-2",
-              "label": "Red"
-            },
-            {
-              "value": "text-success-5",
-              "label": "Green"
-            }
-          ],
+          "label": "Available text class",
           "default": "text-red-2"
         }
       ]
@@ -292,18 +278,7 @@
   "presets": [
     {
       "name": "Hot Deals",
-      "settings": {
-        "title": "Hot Deals",
-        "description": "Explore our most popular pieces that customers can't get enough of",
-        "global_countdown": "46556"
-      },
       "blocks": [
-        {
-          "type": "product"
-        },
-        {
-          "type": "product"
-        },
         {
           "type": "product"
         },
