@@ -16,9 +16,7 @@
                 <img src="{{ collection.featured_image | image_url: width: 2000 }}"
                      data-src="{{ collection.featured_image | image_url: width: 2000 }}"
                      alt="{{ collection.title | escape }}"
-                     class="lazyload"
-                     width="{{ collection.featured_image.width }}"
-                     height="{{ collection.featured_image.height }}">
+                     class="lazyload">
               {%- else -%}
                 {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
               {%- endif -%}
@@ -123,7 +121,7 @@
         {
           "type": "slide",
           "settings": {
-            "collection": "kids"
+            "collection": "baby"
           }
         }
       ]
