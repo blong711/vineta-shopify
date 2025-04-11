@@ -41,45 +41,7 @@
         "background_color": "#e8f5e9"
       }
     },
-    "banner_countdown": {
-      "type": "banner-countdown",
-      "blocks": {
-        "banner_1": {
-          "type": "banner",
-          "settings": {
-            "image": "shopify:\/\/shop_images\/banner-countdown-1.jpg",
-            "title": "Summer Sale",
-            "subtitle": "Up to 70% Off",
-            "button_text": "Shop Now",
-            "button_link": "\/collections\/all",
-            "countdown_timer": "86400",
-            "background_color": "#f8f9fa",
-            "text_color": "#333333"
-          }
-        },
-        "banner_2": {
-          "type": "banner",
-          "settings": {
-            "image": "shopify:\/\/shop_images\/banner-countdown-2.jpg",
-            "title": "New Arrivals",
-            "subtitle": "Limited Time Offer",
-            "button_text": "Discover",
-            "button_link": "\/collections\/new-arrivals",
-            "countdown_timer": "43200",
-            "background_color": "#fff5f5",
-            "text_color": "#333333"
-          }
-        }
-      },
-      "block_order": [
-        "banner_1",
-        "banner_2"
-      ],
-      "settings": {
-        "layout": "grid",
-        "spacing": "medium"
-      }
-    },
+
     "featured_categories": {
       "type": "categories",
       "blocks": {
@@ -253,6 +215,45 @@
         "global_countdown": "46556"
       }
     },
+    "banner_countdown": {
+        "type": "banner-countdown",
+        "blocks": {
+          "banner_1": {
+            "type": "banner_countdown",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/banner-countdown-1.jpg",
+              "title": "Summer Sale",
+              "subtitle": "Up to 70% Off",
+              "button_text": "Shop Now",
+              "button_link": "\/collections\/all",
+              "countdown_timer": "86400",
+              "background_color": "#f8f9fa",
+              "text_color": "#333333"
+            }
+          },
+          "banner_2": {
+            "type": "banner_countdown",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/banner-countdown-2.jpg",
+              "title": "New Arrivals",
+              "subtitle": "Limited Time Offer",
+              "button_text": "Discover",
+              "button_link": "\/collections\/new-arrivals",
+              "countdown_timer": "43200",
+              "background_color": "#fff5f5",
+              "text_color": "#333333"
+            }
+          }
+        },
+        "block_order": [
+          "banner_1",
+          "banner_2"
+        ],
+        "settings": {
+          "layout": "grid",
+          "spacing": "medium"
+        }
+    },
     "testimonials": {
       "type": "testimonials",
       "blocks": {
@@ -300,55 +301,6 @@
         "autoplay_speed": 5000
       }
     },
-    "latest_tips": {
-      "type": "latest-tips",
-      "blocks": {
-        "tip_1": {
-          "type": "tip",
-          "settings": {
-            "image": "shopify:\/\/shop_images\/blog-eletric1.jpg",
-            "title": "Tech Trends 2025: Must-Have Gadgets & Innovations",
-            "link": "\/blogs\/news\/tech-trends-2025",
-            "read_more_text": "Read more"
-          }
-        },
-        "tip_2": {
-          "type": "tip",
-          "settings": {
-            "image": "shopify:\/\/shop_images\/blog-eletric2.jpg",
-            "title": "Cutting-Edge Tech: Top Electronics to Watch This Year",
-            "link": "\/blogs\/news\/cutting-edge-tech",
-            "read_more_text": "Read more"
-          }
-        },
-        "tip_3": {
-          "type": "tip",
-          "settings": {
-            "image": "shopify:\/\/shop_images\/blog-eletric3.jpg",
-            "title": "Next-Gen Gadgets: The Hottest Tech Trends of the Year",
-            "link": "\/blogs\/news\/next-gen-gadgets",
-            "read_more_text": "Read more"
-          }
-        }
-      },
-      "block_order": [
-        "tip_1",
-        "tip_2",
-        "tip_3"
-      ],
-      "settings": {
-        "title": "Latest Tips & Trends",
-        "description": "Discover expert advice, style inspiration, and product updates on our blog.",
-        "autoplay": true,
-        "autoplay_speed": 5000,
-        "slides_per_view_mobile": 1,
-        "slides_per_view_tablet": 2,
-        "slides_per_view_desktop": 3,
-        "space_between_mobile": 12,
-        "space_between_tablet": 12,
-        "space_between_desktop": 24
-      }
-    },
     "brands": {
       "type": "brands",
       "settings": {
@@ -357,17 +309,66 @@
         "animation_direction": "left",
         "clone_count": 2
       }
-    }
+    },
+    "latest_tips": {
+        "type": "latest-tips",
+        "blocks": {
+          "tip_1": {
+            "type": "tip",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/blog-eletric1.jpg",
+              "title": "Tech Trends 2025: Must-Have Gadgets & Innovations",
+              "link": "\/blogs\/news\/tech-trends-2025",
+              "read_more_text": "Read more"
+            }
+          },
+          "tip_2": {
+            "type": "tip",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/blog-eletric2.jpg",
+              "title": "Cutting-Edge Tech: Top Electronics to Watch This Year",
+              "link": "\/blogs\/news\/cutting-edge-tech",
+              "read_more_text": "Read more"
+            }
+          },
+          "tip_3": {
+            "type": "tip",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/blog-eletric3.jpg",
+              "title": "Next-Gen Gadgets: The Hottest Tech Trends of the Year",
+              "link": "\/blogs\/news\/next-gen-gadgets",
+              "read_more_text": "Read more"
+            }
+          }
+        },
+        "block_order": [
+          "tip_1",
+          "tip_2",
+          "tip_3"
+        ],
+        "settings": {
+          "title": "Latest Tips & Trends",
+          "description": "Discover expert advice, style inspiration, and product updates on our blog.",
+          "autoplay": true,
+          "autoplay_speed": 5000,
+          "slides_per_view_mobile": 1,
+          "slides_per_view_tablet": 2,
+          "slides_per_view_desktop": 3,
+          "space_between_mobile": 12,
+          "space_between_tablet": 12,
+          "space_between_desktop": 24
+        }
+      }
   },
   "order": [
     "main_slider",
     "marquee_sale",
-    "banner_countdown",
     "featured_categories",
     "top_picks",
+    "banner_countdown",
     "hot_deals",
     "testimonials",
-    "latest_tips",
-    "brands"
+    "brands",
+    "latest_tips"
   ]
 }
