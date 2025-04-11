@@ -13,19 +13,21 @@
           <div class="col-xl-5 d-none d-xl-block">
             <div class="header-language">
               <div class="tf-languages">
-                <select class="image-select center style-default type-languages">
-                  <option>English</option>
-                  <option>العربية</option>
-                  <option>简体中文</option>
-                  <option>اردو</option>
+                <select class="image-select center style-default type-languages" name="language">
+                  {% for locale in shop.published_locales %}
+                    <option value="{{ locale.iso_code }}" {% if locale.primary %}selected{% endif %}>
+                      {{ locale.name }}
+                    </option>
+                  {% endfor %}
                 </select>
               </div>
               <div class="tf-currencies">
-                <select class="image-select center style-default type-currencies">
-                  <option selected data-thumbnail="images/country/us.png">United States (USD $)</option>
-                  <option data-thumbnail="images/country/fr.png">France (EUR €)</option>
-                  <option data-thumbnail="images/country/ger.png">Germany (EUR €)</option>
-                  <option data-thumbnail="images/country/vn.png">Vietnam (VND ₫)</option>
+                <select class="image-select center style-default type-currencies" name="currency">
+                  {% for currency in shop.enabled_currencies %}
+                    <option value="{{ currency.iso_code }}" {% if currency == cart.currency %}selected{% endif %}>
+                      {{ currency.iso_code }} ({{ currency.symbol }})
+                    </option>
+                  {% endfor %}
                 </select>
               </div>
             </div>
