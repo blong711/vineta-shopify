@@ -1,136 +1,58 @@
-<section class="flat-spacing-8 bg-surface">
-  <div class="container">
-    <div class="flat-title style-between align-items-end wow fadeInUp">
-      <div class="box-title">
-        <h4 class="title">{{ section.settings.title }}</h4>
-        <p class="desc text-main text-md">{{ section.settings.description }}</p>
-      </div>
-      <a href="{{ section.settings.view_all_link }}" class="btn-underline">{{ section.settings.view_all_text }}</a>
-    </div>
-    <div class="fl-control-sw">
-      <div dir="ltr" class="sw-height swiper tf-swiper" data-swiper='{
-        "slidesPerView": 2,
-        "spaceBetween": 12,
-        "speed": 800,
-        "observer": true,
-        "observeParents": true,
-        "slidesPerGroup": 2,
-        "navigation": {
-          "clickable": true,
-          "nextEl": ".nav-next-top-pick",
-          "prevEl": ".nav-prev-top-pick"
-        },
-        "pagination": { "el": ".sw-pagination-top-pick", "clickable": true },
-        "breakpoints": {
-          "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
-          "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4 }
-        }
-      }'>
-        <div class="swiper-wrapper wow fadeInUp">
-          {%- for block in section.blocks -%}
-            <div class="swiper-slide" {{ block.shopify_attributes }}>
-              <div class="card-product style-center">
-                <div class="card-product-wrapper">
-                  <a href="{{ block.settings.product.url }}" class="product-img">
-                    {%- if block.settings.product.featured_image != blank -%}
-                      {{ block.settings.product.featured_image | image_url: width: 300 | image_tag:
-                        loading: 'lazy',
-                        width: 300,
-                        height: 300,
-                        class: 'img-product lazyload'
-                      }}
-                    {%- endif -%}
-                    {%- if block.settings.hover_image != blank -%}
-                      {{ block.settings.hover_image | image_url: width: 300 | image_tag:
-                        loading: 'lazy',
-                        width: 300,
-                        height: 300,
-                        class: 'img-hover lazyload'
-                      }}
-                    {%- endif -%}
-                  </a>
-                  {%- if block.settings.show_sale_badge or block.settings.show_trending_badge -%}
-                    <div class="on-sale-wrap flex-column type-2">
-                      {%- if block.settings.show_sale_badge -%}
-                        <span class="on-sale-item">{{ block.settings.sale_text }}</span>
-                      {%- endif -%}
-                      {%- if block.settings.show_trending_badge -%}
-                        <span class="on-sale-item trending">{{ block.settings.trending_text }}</span>
-                      {%- endif -%}
-                    </div>
-                  {%- endif -%}
-                  <ul class="list-product-btn">
-                    <li>
-                      <a href="#shoppingCart" data-bs-toggle="offcanvas" class="bg-surface hover-tooltip tooltip-left box-icon">
-                        <span class="icon icon-cart2"></span>
-                        <span class="tooltip">Add to Cart</span>
-                      </a>
-                    </li>
-                    <li class="wishlist">
-                      <a href="javascript:void(0);" class="bg-surface hover-tooltip tooltip-left box-icon">
-                        <span class="icon icon-heart2"></span>
-                        <span class="tooltip">Add to Wishlist</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#quickView" data-bs-toggle="modal" class="bg-surface hover-tooltip tooltip-left box-icon quickview">
-                        <span class="icon icon-view"></span>
-                        <span class="tooltip">Quick View</span>
-                      </a>
-                    </li>
-                    <li class="compare">
-                      <a href="#compare" data-bs-toggle="modal" class="bg-surface hover-tooltip tooltip-left box-icon">
-                        <span class="icon icon-compare"></span>
-                        <span class="tooltip">Add to Compare</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="card-product-info text-center">
-                  <a href="{{ block.settings.product.url }}" class="name-product link fw-medium text-md">{{ block.settings.product.title }}</a>
-                  <p class="price-wrap fw-medium">
-                    {%- if block.settings.show_compare_price -%}
-                      <span class="price-new text-primary">{{ block.settings.product.price | money }}</span>
-                      <span class="price-old old-line">{{ block.settings.product.compare_at_price | money }}</span>
-                    {%- else -%}
-                      <span class="price-new">{{ block.settings.product.price | money }}</span>
-                    {%- endif -%}
-                  </p>
-                  {%- if block.settings.show_color_swatches -%}
-                    <ul class="list-color-product justify-content-center">
-                      {%- for color in block.settings.color_swatches -%}
-                        <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
-                          <span class="tooltip">{{ color.name }}</span>
-                          <span class="swatch-value {{ color.class }}"></span>
-                          {%- if color.image != blank -%}
-                            {{ color.image | image_url: width: 100 | image_tag:
-                              loading: 'lazy',
-                              width: 100,
-                              height: 100,
-                              class: 'lazyload'
-                            }}
-                          {%- endif -%}
-                        </li>
-                      {%- endfor -%}
-                    </ul>
-                  {%- endif -%}
-                </div>
-              </div>
-            </div>
-          {%- endfor -%}
+{%- if section.settings.show_section -%}
+  <section class="flat-spacing-8 bg-surface">
+    <div class="container">
+      <div class="flat-title style-between align-items-end wow fadeInUp">
+        <div class="box-title">
+          <h4 class="title">{{ section.settings.title }}</h4>
+          <p class="desc text-main text-md">{{ section.settings.description }}</p>
         </div>
-        <div class="d-flex d-xl-none sw-dot-default sw-pagination-top-pick justify-content-center"></div>
+        <a href="{{ section.settings.view_all_link }}" class="btn-underline">{{ section.settings.view_all_text }}</a>
       </div>
-      <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-top-pick"></div>
-      <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-top-pick"></div>
+      <div class="fl-control-sw">
+        <div dir="ltr" class="sw-height swiper tf-swiper" data-swiper='{
+          "slidesPerView": 2,
+          "spaceBetween": 12,
+          "speed": 800,
+          "observer": true,
+          "observeParents": true,
+          "slidesPerGroup": 2,
+          "navigation": {
+            "clickable": true,
+            "nextEl": ".nav-next-top-pick",
+            "prevEl": ".nav-prev-top-pick"
+          },
+          "pagination": { "el": ".sw-pagination-top-pick", "clickable": true },
+          "breakpoints": {
+            "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
+            "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4 }
+          }
+        }'>
+          <div class="swiper-wrapper wow fadeInUp">
+            {%- for block in section.blocks -%}
+              <div class="swiper-slide" {{ block.shopify_attributes }}>
+                {% render 'card-product', product: block.settings.product %}
+              </div>
+            {%- endfor -%}
+          </div>
+          <div class="d-flex d-xl-none sw-dot-default sw-pagination-top-pick justify-content-center"></div>
+        </div>
+        <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-top-pick"></div>
+        <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-top-pick"></div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Top Picks",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_section",
+      "label": "Show section",
+      "default": true
+    },
     {
       "type": "text",
       "id": "title",
@@ -164,111 +86,6 @@
           "type": "product",
           "id": "product",
           "label": "Product"
-        },
-        {
-          "type": "image_picker",
-          "id": "hover_image",
-          "label": "Hover Image"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_sale_badge",
-          "label": "Show sale badge",
-          "default": true
-        },
-        {
-          "type": "text",
-          "id": "sale_text",
-          "label": "Sale text",
-          "default": "20% Off"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_compare_price",
-          "label": "Show compare price",
-          "default": true
-        },
-        {
-          "type": "checkbox",
-          "id": "show_color_swatches",
-          "label": "Show color swatches",
-          "default": true
-        },
-        {
-          "type": "header",
-          "content": "Color Swatch 1"
-        },
-        {
-          "type": "text",
-          "id": "color_swatch_1_name",
-          "label": "Name",
-          "default": "Black"
-        },
-        {
-          "type": "text",
-          "id": "color_swatch_1_class",
-          "label": "Class",
-          "default": "bg-dark"
-        },
-        {
-          "type": "header",
-          "content": "Color Swatch 2"
-        },
-        {
-          "type": "text",
-          "id": "color_swatch_2_name",
-          "label": "Name",
-          "default": "Red"
-        },
-        {
-          "type": "text",
-          "id": "color_swatch_2_class",
-          "label": "Class",
-          "default": "bg-red-2"
-        },
-        {
-          "type": "header",
-          "content": "Color Swatch 3"
-        },
-        {
-          "type": "text",
-          "id": "color_swatch_3_name",
-          "label": "Name",
-          "default": "Pink"
-        },
-        {
-          "type": "text",
-          "id": "color_swatch_3_class",
-          "label": "Class",
-          "default": "bg-light-pink-10"
-        },
-        {
-          "type": "text",
-          "id": "progress_bar_class",
-          "label": "Progress bar class",
-          "default": "bg-orange-3"
-        },
-        {
-          "type": "range",
-          "id": "progress_value",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "unit": "%",
-          "label": "Progress value",
-          "default": 90
-        },
-        {
-          "type": "number",
-          "id": "available_quantity",
-          "label": "Available quantity",
-          "default": 2
-        },
-        {
-          "type": "text",
-          "id": "available_text_class",
-          "label": "Available text class",
-          "default": "text-red-2"
         }
       ]
     }
@@ -277,6 +94,7 @@
     {
       "name": "Top Picks",
       "settings": {
+        "show_section": true,
         "title": "Top Picks You'll Love",
         "description": "Discover our most popular products that customers can't get enough of",
         "view_all_text": "View all"
@@ -299,234 +117,3 @@
   ]
 }
 {% endschema %}
-
-<style>
-  .flat-spacing-8 {
-    padding: 80px 0;
-  }
-
-  .bg-surface {
-    background-color: #f8f9fa;
-  }
-
-  .flat-title.style-between {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 40px;
-  }
-
-  .box-title .title {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-
-  .box-title .desc {
-    color: #666;
-  }
-
-  .btn-underline {
-    color: #007bff;
-    text-decoration: none;
-    position: relative;
-    padding-bottom: 5px;
-  }
-
-  .btn-underline:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: #007bff;
-    transition: transform 0.3s ease;
-    transform: scaleX(0);
-  }
-
-  .btn-underline:hover:after {
-    transform: scaleX(1);
-  }
-
-  .card-product {
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.3s ease;
-  }
-
-  .card-product:hover {
-    transform: translateY(-5px);
-  }
-
-  .product-img {
-    position: relative;
-    display: block;
-    padding-top: 100%;
-  }
-
-  .product-img img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: opacity 0.3s ease;
-  }
-
-  .img-hover {
-    opacity: 0;
-  }
-
-  .product-img:hover .img-product {
-    opacity: 0;
-  }
-
-  .product-img:hover .img-hover {
-    opacity: 1;
-  }
-
-  .on-sale-wrap {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    z-index: 1;
-  }
-
-  .on-sale-item {
-    display: inline-block;
-    padding: 5px 10px;
-    background: #007bff;
-    color: #fff;
-    font-size: 12px;
-    border-radius: 4px;
-    margin-bottom: 5px;
-  }
-
-  .on-sale-item.trending {
-    background: #28a745;
-  }
-
-  .list-product-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .card-product:hover .list-product-btn {
-    opacity: 1;
-  }
-
-  .list-product-btn li {
-    margin-bottom: 10px;
-  }
-
-  .box-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: #fff;
-    border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-  }
-
-  .box-icon:hover {
-    background: #007bff;
-    color: #fff;
-  }
-
-  .card-product-info {
-    padding: 20px;
-  }
-
-  .name-product {
-    color: #333;
-    text-decoration: none;
-    margin-bottom: 10px;
-    display: block;
-  }
-
-  .price-wrap {
-    margin-bottom: 15px;
-  }
-
-  .price-new {
-    color: #007bff;
-    font-size: 18px;
-  }
-
-  .price-old {
-    color: #999;
-    text-decoration: line-through;
-    margin-left: 10px;
-  }
-
-  .list-color-product {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .color-swatch {
-    position: relative;
-    margin: 0 5px;
-    cursor: pointer;
-  }
-
-  .swatch-value {
-    display: block;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    box-shadow: 0 0 0 1px #ddd;
-  }
-
-  .color-swatch.active .swatch-value {
-    box-shadow: 0 0 0 2px #007bff;
-  }
-
-  .tooltip {
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #333;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 12px;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .hover-tooltip:hover .tooltip {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .tooltip-left {
-    left: auto;
-    right: 100%;
-    transform: none;
-    margin-right: 10px;
-  }
-
-  .tooltip-bot {
-    bottom: auto;
-    top: 100%;
-    margin-top: 10px;
-  }
-</style> 
