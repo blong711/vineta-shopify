@@ -1,0 +1,97 @@
+{
+  "sections": {
+    "bicycle_slider": {
+      "type": "bicycle-slider",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "title": "Ride Into Adventure",
+            "subtitle": "Find your perfect bike today",
+            "button_text": "Shop Collection",
+            "button_link": "/collections/all"
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "title": "Adventure Awaits",
+            "subtitle": "Find the perfect bike for your outdoor journeys",
+            "button_text": "Shop Collection",
+            "button_link": "/collections/all"
+          }
+        },
+        "slide_3": {
+          "type": "slide",
+          "settings": {
+            "title": "Ride the Future",
+            "subtitle": "Explore the newest e-bikes designed for ultimate performance",
+            "button_text": "Shop Collection",
+            "button_link": "/collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2",
+        "slide_3"
+      ]
+    },
+    "bicycle_categories": {
+      "type": "bicycle-categories",
+      "settings": {
+        "categories_text": "Categories",
+        "categories_link": "/collections/all",
+        "heading": "Explore a variety of high-performance bikes, built for speed, durability, and adventure."
+      },
+      "blocks": {
+        "category_1": {
+          "type": "category",
+          "settings": {
+            "category_title": "Bikes",
+            "category_link": "/collections/bikes"
+          }
+        },
+        "category_2": {
+          "type": "category",
+          "settings": {
+            "category_title": "E-Bikes",
+            "category_link": "/collections/e-bikes"
+          }
+        },
+        "category_3": {
+          "type": "category",
+          "settings": {
+            "category_title": "Apparels",
+            "category_link": "/collections/apparels"
+          }
+        },
+        "category_4": {
+          "type": "category",
+          "settings": {
+            "category_title": "Components",
+            "category_link": "/collections/components"
+          }
+        },
+        "category_5": {
+          "type": "category",
+          "settings": {
+            "category_title": "Batteries",
+            "category_link": "/collections/batteries"
+          }
+        }
+      },
+      "block_order": [
+        "category_1",
+        "category_2",
+        "category_3",
+        "category_4",
+        "category_5"
+      ]
+    }
+  },
+  "order": [
+    "bicycle_slider",
+    "bicycle_categories"
+  ]
+} 

@@ -1,0 +1,127 @@
+<!-- Slider -->
+<section class="tf-slideshow slider-bicycle slider-default">
+  <div class="swiper tf-sw-slideshow slider-effect-fade" data-preview="1" data-tablet="1" data-mobile="1"
+    data-space="0" data-space-mb="0" data-loop="true" data-auto-play="true">
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+        <div class="swiper-slide" {{ block.shopify_attributes }}>
+          <div class="slider-wrap">
+            <div class="image">
+              {% if block.settings.slide_image != blank %}
+                <img src="{{ block.settings.slide_image | img_url: 'master' }}"
+                  data-src="{{ block.settings.slide_image | img_url: 'master' }}" 
+                  alt="{{ block.settings.title | escape }}"
+                  class="lazyload">
+              {% endif %}
+            </div>
+            <div class="box-content">
+              <div class="container">
+                <div class="row">
+                  <div class="col-lg-5 col-md-6 col-sm-10">
+                    <div class="content-slider style-2">
+                      <div class="box-title-slider">
+                        <h2 class="heading display-xl-2 fw-medium fade-item fade-item-2">
+                          {{ block.settings.title }}
+                        </h2>
+                        <p class="sub text-xl-2 text-main fade-item fade-item-3 text-main">
+                          {{ block.settings.subtitle }}
+                        </p>
+                      </div>
+                      <div class="box-btn-slider fade-item fade-item-4">
+                        <a href="{{ block.settings.button_link }}" class="tf-btn btn-space1 animate-btn btn-green-2">
+                          {{ block.settings.button_text }}
+                          <i class="icon icon-arr-right3"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="wrap-pagination">
+      <div class="container">
+        <div class="sw-dots style-2 sw-pagination-slider justify-content-center"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /Slider -->
+
+{% schema %}
+{
+  "name": "Bicycle Slider",
+  "tag": "section",
+  "class": "section",
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "slide_image",
+          "label": "Slide Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Ride Into Adventure"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Find your perfect bike today"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Shop Collection"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bicycle Slider",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "title": "Ride Into Adventure",
+            "subtitle": "Find your perfect bike today",
+            "button_text": "Shop Collection"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "title": "Adventure Awaits",
+            "subtitle": "Find the perfect bike for your outdoor journeys",
+            "button_text": "Shop Collection"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "title": "Ride the Future",
+            "subtitle": "Explore the newest e-bikes designed for ultimate performance",
+            "button_text": "Shop Collection"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 
