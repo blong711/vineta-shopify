@@ -22,11 +22,23 @@
           <div class="fs-cls hover-img">
             <div class="img-style image">
               {%- if block.settings.image != blank -%}
-                {{ block.settings.image | image_url: width: 2000 | image_tag:
-                  loading: 'lazy',
-                  class: 'lazyload',
-                  alt: block.settings.image.alt | escape
-                }}
+                {%- assign image = block.settings.image -%}
+                <img
+                  src="{{ image | image_url: width: 2000 }}"
+                  srcset="
+                    {{ image | image_url: width: 400 }} 400w,
+                    {{ image | image_url: width: 800 }} 800w,
+                    {{ image | image_url: width: 1200 }} 1200w,
+                    {{ image | image_url: width: 1600 }} 1600w,
+                    {{ image | image_url: width: 2000 }} 2000w
+                  "
+                  sizes="(min-width: 1200px) 2000px, (min-width: 750px) calc(100vw - 10rem), calc(100vw - 3rem)"
+                  alt="{{ image.alt | escape }}"
+                  loading="lazy"
+                  class="lazyload"
+                  width="{{ image.width }}"
+                  height="{{ image.height }}"
+                >
               {%- else -%}
                 {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
               {%- endif -%}
@@ -149,7 +161,8 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Image",
+          "info": "Recommended size: 2000 x 1000px"
         },
         {
           "type": "text",
