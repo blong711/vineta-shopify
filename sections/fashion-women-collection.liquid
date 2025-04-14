@@ -1,0 +1,116 @@
+<div class="flat-spacing-5">
+  <div class="container">
+    <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+      "slidesPerView": 1,
+      "speed": 800,
+      "observer": true,
+      "observeParents": true,
+      "slidesPerGroup": 1,
+      "navigation": {
+        "clickable": true,
+        "nextEl": ".nav-next-cls",
+        "prevEl": ".nav-prev-cls"
+      },
+      "pagination": { "el": ".sw-pagination-cls", "clickable": true },
+      "breakpoints": {
+        "575": { "slidesPerView": 2, "slidesPerGroup": 2 },
+        "1200": { "slidesPerView": {{ section.settings.slides_per_view }}, "slidesPerGroup": {{ section.settings.slides_per_view }} }
+      }
+    }'>
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          {% if block.type == 'category' %}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <div class="fs-cls lg hover-img">
+                <div class="img-style image">
+                  {% if block.settings.image != blank %}
+                    <img src="{{ block.settings.image | img_url: 'master' }}"
+                      data-src="{{ block.settings.image | img_url: 'master' }}" 
+                      alt="{{ block.settings.image.alt | escape }}"
+                      class="lazyload">
+                  {% endif %}
+                </div>
+                <div class="content wow fadeInUp">
+                  <a href="{{ block.settings.link }}" class="tf-btn font-2 btn-white hover-icon-2 hover-dark">
+                    {{ block.settings.title }}
+                    <i class="icon-arrow-right icon"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls justify-content-center"></div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Fashion Women Collection",
+  "settings": [
+    {
+      "type": "range",
+      "id": "slides_per_view",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Slides per view (Desktop)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Category image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category title",
+          "default": "Category name"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Category link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Fashion Women Collection",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Clothes",
+            "link": "/collections/women-clothes"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Accessories",
+            "link": "/collections/women-accessories"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Sportwear",
+            "link": "/collections/women-sportwear"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 

@@ -1,0 +1,252 @@
+{
+  "sections": {
+    "fashion_women_slider": {
+      "type": "fashion-women-slider",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "background_type": "7",
+            "subtitle": "SUMMER COLLECTION",
+            "title": "Everyday Essentials",
+            "description": "Versatile pieces for all-day style",
+            "button_text": "Shop Collection",
+            "button_link": "/collections/women"
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "background_type": "8",
+            "subtitle": "SUMMER COLLECTION",
+            "title": "Bold and Beautiful",
+            "description": "Stand out with chic, trend-setting women's fashion",
+            "button_text": "Shop Collection",
+            "button_link": "/collections/women"
+          }
+        },
+        "slide_3": {
+          "type": "slide",
+          "settings": {
+            "background_type": "9",
+            "subtitle": "SUMMER COLLECTION",
+            "title": "Feminine Elegance",
+            "description": "Find the perfect outfit for any occasion",
+            "button_text": "Shop Collection",
+            "button_link": "/collections/women"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2",
+        "slide_3"
+      ],
+      "settings": {
+        "slides_per_view": 1,
+        "slides_per_view_tablet": 1,
+        "slides_per_view_mobile": 1,
+        "space_between": 0,
+        "space_between_mobile": 0,
+        "enable_loop": true,
+        "autoplay": true
+      }
+    },
+    "fashion_women_collection": {
+      "type": "fashion-women-collection",
+      "blocks": {
+        "category_1": {
+          "type": "category",
+          "settings": {
+            "title": "Clothes",
+            "link": "/collections/women-clothes"
+          }
+        },
+        "category_2": {
+          "type": "category",
+          "settings": {
+            "title": "Accessories",
+            "link": "/collections/women-accessories"
+          }
+        },
+        "category_3": {
+          "type": "category",
+          "settings": {
+            "title": "Sportwear",
+            "link": "/collections/women-sportwear"
+          }
+        }
+      },
+      "block_order": [
+        "category_1",
+        "category_2",
+        "category_3"
+      ],
+      "settings": {
+        "slides_per_view": 3
+      }
+    },
+    "banner_text_fashion": {
+      "type": "banner-text-fashion",
+      "blocks": {
+        "image_1": {
+          "type": "image",
+          "settings": {}
+        },
+        "image_2": {
+          "type": "image",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "image_1",
+        "image_2"
+      ],
+      "settings": {
+        "title": "Women's Fashion",
+        "description": "Discover the latest trends in women's fashion. From casual to formal, find your perfect style.",
+        "button_text": "Shop Now",
+        "button_link": "/collections/women"
+      }
+    },
+    "banner_collection_02": {
+      "type": "banner-collection-02",
+      "blocks": {
+        "image": {
+          "type": "image",
+          "settings": {}
+        },
+        "content": {
+          "type": "content",
+          "settings": {
+            "title": "New Arrivals",
+            "subtitle": "Be the first to shop our latest women's collection",
+            "button_text": "Shop Now",
+            "button_link": "/collections/women"
+          }
+        }
+      },
+      "block_order": [
+        "image",
+        "content"
+      ],
+      "settings": {}
+    },
+    "limited_deals": {
+      "type": "limited-deals",
+      "blocks": {
+        "product_1": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "show_sale_badge": true,
+            "sale_badge_text": "20% Off",
+            "show_trending_badge": false,
+            "show_sizes": true,
+            "sizes": "XS,S,M,L,XL,2XL",
+            "show_countdown": false,
+            "countdown_timer": "1007500",
+            "show_color_swatches": true,
+            "color_option": "Color"
+          }
+        },
+        "product_2": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "show_sale_badge": false,
+            "sale_badge_text": "20% Off",
+            "show_trending_badge": true,
+            "show_sizes": true,
+            "sizes": "XS,S,M,L,XL",
+            "show_countdown": false,
+            "countdown_timer": "1007500",
+            "show_color_swatches": true,
+            "color_option": "Color"
+          }
+        },
+        "product_3": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "show_sale_badge": true,
+            "sale_badge_text": "20% Off",
+            "show_trending_badge": false,
+            "show_sizes": true,
+            "sizes": "XS,S,M,L",
+            "show_countdown": true,
+            "countdown_timer": "1007500",
+            "show_color_swatches": true,
+            "color_option": "Color"
+          }
+        },
+        "product_4": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "show_sale_badge": false,
+            "sale_badge_text": "20% Off",
+            "show_trending_badge": false,
+            "show_sizes": true,
+            "sizes": "XS,S,M,L,XL",
+            "show_countdown": true,
+            "countdown_timer": "1007500",
+            "show_color_swatches": true,
+            "color_option": "Color"
+          }
+        }
+      },
+      "block_order": [
+        "product_1",
+        "product_2",
+        "product_3",
+        "product_4"
+      ],
+      "settings": {
+        "title": "Limited Time Deals",
+        "description": "Explore our most popular women's pieces that customers can't get enough of",
+        "slides_per_view": 4,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_mobile": 2,
+        "space_between": 24,
+        "space_between_mobile": 12
+      }
+    },
+    "top_picks": {
+      "type": "top-picks",
+      "blocks": {
+        "product_1": {
+          "type": "product",
+          "settings": {
+            "product": ""
+          }
+        },
+        "product_2": {
+          "type": "product",
+          "settings": {
+            "product": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_1",
+        "product_2"
+      ],
+      "settings": {
+        "show_section": true,
+        "title": "Top Picks for Women",
+        "description": "Discover our most popular women's products that customers can't get enough of",
+        "view_all_text": "View all",
+        "view_all_link": "/collections/women"
+      }
+    }
+  },
+  "order": [
+    "fashion_women_slider",
+    "fashion_women_collection",
+    "banner_text_fashion",
+    "banner_collection_02",
+    "limited_deals",
+    "top_picks"
+  ]
+} 
