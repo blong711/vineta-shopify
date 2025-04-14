@@ -97,10 +97,94 @@
       "settings": {
         "slides_per_view": 3
       }
+    },
+    "fashion_women_seller": {
+      "type": "fashion-women-seller",
+      "blocks": {
+        "top_seller_1": {
+          "type": "top_seller",
+          "settings": {
+            "product": "shopify://products/turtleneck-t-shirt"
+          }
+        },
+        "top_seller_2": {
+          "type": "top_seller",
+          "settings": {
+            "product": "shopify://products/loose-fit-tee"
+          }
+        },
+        "on_sale_1": {
+          "type": "on_sale",
+          "settings": {
+            "product": "shopify://products/long-sleeve-t-shirt"
+          }
+        },
+        "on_sale_2": {
+          "type": "on_sale",
+          "settings": {
+            "product": "shopify://products/loose-fit-tee"
+          }
+        },
+        "trending_1": {
+          "type": "trending",
+          "settings": {
+            "product": "shopify://products/short-sleeve-sweat"
+          }
+        },
+        "trending_2": {
+          "type": "trending",
+          "settings": {
+            "product": "shopify://products/long-sleeve-t-shirt"
+          }
+        }
+      },
+      "block_order": [
+        "top_seller_1",
+        "top_seller_2",
+        "on_sale_1",
+        "on_sale_2",
+        "trending_1",
+        "trending_2"
+      ],
+      "settings": {
+        "seller_button_text": "Show All",
+        "seller_button_link": "/collections/women",
+        "sale_button_text": "Show All",
+        "sale_button_link": "/collections/women",
+        "trending_button_text": "Show All",
+        "trending_button_link": "/collections/women"
+      }
+    },
+    "banner_text_fashion": {
+      "type": "banner-text-fashion-women",
+      "blocks": {
+        "lookbook_1": {
+          "type": "lookbook",
+          "settings": {
+            "product_image": "shopify://shop_images/t-shirt.jpg",
+            "product_title": "Shirt Neck T-Shirt",
+            "product_price": "$150.00",
+            "product_link": "/products/shirt-neck-t-shirt"
+          }
+        }
+      },
+      "block_order": [
+        "lookbook_1"
+      ],
+      "settings": {
+        "banner_image": "shopify://shop_images/fashion-woman.jpg",
+        "banner_link": "#",
+        "title": "Elevating Your Style Journey",
+        "description": "Discover timeless pieces that define elegance and sophistication.",
+        "button_text": "Shop Now",
+        "button_link": "/collections/women"
+      }
     }
   },
   "order": [
     "fashion_women_slider",
-    "fashion_women_collection"
+    "fashion_women_collection",
+    "fashion_women_seller",
+    "banner_text_fashion"
   ]
 }

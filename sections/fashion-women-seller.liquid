@@ -1,0 +1,145 @@
+<div class="flat-spacing-3">
+  <div class="container">
+    <div class="flat-animate-tab">
+      <div class="flat-title wow fadeInUp">
+        <ul class="menu-tab-line style-lg justify-content-center" role="tablist">
+          <li class="nav-tab-item" role="presentation">
+            <a href="#seller" class="font-2 tab-link active" data-bs-toggle="tab">Top Sellers</a>
+          </li>
+          <li class="nav-tab-item" role="presentation">
+            <a href="#onSale" class="font-2 tab-link" data-bs-toggle="tab">On Sale</a>
+          </li>
+          <li class="nav-tab-item" role="presentation">
+            <a href="#trending" class="font-2 tab-link" data-bs-toggle="tab">Trending</a>
+          </li>
+        </ul>
+      </div>
+      <div class="tab-content">
+        <div class="tab-pane active show" id="seller" role="tabpanel">
+          <div class="tf-grid-layout tf-col-2 md-col-3 xl-col-4">
+            {% for block in section.blocks %}
+              {% if block.type == 'top_seller' %}
+                {% render 'card-product', product: block.settings.product, style: '2' %}
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="text-center box-btn">
+            <a href="{{ section.settings.seller_button_link }}" class="tf-btn btn-out-line-dark-2">
+              <span class="text-sm">{{ section.settings.seller_button_text }}</span>
+            </a>
+          </div>
+        </div>
+        <div class="tab-pane" id="onSale" role="tabpanel">
+          <div class="tf-grid-layout tf-col-2 md-col-3 xl-col-4">
+            {% for block in section.blocks %}
+              {% if block.type == 'on_sale' %}
+                {% render 'card-product', product: block.settings.product, style: '2' %}
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="text-center box-btn">
+            <a href="{{ section.settings.sale_button_link }}" class="tf-btn btn-out-line-dark-2">
+              <span class="text-sm">{{ section.settings.sale_button_text }}</span>
+            </a>
+          </div>
+        </div>
+        <div class="tab-pane" id="trending" role="tabpanel">
+          <div class="tf-grid-layout tf-col-2 md-col-3 xl-col-4">
+            {% for block in section.blocks %}
+              {% if block.type == 'trending' %}
+                {% render 'card-product', product: block.settings.product, style: '2' %}
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="text-center box-btn">
+            <a href="{{ section.settings.trending_button_link }}" class="tf-btn btn-out-line-dark-2">
+              <span class="text-sm">{{ section.settings.trending_button_text }}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Fashion Women Seller",
+  "settings": [
+    {
+      "type": "text",
+      "id": "seller_button_text",
+      "label": "Top Sellers Button Text",
+      "default": "Show All"
+    },
+    {
+      "type": "url",
+      "id": "seller_button_link",
+      "label": "Top Sellers Button Link"
+    },
+    {
+      "type": "text",
+      "id": "sale_button_text",
+      "label": "On Sale Button Text",
+      "default": "Show All"
+    },
+    {
+      "type": "url",
+      "id": "sale_button_link",
+      "label": "On Sale Button Link"
+    },
+    {
+      "type": "text",
+      "id": "trending_button_text",
+      "label": "Trending Button Text",
+      "default": "Show All"
+    },
+    {
+      "type": "url",
+      "id": "trending_button_link",
+      "label": "Trending Button Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "top_seller",
+      "name": "Top Seller Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    },
+    {
+      "type": "on_sale",
+      "name": "On Sale Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    },
+    {
+      "type": "trending",
+      "name": "Trending Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Fashion Women Seller",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %} 
