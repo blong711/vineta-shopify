@@ -177,37 +177,99 @@
         "button_link": "/collections/women"
       }
     },
-    "testimonial_fashion": {
+    "collection_display": {
       "type": "testimonial-fashion-women",
       "blocks": {
-        "testimonial_1": {
-          "type": "testimonial",
+        "collection_1": {
+          "type": "collection_display",
           "settings": {
-            "title": "Elegance and Comfort Combined",
-            "review": "I recently bought a dress from this store, and it has quickly become my favorite piece. The fabric is high-quality, the fit is perfect, and the design is both stylish and elegant. Highly recommend!",
-            "author_image": "shopify://shop_images/tes-women.jpg",
-            "author_name": "Sarah T.",
-            "product_name": "Linen Wrap Top",
-            "product_link": "/products/linen-wrap-top"
+            "collection": "women-clothes"
           }
         },
-        "testimonial_2": {
-          "type": "testimonial",
+        "collection_2": {
+          "type": "collection_display",
           "settings": {
-            "title": "Style and Comfort in Perfect Harmony",
-            "review": "I recently purchased a handbag from this store, and I couldn't be happier! The design is elegant, the quality is exceptional, and it complements every outfit perfectly. Definitely a great buy!",
-            "author_image": "shopify://shop_images/tes-women2.jpg",
-            "author_name": "Vineta P.",
-            "product_name": "Loose Fit Tee",
-            "product_link": "/products/loose-fit-tee"
+            "collection": "women-accessories"
+          }
+        },
+        "collection_3": {
+          "type": "collection_display",
+          "settings": {
+            "collection": "women-sportwear"
           }
         }
       },
       "block_order": [
-        "testimonial_1",
-        "testimonial_2"
-      ],
-      "settings": {}
+        "collection_1",
+        "collection_2",
+        "collection_3"
+      ]
+    },
+    "brands": {
+        "type": "brands",
+        "settings": {
+          "title": "Our Brands",
+          "animation_speed": 20,
+          "animation_direction": "left",
+          "clone_count": 2
+        }
+    },
+    "shop_gram": {
+        "type": "shop-gram",
+        "settings": {
+        "title": "Shop by @Gram"
+        }
+    },
+    "icon_boxes": {
+        "type": "icon-boxes",
+        "blocks": {
+        "icon_box_cLrNmV": {
+            "type": "icon_box",
+            "settings": {
+            "style": "1",
+            "icon": "icon-shipping",
+            "title": "Free Shipping",
+            "text": "Enjoy free shipping on all orders"
+            }
+        },
+        "icon_box_tRqHJe": {
+            "type": "icon_box",
+            "settings": {
+            "style": "1",
+            "icon": "icon-gift",
+            "title": "Gift Package",
+            "text": "Perfectly packaged for gifting"
+            }
+        },
+        "icon_box_3AmNEz": {
+            "type": "icon_box",
+            "settings": {
+            "style": "1",
+            "icon": "icon-return",
+            "title": "Free Returns",
+            "text": "Within 14 days for a return"
+            }
+        },
+        "icon_box_rGRkRX": {
+            "type": "icon_box",
+            "settings": {
+            "style": "1",
+            "icon": "icon-support",
+            "title": "Support Online",
+            "text": "We support customers 24/7"
+            }
+        }
+        },
+        "block_order": [
+        "icon_box_cLrNmV",
+        "icon_box_tRqHJe",
+        "icon_box_3AmNEz",
+        "icon_box_rGRkRX"
+        ],
+        "settings": {
+        "title": "",
+        "boxes_to_show": 4
+        }
     }
   },
   "order": [
@@ -215,6 +277,9 @@
     "fashion_women_collection",
     "fashion_women_seller",
     "banner_text_fashion",
-    "testimonial_fashion"
+    "collection_display",
+    "brands",
+    "shop_gram",
+    "icon_boxes"
   ]
 }
