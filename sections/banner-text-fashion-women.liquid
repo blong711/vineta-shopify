@@ -1,16 +1,30 @@
+<!-- Banner with text-->
 <div class="s-banner-product">
   <div class="container">
     <div class="content-banner">
       <div class="image-wrap hover-img">
-        <a href="{{ section.settings.banner_link }}" class="image img-style d-block">
-          {% if section.settings.banner_image != blank %}
-            {{ section.settings.banner_image | image_url: width: 2000 | image_tag:
-              loading: 'lazy',
-              class: 'lazyload',
-              alt: section.settings.banner_image.alt
-            }}
-          {% endif %}
-        </a>
+        {% if section.settings.banner_product != blank %}
+          {% assign banner_product = section.settings.banner_product %}
+          <a href="{{ banner_product.url }}" class="image img-style d-block">
+            {% if banner_product.featured_image != blank %}
+              {{ banner_product.featured_image | image_url: width: 2000 | image_tag:
+                loading: 'lazy',
+                class: 'lazyload',
+                alt: banner_product.featured_image.alt
+              }}
+            {% endif %}
+          </a>
+        {% else %}
+          <a href="{{ section.settings.banner_link }}" class="image img-style d-block">
+            {% if section.settings.banner_image != blank %}
+              {{ section.settings.banner_image | image_url: width: 2000 | image_tag:
+                loading: 'lazy',
+                class: 'lazyload',
+                alt: section.settings.banner_image.alt
+              }}
+            {% endif %}
+          </a>
+        {% endif %}
         {% for block in section.blocks %}
           {% if block.type == 'lookbook' %}
             {% assign product = block.settings.product %}
@@ -31,9 +45,6 @@
                     </a>
                     <p class="price-wrap text-md fw-medium">
                       {{ product.price | money }}
-                      {% if product.compare_at_price > product.price %}
-                        <span class="price-old">{{ product.compare_at_price | money }}</span>
-                      {% endif %}
                     </p>
                   </div>
                   <a href="#quickView" data-bs-toggle="modal" class="btn-lookbook hover-tooltip" data-product-handle="{{ product.handle }}">
@@ -66,15 +77,21 @@
     </div>
   </div>
 </div>
+<!-- /Banner with text -->
 
 {% schema %}
 {
   "name": "Banner Text Fashion Women",
   "settings": [
     {
+      "type": "product",
+      "id": "banner_product",
+      "label": "Banner Product"
+    },
+    {
       "type": "image_picker",
       "id": "banner_image",
-      "label": "Banner Image"
+      "label": "Banner Image (Fallback)"
     },
     {
       "type": "url",
