@@ -93,10 +93,51 @@
         "categories_link": "/collections/all",
         "heading": "Explore a variety of high-performance bikes, built for speed, durability, and adventure."
       }
+    },
+    "bicycle_featured": {
+      "type": "bicycle-featured",
+      "settings": {
+        "featured_text": "Featured Products",
+        "featured_link": "/collections/all",
+        "heading": "Discover our top picks for every ride"
+      },
+      "blocks": {
+        "product_1": {
+          "type": "product",
+          "settings": {
+            "product": "radrunner-plus"
+          }
+        },
+        "product_2": {
+          "type": "product",
+          "settings": {
+            "product": "radexpand-5-electric-bike"
+          }
+        },
+        "product_3": {
+          "type": "product",
+          "settings": {
+            "product": "radster-road-electric-bike"
+          }
+        },
+        "product_4": {
+          "type": "product",
+          "settings": {
+            "product": "radster-trail-electric-off-road-bike"
+          }
+        }
+      },
+      "block_order": [
+        "product_1",
+        "product_2",
+        "product_3",
+        "product_4"
+      ]
     }
   },
   "order": [
     "bicycle_slider",
-    "bicycle_categories"
+    "bicycle_categories",
+    "bicycle_featured"
   ]
 }
