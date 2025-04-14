@@ -15,7 +15,6 @@
         "slide_1": {
           "type": "slide",
           "settings": {
-            "image": "",
             "button_text": "Shop Men",
             "button_link": "/collections/men"
           }
@@ -23,7 +22,6 @@
         "slide_2": {
           "type": "slide",
           "settings": {
-            "image": "",
             "button_text": "Shop Women",
             "button_link": "/collections/women"
           }
@@ -31,7 +29,6 @@
         "slide_3": {
           "type": "slide",
           "settings": {
-            "image": "",
             "button_text": "Shop Kids",
             "button_link": "/collections/kids"
           }
@@ -47,7 +44,7 @@
         "slides_per_view_tablet": 2,
         "slides_per_view_mobile": 1.5,
         "space_between": 15,
-        "space_between_mobile": 12,
+        "space_between_mobile": 5,
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_left": 0,
@@ -59,11 +56,15 @@
       "blocks": {
         "image_1": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/fashion-4.jpg"
+          }
         },
         "image_2": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/fashion-3.jpg"
+          }
         }
       },
       "block_order": [
@@ -82,7 +83,9 @@
       "blocks": {
         "image": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/fashion-2.jpg"
+          }
         },
         "content": {
           "type": "content",
@@ -207,184 +210,6 @@
         "view_all_text": "View all",
         "view_all_link": ""
       }
-    },
-    "brands": {
-      "type": "brands",
-      "blocks": {
-        "brand_1": {
-          "type": "brand",
-          "settings": {
-            "image": "",
-            "link": ""
-          }
-        },
-        "brand_2": {
-          "type": "brand",
-          "settings": {
-            "image": "",
-            "link": ""
-          }
-        },
-        "brand_3": {
-          "type": "brand",
-          "settings": {
-            "image": "",
-            "link": ""
-          }
-        },
-        "brand_4": {
-          "type": "brand",
-          "settings": {
-            "image": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "brand_1",
-        "brand_2",
-        "brand_3",
-        "brand_4"
-      ],
-      "settings": {
-        "title": "Our Trusted Brands",
-        "description": "Shop from the world's most trusted fashion brands",
-        "slides_per_view": 4,
-        "slides_per_view_tablet": 3,
-        "slides_per_view_mobile": 2,
-        "space_between": 30,
-        "space_between_mobile": 12
-      }
-    },
-    "testimonials": {
-      "type": "testimonials",
-      "blocks": {
-        "testimonial_1": {
-          "type": "testimonial",
-          "settings": {
-            "image": "",
-            "name": "Sarah Johnson",
-            "position": "Fashion Blogger",
-            "content": "The quality and style of these pieces are unmatched. I've never been more satisfied with my fashion choices!"
-          }
-        },
-        "testimonial_2": {
-          "type": "testimonial",
-          "settings": {
-            "image": "",
-            "name": "Michael Chen",
-            "position": "Stylist",
-            "content": "As a professional stylist, I can confidently recommend these collections to my clients. The attention to detail is exceptional."
-          }
-        }
-      },
-      "block_order": [
-        "testimonial_1",
-        "testimonial_2"
-      ],
-      "settings": {
-        "title": "What Our Customers Say",
-        "description": "Hear from our satisfied customers about their shopping experience",
-        "slides_per_view": 2,
-        "slides_per_view_tablet": 1,
-        "slides_per_view_mobile": 1,
-        "space_between": 30,
-        "space_between_mobile": 12
-      }
-    },
-    "latest_tips": {
-      "type": "latest-tips",
-      "blocks": {
-        "tip_1": {
-          "type": "tip",
-          "settings": {
-            "image": "",
-            "title": "Spring Fashion Trends 2024",
-            "excerpt": "Discover the hottest trends for the upcoming season",
-            "link": "/blogs/fashion/spring-trends-2024"
-          }
-        },
-        "tip_2": {
-          "type": "tip",
-          "settings": {
-            "image": "",
-            "title": "Sustainable Fashion Guide",
-            "excerpt": "Learn how to build an eco-friendly wardrobe",
-            "link": "/blogs/fashion/sustainable-guide"
-          }
-        },
-        "tip_3": {
-          "type": "tip",
-          "settings": {
-            "image": "",
-            "title": "Accessorizing Like a Pro",
-            "excerpt": "Master the art of accessorizing your outfits",
-            "link": "/blogs/fashion/accessorizing-guide"
-          }
-        }
-      },
-      "block_order": [
-        "tip_1",
-        "tip_2",
-        "tip_3"
-      ],
-      "settings": {
-        "title": "Latest Fashion Tips",
-        "description": "Stay updated with the latest fashion trends and styling advice",
-        "slides_per_view": 3,
-        "slides_per_view_tablet": 2,
-        "slides_per_view_mobile": 1,
-        "space_between": 30,
-        "space_between_mobile": 12
-      }
-    },
-    "icon_boxes": {
-      "type": "icon-boxes",
-      "blocks": {
-        "box_1": {
-          "type": "box",
-          "settings": {
-            "icon": "truck",
-            "title": "Free Shipping",
-            "description": "On orders over $50"
-          }
-        },
-        "box_2": {
-          "type": "box",
-          "settings": {
-            "icon": "return",
-            "title": "Easy Returns",
-            "description": "30-day return policy"
-          }
-        },
-        "box_3": {
-          "type": "box",
-          "settings": {
-            "icon": "lock",
-            "title": "Secure Payment",
-            "description": "100% secure checkout"
-          }
-        },
-        "box_4": {
-          "type": "box",
-          "settings": {
-            "icon": "support",
-            "title": "24/7 Support",
-            "description": "Dedicated support"
-          }
-        }
-      },
-      "block_order": [
-        "box_1",
-        "box_2",
-        "box_3",
-        "box_4"
-      ],
-      "settings": {
-        "background_color": "#f8f8f8",
-        "padding_top": 50,
-        "padding_bottom": 50
-      }
     }
   },
   "order": [
@@ -392,10 +217,6 @@
     "banner_text_fashion",
     "banner_collection_02",
     "limited_deals",
-    "top_picks",
-    "brands",
-    "testimonials",
-    "latest_tips",
-    "icon_boxes"
+    "top_picks"
   ]
 }
