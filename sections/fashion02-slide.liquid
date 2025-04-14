@@ -1,0 +1,143 @@
+{%- comment -%}Fashion02 Slide Section{%- endcomment -%}
+{%- if section.blocks.size > 0 -%}
+  <!-- Slider -->
+  <div class="tf-slideshow slider-fashion-2">
+    <div class="swiper tf-sw-slideshow" 
+      data-preview="{{ section.settings.slides_per_view }}"
+      data-tablet="{{ section.settings.slides_per_view_tablet }}"
+      data-mobile="{{ section.settings.slides_per_view_mobile }}"
+      data-space="{{ section.settings.space_between }}"
+      data-space-mb="{{ section.settings.space_between_mobile }}">
+      <div class="swiper-wrapper">
+        {%- for block in section.blocks -%}
+          <div class="swiper-slide" {{ block.shopify_attributes }}>
+            <div class="fs-cls hover-img">
+              <div class="img-style image">
+                {%- if block.settings.image != blank -%}
+                  <img src="{{ block.settings.image | image_url: width: 1000 }}"
+                    data-src="{{ block.settings.image | image_url: width: 1000 }}"
+                    alt="{{ block.settings.image.alt | escape }}"
+                    class="lazyload">
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </div>
+              <div class="content">
+                <a href="{{ block.settings.button_link }}" class="tf-btn btn-white hover-icon-2 hover-dark">
+                  {{ block.settings.button_text }}
+                  <i class="icon-arrow-right icon"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+  <!-- /Slider -->
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Fashion02 Slide",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "slides_per_view",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "label": "Slides per view (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2,
+      "label": "Slides per view (tablet)"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 0.5,
+      "default": 1.5,
+      "label": "Slides per view (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "space_between",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 15,
+      "label": "Space between slides (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "space_between_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 5,
+      "default": 5,
+      "label": "Space between slides (mobile)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "default": "Shop Now",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Fashion02 Slide",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "button_text": "Shop Men"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "button_text": "Shop Women"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "button_text": "Shop Kid"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 
