@@ -11,11 +11,11 @@
                 <div class="swiper-slide" {{ block.shopify_attributes }}>
                   <div class="box-testimonial-main wow fadeInLeft">
                     <div class="content">
-                      <div class="title-review">{{ block.settings.title | default: collection.title }}</div>
-                      <p class="text-review display-xs">{{ block.settings.description | default: collection.description }}</p>
+                      <div class="title-review">{{ collection.title }}</div>
+                      <p class="text-review display-xs">{{ collection.description }}</p>
                       <div class="box-btn">
                         <a href="{{ collection.url }}" class="tf-btn animate-btn btn-dark2">
-                          {{ block.settings.button_text | default: "Shop Collection" }}
+                          Shop Collection
                           <i class="icon-arr-right"></i>
                         </a>
                       </div>
@@ -39,17 +39,11 @@
               {% if collection != blank %}
                 <div class="swiper-slide hover-img">
                   <div class="img-sw-thumb img-style">
-                    {% if block.settings.image != blank %}
-                      {{ block.settings.image | image_url: width: 400 | image_tag:
-                        loading: 'lazy',
-                        class: 'lazyload',
-                        alt: block.settings.title | default: collection.title
-                      }}
-                    {% elsif collection.featured_image != blank %}
+                    {% if collection.featured_image != blank %}
                       {{ collection.featured_image | image_url: width: 400 | image_tag:
                         loading: 'lazy',
                         class: 'lazyload',
-                        alt: block.settings.title | default: collection.title
+                        alt: collection.title
                       }}
                     {% endif %}
                   </div>
@@ -79,30 +73,6 @@
           "type": "collection",
           "id": "collection",
           "label": "Collection"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Custom Title",
-          "info": "Leave blank to use collection title"
-        },
-        {
-          "type": "textarea",
-          "id": "description",
-          "label": "Custom Description",
-          "info": "Leave blank to use collection description"
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Custom Image",
-          "info": "Leave blank to use collection featured image"
-        },
-        {
-          "type": "text",
-          "id": "button_text",
-          "label": "Button Text",
-          "default": "Shop Collection"
         }
       ]
     }
@@ -114,17 +84,13 @@
         {
           "type": "collection_display",
           "settings": {
-            "collection": "women-clothes",
-            "title": "Women's Clothing",
-            "button_text": "Shop Now"
+            "collection": "women-clothes"
           }
         },
         {
           "type": "collection_display",
           "settings": {
-            "collection": "women-accessories",
-            "title": "Women's Accessories",
-            "button_text": "Shop Now"
+            "collection": "women-accessories"
           }
         }
       ]
