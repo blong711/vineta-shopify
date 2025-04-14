@@ -65,19 +65,19 @@
       "type": "fashion-women-collection",
       "blocks": {
         "category_1": {
-          "type": "category",
+          "type": "collection_category",
           "settings": {
             "collection": "men"
           }
         },
         "category_2": {
-          "type": "category",
+          "type": "collection_category",
           "settings": {
             "collection": "women"
           }
         },
         "category_3": {
-          "type": "category",
+          "type": "collection_category",
           "settings": {
             "collection": "baby"
           }
@@ -150,34 +150,36 @@
         "button_link": "/collections/women"
       }
     },
-    "collection_display": {
+    "testimonial_fashion": {
       "type": "testimonial-fashion-women",
       "blocks": {
-        "collection_1": {
-          "type": "collection_display",
+        "testimonial_1": {
+          "type": "testimonial_fashion",
           "settings": {
-            "collection": "women-clothes"
+            "title": "Elegance and Comfort Combined",
+            "review": "I recently bought a dress from this store, and it has quickly become my favorite piece. The fabric is high-quality, the fit is perfect, and the design is both stylish and elegant. Highly recommend!",
+            "author_image": "shopify://shop_images/tes-women.jpg",
+            "author_name": "Sarah T.",
+            "product_name": "Linen Wrap Top",
+            "product_link": "/products/linen-wrap-top"
           }
         },
-        "collection_2": {
-          "type": "collection_display",
+        "testimonial_2": {
+          "type": "testimonial_fashion",
           "settings": {
-            "collection": "women-accessories"
-          }
-        },
-        "collection_3": {
-          "type": "collection_display",
-          "settings": {
-            "collection": "women-sportwear"
+            "title": "Style and Comfort in Perfect Harmony",
+            "review": "I recently purchased a handbag from this store, and I couldn't be happier! The design is elegant, the quality is exceptional, and it complements every outfit perfectly. Definitely a great buy!",
+            "author_image": "shopify://shop_images/tes-women2.jpg",
+            "author_name": "Vineta P.",
+            "product_name": "Loose Fit Tee",
+            "product_link": "/products/loose-fit-tee"
           }
         }
       },
       "block_order": [
-        "collection_1",
-        "collection_2",
-        "collection_3"
-      ],
-      "settings": {}
+        "testimonial_1",
+        "testimonial_2"
+      ]
     },
     "brands": {
       "type": "brands",
@@ -251,7 +253,7 @@
     "fashion_women_collection",
     "fashion_women_seller",
     "banner_text_fashion",
-    "collection_display",
+    "testimonial_fashion",
     "brands",
     "shop_gram",
     "icon_boxes"

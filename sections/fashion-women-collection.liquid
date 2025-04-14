@@ -68,72 +68,104 @@
 </div>
 <!-- /Testimonial -->
 
+<div class="flat-spacing-5">
+  <div class="container">
+    <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+      "slidesPerView": 1,
+      "speed": 800,
+      "observer": true,
+      "observeParents": true,
+      "slidesPerGroup": 1,
+      "navigation": {
+        "clickable": true,
+        "nextEl": ".nav-next-cls",
+        "prevEl": ".nav-prev-cls"
+      },
+      "pagination": { "el": ".sw-pagination-cls", "clickable": true },
+      "breakpoints": {
+        "575": { "slidesPerView": 2, "slidesPerGroup": 2 },
+        "1200": { "slidesPerView": {{ section.settings.slides_per_view }}, "slidesPerGroup": {{ section.settings.slides_per_view }} }
+      }
+    }'>
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          {% assign collection = collections[block.settings.collection] %}
+          {% if collection != blank %}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <div class="fs-cls lg hover-img">
+                <div class="img-style image">
+                  {% if collection.featured_image != blank %}
+                    <img src="{{ collection.featured_image | img_url: 'master' }}"
+                      data-src="{{ collection.featured_image | img_url: 'master' }}" 
+                      alt="{{ collection.title | escape }}"
+                      class="lazyload">
+                  {% endif %}
+                </div>
+                <div class="content wow fadeInUp">
+                  <a href="{{ collection.url }}" class="tf-btn font-2 btn-white hover-icon-2 hover-dark">
+                    {{ collection.title }}
+                    <i class="icon-arrow-right icon"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls justify-content-center"></div>
+    </div>
+  </div>
+</div>
+
 {% schema %}
 {
-  "name": "Testimonial Fashion Women",
-  "settings": [],
+  "name": "Fashion Women Collection",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "slides_per_view",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Slides per view (Desktop)"
+    }
+  ],
   "blocks": [
     {
-      "type": "testimonial",
-      "name": "Testimonial",
+      "type": "collection_category",
+      "name": "Collection",
       "settings": [
         {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Elegance and Comfort Combined"
-        },
-        {
-          "type": "textarea",
-          "id": "review",
-          "label": "Review Text",
-          "default": "I recently bought a dress from this store, and it has quickly become my favorite piece. The fabric is high-quality, the fit is perfect, and the design is both stylish and elegant. Highly recommend!"
-        },
-        {
-          "type": "image_picker",
-          "id": "author_image",
-          "label": "Author Image"
-        },
-        {
-          "type": "text",
-          "id": "author_name",
-          "label": "Author Name",
-          "default": "Sarah T."
-        },
-        {
-          "type": "text",
-          "id": "product_name",
-          "label": "Product Name",
-          "default": "Linen Wrap Top"
-        },
-        {
-          "type": "url",
-          "id": "product_link",
-          "label": "Product Link"
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Testimonial Fashion Women",
+      "name": "Fashion Women Collection",
       "blocks": [
         {
-          "type": "testimonial",
+          "type": "collection_category",
           "settings": {
-            "title": "Elegance and Comfort Combined",
-            "review": "I recently bought a dress from this store, and it has quickly become my favorite piece. The fabric is high-quality, the fit is perfect, and the design is both stylish and elegant. Highly recommend!",
-            "author_name": "Sarah T.",
-            "product_name": "Linen Wrap Top"
+            "collection": "women-clothes"
           }
         },
         {
-          "type": "testimonial",
+          "type": "collection_category",
           "settings": {
-            "title": "Style and Comfort in Perfect Harmony",
-            "review": "I recently purchased a handbag from this store, and I couldn't be happier! The design is elegant, the quality is exceptional, and it complements every outfit perfectly. Definitely a great buy!",
-            "author_name": "Vineta P.",
-            "product_name": "Loose Fit Tee"
+            "collection": "women-accessories"
+          }
+        },
+        {
+          "type": "collection_category",
+          "settings": {
+            "collection": "women-sportwear"
           }
         }
       ]
