@@ -9,51 +9,6 @@
  */
 {
   "sections": {
-    "bicycle_banner_video": {
-      "type": "bicycle-banner-video",
-      "blocks": {
-        "banner_1": {
-          "type": "banner",
-          "settings": {
-            "image": "shopify://shop_images/banner-video-fallback.jpg",
-            "title": "Unleash Your Ride",
-            "subtitle": "Experience the thrill of top performance",
-            "button_text": "Explore now",
-            "button_link": "/collections/all"
-          }
-        }
-      },
-      "block_order": [
-        "banner_1"
-      ]
-    },
-    "bicycle_banner": {
-      "type": "bicycle-banner",
-      "blocks": {
-        "banner_1": {
-          "type": "banner",
-          "settings": {
-            "title": "Unveiling the latest gear",
-            "subtitle": "Check out our newest arrivals",
-            "button_text": "Buy Now",
-            "button_link": "/collections/all"
-          }
-        },
-        "banner_2": {
-          "type": "banner",
-          "settings": {
-            "title": "Deals you can't miss",
-            "subtitle": "Save big on our best-selling bikes",
-            "button_text": "Buy Now",
-            "button_link": "/collections/all"
-          }
-        }
-      },
-      "block_order": [
-        "banner_1",
-        "banner_2"
-      ]
-    },
     "bicycle_slider": {
       "type": "bicycle-slider",
       "blocks": {
@@ -219,49 +174,84 @@
         "heading": "Discover our top picks for every ride"
       }
     },
+    "bicycle_banner": {
+      "type": "bicycle-banner",
+      "blocks": {
+        "banner_1": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/bicycle1.jpg",
+            "title": "Unveiling the latest gear",
+            "subtitle": "Check out our newest arrivals",
+            "button_text": "Buy Now",
+            "button_link": "/collections/all"
+          }
+        },
+        "banner_2": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/bicycle2.jpg",
+            "title": "Deals you can't miss",
+            "subtitle": "Save big on our best-selling bikes",
+            "button_text": "Buy Now",
+            "button_link": "/collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "banner_1",
+        "banner_2"
+      ],
+      "settings": {}
+    },
     "bicycle_gear_up": {
       "type": "bicycle-gear-up",
-      "settings": {
-        "gear_up_text": "Gear Up",
-        "gear_up_link": "/collections/all",
-        "heading": "Top-quality equipment for all your cycling needs"
-      },
       "blocks": {
-        "product_1": {
+        "product_FnBWCh": {
           "type": "product",
           "settings": {
-            "product": "radrunner-plus",
+            "product": "casio-mens-casio-g-shock-mudmaster",
             "vendor": "KALKHOFF",
             "show_sale_badge": true,
             "sale_badge_text": "20% Off",
             "show_color_swatches": true
           }
         },
-        "product_2": {
+        "product_bc7AxV": {
           "type": "product",
           "settings": {
-            "product": "radexpand-5-electric-bike",
-            "vendor": "GASGAS",
+            "product": "captain-foots",
+            "vendor": "KALKHOFF",
             "show_sale_badge": true,
             "sale_badge_text": "20% Off",
             "show_color_swatches": true
           }
         },
-        "product_3": {
+        "product_rFEnhU": {
           "type": "product",
           "settings": {
-            "product": "radster-road-electric-bike",
-            "vendor": "FOCUS",
+            "product": "bic-america-f12-12-front-firing-powered-subwoofer",
+            "vendor": "KALKHOFF",
             "show_sale_badge": true,
-            "sale_badge_text": "25% Off",
+            "sale_badge_text": "20% Off",
             "show_color_swatches": true
           }
         },
-        "product_4": {
+        "product_xz3dDw": {
           "type": "product",
           "settings": {
-            "product": "radster-trail-electric-off-road-bike",
-            "vendor": "FELT",
+            "product": "armani-exchange-armani-exchange-watch-ax2707",
+            "vendor": "KALKHOFF",
+            "show_sale_badge": true,
+            "sale_badge_text": "20% Off",
+            "show_color_swatches": true
+          }
+        },
+        "product_YYzcdb": {
+          "type": "product",
+          "settings": {
+            "product": "accurist-mens-accurist-london",
+            "vendor": "KALKHOFF",
             "show_sale_badge": true,
             "sale_badge_text": "20% Off",
             "show_color_swatches": true
@@ -269,11 +259,36 @@
         }
       },
       "block_order": [
-        "product_1",
-        "product_2",
-        "product_3",
-        "product_4"
-      ]
+        "product_FnBWCh",
+        "product_bc7AxV",
+        "product_rFEnhU",
+        "product_xz3dDw",
+        "product_YYzcdb"
+      ],
+      "settings": {
+        "gear_up_text": "Gear Up",
+        "gear_up_link": "/collections/all",
+        "heading": "Top-quality equipment for all your cycling needs"
+      }
+    },
+    "bicycle_banner_video": {
+      "type": "bicycle-banner-video",
+      "blocks": {
+        "banner_1": {
+          "type": "banner",
+          "settings": {
+            "video": "shopify://files/videos/bicycle.mp4",
+            "title": "Unleash Your Ride",
+            "subtitle": "Experience the thrill of top performance",
+            "button_text": "Explore now",
+            "button_link": "/collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "banner_1"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -283,6 +298,6 @@
     "bicycle_featured",
     "bicycle_banner",
     "bicycle_gear_up",
-    "bicycle_banner_video",
+    "bicycle_banner_video"
   ]
 }
