@@ -1,37 +1,64 @@
 {%- comment -%}Fashion Slide Section{%- endcomment -%}
-<div class="tf-slideshow slider-fashion-2">
-  <div class="swiper tf-sw-slideshow" 
-    data-preview="{{ section.settings.slides_per_view }}"
-    data-tablet="{{ section.settings.slides_per_view_tablet }}"
-    data-mobile="{{ section.settings.slides_per_view_mobile }}"
-    data-space="{{ section.settings.space_between }}"
-    data-space-mb="{{ section.settings.space_between_mobile }}">
-    <div class="swiper-wrapper">
-      {%- for block in section.blocks -%}
-        <div class="swiper-slide" {{ block.shopify_attributes }}>
-          <div class="fs-cls hover-img">
-            <div class="img-style image">
-              {%- if block.settings.image != blank -%}
-                <img src="{{ block.settings.image | image_url: width: 1000 }}"
-                  data-src="{{ block.settings.image | image_url: width: 1000 }}"
-                  alt="{{ block.settings.image.alt | escape }}"
-                  class="lazyload">
-              {%- else -%}
-                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-              {%- endif -%}
+<section class="s-fashion-slide">
+  <div class="container">
+    <div class="tf-slideshow slider-fashion-2">
+      <div class="swiper tf-sw-slideshow" 
+        data-swiper='{
+          "slidesPerView": {{ section.settings.slides_per_view }},
+          "spaceBetween": {{ section.settings.space_between }},
+          "slidesPerGroup": {{ section.settings.slides_per_view }},
+          "speed": 800,
+          "observer": true,
+          "observeParents": true,
+          "navigation": {
+            "nextEl": ".nav-next-fashion",
+            "prevEl": ".nav-prev-fashion"
+          },
+          "pagination": { "el": ".sw-pagination-fashion", "clickable": true },
+          "breakpoints": {
+            "768": { 
+              "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
+              "spaceBetween": {{ section.settings.space_between }}, 
+              "slidesPerGroup": {{ section.settings.slides_per_view_tablet }} 
+            },
+            "1200": { 
+              "slidesPerView": {{ section.settings.slides_per_view }}, 
+              "spaceBetween": {{ section.settings.space_between }}, 
+              "slidesPerGroup": {{ section.settings.slides_per_view }} 
+            }
+          }
+        }'>
+        <div class="swiper-wrapper">
+          {%- for block in section.blocks -%}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <div class="fs-cls hover-img">
+                <div class="img-style image">
+                  {%- if block.settings.image != blank -%}
+                    <img src="{{ block.settings.image | image_url: width: 1000 }}"
+                      data-src="{{ block.settings.image | image_url: width: 1000 }}"
+                      alt="{{ block.settings.image.alt | escape }}"
+                      class="lazyload">
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </div>
+                <div class="content">
+                  <a href="{{ block.settings.button_link }}" class="tf-btn btn-white hover-icon-2 hover-dark">
+                    {{ block.settings.button_text }}
+                    <i class="icon-arrow-right icon"></i>
+                  </a>
+                </div>
+              </div>
             </div>
-            <div class="content">
-              <a href="{{ block.settings.button_link }}" class="tf-btn btn-white hover-icon-2 hover-dark">
-                {{ block.settings.button_text }}
-                <i class="icon-arrow-right icon"></i>
-              </a>
-            </div>
-          </div>
+          {%- endfor -%}
         </div>
-      {%- endfor -%}
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-fashion justify-content-center"></div>
+      </div>
+      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-fashion"></div>
+      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-fashion"></div>
     </div>
   </div>
-</div>
+</section>
 
 {% schema %}
 {
