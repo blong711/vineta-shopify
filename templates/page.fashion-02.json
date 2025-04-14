@@ -15,7 +15,6 @@
         "slide_1": {
           "type": "slide",
           "settings": {
-            "image": "",
             "button_text": "Shop Men",
             "button_link": "/collections/men"
           }
@@ -23,7 +22,6 @@
         "slide_2": {
           "type": "slide",
           "settings": {
-            "image": "",
             "button_text": "Shop Women",
             "button_link": "/collections/women"
           }
@@ -31,7 +29,6 @@
         "slide_3": {
           "type": "slide",
           "settings": {
-            "image": "",
             "button_text": "Shop Kids",
             "button_link": "/collections/kids"
           }
@@ -59,11 +56,15 @@
       "blocks": {
         "image_1": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/fashion-4.jpg"
+          }
         },
         "image_2": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/fashion-3.jpg"
+          }
         }
       },
       "block_order": [
@@ -82,7 +83,9 @@
       "blocks": {
         "image": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/fashion-2.jpg"
+          }
         },
         "content": {
           "type": "content",
@@ -211,49 +214,38 @@
     "brands": {
       "type": "brands",
       "blocks": {
-        "brand_1": {
-          "type": "brand",
-          "settings": {
-            "image": "",
-            "link": ""
-          }
-        },
         "brand_2": {
           "type": "brand",
           "settings": {
-            "image": "",
+            "brand_name": "",
             "link": ""
           }
         },
         "brand_3": {
           "type": "brand",
           "settings": {
-            "image": "",
+            "brand_name": "",
             "link": ""
           }
         },
         "brand_4": {
           "type": "brand",
           "settings": {
-            "image": "",
+            "brand_name": "",
             "link": ""
           }
         }
       },
       "block_order": [
-        "brand_1",
         "brand_2",
         "brand_3",
         "brand_4"
       ],
       "settings": {
-        "title": "Our Trusted Brands",
-        "description": "Shop from the world's most trusted fashion brands",
-        "slides_per_view": 4,
-        "slides_per_view_tablet": 3,
-        "slides_per_view_mobile": 2,
-        "space_between": 30,
-        "space_between_mobile": 10
+        "title": "",
+        "animation_speed": 20,
+        "animation_direction": "left",
+        "clone_count": 2
       }
     },
     "testimonials": {
@@ -262,19 +254,21 @@
         "testimonial_1": {
           "type": "testimonial",
           "settings": {
-            "image": "",
-            "content": "The quality and style of these clothes are amazing! I've never been more satisfied with my purchases.",
-            "author": "Sarah Johnson",
-            "position": "Fashion Blogger"
+            "author_name": "Emily T.",
+            "show_verified_badge": true,
+            "rating": 5,
+            "review_text": "I absolutely love the quality of the products. The customer service was exceptional, and I received my order quickly. Will definitely shop here again!",
+            "product": ""
           }
         },
         "testimonial_2": {
           "type": "testimonial",
           "settings": {
-            "image": "",
-            "content": "Great customer service and fast shipping. The clothes fit perfectly and are exactly as described.",
-            "author": "Michael Chen",
-            "position": "Fashion Enthusiast"
+            "author_name": "Emily T.",
+            "show_verified_badge": true,
+            "rating": 5,
+            "review_text": "I absolutely love the quality of the products. The customer service was exceptional, and I received my order quickly. Will definitely shop here again!",
+            "product": ""
           }
         }
       },
@@ -283,13 +277,7 @@
         "testimonial_2"
       ],
       "settings": {
-        "title": "What Our Customers Say",
-        "description": "Read what our satisfied customers have to say about their shopping experience",
-        "slides_per_view": 2,
-        "slides_per_view_tablet": 1,
-        "slides_per_view_mobile": 1,
-        "space_between": 30,
-        "space_between_mobile": 10
+        "title": "What Our Customers Say"
       }
     },
     "latest_tips": {
@@ -298,19 +286,17 @@
         "tip_1": {
           "type": "tip",
           "settings": {
-            "image": "",
             "title": "Sustainable Fashion Tips",
-            "excerpt": "Learn how to build an eco-friendly wardrobe without compromising on style",
-            "link": "/blogs/fashion/sustainable-fashion-tips"
+            "link": "/blogs/fashion/sustainable-fashion-tips",
+            "read_more_text": "Read more"
           }
         },
         "tip_2": {
           "type": "tip",
           "settings": {
-            "image": "",
             "title": "Seasonal Wardrobe Essentials",
-            "excerpt": "Discover the must-have pieces for every season",
-            "link": "/blogs/fashion/seasonal-wardrobe-essentials"
+            "link": "/blogs/fashion/seasonal-wardrobe-essentials",
+            "read_more_text": "Read more"
           }
         }
       },
@@ -321,11 +307,16 @@
       "settings": {
         "title": "Latest Fashion Tips",
         "description": "Stay updated with the latest fashion trends and styling tips",
-        "slides_per_view": 2,
-        "slides_per_view_tablet": 1,
+        "autoplay": true,
+        "autoplay_speed": 5000,
         "slides_per_view_mobile": 1,
-        "space_between": 30,
-        "space_between_mobile": 10
+        "space_between_mobile": 10,
+        "slides_per_view_tablet": 1,
+        "space_between_tablet": 12,
+        "slides_per_view_desktop": 3,
+        "space_between_desktop": 24,
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     },
     "icon_boxes": {
@@ -334,33 +325,37 @@
         "box_1": {
           "type": "icon_box",
           "settings": {
-            "icon": "truck",
+            "style": "2",
+            "icon": "icon-truck",
             "title": "Free Shipping",
-            "description": "On orders over $50"
+            "text": "Enjoy free shipping on all orders"
           }
         },
         "box_2": {
           "type": "icon_box",
           "settings": {
+            "style": "2",
             "icon": "return",
             "title": "Easy Returns",
-            "description": "30-day return policy"
+            "text": "Enjoy free shipping on all orders"
           }
         },
         "box_3": {
           "type": "icon_box",
           "settings": {
+            "style": "2",
             "icon": "lock",
             "title": "Secure Payment",
-            "description": "100% secure checkout"
+            "text": "Enjoy free shipping on all orders"
           }
         },
         "box_4": {
           "type": "icon_box",
           "settings": {
+            "style": "2",
             "icon": "support",
             "title": "24/7 Support",
-            "description": "Dedicated support"
+            "text": "Enjoy free shipping on all orders"
           }
         }
       },
@@ -371,11 +366,8 @@
         "box_4"
       ],
       "settings": {
-        "columns": 4,
-        "columns_tablet": 2,
-        "columns_mobile": 1,
-        "space_between": 30,
-        "space_between_mobile": 10
+        "title": "Our Services",
+        "boxes_to_show": 4
       }
     }
   },
