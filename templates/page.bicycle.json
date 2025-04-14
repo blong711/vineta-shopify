@@ -342,55 +342,45 @@
       }
     },
     "icon_boxes": {
-        "type": "icon-boxes",
-        "blocks": {
-          "icon_box_cLrNmV": {
-            "type": "icon_box",
-            "settings": {
-              "style": "1",
-              "icon": "icon-shipping",
-              "title": "Free Shipping",
-              "text": "Enjoy free shipping on all orders"
-            }
-          },
-          "icon_box_tRqHJe": {
-            "type": "icon_box",
-            "settings": {
-              "style": "1",
-              "icon": "icon-gift",
-              "title": "Gift Package",
-              "text": "Perfectly packaged for gifting"
-            }
-          },
-          "icon_box_3AmNEz": {
-            "type": "icon_box",
-            "settings": {
-              "style": "1",
-              "icon": "icon-return",
-              "title": "Free Returns",
-              "text": "Within 14 days for a return"
-            }
-          },
-          "icon_box_rGRkRX": {
-            "type": "icon_box",
-            "settings": {
-              "style": "1",
-              "icon": "icon-support",
-              "title": "Support Online",
-              "text": "We support customers 24/7"
-            }
+      "type": "icon-boxes",
+      "blocks": {
+        "icon_box_cLrNmV": {
+          "type": "icon_box",
+          "settings": {
+            "style": "1",
+            "icon": "icon-shipping",
+            "title": "Free Shipping",
+            "text": "Enjoy free shipping on all orders"
           }
         },
-        "block_order": [
-          "icon_box_cLrNmV",
-          "icon_box_tRqHJe",
-          "icon_box_3AmNEz",
-          "icon_box_rGRkRX"
-        ],
-        "settings": {
-          "title": "",
-          "boxes_to_show": 4
+        "icon_box_3AmNEz": {
+          "type": "icon_box",
+          "settings": {
+            "style": "1",
+            "icon": "icon-return",
+            "title": "Easy Returns",
+            "text": "Within 14 days for a return"
+          }
+        },
+        "icon_box_rGRkRX": {
+          "type": "icon_box",
+          "settings": {
+            "style": "1",
+            "icon": "icon-support",
+            "title": "24/7 Support",
+            "text": "Outstanding premium support"
+          }
         }
+      },
+      "block_order": [
+        "icon_box_cLrNmV",
+        "icon_box_3AmNEz",
+        "icon_box_rGRkRX"
+      ],
+      "settings": {
+        "title": "",
+        "boxes_to_show": 4
+      }
     }
   },
   "order": [
