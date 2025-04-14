@@ -25,23 +25,26 @@
     }'>
       <div class="swiper-wrapper">
         {% for block in section.blocks %}
-          <div class="swiper-slide" {{ block.shopify_attributes }}>
-            <div class="wg-cls style-abs type-2 hover-img">
-              <a href="{{ block.settings.category_link }}" class="image img-style d-block">
-                {% if block.settings.category_image != blank %}
-                  <img src="{{ block.settings.category_image | img_url: 'master' }}"
-                    data-src="{{ block.settings.category_image | img_url: 'master' }}" 
-                    alt="{{ block.settings.category_title | escape }}"
-                    class="lazyload">
-                {% endif %}
-              </a>
-              <div class="cls-btn text-center">
-                <a href="{{ block.settings.category_link }}" class="tf-btn btn-cls btn-white hover-dark">
-                  {{ block.settings.category_title }}
+          {% assign collection = collections[block.settings.collection] %}
+          {% if collection != blank %}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <div class="wg-cls style-abs type-2 hover-img">
+                <a href="{{ collection.url }}" class="image img-style d-block">
+                  {% if collection.featured_image != blank %}
+                    <img src="{{ collection.featured_image | img_url: 'master' }}"
+                      data-src="{{ collection.featured_image | img_url: 'master' }}" 
+                      alt="{{ collection.title | escape }}"
+                      class="lazyload">
+                  {% endif %}
                 </a>
+                <div class="cls-btn text-center">
+                  <a href="{{ collection.url }}" class="tf-btn btn-cls btn-white hover-dark">
+                    {{ collection.title }}
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
+          {% endif %}
         {% endfor %}
       </div>
       <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-2 justify-content-center"></div>
@@ -80,20 +83,9 @@
       "name": "Category",
       "settings": [
         {
-          "type": "image_picker",
-          "id": "category_image",
-          "label": "Category Image"
-        },
-        {
-          "type": "text",
-          "id": "category_title",
-          "label": "Category Title",
-          "default": "Bikes"
-        },
-        {
-          "type": "url",
-          "id": "category_link",
-          "label": "Category Link"
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
         }
       ]
     }
@@ -105,31 +97,31 @@
         {
           "type": "category",
           "settings": {
-            "category_title": "Bikes"
+            "collection": "bikes"
           }
         },
         {
           "type": "category",
           "settings": {
-            "category_title": "E-Bikes"
+            "collection": "e-bikes"
           }
         },
         {
           "type": "category",
           "settings": {
-            "category_title": "Apparels"
+            "collection": "apparels"
           }
         },
         {
           "type": "category",
           "settings": {
-            "category_title": "Components"
+            "collection": "components"
           }
         },
         {
           "type": "category",
           "settings": {
-            "category_title": "Batteries"
+            "collection": "batteries"
           }
         }
       ]
