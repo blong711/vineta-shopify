@@ -9,6 +9,33 @@
  */
 {
   "sections": {
+    "bicycle_banner": {
+      "type": "bicycle-banner",
+      "blocks": {
+        "banner_1": {
+          "type": "banner",
+          "settings": {
+            "title": "Unveiling the latest gear",
+            "subtitle": "Check out our newest arrivals",
+            "button_text": "Buy Now",
+            "button_link": "/collections/all"
+          }
+        },
+        "banner_2": {
+          "type": "banner",
+          "settings": {
+            "title": "Deals you can't miss",
+            "subtitle": "Save big on our best-selling bikes",
+            "button_text": "Buy Now",
+            "button_link": "/collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "banner_1",
+        "banner_2"
+      ]
+    },
     "bicycle_slider": {
       "type": "bicycle-slider",
       "blocks": {
@@ -49,6 +76,43 @@
         "slide_3"
       ],
       "settings": {}
+    },
+    "brands": {
+      "type": "brands",
+      "blocks": {
+        "brand_2": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "",
+            "link": ""
+          }
+        },
+        "brand_3": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "",
+            "link": ""
+          }
+        },
+        "brand_4": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_2",
+        "brand_3",
+        "brand_4"
+      ],
+      "settings": {
+        "title": "",
+        "animation_speed": 20,
+        "animation_direction": "left",
+        "clone_count": 2
+      }
     },
     "bicycle_categories": {
       "type": "bicycle-categories",
@@ -136,11 +200,70 @@
         "featured_link": "/collections/all",
         "heading": "Discover our top picks for every ride"
       }
+    },
+    "bicycle_gear_up": {
+      "type": "bicycle-gear-up",
+      "settings": {
+        "gear_up_text": "Gear Up",
+        "gear_up_link": "/collections/all",
+        "heading": "Top-quality equipment for all your cycling needs"
+      },
+      "blocks": {
+        "product_1": {
+          "type": "product",
+          "settings": {
+            "product": "radrunner-plus",
+            "vendor": "KALKHOFF",
+            "show_sale_badge": true,
+            "sale_badge_text": "20% Off",
+            "show_color_swatches": true
+          }
+        },
+        "product_2": {
+          "type": "product",
+          "settings": {
+            "product": "radexpand-5-electric-bike",
+            "vendor": "GASGAS",
+            "show_sale_badge": true,
+            "sale_badge_text": "20% Off",
+            "show_color_swatches": true
+          }
+        },
+        "product_3": {
+          "type": "product",
+          "settings": {
+            "product": "radster-road-electric-bike",
+            "vendor": "FOCUS",
+            "show_sale_badge": true,
+            "sale_badge_text": "25% Off",
+            "show_color_swatches": true
+          }
+        },
+        "product_4": {
+          "type": "product",
+          "settings": {
+            "product": "radster-trail-electric-off-road-bike",
+            "vendor": "FELT",
+            "show_sale_badge": true,
+            "sale_badge_text": "20% Off",
+            "show_color_swatches": true
+          }
+        }
+      },
+      "block_order": [
+        "product_1",
+        "product_2",
+        "product_3",
+        "product_4"
+      ]
     }
   },
   "order": [
+    "bicycle_banner",
     "bicycle_slider",
+    "brands",
     "bicycle_categories",
-    "bicycle_featured"
+    "bicycle_featured",
+    "bicycle_gear_up"
   ]
 }

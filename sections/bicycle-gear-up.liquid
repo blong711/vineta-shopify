@@ -1,0 +1,220 @@
+<!-- Gear Up -->
+<section class="flat-spacing-3">
+  <div class="container">
+    <div class="flat-title-v2 text-center justify-items-center wow fadeInUp">
+      <a href="{{ section.settings.gear_up_link }}" class="tf-btn btn-out-line-green btn-small text-uppercase">
+        {{ section.settings.gear_up_text }}
+      </a>
+      <h4>{{ section.settings.heading }}</h4>
+    </div>
+    <div class="fl-control-sw wow fadeInUp">
+      <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+        "slidesPerView": 2,
+        "spaceBetween": 12,
+        "speed": 1000,
+        "observer": true,
+        "observeParents": true,
+        "slidesPerGroup": 2,
+        "navigation": {
+          "clickable": true,
+          "nextEl": ".nav-next-gear-up",
+          "prevEl": ".nav-prev-gear-up"
+        },
+        "pagination": { "el": ".sw-pagination-gear-up", "clickable": true },
+        "breakpoints": {
+          "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
+          "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4 }
+        }
+      }'>
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <div class="card-product style-border style-2">
+                <div class="card-product-wrapper asp-ratio-0">
+                  <a href="{{ block.settings.product.url }}" class="product-img">
+                    {% if block.settings.product.featured_image != blank %}
+                      {{ block.settings.product.featured_image | image_url: width: 600 | image_tag:
+                        loading: 'lazy',
+                        class: 'img-product lazyload',
+                        alt: block.settings.product.title
+                      }}
+                      {% if block.settings.product.images[1] != blank %}
+                        {{ block.settings.product.images[1] | image_url: width: 600 | image_tag:
+                          loading: 'lazy',
+                          class: 'img-hover lazyload',
+                          alt: block.settings.product.title
+                        }}
+                      {% endif %}
+                    {% else %}
+                      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {% endif %}
+                  </a>
+                  
+                  {% if block.settings.show_sale_badge and block.settings.product.compare_at_price > block.settings.product.price %}
+                    <div class="on-sale-wrap">
+                      <span class="on-sale-item">
+                        {{ block.settings.sale_badge_text | default: 'Sale' }}
+                      </span>
+                    </div>
+                  {% endif %}
+
+                  <ul class="list-product-btn">
+                    <li>
+                      <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip box-icon">
+                        <span class="icon icon-cart2"></span>
+                        <span class="tooltip">Add to Cart</span>
+                      </a>
+                    </li>
+                    <li class="wishlist">
+                      <a href="javascript:void(0);" class="hover-tooltip box-icon">
+                        <span class="icon icon-heart2"></span>
+                        <span class="tooltip">Add to Wishlist</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip box-icon">
+                        <span class="icon icon-view"></span>
+                        <span class="tooltip">Quick View</span>
+                      </a>
+                    </li>
+                    <li class="compare">
+                      <a href="#compare" data-bs-toggle="modal" aria-controls="compare" class="hover-tooltip box-icon">
+                        <span class="icon icon-compare"></span>
+                        <span class="tooltip">Add to Compare</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="card-product-info text-center">
+                  <p class="type text-xs text-dark fw-medium">
+                    {{ block.settings.vendor }}
+                  </p>
+                  <a href="{{ block.settings.product.url }}" class="name-product link fw-medium text-md">
+                    {{ block.settings.product.title }}
+                  </a>
+                  <p class="price-wrap fw-medium">
+                    <span class="price-new text-primary">{{ block.settings.product.price | money }}</span>
+                    {% if block.settings.product.compare_at_price > block.settings.product.price %}
+                      <span class="price-old text-dark">{{ block.settings.product.compare_at_price | money }}</span>
+                    {% endif %}
+                  </p>
+                  
+                  {% if block.settings.show_color_swatches and block.settings.product.variants.size > 1 %}
+                    <ul class="list-color-product justify-content-center">
+                      {% for variant in block.settings.product.variants %}
+                        <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
+                          <span class="tooltip color-filter">{{ variant.title }}</span>
+                          <span class="swatch-value" style="background-color: {{ variant.title | handleize }}"></span>
+                          {% if variant.image != blank %}
+                            {{ variant.image | image_url: width: 100 | image_tag:
+                              loading: 'lazy',
+                              class: 'lazyload',
+                              alt: variant.title
+                            }}
+                          {% endif %}
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-gear-up justify-content-center"></div>
+      </div>
+      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-gear-up"></div>
+      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-gear-up"></div>
+    </div>
+  </div>
+</section>
+<!-- /Gear Up -->
+
+{% schema %}
+{
+  "name": "Bicycle Gear Up",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "gear_up_text",
+      "label": "Gear Up Text",
+      "default": "Gear Up"
+    },
+    {
+      "type": "url",
+      "id": "gear_up_link",
+      "label": "Gear Up Link"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Top-quality equipment for all your cycling needs"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "vendor",
+          "label": "Vendor",
+          "default": "KALKHOFF"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_sale_badge",
+          "label": "Show Sale Badge",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "sale_badge_text",
+          "label": "Sale Badge Text",
+          "default": "20% Off"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_color_swatches",
+          "label": "Show Color Swatches",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bicycle Gear Up",
+      "blocks": [
+        {
+          "type": "product",
+          "settings": {
+            "vendor": "KALKHOFF",
+            "show_sale_badge": true,
+            "sale_badge_text": "20% Off",
+            "show_color_swatches": true
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "vendor": "GASGAS",
+            "show_sale_badge": true,
+            "sale_badge_text": "20% Off",
+            "show_color_swatches": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 
