@@ -13,30 +13,36 @@
         </a>
         {% for block in section.blocks %}
           {% if block.type == 'lookbook' %}
-            <div class="loobook-product style-row">
-              <div class="img-style">
-                {% if block.settings.product_image != blank %}
-                  {{ block.settings.product_image | image_url: width: 200 | image_tag:
-                    loading: 'lazy',
-                    alt: block.settings.product_image.alt
-                  }}
-                {% endif %}
-              </div>
-              <div class="content">
-                <div class="info">
-                  <a href="{{ block.settings.product_link }}" class="text-md fw-medium text-line-clamp-1 link">
-                    {{ block.settings.product_title }}
-                  </a>
-                  <p class="price-wrap text-md fw-medium">
-                    {{ block.settings.product_price }}
-                  </p>
+            {% assign product = block.settings.product %}
+            {% if product != blank %}
+              <div class="loobook-product style-row">
+                <div class="img-style">
+                  {% if product.featured_image != blank %}
+                    {{ product.featured_image | image_url: width: 200 | image_tag:
+                      loading: 'lazy',
+                      alt: product.featured_image.alt
+                    }}
+                  {% endif %}
                 </div>
-                <a href="#quickView" data-bs-toggle="modal" class="btn-lookbook hover-tooltip">
-                  <i class="icon-view"></i>
-                  <span class="tooltip">Quick view</span>
-                </a>
+                <div class="content">
+                  <div class="info">
+                    <a href="{{ product.url }}" class="text-md fw-medium text-line-clamp-1 link">
+                      {{ product.title }}
+                    </a>
+                    <p class="price-wrap text-md fw-medium">
+                      {{ product.price | money }}
+                      {% if product.compare_at_price > product.price %}
+                        <span class="price-old">{{ product.compare_at_price | money }}</span>
+                      {% endif %}
+                    </p>
+                  </div>
+                  <a href="#quickView" data-bs-toggle="modal" class="btn-lookbook hover-tooltip" data-product-handle="{{ product.handle }}">
+                    <i class="icon-view"></i>
+                    <span class="tooltip">Quick view</span>
+                  </a>
+                </div>
               </div>
-            </div>
+            {% endif %}
           {% endif %}
         {% endfor %}
       </div>
@@ -105,24 +111,9 @@
       "name": "Lookbook Product",
       "settings": [
         {
-          "type": "image_picker",
-          "id": "product_image",
-          "label": "Product Image"
-        },
-        {
-          "type": "text",
-          "id": "product_title",
-          "label": "Product Title"
-        },
-        {
-          "type": "text",
-          "id": "product_price",
-          "label": "Product Price"
-        },
-        {
-          "type": "url",
-          "id": "product_link",
-          "label": "Product Link"
+          "type": "product",
+          "id": "product",
+          "label": "Product"
         }
       ]
     }

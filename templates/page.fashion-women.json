@@ -161,15 +161,19 @@
         "lookbook_1": {
           "type": "lookbook",
           "settings": {
-            "product_image": "shopify://shop_images/t-shirt.jpg",
-            "product_title": "Shirt Neck T-Shirt",
-            "product_price": "$150.00",
-            "product_link": "/products/shirt-neck-t-shirt"
+            "product": "shopify://products/turtleneck-t-shirt"
+          }
+        },
+        "lookbook_2": {
+          "type": "lookbook",
+          "settings": {
+            "product": "shopify://products/loose-fit-tee"
           }
         }
       },
       "block_order": [
-        "lookbook_1"
+        "lookbook_1",
+        "lookbook_2"
       ],
       "settings": {
         "banner_image": "shopify://shop_images/fashion-woman.jpg",
