@@ -1,0 +1,230 @@
+{%- comment -%}Limited Deals Section{%- endcomment -%}
+<section class="s-limited-deals">
+  <div class="container">
+    <div class="flat-title wow fadeInUp">
+      <h4 class="title">{{ section.settings.title }}</h4>
+      <p class="desc text-main text-md">{{ section.settings.description }}</p>
+    </div>
+    <div class="hover-sw-nav hover-sw-2 wow fadeInUp">
+      <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
+        "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+        "spaceBetween": {{ section.settings.space_between_mobile }},
+        "speed": 800,
+        "observer": true,
+        "observeParents": true,
+        "slidesPerGroup": {{ section.settings.slides_per_view_mobile }},
+        "navigation": {
+          "clickable": true,
+          "nextEl": ".nav-next-deal",
+          "prevEl": ".nav-prev-deal"
+        },
+        "pagination": { "el": ".sw-pagination-deal", "clickable": true },
+        "breakpoints": {
+          "768": { 
+            "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
+            "spaceBetween": {{ section.settings.space_between }}, 
+            "slidesPerGroup": {{ section.settings.slides_per_view_tablet }} 
+          },
+          "1200": { 
+            "slidesPerView": {{ section.settings.slides_per_view }}, 
+            "spaceBetween": {{ section.settings.space_between }}, 
+            "slidesPerGroup": {{ section.settings.slides_per_view }} 
+          }
+        }
+      }'>
+        <div class="swiper-wrapper">
+          {%- for block in section.blocks -%}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              {% render 'card-product',
+                product: block.settings.product,
+                hover_image: block.settings.hover_image,
+                show_sale_badge: block.settings.show_sale_badge,
+                sale_badge_text: block.settings.sale_badge_text,
+                show_trending_badge: block.settings.show_trending_badge,
+                show_sizes: block.settings.show_sizes,
+                sizes: block.settings.sizes,
+                show_countdown: block.settings.show_countdown,
+                countdown_timer: block.settings.countdown_timer,
+                show_color_swatches: block.settings.show_color_swatches,
+                color_option: block.settings.color_option,
+                style: 'style-2'
+              %}
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-deal justify-content-center"></div>
+      </div>
+      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-deal"></div>
+      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-deal"></div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Limited Deals",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Limited Time Deals"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Explore our most popular pieces that customers can't get enough of"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Slides per view (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Slides per view (Tablet)"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 0.5,
+      "default": 2,
+      "label": "Slides per view (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "space_between",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 24,
+      "label": "Space between slides (Desktop/Tablet)"
+    },
+    {
+      "type": "range",
+      "id": "space_between_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 12,
+      "label": "Space between slides (Mobile)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "image_picker",
+          "id": "hover_image",
+          "label": "Hover Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_sale_badge",
+          "label": "Show Sale Badge",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "sale_badge_text",
+          "label": "Sale Badge Text",
+          "default": "20% Off"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_trending_badge",
+          "label": "Show Trending Badge",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_sizes",
+          "label": "Show Size Options",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "sizes",
+          "label": "Sizes",
+          "info": "Comma separated list of sizes (e.g. XS,S,M,L,XL)"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_countdown",
+          "label": "Show Countdown",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "countdown_timer",
+          "label": "Countdown Timer (seconds)",
+          "default": "1007500"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_color_swatches",
+          "label": "Show Color Swatches",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Color Swatches"
+        },
+        {
+          "type": "text",
+          "id": "color_option",
+          "label": "Color Option Name",
+          "info": "Enter the name of the color option for this product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Limited Deals",
+      "settings": {
+        "title": "Limited Time Deals",
+        "description": "Explore our most popular pieces that customers can't get enough of",
+        "slides_per_view": 4,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_mobile": 2,
+        "space_between": 24,
+        "space_between_mobile": 12
+      },
+      "blocks": [
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 

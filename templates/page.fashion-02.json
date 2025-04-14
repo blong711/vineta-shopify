@@ -1,48 +1,153 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    "fashion_slide_JJ9RVq": {
+    "fashion_slide": {
       "type": "fashion-slide",
-      "blocks": {
-        "slide_z8jKEz": {
-          "type": "slide",
-          "settings": {
-            "collection": "men"
-          }
-        },
-        "slide_z3L3UH": {
-          "type": "slide",
-          "settings": {
-            "collection": "women"
-          }
-        },
-        "slide_ePP38K": {
-          "type": "slide",
-          "settings": {
-            "collection": "baby"
-          }
-        }
-      },
-      "block_order": [
-        "slide_z8jKEz",
-        "slide_z3L3UH",
-        "slide_ePP38K"
-      ],
       "settings": {
         "slides_per_view": 3,
         "slides_per_view_tablet": 2,
         "slides_per_view_mobile": 1.5,
         "space_between": 15,
         "space_between_mobile": 5
-      }
+      },
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/slider-fashion-2-1.png",
+            "button_text": "Shop Men",
+            "button_link": "/collections/men"
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/slider-fashion-2-2.png",
+            "button_text": "Shop Women",
+            "button_link": "/collections/women"
+          }
+        },
+        "slide_3": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/slider-fashion-2-3.png",
+            "button_text": "Shop Kid",
+            "button_link": "/collections/kids"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2",
+        "slide_3"
+      ]
+    },
+    "banner_text_fashion": {
+      "type": "banner-text-fashion",
+      "settings": {
+        "title": "Sustainable Fashion",
+        "description": "Look good, feel good with eco-friendly and stylish designs.",
+        "button_text": "Shop Now",
+        "button_link": "/collections/all"
+      },
+      "blocks": {
+        "image_1": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/fashion-3.jpg"
+          }
+        },
+        "image_2": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/fashion-4.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "image_1",
+        "image_2"
+      ]
+    },
+    "banner_collection_02": {
+      "type": "banner-collection-02",
+      "blocks": {
+        "image": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/fashion-2.jpg"
+          }
+        },
+        "content": {
+          "type": "content",
+          "settings": {
+            "title": "Effortless Chic",
+            "subtitle": "Achieve effortless style with pieces made for everyday wear",
+            "button_text": "Explore Now",
+            "button_link": "/collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "image",
+        "content"
+      ]
+    },
+    "limited_deals": {
+      "type": "limited-deals",
+      "settings": {
+        "title": "Limited Time Deals",
+        "description": "Explore our most popular pieces that customers can't get enough of",
+        "slides_per_view": 4,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_mobile": 2,
+        "space_between": 24,
+        "space_between_mobile": 12
+      },
+      "blocks": {
+        "product_1": {
+          "type": "product",
+          "settings": {
+            "product": "accurist-mens-accurist-london",
+            "show_sale_badge": true,
+            "sale_badge_text": "20% Off",
+            "show_sizes": true,
+            "sizes": "XS,S,M,L,XL,2XL"
+          }
+        },
+        "product_2": {
+          "type": "product",
+          "settings": {
+            "product": "armani-exchange-armani-exchange-watch-ax2707",
+            "show_trending_badge": true
+          }
+        },
+        "product_3": {
+          "type": "product",
+          "settings": {
+            "product": "armani-exchange-armani-exchange-watch-ax2707",
+            "show_sale_badge": true,
+            "sale_badge_text": "20% Off",
+            "show_countdown": true,
+            "countdown_timer": "1007500"
+          }
+        },
+        "product_4": {
+          "type": "product",
+          "settings": {
+            "product": "armani-exchange-armani-exchange-watch-ax2707",
+            "show_sizes": true,
+            "sizes": "XS,S,M,L",
+            "show_countdown": true,
+            "countdown_timer": "1007500"
+          }
+        }
+      },
+      "block_order": [
+        "product_1",
+        "product_2",
+        "product_3",
+        "product_4"
+      ]
     },
     "top_picks": {
       "type": "top-picks",
@@ -74,7 +179,10 @@
     }
   },
   "order": [
-    "fashion_slide_JJ9RVq",
+    "fashion_slide",
+    "banner_text_fashion",
+    "banner_collection_02",
+    "limited_deals",
     "top_picks"
   ]
 }

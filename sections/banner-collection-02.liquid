@@ -1,0 +1,103 @@
+{%- comment -%}Banner Collection 02 Section{%- endcomment -%}
+<section class="s-banner-colection flat-spacing-6">
+  <div class="container">
+    <div class="banner-content tf-grid-layout tf-col-2 hover-overlay-2">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'image' -%}
+            <div class="image img-hv-overlay" {{ block.shopify_attributes }}>
+              {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url: width: 1000 }}"
+                  data-src="{{ block.settings.image | image_url: width: 1000 }}"
+                  alt="{{ block.settings.image.alt | escape }}"
+                  class="lazyload">
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+          {%- when 'content' -%}
+            <div class="box-content" {{ block.shopify_attributes }}>
+              <div class="box-title-banner wow fadeInUp">
+                <p class="title display-md fw-medium">
+                  {{ block.settings.title }}
+                </p>
+                <p class="sub text-lg">
+                  {{ block.settings.subtitle | replace: '<br>', '<br>' }}
+                </p>
+              </div>
+              <div class="box-btn-banner wow fadeInUp">
+                <a href="{{ block.settings.button_link }}" class="tf-btn animate-btn">
+                  {{ block.settings.button_text }}
+                </a>
+              </div>
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Banner Collection 02",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    },
+    {
+      "type": "content",
+      "name": "Content",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Effortless Chic"
+        },
+        {
+          "type": "textarea",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Achieve effortless style with pieces made for everyday wear"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Explore Now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link",
+          "default": "/collections/all"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner Collection 02",
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "content"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 
