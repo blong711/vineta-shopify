@@ -101,50 +101,29 @@
     "fashion_women_seller": {
       "type": "fashion-women-seller",
       "blocks": {
-        "top_seller_1": {
-          "type": "top_seller",
-          "settings": {
-            "product": "shopify://products/turtleneck-t-shirt"
-          }
-        },
-        "top_seller_2": {
-          "type": "top_seller",
-          "settings": {
-            "product": "shopify://products/loose-fit-tee"
-          }
-        },
-        "on_sale_1": {
-          "type": "on_sale",
-          "settings": {
-            "product": "shopify://products/long-sleeve-t-shirt"
-          }
-        },
-        "on_sale_2": {
-          "type": "on_sale",
-          "settings": {
-            "product": "shopify://products/loose-fit-tee"
-          }
-        },
-        "trending_1": {
+        "trending_Vjedad": {
           "type": "trending",
           "settings": {
-            "product": "shopify://products/short-sleeve-sweat"
+            "product": "armchair-charcoal"
           }
         },
-        "trending_2": {
-          "type": "trending",
+        "on_sale_aDiabq": {
+          "type": "on_sale",
           "settings": {
-            "product": "shopify://products/long-sleeve-t-shirt"
+            "product": "annurca-apples"
+          }
+        },
+        "top_seller_M8QDmX": {
+          "type": "top_seller",
+          "settings": {
+            "product": "aloe-arborescens"
           }
         }
       },
       "block_order": [
-        "top_seller_1",
-        "top_seller_2",
-        "on_sale_1",
-        "on_sale_2",
-        "trending_1",
-        "trending_2"
+        "trending_Vjedad",
+        "on_sale_aDiabq",
+        "top_seller_M8QDmX"
       ],
       "settings": {
         "seller_button_text": "Show All",
@@ -215,73 +194,74 @@
         "collection_1",
         "collection_2",
         "collection_3"
-      ]
+      ],
+      "settings": {}
     },
     "brands": {
-        "type": "brands",
-        "settings": {
-          "title": "Our Brands",
-          "animation_speed": 20,
-          "animation_direction": "left",
-          "clone_count": 2
-        }
+      "type": "brands",
+      "settings": {
+        "title": "",
+        "animation_speed": 20,
+        "animation_direction": "left",
+        "clone_count": 2
+      }
     },
     "shop_gram": {
-        "type": "shop-gram",
-        "settings": {
+      "type": "shop-gram",
+      "settings": {
         "title": "Shop by @Gram"
-        }
+      }
     },
     "icon_boxes": {
-        "type": "icon-boxes",
-        "blocks": {
+      "type": "icon-boxes",
+      "blocks": {
         "icon_box_cLrNmV": {
-            "type": "icon_box",
-            "settings": {
+          "type": "icon_box",
+          "settings": {
             "style": "1",
             "icon": "icon-shipping",
             "title": "Free Shipping",
             "text": "Enjoy free shipping on all orders"
-            }
+          }
         },
         "icon_box_tRqHJe": {
-            "type": "icon_box",
-            "settings": {
+          "type": "icon_box",
+          "settings": {
             "style": "1",
             "icon": "icon-gift",
             "title": "Gift Package",
             "text": "Perfectly packaged for gifting"
-            }
+          }
         },
         "icon_box_3AmNEz": {
-            "type": "icon_box",
-            "settings": {
+          "type": "icon_box",
+          "settings": {
             "style": "1",
             "icon": "icon-return",
             "title": "Free Returns",
             "text": "Within 14 days for a return"
-            }
+          }
         },
         "icon_box_rGRkRX": {
-            "type": "icon_box",
-            "settings": {
+          "type": "icon_box",
+          "settings": {
             "style": "1",
             "icon": "icon-support",
             "title": "Support Online",
             "text": "We support customers 24/7"
-            }
+          }
         }
-        },
-        "block_order": [
+      },
+      "block_order": [
         "icon_box_cLrNmV",
         "icon_box_tRqHJe",
         "icon_box_3AmNEz",
         "icon_box_rGRkRX"
-        ],
-        "settings": {
+      ],
+      "settings": {
         "title": "",
         "boxes_to_show": 4
-        }
+      }
     }
   },
   "order": [
