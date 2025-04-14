@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "bicycle_slider": {
@@ -35,44 +44,40 @@
         "slide_1",
         "slide_2",
         "slide_3"
-      ]
+      ],
+      "settings": {}
     },
     "bicycle_categories": {
       "type": "bicycle-categories",
-      "settings": {
-        "categories_text": "Categories",
-        "categories_link": "/collections/all",
-        "heading": "Explore a variety of high-performance bikes, built for speed, durability, and adventure."
-      },
       "blocks": {
         "category_1": {
           "type": "category",
           "settings": {
-            "collection": "bikes"
+            "collection": "bike"
           }
         },
         "category_2": {
           "type": "category",
           "settings": {
-            "collection": "e-bikes"
+            "collection": "houseware"
           }
         },
         "category_3": {
           "type": "category",
           "settings": {
-            "collection": "apparels"
+            "collection": "accessories"
           }
         },
         "category_4": {
           "type": "category",
           "settings": {
-            "collection": "components"
+            "collection": "fruit"
           }
         },
         "category_5": {
           "type": "category",
           "settings": {
-            "collection": "batteries"
+            "collection": "men"
           }
         }
       },
@@ -82,11 +87,16 @@
         "category_3",
         "category_4",
         "category_5"
-      ]
+      ],
+      "settings": {
+        "categories_text": "Categories",
+        "categories_link": "/collections/all",
+        "heading": "Explore a variety of high-performance bikes, built for speed, durability, and adventure."
+      }
     }
   },
   "order": [
     "bicycle_slider",
     "bicycle_categories"
   ]
-} 
+}
