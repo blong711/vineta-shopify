@@ -1,19 +1,21 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "fashion02_slide": {
       "type": "fashion02-slide",
-      "settings": {
-        "slides_per_view": 3,
-        "slides_per_view_tablet": 2,
-        "slides_per_view_mobile": 1.5,
-        "space_between": 15,
-        "space_between_mobile": 5
-      },
       "blocks": {
         "slide_1": {
           "type": "slide",
           "settings": {
-            "image": "shopify:\/\/shop_images\/slider-fashion-2-1.png",
+            "image": "shopify://shop_images/phone.png",
             "button_text": "Shop Men",
             "button_link": "/collections/men"
           }
@@ -21,7 +23,6 @@
         "slide_2": {
           "type": "slide",
           "settings": {
-            "image": "shopify:\/\/shop_images\/slider-fashion-2-2.png",
             "button_text": "Shop Women",
             "button_link": "/collections/women"
           }
@@ -29,7 +30,6 @@
         "slide_3": {
           "type": "slide",
           "settings": {
-            "image": "shopify:\/\/shop_images\/slider-fashion-2-3.png",
             "button_text": "Shop Kid",
             "button_link": "/collections/kids"
           }
@@ -39,43 +39,44 @@
         "slide_1",
         "slide_2",
         "slide_3"
-      ]
+      ],
+      "settings": {
+        "slides_per_view": 3,
+        "slides_per_view_tablet": 2,
+        "slides_per_view_mobile": 1.5,
+        "space_between": 15,
+        "space_between_mobile": 5
+      }
     },
     "banner_text_fashion": {
       "type": "banner-text-fashion",
-      "settings": {
-        "title": "Sustainable Fashion",
-        "description": "Look good, feel good with eco-friendly and stylish designs.",
-        "button_text": "Shop Now",
-        "button_link": "/collections/all"
-      },
       "blocks": {
         "image_1": {
           "type": "image",
-          "settings": {
-            "image": "shopify:\/\/shop_images\/fashion-3.jpg"
-          }
+          "settings": {}
         },
         "image_2": {
           "type": "image",
-          "settings": {
-            "image": "shopify:\/\/shop_images\/fashion-4.jpg"
-          }
+          "settings": {}
         }
       },
       "block_order": [
         "image_1",
         "image_2"
-      ]
+      ],
+      "settings": {
+        "title": "Sustainable Fashion",
+        "description": "Look good, feel good with eco-friendly and stylish designs.",
+        "button_text": "Shop Now",
+        "button_link": "/collections/all"
+      }
     },
     "banner_collection_02": {
       "type": "banner-collection-02",
       "blocks": {
         "image": {
           "type": "image",
-          "settings": {
-            "image": "shopify:\/\/shop_images\/fashion-2.jpg"
-          }
+          "settings": {}
         },
         "content": {
           "type": "content",
@@ -90,19 +91,11 @@
       "block_order": [
         "image",
         "content"
-      ]
+      ],
+      "settings": {}
     },
     "limited_deals": {
       "type": "limited-deals",
-      "settings": {
-        "title": "Limited Time Deals",
-        "description": "Explore our most popular pieces that customers can't get enough of",
-        "slides_per_view": 4,
-        "slides_per_view_tablet": 3,
-        "slides_per_view_mobile": 2,
-        "space_between": 24,
-        "space_between_mobile": 12
-      },
       "blocks": {
         "product_1": {
           "type": "product",
@@ -110,15 +103,28 @@
             "product": "accurist-mens-accurist-london",
             "show_sale_badge": true,
             "sale_badge_text": "20% Off",
+            "show_trending_badge": false,
             "show_sizes": true,
-            "sizes": "XS,S,M,L,XL,2XL"
+            "sizes": "XS,S,M,L,XL,2XL",
+            "show_countdown": false,
+            "countdown_timer": "1007500",
+            "show_color_swatches": false,
+            "color_option": ""
           }
         },
         "product_2": {
           "type": "product",
           "settings": {
             "product": "armani-exchange-armani-exchange-watch-ax2707",
-            "show_trending_badge": true
+            "show_sale_badge": false,
+            "sale_badge_text": "20% Off",
+            "show_trending_badge": true,
+            "show_sizes": false,
+            "sizes": "",
+            "show_countdown": false,
+            "countdown_timer": "1007500",
+            "show_color_swatches": false,
+            "color_option": ""
           }
         },
         "product_3": {
@@ -127,18 +133,28 @@
             "product": "armani-exchange-armani-exchange-watch-ax2707",
             "show_sale_badge": true,
             "sale_badge_text": "20% Off",
+            "show_trending_badge": false,
+            "show_sizes": false,
+            "sizes": "",
             "show_countdown": true,
-            "countdown_timer": "1007500"
+            "countdown_timer": "1007500",
+            "show_color_swatches": false,
+            "color_option": ""
           }
         },
         "product_4": {
           "type": "product",
           "settings": {
             "product": "armani-exchange-armani-exchange-watch-ax2707",
+            "show_sale_badge": false,
+            "sale_badge_text": "20% Off",
+            "show_trending_badge": false,
             "show_sizes": true,
             "sizes": "XS,S,M,L",
             "show_countdown": true,
-            "countdown_timer": "1007500"
+            "countdown_timer": "1007500",
+            "show_color_swatches": false,
+            "color_option": ""
           }
         }
       },
@@ -147,7 +163,16 @@
         "product_2",
         "product_3",
         "product_4"
-      ]
+      ],
+      "settings": {
+        "title": "Limited Time Deals",
+        "description": "Explore our most popular pieces that customers can't get enough of",
+        "slides_per_view": 4,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_mobile": 2,
+        "space_between": 24,
+        "space_between_mobile": 12
+      }
     },
     "top_picks": {
       "type": "top-picks",
