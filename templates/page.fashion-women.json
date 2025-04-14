@@ -176,12 +176,44 @@
         "button_text": "Shop Now",
         "button_link": "/collections/women"
       }
+    },
+    "testimonial_fashion": {
+      "type": "testimonial-fashion-women",
+      "blocks": {
+        "testimonial_1": {
+          "type": "testimonial",
+          "settings": {
+            "title": "Elegance and Comfort Combined",
+            "review": "I recently bought a dress from this store, and it has quickly become my favorite piece. The fabric is high-quality, the fit is perfect, and the design is both stylish and elegant. Highly recommend!",
+            "author_image": "shopify://shop_images/tes-women.jpg",
+            "author_name": "Sarah T.",
+            "product_name": "Linen Wrap Top",
+            "product_link": "/products/linen-wrap-top"
+          }
+        },
+        "testimonial_2": {
+          "type": "testimonial",
+          "settings": {
+            "title": "Style and Comfort in Perfect Harmony",
+            "review": "I recently purchased a handbag from this store, and I couldn't be happier! The design is elegant, the quality is exceptional, and it complements every outfit perfectly. Definitely a great buy!",
+            "author_image": "shopify://shop_images/tes-women2.jpg",
+            "author_name": "Vineta P.",
+            "product_name": "Loose Fit Tee",
+            "product_link": "/products/loose-fit-tee"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_1",
+        "testimonial_2"
+      ]
     }
   },
   "order": [
     "fashion_women_slider",
     "fashion_women_collection",
     "fashion_women_seller",
-    "banner_text_fashion"
+    "banner_text_fashion",
+    "testimonial_fashion"
   ]
 }

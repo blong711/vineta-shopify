@@ -1,0 +1,143 @@
+<!-- Testimonial -->
+<div class="flat-spacing-3">
+  <div class="container">
+    <div class="wrapper-thumbs-tes-2 flat-thumbs-tes">
+      <div class="box-left">
+        <div dir="ltr" class="swiper tf-tes-main" data-space-lg="24" data-space="12">
+          <div class="swiper-wrapper">
+            {% for block in section.blocks %}
+              <div class="swiper-slide" {{ block.shopify_attributes }}>
+                <div class="box-testimonial-main wow fadeInLeft">
+                  <span class="quote icon-quote2"></span>
+                  <div class="content">
+                    <div class="list-star-default">
+                      {% for i in (1..5) %}
+                        <i class="icon-star"></i>
+                      {% endfor %}
+                    </div>
+                    <div class="title-review">{{ block.settings.title }}</div>
+                    <p class="text-review display-xs">{{ block.settings.review }}</p>
+                    <div class="box-author">
+                      <div class="img d-md-none">
+                        {% if block.settings.author_image != blank %}
+                          {{ block.settings.author_image | image_url: width: 100 | image_tag:
+                            loading: 'lazy',
+                            alt: block.settings.author_name
+                          }}
+                        {% endif %}
+                      </div>
+                      <div class="info">
+                        <div class="name text-md fw-medium">{{ block.settings.author_name }}</div>
+                        <a href="{{ block.settings.product_link }}" class="meta link">
+                          Purchase item: <span class="fw-medium">{{ block.settings.product_name }}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+          <div class="box-nav-swiper">
+            <div class="swiper-button-prev nav-swiper size-30 style-line nav-prev-tes"></div>
+            <div class="swiper-button-next nav-swiper size-30 style-line nav-next-tes"></div>
+          </div>
+        </div>
+      </div>
+      <div class="box-right">
+        <div dir="ltr" class="swiper tf-thumb-tes" data-space-lg="24" data-space="12">
+          <div class="swiper-wrapper">
+            {% for block in section.blocks %}
+              <div class="swiper-slide hover-img">
+                <div class="img-sw-thumb img-style">
+                  {% if block.settings.author_image != blank %}
+                    {{ block.settings.author_image | image_url: width: 200 | image_tag:
+                      loading: 'lazy',
+                      class: 'lazyload',
+                      alt: block.settings.author_name
+                    }}
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Testimonial -->
+
+{% schema %}
+{
+  "name": "Testimonial Fashion Women",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Elegance and Comfort Combined"
+        },
+        {
+          "type": "textarea",
+          "id": "review",
+          "label": "Review Text",
+          "default": "I recently bought a dress from this store, and it has quickly become my favorite piece. The fabric is high-quality, the fit is perfect, and the design is both stylish and elegant. Highly recommend!"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author Image"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "Sarah T."
+        },
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "Product Name",
+          "default": "Linen Wrap Top"
+        },
+        {
+          "type": "url",
+          "id": "product_link",
+          "label": "Product Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial Fashion Women",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "title": "Elegance and Comfort Combined",
+            "review": "I recently bought a dress from this store, and it has quickly become my favorite piece. The fabric is high-quality, the fit is perfect, and the design is both stylish and elegant. Highly recommend!",
+            "author_name": "Sarah T.",
+            "product_name": "Linen Wrap Top"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "title": "Style and Comfort in Perfect Harmony",
+            "review": "I recently purchased a handbag from this store, and I couldn't be happier! The design is elegant, the quality is exceptional, and it complements every outfit perfectly. Definitely a great buy!",
+            "author_name": "Vineta P.",
+            "product_name": "Loose Fit Tee"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 
