@@ -29,95 +29,14 @@
         <div class="swiper-wrapper">
           {% for block in section.blocks %}
             <div class="swiper-slide" {{ block.shopify_attributes }}>
-              <div class="card-product style-border style-2">
-                <div class="card-product-wrapper asp-ratio-0">
-                  <a href="{{ block.settings.product.url }}" class="product-img">
-                    {% if block.settings.product.featured_image != blank %}
-                      {{ block.settings.product.featured_image | image_url: width: 600 | image_tag:
-                        loading: 'lazy',
-                        class: 'img-product lazyload',
-                        alt: block.settings.product.title
-                      }}
-                      {% if block.settings.product.images[1] != blank %}
-                        {{ block.settings.product.images[1] | image_url: width: 600 | image_tag:
-                          loading: 'lazy',
-                          class: 'img-hover lazyload',
-                          alt: block.settings.product.title
-                        }}
-                      {% endif %}
-                    {% else %}
-                      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                    {% endif %}
-                  </a>
-                  
-                  {% if block.settings.show_sale_badge and block.settings.product.compare_at_price > block.settings.product.price %}
-                    <div class="on-sale-wrap">
-                      <span class="on-sale-item">
-                        {{ block.settings.sale_badge_text | default: 'Sale' }}
-                      </span>
-                    </div>
-                  {% endif %}
-
-                  <ul class="list-product-btn">
-                    <li>
-                      <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip box-icon">
-                        <span class="icon icon-cart2"></span>
-                        <span class="tooltip">Add to Cart</span>
-                      </a>
-                    </li>
-                    <li class="wishlist">
-                      <a href="javascript:void(0);" class="hover-tooltip box-icon">
-                        <span class="icon icon-heart2"></span>
-                        <span class="tooltip">Add to Wishlist</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip box-icon">
-                        <span class="icon icon-view"></span>
-                        <span class="tooltip">Quick View</span>
-                      </a>
-                    </li>
-                    <li class="compare">
-                      <a href="#compare" data-bs-toggle="modal" aria-controls="compare" class="hover-tooltip box-icon">
-                        <span class="icon icon-compare"></span>
-                        <span class="tooltip">Add to Compare</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="card-product-info text-center">
-                  <p class="type text-xs text-dark fw-medium">
-                    {{ block.settings.vendor }}
-                  </p>
-                  <a href="{{ block.settings.product.url }}" class="name-product link fw-medium text-md">
-                    {{ block.settings.product.title }}
-                  </a>
-                  <p class="price-wrap fw-medium">
-                    <span class="price-new text-primary">{{ block.settings.product.price | money }}</span>
-                    {% if block.settings.product.compare_at_price > block.settings.product.price %}
-                      <span class="price-old text-dark">{{ block.settings.product.compare_at_price | money }}</span>
-                    {% endif %}
-                  </p>
-                  
-                  {% if block.settings.show_color_swatches and block.settings.product.variants.size > 1 %}
-                    <ul class="list-color-product justify-content-center">
-                      {% for variant in block.settings.product.variants %}
-                        <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
-                          <span class="tooltip color-filter">{{ variant.title }}</span>
-                          <span class="swatch-value" style="background-color: {{ variant.title | handleize }}"></span>
-                          {% if variant.image != blank %}
-                            {{ variant.image | image_url: width: 100 | image_tag:
-                              loading: 'lazy',
-                              class: 'lazyload',
-                              alt: variant.title
-                            }}
-                          {% endif %}
-                        </li>
-                      {% endfor %}
-                    </ul>
-                  {% endif %}
-                </div>
-              </div>
+              {% render 'card-product',
+                product: block.settings.product,
+                vendor: block.settings.vendor,
+                show_sale_badge: block.settings.show_sale_badge,
+                sale_badge_text: block.settings.sale_badge_text,
+                show_color_swatches: block.settings.show_color_swatches,
+                class: 'style-border style-2'
+              %}
             </div>
           {% endfor %}
         </div>
