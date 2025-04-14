@@ -1,77 +1,148 @@
 {%- comment -%}Fashion Slide Section{%- endcomment -%}
-<section class="s-fashion-slide">
-  <div class="container">
-    <div class="tf-slideshow slider-fashion-2">
-      <div class="swiper tf-sw-slideshow" 
-        data-swiper='{
-          "slidesPerView": {{ section.settings.slides_per_view }},
-          "spaceBetween": {{ section.settings.space_between }},
-          "slidesPerGroup": {{ section.settings.slides_per_view }},
-          "speed": 800,
-          "observer": true,
-          "observeParents": true,
-          "navigation": {
-            "nextEl": ".nav-next-fashion",
-            "prevEl": ".nav-prev-fashion"
-          },
-          "pagination": { "el": ".sw-pagination-fashion", "clickable": true },
-          "breakpoints": {
-            "768": { 
-              "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
-              "spaceBetween": {{ section.settings.space_between }}, 
-              "slidesPerGroup": {{ section.settings.slides_per_view_tablet }} 
+{%- if section.blocks.size > 0 -%}
+  <section class="s-fashion-slide" id="fashion-slide-{{ section.id }}">
+    <div class="container">
+      <div class="tf-slideshow slider-fashion-2">
+        <div class="swiper tf-sw-slideshow" 
+          data-swiper='{
+            "slidesPerView": {{ section.settings.slides_per_view }},
+            "spaceBetween": {{ section.settings.space_between }},
+            "slidesPerGroup": {{ section.settings.slides_per_view }},
+            "speed": 800,
+            "observer": true,
+            "observeParents": true,
+            "navigation": {
+              "nextEl": ".nav-next-fashion-{{ section.id }}",
+              "prevEl": ".nav-prev-fashion-{{ section.id }}"
             },
-            "1200": { 
-              "slidesPerView": {{ section.settings.slides_per_view }}, 
-              "spaceBetween": {{ section.settings.space_between }}, 
-              "slidesPerGroup": {{ section.settings.slides_per_view }} 
+            "pagination": { "el": ".sw-pagination-fashion-{{ section.id }}", "clickable": true },
+            "breakpoints": {
+              "768": { 
+                "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
+                "spaceBetween": {{ section.settings.space_between }}, 
+                "slidesPerGroup": {{ section.settings.slides_per_view_tablet }} 
+              },
+              "1200": { 
+                "slidesPerView": {{ section.settings.slides_per_view }}, 
+                "spaceBetween": {{ section.settings.space_between }}, 
+                "slidesPerGroup": {{ section.settings.slides_per_view }} 
+              }
             }
-          }
-        }'>
+          }'>
+          <div class="swiper-wrapper">
+            {%- for block in section.blocks -%}
+              <div class="swiper-slide" {{ block.shopify_attributes }}>
+                <div class="fs-cls hover-img">
+                  <div class="img-style image">
+                    {%- if block.settings.image != blank -%}
+                      <img src="{{ block.settings.image | image_url: width: 1000 }}"
+                        data-src="{{ block.settings.image | image_url: width: 1000 }}"
+                        alt="{{ block.settings.image.alt | escape }}"
+                        class="lazyload">
+                    {%- else -%}
+                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </div>
+                  <div class="content">
+                    <a href="{{ block.settings.button_link }}" class="tf-btn btn-white hover-icon-2 hover-dark">
+                      {{ block.settings.button_text }}
+                      <i class="icon-arrow-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+          <div class="d-flex d-xl-none sw-dot-default sw-pagination-fashion-{{ section.id }} justify-content-center"></div>
+        </div>
+        <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-fashion-{{ section.id }}"></div>
+        <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-fashion-{{ section.id }}"></div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+<div class="fashion-slide-{{ section.id }} color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    <div class="s-fashion-slide">
+      <div class="swiper fashion-slide-{{ section.id }}-swiper">
         <div class="swiper-wrapper">
           {%- for block in section.blocks -%}
             <div class="swiper-slide" {{ block.shopify_attributes }}>
-              <div class="fs-cls hover-img">
-                <div class="img-style image">
-                  {%- if block.settings.image != blank -%}
-                    <img src="{{ block.settings.image | image_url: width: 1000 }}"
-                      data-src="{{ block.settings.image | image_url: width: 1000 }}"
-                      alt="{{ block.settings.image.alt | escape }}"
-                      class="lazyload">
-                  {%- else -%}
-                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                  {%- endif -%}
-                </div>
-                <div class="content">
-                  <a href="{{ block.settings.button_link }}" class="tf-btn btn-white hover-icon-2 hover-dark">
+              <div class="fashion-slide__item">
+                {%- if block.settings.image != blank -%}
+                  <div class="fashion-slide__image">
+                    {{ block.settings.image | image_url: width: 1500 | image_tag:
+                      loading: 'lazy',
+                      width: block.settings.image.width,
+                      height: block.settings.image.height,
+                      class: 'fashion-slide__img'
+                    }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.button_text != blank -%}
+                  <a href="{{ block.settings.button_link }}" class="button button--primary">
                     {{ block.settings.button_text }}
-                    <i class="icon-arrow-right icon"></i>
                   </a>
-                </div>
+                {%- endif -%}
               </div>
             </div>
           {%- endfor -%}
         </div>
-        <div class="d-flex d-xl-none sw-dot-default sw-pagination-fashion justify-content-center"></div>
+        <div class="swiper-pagination fashion-slide-{{ section.id }}-pagination"></div>
+        <div class="swiper-button-prev fashion-slide-{{ section.id }}-prev"></div>
+        <div class="swiper-button-next fashion-slide-{{ section.id }}-next"></div>
       </div>
-      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-fashion"></div>
-      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-fashion"></div>
     </div>
   </div>
-</section>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    new Swiper('.fashion-slide-{{ section.id }}-swiper', {
+      slidesPerView: {{ section.settings.slides_per_view }},
+      spaceBetween: {{ section.settings.space_between }},
+      loop: true,
+      pagination: {
+        el: '.fashion-slide-{{ section.id }}-pagination',
+        clickable: true
+      },
+      navigation: {
+        nextEl: '.fashion-slide-{{ section.id }}-next',
+        prevEl: '.fashion-slide-{{ section.id }}-prev',
+      },
+      breakpoints: {
+        320: {
+          slidesPerView: {{ section.settings.slides_per_view_mobile }},
+          spaceBetween: {{ section.settings.space_between_mobile }}
+        },
+        750: {
+          slidesPerView: {{ section.settings.slides_per_view_tablet }},
+          spaceBetween: {{ section.settings.space_between }}
+        },
+        990: {
+          slidesPerView: {{ section.settings.slides_per_view }},
+          spaceBetween: {{ section.settings.space_between }}
+        }
+      }
+    });
+  });
+</script>
 
 {% schema %}
 {
   "name": "Fashion Slide",
+  "tag": "section",
+  "class": "section",
   "settings": [
     {
       "type": "range",
       "id": "slides_per_view",
       "min": 1,
-      "max": 6,
+      "max": 5,
       "step": 1,
       "default": 3,
-      "label": "Slides per view (Desktop)"
+      "label": "Slides per view (desktop)"
     },
     {
       "type": "range",
@@ -80,7 +151,7 @@
       "max": 4,
       "step": 1,
       "default": 2,
-      "label": "Slides per view (Tablet)"
+      "label": "Slides per view (tablet)"
     },
     {
       "type": "range",
@@ -89,31 +160,68 @@
       "max": 3,
       "step": 0.5,
       "default": 1.5,
-      "label": "Slides per view (Mobile)"
+      "label": "Slides per view (mobile)"
     },
     {
       "type": "range",
       "id": "space_between",
       "min": 0,
       "max": 50,
-      "step": 1,
+      "step": 5,
       "default": 15,
-      "label": "Space between slides (Desktop/Tablet)"
+      "label": "Space between slides (desktop)"
     },
     {
       "type": "range",
       "id": "space_between_mobile",
       "min": 0,
       "max": 30,
-      "step": 1,
+      "step": 5,
       "default": 5,
-      "label": "Space between slides (Mobile)"
+      "label": "Space between slides (mobile)"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "background-1",
+          "label": "Background 1"
+        },
+        {
+          "value": "background-2",
+          "label": "Background 2"
+        }
+      ],
+      "default": "background-1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
     }
   ],
   "blocks": [
     {
       "type": "slide",
       "name": "Slide",
+      "limit": 5,
       "settings": [
         {
           "type": "image_picker",
@@ -123,14 +231,13 @@
         {
           "type": "text",
           "id": "button_text",
-          "label": "Button Text",
-          "default": "Shop Now"
+          "default": "Shop Now",
+          "label": "Button text"
         },
         {
           "type": "url",
           "id": "button_link",
-          "label": "Button Link",
-          "default": "/collections/all"
+          "label": "Button link"
         }
       ]
     }
@@ -138,13 +245,6 @@
   "presets": [
     {
       "name": "Fashion Slide",
-      "settings": {
-        "slides_per_view": 3,
-        "slides_per_view_tablet": 2,
-        "slides_per_view_mobile": 1.5,
-        "space_between": 15,
-        "space_between_mobile": 5
-      },
       "blocks": [
         {
           "type": "slide",
