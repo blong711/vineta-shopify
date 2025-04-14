@@ -1,13 +1,41 @@
+{%- style -%}
+.fashion02-slide-{{ section.id }} {
+  position: relative;
+}
+{%- endstyle -%}
+
 {%- comment -%}Fashion02 Slide Section{%- endcomment -%}
 {%- if section.blocks.size > 0 -%}
   <!-- Slider -->
-  <div class="tf-slideshow slider-fashion-2">
+  <div class="tf-slideshow slider-fashion-2 fashion02-slide-{{ section.id }}">
     <div class="swiper tf-sw-slideshow" 
-      data-preview="{{ section.settings.slides_per_view }}"
-      data-tablet="{{ section.settings.slides_per_view_tablet }}"
-      data-mobile="{{ section.settings.slides_per_view_mobile }}"
-      data-space="{{ section.settings.space_between }}"
-      data-space-mb="{{ section.settings.space_between_mobile }}">
+      data-swiper='{
+        "slidesPerView": {{ section.settings.slides_per_view }},
+        "spaceBetween": {{ section.settings.space_between }},
+        "loop": true,
+        "navigation": {
+          "nextEl": ".fashion02-slide-{{ section.id }} .swiper-button-next",
+          "prevEl": ".fashion02-slide-{{ section.id }} .swiper-button-prev"
+        },
+        "pagination": {
+          "el": ".fashion02-slide-{{ section.id }} .swiper-pagination",
+          "clickable": true
+        },
+        "breakpoints": {
+          "320": {
+            "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+            "spaceBetween": {{ section.settings.space_between_mobile }}
+          },
+          "768": {
+            "slidesPerView": {{ section.settings.slides_per_view_tablet }},
+            "spaceBetween": {{ section.settings.space_between }}
+          },
+          "1024": {
+            "slidesPerView": {{ section.settings.slides_per_view }},
+            "spaceBetween": {{ section.settings.space_between }}
+          }
+        }
+      }'>
       <div class="swiper-wrapper">
         {%- for block in section.blocks -%}
           <div class="swiper-slide" {{ block.shopify_attributes }}>
@@ -32,9 +60,44 @@
           </div>
         {%- endfor -%}
       </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
     </div>
   </div>
   <!-- /Slider -->
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var swiper = new Swiper('.fashion02-slide-{{ section.id }} .tf-sw-slideshow', {
+        slidesPerView: {{ section.settings.slides_per_view }},
+        spaceBetween: {{ section.settings.space_between }},
+        loop: true,
+        navigation: {
+          nextEl: '.fashion02-slide-{{ section.id }} .swiper-button-next',
+          prevEl: '.fashion02-slide-{{ section.id }} .swiper-button-prev'
+        },
+        pagination: {
+          el: '.fashion02-slide-{{ section.id }} .swiper-pagination',
+          clickable: true
+        },
+        breakpoints: {
+          320: {
+            slidesPerView: {{ section.settings.slides_per_view_mobile }},
+            spaceBetween: {{ section.settings.space_between_mobile }}
+          },
+          768: {
+            slidesPerView: {{ section.settings.slides_per_view_tablet }},
+            spaceBetween: {{ section.settings.space_between }}
+          },
+          1024: {
+            slidesPerView: {{ section.settings.slides_per_view }},
+            spaceBetween: {{ section.settings.space_between }}
+          }
+        }
+      });
+    });
+  </script>
 {%- endif -%}
 
 {% schema %}
