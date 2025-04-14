@@ -51,6 +51,34 @@
         "padding_right": 0
       }
     },
+    "top_picks": {
+      "type": "top-picks",
+      "blocks": {
+        "product_1": {
+          "type": "product",
+          "settings": {
+            "product": "accurist-mens-accurist-london"
+          }
+        },
+        "product_2": {
+          "type": "product",
+          "settings": {
+            "product": "armani-exchange-armani-exchange-watch-ax2707"
+          }
+        }
+      },
+      "block_order": [
+        "product_1",
+        "product_2"
+      ],
+      "settings": {
+        "show_section": true,
+        "title": "Top Picks You'll Love",
+        "description": "Discover our most popular products that customers can't get enough of",
+        "view_all_text": "View all",
+        "view_all_link": ""
+      }
+    },
     "banner_text_fashion": {
       "type": "banner-text-fashion",
       "blocks": {
@@ -77,31 +105,6 @@
         "button_text": "Shop Now",
         "button_link": "/collections/all"
       }
-    },
-    "banner_collection_02": {
-      "type": "banner-collection-02",
-      "blocks": {
-        "image": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/fashion-2.jpg"
-          }
-        },
-        "content": {
-          "type": "content",
-          "settings": {
-            "title": "Effortless Chic",
-            "subtitle": "Achieve effortless style with pieces made for everyday wear",
-            "button_text": "Explore Now",
-            "button_link": "/collections/all"
-          }
-        }
-      },
-      "block_order": [
-        "image",
-        "content"
-      ],
-      "settings": {}
     },
     "limited_deals": {
       "type": "limited-deals",
@@ -183,33 +186,30 @@
         "space_between_mobile": 12
       }
     },
-    "top_picks": {
-      "type": "top-picks",
+    "banner_collection_02": {
+      "type": "banner-collection-02",
       "blocks": {
-        "product_1": {
-          "type": "product",
+        "image": {
+          "type": "image",
           "settings": {
-            "product": "accurist-mens-accurist-london"
+            "image": "shopify://shop_images/fashion-2.jpg"
           }
         },
-        "product_2": {
-          "type": "product",
+        "content": {
+          "type": "content",
           "settings": {
-            "product": "armani-exchange-armani-exchange-watch-ax2707"
+            "title": "Effortless Chic",
+            "subtitle": "Achieve effortless style with pieces made for everyday wear",
+            "button_text": "Explore Now",
+            "button_link": "/collections/all"
           }
         }
       },
       "block_order": [
-        "product_1",
-        "product_2"
+        "image",
+        "content"
       ],
-      "settings": {
-        "show_section": true,
-        "title": "Top Picks You'll Love",
-        "description": "Discover our most popular products that customers can't get enough of",
-        "view_all_text": "View all",
-        "view_all_link": ""
-      }
+      "settings": {}
     },
     "brands": {
       "type": "brands",
@@ -308,6 +308,7 @@
         "tip_1": {
           "type": "tip",
           "settings": {
+            "image": "shopify://shop_images/blog-7.jpg",
             "title": "Sustainable Fashion Tips",
             "link": "/blogs/fashion/sustainable-fashion-tips",
             "read_more_text": "Read more"
@@ -316,6 +317,7 @@
         "tip_2": {
           "type": "tip",
           "settings": {
+            "image": "shopify://shop_images/blog-8.jpg",
             "title": "Seasonal Wardrobe Essentials",
             "link": "/blogs/fashion/seasonal-wardrobe-essentials",
             "read_more_text": "Read more"
@@ -324,6 +326,7 @@
         "tip_888fWU": {
           "type": "tip",
           "settings": {
+            "image": "shopify://shop_images/blog-9.jpg",
             "title": "Tech Trends 2025: Must-Have Gadgets & Innovations",
             "link": "",
             "read_more_text": "Read more"
