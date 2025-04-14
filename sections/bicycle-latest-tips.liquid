@@ -1,0 +1,238 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="flat-spacing-3 pb-0 section-{{ section.id }}-padding">
+  <div class="container">
+    <div class="flat-title-v2 text-center justify-items-center wow fadeInUp">
+      <a href="{{ section.settings.blog_link }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.blog_text }}</a>
+      <h4 class="text-capitalize">{{ section.settings.title }}</h4>
+    </div>
+    <div class="fl-control-sw wow fadeInUp">
+      <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+        "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+        "spaceBetween": {{ section.settings.space_between_mobile }},
+        "speed": 1000,
+        "observer": true,
+        "observeParents": true,
+        "slidesPerGroup": 1,
+        "navigation": {
+          "clickable": true,
+          "nextEl": ".nav-next-blog",
+          "prevEl": ".nav-prev-blog"
+        },
+        "pagination": { "el": ".sw-pagination-blog", "clickable": true },
+        "breakpoints": {
+          "577": { 
+            "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
+            "spaceBetween": {{ section.settings.space_between_tablet }}, 
+            "slidesPerGroup": 2 
+          },
+          "1200": { 
+            "slidesPerView": {{ section.settings.slides_per_view_desktop }}, 
+            "spaceBetween": {{ section.settings.space_between_desktop }}, 
+            "slidesPerGroup": 4
+          }
+        }
+      }'>
+        <div class="swiper-wrapper">
+          {%- for block in section.blocks -%}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <div class="news-item hover-img">
+                <a href="{{ block.settings.link }}" class="image-box img-style">
+                  {%- if block.settings.image != blank -%}
+                    {{ block.settings.image | image_url: width: 400 | image_tag:
+                      loading: 'lazy',
+                      width: block.settings.image.width,
+                      height: block.settings.image.height,
+                      class: 'img-fluid',
+                      alt: block.settings.title
+                    }}
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </a>
+                <div class="content">
+                  <a href="{{ block.settings.link }}" class="title fw-medium link text-xl text-line-clamp-2">{{ block.settings.title }}</a>
+                  <a href="{{ block.settings.link }}" class="btn-readmore link">{{ block.settings.read_more_text }} <i class="icon icon-arr-right"></i></a>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-blog justify-content-center"></div>
+      </div>
+      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-blog"></div>
+      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-blog"></div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bicycle Latest Tips",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "blog_text",
+      "label": "Blog Text",
+      "default": "OUR BLOG"
+    },
+    {
+      "type": "url",
+      "id": "blog_link",
+      "label": "Blog Link"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Ride the Future: E-Bike Insights & Trends"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Slides per view (Mobile)",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "space_between_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "label": "Space between (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Slides per view (Tablet)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "space_between_tablet",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "label": "Space between (Tablet)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Slides per view (Desktop)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "space_between_desktop",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "label": "Space between (Desktop)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tip",
+      "name": "Tip",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Bike Trends: Must-Have Cycling Gear This Year"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "read_more_text",
+          "label": "Read More Text",
+          "default": "Read more"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bicycle Latest Tips",
+      "blocks": [
+        {
+          "type": "tip",
+          "settings": {
+            "title": "Bike Trends: Must-Have Cycling Gear This Year",
+            "read_more_text": "Read more"
+          }
+        },
+        {
+          "type": "tip",
+          "settings": {
+            "title": "Cycling Trends: Top Bikes and Gear This Year",
+            "read_more_text": "Read more"
+          }
+        },
+        {
+          "type": "tip",
+          "settings": {
+            "title": "Ride in Style: Top Bicycle Trends This Year",
+            "read_more_text": "Read more"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 
