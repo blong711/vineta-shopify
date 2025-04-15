@@ -28,13 +28,14 @@
       }'>
         <div class="swiper-wrapper">
           {% for block in section.blocks %}
+            {% assign collection = collections[block.settings.collection] %}
             <div class="swiper-slide" {{ block.shopify_attributes }}>
               {% if section.settings.layout == 'grid' %}
                 <div class="wg-cls style-abs2 hover-img">
-                  <a href="{{ block.settings.link }}" class="image-wrap relative">
+                  <a href="{{ collection.url }}" class="image-wrap relative">
                     <div class="image img-style">
-                      {% if block.settings.image != blank %}
-                        {{ block.settings.image | image_url: width: 400 | image_tag:
+                      {% if collection.featured_image != blank %}
+                        {{ collection.featured_image | image_url: width: 400 | image_tag:
                           loading: 'lazy',
                           class: 'lazyload'
                         }}
@@ -43,22 +44,20 @@
                       {% endif %}
                     </div>
                     <div class="cls-btn text-center">
-                      <button class="tf-btn btn-white hover-dark">{{ block.settings.button_text }}</button>
+                      <button class="tf-btn btn-white hover-dark">{{ section.settings.button_text }}</button>
                     </div>
                     <span class="tf-overlay"></span>
                   </a>
                   <div class="cls-content text-center">
-                    <a href="{{ block.settings.link }}" class="text-type text-xl-2 fw-medium link">{{ block.settings.title }}</a>
-                    {% if block.settings.item_count != blank %}
-                      <span class="count-item body-text-2 text-main">{{ block.settings.item_count }}</span>
-                    {% endif %}
+                    <a href="{{ collection.url }}" class="text-type text-xl-2 fw-medium link">{{ collection.title }}</a>
+                    <span class="count-item body-text-2 text-main">{{ collection.all_products_count }} items</span>
                   </div>
                 </div>
               {% else %}
                 <div class="wg-cls style-circle-md hover-img">
-                  <a href="{{ block.settings.link }}" class="image img-style d-block">
-                    {% if block.settings.image != blank %}
-                      {{ block.settings.image | image_url: width: 200 | image_tag:
+                  <a href="{{ collection.url }}" class="image img-style d-block">
+                    {% if collection.featured_image != blank %}
+                      {{ collection.featured_image | image_url: width: 200 | image_tag:
                         loading: 'lazy',
                         class: 'lazyload'
                       }}
@@ -67,7 +66,7 @@
                     {% endif %}
                   </a>
                   <div class="cls-content text-center">
-                    <a href="{{ block.settings.link }}" class="link text-sm fw-medium">{{ block.settings.title }}</a>
+                    <a href="{{ collection.url }}" class="link text-sm fw-medium">{{ collection.title }}</a>
                   </div>
                 </div>
               {% endif %}
@@ -153,6 +152,12 @@
         }
       ],
       "default": "4"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "View all"
     }
   ],
   "blocks": [
@@ -161,32 +166,9 @@
       "name": "Collection",
       "settings": [
         {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Collection name"
-        },
-        {
-          "type": "text",
-          "id": "item_count",
-          "label": "Item count",
-          "default": "9 items"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
-        },
-        {
-          "type": "text",
-          "id": "button_text",
-          "label": "Button text",
-          "default": "View all"
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
         }
       ]
     }
