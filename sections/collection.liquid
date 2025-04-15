@@ -182,14 +182,14 @@
             <span></span>
           </div>
         </li>
-        <li class="tf-view-layout-switch sw-layout-3" data-value-layout="tf-col-3">
+        <li class="tf-view-layout-switch sw-layout-3 active" data-value-layout="tf-col-3">
           <div class="item icon-grid-3">
             <span></span>
             <span></span>
             <span></span>
           </div>
         </li>
-        <li class="tf-view-layout-switch sw-layout-4 active" data-value-layout="tf-col-4">
+        <li class="tf-view-layout-switch sw-layout-4" data-value-layout="tf-col-4">
           <div class="item icon-grid-4">
             <span></span>
             <span></span>
@@ -254,7 +254,7 @@
       </div>
 
       <!-- Grid View Layout -->
-      <div class="wrapper-shop tf-grid-layout tf-col-4" id="gridLayout">
+      <div class="wrapper-shop tf-grid-layout tf-col-3" id="gridLayout">
         {% for product in collection.products %}
           <div class="card-product grid style-1{% if product.options contains 'Size' %} card-product-size{% endif %}" 
                data-availability="{{ product.available | default: 'In stock' }}" 
@@ -393,6 +393,21 @@
     gap: 8px;
   }
 
+  /* Grid Layout Styles */
+  .tf-grid-layout {
+    display: grid;
+    gap: 30px;
+  }
+  .tf-grid-layout.tf-col-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .tf-grid-layout.tf-col-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .tf-grid-layout.tf-col-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
   @media (max-width: 991px) {
     .filter-left,
     .filter-right {
@@ -403,6 +418,18 @@
     }
     .dropdown-filter {
       width: 100%;
+    }
+    .tf-grid-layout.tf-col-3,
+    .tf-grid-layout.tf-col-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 575px) {
+    .tf-grid-layout.tf-col-2,
+    .tf-grid-layout.tf-col-3,
+    .tf-grid-layout.tf-col-4 {
+      grid-template-columns: 1fr;
     }
   }
 </style>
