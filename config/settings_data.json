@@ -106,14 +106,68 @@
       },
       "product": {
         "type": "product",
+        "blocks": {
+          "payment_icon_bLKdC3": {
+            "type": "payment_icon",
+            "settings": {
+              "image": "shopify://shop_images/Visa.png"
+            }
+          },
+          "payment_icon_N9EHiY": {
+            "type": "payment_icon",
+            "settings": {
+              "image": "shopify://shop_images/Visa.png"
+            }
+          },
+          "payment_icon_VBdTDe": {
+            "type": "payment_icon",
+            "settings": {
+              "image": "shopify://shop_images/Visa.png"
+            }
+          },
+          "payment_icon_GpCrqU": {
+            "type": "payment_icon",
+            "settings": {
+              "image": "shopify://shop_images/Visa.png"
+            }
+          },
+          "payment_icon_6Ndm78": {
+            "type": "payment_icon",
+            "settings": {
+              "image": "shopify://shop_images/Visa.png"
+            }
+          },
+          "payment_icon_hrx8Uj": {
+            "type": "payment_icon",
+            "settings": {
+              "image": "shopify://shop_images/Visa.png"
+            }
+          },
+          "payment_icon_8xYPQh": {
+            "type": "payment_icon",
+            "settings": {
+              "image": "shopify://shop_images/Visa.png"
+            }
+          }
+        },
+        "block_order": [
+          "payment_icon_bLKdC3",
+          "payment_icon_N9EHiY",
+          "payment_icon_VBdTDe",
+          "payment_icon_GpCrqU",
+          "payment_icon_6Ndm78",
+          "payment_icon_hrx8Uj",
+          "payment_icon_8xYPQh"
+        ],
         "settings": {
           "layout": "default",
+          "show_trust_seal": true,
+          "trust_seal_text": "Guarantee Safe Checkout:",
           "show_sold_count": true,
           "sold_count_text": "30 sold in last 24 hours",
           "show_stock_count": true,
           "show_size_guide": true,
           "show_extra_links": true,
-          "show_trust_seal": true,
           "show_delivery_info": true,
           "delivery_time": "3-5 days international",
           "free_shipping_text": "all orders over $150",
