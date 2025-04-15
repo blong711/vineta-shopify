@@ -166,10 +166,16 @@
                 <div class="tf-product-info-trust-seal text-center">
                   <p class="text-md text-dark-2 text-seal fw-medium">{{ section.settings.trust_seal_text }}</p>
                   <ul class="list-card">
-                    {% for payment in section.settings.payment_icons %}
-                      {% if payment.image != blank %}
+                    {% for block in section.blocks %}
+                      {% if block.type == 'payment_icon' and block.settings.image != blank %}
                         <li class="card-item">
-                          <img src="{{ payment.image | image_url }}" alt="{{ payment.image.alt | default: 'Payment method' }}" loading="lazy">
+                          {% assign img = block.settings.image %}
+                          <img 
+                            src="{{ img | image_url }}" 
+                            alt="{{ img.alt | default: 'Payment method' }}" 
+                            loading="lazy"
+                            width="60"
+                            height="40">
                         </li>
                       {% endif %}
                     {% endfor %}
@@ -399,6 +405,22 @@ document.addEventListener('DOMContentLoaded', function() {
       "default": "default"
     },
     {
+      "type": "header",
+      "content": "Trust Seal Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_seal",
+      "label": "Show Trust Seal",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "trust_seal_text",
+      "label": "Trust Seal Text",
+      "default": "Guarantee Safe Checkout:"
+    },
+    {
       "type": "checkbox",
       "id": "show_sold_count",
       "label": "Show Sold Count",
@@ -430,12 +452,6 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     {
       "type": "checkbox",
-      "id": "show_trust_seal",
-      "label": "Show Trust Seal",
-      "default": true
-    },
-    {
-      "type": "checkbox",
       "id": "show_delivery_info",
       "label": "Show Delivery Info",
       "default": true
@@ -463,30 +479,19 @@ document.addEventListener('DOMContentLoaded', function() {
       "id": "show_sticky_cart",
       "label": "Show Sticky Add to Cart",
       "default": true
-    },
+    }
+  ],
+  "blocks": [
     {
-      "type": "text",
-      "id": "trust_seal_text",
-      "label": "Trust Seal Text",
-      "default": "Guarantee Safe Checkout:"
-    },
-    {
-      "type": "array",
-      "id": "payment_icons",
-      "label": "Payment Icons",
-      "max": 7,
-      "info": "Upload payment method icons (recommended size: 60x40px)",
-      "blocks": [
+      "type": "payment_icon",
+      "name": "Payment Icon",
+      "limit": 7,
+      "settings": [
         {
-          "type": "image",
-          "name": "Payment Icon",
-          "settings": [
-            {
-              "type": "image_picker",
-              "id": "image",
-              "label": "Payment Icon"
-            }
-          ]
+          "type": "image_picker",
+          "id": "image",
+          "label": "Payment Icon Image",
+          "info": "Recommended size: 60x40px"
         }
       ]
     }
