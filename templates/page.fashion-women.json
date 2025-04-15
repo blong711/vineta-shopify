@@ -312,17 +312,103 @@
             "title": "Support Online",
             "text": "We support customers 24/7"
           }
+        },
+        "icon_box_eLRf9K": {
+          "type": "icon_box",
+          "settings": {
+            "style": "2",
+            "icon": "icon-shipping",
+            "title": "Free Shipping",
+            "text": "Enjoy free shipping on all orders"
+          }
+        },
+        "icon_box_HUQPxy": {
+          "type": "icon_box",
+          "settings": {
+            "style": "2",
+            "icon": "icon-shipping",
+            "title": "Free Shipping",
+            "text": "Enjoy free shipping on all orders"
+          }
         }
       },
       "block_order": [
         "icon_box_cLrNmV",
         "icon_box_tRqHJe",
         "icon_box_3AmNEz",
-        "icon_box_rGRkRX"
+        "icon_box_rGRkRX",
+        "icon_box_eLRf9K",
+        "icon_box_HUQPxy"
       ],
       "settings": {
         "title": "",
         "boxes_to_show": 4
+      }
+    },
+    "fashion_women_slider_fmWQkh": {
+      "type": "fashion-women-slider",
+      "blocks": {
+        "slide_tGq8AE": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/person-fishing-on-the-beach-is-silhouetted-at-sunset.jpg",
+            "background_type": "7",
+            "subtitle": "SUMMER COLLECTION",
+            "title": "Everyday Essentials",
+            "description": "Versatile pieces for all-day style",
+            "button_text": "Shop Collection",
+            "button_link": ""
+          }
+        },
+        "slide_Qjk3Wf": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/rack-of-womens-clothing.jpg",
+            "background_type": "8",
+            "subtitle": "SUMMER COLLECTION",
+            "title": "Bold and Beautiful",
+            "description": "Stand out with chic, trend-setting women's fashion",
+            "button_text": "Shop Collection",
+            "button_link": ""
+          }
+        },
+        "slide_WnRDYp": {
+          "type": "slide",
+          "settings": {
+            "background_type": "7",
+            "subtitle": "SUMMER COLLECTION",
+            "title": "Everyday Essentials",
+            "description": "Versatile pieces for all-day style",
+            "button_text": "Shop Collection",
+            "button_link": ""
+          }
+        },
+        "slide_armLNU": {
+          "type": "slide",
+          "settings": {
+            "background_type": "9",
+            "subtitle": "SUMMER COLLECTION",
+            "title": "Feminine Elegance",
+            "description": "Find the perfect outfit for any occasion",
+            "button_text": "Shop Collection",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_tGq8AE",
+        "slide_Qjk3Wf",
+        "slide_WnRDYp",
+        "slide_armLNU"
+      ],
+      "settings": {
+        "slides_per_view": 1,
+        "slides_per_view_tablet": 1,
+        "slides_per_view_mobile": 2,
+        "space_between": 40,
+        "space_between_mobile": 0,
+        "enable_loop": true,
+        "autoplay": true
       }
     }
   },
@@ -334,6 +420,7 @@
     "testimonial_fashion",
     "brands",
     "shop_gram",
-    "icon_boxes"
+    "icon_boxes",
+    "fashion_women_slider_fmWQkh"
   ]
 }
