@@ -452,23 +452,29 @@
     const listLayout = document.getElementById('listLayout');
     const gridLayout = document.getElementById('gridLayout');
 
+    function updateLayout(layout) {
+      // Update active state
+      layoutSwitches.forEach(s => s.classList.remove('active'));
+      const activeSwitch = Array.from(layoutSwitches).find(s => s.dataset.valueLayout === layout);
+      if (activeSwitch) {
+        activeSwitch.classList.add('active');
+      }
+
+      // Show/hide layouts
+      if (layout === 'list') {
+        listLayout.style.display = 'block';
+        gridLayout.style.display = 'none';
+      } else {
+        listLayout.style.display = 'none';
+        gridLayout.style.display = 'block';
+        gridLayout.className = `wrapper-shop tf-grid-layout ${layout}`;
+      }
+    }
+
     layoutSwitches.forEach(switchEl => {
       switchEl.addEventListener('click', function() {
         const layout = this.dataset.valueLayout;
-        
-        // Update active state
-        layoutSwitches.forEach(s => s.classList.remove('active'));
-        this.classList.add('active');
-
-        // Show/hide layouts
-        if (layout === 'list') {
-          listLayout.style.display = 'block';
-          gridLayout.style.display = 'none';
-        } else {
-          listLayout.style.display = 'none';
-          gridLayout.style.display = 'block';
-          gridLayout.className = `wrapper-shop tf-grid-layout ${layout}`;
-        }
+        updateLayout(layout);
       });
     });
 
@@ -530,24 +536,11 @@
     const defaultGridLayout = '{{ section.settings.default_grid_layout }}';
     const defaultView = '{{ section.settings.default_view }}';
     
-    // Set initial active layout button
-    const layoutButtons = document.querySelectorAll('.tf-view-layout-switch');
-    layoutButtons.forEach(button => {
-      if (defaultView === 'list' && button.dataset.valueLayout === 'list') {
-        button.classList.add('active');
-      } else if (defaultView === 'grid' && button.dataset.valueLayout === defaultGridLayout) {
-        button.classList.add('active');
-      }
-    });
-
-    // Set initial layout display
+    // Set initial layout
     if (defaultView === 'list') {
-      listLayout.style.display = 'block';
-      gridLayout.style.display = 'none';
+      updateLayout('list');
     } else {
-      listLayout.style.display = 'none';
-      gridLayout.style.display = 'block';
-      gridLayout.className = `wrapper-shop tf-grid-layout ${defaultGridLayout}`;
+      updateLayout(defaultGridLayout);
     }
   });
 </script>
