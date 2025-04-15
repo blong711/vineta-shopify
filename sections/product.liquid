@@ -12,49 +12,63 @@
       <div class="row">
         <!-- Product Images -->
         <div class="col-md-6">
-          <div class="tf-product-media-wrap sticky-top">
-            <div class="thumbs-slider">
-              <div dir="ltr" class="swiper tf-product-media-thumbs other-image-zoom" data-preview="4" data-direction="vertical">
-                <div class="swiper-wrapper stagger-wrap">
-                  {% for image in product.images %}
-                    <div class="swiper-slide stagger-item" data-color="{{ image.alt | default: 'default' }}">
-                      <div class="item">
-                        <img class="lazyload"
-                          data-src="{{ image | image_url: width: 800 }}"
-                          src="{{ image | image_url: width: 400 }}"
-                          alt="{{ image.alt | default: product.title }}">
-                      </div>
-                    </div>
-                  {% endfor %}
-                </div>
-              </div>
-              <div class="flat-wrap-media-product">
-                <div dir="ltr" class="swiper tf-product-media-main" id="gallery-swiper-started">
-                  <div class="swiper-wrapper">
+          {% if section.settings.layout == 'grid' %}
+            <div class="wrapper-gallery-scroll flat-single-grid" id="gallery-started">
+              {% for image in product.images %}
+                <a href="{{ image | image_url: width: 1200 }}" data-scroll="{{ image.alt | default: 'default' }}" target="_blank" class="item item-scroll-target" data-pswp-width="552px" data-pswp-height="827px">
+                  <img class="tf-image-zoom lazyload"
+                    data-zoom="{{ image | image_url: width: 1200 }}"
+                    data-src="{{ image | image_url: width: 800 }}"
+                    src="{{ image | image_url: width: 400 }}"
+                    alt="{{ image.alt | default: product.title }}">
+                </a>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="tf-product-media-wrap sticky-top">
+              <div class="thumbs-slider">
+                <div dir="ltr" class="swiper tf-product-media-thumbs other-image-zoom" data-preview="4" data-direction="vertical">
+                  <div class="swiper-wrapper stagger-wrap">
                     {% for image in product.images %}
-                      <div class="swiper-slide" data-color="{{ image.alt | default: 'default' }}">
-                        <a href="{{ image | image_url: width: 1200 }}" target="_blank" class="item" data-pswp-width="552px" data-pswp-height="827px">
-                          <img class="tf-image-zoom lazyload"
-                            data-zoom="{{ image | image_url: width: 1200 }}"
+                      <div class="swiper-slide stagger-item" data-color="{{ image.alt | default: 'default' }}">
+                        <div class="item">
+                          <img class="lazyload"
                             data-src="{{ image | image_url: width: 800 }}"
                             src="{{ image | image_url: width: 400 }}"
                             alt="{{ image.alt | default: product.title }}">
-                        </a>
+                        </div>
                       </div>
                     {% endfor %}
                   </div>
                 </div>
-                <div class="swiper-button-next nav-swiper thumbs-next"></div>
-                <div class="swiper-button-prev nav-swiper thumbs-prev"></div>
+                <div class="flat-wrap-media-product">
+                  <div dir="ltr" class="swiper tf-product-media-main" id="gallery-swiper-started">
+                    <div class="swiper-wrapper">
+                      {% for image in product.images %}
+                        <div class="swiper-slide" data-color="{{ image.alt | default: 'default' }}">
+                          <a href="{{ image | image_url: width: 1200 }}" target="_blank" class="item" data-pswp-width="552px" data-pswp-height="827px">
+                            <img class="tf-image-zoom lazyload"
+                              data-zoom="{{ image | image_url: width: 1200 }}"
+                              data-src="{{ image | image_url: width: 800 }}"
+                              src="{{ image | image_url: width: 400 }}"
+                              alt="{{ image.alt | default: product.title }}">
+                          </a>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="swiper-button-next nav-swiper thumbs-next"></div>
+                  <div class="swiper-button-prev nav-swiper thumbs-prev"></div>
+                </div>
               </div>
             </div>
-          </div>
+          {% endif %}
         </div>
         <!-- /Product Images -->
 
         <!-- Product Info -->
         <div class="col-md-6">
-          <div class="tf-product-info-wrap position-relative">
+          <div class="tf-product-info-wrap{% if section.settings.layout == 'grid' %} sticky-top{% endif %} position-relative">
             <div class="tf-zoom-main"></div>
             <div class="tf-product-info-list other-image-zoom">
               <div class="tf-product-info-heading">
@@ -110,7 +124,7 @@
                     <div class="variant-picker-values">
                       {% for value in option.values %}
                         {% if option.name == 'Color' %}
-                          <div class="hover-tooltip tooltip-bot color-btn{% if value == option.selected_value %} active{% endif %}" data-{{ option.name | handle }}="{{ value | handle }}">
+                          <div class="hover-tooltip tooltip-bot color-btn{% if value == option.selected_value %} active{% endif %}{% if section.settings.layout == 'grid' %} btn-scroll-target{% endif %}" data-{{ option.name | handle }}="{{ value | handle }}"{% if section.settings.layout == 'grid' %} data-scroll="{{ value | handle }}"{% endif %}>
                             <span class="check-color bg-{{ value | handle }}"></span>
                             <span class="tooltip">{{ value }}</span>
                           </div>
@@ -262,38 +276,58 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize main product gallery
-  const galleryThumbs = new Swiper('.tf-product-media-thumbs', {
-    direction: 'vertical',
-    slidesPerView: 4,
-    spaceBetween: 10,
-    navigation: {
-      nextEl: '.thumbs-next',
-      prevEl: '.thumbs-prev',
-    },
-    breakpoints: {
-      320: {
-        direction: 'horizontal',
-        slidesPerView: 4,
+  {% if section.settings.layout == 'grid' %}
+    // Grid layout specific functionality
+    const galleryItems = document.querySelectorAll('.item-scroll-target');
+    const colorButtons = document.querySelectorAll('.btn-scroll-target');
+    
+    colorButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const color = this.getAttribute('data-scroll');
+        document.querySelectorAll('.btn-scroll-target').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        
+        galleryItems.forEach(item => {
+          if (item.getAttribute('data-scroll') === color) {
+            item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        });
+      });
+    });
+  {% else %}
+    // Default layout with Swiper
+    const galleryThumbs = new Swiper('.tf-product-media-thumbs', {
+      direction: 'vertical',
+      slidesPerView: 4,
+      spaceBetween: 10,
+      navigation: {
+        nextEl: '.thumbs-next',
+        prevEl: '.thumbs-prev',
       },
-      768: {
-        direction: 'vertical',
-        slidesPerView: 4,
+      breakpoints: {
+        320: {
+          direction: 'horizontal',
+          slidesPerView: 4,
+        },
+        768: {
+          direction: 'vertical',
+          slidesPerView: 4,
+        }
       }
-    }
-  });
+    });
 
-  const galleryMain = new Swiper('.tf-product-media-main', {
-    slidesPerView: 1,
-    spaceBetween: 10,
-    thumbs: {
-      swiper: galleryThumbs
-    },
-    navigation: {
-      nextEl: '.thumbs-next',
-      prevEl: '.thumbs-prev',
-    }
-  });
+    const galleryMain = new Swiper('.tf-product-media-main', {
+      slidesPerView: 1,
+      spaceBetween: 10,
+      thumbs: {
+        swiper: galleryThumbs
+      },
+      navigation: {
+        nextEl: '.thumbs-next',
+        prevEl: '.thumbs-prev',
+      }
+    });
+  {% endif %}
 
   // Handle color variant selection
   document.querySelectorAll('.color-btn').forEach(button => {
