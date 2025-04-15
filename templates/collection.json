@@ -1,8 +1,18 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "breadcrumb": {
       "type": "breadcrumb",
       "settings": {
+        "show_breadcrumb": true
       }
     },
     "collection-header": {
@@ -15,8 +25,10 @@
     "main": {
       "type": "collection",
       "settings": {
+        "filter_type": "drawer",
         "products_per_page": 16,
         "default_view": "grid",
+        "default_grid_layout": "tf-col-4",
         "default_sort": "best-selling"
       }
     }
@@ -26,4 +38,4 @@
     "collection-header",
     "main"
   ]
-} 
+}
