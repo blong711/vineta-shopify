@@ -8,49 +8,78 @@
 {% paginate collection.products by section.settings.products_per_page %}
 <section class="flat-spacing pt-0">
   <div class="container">
-    <!-- Filter Sidebar -->
-    <div class="offcanvas offcanvas-start canvas-sidebar canvas-filter" id="filterShop">
-      <div class="canvas-wrapper">
-        <div class="canvas-header">
-          <span class="title">Filter</span>
-          <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    {%- case section.settings.filter_type -%}
+      {%- when 'drawer' -%}
+        <!-- Filter Drawer -->
+        <div class="offcanvas offcanvas-start canvas-sidebar canvas-filter" id="filterShop">
+          <div class="canvas-wrapper">
+            <div class="canvas-header">
+              <span class="title">Filter</span>
+              <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="canvas-body">
+              {% render 'filter-content' %}
+            </div>
+          </div>
         </div>
-        <div class="canvas-body">
-          {% render 'filter-content' %}
+      {%- when 'left' -%}
+        <!-- Left Sidebar -->
+        <div class="row">
+          <div class="col-lg-3">
+            <div class="filter-sidebar filter-left">
+              <div class="filter-content">
+                {% render 'filter-content' %}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-9">
+      {%- when 'right' -%}
+        <!-- Right Sidebar -->
+        <div class="row">
+          <div class="col-lg-9">
+      {%- when 'horizontal' -%}
+        <!-- Horizontal Filter -->
+        <div class="filter-horizontal">
+          <div class="filter-content">
+            {% render 'filter-content' %}
+          </div>
         </div>
-      </div>
-    </div>
+    {%- endcase -%}
 
     <div class="tf-shop-control">
-      <div class="tf-group-filter">
-        <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="filterShop" class="tf-btn-filter">
-          <span class="icon icon-filter"></span>
-          <span class="text">Filter</span>
-        </a>
-        <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
-          <div class="btn-select">
-            <span class="text-sort-value">{{ collection.sort_by | default: 'best-selling' | replace: '-', ' ' | capitalize }}</span>
-            <span class="icon icon-arr-down"></span>
+      {%- if section.settings.filter_type == 'drawer' -%}
+        <div class="tf-group-filter">
+          <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="filterShop" class="tf-btn-filter">
+            <span class="icon icon-filter"></span>
+            <span class="text">Filter</span>
+          </a>
+      {%- endif -%}
+      <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
+        <div class="btn-select">
+          <span class="text-sort-value">{{ collection.sort_by | default: 'best-selling' | replace: '-', ' ' | capitalize }}</span>
+          <span class="icon icon-arr-down"></span>
+        </div>
+        <div class="dropdown-menu">
+          <div class="select-item{% if collection.sort_by == 'best-selling' %} active{% endif %}" data-sort-value="best-selling">
+            <span class="text-value-item">Best selling</span>
           </div>
-          <div class="dropdown-menu">
-            <div class="select-item{% if collection.sort_by == 'best-selling' %} active{% endif %}" data-sort-value="best-selling">
-              <span class="text-value-item">Best selling</span>
-            </div>
-            <div class="select-item{% if collection.sort_by == 'title-ascending' %} active{% endif %}" data-sort-value="title-ascending">
-              <span class="text-value-item">Alphabetically, A-Z</span>
-            </div>
-            <div class="select-item{% if collection.sort_by == 'title-descending' %} active{% endif %}" data-sort-value="title-descending">
-              <span class="text-value-item">Alphabetically, Z-A</span>
-            </div>
-            <div class="select-item{% if collection.sort_by == 'price-ascending' %} active{% endif %}" data-sort-value="price-ascending">
-              <span class="text-value-item">Price, low to high</span>
-            </div>
-            <div class="select-item{% if collection.sort_by == 'price-descending' %} active{% endif %}" data-sort-value="price-descending">
-              <span class="text-value-item">Price, high to low</span>
-            </div>
+          <div class="select-item{% if collection.sort_by == 'title-ascending' %} active{% endif %}" data-sort-value="title-ascending">
+            <span class="text-value-item">Alphabetically, A-Z</span>
+          </div>
+          <div class="select-item{% if collection.sort_by == 'title-descending' %} active{% endif %}" data-sort-value="title-descending">
+            <span class="text-value-item">Alphabetically, Z-A</span>
+          </div>
+          <div class="select-item{% if collection.sort_by == 'price-ascending' %} active{% endif %}" data-sort-value="price-ascending">
+            <span class="text-value-item">Price, low to high</span>
+          </div>
+          <div class="select-item{% if collection.sort_by == 'price-descending' %} active{% endif %}" data-sort-value="price-descending">
+            <span class="text-value-item">Price, high to low</span>
           </div>
         </div>
       </div>
+      {%- if section.settings.filter_type == 'drawer' -%}
+        </div>
+      {%- endif -%}
       <ul class="tf-control-layout">
         <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
           <div class="item icon-list">
@@ -174,9 +203,58 @@
         {% endif %}
       </div>
     </div>
+
+    {%- if section.settings.filter_type == 'left' or section.settings.filter_type == 'right' -%}
+      </div>
+      {%- if section.settings.filter_type == 'right' -%}
+        <div class="col-lg-3">
+          <div class="filter-sidebar filter-right">
+            <div class="filter-content">
+              {% render 'filter-content' %}
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+      </div>
+    {%- endif -%}
   </div>
 </section>
 {% endpaginate %}
+
+<style>
+  /* Filter Type Specific Styles */
+  .filter-sidebar {
+    margin-bottom: 30px;
+  }
+  .filter-left {
+    padding-right: 30px;
+  }
+  .filter-right {
+    padding-left: 30px;
+  }
+  .filter-horizontal {
+    margin-bottom: 20px;
+  }
+  .filter-horizontal .filter-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .filter-horizontal .widget-facet {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  @media (max-width: 991px) {
+    .filter-left,
+    .filter-right {
+      padding: 0;
+    }
+    .filter-horizontal .filter-content {
+      flex-direction: column;
+    }
+  }
+</style>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -251,6 +329,30 @@
 {
   "name": "Collection",
   "settings": [
+    {
+      "type": "select",
+      "id": "filter_type",
+      "label": "Filter Type",
+      "options": [
+        {
+          "value": "drawer",
+          "label": "Drawer"
+        },
+        {
+          "value": "left",
+          "label": "Left Sidebar"
+        },
+        {
+          "value": "right",
+          "label": "Right Sidebar"
+        },
+        {
+          "value": "horizontal",
+          "label": "Horizontal"
+        }
+      ],
+      "default": "drawer"
+    },
     {
       "type": "range",
       "id": "products_per_page",
