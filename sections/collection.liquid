@@ -39,9 +39,98 @@
           <div class="col-lg-9">
       {%- when 'horizontal' -%}
         <!-- Horizontal Filter -->
-        <div class="filter-horizontal">
-          <div class="filter-content">
-            {% render 'filter-content' %}
+        <div class="tf-filter-dropdown">
+          <span class="title-filter">Filter:</span>
+          <div class="meta-dropdown-filter">
+            <div class="dropdown dropdown-filter">
+              <div class="dropdown-toggle" id="availability" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <span class="text-value">Availability</span>
+                <span class="icon icon-arr-down"></span>
+              </div>
+              <div class="dropdown-menu" aria-labelledby="availability">
+                <ul class="filter-group-check">
+                  <li class="list-item">
+                    <input type="radio" name="availability" class="tf-check" id="inStock">
+                    <label for="inStock" class="label"><span>In stock</span>&nbsp;<span class="count">(20)</span></label>
+                  </li>
+                  <li class="list-item">
+                    <input type="radio" name="availability" class="tf-check" id="outStock">
+                    <label for="outStock" class="label"><span>Out of stock</span>&nbsp;<span class="count">(3)</span></label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="dropdown dropdown-filter">
+              <div class="dropdown-toggle" id="price" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <span class="text-value">Price</span>
+                <span class="icon icon-arr-down"></span>
+              </div>
+              <div class="dropdown-menu" aria-labelledby="price">
+                <div class="widget-price filter-price">
+                  <div class="price-val-range" id="price-value-range" data-min="0" data-max="500"></div>
+                  <div class="box-value-price">
+                    <span class="text-sm">Price:</span>
+                    <div class="price-box">
+                      <div class="price-val" id="price-min-value" data-currency="$"></div>
+                      <span>-</span>
+                      <div class="price-val" id="price-max-value" data-currency="$"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="dropdown dropdown-filter">
+              <div class="dropdown-toggle" id="color" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <span class="text-value">Color</span>
+                <span class="icon icon-arr-down"></span>
+              </div>
+              <div class="dropdown-menu" aria-labelledby="color">
+                <div class="filter-color-box flat-check-list">
+                  <div class="check-item color-item color-check"><span class="color bg-yellow"></span><span class="color-text">Yellow</span></div>
+                  <div class="check-item color-item color-check"><span class="color bg-dark"></span><span class="color-text">Black</span></div>
+                  <div class="check-item color-item color-check line"><span class="color bg-white"></span><span class="color-text">White</span></div>
+                  <div class="check-item color-item color-check"><span class="color bg-purple-3"></span><span class="color-text">Purple</span></div>
+                  <div class="check-item color-item color-check"><span class="color bg-light-orange"></span><span class="color-text">Light Orange</span></div>
+                  <div class="check-item color-item color-check"><span class="color bg-light-pink-4"></span><span class="color-text">Light Pink</span></div>
+                  <div class="check-item color-item color-check"><span class="color bg-pink"></span><span class="color-text">Pink</span></div>
+                  <div class="check-item color-item color-check"><span class="color bg-dark-green"></span><span class="color-text">Dark Green</span></div>
+                  <div class="check-item color-item color-check"><span class="color bg-grey-4"></span><span class="color-text">Grey</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="dropdown dropdown-filter">
+              <div class="dropdown-toggle" id="size" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <span class="text-value">Size</span>
+                <span class="icon icon-arr-down"></span>
+              </div>
+              <div class="dropdown-menu" aria-labelledby="size">
+                <div class="filter-size-box flat-check-list">
+                  <div class="check-item size-item size-check"><span class="size">XS</span>&nbsp;<span class="count">(10)</span></div>
+                  <div class="check-item size-item size-check"><span class="size">S</span>&nbsp;<span class="count">(8)</span></div>
+                  <div class="check-item size-item size-check"><span class="size">L</span>&nbsp;<span class="count">(20)</span></div>
+                  <div class="check-item size-item size-check"><span class="size">M</span>&nbsp;<span class="count">(10)</span></div>
+                  <div class="check-item size-item size-check"><span class="size">XL</span>&nbsp;<span class="count">(20)</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="dropdown dropdown-filter">
+              <div class="dropdown-toggle" id="brand" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <span class="text-value">Brand</span>
+                <span class="icon icon-arr-down"></span>
+              </div>
+              <div class="dropdown-menu" aria-labelledby="brand">
+                <ul class="filter-group-check">
+                  <li class="list-item">
+                    <input type="radio" name="brand" class="tf-check" id="Vineta">
+                    <label for="Vineta" class="label"><span>Vineta</span>&nbsp;<span class="count">(11)</span></label>
+                  </li>
+                  <li class="list-item">
+                    <input type="radio" name="brand" class="tf-check" id="Zotac">
+                    <label for="Zotac" class="label"><span>Zotac</span>&nbsp;<span class="count">(20)</span></label>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
     {%- endcase -%}
@@ -232,17 +321,76 @@
   .filter-right {
     padding-left: 30px;
   }
-  .filter-horizontal {
+  .tf-filter-dropdown {
     margin-bottom: 20px;
   }
-  .filter-horizontal .filter-content {
+  .meta-dropdown-filter {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
   }
-  .filter-horizontal .widget-facet {
-    flex: 1;
+  .dropdown-filter {
+    position: relative;
+  }
+  .dropdown-filter .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .dropdown-filter .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
     min-width: 200px;
+    padding: 16px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+  .filter-group-check {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .filter-group-check .list-item {
+    margin-bottom: 8px;
+  }
+  .filter-group-check .label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .filter-color-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .color-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+  }
+  .filter-size-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .size-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   @media (max-width: 991px) {
@@ -250,8 +398,11 @@
     .filter-right {
       padding: 0;
     }
-    .filter-horizontal .filter-content {
+    .meta-dropdown-filter {
       flex-direction: column;
+    }
+    .dropdown-filter {
+      width: 100%;
     }
   }
 </style>
@@ -320,6 +471,31 @@
         const url = new URL(window.location.href);
         url.searchParams.delete('filter.v.tag');
         window.location.href = url.toString();
+      });
+    }
+
+    // Initialize price range slider
+    const priceRange = document.getElementById('price-value-range');
+    if (priceRange) {
+      const minPrice = parseInt(priceRange.dataset.min);
+      const maxPrice = parseInt(priceRange.dataset.max);
+      
+      noUiSlider.create(priceRange, {
+        start: [minPrice, maxPrice],
+        connect: true,
+        range: {
+          'min': minPrice,
+          'max': maxPrice
+        }
+      });
+
+      const minValue = document.getElementById('price-min-value');
+      const maxValue = document.getElementById('price-max-value');
+      const currency = minValue.dataset.currency;
+
+      priceRange.noUiSlider.on('update', function(values) {
+        minValue.textContent = currency + values[0];
+        maxValue.textContent = currency + values[1];
       });
     }
   });
