@@ -12,35 +12,6 @@
     "sections": {
       "top-bar": {
         "type": "top-bar",
-        "blocks": {
-          "social_media_MmRpPj": {
-            "type": "social_media",
-            "settings": {
-              "facebook_url": "https://www.facebook.com/",
-              "instagram_url": "https://www.instagram.com/",
-              "twitter_url": "https://x.com/",
-              "snapchat_url": "https://www.snapchat.com/"
-            }
-          },
-          "announcement_jmbKLJ": {
-            "type": "announcement",
-            "settings": {
-              "announcements": "Return extended to 60 days\nLife-time Guarantees\nLimited-Time Offer"
-            }
-          },
-          "language_currency_WBGMYU": {
-            "type": "language_currency",
-            "settings": {
-              "show_language": true,
-              "show_currency": true
-            }
-          }
-        },
-        "block_order": [
-          "social_media_MmRpPj",
-          "announcement_jmbKLJ",
-          "language_currency_WBGMYU"
-        ],
         "settings": {
           "background_color": "#1A1A1A",
           "text_color": "#FFFFFF",
@@ -49,117 +20,63 @@
       },
       "header": {
         "type": "header",
-        "blocks": {
-          "logo_zn66tQ": {
-            "type": "logo",
-            "settings": {
-              "logo_width": 150
-            }
-          },
-          "menu_RHcKpj": {
-            "type": "menu",
-            "settings": {
-              "menu": "main-menu",
-              "show_product_cards": true,
-              "product_image_1": "shopify://shop_images/Samsung-Gear-S2-2.jpg",
-              "product_title_1": "Accessories",
-              "product_url_1": "shopify://collections/accessories",
-              "product_image_2": "shopify://shop_images/Allegra-Dining-Chair-angle-1800x1350.jpg",
-              "product_title_2": "Houseware",
-              "product_url_2": "shopify://collections/houseware",
-              "product_title_3": "Accessories",
-              "product_url_3": "",
-              "product_title_4": "Sportwear",
-              "product_url_4": ""
-            }
-          },
-          "icons_LgRUqJ": {
-            "type": "icons",
-            "settings": {
-              "show_search": true,
-              "show_account": true,
-              "show_wishlist": true,
-              "show_cart": true
-            }
-          }
-        },
-        "block_order": [
-          "logo_zn66tQ",
-          "menu_RHcKpj",
-          "icons_LgRUqJ"
-        ],
         "settings": {
           "layout": "layout-1",
           "logo_width": 100,
           "menu": "main-menu"
         }
       },
+      "breadcrumb": {
+        "type": "breadcrumb",
+        "settings": {
+          "show_breadcrumb": true
+        }
+      },
+      "page-title": {
+        "type": "page-title",
+        "settings": {
+          "title": "Shopping Cart"
+        }
+      },
+      "product": {
+        "type": "product",
+        "settings": {
+          "layout": "grid",
+          "show_sold_count": true,
+          "sold_count_text": "30 sold in last 24 hours",
+          "show_stock_count": true,
+          "show_size_guide": true,
+          "show_extra_links": true,
+          "show_trust_seal": true,
+          "show_delivery_info": true,
+          "delivery_time": "3-5 days international",
+          "free_shipping_text": "all orders over $150",
+          "show_fbt": true,
+          "show_sticky_cart": true
+        }
+      },
+      "product-details": {
+        "type": "product-details",
+        "settings": {
+          "show_description": true,
+          "show_materials": true,
+          "show_return_policies": true
+        }
+      },
+      "people-also-bought": {
+        "type": "people-also-bought",
+        "settings": {
+          "title": "People Also Bought"
+        }
+      },
+      "recently-viewed": {
+        "type": "recently-viewed",
+        "settings": {
+          "title": "Recently Viewed"
+        }
+      },
       "footer": {
         "type": "footer",
-        "blocks": {
-          "social_TVHH7q": {
-            "type": "social",
-            "settings": {
-              "platform": "fb",
-              "url": ""
-            }
-          },
-          "social_WFaAMN": {
-            "type": "social",
-            "settings": {
-              "platform": "instagram",
-              "url": ""
-            }
-          },
-          "social_aJH74a": {
-            "type": "social",
-            "settings": {
-              "platform": "linkedin",
-              "url": ""
-            }
-          },
-          "social_Yfw9PC": {
-            "type": "social",
-            "settings": {
-              "platform": "x",
-              "url": ""
-            }
-          },
-          "contact_RmR3mc": {
-            "type": "contact",
-            "settings": {
-              "title": "Business Contact",
-              "address": "123 Yarran st, Punchbowl, NSW 2196, Australia",
-              "phone": "(64) 8342 1245",
-              "email": "support@example.com",
-              "map_link": ""
-            }
-          },
-          "newsletter_7Vbh4H": {
-            "type": "newsletter",
-            "settings": {
-              "title": "Subscribe Newsletter",
-              "text": "We invite you to register to read the latest news, offers and events about our company. We promise not spam your inbox.",
-              "placeholder": "Email address"
-            }
-          },
-          "menu_GPaTw4": {
-            "type": "menu",
-            "settings": {
-              "title": "About Us",
-              "menu": ""
-            }
-          }
-        },
-        "block_order": [
-          "social_TVHH7q",
-          "social_WFaAMN",
-          "social_aJH74a",
-          "social_Yfw9PC",
-          "contact_RmR3mc",
-          "newsletter_7Vbh4H",
-          "menu_GPaTw4"
-        ],
         "settings": {
           "show_payment_icons": true
         }
@@ -195,143 +112,6 @@
       "quickview-modal": {
         "type": "quickview-modal",
         "settings": {}
-      },
-      "breadcrumb": {
-        "type": "breadcrumb",
-        "settings": {
-          "show_breadcrumb": true
-        }
-      },
-      "page-title": {
-        "type": "page-title",
-        "settings": {
-          "title": "Shopping Cart"
-        }
-      },
-      "product": {
-        "type": "product",
-        "blocks": {
-          "gallery_RtCQY9": {
-            "type": "gallery",
-            "settings": {}
-          },
-          "title_GcyfFP": {
-            "type": "title",
-            "settings": {
-              "show_rating": true,
-              "show_price": true,
-              "show_sold_count": true,
-              "show_inventory": true
-            }
-          },
-          "variants_GHEAgU": {
-            "type": "variants",
-            "settings": {
-              "show_size_guide": true
-            }
-          },
-          "quantity_3eWVMa": {
-            "type": "quantity",
-            "settings": {
-              "show_buy_now": true,
-              "show_payment_options": true
-            }
-          },
-          "trust_seal_NGdP6Q": {
-            "type": "trust_seal",
-            "settings": {
-              "title": "Guarantee Safe Checkout:",
-              "payment_title_1": "",
-              "payment_title_2": "",
-              "payment_title_3": "",
-              "payment_title_4": "",
-              "payment_title_5": ""
-            }
-          },
-          "delivery_info_MwFHDr": {
-            "type": "delivery_info",
-            "settings": {
-              "show_delivery_time": true,
-              "delivery_time": "3-5 days international",
-              "show_shipping_info": true,
-              "free_shipping_threshold": "all orders over $150"
-            }
-          },
-          "sticky_add_to_cart_FQ3V8r": {
-            "type": "sticky_add_to_cart",
-            "settings": {}
-          },
-          "extra_link_m8AVUJ": {
-            "type": "extra_link",
-            "settings": {
-              "show_wishlist": true,
-              "show_compare": true,
-              "show_ask": true,
-              "show_share": true
-            }
-          }
-        },
-        "block_order": [
-          "gallery_RtCQY9",
-          "title_GcyfFP",
-          "variants_GHEAgU",
-          "quantity_3eWVMa",
-          "trust_seal_NGdP6Q",
-          "delivery_info_MwFHDr",
-          "sticky_add_to_cart_FQ3V8r",
-          "extra_link_m8AVUJ"
-        ],
-        "settings": {}
-      },
-      "product-details": {
-        "type": "product-details",
-        "settings": {
-          "show_description": true,
-          "show_materials": true,
-          "show_return_policies": true
-        }
-      },
-      "people-also-bought": {
-        "type": "people-also-bought",
-        "blocks": {
-          "related_products_9PQ7zW": {
-            "type": "related_products",
-            "settings": {
-              "products_to_show": 8,
-              "slides_per_view_mobile": 2,
-              "slides_per_view_tablet": 3,
-              "slides_per_view_desktop": 4,
-              "space_between": 12
-            }
-          }
-        },
-        "block_order": [
-          "related_products_9PQ7zW"
-        ],
-        "settings": {
-          "title": "People Also Bought"
-        }
-      },
-      "recently-viewed": {
-        "type": "recently-viewed",
-        "blocks": {
-          "recently_viewed_kRqKHe": {
-            "type": "recently_viewed",
-            "settings": {
-              "products_to_show": 8,
-              "slides_per_view_mobile": 2,
-              "slides_per_view_tablet": 3,
-              "slides_per_view_desktop": 4,
-              "space_between": 12
-            }
-          }
-        },
-        "block_order": [
-          "recently_viewed_kRqKHe"
-        ],
-        "settings": {
-          "title": "Recently Viewed"
-        }
       },
       "ask-question-drawer": {
         "type": "ask-question-drawer",
