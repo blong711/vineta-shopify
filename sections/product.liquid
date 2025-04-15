@@ -1,13 +1,13 @@
 {% comment %}
   Product Section
-  - Default layout with vertical thumbnails
+  - Multiple layout options: Default, Grid, Stacked
   - Responsive image gallery
   - Product information with variants
   - Add to cart functionality
 {% endcomment %}
 
 <section class="flat-single-product">
-  <div class="tf-main-product section-image-zoom">
+  <div class="tf-main-product section-image-zoom{% if section.settings.layout == 'grid' %} flat-single-grid-2{% endif %}{% if section.settings.layout == 'stacked' %} flat-single-stacked{% endif %}">
     <div class="container">
       <div class="row">
         <!-- Product Images -->
@@ -351,6 +351,26 @@ document.addEventListener('DOMContentLoaded', function() {
 {
   "name": "Product",
   "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Product Layout",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "stacked",
+          "label": "Stacked"
+        }
+      ],
+      "default": "default"
+    },
     {
       "type": "checkbox",
       "id": "show_sold_count",
