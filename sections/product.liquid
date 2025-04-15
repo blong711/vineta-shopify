@@ -164,12 +164,14 @@
 
               {% if section.settings.show_trust_seal %}
                 <div class="tf-product-info-trust-seal text-center">
-                  <p class="text-md text-dark-2 text-seal fw-medium">Guarantee Safe Checkout:</p>
+                  <p class="text-md text-dark-2 text-seal fw-medium">{{ section.settings.trust_seal_text }}</p>
                   <ul class="list-card">
-                    {% for i in (1..7) %}
-                      <li class="card-item">
-                        <img src="{{ 'payment-' | append: i | append: '.png' | asset_url }}" alt="card">
-                      </li>
+                    {% for payment in section.settings.payment_icons %}
+                      {% if payment.image != blank %}
+                        <li class="card-item">
+                          <img src="{{ payment.image | image_url }}" alt="{{ payment.image.alt | default: 'Payment method' }}" loading="lazy">
+                        </li>
+                      {% endif %}
                     {% endfor %}
                   </ul>
                 </div>
@@ -461,6 +463,32 @@ document.addEventListener('DOMContentLoaded', function() {
       "id": "show_sticky_cart",
       "label": "Show Sticky Add to Cart",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "trust_seal_text",
+      "label": "Trust Seal Text",
+      "default": "Guarantee Safe Checkout:"
+    },
+    {
+      "type": "array",
+      "id": "payment_icons",
+      "label": "Payment Icons",
+      "max": 7,
+      "info": "Upload payment method icons (recommended size: 60x40px)",
+      "blocks": [
+        {
+          "type": "image",
+          "name": "Payment Icon",
+          "settings": [
+            {
+              "type": "image_picker",
+              "id": "image",
+              "label": "Payment Icon"
+            }
+          ]
+        }
+      ]
     }
   ],
   "presets": [
