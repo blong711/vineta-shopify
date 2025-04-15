@@ -525,6 +525,33 @@
         maxValue.textContent = currency + values[1];
       });
     }
+
+    // Initialize default layout based on theme settings
+    const defaultGridLayout = '{{ section.settings.default_grid_layout }}';
+    const defaultView = '{{ section.settings.default_view }}';
+    
+    // Set initial active layout button
+    const layoutButtons = document.querySelectorAll('.tf-view-layout-switch');
+    layoutButtons.forEach(button => {
+      if (defaultView === 'list' && button.dataset.valueLayout === 'list') {
+        button.classList.add('active');
+      } else if (defaultView === 'grid' && button.dataset.valueLayout === defaultGridLayout) {
+        button.classList.add('active');
+      }
+    });
+
+    // Set initial layout display
+    const listLayout = document.getElementById('listLayout');
+    const gridLayout = document.getElementById('gridLayout');
+    
+    if (defaultView === 'list') {
+      listLayout.style.display = 'block';
+      gridLayout.style.display = 'none';
+    } else {
+      listLayout.style.display = 'none';
+      gridLayout.style.display = 'block';
+      gridLayout.className = `wrapper-shop tf-grid-layout ${defaultGridLayout}`;
+    }
   });
 </script>
 
@@ -580,6 +607,26 @@
         }
       ],
       "default": "grid"
+    },
+    {
+      "type": "select",
+      "id": "default_grid_layout",
+      "label": "Default grid layout",
+      "options": [
+        {
+          "value": "tf-col-2",
+          "label": "2 columns"
+        },
+        {
+          "value": "tf-col-3",
+          "label": "3 columns"
+        },
+        {
+          "value": "tf-col-4",
+          "label": "4 columns"
+        }
+      ],
+      "default": "tf-col-3"
     },
     {
       "type": "select",
