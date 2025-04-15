@@ -189,7 +189,7 @@
             <span></span>
           </div>
         </li>
-        <li class="tf-view-layout-switch sw-layout-4 active" data-value-layout="tf-col-4">
+        <li class="tf-view-layout-switch sw-layout-4{% if section.settings.default_grid_columns == '4' %} active{% endif %}" data-value-layout="tf-col-4">
           <div class="item icon-grid-4">
             <span></span>
             <span></span>
@@ -254,7 +254,7 @@
       </div>
 
       <!-- Grid View Layout -->
-      <div class="wrapper-shop tf-grid-layout tf-col-4" id="gridLayout">
+      <div class="wrapper-shop tf-grid-layout tf-col-{{ section.settings.default_grid_columns }}" id="gridLayout">
         {% for product in collection.products %}
           <div class="card-product grid style-1{% if product.options contains 'Size' %} card-product-size{% endif %}" 
                data-availability="{{ product.available | default: 'In stock' }}" 
@@ -309,103 +309,6 @@
   </div>
 </section>
 {% endpaginate %}
-
-<style>
-  /* Filter Type Specific Styles */
-  .filter-sidebar {
-    margin-bottom: 30px;
-  }
-  .filter-left {
-    padding-right: 30px;
-  }
-  .filter-right {
-    padding-left: 30px;
-  }
-  .tf-filter-dropdown {
-    margin-bottom: 20px;
-  }
-  .meta-dropdown-filter {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  .dropdown-filter {
-    position: relative;
-  }
-  .dropdown-filter .dropdown-toggle {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    border: 1px solid #e5e5e5;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  .dropdown-filter .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    min-width: 200px;
-    padding: 16px;
-    background: #fff;
-    border: 1px solid #e5e5e5;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    z-index: 1000;
-  }
-  .filter-group-check {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .filter-group-check .list-item {
-    margin-bottom: 8px;
-  }
-  .filter-group-check .label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-  }
-  .filter-color-box {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-  }
-  .color-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .color {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-  }
-  .filter-size-box {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-  }
-  .size-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  @media (max-width: 991px) {
-    .filter-left,
-    .filter-right {
-      padding: 0;
-    }
-    .meta-dropdown-filter {
-      flex-direction: column;
-    }
-    .dropdown-filter {
-      width: 100%;
-    }
-  }
-</style>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -528,6 +431,22 @@
         }
       ],
       "default": "drawer"
+    },
+    {
+      "type": "select",
+      "id": "default_grid_columns",
+      "label": "Default Grid Columns",
+      "options": [
+        {
+          "value": "3",
+          "label": "3 Columns"
+        },
+        {
+          "value": "4",
+          "label": "4 Columns"
+        }
+      ],
+      "default": "4"
     },
     {
       "type": "range",
