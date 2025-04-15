@@ -144,9 +144,9 @@
                     <input class="quantity-product" type="text" name="number" value="1">
                     <button class="btn-quantity btn-increase">+</button>
                   </div>
-                  <button type="submit" name="add" class="tf-btn hover-primary btn-add-to-cart">Add to cart</button>
+                  <a href="#shoppingCart" data-bs-toggle="offcanvas" class="tf-btn hover-primary btn-add-to-cart">Add to cart</a>
                 </div>
-                <button type="submit" name="checkout" class="tf-btn btn-primary w-100 animate-btn">Buy it now</button>
+                <a href="#" class="tf-btn btn-primary w-100 animate-btn">Buy it now</a>
                 <a href="/checkout" class="more-choose-payment link">More payment options</a>
               </div>
 
@@ -224,7 +224,7 @@
                     <span class="total-price">$51.00 USD</span>
                     <span class="total-price-old">$53.00 USD</span>
                   </div>
-                  <button data-bs-target="#shoppingCart" data-bs-toggle="modal" class="btn-submit-total tf-btn btn-out-line-primary">Add selected to cart</button>
+                  <button data-bs-target="#shoppingCart" data-bs-toggle="offcanvas" class="btn-submit-total tf-btn btn-out-line-primary">Add selected to cart</button>
                 </form>
               </div>
             {% endif %}
@@ -264,7 +264,7 @@
                     <button class="btn-quantity plus-btn">+</button>
                   </div>
                 </div>
-                <button type="submit" name="add" class="tf-btn animate-btn d-inline-flex justify-content-center">Add to cart</button>
+                <a href="#shoppingCart" data-bs-toggle="offcanvas" class="tf-btn animate-btn d-inline-flex justify-content-center">Add to cart</a>
               </div>
             </form>
           </div>
@@ -336,14 +336,16 @@ document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
       this.classList.add('active');
       
-      // Update main image based on color
-      const slides = document.querySelectorAll('.tf-product-media-main .swiper-slide');
-      slides.forEach(slide => {
-        if (slide.getAttribute('data-color') === color) {
-          const slideIndex = Array.from(slides).indexOf(slide);
-          galleryMain.slideTo(slideIndex);
-        }
-      });
+      {% if section.settings.layout != 'grid' %}
+        // Update main image based on color
+        const slides = document.querySelectorAll('.tf-product-media-main .swiper-slide');
+        slides.forEach(slide => {
+          if (slide.getAttribute('data-color') === color) {
+            const slideIndex = Array.from(slides).indexOf(slide);
+            galleryMain.slideTo(slideIndex);
+          }
+        });
+      {% endif %}
     });
   });
 
