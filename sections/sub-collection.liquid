@@ -1,0 +1,214 @@
+{% comment %}
+  Sub Collection Section
+  - Two layout options: Grid and Circular
+  - Swiper slider for responsive display
+  - Customizable number of items per row
+{% endcomment %}
+
+<div class="flat-spacing-{{ section.settings.spacing }}">
+  <div class="container{% if section.settings.container_width == 'narrow' %}-6{% endif %}">
+    <div class="fl-control-sw pos1">
+      <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp" data-swiper='{
+        "slidesPerView": 2,
+        "spaceBetween": 12,
+        "speed": 800,
+        "observer": true,
+        "observeParents": true,
+        "slidesPerGroup": 2,
+        "navigation": {
+          "clickable": true,
+          "nextEl": ".nav-next-cls",
+          "prevEl": ".nav-prev-cls"
+        },
+        "pagination": { "el": ".sw-pagination-cls", "clickable": true },
+        "breakpoints": {
+          "768": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3 },
+          "1200": { "slidesPerView": {{ section.settings.items_per_row }}, "spaceBetween": 24, "slidesPerGroup": 3 }
+        }
+      }'>
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              {% if section.settings.layout == 'grid' %}
+                <div class="wg-cls style-abs2 hover-img">
+                  <a href="{{ block.settings.link }}" class="image-wrap relative">
+                    <div class="image img-style">
+                      {% if block.settings.image != blank %}
+                        {{ block.settings.image | image_url: width: 400 | image_tag:
+                          loading: 'lazy',
+                          class: 'lazyload'
+                        }}
+                      {% else %}
+                        {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {% endif %}
+                    </div>
+                    <div class="cls-btn text-center">
+                      <button class="tf-btn btn-white hover-dark">{{ block.settings.button_text }}</button>
+                    </div>
+                    <span class="tf-overlay"></span>
+                  </a>
+                  <div class="cls-content text-center">
+                    <a href="{{ block.settings.link }}" class="text-type text-xl-2 fw-medium link">{{ block.settings.title }}</a>
+                    {% if block.settings.item_count != blank %}
+                      <span class="count-item body-text-2 text-main">{{ block.settings.item_count }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+              {% else %}
+                <div class="wg-cls style-circle-md hover-img">
+                  <a href="{{ block.settings.link }}" class="image img-style d-block">
+                    {% if block.settings.image != blank %}
+                      {{ block.settings.image | image_url: width: 200 | image_tag:
+                        loading: 'lazy',
+                        class: 'lazyload'
+                      }}
+                    {% else %}
+                      {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {% endif %}
+                  </a>
+                  <div class="cls-content text-center">
+                    <a href="{{ block.settings.link }}" class="link text-sm fw-medium">{{ block.settings.title }}</a>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls justify-content-center"></div>
+      </div>
+      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls"></div>
+      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls"></div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sub Collection",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "circular",
+          "label": "Circular"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container Width",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "spacing",
+      "label": "Spacing",
+      "options": [
+        {
+          "value": "4",
+          "label": "Small"
+        },
+        {
+          "value": "24",
+          "label": "Large"
+        }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "items_per_row",
+      "label": "Items per row (desktop)",
+      "options": [
+        {
+          "value": "4",
+          "label": "4 items"
+        },
+        {
+          "value": "6",
+          "label": "6 items"
+        },
+        {
+          "value": "8",
+          "label": "8 items"
+        }
+      ],
+      "default": "4"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Collection name"
+        },
+        {
+          "type": "text",
+          "id": "item_count",
+          "label": "Item count",
+          "default": "9 items"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "View all"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sub Collection",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 
