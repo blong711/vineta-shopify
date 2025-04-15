@@ -7,24 +7,12 @@
 {% endcomment %}
 
 <section class="flat-single-product">
-  <div class="tf-main-product section-image-zoom>
+  <div class="tf-main-product section-image-zoom">
     <div class="container">
       <div class="row">
         <!-- Product Images -->
         <div class="col-md-6">
-          {% if section.settings.layout == 'grid' %}
-            <div class="wrapper-gallery-scroll flat-single-grid" id="gallery-started">
-              {% for image in product.images %}
-                <a href="{{ image | image_url: width: 1200 }}" data-scroll="{{ image.alt | default: 'default' }}" target="_blank" class="item item-scroll-target" data-pswp-width="552px" data-pswp-height="827px">
-                  <img class="tf-image-zoom lazyload"
-                    data-zoom="{{ image | image_url: width: 1200 }}"
-                    data-src="{{ image | image_url: width: 800 }}"
-                    src="{{ image | image_url: width: 400 }}"
-                    alt="{{ image.alt | default: product.title }}">
-                </a>
-              {% endfor %}
-            </div>
-          {% else %}
+          {% if section.settings.layout == 'default' %}
             <div class="tf-product-media-wrap sticky-top">
               <div class="thumbs-slider">
                 <div dir="ltr" class="swiper tf-product-media-thumbs other-image-zoom" data-preview="4" data-direction="vertical">
@@ -62,13 +50,25 @@
                 </div>
               </div>
             </div>
+          {% else %}
+            <div class="wrapper-gallery-scroll flat-single-grid{% if section.settings.layout == 'stacked' %} flat-single-stacked{% endif %}" id="gallery-started">
+              {% for image in product.images %}
+                <a href="{{ image | image_url: width: 1200 }}" data-scroll="{{ image.alt | default: 'default' }}" target="_blank" class="item item-scroll-target" data-pswp-width="552px" data-pswp-height="827px">
+                  <img class="tf-image-zoom lazyload"
+                    data-zoom="{{ image | image_url: width: 1200 }}"
+                    data-src="{{ image | image_url: width: 800 }}"
+                    src="{{ image | image_url: width: 400 }}"
+                    alt="{{ image.alt | default: product.title }}">
+                </a>
+              {% endfor %}
+            </div>
           {% endif %}
         </div>
         <!-- /Product Images -->
 
         <!-- Product Info -->
         <div class="col-md-6">
-          <div class="tf-product-info-wrap{% if section.settings.layout == 'grid' %} sticky-top{% endif %} position-relative">
+          <div class="tf-product-info-wrap sticky-top position-relative">
             <div class="tf-zoom-main"></div>
             <div class="tf-product-info-list other-image-zoom">
               <div class="tf-product-info-heading">
@@ -124,12 +124,12 @@
                     <div class="variant-picker-values">
                       {% for value in option.values %}
                         {% if option.name == 'Color' %}
-                          <div class="hover-tooltip tooltip-bot color-btn{% if value == option.selected_value %} active{% endif %}{% if section.settings.layout == 'grid' %} btn-scroll-target{% endif %}" data-{{ option.name | handle }}="{{ value | handle }}"{% if section.settings.layout == 'grid' %} data-scroll="{{ value | handle }}"{% endif %}>
+                          <div class="hover-tooltip tooltip-bot color-btn btn-scroll-target{% if value == option.selected_value %} active{% endif %}" data-scroll="{{ value | handle }}">
                             <span class="check-color bg-{{ value | handle }}"></span>
                             <span class="tooltip">{{ value }}</span>
                           </div>
                         {% else %}
-                          <span class="size-btn{% if value == option.selected_value %} active{% endif %}" data-{{ option.name | handle }}="{{ value | handle }}">{{ value }}</span>
+                          <span class="size-btn{% if value == option.selected_value %} active{% endif %}" data-size="{{ value | handle }}">{{ value }}</span>
                         {% endif %}
                       {% endfor %}
                     </div>
@@ -276,25 +276,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  {% if section.settings.layout == 'grid' %}
-    // Grid layout specific functionality
-    const galleryItems = document.querySelectorAll('.item-scroll-target');
-    const colorButtons = document.querySelectorAll('.btn-scroll-target');
-    
-    colorButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        const color = this.getAttribute('data-scroll');
-        document.querySelectorAll('.btn-scroll-target').forEach(btn => btn.classList.remove('active'));
-        this.classList.add('active');
-        
-        galleryItems.forEach(item => {
-          if (item.getAttribute('data-scroll') === color) {
-            item.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-        });
-      });
-    });
-  {% else %}
+  {% if section.settings.layout == 'default' %}
     // Default layout with Swiper
     const galleryThumbs = new Swiper('.tf-product-media-thumbs', {
       direction: 'vertical',
@@ -327,25 +309,32 @@ document.addEventListener('DOMContentLoaded', function() {
         prevEl: '.thumbs-prev',
       }
     });
+  {% else %}
+    // Grid and Stacked layout functionality
+    const galleryItems = document.querySelectorAll('.item-scroll-target');
+    const colorButtons = document.querySelectorAll('.btn-scroll-target');
+    
+    colorButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const color = this.getAttribute('data-scroll');
+        document.querySelectorAll('.btn-scroll-target').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        
+        galleryItems.forEach(item => {
+          if (item.getAttribute('data-scroll') === color) {
+            item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        });
+      });
+    });
   {% endif %}
 
   // Handle color variant selection
   document.querySelectorAll('.color-btn').forEach(button => {
     button.addEventListener('click', function() {
-      const color = this.getAttribute('data-color');
+      const color = this.getAttribute('data-scroll');
       document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
       this.classList.add('active');
-      
-      {% if section.settings.layout != 'grid' %}
-        // Update main image based on color
-        const slides = document.querySelectorAll('.tf-product-media-main .swiper-slide');
-        slides.forEach(slide => {
-          if (slide.getAttribute('data-color') === color) {
-            const slideIndex = Array.from(slides).indexOf(slide);
-            galleryMain.slideTo(slideIndex);
-          }
-        });
-      {% endif %}
     });
   });
 
