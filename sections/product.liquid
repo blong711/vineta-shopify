@@ -1,6 +1,6 @@
 {% comment %}
   Product Section
-  - Multiple layout options: Default, Grid, Stacked
+  - Default layout with vertical thumbnails
   - Responsive image gallery
   - Product information with variants
   - Add to cart functionality
@@ -12,23 +12,49 @@
       <div class="row">
         <!-- Product Images -->
         <div class="col-md-6">
-          <div class="wrapper-gallery-scroll flat-single-grid{% if section.settings.layout == 'grid' %} flat-single-grid-2{% endif %}{% if section.settings.layout == 'stacked' %} flat-single-stacked{% endif %}" id="gallery-started">
-            {% for image in product.images %}
-              <a href="{{ image | image_url }}" data-scroll="{{ image.alt | handleize }}" target="_blank" class="item item-scroll-target" data-pswp-width="552px" data-pswp-height="827px">
-                <img class="tf-image-zoom lazyload"
-                  data-zoom="{{ image | image_url }}"
-                  data-src="{{ image | image_url }}"
-                  src="{{ image | image_url }}"
-                  alt="{{ image.alt | escape }}">
-              </a>
-            {% endfor %}
+          <div class="tf-product-media-wrap sticky-top">
+            <div class="thumbs-slider">
+              <div dir="ltr" class="swiper tf-product-media-thumbs other-image-zoom" data-preview="4" data-direction="vertical">
+                <div class="swiper-wrapper stagger-wrap">
+                  {% for image in product.images %}
+                    <div class="swiper-slide stagger-item" data-color="{{ image.alt | default: 'default' }}">
+                      <div class="item">
+                        <img class="lazyload"
+                          data-src="{{ image | image_url: width: 800 }}"
+                          src="{{ image | image_url: width: 400 }}"
+                          alt="{{ image.alt | default: product.title }}">
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="flat-wrap-media-product">
+                <div dir="ltr" class="swiper tf-product-media-main" id="gallery-swiper-started">
+                  <div class="swiper-wrapper">
+                    {% for image in product.images %}
+                      <div class="swiper-slide" data-color="{{ image.alt | default: 'default' }}">
+                        <a href="{{ image | image_url: width: 1200 }}" target="_blank" class="item" data-pswp-width="552px" data-pswp-height="827px">
+                          <img class="tf-image-zoom lazyload"
+                            data-zoom="{{ image | image_url: width: 1200 }}"
+                            data-src="{{ image | image_url: width: 800 }}"
+                            src="{{ image | image_url: width: 400 }}"
+                            alt="{{ image.alt | default: product.title }}">
+                        </a>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class="swiper-button-next nav-swiper thumbs-next"></div>
+                <div class="swiper-button-prev nav-swiper thumbs-prev"></div>
+              </div>
+            </div>
           </div>
         </div>
         <!-- /Product Images -->
 
         <!-- Product Info -->
         <div class="col-md-6">
-          <div class="tf-product-info-wrap sticky-top">
+          <div class="tf-product-info-wrap position-relative">
             <div class="tf-zoom-main"></div>
             <div class="tf-product-info-list other-image-zoom">
               <div class="tf-product-info-heading">
@@ -74,7 +100,7 @@
 
               <div class="tf-product-info-variant">
                 {% for option in product.options_with_values %}
-                  <div class="variant-picker-item variant-{{ option.name | downcase }}">
+                  <div class="variant-picker-item variant-{{ option.name | handle }}">
                     <div class="variant-picker-label">
                       <div>{{ option.name }}:<span class="variant-picker-label-value value-current{{ option.name }}">{{ option.selected_value }}</span></div>
                       {% if option.name == 'Size' and section.settings.show_size_guide %}
@@ -84,12 +110,12 @@
                     <div class="variant-picker-values">
                       {% for value in option.values %}
                         {% if option.name == 'Color' %}
-                          <div class="hover-tooltip tooltip-bot color-btn btn-scroll-target{% if value == option.selected_value %} active{% endif %}" data-scroll="{{ value | handleize }}">
-                            <span class="check-color bg-{{ value | handleize }}"></span>
+                          <div class="hover-tooltip tooltip-bot color-btn{% if value == option.selected_value %} active{% endif %}" data-{{ option.name | handle }}="{{ value | handle }}">
+                            <span class="check-color bg-{{ value | handle }}"></span>
                             <span class="tooltip">{{ value }}</span>
                           </div>
                         {% else %}
-                          <span class="size-btn{% if value == option.selected_value %} active{% endif %}" data-size="{{ value | downcase }}">{{ value }}</span>
+                          <span class="size-btn{% if value == option.selected_value %} active{% endif %}" data-{{ option.name | handle }}="{{ value | handle }}">{{ value }}</span>
                         {% endif %}
                       {% endfor %}
                     </div>
@@ -201,7 +227,7 @@
         <div class="tf-height-observer w-100 d-flex align-items-center">
           <div class="tf-sticky-atc-product d-flex align-items-center">
             <div class="tf-sticky-atc-img">
-              <img class="lazyload" data-src="{{ product.featured_image | image_url }}" alt="{{ product.title }}">
+              <img class="lazyload" data-src="{{ product.featured_image | image_url: width: 100 }}" src="{{ product.featured_image | image_url: width: 50 }}" alt="{{ product.title }}">
             </div>
             <div class="tf-sticky-atc-title fw-5 d-xl-block d-none">{{ product.title }}</div>
           </div>
@@ -234,30 +260,97 @@
   {% endif %}
 </section>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize main product gallery
+  const galleryThumbs = new Swiper('.tf-product-media-thumbs', {
+    direction: 'vertical',
+    slidesPerView: 4,
+    spaceBetween: 10,
+    navigation: {
+      nextEl: '.thumbs-next',
+      prevEl: '.thumbs-prev',
+    },
+    breakpoints: {
+      320: {
+        direction: 'horizontal',
+        slidesPerView: 4,
+      },
+      768: {
+        direction: 'vertical',
+        slidesPerView: 4,
+      }
+    }
+  });
+
+  const galleryMain = new Swiper('.tf-product-media-main', {
+    slidesPerView: 1,
+    spaceBetween: 10,
+    thumbs: {
+      swiper: galleryThumbs
+    },
+    navigation: {
+      nextEl: '.thumbs-next',
+      prevEl: '.thumbs-prev',
+    }
+  });
+
+  // Handle color variant selection
+  document.querySelectorAll('.color-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const color = this.getAttribute('data-color');
+      document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+      
+      // Update main image based on color
+      const slides = document.querySelectorAll('.tf-product-media-main .swiper-slide');
+      slides.forEach(slide => {
+        if (slide.getAttribute('data-color') === color) {
+          const slideIndex = Array.from(slides).indexOf(slide);
+          galleryMain.slideTo(slideIndex);
+        }
+      });
+    });
+  });
+
+  // Handle size variant selection
+  document.querySelectorAll('.size-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const size = this.getAttribute('data-size');
+      document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Initialize image zoom
+  const zoomMain = document.querySelector('.tf-zoom-main');
+  const zoomImages = document.querySelectorAll('.tf-image-zoom');
+  
+  zoomImages.forEach(image => {
+    image.addEventListener('mousemove', function(e) {
+      const rect = this.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const xPercent = x / rect.width * 100;
+      const yPercent = y / rect.height * 100;
+      
+      zoomMain.style.backgroundImage = `url(${this.getAttribute('data-zoom')})`;
+      zoomMain.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
+      zoomMain.style.display = 'block';
+    });
+    
+    image.addEventListener('mouseleave', function() {
+      zoomMain.style.display = 'none';
+    });
+  });
+});
+</script>
+
 {% schema %}
 {
   "name": "Product",
   "settings": [
-    {
-      "type": "select",
-      "id": "layout",
-      "label": "Product Layout",
-      "options": [
-        {
-          "value": "default",
-          "label": "Default"
-        },
-        {
-          "value": "grid",
-          "label": "Grid"
-        },
-        {
-          "value": "stacked",
-          "label": "Stacked"
-        }
-      ],
-      "default": "default"
-    },
     {
       "type": "checkbox",
       "id": "show_sold_count",
