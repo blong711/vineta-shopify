@@ -12,6 +12,35 @@
     "sections": {
       "top-bar": {
         "type": "top-bar",
+        "blocks": {
+          "social_media_tFm3Ah": {
+            "type": "social_media",
+            "settings": {
+              "facebook_url": "https://www.facebook.com/",
+              "instagram_url": "https://www.instagram.com/",
+              "twitter_url": "https://x.com/",
+              "snapchat_url": "https://www.snapchat.com/"
+            }
+          },
+          "announcement_HTwmqP": {
+            "type": "announcement",
+            "settings": {
+              "announcements": "Return extended to 60 days\nLife-time Guarantees\nLimited-Time Offer"
+            }
+          },
+          "language_currency_RFVeRH": {
+            "type": "language_currency",
+            "settings": {
+              "show_language": true,
+              "show_currency": true
+            }
+          }
+        },
+        "block_order": [
+          "social_media_tFm3Ah",
+          "announcement_HTwmqP",
+          "language_currency_RFVeRH"
+        ],
         "settings": {
           "background_color": "#1a1a1a",
           "text_color": "#ffffff",
@@ -20,6 +49,43 @@
       },
       "header": {
         "type": "header",
+        "blocks": {
+          "logo_h4TRRT": {
+            "type": "logo",
+            "settings": {
+              "logo_width": 150
+            }
+          },
+          "menu_YrBVVi": {
+            "type": "menu",
+            "settings": {
+              "menu": "main-menu",
+              "show_product_cards": true,
+              "product_title_1": "Men",
+              "product_url_1": "",
+              "product_title_2": "Women",
+              "product_url_2": "",
+              "product_title_3": "Accessories",
+              "product_url_3": "",
+              "product_title_4": "Sportwear",
+              "product_url_4": ""
+            }
+          },
+          "icons_GnKDzb": {
+            "type": "icons",
+            "settings": {
+              "show_search": true,
+              "show_account": true,
+              "show_wishlist": true,
+              "show_cart": true
+            }
+          }
+        },
+        "block_order": [
+          "logo_h4TRRT",
+          "menu_YrBVVi",
+          "icons_GnKDzb"
+        ],
         "settings": {
           "layout": "layout-1",
           "logo_width": 100,
@@ -41,7 +107,7 @@
       "product": {
         "type": "product",
         "settings": {
-          "layout": "grid",
+          "layout": "default",
           "show_sold_count": true,
           "sold_count_text": "30 sold in last 24 hours",
           "show_stock_count": true,
