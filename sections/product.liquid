@@ -168,11 +168,10 @@
                   <ul class="list-card">
                     {% for block in section.blocks %}
                       {% if block.type == 'payment_icon' and block.settings.image != blank %}
-                        <li class="card-item">
-                          {% assign img = block.settings.image %}
+                        <li class="card-item" {{ block.shopify_attributes }}>
                           <img 
-                            src="{{ img | image_url }}" 
-                            alt="{{ img.alt | default: 'Payment method' }}" 
+                            src="{{ block.settings.image | image_url: width: 60 }}" 
+                            alt="{{ block.settings.image.alt | default: 'Payment method' }}" 
                             loading="lazy"
                             width="60"
                             height="40">
@@ -492,13 +491,30 @@ document.addEventListener('DOMContentLoaded', function() {
           "id": "image",
           "label": "Payment Icon Image",
           "info": "Recommended size: 60x40px"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Payment Method Name",
+          "default": "Payment Method"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Product"
+      "name": "Product",
+      "blocks": [
+        {
+          "type": "payment_icon"
+        },
+        {
+          "type": "payment_icon"
+        },
+        {
+          "type": "payment_icon"
+        }
+      ]
     }
   ]
 }
