@@ -1,0 +1,159 @@
+{%- comment -%}
+  Filter Section
+  Supports multiple layouts: drawer, left, right, and horizontal
+  Usage:
+    {% section 'filter' %}
+    {% section 'filter' with position: 'left' %}
+    {% section 'filter' with position: 'right' %}
+    {% section 'filter' with position: 'horizontal' %}
+{%- endcomment -%}
+
+{%- assign position = position | default: 'drawer' -%}
+
+{%- if position == 'drawer' -%}
+  <div class="filter-drawer">
+    <button class="filter-toggle" data-bs-toggle="offcanvas" data-bs-target="#filter-offcanvas" aria-controls="filter-offcanvas">
+      <span class="icon icon-filter"></span>
+      <span>Filter</span>
+    </button>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="filter-offcanvas" aria-labelledby="filter-offcanvas-label">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="filter-offcanvas-label">Filter</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        {% render 'filter-content' %}
+      </div>
+    </div>
+  </div>
+{%- elsif position == 'horizontal' -%}
+  <div class="filter-horizontal">
+    <div class="filter-content">
+      {% render 'filter-content' %}
+    </div>
+  </div>
+{%- else -%}
+  <div class="filter-sidebar filter-{{ position }}">
+    <div class="filter-content">
+      {% render 'filter-content' %}
+    </div>
+  </div>
+{%- endif -%}
+
+<style>
+  /* Drawer Layout */
+  .filter-drawer {
+    margin-bottom: 20px;
+  }
+  .filter-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--background);
+    cursor: pointer;
+  }
+  .offcanvas {
+    width: 300px;
+  }
+
+  /* Horizontal Layout */
+  .filter-horizontal {
+    margin-bottom: 20px;
+  }
+  .filter-horizontal .filter-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .filter-horizontal .widget-facet {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  /* Sidebar Layouts */
+  .filter-sidebar {
+    width: 300px;
+  }
+  .filter-left {
+    float: left;
+    margin-right: 20px;
+  }
+  .filter-right {
+    float: right;
+    margin-left: 20px;
+  }
+
+  /* Common Styles */
+  .widget-facet {
+    margin-bottom: 20px;
+  }
+  .facet-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    cursor: pointer;
+  }
+  .collapse-body {
+    padding: 10px 0;
+  }
+  .current-scrollbar {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize collapse functionality
+    const collapseElements = document.querySelectorAll('[data-bs-toggle="collapse"]');
+    collapseElements.forEach(element => {
+      element.addEventListener('click', function() {
+        const target = document.querySelector(this.dataset.bsTarget);
+        const icon = this.querySelector('.icon');
+        if (target.classList.contains('show')) {
+          icon.classList.remove('icon-arrow-up');
+          icon.classList.add('icon-arrow-down');
+        } else {
+          icon.classList.remove('icon-arrow-down');
+          icon.classList.add('icon-arrow-up');
+        }
+      });
+    });
+
+    // Initialize price range slider
+    const priceRange = document.getElementById('price-value-range');
+    if (priceRange) {
+      const minValue = document.getElementById('price-min-value');
+      const maxValue = document.getElementById('price-max-value');
+      const currency = minValue.dataset.currency;
+
+      noUiSlider.create(priceRange, {
+        start: [0, 500],
+        connect: true,
+        range: {
+          'min': parseInt(priceRange.dataset.min),
+          'max': parseInt(priceRange.dataset.max)
+        }
+      });
+
+      priceRange.noUiSlider.on('update', function(values) {
+        minValue.textContent = currency + values[0];
+        maxValue.textContent = currency + values[1];
+      });
+    }
+
+    // Initialize filter selection
+    const filterInputs = document.querySelectorAll('.tf-check, .color-check, .size-check');
+    filterInputs.forEach(input => {
+      input.addEventListener('change', function() {
+        // Handle filter selection
+        // This is where you would implement the actual filtering logic
+      });
+    });
+  });
+</script> 

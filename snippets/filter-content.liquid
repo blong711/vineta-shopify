@@ -1,0 +1,152 @@
+{%- comment -%}
+  Filter Content Snippet
+  Contains the common filter elements used by all filter layouts
+{%- endcomment -%}
+
+<form id="collection-filters-form" method="GET" action="{{ collection.url }}">
+  <!-- Categories -->
+  <div class="widget-facet">
+    <ul class="list-categories current-scrollbar">
+      {% for collection in collections %}
+        <li class="cate-item">
+          <a class="text-sm link" href="{{ collection.url }}">
+            <span>{{ collection.title }}</span>
+            <span class="count">({{ collection.products_count }})</span>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Availability -->
+  <div class="widget-facet">
+    <div class="facet-title text-xl fw-medium" data-bs-target="#availability" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="availability">
+      <span>Availability</span>
+      <span class="icon icon-arrow-up"></span>
+    </div>
+    <div id="availability" class="collapse show">
+      <ul class="collapse-body filter-group-check current-scrollbar">
+        <li class="list-item">
+          <input type="checkbox"
+            name="filter.v.availability"
+            value="1"
+            id="Filter-availability-1"
+            {% if current_tags contains 'filter.v.availability:1' %}checked{% endif %}
+            class="tf-check">
+          <label for="Filter-availability-1" class="label">
+            <span>In stock</span>
+            <span class="count">({{ collection.products | where: "available", true | size }})</span>
+          </label>
+        </li>
+        <li class="list-item">
+          <input type="checkbox"
+            name="filter.v.availability"
+            value="0"
+            id="Filter-availability-2"
+            {% if current_tags contains 'filter.v.availability:0' %}checked{% endif %}
+            class="tf-check">
+          <label for="Filter-availability-2" class="label">
+            <span>Out of stock</span>
+            <span class="count">({{ collection.products | where: "available", false | size }})</span>
+          </label>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Shopify Search & Discovery Filters -->
+  {%- for filter in collection.filters -%}
+    {%- if filter.label != 'Availability' -%}
+      <div class="widget-facet">
+        <div class="facet-title text-xl fw-medium" data-bs-target="#filter-{{ filter.label | handle }}" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="filter-{{ filter.label | handle }}">
+          <span>{{ filter.label }}</span>
+          <span class="icon icon-arrow-up"></span>
+        </div>
+        <div id="filter-{{ filter.label | handle }}" class="collapse show">
+          {%- case filter.type -%}
+            {%- when 'boolean' or 'list' -%}
+              <ul class="collapse-body filter-group-check current-scrollbar">
+                {%- for filter_value in filter.values -%}
+                  <li class="list-item">
+                    <input type="checkbox"
+                      name="{{ filter_value.param_name }}"
+                      value="{{ filter_value.value }}"
+                      id="Filter-{{ filter.label | escape }}-{{ forloop.index }}"
+                      {% if filter_value.active -%}checked{%- endif %}
+                      {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
+                      class="tf-check">
+                    <label for="Filter-{{ filter.label | escape }}-{{ forloop.index }}" class="label">
+                      <span>{{ filter_value.label }}</span>
+                      <span class="count">({{ filter_value.count }})</span>
+                    </label>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- when 'price_range' -%}
+              <div class="collapse-body widget-price filter-price">
+                <span class="reset-price">Reset</span>
+                <div class="price-val-range" id="price-value-range" 
+                  data-min="{{ filter.min_value.value | default: 0 | money_without_currency | round }}"
+                  data-max="{{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}"
+                  data-range-min="{{ filter.range_min | money_without_currency | round }}"
+                  data-range-max="{{ filter.range_max | money_without_currency | round }}"></div>
+                <div class="box-value-price">
+                  <span class="text-sm">Price:</span>
+                  <div class="price-box">
+                    <div class="price-val" id="price-min-value" data-currency="{{ shop.currency.symbol }}">
+                      {{ filter.min_value.value | default: 0 | money_without_currency | round }}
+                    </div>
+                    <span>-</span>
+                    <div class="price-val" id="price-max-value" data-currency="{{ shop.currency.symbol }}">
+                      {{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+          {%- endcase -%}
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+
+  <!-- On Sale -->
+  <div class="widget-facet">
+    <div class="facet-title text-xl fw-medium"><span>On sale</span></div>
+    <ul class="collapse-body list-recent">
+      {% for product in collection.products %}
+        {% if product.compare_at_price > product.price %}
+          <li>
+            <div class="recent-blog-item">
+              <a href="{{ product.url }}" class="img-product">
+                <img src="{{ product.featured_image | img_url: 'small' }}" alt="{{ product.title | escape }}">
+              </a>
+              <div class="content">
+                <a href="{{ product.url }}" class="title text-md link fw-medium">{{ product.title }}</a>
+                <div class="price text-md fw-medium">
+                  <span class="new-price">{{ product.price | money }}</span>
+                  <span class="old-price">{{ product.compare_at_price | money }}</span>
+                </div>
+                <p class="text-sm">{{ product.variants.size }} variant{% if product.variants.size != 1 %}s{% endif %} available</p>
+              </div>
+            </div>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Banner -->
+  <div class="widget-facet">
+    <div class="sb-banner hover-img">
+      <div class="image img-style">
+        <img src="{{ section.settings.filter_banner | img_url: 'master' }}" data-src="{{ section.settings.filter_banner | img_url: 'master' }}" alt="banner" class="lazyload">
+      </div>
+      <div class="banner-content">
+        <p class="title">
+          Elevate <br> Your Style
+        </p>
+        <a href="{{ collection.url }}" class="tf-btn btn-white hover-primary">Shop Now</a>
+      </div>
+    </div>
+  </div>
+</form> 
