@@ -1,119 +1,152 @@
-{%- if section.settings.show_section -%}
-  <section class="flat-spacing-8 bg-surface">
+<!-- Collection -->
+<div class="pt-24">
     <div class="container">
-      <div class="flat-title style-between align-items-end wow fadeInUp">
-        <div class="box-title">
-          <h4 class="title">{{ section.settings.title }}</h4>
-          <p class="desc text-main text-md">{{ section.settings.description }}</p>
+        <div dir="ltr" class="swiper tf-swiper {% if section.settings.layout == 'default' %}hover-sw-nav{% endif %} wow fadeInUp" data-swiper='{
+                "slidesPerView": 1,
+                "spaceBetween": 12,
+                "speed": {{ section.settings.speed }},
+                "observer": true,
+                "observeParents": true,
+                "slidesPerGroup": 1,
+                "navigation": {
+                    "clickable": true,
+                    "nextEl": ".nav-next-cls",
+                    "prevEl": ".nav-prev-cls"
+                },
+                "pagination": { "el": ".sw-pagination-cls", "clickable": true },
+                "breakpoints": {
+                "575": { "slidesPerView": 2, "spaceBetween": 12 ,"slidesPerGroup": 2 },
+                "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
+                "1200": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3}
+                }
+            }'>
+            <div class="swiper-wrapper">
+                {% for block in section.blocks %}
+                    <div class="swiper-slide" {{ block.shopify_attributes }}>
+                        {% if section.settings.layout == 'default' %}
+                            <div class="wg-cls style-abs asp-1 hover-img">
+                                {% if block.settings.image != blank %}
+                                    <a href="{{ block.settings.link }}" class="image img-style d-block">
+                                        <img src="{{ block.settings.image | img_url: 'master' }}"
+                                            data-src="{{ block.settings.image | img_url: 'master' }}" 
+                                            alt="{{ block.settings.image.alt | escape }}" 
+                                            class="lazyload"
+                                            width="{{ block.settings.image.width }}"
+                                            height="{{ block.settings.image.height }}">
+                                    </a>
+                                {% endif %}
+                                <div class="cls-btn text-center">
+                                    <a href="{{ block.settings.link }}"
+                                        class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                                        {{ block.settings.title }}
+                                        <i class="icon icon-arrow-top-left"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="fs-cls lg hover-img">
+                                <div class="img-style image">
+                                    {% if block.settings.image != blank %}
+                                        <img src="{{ block.settings.image | img_url: 'master' }}"
+                                            data-src="{{ block.settings.image | img_url: 'master' }}" 
+                                            alt="{{ block.settings.image.alt | escape }}" 
+                                            class="lazyload"
+                                            width="{{ block.settings.image.width }}"
+                                            height="{{ block.settings.image.height }}">
+                                    {% endif %}
+                                </div>
+                                <div class="content wow fadeInUp">
+                                    <a href="{{ block.settings.link }}" class="tf-btn font-2 btn-white hover-icon-2 hover-dark">
+                                        {{ block.settings.title }}
+                                        <i class="icon-arrow-right icon"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls justify-content-center"></div>
+            <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls"></div>
+            <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls"></div>
         </div>
-        <a href="{{ section.settings.view_all_link }}" class="btn-underline">{{ section.settings.view_all_text }}</a>
-      </div>
-      <div class="fl-control-sw">
-        <div dir="ltr" class="sw-height swiper tf-swiper" data-swiper='{
-          "slidesPerView": 2,
-          "spaceBetween": 12,
-          "speed": 800,
-          "observer": true,
-          "observeParents": true,
-          "slidesPerGroup": 2,
-          "navigation": {
-            "clickable": true,
-            "nextEl": ".nav-next-top-pick",
-            "prevEl": ".nav-prev-top-pick"
-          },
-          "pagination": { "el": ".sw-pagination-top-pick", "clickable": true },
-          "breakpoints": {
-            "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
-            "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4 }
-          }
-        }'>
-          <div class="swiper-wrapper wow fadeInUp">
-            {%- for block in section.blocks -%}
-              <div class="swiper-slide" {{ block.shopify_attributes }}>
-                {% render 'card-product', product: block.settings.product, style: 'style-center' %}
-              </div>
-            {%- endfor -%}
-          </div>
-          <div class="d-flex d-xl-none sw-dot-default sw-pagination-top-pick justify-content-center"></div>
-        </div>
-        <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-top-pick"></div>
-        <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-top-pick"></div>
-      </div>
     </div>
-  </section>
-{%- endif -%}
+</div>
+<!-- /Collection -->
 
 {% schema %}
 {
-  "name": "Top Picks",
-  "settings": [
-    {
-      "type": "checkbox",
-      "id": "show_section",
-      "label": "Show section",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Title",
-      "default": "Top Picks You'll Love"
-    },
-    {
-      "type": "text",
-      "id": "description",
-      "label": "Description",
-      "default": "Discover our most popular products that customers can't get enough of"
-    },
-    {
-      "type": "text",
-      "id": "view_all_text",
-      "label": "View All Text",
-      "default": "View all"
-    },
-    {
-      "type": "url",
-      "id": "view_all_link",
-      "label": "View All Link"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "product",
-      "name": "Product",
-      "settings": [
+    "name": "Collection Slider",
+    "settings": [
         {
-          "type": "product",
-          "id": "product",
-          "label": "Product"
+            "type": "select",
+            "id": "layout",
+            "label": "Section Layout",
+            "options": [
+                { "value": "default", "label": "Default" },
+                { "value": "home-fashion-women", "label": "Home Fashion Women (Collection)" }
+            ],
+            "default": "default"
+        },
+        {
+            "type": "range",
+            "id": "speed",
+            "min": 100,
+            "max": 2000,
+            "step": 100,
+            "unit": "ms",
+            "label": "Transition speed",
+            "default": 800
         }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Top Picks",
-      "settings": {
-        "show_section": true,
-        "title": "Top Picks You'll Love",
-        "description": "Discover our most popular products that customers can't get enough of",
-        "view_all_text": "View all"
-      },
-      "blocks": [
+    ],
+    "blocks": [
         {
-          "type": "product"
-        },
-        {
-          "type": "product"
-        },
-        {
-          "type": "product"
-        },
-        {
-          "type": "product"
+            "type": "collection",
+            "name": "Collection",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Collection image"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Collection title",
+                    "default": "Collection"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Collection link"
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ],
+    "presets": [
+        {
+            "name": "Collection Slider",
+            "blocks": [
+                {
+                    "type": "collection",
+                    "settings": {
+                        "title": "Tops"
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                        "title": "Bottoms"
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                        "title": "Accessories"
+                    }
+                }
+            ]
+        }
+    ]
 }
-{% endschema %}
+{% endschema %} 
