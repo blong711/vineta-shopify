@@ -1,148 +1,95 @@
-{%- if section.settings.show_section -%}
-  <!-- Banner Collection-->
-  <div class="s-banner-colection banner-cls-electric flat-spacing-3">
-    <div class="container">
-      <div class="banner-content tf-grid-layout tf-col-2 hover-overlay-2">
-        <div class="image">
-          {%- if section.settings.banner_image != blank -%}
-            <img src="{{ section.settings.banner_image | img_url: 'master' }}"
-              data-src="{{ section.settings.banner_image | img_url: 'master' }}"
-              alt="{{ section.settings.title | escape }}"
-              class="lazyload">
-          {%- else -%}
-            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
-          {%- endif -%}
+{%- style -%}
+  .banner-cls-electric {
+    padding: {{ section.settings.padding_top }}px 0;
+  }
+{%- endstyle -%}
+
+<!-- Banner Collection-->
+<div class="s-banner-colection banner-cls-electric flat-spacing-3">
+  <div class="container">
+    <div class="banner-content tf-grid-layout tf-col-2 hover-overlay-2">
+      <div class="image">
+        {%- if section.settings.image != blank -%}
+          <img 
+            src="{{ section.settings.image | img_url: 'master' }}" 
+            alt="{{ section.settings.image.alt | escape }}" 
+            class="lazyload"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+          >
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+      <div class="box-content">
+        <div class="box-title-banner wow fadeInUp">
+          <p class="title display-md fw-medium">
+            {{ section.settings.title }}
+          </p>
+          <p class="sub text-md text-main">
+            {{ section.settings.subtitle }}
+          </p>
         </div>
-        <div class="box-content">
-          {% for block in section.blocks %}
-            {% case block.type %}
-              {% when 'title' %}
-                <div class="box-title-banner wow fadeInUp" {{ block.shopify_attributes }}>
-                  {%- if block.settings.text != blank -%}
-                    <p class="title display-md fw-medium">
-                      {{ block.settings.text }}
-                    </p>
-                  {%- endif -%}
-                </div>
-              {% when 'subtitle' %}
-                <div class="box-title-banner wow fadeInUp" {{ block.shopify_attributes }}>
-                  {%- if block.settings.text != blank -%}
-                    <p class="sub text-md text-main">
-                      {{ block.settings.text }}
-                    </p>
-                  {%- endif -%}
-                </div>
-              {% when 'button' %}
-                {%- if block.settings.label != blank -%}
-                  <div class="box-btn-banner wow fadeInUp" {{ block.shopify_attributes }}>
-                    <a href="{{ block.settings.link }}" class="tf-btn btn-dark2 animate-btn">
-                      {{ block.settings.label }}
-                      <i class="icon icon-arr-right"></i>
-                    </a>
-                  </div>
-                {%- endif -%}
-            {% endcase %}
-          {% endfor %}
+        <div class="box-btn-banner wow fadeInUp">
+          <a href="{{ section.settings.button_link }}" class="tf-btn btn-dark2 animate-btn">
+            {{ section.settings.button_text }}
+            <i class="icon icon-arr-right"></i>
+          </a>
         </div>
       </div>
     </div>
   </div>
-  <!-- /Banner Collection-->
-{%- endif -%}
+</div>
+<!-- /Banner Collection-->
 
 {% schema %}
 {
   "name": "Banner Collection",
   "settings": [
     {
-      "type": "header",
-      "content": "Banner Settings"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_section",
-      "label": "Show section",
-      "default": true
-    },
-    {
       "type": "image_picker",
-      "id": "banner_image",
-      "label": "Banner image"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "title",
-      "name": "Title",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Text",
-          "default": "Unmatched Performance"
-        }
-      ]
+      "id": "image",
+      "label": "Image"
     },
     {
-      "type": "subtitle",
-      "name": "Subtitle",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Text",
-          "default": "Upgrade your devices with cutting-edge technology."
-        }
-      ]
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Unmatched Performance"
     },
     {
-      "type": "button",
-      "name": "Button",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Label",
-          "default": "Shop Now"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
-        }
-      ]
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Upgrade your devices with cutting-edge technology."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
     }
   ],
   "presets": [
     {
       "name": "Banner Collection",
-      "settings": {
-        "show_section": true
-      },
-      "blocks": [
-        {
-          "type": "title",
-          "settings": {
-            "text": "Unmatched Performance"
-          }
-        },
-        {
-          "type": "subtitle",
-          "settings": {
-            "text": "Upgrade your devices with cutting-edge technology."
-          }
-        },
-        {
-          "type": "button",
-          "settings": {
-            "label": "Shop Now"
-          }
-        }
-      ]
+      "category": "Banner"
     }
   ]
 }
-{% endschema %} 
+{% endschema %}
