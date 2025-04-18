@@ -19,21 +19,22 @@
         }'>
         <div class="swiper-wrapper">
             {% for block in section.blocks %}
+                {% assign collection = collections[block.settings.collection] %}
                 <div class="swiper-slide" {{ block.shopify_attributes }}>
                     <div class="fs-cls lg hover-img">
-                        {% if block.settings.image != blank %}
+                        {% if collection.featured_image != blank %}
                             <div class="img-style image">
-                                <img src="{{ block.settings.image | img_url: 'master' }}"
-                                    data-src="{{ block.settings.image | img_url: 'master' }}" 
-                                    alt="{{ block.settings.image.alt | escape }}" 
+                                <img src="{{ collection.featured_image | img_url: 'master' }}"
+                                    data-src="{{ collection.featured_image | img_url: 'master' }}" 
+                                    alt="{{ collection.title | escape }}" 
                                     class="lazyload"
-                                    width="{{ block.settings.image.width }}"
-                                    height="{{ block.settings.image.height }}">
+                                    width="{{ collection.featured_image.width }}"
+                                    height="{{ collection.featured_image.height }}">
                             </div>
                         {% endif %}
                         <div class="content wow fadeInUp">
-                            <a href="{{ block.settings.link }}" class="tf-btn font-2 btn-white hover-icon-2 hover-dark">
-                                {{ block.settings.title }}
+                            <a href="{{ collection.url }}" class="tf-btn font-2 btn-white hover-icon-2 hover-dark">
+                                {{ collection.title }}
                                 <i class="icon-arrow-right icon"></i>
                             </a>
                         </div>
@@ -67,22 +68,23 @@
                 }'>
                 <div class="swiper-wrapper">
                     {% for block in section.blocks %}
+                        {% assign collection = collections[block.settings.collection] %}
                         <div class="swiper-slide" {{ block.shopify_attributes }}>
                             <div class="wg-cls style-abs asp-1 hover-img">
-                                {% if block.settings.image != blank %}
-                                    <a href="{{ block.settings.link }}" class="image img-style d-block">
-                                        <img src="{{ block.settings.image | img_url: 'master' }}"
-                                            data-src="{{ block.settings.image | img_url: 'master' }}" 
-                                            alt="{{ block.settings.image.alt | escape }}" 
+                                {% if collection.featured_image != blank %}
+                                    <a href="{{ collection.url }}" class="image img-style d-block">
+                                        <img src="{{ collection.featured_image | img_url: 'master' }}"
+                                            data-src="{{ collection.featured_image | img_url: 'master' }}" 
+                                            alt="{{ collection.title | escape }}" 
                                             class="lazyload"
-                                            width="{{ block.settings.image.width }}"
-                                            height="{{ block.settings.image.height }}">
+                                            width="{{ collection.featured_image.width }}"
+                                            height="{{ collection.featured_image.height }}">
                                     </a>
                                 {% endif %}
                                 <div class="cls-btn text-center">
-                                    <a href="{{ block.settings.link }}"
+                                    <a href="{{ collection.url }}"
                                         class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                        {{ block.settings.title }}
+                                        {{ collection.title }}
                                         <i class="icon icon-arrow-top-left"></i>
                                     </a>
                                 </div>
@@ -130,20 +132,9 @@
             "name": "Collection",
             "settings": [
                 {
-                    "type": "image_picker",
-                    "id": "image",
-                    "label": "Collection image"
-                },
-                {
-                    "type": "text",
-                    "id": "title",
-                    "label": "Collection title",
-                    "default": "Collection"
-                },
-                {
-                    "type": "url",
-                    "id": "link",
-                    "label": "Collection link"
+                    "type": "collection",
+                    "id": "collection",
+                    "label": "Collection"
                 }
             ]
         }
@@ -158,19 +149,19 @@
                 {
                     "type": "collection",
                     "settings": {
-                        "title": "Tops"
+                        "collection": ""
                     }
                 },
                 {
                     "type": "collection",
                     "settings": {
-                        "title": "Bottoms"
+                        "collection": ""
                     }
                 },
                 {
                     "type": "collection",
                     "settings": {
-                        "title": "Accessories"
+                        "collection": ""
                     }
                 }
             ]
@@ -184,19 +175,19 @@
                 {
                     "type": "collection",
                     "settings": {
-                        "title": "Clothes"
+                        "collection": ""
                     }
                 },
                 {
                     "type": "collection",
                     "settings": {
-                        "title": "Accessories"
+                        "collection": ""
                     }
                 },
                 {
                     "type": "collection",
                     "settings": {
-                        "title": "Sportwear"
+                        "collection": ""
                     }
                 }
             ]
