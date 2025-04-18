@@ -1,125 +1,206 @@
-{%- if section.blocks.size > 0 -%}
-  <div class="pt-24">
-    <div class="container">
-      <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp" 
-        data-swiper='{
-          "slidesPerView": 1,
-          "spaceBetween": 12,
-          "speed": 800,
-          "observer": true,
-          "observeParents": true,
-          "slidesPerGroup": 1,
-          "navigation": {
-            "clickable": true,
-            "nextEl": ".nav-next-cls",
-            "prevEl": ".nav-prev-cls"
-          },
-          "pagination": { 
-            "el": ".sw-pagination-cls", 
-            "clickable": true 
-          },
-          "breakpoints": {
-            "575": { 
-              "slidesPerView": 2, 
-              "spaceBetween": 12,
-              "slidesPerGroup": 2 
+<!-- Collection -->
+{% if section.settings.layout == 'home-fashion-women' %}
+    <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+            "slidesPerView": 1,
+            "speed": {{ section.settings.speed }},
+            "observer": true,
+            "observeParents": true,
+            "slidesPerGroup": 1,
+            "navigation": {
+                "clickable": true,
+                "nextEl": ".nav-next-cls",
+                "prevEl": ".nav-prev-cls"
             },
-            "768": { 
-              "slidesPerView": 3, 
-              "spaceBetween": 12, 
-              "slidesPerGroup": 3 
-            },
-            "1200": { 
-              "slidesPerView": {{ section.settings.collections_to_show }}, 
-              "spaceBetween": 24, 
-              "slidesPerGroup": {{ section.settings.collections_to_show }}
+            "pagination": { "el": ".sw-pagination-cls", "clickable": true },
+            "breakpoints": {
+            "575": { "slidesPerView": 2,"slidesPerGroup": 2 },
+            "1200": { "slidesPerView": 3, "slidesPerGroup": 3}
             }
-          }
         }'>
         <div class="swiper-wrapper">
-          {%- for block in section.blocks -%}
-            <div class="swiper-slide" {{ block.shopify_attributes }}>
-              <div class="wg-cls style-abs asp-1 hover-img">
-                <a href="{{ block.settings.collection.url }}" class="image img-style d-block">
-                  {%- if block.settings.collection.image != blank -%}
-                    <img src="{{ block.settings.collection.image | img_url: 'master' }}"
-                      data-src="{{ block.settings.collection.image | img_url: 'master' }}"
-                      alt="{{ block.settings.collection.title | escape }}"
-                      class="lazyload">
-                  {%- elsif block.settings.collection.products.first.featured_image -%}
-                    <img src="{{ block.settings.collection.products.first.featured_image | img_url: 'master' }}"
-                      data-src="{{ block.settings.collection.products.first.featured_image | img_url: 'master' }}"
-                      alt="{{ block.settings.collection.title | escape }}"
-                      class="lazyload">
-                  {%- else -%}
-                    {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                  {%- endif -%}
-                </a>
-                <div class="cls-btn text-center">
-                  <a href="{{ block.settings.collection.url }}" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                    {{ block.settings.collection.title }}
-                    <i class="icon icon-arrow-top-left"></i>
-                  </a>
+            {% for block in section.blocks %}
+                <div class="swiper-slide" {{ block.shopify_attributes }}>
+                    <div class="fs-cls lg hover-img">
+                        {% if block.settings.image != blank %}
+                            <div class="img-style image">
+                                <img src="{{ block.settings.image | img_url: 'master' }}"
+                                    data-src="{{ block.settings.image | img_url: 'master' }}" 
+                                    alt="{{ block.settings.image.alt | escape }}" 
+                                    class="lazyload"
+                                    width="{{ block.settings.image.width }}"
+                                    height="{{ block.settings.image.height }}">
+                            </div>
+                        {% endif %}
+                        <div class="content wow fadeInUp">
+                            <a href="{{ block.settings.link }}" class="tf-btn font-2 btn-white hover-icon-2 hover-dark">
+                                {{ block.settings.title }}
+                                <i class="icon-arrow-right icon"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          {%- endfor -%}
+            {% endfor %}
         </div>
         <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls justify-content-center"></div>
-        <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls"></div>
-        <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls"></div>
-      </div>
     </div>
-  </div>
-{%- endif -%}
+{% else %}
+    <div class="pt-24">
+        <div class="container">
+            <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp" data-swiper='{
+                    "slidesPerView": 1,
+                    "spaceBetween": 12,
+                    "speed": {{ section.settings.speed }},
+                    "observer": true,
+                    "observeParents": true,
+                    "slidesPerGroup": 1,
+                    "navigation": {
+                        "clickable": true,
+                        "nextEl": ".nav-next-cls",
+                        "prevEl": ".nav-prev-cls"
+                    },
+                    "pagination": { "el": ".sw-pagination-cls", "clickable": true },
+                    "breakpoints": {
+                    "575": { "slidesPerView": 2, "spaceBetween": 12 ,"slidesPerGroup": 2 },
+                    "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
+                    "1200": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3}
+                    }
+                }'>
+                <div class="swiper-wrapper">
+                    {% for block in section.blocks %}
+                        <div class="swiper-slide" {{ block.shopify_attributes }}>
+                            <div class="wg-cls style-abs asp-1 hover-img">
+                                {% if block.settings.image != blank %}
+                                    <a href="{{ block.settings.link }}" class="image img-style d-block">
+                                        <img src="{{ block.settings.image | img_url: 'master' }}"
+                                            data-src="{{ block.settings.image | img_url: 'master' }}" 
+                                            alt="{{ block.settings.image.alt | escape }}" 
+                                            class="lazyload"
+                                            width="{{ block.settings.image.width }}"
+                                            height="{{ block.settings.image.height }}">
+                                    </a>
+                                {% endif %}
+                                <div class="cls-btn text-center">
+                                    <a href="{{ block.settings.link }}"
+                                        class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                                        {{ block.settings.title }}
+                                        <i class="icon icon-arrow-top-left"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls justify-content-center"></div>
+                <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls"></div>
+                <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls"></div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+<!-- /Collection -->
 
 {% schema %}
 {
-  "name": "Featured Collections",
-  "settings": [
-    {
-      "type": "range",
-      "id": "collections_to_show",
-      "min": 2,
-      "max": 6,
-      "step": 1,
-      "label": "Collections to show at once",
-      "default": 3,
-      "info": "Number of collections visible in the slider at the same time"
-    }
-  ],
-  "max_blocks": 12,
-  "blocks": [
-    {
-      "type": "collection",
-      "name": "Collection",
-      "settings": [
+    "name": "Collection Slider",
+    "settings": [
         {
-          "type": "collection",
-          "id": "collection",
-          "label": "Collection"
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Featured Collections",
-      "settings": {
-        "collections_to_show": 3
-      },
-      "blocks": [
-        {
-          "type": "collection"
+            "type": "select",
+            "id": "layout",
+            "label": "Section Layout",
+            "options": [
+                { "value": "default", "label": "Default" },
+                { "value": "home-fashion-women", "label": "Home Fashion Women (Collection)" }
+            ],
+            "default": "default"
         },
         {
-          "type": "collection"
+            "type": "range",
+            "id": "speed",
+            "min": 100,
+            "max": 2000,
+            "step": 100,
+            "unit": "ms",
+            "label": "Transition speed",
+            "default": 800
+        }
+    ],
+    "blocks": [
+        {
+            "type": "collection",
+            "name": "Collection",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Collection image"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Collection title",
+                    "default": "Collection"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Collection link"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Collection Slider",
+            "settings": {
+                "layout": "default"
+            },
+            "blocks": [
+                {
+                    "type": "collection",
+                    "settings": {
+                        "title": "Tops"
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                        "title": "Bottoms"
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                        "title": "Accessories"
+                    }
+                }
+            ]
         },
         {
-          "type": "collection"
+            "name": "Home Fashion Women Collection",
+            "settings": {
+                "layout": "home-fashion-women"
+            },
+            "blocks": [
+                {
+                    "type": "collection",
+                    "settings": {
+                        "title": "Clothes"
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                        "title": "Accessories"
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                        "title": "Sportwear"
+                    }
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }
 {% endschema %} 
