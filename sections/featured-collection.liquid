@@ -1,75 +1,71 @@
 <!-- Collection -->
-<div class="pt-24">
-    <div class="container">
-        <div dir="ltr" class="swiper tf-swiper {% if section.settings.layout == 'default' %}hover-sw-nav{% endif %} wow fadeInUp" data-swiper='{
-                "slidesPerView": 1,
-                "spaceBetween": 12,
-                "speed": {{ section.settings.speed }},
-                "observer": true,
-                "observeParents": true,
-                "slidesPerGroup": 1,
-                "navigation": {
-                    "clickable": true,
-                    "nextEl": ".nav-next-cls",
-                    "prevEl": ".nav-prev-cls"
-                },
-                "pagination": { "el": ".sw-pagination-cls", "clickable": true },
-                "breakpoints": {
-                "575": { "slidesPerView": 2, "spaceBetween": 12 ,"slidesPerGroup": 2 },
-                "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
-                "1200": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3}
-                }
-            }'>
-            <div class="swiper-wrapper">
-                {% for block in section.blocks %}
-                    <div class="swiper-slide" {{ block.shopify_attributes }}>
-                        {% if section.settings.layout == 'default' %}
-                            <div class="wg-cls style-abs asp-1 hover-img">
+<div>
+    <div dir="ltr" class="swiper tf-swiper {% if section.settings.layout == 'default' %}hover-sw-nav{% endif %} wow fadeInUp" data-swiper='{
+            "slidesPerView": 1,
+            "speed": {{ section.settings.speed }},
+            "observer": true,
+            "observeParents": true,
+            "slidesPerGroup": 1,
+            "navigation": {
+                "clickable": true,
+                "nextEl": ".nav-next-cls",
+                "prevEl": ".nav-prev-cls"
+            },
+            "pagination": { "el": ".sw-pagination-cls", "clickable": true },
+            "breakpoints": {
+            "575": { "slidesPerView": 2, "slidesPerGroup": 2 },
+            "1200": { "slidesPerView": 3, "slidesPerGroup": 3}
+            }
+        }'>
+        <div class="swiper-wrapper">
+            {% for block in section.blocks %}
+                <div class="swiper-slide" {{ block.shopify_attributes }}>
+                    {% if section.settings.layout == 'default' %}
+                        <div class="wg-cls style-abs asp-1 hover-img">
+                            {% if block.settings.image != blank %}
+                                <a href="{{ block.settings.link }}" class="image img-style d-block">
+                                    <img src="{{ block.settings.image | img_url: 'master' }}"
+                                        data-src="{{ block.settings.image | img_url: 'master' }}" 
+                                        alt="{{ block.settings.image.alt | escape }}" 
+                                        class="lazyload"
+                                        width="{{ block.settings.image.width }}"
+                                        height="{{ block.settings.image.height }}">
+                                </a>
+                            {% endif %}
+                            <div class="cls-btn text-center">
+                                <a href="{{ block.settings.link }}"
+                                    class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                                    {{ block.settings.title }}
+                                    <i class="icon icon-arrow-top-left"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="fs-cls lg hover-img">
+                            <div class="img-style image">
                                 {% if block.settings.image != blank %}
-                                    <a href="{{ block.settings.link }}" class="image img-style d-block">
-                                        <img src="{{ block.settings.image | img_url: 'master' }}"
-                                            data-src="{{ block.settings.image | img_url: 'master' }}" 
-                                            alt="{{ block.settings.image.alt | escape }}" 
-                                            class="lazyload"
-                                            width="{{ block.settings.image.width }}"
-                                            height="{{ block.settings.image.height }}">
-                                    </a>
+                                    <img src="{{ block.settings.image | img_url: 'master' }}"
+                                        data-src="{{ block.settings.image | img_url: 'master' }}" 
+                                        alt="{{ block.settings.image.alt | escape }}" 
+                                        class="lazyload"
+                                        width="{{ block.settings.image.width }}"
+                                        height="{{ block.settings.image.height }}">
                                 {% endif %}
-                                <div class="cls-btn text-center">
-                                    <a href="{{ block.settings.link }}"
-                                        class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                        {{ block.settings.title }}
-                                        <i class="icon icon-arrow-top-left"></i>
-                                    </a>
-                                </div>
                             </div>
-                        {% else %}
-                            <div class="fs-cls lg hover-img">
-                                <div class="img-style image">
-                                    {% if block.settings.image != blank %}
-                                        <img src="{{ block.settings.image | img_url: 'master' }}"
-                                            data-src="{{ block.settings.image | img_url: 'master' }}" 
-                                            alt="{{ block.settings.image.alt | escape }}" 
-                                            class="lazyload"
-                                            width="{{ block.settings.image.width }}"
-                                            height="{{ block.settings.image.height }}">
-                                    {% endif %}
-                                </div>
-                                <div class="content wow fadeInUp">
-                                    <a href="{{ block.settings.link }}" class="tf-btn font-2 btn-white hover-icon-2 hover-dark">
-                                        {{ block.settings.title }}
-                                        <i class="icon-arrow-right icon"></i>
-                                    </a>
-                                </div>
+                            <div class="content wow fadeInUp">
+                                <a href="{{ block.settings.link }}" class="tf-btn font-2 btn-white hover-icon-2 hover-dark">
+                                    {{ block.settings.title }}
+                                    <i class="icon-arrow-right icon"></i>
+                                </a>
                             </div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls justify-content-center"></div>
-            <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls"></div>
-            <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls"></div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
         </div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls justify-content-center"></div>
+        <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls"></div>
+        <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls"></div>
     </div>
 </div>
 <!-- /Collection -->
