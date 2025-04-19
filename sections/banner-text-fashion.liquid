@@ -1,64 +1,106 @@
-{%- comment -%}Banner with Text Section{%- endcomment -%}
-<section class="s-banner-with-text banner-text-fashion flat-spacing-3 pt-0">
-  <div class="container">
-    <div class="row flex-wrap-reverse">
-      <div class="col-md-5">
-        <div class="content-banner type-left wow fadeInUp">
-          <div class="box-title-banner">
-            <h4>{{ section.settings.title }}</h4>
-            <p class="text-md text-main">
-              {{ section.settings.description }}
-            </p>
-          </div>
-          <div class="box-btn-banner">
-            <a href="{{ section.settings.button_link }}" class="tf-btn animate-btn">
-              {{ section.settings.button_text }}
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-7">
-        <div class="image-banner">
-          {%- for block in section.blocks -%}
-            <div class="image image-{{ forloop.index }} hover-shine hover-img" {{ block.shopify_attributes }}>
-              <div class="shine-item img-style wow fadeInRight" {% if forloop.index == 2 %}data-wow-delay="0.1s"{% endif %}>
-                {%- if block.settings.image != blank -%}
-                  <img src="{{ block.settings.image | image_url: width: 1000 }}"
-                       data-src="{{ block.settings.image | image_url: width: 1000 }}"
-                       alt="{{ block.settings.image.alt | escape }}"
-                       class="lazyload">
-                {%- else -%}
-                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                {%- endif -%}
-              </div>
+<!-- Banner with text-->
+<div class="s-banner-product">
+    <div class="container">
+        <div class="content-banner">
+            <div class="image-wrap hover-img">
+                <a href="{{ section.settings.banner_link }}" class="image img-style d-block">
+                    <img src="{{ section.settings.banner_image | image_url: 'master' }}"
+                         data-src="{{ section.settings.banner_image | image_url: 'master' }}"
+                         alt="{{ section.settings.banner_image.alt | escape }}"
+                         class="lazyload"
+                         width="1170"
+                         height="600">
+                </a>
+                {% if section.settings.featured_product != blank %}
+                    {% assign product = all_products[section.settings.featured_product] %}
+                    <div class="loobook-product style-row">
+                        <div class="img-style">
+                            <img src="{{ product.featured_image | image_url: 'medium' }}"
+                                 alt="{{ product.featured_image.alt | escape }}"
+                                 width="100"
+                                 height="100">
+                        </div>
+                        <div class="content">
+                            <div class="info">
+                                <a href="{{ product.url }}" class="text-md fw-medium text-line-clamp-1 link">
+                                    {{ product.title }}
+                                </a>
+                                <p class="price-wrap text-md fw-medium">
+                                    {{ product.price | money }}
+                                </p>
+                            </div>
+                            <a href="#" class="btn-lookbook hover-tooltip js-quick-view" data-product-handle="{{ product.handle }}">
+                                <i class="icon-view"></i>
+                                <span class="tooltip">{{ 'products.product.quick_view' | t }}</span>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
-          {%- endfor -%}
+
+            <div class="content-right text-center wow fadeInUp">
+                <div class="box-title">
+                    <p class="display-lg-3 font-2 text-dark-3">
+                        {{ section.settings.heading }}
+                    </p>
+                    <p class="body-text-2 text-dark-3 font-2">
+                        {{ section.settings.subtext }}
+                    </p>
+                </div>
+                {% if section.settings.button_label != blank %}
+                    <div class="box-btn">
+                        <a href="{{ section.settings.button_link }}" class="tf-btn animate-btn btn-dark2">
+                            {{ section.settings.button_label }}
+                            <i class="icon-arr-right"></i>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-</section>
+</div>
+<!-- /Banner with text -->
 
 {% schema %}
 {
   "name": "Banner with Text",
   "settings": [
     {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner Image",
+      "info": "1170 x 600px recommended"
+    },
+    {
+      "type": "url",
+      "id": "banner_link",
+      "label": "Banner Link"
+    },
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "Featured Product"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
       "type": "text",
-      "id": "title",
-      "label": "Title",
-      "default": "Sustainable Fashion"
+      "id": "heading",
+      "label": "Heading",
+      "default": "Elevating Your Style Journey"
     },
     {
       "type": "textarea",
-      "id": "description",
-      "label": "Description",
-      "default": "Look good, feel good with eco-friendly and stylish designs."
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Discover timeless pieces that define elegance and sophistication."
     },
     {
       "type": "text",
-      "id": "button_text",
-      "label": "Button Text",
+      "id": "button_label",
+      "label": "Button Label",
       "default": "Shop Now"
     },
     {
@@ -67,38 +109,33 @@
       "label": "Button Link"
     }
   ],
-  "blocks": [
-    {
-      "type": "image",
-      "name": "Image",
-      "limit": 2,
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
-        }
-      ]
-    }
-  ],
   "presets": [
     {
       "name": "Banner with Text",
+      "category": "Image",
       "settings": {
-        "title": "Sustainable Fashion",
-        "description": "Look good, feel good with eco-friendly and stylish designs.",
-        "button_text": "Shop Now",
-        "button_link": "/collections/all"
-      },
-      "blocks": [
-        {
-          "type": "image"
-        },
-        {
-          "type": "image"
-        }
-      ]
+        "heading": "Elevating Your Style Journey",
+        "subtext": "Discover timeless pieces that define elegance and sophistication.",
+        "button_label": "Shop Now"
+      }
     }
   ]
 }
-{% endschema %} 
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+    const quickViewButtons = document.querySelectorAll('.js-quick-view');
+    
+    quickViewButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const productHandle = this.dataset.productHandle;
+            // Add your quick view logic here
+        });
+    });
+});
+{% endjavascript %} 
