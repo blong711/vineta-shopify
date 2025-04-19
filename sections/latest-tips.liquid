@@ -1,51 +1,18 @@
-{% schema %}
-{
-  "name": "Latest Tips & Trends",
-  "settings": [
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Section Title",
-      "default": "Latest Tips & Trends"
-    },
-    {
-      "type": "text",
-      "id": "description",
-      "label": "Section Description",
-      "default": "Discover expert advice, style inspiration, and product updates on our blog."
-    },
-    {
-      "type": "range",
-      "id": "posts_limit",
-      "min": 3,
-      "max": 12,
-      "step": 1,
-      "label": "Number of Posts to Show",
-      "default": 6
-    },
-    {
-      "type": "select",
-      "id": "blog",
-      "label": "Blog",
-      "info": "Select which blog to display posts from",
-      "options": [
-        {
-          "value": "news",
-          "label": "News"
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Latest Tips & Trends",
-      "category": "Blog"
-    }
-  ]
-}
-{% endschema %}
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
 
-<section class="flat-spacing-3 pt-0">
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="flat-spacing-3 pt-0 section-{{ section.id }}-padding">
   <div class="container">
     <div class="flat-title wow fadeInUp">
       <h4 class="title">{{ section.settings.title }}</h4>
@@ -53,49 +20,63 @@
     </div>
     <div class="fl-control-sw wow fadeInUp">
       <div dir="ltr" class="swiper tf-swiper" data-swiper='{
-              "slidesPerView": 1,
-              "spaceBetween": 12,
-              "speed": 800,
-              "observer": true,
-              "observeParents": true,
-              "slidesPerGroup": 1,
-              "navigation": {
-                  "clickable": true,
-                  "nextEl": ".nav-next-new",
-                  "prevEl": ".nav-prev-new"
-              },
-              "pagination": { "el": ".sw-pagination-new", "clickable": true },
-              "breakpoints": {
-              "577": { "slidesPerView": 2, "spaceBetween": 12, "slidesPerGroup": 2 },
-              "1200": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 4}
-              }
-          }'>
+        "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+        "spaceBetween": {{ section.settings.space_between_mobile }},
+        "speed": 800,
+        "observer": true,
+        "observeParents": true,
+        "slidesPerGroup": {{ section.settings.slides_per_view_mobile }},
+        "navigation": {
+          "clickable": true,
+          "nextEl": ".nav-next-new",
+          "prevEl": ".nav-prev-new"
+        },
+        "pagination": { "el": ".sw-pagination-new", "clickable": true },
+        "autoplay": {
+          "delay": {{ section.settings.autoplay_speed }},
+          "disableOnInteraction": false
+        },
+        "breakpoints": {
+          "577": { 
+            "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
+            "spaceBetween": {{ section.settings.space_between_tablet }}, 
+            "slidesPerGroup": {{ section.settings.slides_per_view_tablet }}
+          },
+          "1200": { 
+            "slidesPerView": {{ section.settings.slides_per_view_desktop }}, 
+            "spaceBetween": {{ section.settings.space_between_desktop }}, 
+            "slidesPerGroup": {{ section.settings.slides_per_view_desktop }}
+          }
+        }
+      }'>
         <div class="swiper-wrapper">
-          {% assign blog = blogs[section.settings.blog] %}
-          {% for article in blog.articles limit: section.settings.posts_limit %}
-            <div class="swiper-slide">
+          {%- for block in section.blocks -%}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
               <div class="news-item hover-img">
-                {% if article.image %}
-                  <a href="{{ article.url }}" class="img-style">
-                    <img src="{{ article.image | img_url: 'master' }}" 
-                         data-src="{{ article.image | img_url: 'master' }}" 
-                         alt="{{ article.title | escape }}"
-                         loading="lazy"
-                         width="370"
-                         height="250">
-                  </a>
-                {% endif %}
+                <a href="{{ block.settings.link }}" class="img-style">
+                  {%- if block.settings.image != blank -%}
+                    {{ block.settings.image | image_url: width: 600 | image_tag:
+                      loading: 'lazy',
+                      width: 600,
+                      height: 400,
+                      class: 'lazyload',
+                      alt: block.settings.title
+                    }}
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </a>
                 <div class="content">
-                  <a href="{{ article.url }}" class="title fw-medium link text-xl text-line-clamp-2">
-                    {{ article.title }}
+                  <a href="{{ block.settings.link }}" class="title fw-medium link text-xl text-line-clamp-2">
+                    {{ block.settings.title }}
                   </a>
-                  <a href="{{ article.url }}" class="btn-readmore link">
-                    Read more <i class="icon icon-arr-right"></i>
+                  <a href="{{ block.settings.link }}" class="btn-readmore link">
+                    {{ block.settings.read_more_text }} <i class="icon icon-arr-right"></i>
                   </a>
                 </div>
               </div>
             </div>
-          {% endfor %}
+          {%- endfor -%}
         </div>
         <div class="d-flex d-xl-none sw-dot-default sw-pagination-new justify-content-center"></div>
       </div>
@@ -103,4 +84,181 @@
       <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-new"></div>
     </div>
   </div>
-</section> 
+</section>
+
+{% schema %}
+{
+  "name": "Latest Tips & Trends",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Latest Tips & Trends"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description",
+      "default": "Discover expert advice, style inspiration, and product updates on our blog."
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 1000,
+      "max": 9000,
+      "step": 1000,
+      "unit": "ms",
+      "label": "Autoplay speed",
+      "default": 5000
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Slides per view",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "space_between_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between slides",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Tablet settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Slides per view",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "space_between_tablet",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between slides",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Desktop settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Slides per view",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "space_between_desktop",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between slides",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tip",
+      "name": "Tip",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Tech Trends 2025: Must-Have Gadgets & Innovations"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "read_more_text",
+          "label": "Read more text",
+          "default": "Read more"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Latest Tips & Trends",
+      "blocks": [
+        {
+          "type": "tip"
+        },
+        {
+          "type": "tip"
+        },
+        {
+          "type": "tip"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 
