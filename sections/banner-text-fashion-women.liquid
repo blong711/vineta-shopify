@@ -1,5 +1,5 @@
 <!-- Banner with text-->
-<div class="s-banner-product{% if section.settings.layout == 'home-fashion-02' %} banner-text-fashion flat-spacing-3 pt-0{% endif %}">
+<div class="{% if section.settings.layout == 'home-fashion-02' %}s-banner-with-text banner-text-fashion flat-spacing-3 pt-0{% else %}s-banner-product{% endif %}">
   <div class="container">
     {% if section.settings.layout == 'home-fashion-02' %}
       <div class="row flex-wrap-reverse">
