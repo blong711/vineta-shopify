@@ -1,6 +1,55 @@
 <!-- Banner with text-->
-<div class="s-banner-product">
+<div class="s-banner-product{% if section.settings.layout == 'home-fashion-02' %} banner-text-fashion flat-spacing-3 pt-0{% endif %}">
   <div class="container">
+    {% if section.settings.layout == 'home-fashion-02' %}
+      <div class="row flex-wrap-reverse">
+        <div class="col-md-5">
+          <div class="content-banner type-left wow fadeInUp">
+            <div class="box-title-banner">
+              <h4>{{ section.settings.title }}</h4>
+              <p class="text-md text-main">
+                {{ section.settings.description }}
+              </p>
+            </div>
+            <div class="box-btn-banner">
+              <a href="{{ section.settings.button_link }}" class="tf-btn animate-btn">
+                {{ section.settings.button_text }}
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-7">
+          <div class="image-banner">
+            <div class="image image-2 hover-shine hover-img">
+              <div class="shine-item img-style wow fadeInRight" data-wow-delay="0.1s">
+                {% if section.settings.image_2 != blank %}
+                  {{ section.settings.image_2 | image_url: width: 2000 | image_tag:
+                    loading: 'lazy',
+                    class: 'lazyload',
+                    alt: section.settings.image_2.alt,
+                    width: section.settings.image_2.width,
+                    height: section.settings.image_2.height
+                  }}
+                {% endif %}
+              </div>
+            </div>
+            <div class="image image-1 hover-shine hover-img">
+              <div class="shine-item img-style wow fadeInRight">
+                {% if section.settings.image_1 != blank %}
+                  {{ section.settings.image_1 | image_url: width: 2000 | image_tag:
+                    loading: 'lazy',
+                    class: 'lazyload',
+                    alt: section.settings.image_1.alt,
+                    width: section.settings.image_1.width,
+                    height: section.settings.image_1.height
+                  }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% else %}
     <div class="content-banner">
       <div class="image-wrap hover-img">
         {% if section.settings.banner_product != blank %}
@@ -58,23 +107,24 @@
         {% endfor %}
       </div>
 
-      <div class="content-right text-center wow fadeInUp">
-        <div class="box-title">
-          <p class="display-lg-3 font-2 text-dark-3">
-            {{ section.settings.title }}
-          </p>
-          <p class="body-text-2 text-dark-3 font-2">
-            {{ section.settings.description }}
-          </p>
-        </div>
-        <div class="box-btn">
-          <a href="{{ section.settings.button_link }}" class="tf-btn animate-btn btn-dark2">
-            {{ section.settings.button_text }}
-            <i class="icon-arr-right"></i>
-          </a>
+        <div class="content-right text-center wow fadeInUp">
+          <div class="box-title">
+            <p class="display-lg-3 font-2 text-dark-3">
+              {{ section.settings.title }}
+            </p>
+            <p class="body-text-2 text-dark-3 font-2">
+              {{ section.settings.description }}
+            </p>
+          </div>
+          <div class="box-btn">
+            <a href="{{ section.settings.button_link }}" class="tf-btn animate-btn btn-dark2">
+              {{ section.settings.button_text }}
+              <i class="icon-arr-right"></i>
+            </a>
+          </div>
         </div>
       </div>
-    </div>
+    {% endif %}
   </div>
 </div>
 <!-- /Banner with text -->
@@ -83,6 +133,16 @@
 {
   "name": "Banner Text Fashion Women",
   "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Section Layout",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "home-fashion-02", "label": "Home Fashion 02 (Banner Text)" }
+      ],
+      "default": "default"
+    },
     {
       "type": "product",
       "id": "banner_product",
@@ -120,6 +180,16 @@
       "type": "url",
       "id": "button_link",
       "label": "Button Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "First Image (Home Fashion 02)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Second Image (Home Fashion 02)"
     }
   ],
   "blocks": [
