@@ -18,138 +18,68 @@
             "id": "title",
             "label": "Section Title",
             "default": "Happy Customers"
-        },
+        }
+    ],
+    "blocks": [
         {
-            "type": "header",
-            "content": "Testimonial 1"
-        },
-        {
-            "type": "text",
-            "id": "testimonial1_name",
-            "label": "Customer Name",
-            "default": "Emily T."
-        },
-        {
-            "type": "image_picker",
-            "id": "testimonial1_image",
-            "label": "Customer Image"
-        },
-        {
-            "type": "text",
-            "id": "testimonial1_product",
-            "label": "Product Name",
-            "default": "Crop T-shirt"
-        },
-        {
-            "type": "url",
-            "id": "testimonial1_product_url",
-            "label": "Product URL"
-        },
-        {
-            "type": "text",
-            "id": "testimonial1_price",
-            "label": "Product Price",
-            "default": "$150.00"
-        },
-        {
-            "type": "textarea",
-            "id": "testimonial1_review",
-            "label": "Customer Review",
-            "default": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!"
-        },
-        {
-            "type": "text",
-            "id": "testimonial1_title",
-            "label": "Review Title",
-            "default": "Elegance and Comfort Combined"
-        },
-        {
-            "type": "header",
-            "content": "Testimonial 2"
-        },
-        {
-            "type": "text",
-            "id": "testimonial2_name",
-            "label": "Customer Name",
-            "default": "Jessica M."
-        },
-        {
-            "type": "image_picker",
-            "id": "testimonial2_image",
-            "label": "Customer Image"
-        },
-        {
-            "type": "text",
-            "id": "testimonial2_product",
-            "label": "Product Name",
-            "default": "Oversized Tee"
-        },
-        {
-            "type": "url",
-            "id": "testimonial2_product_url",
-            "label": "Product URL"
-        },
-        {
-            "type": "text",
-            "id": "testimonial2_price",
-            "label": "Product Price",
-            "default": "$80.00"
-        },
-        {
-            "type": "textarea",
-            "id": "testimonial2_review",
-            "label": "Customer Review",
-            "default": "I love the fit and quality of everything I've purchased. The customer service is exceptional, and shipping is always fast. Highly recommend!"
-        },
-        {
-            "type": "text",
-            "id": "testimonial2_title",
-            "label": "Review Title",
-            "default": "Style and Comfort in Perfect Harmony"
-        },
-        {
-            "type": "header",
-            "content": "Testimonial 3"
-        },
-        {
-            "type": "text",
-            "id": "testimonial3_name",
-            "label": "Customer Name",
-            "default": "Sarah K."
-        },
-        {
-            "type": "image_picker",
-            "id": "testimonial3_image",
-            "label": "Customer Image"
-        },
-        {
-            "type": "text",
-            "id": "testimonial3_product",
-            "label": "Product Name",
-            "default": "Polo Neck T-Shirt"
-        },
-        {
-            "type": "url",
-            "id": "testimonial3_product_url",
-            "label": "Product URL"
-        },
-        {
-            "type": "text",
-            "id": "testimonial3_price",
-            "label": "Product Price",
-            "default": "$100.00"
-        },
-        {
-            "type": "textarea",
-            "id": "testimonial3_review",
-            "label": "Customer Review",
-            "default": "The attention to detail in their products is amazing. I've received so many compliments on my purchases. Will definitely be shopping here again!"
+            "type": "testimonial",
+            "name": "Testimonial",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "name",
+                    "label": "Customer Name",
+                    "default": "Emily T."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Customer Image"
+                },
+                {
+                    "type": "text",
+                    "id": "product",
+                    "label": "Product Name",
+                    "default": "Crop T-shirt"
+                },
+                {
+                    "type": "url",
+                    "id": "product_url",
+                    "label": "Product URL"
+                },
+                {
+                    "type": "text",
+                    "id": "price",
+                    "label": "Product Price",
+                    "default": "$150.00"
+                },
+                {
+                    "type": "textarea",
+                    "id": "review",
+                    "label": "Customer Review",
+                    "default": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Review Title",
+                    "default": "Elegance and Comfort Combined"
+                }
+            ]
         }
     ],
     "presets": [
         {
             "name": "Testimonial",
-            "category": "Content"
+            "category": "Content",
+            "blocks": [
+                {
+                    "type": "testimonial"
+                },
+                {
+                    "type": "testimonial"
+                }
+            ]
         }
     ]
 }
@@ -167,90 +97,45 @@
         {% if section.settings.layout == 'home-fashion-women' %}
             <div class="wrapper-thumbs-tes-2 flat-thumbs-tes">
                 <div class="box-left">
-                    <div dir="ltr" class="swiper tf-tes-main" data-swiper='{
-                        "slidesPerView": 1,
-                        "spaceBetween": 12,
-                        "speed": 800,
-                        "observer": true,
-                        "observeParents": true,
-                        "navigation": {
-                            "nextEl": ".nav-next-tes",
-                            "prevEl": ".nav-prev-tes"
-                        }
-                    }'>
+                    <div dir="ltr" class="swiper tf-tes-main" data-space-lg="24" data-space="12">
                         <div class="swiper-wrapper">
-                            <!-- Testimonial Item 1 -->
-                            <div class="swiper-slide">
-                                <div class="box-testimonial-main wow fadeInLeft">
-                                    <span class="quote icon-quote2"></span>
-                                    <div class="content">
-                                        <div class="list-star-default">
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                        </div>
-                                        <div class="title-review">{{ section.settings.testimonial1_title }}</div>
-                                        <p class="text-review display-xs">{{ section.settings.testimonial1_review }}</p>
-                                        <div class="box-author">
-                                            <div class="img d-md-none">
-                                                {% if section.settings.testimonial1_image != blank %}
-                                                    <img src="{{ section.settings.testimonial1_image | img_url: '120x120' }}" 
-                                                         alt="{{ section.settings.testimonial1_name }}" 
-                                                         width="60" 
-                                                         height="60">
-                                                {% else %}
-                                                    <img src="{{ 'author-fs1.jpg' | asset_url }}" 
-                                                         alt="{{ section.settings.testimonial1_name }}" 
-                                                         width="60" 
-                                                         height="60">
-                                                {% endif %}
+                            {% for block in section.blocks %}
+                                <div class="swiper-slide" {{ block.shopify_attributes }}>
+                                    <div class="box-testimonial-main wow fadeInLeft">
+                                        <span class="quote icon-quote2"></span>
+                                        <div class="content">
+                                            <div class="list-star-default">
+                                                <i class="icon-star"></i>
+                                                <i class="icon-star"></i>
+                                                <i class="icon-star"></i>
+                                                <i class="icon-star"></i>
+                                                <i class="icon-star"></i>
                                             </div>
-                                            <div class="info">
-                                                <div class="name text-md fw-medium">{{ section.settings.testimonial1_name }}</div>
-                                                <a href="{{ section.settings.testimonial1_product_url }}" class="meta link">Purchase item: <span class="fw-medium">{{ section.settings.testimonial1_product }}</span></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Testimonial Item 2 -->
-                            <div class="swiper-slide">
-                                <div class="box-testimonial-main wow fadeInLeft">
-                                    <span class="quote icon-quote2"></span>
-                                    <div class="content">
-                                        <div class="list-star-default">
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                        </div>
-                                        <div class="title-review">{{ section.settings.testimonial2_title }}</div>
-                                        <p class="text-review display-xs">{{ section.settings.testimonial2_review }}</p>
-                                        <div class="box-author">
-                                            <div class="img d-md-none">
-                                                {% if section.settings.testimonial2_image != blank %}
-                                                    <img src="{{ section.settings.testimonial2_image | img_url: '120x120' }}" 
-                                                         alt="{{ section.settings.testimonial2_name }}" 
-                                                         width="60" 
-                                                         height="60">
-                                                {% else %}
-                                                    <img src="{{ 'author-fs2.jpg' | asset_url }}" 
-                                                         alt="{{ section.settings.testimonial2_name }}" 
-                                                         width="60" 
-                                                         height="60">
-                                                {% endif %}
-                                            </div>
-                                            <div class="info">
-                                                <div class="name text-md fw-medium">{{ section.settings.testimonial2_name }}</div>
-                                                <a href="{{ section.settings.testimonial2_product_url }}" class="meta link">Purchase item: <span class="fw-medium">{{ section.settings.testimonial2_product }}</span></a>
+                                            <div class="title-review">{{ block.settings.title }}</div>
+                                            <p class="text-review display-xs">{{ block.settings.review }}</p>
+                                            <div class="box-author">
+                                                <div class="img d-md-none">
+                                                    {% if block.settings.image != blank %}
+                                                        <img src="{{ block.settings.image | img_url: '120x120' }}" 
+                                                             alt="{{ block.settings.name }}" 
+                                                             width="60" 
+                                                             height="60">
+                                                    {% else %}
+                                                        <img src="{{ 'author-fs1.jpg' | asset_url }}" 
+                                                             alt="{{ block.settings.name }}" 
+                                                             width="60" 
+                                                             height="60">
+                                                    {% endif %}
+                                                </div>
+                                                <div class="info">
+                                                    <div class="name text-md fw-medium">{{ block.settings.name }}</div>
+                                                    <a href="{{ block.settings.product_url }}" class="meta link">Purchase item: <span class="fw-medium">{{ block.settings.product }}</span></a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            {% endfor %}
                         </div>
                         <div class="box-nav-swiper">
                             <div class="swiper-button-prev nav-swiper size-30 style-line nav-prev-tes"></div>
@@ -267,44 +152,27 @@
                         "observeParents": true
                     }'>
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide hover-img">
-                                <div class="img-sw-thumb img-style">
-                                    {% if section.settings.testimonial1_image != blank %}
-                                        <img class="lazyload" 
-                                             data-src="{{ section.settings.testimonial1_image | img_url: '400x' }}" 
-                                             src="{{ section.settings.testimonial1_image | img_url: '400x' }}" 
-                                             alt="{{ section.settings.testimonial1_name }}"
-                                             width="400"
-                                             height="400">
-                                    {% else %}
-                                        <img class="lazyload" 
-                                             data-src="{{ 'author-fs1.jpg' | asset_url }}" 
-                                             src="{{ 'author-fs1.jpg' | asset_url }}" 
-                                             alt="{{ section.settings.testimonial1_name }}"
-                                             width="400"
-                                             height="400">
-                                    {% endif %}
+                            {% for block in section.blocks %}
+                                <div class="swiper-slide hover-img">
+                                    <div class="img-sw-thumb img-style">
+                                        {% if block.settings.image != blank %}
+                                            <img class="lazyload" 
+                                                 data-src="{{ block.settings.image | img_url: '400x' }}" 
+                                                 src="{{ block.settings.image | img_url: '400x' }}" 
+                                                 alt="{{ block.settings.name }}"
+                                                 width="400"
+                                                 height="400">
+                                        {% else %}
+                                            <img class="lazyload" 
+                                                 data-src="{{ 'author-fs1.jpg' | asset_url }}" 
+                                                 src="{{ 'author-fs1.jpg' | asset_url }}" 
+                                                 alt="{{ block.settings.name }}"
+                                                 width="400"
+                                                 height="400">
+                                        {% endif %}
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="swiper-slide hover-img">
-                                <div class="img-sw-thumb img-style">
-                                    {% if section.settings.testimonial2_image != blank %}
-                                        <img class="lazyload" 
-                                             data-src="{{ section.settings.testimonial2_image | img_url: '400x' }}" 
-                                             src="{{ section.settings.testimonial2_image | img_url: '400x' }}" 
-                                             alt="{{ section.settings.testimonial2_name }}"
-                                             width="400"
-                                             height="400">
-                                    {% else %}
-                                        <img class="lazyload" 
-                                             data-src="{{ 'author-fs2.jpg' | asset_url }}" 
-                                             src="{{ 'author-fs2.jpg' | asset_url }}" 
-                                             alt="{{ section.settings.testimonial2_name }}"
-                                             width="400"
-                                             height="400">
-                                    {% endif %}
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -324,102 +192,55 @@
                 }
             }'>
                 <div class="swiper-wrapper">
-                    <!-- Testimonial Item 1 -->
-                    <div class="swiper-slide">
-                        <div class="wg-testimonial wow fadeInLeft">
-                            <div class="content">
-                                <div class="content-top">
-                                    <div class="box-author">
-                                        <p class="name-author text-sm fw-medium">{{ section.settings.testimonial1_name }}</p>
-                                        <div class="box-verified text-main">
-                                            <i class="icon-verifi"></i>
-                                            <p class="text-xs fst-italic">Verified Buyer</p>
+                    {% for block in section.blocks %}
+                        <div class="swiper-slide" {{ block.shopify_attributes }}>
+                            <div class="wg-testimonial wow fadeInLeft" data-wow-delay="{{ forloop.index | times: 0.1 }}s">
+                                <div class="content">
+                                    <div class="content-top">
+                                        <div class="box-author">
+                                            <p class="name-author text-sm fw-medium">{{ block.settings.name }}</p>
+                                            <div class="box-verified text-main">
+                                                <i class="icon-verifi"></i>
+                                                <p class="text-xs fst-italic">Verified Buyer</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="list-star-default">
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                    </div>
-                                    <p class="text-review text-sm text-main">
-                                        {{ section.settings.testimonial1_review }}
-                                    </p>
-                                </div>
-                                <span class="br-line d-block"></span>
-                                <div class="box-avt">
-                                    <div class="avatar">
-                                        {% if section.settings.testimonial1_image != blank %}
-                                            <img src="{{ section.settings.testimonial1_image | img_url: '120x120' }}" 
-                                                 alt="{{ section.settings.testimonial1_name }}" 
-                                                 width="60" 
-                                                 height="60">
-                                        {% else %}
-                                            <img src="{{ 'author-fs1.jpg' | asset_url }}" 
-                                                 alt="{{ section.settings.testimonial1_name }}" 
-                                                 width="60" 
-                                                 height="60">
-                                        {% endif %}
-                                    </div>
-                                    <div class="box-price">
-                                        <p class="name-item text-xs">
-                                            Item purchased: <a href="{{ section.settings.testimonial1_product_url }}" class="fw-medium text-sm link text-line-clamp-1">{{ section.settings.testimonial1_product }}</a>
+                                        <div class="list-star-default">
+                                            <i class="icon-star"></i>
+                                            <i class="icon-star"></i>
+                                            <i class="icon-star"></i>
+                                            <i class="icon-star"></i>
+                                            <i class="icon-star"></i>
+                                        </div>
+                                        <p class="text-review text-sm text-main">
+                                            {{ block.settings.review }}
                                         </p>
-                                        <p class="price text-md fw-medium">{{ section.settings.testimonial1_price }}</p>
+                                    </div>
+                                    <span class="br-line d-block"></span>
+                                    <div class="box-avt">
+                                        <div class="avatar">
+                                            {% if block.settings.image != blank %}
+                                                <img src="{{ block.settings.image | img_url: '120x120' }}" 
+                                                     alt="{{ block.settings.name }}" 
+                                                     width="60" 
+                                                     height="60">
+                                            {% else %}
+                                                <img src="{{ 'author-fs1.jpg' | asset_url }}" 
+                                                     alt="{{ block.settings.name }}" 
+                                                     width="60" 
+                                                     height="60">
+                                            {% endif %}
+                                        </div>
+                                        <div class="box-price">
+                                            <p class="name-item text-xs">
+                                                Item purchased: <a href="{{ block.settings.product_url }}" class="fw-medium text-sm link text-line-clamp-1">{{ block.settings.product }}</a>
+                                            </p>
+                                            <p class="price text-md fw-medium">{{ block.settings.price }}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Testimonial Item 2 -->
-                    <div class="swiper-slide">
-                        <div class="wg-testimonial wow fadeInLeft" data-wow-delay="0.1s">
-                            <div class="content">
-                                <div class="content-top">
-                                    <div class="box-author">
-                                        <p class="name-author text-sm fw-medium">{{ section.settings.testimonial2_name }}</p>
-                                        <div class="box-verified text-main">
-                                            <i class="icon-verifi"></i>
-                                            <p class="text-xs fst-italic">Verified Buyer</p>
-                                        </div>
-                                    </div>
-                                    <div class="list-star-default">
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                    </div>
-                                    <p class="text-review text-sm text-main">
-                                        {{ section.settings.testimonial2_review }}
-                                    </p>
-                                </div>
-                                <span class="br-line d-block"></span>
-                                <div class="box-avt">
-                                    <div class="avatar">
-                                        {% if section.settings.testimonial2_image != blank %}
-                                            <img src="{{ section.settings.testimonial2_image | img_url: '120x120' }}" 
-                                                 alt="{{ section.settings.testimonial2_name }}" 
-                                                 width="60" 
-                                                 height="60">
-                                        {% else %}
-                                            <img src="{{ 'author-fs2.jpg' | asset_url }}" 
-                                                 alt="{{ section.settings.testimonial2_name }}" 
-                                                 width="60" 
-                                                 height="60">
-                                        {% endif %}
-                                    </div>
-                                    <div class="box-price">
-                                        <p class="name-item text-xs">
-                                            Item purchased: <a href="{{ section.settings.testimonial2_product_url }}" class="fw-medium text-sm link text-line-clamp-1">{{ section.settings.testimonial2_product }}</a>
-                                        </p>
-                                        <p class="price text-md fw-medium">{{ section.settings.testimonial2_price }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
                 <div class="swiper-pagination sw-pagination-tes"></div>
             </div>
