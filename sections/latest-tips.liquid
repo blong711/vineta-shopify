@@ -3,16 +3,6 @@
   "name": "Latest Tips & Trends",
   "settings": [
     {
-      "type": "select",
-      "id": "layout",
-      "label": "Section Layout",
-      "options": [
-        { "value": "default", "label": "Default" },
-        { "value": "home-bicycle", "label": "Home Bicycle (Latest tip)" }
-      ],
-      "default": "default"
-    },
-    {
       "type": "text",
       "id": "title",
       "label": "Section Title",
@@ -23,19 +13,6 @@
       "id": "description",
       "label": "Section Description",
       "default": "Discover expert advice, style inspiration, and product updates on our blog."
-    },
-    {
-      "type": "text",
-      "id": "blog_button_text",
-      "label": "Blog Button Text",
-      "default": "OUR BLOG",
-      "info": "Only used in Home Bicycle layout"
-    },
-    {
-      "type": "url",
-      "id": "blog_button_url",
-      "label": "Blog Button URL",
-      "info": "Only used in Home Bicycle layout"
     },
     {
       "type": "range",
@@ -68,24 +45,12 @@
 }
 {% endschema %}
 
-<section class="flat-spacing-3 {% if section.settings.layout == 'home-bicycle' %}pb-0{% else %}pt-0{% endif %}">
+<section class="flat-spacing-3 pt-0">
   <div class="container">
-    {% if section.settings.layout == 'home-bicycle' %}
-      <div class="flat-title-v2 text-center justify-items-center wow fadeInUp">
-        {% if section.settings.blog_button_url != blank %}
-          <a href="{{ section.settings.blog_button_url }}" class="tf-btn btn-out-line-green btn-small text-uppercase">
-            {{ section.settings.blog_button_text }}
-          </a>
-        {% endif %}
-        <h4 class="text-capitalize">{{ section.settings.title }}</h4>
-      </div>
-    {% else %}
-      <div class="flat-title wow fadeInUp">
-        <h4 class="title">{{ section.settings.title }}</h4>
-        <p class="desc text-main text-md">{{ section.settings.description }}</p>
-      </div>
-    {% endif %}
-    
+    <div class="flat-title wow fadeInUp">
+      <h4 class="title">{{ section.settings.title }}</h4>
+      <p class="desc text-main text-md">{{ section.settings.description }}</p>
+    </div>
     <div class="fl-control-sw wow fadeInUp">
       <div dir="ltr" class="swiper tf-swiper" data-swiper='{
               "slidesPerView": 1,
@@ -111,7 +76,7 @@
             <div class="swiper-slide">
               <div class="news-item hover-img">
                 {% if article.image %}
-                  <a href="{{ article.url }}" class="image-box img-style">
+                  <a href="{{ article.url }}" class="img-style">
                     <img src="{{ article.image | img_url: 'master' }}" 
                          data-src="{{ article.image | img_url: 'master' }}" 
                          alt="{{ article.title | escape }}"
