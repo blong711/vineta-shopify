@@ -12,19 +12,12 @@
   }
 {%- endstyle -%}
 
-<section class="flat-spacing-3 {% if section.settings.layout == 'home-bicycle' %}pb-0{% endif %} section-{{ section.id }}-padding">
+<section class="flat-spacing-3 pt-0 section-{{ section.id }}-padding">
   <div class="container">
-    {% if section.settings.layout == 'home-bicycle' %}
-      <div class="flat-title-v2 text-center justify-items-center wow fadeInUp">
-        <a href="{{ section.settings.blog_link }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.blog_button_text }}</a>
-        <h4 class="text-capitalize">{{ section.settings.title }}</h4>
-      </div>
-    {% else %}
-      <div class="flat-title wow fadeInUp">
-        <h4 class="title">{{ section.settings.title }}</h4>
-        <p class="desc text-main text-md">{{ section.settings.description }}</p>
-      </div>
-    {% endif %}
+    <div class="flat-title wow fadeInUp">
+      <h4 class="title">{{ section.settings.title }}</h4>
+      <p class="desc text-main text-md">{{ section.settings.description }}</p>
+    </div>
     <div class="fl-control-sw wow fadeInUp">
       <div dir="ltr" class="swiper tf-swiper" data-swiper='{
         "slidesPerView": {{ section.settings.slides_per_view_mobile }},
@@ -60,7 +53,7 @@
           {%- for block in section.blocks -%}
             <div class="swiper-slide" {{ block.shopify_attributes }}>
               <div class="news-item hover-img">
-                <a href="{{ block.settings.link }}" class="image-box img-style">
+                <a href="{{ block.settings.link }}" class="img-style">
                   {%- if block.settings.image != blank -%}
                     {{ block.settings.image | image_url: width: 600 | image_tag:
                       loading: 'lazy',
@@ -100,16 +93,6 @@
   "class": "section",
   "settings": [
     {
-      "type": "select",
-      "id": "layout",
-      "label": "Section Layout",
-      "options": [
-        { "value": "default", "label": "Default" },
-        { "value": "home-bicycle", "label": "Home Bicycle (Latest tip)" }
-      ],
-      "default": "default"
-    },
-    {
       "type": "text",
       "id": "title",
       "label": "Title",
@@ -119,21 +102,7 @@
       "type": "text",
       "id": "description",
       "label": "Description",
-      "default": "Discover expert advice, style inspiration, and product updates on our blog.",
-      "info": "Only used in default layout"
-    },
-    {
-      "type": "text",
-      "id": "blog_button_text",
-      "label": "Blog Button Text",
-      "default": "OUR BLOG",
-      "info": "Only used in home-bicycle layout"
-    },
-    {
-      "type": "url",
-      "id": "blog_link",
-      "label": "Blog Link",
-      "info": "Only used in home-bicycle layout"
+      "default": "Discover expert advice, style inspiration, and product updates on our blog."
     },
     {
       "type": "checkbox",
