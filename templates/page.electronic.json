@@ -109,41 +109,13 @@
         "product_1": {
           "type": "product",
           "settings": {
-            "product": "accurist-mens-accurist-london",
-            "show_sale_badge": true,
-            "sale_text": "20% Off",
-            "show_compare_price": true,
-            "show_color_swatches": true,
-            "color_swatch_1_name": "Black",
-            "color_swatch_1_class": "bg-dark",
-            "color_swatch_2_name": "Red",
-            "color_swatch_2_class": "bg-red-2",
-            "color_swatch_3_name": "Pink",
-            "color_swatch_3_class": "bg-light-pink-10",
-            "progress_bar_class": "bg-orange-3",
-            "progress_value": 90,
-            "available_quantity": 2,
-            "available_text_class": "text-red-2"
+            "product": "accurist-mens-accurist-london"
           }
         },
         "product_2": {
           "type": "product",
           "settings": {
-            "product": "armani-exchange-armani-exchange-watch-ax2707",
-            "show_sale_badge": true,
-            "sale_text": "15% Off",
-            "show_compare_price": true,
-            "show_color_swatches": true,
-            "color_swatch_1_name": "Grey",
-            "color_swatch_1_class": "bg-grey-6",
-            "color_swatch_2_name": "White",
-            "color_swatch_2_class": "bg-white",
-            "color_swatch_3_name": "Black",
-            "color_swatch_3_class": "bg-dark",
-            "progress_bar_class": "bg-green-2",
-            "progress_value": 40,
-            "available_quantity": 60,
-            "available_text_class": "text-success-5"
+            "product": "armani-exchange-armani-exchange-watch-ax2707"
           }
         }
       },
@@ -152,6 +124,7 @@
         "product_2"
       ],
       "settings": {
+        "show_section": true,
         "title": "Top Picks You'll Love",
         "description": "Discover our most popular products that customers can't get enough of",
         "view_all_text": "View all",
@@ -160,35 +133,13 @@
     },
     "banner_collection": {
       "type": "banner-collection",
-      "blocks": {
-        "title_1": {
-          "type": "title",
-          "settings": {
-            "text": "Unmatched Performance"
-          }
-        },
-        "subtitle_1": {
-          "type": "subtitle",
-          "settings": {
-            "text": "Upgrade your devices with cutting-edge technology."
-          }
-        },
-        "button_1": {
-          "type": "button",
-          "settings": {
-            "label": "Shop Now",
-            "link": "/collections/electronics"
-          }
-        }
-      },
-      "block_order": [
-        "title_1",
-        "subtitle_1",
-        "button_1"
-      ],
       "settings": {
-        "show_section": true,
-        "banner_image": "shopify://shop_images/phone.png"
+        "layout": "electric",
+        "title": "Unmatched Performance",
+        "subtitle": "Upgrade your devices with cutting-edge technology.",
+        "button_text": "Shop Now",
+        "button_link": "",
+        "padding_top": 36
       }
     },
     "hot_deals": {
@@ -197,43 +148,13 @@
         "product_1": {
           "type": "product",
           "settings": {
-            "product": "aclla-cress",
-            "show_sale_badge": true,
-            "sale_text": "20% Off",
-            "countdown_timer": "1007500",
-            "show_compare_price": true,
-            "show_color_swatches": true,
-            "color_swatch_1_name": "Black",
-            "color_swatch_1_class": "bg-dark",
-            "color_swatch_2_name": "Red",
-            "color_swatch_2_class": "bg-red-2",
-            "color_swatch_3_name": "Pink",
-            "color_swatch_3_class": "bg-light-pink-10",
-            "progress_bar_class": "bg-orange-3",
-            "progress_value": 90,
-            "available_quantity": 2,
-            "available_text_class": "text-red-2"
+            "product": "aclla-cress"
           }
         },
         "product_2": {
           "type": "product",
           "settings": {
-            "product": "aloe-arborescens",
-            "show_sale_badge": true,
-            "sale_text": "15% Off",
-            "countdown_timer": "810549",
-            "show_compare_price": true,
-            "show_color_swatches": true,
-            "color_swatch_1_name": "Grey",
-            "color_swatch_1_class": "bg-grey-6",
-            "color_swatch_2_name": "White",
-            "color_swatch_2_class": "bg-white",
-            "color_swatch_3_name": "Black",
-            "color_swatch_3_class": "bg-dark",
-            "progress_bar_class": "bg-green-2",
-            "progress_value": 40,
-            "available_quantity": 60,
-            "available_text_class": "text-success-5"
+            "product": "aloe-arborescens"
           }
         }
       },
@@ -242,6 +163,7 @@
         "product_2"
       ],
       "settings": {
+        "show_section": true,
         "title": "Hot Deals",
         "description": "Explore our most popular pieces that customers can't get enough of",
         "global_countdown": "46556"
@@ -301,50 +223,14 @@
     },
     "latest_tips": {
       "type": "latest-tips",
-      "blocks": {
-        "tip_1": {
-          "type": "tip",
-          "settings": {
-            "title": "Tech Trends 2025: Must-Have Gadgets & Innovations",
-            "link": "/blogs/news/tech-trends-2025",
-            "read_more_text": "Read more"
-          }
-        },
-        "tip_2": {
-          "type": "tip",
-          "settings": {
-            "title": "Cutting-Edge Tech: Top Electronics to Watch This Year",
-            "link": "/blogs/news/cutting-edge-tech",
-            "read_more_text": "Read more"
-          }
-        },
-        "tip_3": {
-          "type": "tip",
-          "settings": {
-            "title": "Next-Gen Gadgets: The Hottest Tech Trends of the Year",
-            "link": "/blogs/news/next-gen-gadgets",
-            "read_more_text": "Read more"
-          }
-        }
-      },
-      "block_order": [
-        "tip_1",
-        "tip_2",
-        "tip_3"
-      ],
       "settings": {
+        "layout": "home-bicycle",
         "title": "Latest Tips & Trends",
         "description": "Discover expert advice, style inspiration, and product updates on our blog.",
-        "autoplay": true,
-        "autoplay_speed": 5000,
-        "slides_per_view_mobile": 1,
-        "space_between_mobile": 12,
-        "slides_per_view_tablet": 2,
-        "space_between_tablet": 12,
-        "slides_per_view_desktop": 3,
-        "space_between_desktop": 24,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "blog_button_text": "OUR BLOG",
+        "blog_button_url": "",
+        "posts_limit": 6,
+        "blog": "news"
       }
     },
     "icon_boxes": {
