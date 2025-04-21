@@ -1,0 +1,276 @@
+{% assign active_tab = section.settings.default_tab %}
+
+<div class="flat-spacing-3">
+  <div class="container">
+    <div class="flat-animate-tab">
+      <div class="flat-title wow fadeInUp">
+        <ul class="menu-tab-line style-lg justify-content-center" role="tablist">
+          {% for tab in section.blocks %}
+            {% if tab.type == 'tab' %}
+              <li class="nav-tab-item" role="presentation">
+                <a href="#{{ tab.settings.tab_id }}" 
+                   class="font-2 tab-link {% if tab.settings.tab_id == active_tab %}active{% endif %}" 
+                   data-bs-toggle="tab">
+                  {{ tab.settings.tab_title }}
+                </a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      
+      <div class="tab-content">
+        {% for tab in section.blocks %}
+          {% if tab.type == 'tab' %}
+            <div class="tab-pane {% if tab.settings.tab_id == active_tab %}active show{% endif %}" 
+                 id="{{ tab.settings.tab_id }}" 
+                 role="tabpanel">
+              <div class="tf-grid-layout tf-col-2 md-col-3 xl-col-4">
+                {% for product in tab.settings.products %}
+                  <div class="card-product card-product-size style-2">
+                    <div class="card-product-wrapper">
+                      <a href="{{ product.url }}" class="product-img">
+                        <img class="img-product lazyload" 
+                             data-src="{{ product.featured_image | img_url: 'master' }}"
+                             src="{{ product.featured_image | img_url: 'small' }}" 
+                             alt="{{ product.title | escape }}"
+                             width="570"
+                             height="760">
+                        {% if product.images[1] %}
+                          <img class="img-hover lazyload" 
+                               data-src="{{ product.images[1] | img_url: 'master' }}"
+                               src="{{ product.images[1] | img_url: 'small' }}" 
+                               alt="{{ product.title | escape }}"
+                               width="570"
+                               height="760">
+                        {% endif %}
+                      </a>
+                      
+                      {% if product.compare_at_price > product.price %}
+                        <div class="on-sale-wrap">
+                          <span class="on-sale-item">
+                            {{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}% Off
+                          </span>
+                        </div>
+                      {% endif %}
+
+                      <ul class="list-product-btn">
+                        <li>
+                          <a href="#" class="hover-tooltip box-icon js-add-to-cart" data-variant-id="{{ product.selected_or_first_available_variant.id }}">
+                            <span class="icon icon-cart2"></span>
+                            <span class="tooltip">{{ 'products.product.add_to_cart' | t }}</span>
+                          </a>
+                        </li>
+                        <li class="wishlist">
+                          <a href="#" class="hover-tooltip box-icon js-add-to-wishlist" data-product-handle="{{ product.handle }}">
+                            <span class="icon icon-heart2"></span>
+                            <span class="tooltip">{{ 'products.product.add_to_wishlist' | t }}</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#" class="hover-tooltip box-icon quickview js-quick-view" data-product-handle="{{ product.handle }}">
+                            <span class="icon icon-view"></span>
+                            <span class="tooltip">{{ 'products.product.quick_view' | t }}</span>
+                          </a>
+                        </li>
+                        <li class="compare">
+                          <a href="#" class="hover-tooltip box-icon js-add-to-compare" data-product-handle="{{ product.handle }}">
+                            <span class="icon icon-compare"></span>
+                            <span class="tooltip">{{ 'products.product.add_to_compare' | t }}</span>
+                          </a>
+                        </li>
+                      </ul>
+
+                      {% if product.variants.size > 1 %}
+                        <ul class="size-box">
+                          {% for variant in product.variants %}
+                            {% if variant.available %}
+                              <li class="size-item text-xs text-white">{{ variant.title }}</li>
+                            {% endif %}
+                          {% endfor %}
+                        </ul>
+                      {% endif %}
+                    </div>
+
+                    <div class="card-product-info">
+                      <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
+                      <p class="price-wrap fw-medium">
+                        <span class="price-new {% if product.compare_at_price > product.price %}text-primary{% endif %}">
+                          {{ product.price | money }}
+                        </span>
+                        {% if product.compare_at_price > product.price %}
+                          <span class="price-old">{{ product.compare_at_price | money }}</span>
+                        {% endif %}
+                      </p>
+
+                      {% if product.variants.size > 1 and product.variants[0].option1 == 'Color' or product.variants[0].option1 == 'Colour' %}
+                        <ul class="list-color-product">
+                          {% for variant in product.variants %}
+                            {% if variant.available %}
+                              <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
+                                <span class="tooltip color-filter">{{ variant.title }}</span>
+                                <span class="swatch-value" style="background-color: {{ variant.title | handle }}"></span>
+                                {% if variant.image %}
+                                  <img class="lazyload" 
+                                       data-src="{{ variant.image | img_url: 'master' }}"
+                                       src="{{ variant.image | img_url: 'small' }}" 
+                                       alt="{{ variant.title | escape }}"
+                                       width="570"
+                                       height="760">
+                                {% endif %}
+                              </li>
+                            {% endif %}
+                          {% endfor %}
+                        </ul>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Tabs",
+  "settings": [
+    {
+      "type": "select",
+      "id": "default_tab",
+      "label": "Default Active Tab",
+      "options": [
+        {
+          "value": "seller",
+          "label": "Top Sellers"
+        },
+        {
+          "value": "onSale",
+          "label": "On Sale"
+        },
+        {
+          "value": "trending",
+          "label": "Trending"
+        }
+      ],
+      "default": "seller"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Product Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_title",
+          "label": "Tab Title",
+          "default": "Top Sellers"
+        },
+        {
+          "type": "text",
+          "id": "tab_id",
+          "label": "Tab ID",
+          "default": "seller"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "range",
+          "id": "products_limit",
+          "min": 4,
+          "max": 12,
+          "step": 4,
+          "default": 8,
+          "label": "Number of Products"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Tabs",
+      "blocks": [
+        {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Top Sellers",
+            "tab_id": "seller"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "tab_title": "On Sale",
+            "tab_id": "onSale"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Trending",
+            "tab_id": "trending"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+  // Initialize tabs
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add click handlers for add to cart, wishlist, quickview and compare
+    const addToCartButtons = document.querySelectorAll('.js-add-to-cart');
+    const addToWishlistButtons = document.querySelectorAll('.js-add-to-wishlist');
+    const quickViewButtons = document.querySelectorAll('.js-quick-view');
+    const addToCompareButtons = document.querySelectorAll('.js-add-to-compare');
+
+    // Add to cart functionality
+    addToCartButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const variantId = this.dataset.variantId;
+        // Add your cart addition logic here
+      });
+    });
+
+    // Add to wishlist functionality
+    addToWishlistButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const productHandle = this.dataset.productHandle;
+        // Add your wishlist logic here
+      });
+    });
+
+    // Quick view functionality
+    quickViewButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const productHandle = this.dataset.productHandle;
+        // Add your quick view logic here
+      });
+    });
+
+    // Add to compare functionality
+    addToCompareButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const productHandle = this.dataset.productHandle;
+        // Add your compare logic here
+      });
+    });
+  });
+{% endjavascript %} 
