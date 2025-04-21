@@ -140,6 +140,58 @@
           </div>
         </div>
       </section>
+    {%- when 'bicycle' -%}
+      <section>
+        <div class="container">
+          <div class="flat-title-v2 style-2 text-center justify-items-center wow fadeInUp">
+            <a href="{{ routes.collections_url }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.button_text }}</a>
+            <h4>
+              {{ section.settings.title | newline_to_br }}
+            </h4>
+          </div>
+        </div>
+        <div class="slider-layout-right">
+          <div dir="ltr" class="swiper tf-swiper tf-sw-right" data-swiper='{
+            "slidesPerView": 2,
+            "spaceBetween": 12,
+            "speed": 1000,
+            "observer": true,
+            "observeParents": true,
+            "slidesPerGroup": 2,
+            "pagination": { "el": ".sw-pagination-cls-2", "clickable": true },
+            "breakpoints": {
+              "768": { "slidesPerView": 2.7, "spaceBetween": 12, "slidesPerGroup": 2 },
+              "992": { "slidesPerView": 3.7, "spaceBetween": 24, "slidesPerGroup": 3 },
+              "1200": { "slidesPerView": 4.7, "spaceBetween": 24, "slidesPerGroup": 3}
+            }
+          }'>
+            <div class="swiper-wrapper">
+              {%- for block in section.blocks -%}
+                {%- assign collection = collections[block.settings.collection] -%}
+                <div class="swiper-slide" {{ block.shopify_attributes }}>
+                  <div class="wg-cls style-abs type-2 hover-img">
+                    <a href="{{ collection.url }}" class="image img-style d-block">
+                      {%- if collection.featured_image != blank -%}
+                        {{ collection.featured_image | image_url: width: 300 | image_tag:
+                          loading: 'lazy',
+                          width: 300,
+                          height: 300,
+                          class: 'lazyload',
+                          alt: collection.title
+                        }}
+                      {%- endif -%}
+                    </a>
+                    <div class="cls-btn text-center">
+                      <a href="{{ collection.url }}" class="tf-btn btn-cls btn-white hover-dark">{{ collection.title }}</a>
+                    </div>
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+            <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-2 justify-content-center"></div>
+          </div>
+        </div>
+      </section>
   {%- endcase -%}
 {%- endif -%}
 
@@ -159,6 +211,10 @@
         {
           "value": "layout2",
           "label": "Slider Layout"
+        },
+        {
+          "value": "bicycle",
+          "label": "Bicycle Layout"
         }
       ],
       "default": "layout1"
@@ -167,6 +223,12 @@
       "type": "text",
       "id": "title",
       "label": "Title",
+      "default": "Explore a variety of high-performance bikes\nbuilt for speed, durability, and adventure."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
       "default": "Categories"
     },
     {
