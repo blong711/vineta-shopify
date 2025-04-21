@@ -64,41 +64,209 @@
         "speed": 800
       }
     },
-    "banner": {
-      "type": "banner",
-      "settings": {}
-    },
-    "featured-collection": {
-      "type": "featured-collection",
+    "marquee_sale_rdpiJj": {
+      "type": "marquee-sale",
+      "blocks": {
+        "text_ycBxfz": {
+          "type": "text",
+          "settings": {
+            "text": "50% Off On Selected Items"
+          }
+        },
+        "text_4CT4kM": {
+          "type": "text",
+          "settings": {
+            "text": "New Arrival"
+          }
+        },
+        "text_VdUgic": {
+          "type": "text",
+          "settings": {
+            "text": "50% Off On Selected Items"
+          }
+        },
+        "text_p4X44M": {
+          "type": "text",
+          "settings": {
+            "text": "New Arrival"
+          }
+        }
+      },
+      "block_order": [
+        "text_ycBxfz",
+        "text_4CT4kM",
+        "text_VdUgic",
+        "text_p4X44M"
+      ],
       "settings": {
-        "layout": "default",
-        "speed": 800
+        "background_color": "#E8F5E9"
       }
     },
-    "icon-boxes": {
-      "type": "icon-boxes",
+    "categories_BpWrEg": {
+      "type": "categories",
+      "blocks": {
+        "category_yNh79B": {
+          "type": "category",
+          "settings": {
+            "collection": "accessories"
+          }
+        },
+        "category_3PPaDt": {
+          "type": "category",
+          "settings": {
+            "collection": "baby"
+          }
+        },
+        "category_6x67jX": {
+          "type": "category",
+          "settings": {
+            "collection": "bike"
+          }
+        },
+        "category_CipyKY": {
+          "type": "category",
+          "settings": {
+            "collection": "fruit"
+          }
+        },
+        "category_8HqDRH": {
+          "type": "category",
+          "settings": {
+            "collection": "houseware"
+          }
+        },
+        "category_V4BzTc": {
+          "type": "category",
+          "settings": {
+            "collection": "men"
+          }
+        },
+        "category_bGLACU": {
+          "type": "category",
+          "settings": {
+            "collection": "women"
+          }
+        }
+      },
+      "block_order": [
+        "category_yNh79B",
+        "category_3PPaDt",
+        "category_6x67jX",
+        "category_CipyKY",
+        "category_8HqDRH",
+        "category_V4BzTc",
+        "category_bGLACU"
+      ],
       "settings": {
-        "layout": "default",
-        "slides_per_view_mobile": 2,
-        "slides_per_view_tablet": 3,
-        "slides_per_view_desktop": 4,
-        "space_between": 10,
-        "show_pagination": true
+        "layout": "layout2",
+        "title": "Categories",
+        "button_text": "Categories",
+        "products_to_show": 6,
+        "products_per_collection": 6
       }
     },
-    "testimonials": {
-      "type": "testimonials",
+    "top_picks_kkPz79": {
+      "type": "top-picks",
+      "blocks": {
+        "product_hPCdGR": {
+          "type": "product",
+          "settings": {
+            "product": "accurist-mens-accurist-london",
+            "show_sale_badge": false,
+            "sale_badge_text": "20% Off",
+            "show_trending_badge": false,
+            "trending_badge_text": "Trending",
+            "show_color_swatches": false,
+            "show_size_swatches": false,
+            "size_swatches": "",
+            "show_countdown": false,
+            "countdown_timer": "86400"
+          }
+        },
+        "product_TWVBWy": {
+          "type": "product",
+          "settings": {
+            "product": "aclla-cress",
+            "show_sale_badge": false,
+            "sale_badge_text": "20% Off",
+            "show_trending_badge": false,
+            "trending_badge_text": "Trending",
+            "show_color_swatches": false,
+            "show_size_swatches": false,
+            "size_swatches": "",
+            "show_countdown": false,
+            "countdown_timer": "86400"
+          }
+        },
+        "product_jFnnW9": {
+          "type": "product",
+          "settings": {
+            "product": "aloe-arborescens",
+            "show_sale_badge": false,
+            "sale_badge_text": "20% Off",
+            "show_trending_badge": false,
+            "trending_badge_text": "Trending",
+            "show_color_swatches": false,
+            "show_size_swatches": false,
+            "size_swatches": "",
+            "show_countdown": false,
+            "countdown_timer": "86400"
+          }
+        },
+        "product_EidjTm": {
+          "type": "product",
+          "settings": {
+            "product": "annurca-apples",
+            "show_sale_badge": false,
+            "sale_badge_text": "20% Off",
+            "show_trending_badge": false,
+            "trending_badge_text": "Trending",
+            "show_color_swatches": false,
+            "show_size_swatches": false,
+            "size_swatches": "",
+            "show_countdown": false,
+            "countdown_timer": "86400"
+          }
+        },
+        "product_K7y4wr": {
+          "type": "product",
+          "settings": {
+            "product": "apples-granny",
+            "show_sale_badge": false,
+            "sale_badge_text": "20% Off",
+            "show_trending_badge": false,
+            "trending_badge_text": "Trending",
+            "show_color_swatches": false,
+            "show_size_swatches": false,
+            "size_swatches": "",
+            "show_countdown": false,
+            "countdown_timer": "86400"
+          }
+        }
+      },
+      "block_order": [
+        "product_hPCdGR",
+        "product_TWVBWy",
+        "product_jFnnW9",
+        "product_EidjTm",
+        "product_K7y4wr"
+      ],
       "settings": {
         "layout": "default",
-        "title": "Happy Customers"
+        "title": "Top Picks You'll Love",
+        "description": "Explore our most popular pieces that customers can't get enough of",
+        "spacing": "flat-spacing-8",
+        "background_color": "bg-surface",
+        "show_view_all": true,
+        "view_all_link": "",
+        "view_all_text": "View all"
       }
     }
   },
   "order": [
     "main_slider_X9TD4H",
-    "banner",
-    "featured-collection",
-    "icon-boxes",
-    "testimonials"
+    "marquee_sale_rdpiJj",
+    "categories_BpWrEg",
+    "top_picks_kkPz79"
   ]
 }
