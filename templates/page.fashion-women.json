@@ -95,10 +95,235 @@
         "layout": "home-fashion-women",
         "speed": 800
       }
+    },
+    "top_sellers_VRntpt": {
+      "type": "top-sellers",
+      "blocks": {
+        "tab_8eJMKV": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Top Sellers",
+            "tab_id": "seller",
+            "collection": "accessories",
+            "products_limit": 8
+          }
+        },
+        "tab_YzCVPR": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "On Sale",
+            "tab_id": "onSale",
+            "collection": "men",
+            "products_limit": 8
+          }
+        },
+        "tab_88tiNi": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Trending",
+            "tab_id": "trending",
+            "collection": "women",
+            "products_limit": 8
+          }
+        }
+      },
+      "block_order": [
+        "tab_8eJMKV",
+        "tab_YzCVPR",
+        "tab_88tiNi"
+      ],
+      "settings": {
+        "default_tab": "seller"
+      }
+    },
+    "banner_text_nDkprB": {
+      "type": "banner-text",
+      "blocks": {
+        "lookbook_PVzLw9": {
+          "type": "lookbook",
+          "settings": {
+            "product": "accurist-mens-accurist-london"
+          }
+        }
+      },
+      "block_order": [
+        "lookbook_PVzLw9"
+      ],
+      "settings": {
+        "layout": "default",
+        "banner_product": "accurist-mens-accurist-london",
+        "banner_link": "",
+        "title": "Elevating Your Style Journey",
+        "description": "Discover timeless pieces that define elegance and sophistication.",
+        "button_text": "Shop Now",
+        "button_link": ""
+      }
+    },
+    "testimonials_Xi7XPL": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial_tNJqqH": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Emily T.",
+            "image": "shopify://shop_images/tes-women.jpg",
+            "testimonial_image": "shopify://shop_images/tes-women.jpg",
+            "product": "Crop T-shirt",
+            "product_url": "",
+            "price": "$150.00",
+            "review": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!",
+            "title": "Elegance and Comfort Combined"
+          }
+        },
+        "testimonial_eMRM8h": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Emily T.",
+            "image": "shopify://shop_images/tes-women2.jpg",
+            "testimonial_image": "shopify://shop_images/tes-women2.jpg",
+            "product": "Crop T-shirt",
+            "product_url": "",
+            "price": "$150.00",
+            "review": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!",
+            "title": "Elegance and Comfort Combined"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_tNJqqH",
+        "testimonial_eMRM8h"
+      ],
+      "settings": {
+        "layout": "home-fashion-women",
+        "title": "Happy Customers"
+      }
+    },
+    "brands_4Uwhrt": {
+      "type": "brands",
+      "blocks": {
+        "brand_mCqf8K": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/zara_ccd5e03e-bbd2-4263-8def-f6c7b77767ab.png",
+            "brand_link": ""
+          }
+        },
+        "brand_NCttaQ": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/bear.png",
+            "brand_link": ""
+          }
+        },
+        "brand_4UXjJQ": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/vogue.png",
+            "brand_link": ""
+          }
+        },
+        "brand_aFyGnn": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/forever.png",
+            "brand_link": ""
+          }
+        },
+        "brand_hxJbeP": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/burberry.png",
+            "brand_link": ""
+          }
+        },
+        "brand_YxchfL": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/nike.png",
+            "brand_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_mCqf8K",
+        "brand_NCttaQ",
+        "brand_4UXjJQ",
+        "brand_aFyGnn",
+        "brand_hxJbeP",
+        "brand_YxchfL"
+      ],
+      "settings": {
+        "speed": 80,
+        "style": "left",
+        "clone": 2
+      }
+    },
+    "shop_gram_c7w3Dq": {
+      "type": "shop-gram",
+      "settings": {
+        "title": "Shop by @Gram"
+      }
+    },
+    "icon_boxes_yaaQjQ": {
+      "type": "icon-boxes",
+      "blocks": {
+        "icon_box_TNVCwp": {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-shipping",
+            "title": "Free Shipping",
+            "description": "Enjoy free shipping on all orders"
+          }
+        },
+        "icon_box_EiWbVM": {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-gift",
+            "title": "Gift Package",
+            "description": "Perfectly packaged for gifting"
+          }
+        },
+        "icon_box_TY9kzY": {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-return",
+            "title": "Free Returns",
+            "description": "Within 14 days for a return"
+          }
+        },
+        "icon_box_iKEiMP": {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-support",
+            "title": "Support Online",
+            "description": "We support customers 24/7"
+          }
+        }
+      },
+      "block_order": [
+        "icon_box_TNVCwp",
+        "icon_box_EiWbVM",
+        "icon_box_TY9kzY",
+        "icon_box_iKEiMP"
+      ],
+      "settings": {
+        "layout": "default",
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "space_between": 10,
+        "show_pagination": true
+      }
     }
   },
   "order": [
     "main_slider_LxBrpH",
-    "featured_collection_KC9ne3"
+    "featured_collection_KC9ne3",
+    "top_sellers_VRntpt",
+    "banner_text_nDkprB",
+    "testimonials_Xi7XPL",
+    "brands_4Uwhrt",
+    "shop_gram_c7w3Dq",
+    "icon_boxes_yaaQjQ"
   ]
 }
