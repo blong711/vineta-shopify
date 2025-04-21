@@ -7,7 +7,24 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
-  "sections": {},
-  "order": []
+{
+  "sections": {
+    "slider-fashion": {
+      "type": "slider-fashion",
+      "settings": {}
+    },
+    "categories": {
+      "type": "categories",
+      "settings": {}
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {}
+    },
+    "latest-tips": {
+      "type": "latest-tips",
+      "settings": {}
+    }
+  },
+  "order": ["slider-fashion", "categories", "featured-collection", "latest-tips"]
 }

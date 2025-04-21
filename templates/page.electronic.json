@@ -8,6 +8,23 @@
  * ------------------------------------------------------------
  */
 {
-  "sections": {},
-  "order": []
+  "sections": {
+    "banner": {
+      "type": "banner",
+      "settings": {}
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {}
+    },
+    "icon-boxes": {
+      "type": "icon-boxes",
+      "settings": {}
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {}
+    }
+  },
+  "order": ["banner", "featured-collection", "icon-boxes", "testimonials"]
 }

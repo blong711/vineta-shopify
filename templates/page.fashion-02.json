@@ -7,7 +7,24 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
-  "sections": {},
-  "order": []
+{
+  "sections": {
+    "banner-text": {
+      "type": "banner-text",
+      "settings": {}
+    },
+    "collection": {
+      "type": "collection",
+      "settings": {}
+    },
+    "top-picks": {
+      "type": "top-picks",
+      "settings": {}
+    },
+    "brands": {
+      "type": "brands",
+      "settings": {}
+    }
+  },
+  "order": ["banner-text", "collection", "top-picks", "brands"]
 }

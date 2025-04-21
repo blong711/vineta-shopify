@@ -7,7 +7,24 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
-  "sections": {},
-  "order": []
+{
+  "sections": {
+    "bicycle-banner": {
+      "type": "bicycle-banner",
+      "settings": {}
+    },
+    "bicycle-categories": {
+      "type": "bicycle-categories",
+      "settings": {}
+    },
+    "bicycle-gear-up": {
+      "type": "bicycle-gear-up",
+      "settings": {}
+    },
+    "bicycle-latest-tips": {
+      "type": "bicycle-latest-tips",
+      "settings": {}
+    }
+  },
+  "order": ["bicycle-banner", "bicycle-categories", "bicycle-gear-up", "bicycle-latest-tips"]
 }
