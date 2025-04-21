@@ -95,10 +95,51 @@
         "layout": "home-fashion-women",
         "speed": 800
       }
+    },
+    "top_sellers_VRntpt": {
+      "type": "top-sellers",
+      "blocks": {
+        "tab_8eJMKV": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Top Sellers",
+            "tab_id": "seller",
+            "collection": "accessories",
+            "products_limit": 8
+          }
+        },
+        "tab_YzCVPR": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "On Sale",
+            "tab_id": "onSale",
+            "collection": "men",
+            "products_limit": 8
+          }
+        },
+        "tab_88tiNi": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Trending",
+            "tab_id": "trending",
+            "collection": "women",
+            "products_limit": 8
+          }
+        }
+      },
+      "block_order": [
+        "tab_8eJMKV",
+        "tab_YzCVPR",
+        "tab_88tiNi"
+      ],
+      "settings": {
+        "default_tab": "seller"
+      }
     }
   },
   "order": [
     "main_slider_LxBrpH",
-    "featured_collection_KC9ne3"
+    "featured_collection_KC9ne3",
+    "top_sellers_VRntpt"
   ]
 }
