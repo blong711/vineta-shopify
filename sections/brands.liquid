@@ -1,160 +1,113 @@
-<div class="flat-spacing-2">
-  <div class="container">
-    {%- if section.settings.title != blank -%}
-      <div class="flat-title wow fadeInUp">
-        <h4 class="title">{{ section.settings.title }}</h4>
-      </div>
-    {%- endif -%}
-    {%- if section.blocks.size > 0 -%}
-      <div class="infiniteslide tf-brand" 
-           data-clone="{{ section.settings.clone_count }}" 
-           data-style="{{ section.settings.animation_direction }}" 
-           data-speed="{{ section.settings.animation_speed }}">
-        {%- for block in section.blocks -%}
-          {%- if block.settings.logo != blank -%}
-            <div class="brand-item" {{ block.shopify_attributes }}>
-              {%- if block.settings.link != blank -%}
-                <a href="{{ block.settings.link }}" target="_blank" rel="noopener">
-              {%- endif -%}
-                <img src="{{ block.settings.logo | img_url: 'master' }}"
-                     alt="{{ block.settings.logo.alt | escape | default: block.settings.brand_name }}"
-                     loading="lazy"
-                     width="{{ block.settings.logo.width }}"
-                     height="{{ block.settings.logo.height }}">
-              {%- if block.settings.link != blank -%}
-                </a>
-              {%- endif -%}
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
-        {%- comment -%} Clone blocks for infinite scroll effect {%- endcomment -%}
-        {%- for block in section.blocks -%}
-          {%- if block.settings.logo != blank -%}
-            <div class="brand-item">
-              {%- if block.settings.link != blank -%}
-                <a href="{{ block.settings.link }}" target="_blank" rel="noopener">
-              {%- endif -%}
-                <img src="{{ block.settings.logo | img_url: 'master' }}"
-                     alt="{{ block.settings.logo.alt | escape | default: block.settings.brand_name }}"
-                     loading="lazy"
-                     width="{{ block.settings.logo.width }}"
-                     height="{{ block.settings.logo.height }}">
-              {%- if block.settings.link != blank -%}
-                </a>
-              {%- endif -%}
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-    {%- endif -%}
-  </div>
-</div>
-
 {% schema %}
-{
-  "name": "Brands",
-  "settings": [
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Section Title",
-      "default": "Our Brands"
-    },
-    {
-      "type": "header",
-      "content": "Animation Settings"
-    },
-    {
-      "type": "range",
-      "id": "animation_speed",
-      "min": 10,
-      "max": 120,
-      "step": 5,
-      "unit": "s",
-      "label": "Animation Speed",
-      "default": 20
-    },
-    {
-      "type": "select",
-      "id": "animation_direction",
-      "label": "Animation Direction",
-      "options": [
-        {
-          "value": "left",
-          "label": "Left to Right"
-        },
-        {
-          "value": "right",
-          "label": "Right to Left"
-        }
-      ],
-      "default": "left"
-    },
-    {
-      "type": "range",
-      "id": "clone_count",
-      "min": 1,
-      "max": 3,
-      "step": 1,
-      "label": "Number of Clones",
-      "default": 2,
-      "info": "Number of times to clone the brand list for infinite scroll"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "brand",
-      "name": "Brand Logo",
-      "settings": [
-        {
-          "type": "text",
-          "id": "brand_name",
-          "label": "Brand Name",
-          "info": "Used for alt text if no logo is uploaded"
-        },
-        {
-          "type": "image_picker",
-          "id": "logo",
-          "label": "Brand Logo"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Brand Link"
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Brand Slider",
-      "settings": {
-        "title": "Our Brands",
-        "animation_speed": 20,
-        "animation_direction": "left",
-        "clone_count": 2
+  {
+    "name": "Brand",
+    "settings": [
+      {
+        "type": "range",
+        "id": "speed",
+        "min": 20,
+        "max": 200,
+        "step": 10,
+        "unit": "ms",
+        "label": "Slider speed",
+        "default": 80
       },
-      "blocks": [
-        {
-          "type": "brand"
-        },
-        {
-          "type": "brand"
-        },
-        {
-          "type": "brand"
-        },
-        {
-          "type": "brand"
-        },
-        {
-          "type": "brand"
-        },
-        {
-          "type": "brand"
-        }
-      ]
-    }
-  ]
-}
-{% endschema %}
+      {
+        "type": "select",
+        "id": "style",
+        "label": "Slider style",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ],
+        "default": "left"
+      },
+      {
+        "type": "range",
+        "id": "clone",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "label": "Number of clones",
+        "default": 2
+      }
+    ],
+    "blocks": [
+      {
+        "type": "brand",
+        "name": "Brand",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "brand_image",
+            "label": "Brand image"
+          },
+          {
+            "type": "url",
+            "id": "brand_link",
+            "label": "Brand link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Brand",
+        "blocks": [
+          {
+            "type": "brand"
+          },
+          {
+            "type": "brand"
+          },
+          {
+            "type": "brand"
+          },
+          {
+            "type": "brand"
+          },
+          {
+            "type": "brand"
+          },
+          {
+            "type": "brand"
+          }
+        ]
+      }
+    ]
+  }
+  {% endschema %}
+  
+  <div class="flat-spacing-2">
+    <div class="container">
+      <div class="infiniteslide tf-brand" data-clone="{{ section.settings.clone }}" data-style="{{ section.settings.style }}" data-speed="{{ section.settings.speed }}">
+        {% for block in section.blocks %}
+          <div class="brand-item" {{ block.shopify_attributes }}>
+            {% if block.settings.brand_link != blank %}
+              <a href="{{ block.settings.brand_link }}">
+            {% endif %}
+              {% if block.settings.brand_image != blank %}
+                <img 
+                  src="{{ block.settings.brand_image | img_url: 'master' }}" 
+                  alt="{{ block.settings.brand_image.alt | escape }}"
+                  width="{{ block.settings.brand_image.width }}"
+                  height="{{ block.settings.brand_image.height }}"
+                  loading="lazy"
+                >
+              {% else %}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {% endif %}
+            {% if block.settings.brand_link != blank %}
+              </a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div> 
