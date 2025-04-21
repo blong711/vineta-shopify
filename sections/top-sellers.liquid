@@ -26,7 +26,9 @@
                  id="{{ tab.settings.tab_id }}" 
                  role="tabpanel">
               <div class="tf-grid-layout tf-col-2 md-col-3 xl-col-4">
-                {% for product in tab.settings.products %}
+                {%- assign collection = collections[tab.settings.collection] -%}
+                {%- assign product_limit = tab.settings.products_limit | default: 8 -%}
+                {% for product in collection.products limit: product_limit %}
                   <div class="card-product card-product-size style-2">
                     <div class="card-product-wrapper">
                       <a href="{{ product.url }}" class="product-img">
