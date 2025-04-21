@@ -61,8 +61,10 @@
             "settings": {
               "menu": "main-menu",
               "show_product_cards": true,
+              "product_image_1": "shopify://shop_images/5711707751_2_1_1.jpg",
               "product_title_1": "Men",
               "product_url_1": "",
+              "product_image_2": "shopify://shop_images/5713200620_2_2_1.jpg",
               "product_title_2": "Women",
               "product_url_2": "",
               "product_title_3": "Accessories",
@@ -174,6 +176,70 @@
       },
       "footer": {
         "type": "footer",
+        "blocks": {
+          "social_gEpbTt": {
+            "type": "social",
+            "settings": {
+              "platform": "fb",
+              "url": ""
+            }
+          },
+          "social_PCTNrA": {
+            "type": "social",
+            "settings": {
+              "platform": "instagram",
+              "url": ""
+            }
+          },
+          "social_crJEMa": {
+            "type": "social",
+            "settings": {
+              "platform": "linkedin",
+              "url": ""
+            }
+          },
+          "social_xLynxq": {
+            "type": "social",
+            "settings": {
+              "platform": "x",
+              "url": ""
+            }
+          },
+          "contact_N9LARX": {
+            "type": "contact",
+            "settings": {
+              "title": "Business Contact",
+              "address": "123 Yarran st, Punchbowl, NSW 2196, Australia",
+              "phone": "(64) 8342 1245",
+              "email": "support@example.com",
+              "map_link": ""
+            }
+          },
+          "newsletter_EnAWti": {
+            "type": "newsletter",
+            "settings": {
+              "title": "Subscribe Newsletter",
+              "text": "We invite you to register to read the latest news, offers and events about our company. We promise not spam your inbox.",
+              "placeholder": "Email address"
+            }
+          },
+          "menu_VPt34e": {
+            "type": "menu",
+            "settings": {
+              "title": "About Us",
+              "menu": ""
+            }
+          }
+        },
+        "block_order": [
+          "social_gEpbTt",
+          "social_PCTNrA",
+          "social_crJEMa",
+          "social_xLynxq",
+          "contact_N9LARX",
+          "newsletter_EnAWti",
+          "menu_VPt34e"
+        ],
         "settings": {
           "show_payment_icons": true
         }
