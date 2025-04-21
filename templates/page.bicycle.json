@@ -9,22 +9,70 @@
  */
 {
   "sections": {
-    "bicycle-banner": {
-      "type": "bicycle-banner",
-      "settings": {}
+    "main_slider_6k8JMr": {
+      "type": "main-slider",
+      "blocks": {
+        "slide_6KCgL4": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/slider-bicycle-1_34871707-4970-4fa5-a9de-07d832cb4488.jpg",
+            "image_position": "left",
+            "content_position": "left",
+            "subtitle": "SUMMER COLLECTION",
+            "heading": "Adventure Awaits",
+            "subheading": "Discover the latest trends in fashion that speak your style.",
+            "button_text": "Shop Now",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_6KCgL4"
+      ],
+      "settings": {
+        "layout": "bicycle",
+        "autoplay": true,
+        "loop": true,
+        "speed": 800
+      }
     },
     "bicycle-categories": {
       "type": "bicycle-categories",
-      "settings": {}
+      "settings": {
+        "categories_text": "Categories",
+        "categories_link": "",
+        "heading": "Explore a variety of high-performance bikes, built for speed, durability, and adventure."
+      }
     },
     "bicycle-gear-up": {
       "type": "bicycle-gear-up",
-      "settings": {}
+      "settings": {
+        "gear_up_text": "Gear Up",
+        "gear_up_link": "",
+        "heading": "Top-quality equipment for all your cycling needs"
+      }
     },
     "bicycle-latest-tips": {
       "type": "bicycle-latest-tips",
-      "settings": {}
+      "settings": {
+        "blog_text": "OUR BLOG",
+        "blog_link": "",
+        "title": "Ride the Future: E-Bike Insights & Trends",
+        "slides_per_view_mobile": 1,
+        "space_between_mobile": 12,
+        "slides_per_view_tablet": 2,
+        "space_between_tablet": 12,
+        "slides_per_view_desktop": 3,
+        "space_between_desktop": 24,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
-  "order": ["bicycle-banner", "bicycle-categories", "bicycle-gear-up", "bicycle-latest-tips"]
+  "order": [
+    "main_slider_6k8JMr",
+    "bicycle-categories",
+    "bicycle-gear-up",
+    "bicycle-latest-tips"
+  ]
 }
