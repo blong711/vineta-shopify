@@ -16,6 +16,9 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/slider-fashion-1.png",
+            "image_position": "left",
+            "content_position": "left",
+            "subtitle": "SUMMER COLLECTION",
             "heading": "StyleRedefined",
             "subheading": "Discover the latest trends in fashion that speak your style.",
             "button_text": "Shop Collection",
@@ -26,6 +29,9 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/slider-fashion-2.png",
+            "image_position": "left",
+            "content_position": "left",
+            "subtitle": "SUMMER COLLECTION",
             "heading": "EleganceRedefined",
             "subheading": "Discover timeless styles for every occasion.",
             "button_text": "Shop Collection",
@@ -36,6 +42,9 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/slider-fashion-3.png",
+            "image_position": "left",
+            "content_position": "left",
+            "subtitle": "SUMMER COLLECTION",
             "heading": "Elevate YourWardrobe",
             "subheading": "Timeless pieces to refresh your look for every season.",
             "button_text": "Shop Collection",
@@ -51,7 +60,8 @@
       "settings": {
         "layout": "fade",
         "autoplay": true,
-        "autoplay_speed": 5000
+        "loop": true,
+        "speed": 800
       }
     },
     "featured_collection": {
@@ -82,7 +92,8 @@
         "collection_eXrWLV"
       ],
       "settings": {
-        "collections_to_show": 3
+        "layout": "default",
+        "speed": 800
       }
     },
     "best_sellers": {
@@ -141,19 +152,45 @@
     "banner_countdown": {
       "type": "banner-countdown",
       "blocks": {
-        "banner_1": {
-          "type": "banner",
+        "season_text_Nm6t3F": {
+          "type": "season_text",
           "settings": {
-            "title": "SUMMER SALE",
-            "text": "50% OFF",
-            "countdown_date": "2025/12/31",
-            "button_text": "Shop Now",
+            "text": "SUMMER SALE"
+          }
+        },
+        "heading_WLAqBn": {
+          "type": "heading",
+          "settings": {
+            "text": "50% OFF"
+          }
+        },
+        "promo_code_DD47CT": {
+          "type": "promo_code",
+          "settings": {
+            "text": "12D34E"
+          }
+        },
+        "countdown_WdF7DF": {
+          "type": "countdown",
+          "settings": {
+            "show_countdown": true,
+            "end_date": "2025-12-31 23:59:59"
+          }
+        },
+        "button_cyz8ge": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop Now",
             "button_link": ""
           }
         }
       },
       "block_order": [
-        "banner_1"
+        "season_text_Nm6t3F",
+        "heading_WLAqBn",
+        "promo_code_DD47CT",
+        "countdown_WdF7DF",
+        "button_cyz8ge"
       ],
       "settings": {
         "show_section": true,
@@ -183,6 +220,7 @@
       "settings": {
         "layout": "layout1",
         "title": "Categories",
+        "button_text": "Categories",
         "products_to_show": 6,
         "products_per_collection": 6
       }
@@ -246,25 +284,49 @@
         "testimonial_E9TjUd": {
           "type": "testimonial",
           "settings": {
-            "product": "crop t-shirt"
+            "name": "Emily T.",
+            "image": "shopify://shop_images/author-fs1.jpg",
+            "product": "crop t-shirt",
+            "product_url": "",
+            "price": "$150.00",
+            "review": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!",
+            "title": "Elegance and Comfort Combined"
           }
         },
         "testimonial_YpirLf": {
           "type": "testimonial",
           "settings": {
-            "product": "crop t-shirt"
+            "name": "Emily T.",
+            "image": "shopify://shop_images/author-fs1.jpg",
+            "product": "crop t-shirt",
+            "product_url": "",
+            "price": "$150.00",
+            "review": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!",
+            "title": "Elegance and Comfort Combined"
           }
         },
         "testimonial_cqcA37": {
           "type": "testimonial",
           "settings": {
-            "product": "crop t-shirt"
+            "name": "Emily T.",
+            "image": "shopify://shop_images/author-fs1.jpg",
+            "product": "crop t-shirt",
+            "product_url": "",
+            "price": "$150.00",
+            "review": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!",
+            "title": "Elegance and Comfort Combined"
           }
         },
         "testimonial_DJyhG9": {
           "type": "testimonial",
           "settings": {
-            "product": "crop t-shirt"
+            "name": "Emily T.",
+            "image": "shopify://shop_images/author-fs1.jpg",
+            "product": "crop t-shirt",
+            "product_url": "",
+            "price": "$150.00",
+            "review": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!",
+            "title": "Elegance and Comfort Combined"
           }
         }
       },
@@ -275,13 +337,72 @@
         "testimonial_DJyhG9"
       ],
       "settings": {
+        "layout": "default",
         "title": "Happy Customers"
       }
     },
     "brands": {
       "type": "brands",
+      "blocks": {
+        "brand_THgM68": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "",
+            "logo": "shopify://shop_images/asos.png",
+            "link": ""
+          }
+        },
+        "brand_6gcnTQ": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "",
+            "logo": "shopify://shop_images/zara_ccd5e03e-bbd2-4263-8def-f6c7b77767ab.png",
+            "link": ""
+          }
+        },
+        "brand_j4HkJY": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "",
+            "logo": "shopify://shop_images/bear.png",
+            "link": ""
+          }
+        },
+        "brand_YYhiKG": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "",
+            "logo": "shopify://shop_images/nike.png",
+            "link": ""
+          }
+        },
+        "brand_f9DGhH": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "",
+            "logo": "shopify://shop_images/burberry.png",
+            "link": ""
+          }
+        },
+        "brand_trgKmc": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "",
+            "logo": "shopify://shop_images/elle.png",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_THgM68",
+        "brand_6gcnTQ",
+        "brand_j4HkJY",
+        "brand_YYhiKG",
+        "brand_f9DGhH",
+        "brand_trgKmc"
+      ],
       "settings": {
-        "title": "Our Brands",
+        "title": "",
         "animation_speed": 20,
         "animation_direction": "left",
         "clone_count": 2
@@ -299,37 +420,33 @@
         "icon_box_cLrNmV": {
           "type": "icon_box",
           "settings": {
-            "style": "1",
             "icon": "icon-shipping",
             "title": "Free Shipping",
-            "text": "Enjoy free shipping on all orders"
+            "description": "Enjoy free shipping on all orders"
           }
         },
         "icon_box_tRqHJe": {
           "type": "icon_box",
           "settings": {
-            "style": "1",
             "icon": "icon-gift",
             "title": "Gift Package",
-            "text": "Perfectly packaged for gifting"
+            "description": "Enjoy free shipping on all orders"
           }
         },
         "icon_box_3AmNEz": {
           "type": "icon_box",
           "settings": {
-            "style": "1",
             "icon": "icon-return",
             "title": "Free Returns",
-            "text": "Within 14 days for a return"
+            "description": "Enjoy free shipping on all orders"
           }
         },
         "icon_box_rGRkRX": {
           "type": "icon_box",
           "settings": {
-            "style": "1",
             "icon": "icon-support",
             "title": "Support Online",
-            "text": "We support customers 24/7"
+            "description": "Enjoy free shipping on all orders"
           }
         }
       },
@@ -340,8 +457,12 @@
         "icon_box_rGRkRX"
       ],
       "settings": {
-        "title": "",
-        "boxes_to_show": 4
+        "layout": "default",
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "space_between": 10,
+        "show_pagination": true
       }
     }
   },
