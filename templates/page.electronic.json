@@ -9,22 +9,96 @@
  */
 {
   "sections": {
+    "main_slider_X9TD4H": {
+      "type": "main-slider",
+      "blocks": {
+        "slide_3BA9Ka": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/slider-electronic-1.png",
+            "image_position": "left",
+            "content_position": "left",
+            "subtitle": "APPLE WATCHES COLLECTION",
+            "heading": "Sale up to  15% Off",
+            "subheading": "Discover the latest trends in fashion that speak your style.",
+            "button_text": "Shop Now",
+            "button_link": ""
+          }
+        },
+        "slide_xkUpFP": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/slider-electronic-2.png",
+            "image_position": "left",
+            "content_position": "left",
+            "subtitle": "APPLE MAGSAFE CHARGER",
+            "heading": "Next-Level Tech",
+            "subheading": "Discover the latest trends in fashion that speak your style.",
+            "button_text": "Shop Now",
+            "button_link": ""
+          }
+        },
+        "slide_jr9ycA": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/slider-electronic-3.png",
+            "image_position": "left",
+            "content_position": "left",
+            "subtitle": "ON-EAR HEADPHONES",
+            "heading": "Power Up Your Life",
+            "subheading": "Discover the latest trends in fashion that speak your style.",
+            "button_text": "Shop Now",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_3BA9Ka",
+        "slide_xkUpFP",
+        "slide_jr9ycA"
+      ],
+      "settings": {
+        "layout": "home-electronic",
+        "autoplay": true,
+        "loop": true,
+        "speed": 800
+      }
+    },
     "banner": {
       "type": "banner",
       "settings": {}
     },
     "featured-collection": {
       "type": "featured-collection",
-      "settings": {}
+      "settings": {
+        "layout": "default",
+        "speed": 800
+      }
     },
     "icon-boxes": {
       "type": "icon-boxes",
-      "settings": {}
+      "settings": {
+        "layout": "default",
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "space_between": 10,
+        "show_pagination": true
+      }
     },
     "testimonials": {
       "type": "testimonials",
-      "settings": {}
+      "settings": {
+        "layout": "default",
+        "title": "Happy Customers"
+      }
     }
   },
-  "order": ["banner", "featured-collection", "icon-boxes", "testimonials"]
+  "order": [
+    "main_slider_X9TD4H",
+    "banner",
+    "featured-collection",
+    "icon-boxes",
+    "testimonials"
+  ]
 }
