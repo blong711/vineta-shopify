@@ -9,22 +9,96 @@
  */
 {
   "sections": {
-    "slider-fashion": {
-      "type": "slider-fashion",
-      "settings": {}
+    "main_slider_LxBrpH": {
+      "type": "main-slider",
+      "blocks": {
+        "slide_y4DUC8": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/woman-1.png",
+            "image_position": "left",
+            "content_position": "left",
+            "subtitle": "SUMMER COLLECTION",
+            "heading": "Everyday Essentials",
+            "subheading": "Versatile pieces for all-day style",
+            "button_text": "Shop Collection",
+            "button_link": ""
+          }
+        },
+        "slide_D4hkwY": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/woman-2.png",
+            "image_position": "left",
+            "content_position": "left",
+            "subtitle": "SUMMER COLLECTION",
+            "heading": "Bold and Beautiful",
+            "subheading": "Stand out with chic, trend-setting women’s fashion.",
+            "button_text": "Shop Now",
+            "button_link": ""
+          }
+        },
+        "slide_yWQ7aN": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/woman-3.png",
+            "image_position": "left",
+            "content_position": "left",
+            "subtitle": "SUMMER COLLECTION",
+            "heading": "Feminine Elegance",
+            "subheading": "Find the perfect outfit for any occasion.",
+            "button_text": "Shop Now",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_y4DUC8",
+        "slide_D4hkwY",
+        "slide_yWQ7aN"
+      ],
+      "settings": {
+        "layout": "fashion-women",
+        "autoplay": true,
+        "loop": true,
+        "speed": 800
+      }
     },
-    "categories": {
-      "type": "categories",
-      "settings": {}
-    },
-    "featured-collection": {
+    "featured_collection_KC9ne3": {
       "type": "featured-collection",
-      "settings": {}
-    },
-    "latest-tips": {
-      "type": "latest-tips",
-      "settings": {}
+      "blocks": {
+        "collection_eKx9Ri": {
+          "type": "collection",
+          "settings": {
+            "collection": "men"
+          }
+        },
+        "collection_XPFDwG": {
+          "type": "collection",
+          "settings": {
+            "collection": "women"
+          }
+        },
+        "collection_tTJMpq": {
+          "type": "collection",
+          "settings": {
+            "collection": "baby"
+          }
+        }
+      },
+      "block_order": [
+        "collection_eKx9Ri",
+        "collection_XPFDwG",
+        "collection_tTJMpq"
+      ],
+      "settings": {
+        "layout": "home-fashion-women",
+        "speed": 800
+      }
     }
   },
-  "order": ["slider-fashion", "categories", "featured-collection", "latest-tips"]
+  "order": [
+    "main_slider_LxBrpH",
+    "featured_collection_KC9ne3"
+  ]
 }
