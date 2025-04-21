@@ -1,3 +1,8 @@
+{%- comment -%}
+  Feature Products Section
+  Usage: {% section 'feature' %}
+{%- endcomment -%}
+
 <section class="flat-spacing-3">
     <div class="container">
         <div class="flat-title-v2 justify-items-center text-center wow fadeInUp">
@@ -9,80 +14,14 @@
                 <div class="swiper-wrapper">
                     {% for block in section.blocks %}
                         <div class="swiper-slide" {{ block.shopify_attributes }}>
-                            <div class="card-product style-border style-2">
-                                <div class="card-product-wrapper asp-ratio-0">
-                                    <a href="{{ block.settings.product_url }}" class="product-img">
-                                        <img class="img-product"
-                                            src="{{ block.settings.product_image | image_url }}"
-                                            alt="{{ block.settings.product_title }}"
-                                            width="270"
-                                            height="270"
-                                            loading="lazy">
-                                        <img class="img-hover"
-                                            src="{{ block.settings.product_hover_image | image_url }}"
-                                            alt="{{ block.settings.product_title }}"
-                                            width="270"
-                                            height="270"
-                                            loading="lazy">
-                                    </a>
-                                    {% if block.settings.sale_badge != blank %}
-                                        <div class="on-sale-wrap"><span class="on-sale-item">{{ block.settings.sale_badge }}</span></div>
-                                    {% endif %}
-                                    <ul class="list-product-btn">
-                                        <li>
-                                            <a href="#" class="hover-tooltip box-icon js-add-to-cart" data-product-id="{{ block.settings.product_id }}">
-                                                <span class="icon icon-cart2"></span>
-                                                <span class="tooltip">{{ 'products.product.add_to_cart' | t }}</span>
-                                            </a>
-                                        </li>
-                                        <li class="wishlist">
-                                            <a href="#" class="hover-tooltip box-icon js-add-to-wishlist" data-product-id="{{ block.settings.product_id }}">
-                                                <span class="icon icon-heart2"></span>
-                                                <span class="tooltip">{{ 'products.product.add_to_wishlist' | t }}</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="hover-tooltip box-icon js-quick-view" data-product-id="{{ block.settings.product_id }}">
-                                                <span class="icon icon-view"></span>
-                                                <span class="tooltip">{{ 'products.product.quick_view' | t }}</span>
-                                            </a>
-                                        </li>
-                                        <li class="compare">
-                                            <a href="#" class="hover-tooltip box-icon js-add-to-compare" data-product-id="{{ block.settings.product_id }}">
-                                                <span class="icon icon-compare"></span>
-                                                <span class="tooltip">{{ 'products.product.add_to_compare' | t }}</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="card-product-info text-center">
-                                    <p class="type text-xs text-dark fw-medium">
-                                        {{ block.settings.brand }}
-                                    </p>
-                                    <a href="{{ block.settings.product_url }}" class="name-product link fw-medium text-md">{{ block.settings.product_title }}</a>
-                                    <p class="price-wrap fw-medium">
-                                        <span class="price-new text-primary">{{ block.settings.price | money }}</span>
-                                        {% if block.settings.compare_at_price > block.settings.price %}
-                                            <span class="price-old text-dark">{{ block.settings.compare_at_price | money }}</span>
-                                        {% endif %}
-                                    </p>
-                                    {% if block.settings.color_swatches %}
-                                        <ul class="list-color-product justify-content-center">
-                                            {% for color in block.settings.color_swatches %}
-                                                <li class="list-color-item color-swatch hover-tooltip tooltip-bot{% if forloop.first %} active{% endif %}">
-                                                    <span class="tooltip color-filter">{{ color.name }}</span>
-                                                    <span class="swatch-value" style="background-color: {{ color.value }}"></span>
-                                                    <img class="lazyload"
-                                                        data-src="{{ color.image | image_url }}"
-                                                        alt="{{ color.name }}"
-                                                        width="270"
-                                                        height="270">
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                                </div>
-                            </div>
+                            {% render 'card-product',
+                                product: block.settings.product,
+                                style: 'style-2',
+                                show_sale_badge: true,
+                                sale_badge_text: block.settings.sale_badge,
+                                show_color_swatches: true,
+                                vendor: block.settings.brand
+                            %}
                         </div>
                     {% endfor %}
                 </div>
@@ -169,60 +108,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     "id": "sale_badge",
                     "label": "Sale Badge Text",
                     "info": "Leave empty to hide badge"
-                },
-                {
-                    "type": "image_picker",
-                    "id": "product_hover_image",
-                    "label": "Hover Image"
-                },
-                {
-                    "type": "header",
-                    "content": "Color Swatches"
-                },
-                {
-                    "type": "text",
-                    "id": "color_name_1",
-                    "label": "Color 1 Name"
-                },
-                {
-                    "type": "color",
-                    "id": "color_value_1",
-                    "label": "Color 1 Value"
-                },
-                {
-                    "type": "image_picker",
-                    "id": "color_image_1",
-                    "label": "Color 1 Image"
-                },
-                {
-                    "type": "text",
-                    "id": "color_name_2",
-                    "label": "Color 2 Name"
-                },
-                {
-                    "type": "color",
-                    "id": "color_value_2",
-                    "label": "Color 2 Value"
-                },
-                {
-                    "type": "image_picker",
-                    "id": "color_image_2",
-                    "label": "Color 2 Image"
-                },
-                {
-                    "type": "text",
-                    "id": "color_name_3",
-                    "label": "Color 3 Name"
-                },
-                {
-                    "type": "color",
-                    "id": "color_value_3",
-                    "label": "Color 3 Value"
-                },
-                {
-                    "type": "image_picker",
-                    "id": "color_image_3",
-                    "label": "Color 3 Image"
                 }
             ]
         }
