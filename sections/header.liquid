@@ -97,31 +97,161 @@
         <nav class="box-navigation text-center">
           <ul class="box-nav-menu">
             {%- for block in section.blocks -%}
-              {%- if block.type == 'menu' -%}
-                {%- for link in linklists[block.settings.menu].links -%}
-                  <li class="menu-item{% if link.links != blank %} has-submenu{% endif %}">
-                    <a href="{{ link.url }}" class="item-link">
-                      {{ link.title }}
-                      {%- if link.links != blank -%}
+              {%- if block.type == 'menu_item' -%}
+                <li class="menu-item{% if block.settings.submenu_links != blank %} has-submenu{% endif %}" {{ block.shopify_attributes }}>
+                  <a href="{{ block.settings.url }}" class="item-link">
+                    {{ block.settings.title }}
+                    {%- if block.settings.submenu_links != blank -%}
+                      <i class="icon icon-arr-down"></i>
+                    {%- endif -%}
+                  </a>
+                  {%- if block.settings.submenu_links != blank -%}
+                    <div class="sub-menu mega-menu mega-shop">
+                      <div class="wrapper-sub-menu">
+                        {%- assign submenu_links = block.settings.submenu_links | split: ',' -%}
+                        {%- for link in submenu_links -%}
+                          {%- assign link_parts = link | split: '|' -%}
+                          {%- assign link_title = link_parts[0] -%}
+                          {%- assign link_url = link_parts[1] -%}
+                          {%- assign link_children = link_parts[2] | split: ';' -%}
+                          <div class="mega-menu-item">
+                            <div class="menu-heading">
+                              <a href="{{ link_url }}" class="menu-heading-link">
+                                {{ link_title }}
+                              </a>
+                            </div>
+                            {%- if link_children.size > 0 -%}
+                              <ul class="menu-list">
+                                {%- for child in link_children -%}
+                                  {%- assign child_parts = child | split: '|' -%}
+                                  <li>
+                                    <a href="{{ child_parts[1] }}" class="menu-link-text link">
+                                      {{ child_parts[0] }}
+                                    </a>
+                                  </li>
+                                {%- endfor -%}
+                              </ul>
+                            {%- endif -%}
+                          </div>
+                        {%- endfor -%}
+                      </div>
+                      {%- if block.settings.show_product_cards -%}
+                        <div class="wrapper-sub-collection">
+                          <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
+                            data-swiper='{
+                              "slidesPerView": 2,
+                              "spaceBetween": 24,
+                              "speed": 800,
+                              "observer": true,
+                              "observeParents": true,
+                              "slidesPerGroup": 2,
+                              "navigation": {
+                                "clickable": true,
+                                "nextEl": ".nav-next-cls-header",
+                                "prevEl": ".nav-prev-cls-header"
+                              },
+                              "pagination": { "el": ".sw-pagination-cls-header", "clickable": true }
+                            }'>
+                            <div class="swiper-wrapper">
+                              {%- for i in (1..4) -%}
+                                {%- assign product_image = 'product_image_' | append: i -%}
+                                {%- assign product_title = 'product_title_' | append: i -%}
+                                {%- assign product_url = 'product_url_' | append: i -%}
+                                {%- if block.settings[product_image] != blank -%}
+                                  <div class="swiper-slide">
+                                    <div class="wg-cls style-abs asp-1 hover-img">
+                                      <a href="{{ block.settings[product_url] }}" class="image img-style d-block">
+                                        <img src="{{ block.settings[product_image] | img_url: 'master' }}"
+                                          alt="{{ block.settings[product_title] }}"
+                                          width="300"
+                                          height="300"
+                                          class="lazyload">
+                                      </a>
+                                      <div class="cls-btn text-center">
+                                        <a href="{{ block.settings[product_url] }}"
+                                          class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                                          {{ block.settings[product_title] }}
+                                          <i class="icon icon-arrow-top-left"></i>
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                {%- endif -%}
+                              {%- endfor -%}
+                            </div>
+                            <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center"></div>
+                            <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls-header"></div>
+                            <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls-header"></div>
+                          </div>
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </nav>
+      </div>
+    </div>
+  {%- else -%}
+  <div class="container">
+    <div class="row wrapper-header align-items-center">
+      <div class="col-md-4 col-3 d-xl-none">
+        <a href="#mobileMenu" class="mobile-menu" data-bs-toggle="offcanvas" aria-controls="mobileMenu">
+          <i class="icon icon-categories1"></i>
+        </a>
+      </div>
+      
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'logo' -%}
+            <div class="col-xl-2 col-md-4 col-6" {{ block.shopify_attributes }}>
+              <a href="{{ routes.root_url }}" class="logo-header">
+                {%- if block.settings.logo != blank -%}
+                  <img src="{{ block.settings.logo | image_url: width: block.settings.logo_width }}"
+                    alt="{{ block.settings.logo.alt | default: shop.name }}"
+                    width="{{ block.settings.logo_width }}"
+                    height="{{ block.settings.logo_width | divided_by: block.settings.logo.aspect_ratio }}"
+                    class="logo">
+                {%- else -%}
+                  <span class="h4">{{ shop.name }}</span>
+                {%- endif -%}
+              </a>
+            </div>
+          {%- when 'menu_item' -%}
+            <div class="col-xl-8 d-none d-xl-block" {{ block.shopify_attributes }}>
+              <nav class="box-navigation text-center">
+                <ul class="box-nav-menu">
+                  <li class="menu-item{% if block.settings.submenu_links != blank %} has-submenu{% endif %}">
+                    <a href="{{ block.settings.url }}" class="item-link">
+                      {{ block.settings.title }}
+                      {%- if block.settings.submenu_links != blank -%}
                         <i class="icon icon-arr-down"></i>
                       {%- endif -%}
                     </a>
-                    {%- if link.links != blank -%}
+                    {%- if block.settings.submenu_links != blank -%}
                       <div class="sub-menu mega-menu mega-shop">
                         <div class="wrapper-sub-menu">
-                          {%- for childlink in link.links -%}
+                          {%- assign submenu_links = block.settings.submenu_links | split: ',' -%}
+                          {%- for link in submenu_links -%}
+                            {%- assign link_parts = link | split: '|' -%}
+                            {%- assign link_title = link_parts[0] -%}
+                            {%- assign link_url = link_parts[1] -%}
+                            {%- assign link_children = link_parts[2] | split: ';' -%}
                             <div class="mega-menu-item">
                               <div class="menu-heading">
-                                <a href="{{ childlink.url }}" class="menu-heading-link">
-                                  {{ childlink.title }}
+                                <a href="{{ link_url }}" class="menu-heading-link">
+                                  {{ link_title }}
                                 </a>
                               </div>
-                              {%- if childlink.links != blank -%}
+                              {%- if link_children.size > 0 -%}
                                 <ul class="menu-list">
-                                  {%- for grandchildlink in childlink.links -%}
+                                  {%- for child in link_children -%}
+                                    {%- assign child_parts = child | split: '|' -%}
                                     <li>
-                                      <a href="{{ grandchildlink.url }}" class="menu-link-text link">
-                                        {{ grandchildlink.title }}
+                                      <a href="{{ child_parts[1] }}" class="menu-link-text link">
+                                        {{ child_parts[0] }}
                                       </a>
                                     </li>
                                   {%- endfor -%}
@@ -183,128 +313,6 @@
                       </div>
                     {%- endif -%}
                   </li>
-                {%- endfor -%}
-              {%- endif -%}
-            {%- endfor -%}
-          </ul>
-        </nav>
-      </div>
-    </div>
-  {%- else -%}
-  <div class="container">
-    <div class="row wrapper-header align-items-center">
-      <div class="col-md-4 col-3 d-xl-none">
-        <a href="#mobileMenu" class="mobile-menu" data-bs-toggle="offcanvas" aria-controls="mobileMenu">
-          <i class="icon icon-categories1"></i>
-        </a>
-      </div>
-      
-      {%- for block in section.blocks -%}
-        {%- case block.type -%}
-          {%- when 'logo' -%}
-            <div class="col-xl-2 col-md-4 col-6" {{ block.shopify_attributes }}>
-              <a href="{{ routes.root_url }}" class="logo-header">
-                {%- if block.settings.logo != blank -%}
-                  <img src="{{ block.settings.logo | image_url: width: block.settings.logo_width }}"
-                    alt="{{ block.settings.logo.alt | default: shop.name }}"
-                    width="{{ block.settings.logo_width }}"
-                    height="{{ block.settings.logo_width | divided_by: block.settings.logo.aspect_ratio }}"
-                    class="logo">
-                {%- else -%}
-                  <span class="h4">{{ shop.name }}</span>
-                {%- endif -%}
-              </a>
-            </div>
-          {%- when 'menu' -%}
-            <div class="col-xl-8 d-none d-xl-block" {{ block.shopify_attributes }}>
-              <nav class="box-navigation text-center">
-                <ul class="box-nav-menu">
-                  {%- for link in linklists[block.settings.menu].links -%}
-                    <li class="menu-item{% if link.links != blank %} has-submenu{% endif %}">
-                      <a href="{{ link.url }}" class="item-link">
-                        {{ link.title }}
-                        {%- if link.links != blank -%}
-                          <i class="icon icon-arr-down"></i>
-                        {%- endif -%}
-                      </a>
-                      {%- if link.links != blank -%}
-                        <div class="sub-menu mega-menu mega-shop">
-                          <div class="wrapper-sub-menu">
-                            {%- for childlink in link.links -%}
-                              <div class="mega-menu-item">
-                                <div class="menu-heading">
-                                  <a href="{{ childlink.url }}" class="menu-heading-link">
-                                    {{ childlink.title }}
-                                  </a>
-                                </div>
-                                {%- if childlink.links != blank -%}
-                                  <ul class="menu-list">
-                                    {%- for grandchildlink in childlink.links -%}
-                                      <li>
-                                        <a href="{{ grandchildlink.url }}" class="menu-link-text link">
-                                          {{ grandchildlink.title }}
-                                        </a>
-                                      </li>
-                                    {%- endfor -%}
-                                  </ul>
-                                {%- endif -%}
-                              </div>
-                            {%- endfor -%}
-                          </div>
-                          {%- if block.settings.show_product_cards -%}
-                            <div class="wrapper-sub-collection">
-                              <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
-                                data-swiper='{
-                                  "slidesPerView": 2,
-                                  "spaceBetween": 24,
-                                  "speed": 800,
-                                  "observer": true,
-                                  "observeParents": true,
-                                  "slidesPerGroup": 2,
-                                  "navigation": {
-                                    "clickable": true,
-                                    "nextEl": ".nav-next-cls-header",
-                                    "prevEl": ".nav-prev-cls-header"
-                                  },
-                                  "pagination": { "el": ".sw-pagination-cls-header", "clickable": true }
-                                }'>
-                                <div class="swiper-wrapper">
-                                  {%- for i in (1..4) -%}
-                                    {%- assign product_image = 'product_image_' | append: i -%}
-                                    {%- assign product_title = 'product_title_' | append: i -%}
-                                    {%- assign product_url = 'product_url_' | append: i -%}
-                                    {%- if block.settings[product_image] != blank -%}
-                                      <div class="swiper-slide">
-                                        <div class="wg-cls style-abs asp-1 hover-img">
-                                          <a href="{{ block.settings[product_url] }}" class="image img-style d-block">
-                                            <img src="{{ block.settings[product_image] | img_url: 'master' }}"
-                                              alt="{{ block.settings[product_title] }}"
-                                              width="300"
-                                              height="300"
-                                              class="lazyload">
-                                          </a>
-                                          <div class="cls-btn text-center">
-                                            <a href="{{ block.settings[product_url] }}"
-                                              class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                              {{ block.settings[product_title] }}
-                                              <i class="icon icon-arrow-top-left"></i>
-                                            </a>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    {%- endif -%}
-                                  {%- endfor -%}
-                                </div>
-                                <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center"></div>
-                                <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls-header"></div>
-                                <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls-header"></div>
-                              </div>
-                            </div>
-                          {%- endif -%}
-                        </div>
-                      {%- endif -%}
-                    </li>
-                  {%- endfor -%}
                 </ul>
               </nav>
             </div>
@@ -387,12 +395,6 @@
       "default": 100,
       "unit": "px",
       "label": "Logo width"
-    },
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Menu",
-      "default": "main-menu"
     }
   ],
   "blocks": [
@@ -419,15 +421,25 @@
       ]
     },
     {
-      "type": "menu",
-      "name": "Menu",
-      "limit": 1,
+      "type": "menu_item",
+      "name": "Menu Item",
       "settings": [
         {
-          "type": "link_list",
-          "id": "menu",
-          "label": "Menu",
-          "default": "main-menu"
+          "type": "text",
+          "id": "title",
+          "label": "Menu Item Title",
+          "default": "Menu Item"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Menu Item URL"
+        },
+        {
+          "type": "textarea",
+          "id": "submenu_links",
+          "label": "Submenu Links",
+          "info": "Format: Title|URL|Child1|ChildURL1;Child2|ChildURL2,Title2|URL2|Child3|ChildURL3"
         },
         {
           "type": "checkbox",
@@ -557,14 +569,27 @@
           "type": "logo"
         },
         {
-          "type": "menu",
+          "type": "menu_item",
           "settings": {
-            "menu": "main-menu",
+            "title": "Men",
+            "url": "/collections/men",
             "show_product_cards": true,
-            "product_title_1": "Men",
-            "product_title_2": "Women",
-            "product_title_3": "Accessories",
-            "product_title_4": "Sportwear"
+            "product_title_1": "Men's Clothing",
+            "product_title_2": "Men's Shoes",
+            "product_title_3": "Men's Accessories",
+            "product_title_4": "Men's Sportswear"
+          }
+        },
+        {
+          "type": "menu_item",
+          "settings": {
+            "title": "Women",
+            "url": "/collections/women",
+            "show_product_cards": true,
+            "product_title_1": "Women's Clothing",
+            "product_title_2": "Women's Shoes",
+            "product_title_3": "Women's Accessories",
+            "product_title_4": "Women's Sportswear"
           }
         },
         {
