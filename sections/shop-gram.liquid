@@ -30,8 +30,8 @@
     // Initialize Instafeed
     var feed = new Instafeed({
       get: 'user',
-      userId: '{{ section.settings.instagram_user_id }}',
-      accessToken: '{{ section.settings.instagram_access_token }}',
+      userId: '{{ shop.metafields.instafeed.user_id }}',
+      accessToken: '{{ shop.metafields.instafeed.access_token }}',
       limit: 5,
       resolution: 'standard_resolution',
       template: '<div class="swiper-slide"><div class="gallery-item hover-img hover-overlay wow fadeInLeft"><div class="image img-style"><img src="{{image}}" alt="Instagram post"></div><a href="{{link}}" target="_blank" class="box-icon hover-tooltip"><span class="icon icon-cart2"></span><span class="tooltip">View on Instagram</span></a></div></div>',
@@ -73,18 +73,6 @@
       "id": "title",
       "label": "Title",
       "default": "Shop by @Gram"
-    },
-    {
-      "type": "text",
-      "id": "instagram_user_id",
-      "label": "Instagram User ID",
-      "info": "Your Instagram User ID (required for Instafeed)"
-    },
-    {
-      "type": "text",
-      "id": "instagram_access_token",
-      "label": "Instagram Access Token",
-      "info": "Your Instagram Access Token (required for Instafeed)"
     }
   ],
   "presets": [
