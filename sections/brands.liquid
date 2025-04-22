@@ -46,7 +46,8 @@
           {
             "type": "image_picker",
             "id": "brand_image",
-            "label": "Brand image"
+            "label": "Brand image",
+            "info": "Recommended size: 360px x 171px"
           },
           {
             "type": "url",
@@ -101,16 +102,26 @@
               <a href="{{ block.settings.brand_link }}">
             {% endif %}
               {% if block.settings.brand_image != blank %}
-                {% comment %}Debug output{% endcomment %}
-                {% assign image = block.settings.brand_image %}
                 <img 
-                  src="{{ image.src }}"
-                  alt="{{ image.alt | escape | default: 'Brand logo' }}"
-                  width="{{ image.width | default: 240 }}"
-                  height="{{ image.height | default: 114 }}"
+                  src="{{ block.settings.brand_image | img_url }}"
+                  srcset="
+                    {{ block.settings.brand_image | img_url: '180x' }} 180w,
+                    {{ block.settings.brand_image | img_url: '360x' }} 360w
+                  "
+                  sizes="(max-width: 768px) 180px, 360px"
+                  alt="{{ block.settings.brand_image.alt | escape | default: 'Brand logo' }}"
+                  width="{{ block.settings.brand_image.width | default: 240 }}"
+                  height="{{ block.settings.brand_image.height | default: 114 }}"
                   loading="lazy"
                   class="brand-logo"
                 >
+                {% comment %}Debug information{% endcomment %}
+                <!-- Image Debug:
+                  URL: {{ block.settings.brand_image | img_url }}
+                  Alt: {{ block.settings.brand_image.alt }}
+                  Width: {{ block.settings.brand_image.width }}
+                  Height: {{ block.settings.brand_image.height }}
+                -->
               {% else %}
                 {{ 'image' | placeholder_svg_tag: 'placeholder-svg brand-logo' }}
               {% endif %}
