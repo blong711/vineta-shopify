@@ -18,7 +18,7 @@
       }
     }'>
       <div class="swiper-wrapper" id="instafeed">
-        {% if shop.metafields.instafeed.user_id and shop.metafields.instafeed.access_token %}
+        {% if shop.metafields.instafeed.user_id and shop.metafields.instafeed.access_token or section.settings.instagram_user_id != blank and section.settings.instagram_access_token != blank %}
           <!-- Instagram feed will be loaded here by Instafeed.js -->
         {% else %}
           <!-- item 1 -->
@@ -88,14 +88,14 @@
   </div>
 </section>
 
-{% if shop.metafields.instafeed.user_id and shop.metafields.instafeed.access_token %}
+{% if shop.metafields.instafeed.user_id and shop.metafields.instafeed.access_token or section.settings.instagram_user_id != blank and section.settings.instagram_access_token != blank %}
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     // Initialize Instafeed
     var feed = new Instafeed({
       get: 'user',
-      userId: '{{ shop.metafields.instafeed.user_id }}',
-      accessToken: '{{ shop.metafields.instafeed.access_token }}',
+      userId: '{{ section.settings.instagram_user_id | default: shop.metafields.instafeed.user_id }}',
+      accessToken: '{{ section.settings.instagram_access_token | default: shop.metafields.instafeed.access_token }}',
       limit: 5,
       resolution: 'standard_resolution',
       template: '<div class="swiper-slide"><div class="gallery-item hover-img hover-overlay wow fadeInLeft"><div class="image img-style"><img src="{{image}}" alt="Instagram post"></div><a href="{{link}}" target="_blank" class="box-icon hover-tooltip"><span class="icon icon-cart2"></span><span class="tooltip">View on Instagram</span></a></div></div>',
@@ -138,6 +138,23 @@
       "id": "title",
       "label": "Title",
       "default": "Shop by @Gram"
+    },
+    {
+      "type": "header",
+      "content": "Instagram Settings",
+      "info": "These settings are optional. If you have the Instafeed app installed, it will automatically use those credentials."
+    },
+    {
+      "type": "text",
+      "id": "instagram_user_id",
+      "label": "Instagram User ID",
+      "info": "Your Instagram User ID (optional if using Instafeed app)"
+    },
+    {
+      "type": "text",
+      "id": "instagram_access_token",
+      "label": "Instagram Access Token",
+      "info": "Your Instagram Access Token (optional if using Instafeed app)"
     }
   ],
   "presets": [
