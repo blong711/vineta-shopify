@@ -1,7 +1,8 @@
+{%- comment -%}Shop by @Gram Section{%- endcomment -%}
 <section class="flat-spacing-4 pt-0">
   <div class="container">
     <div class="flat-title wow fadeInUp">
-      <h4 class="title">Shop by @Gram</h4>
+      <h4 class="title">{{ section.settings.title }}</h4>
     </div>
     <div dir="ltr" class="swiper tf-swiper" data-swiper='{
       "slidesPerView": 2,
@@ -16,72 +17,52 @@
         "1200": { "slidesPerView": 5}
       }
     }'>
-      <div class="swiper-wrapper">
-        <!-- item 1 -->
-        <div class="swiper-slide">
-          <div class="gallery-item hover-img hover-overlay wow fadeInLeft">
-            <div class="image img-style">
-              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
-            </div>
-            <a href="#" class="box-icon hover-tooltip">
-              <span class="icon icon-cart2"></span>
-              <span class="tooltip">View Product</span>
-            </a>
-          </div>
-        </div>
-        <!-- item 2 -->
-        <div class="swiper-slide">
-          <div class="gallery-item hover-img hover-overlay wow fadeInLeft" data-wow-delay="0.1s">
-            <div class="image img-style">
-              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-            </div>
-            <a href="#" class="box-icon hover-tooltip">
-              <span class="icon icon-cart2"></span>
-              <span class="tooltip">View Product</span>
-            </a>
-          </div>
-        </div>
-        <!-- item 3 -->
-        <div class="swiper-slide">
-          <div class="gallery-item hover-img hover-overlay wow fadeInLeft" data-wow-delay="0.2s">
-            <div class="image img-style">
-              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-            </div>
-            <a href="#" class="box-icon hover-tooltip">
-              <span class="icon icon-cart2"></span>
-              <span class="tooltip">View Product</span>
-            </a>
-          </div>
-        </div>
-        <!-- item 4 -->
-        <div class="swiper-slide">
-          <div class="gallery-item hover-img hover-overlay wow fadeInLeft" data-wow-delay="0.3s">
-            <div class="image img-style">
-              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-            </div>
-            <a href="#" class="box-icon hover-tooltip">
-              <span class="icon icon-cart2"></span>
-              <span class="tooltip">View Product</span>
-            </a>
-          </div>
-        </div>
-        <!-- item 5 -->
-        <div class="swiper-slide">
-          <div class="gallery-item hover-img hover-overlay wow fadeInLeft" data-wow-delay="0.4s">
-            <div class="image img-style">
-              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-            </div>
-            <a href="#" class="box-icon hover-tooltip">
-              <span class="icon icon-cart2"></span>
-              <span class="tooltip">View Product</span>
-            </a>
-          </div>
-        </div>
+      <div class="swiper-wrapper" id="instafeed">
+        <!-- Instagram feed will be loaded here by Instafeed.js -->
       </div>
       <span class="d-flex d-xl-none sw-dot-default sw-pagination-gallery justify-content-center"></span>
     </div>
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Instafeed
+    var feed = new Instafeed({
+      get: 'user',
+      userId: '{{ section.settings.instagram_user_id }}',
+      accessToken: '{{ section.settings.instagram_access_token }}',
+      limit: 5,
+      resolution: 'standard_resolution',
+      template: '<div class="swiper-slide"><div class="gallery-item hover-img hover-overlay wow fadeInLeft"><div class="image img-style"><img src="{{image}}" alt="Instagram post"></div><a href="{{link}}" target="_blank" class="box-icon hover-tooltip"><span class="icon icon-cart2"></span><span class="tooltip">View on Instagram</span></a></div></div>',
+      target: 'instafeed',
+      after: function() {
+        // Reinitialize Swiper after Instagram feed is loaded
+        var swiper = new Swiper('.tf-swiper', {
+          slidesPerView: 2,
+          spaceBetween: 10,
+          speed: 800,
+          observer: true,
+          observeParents: true,
+          slidesPerGroup: 2,
+          pagination: {
+            el: '.sw-pagination-gallery',
+            clickable: true
+          },
+          breakpoints: {
+            768: {
+              slidesPerView: 3
+            },
+            1200: {
+              slidesPerView: 5
+            }
+          }
+        });
+      }
+    });
+    feed.run();
+  });
+</script>
 
 {% schema %}
 {
@@ -92,6 +73,18 @@
       "id": "title",
       "label": "Title",
       "default": "Shop by @Gram"
+    },
+    {
+      "type": "text",
+      "id": "instagram_user_id",
+      "label": "Instagram User ID",
+      "info": "Your Instagram User ID (required for Instafeed)"
+    },
+    {
+      "type": "text",
+      "id": "instagram_access_token",
+      "label": "Instagram Access Token",
+      "info": "Your Instagram Access Token (required for Instafeed)"
     }
   ],
   "presets": [
