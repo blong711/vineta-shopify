@@ -1,0 +1,52 @@
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {}
+    },
+    "page-title": {
+      "type": "page-title",
+      "settings": {
+        "title": "Sample Product - Stacked Layout"
+      }
+    },
+    "product": {
+      "type": "product",
+      "settings": {
+        "layout": "stacked",
+        "show_sold_count": true,
+        "sold_count_text": "Sold in last 24 hours",
+        "show_stock_count": true,
+        "show_size_guide": true,
+        "show_extra_links": true,
+        "show_trust_seal": true,
+        "trust_seal_text": "Guaranteed Safe Checkout",
+        "show_delivery_info": true,
+        "delivery_time": "3-5 business days",
+        "free_shipping_text": "orders over $100",
+        "show_fbt": true,
+        "show_sticky_cart": true
+      }
+    },
+    "product-details": {
+      "type": "product-details",
+      "settings": {}
+    },
+    "people-also-bought": {
+      "type": "people-also-bought",
+      "settings": {}
+    },
+    "recently-viewed": {
+      "type": "recently-viewed",
+      "settings": {}
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "page-title",
+    "product",
+    "product-details",
+    "people-also-bought",
+    "recently-viewed"
+  ]
+} 
