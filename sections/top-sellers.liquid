@@ -29,104 +29,14 @@
                 {%- assign collection = collections[tab.settings.collection] -%}
                 {%- assign product_limit = tab.settings.products_limit | default: 8 -%}
                 {% for product in collection.products limit: product_limit %}
-                  <div class="card-product card-product-size style-2">
-                    <div class="card-product-wrapper">
-                      <a href="{{ product.url }}" class="product-img">
-                        <img class="img-product lazyload" 
-                             data-src="{{ product.featured_image | img_url: 'master' }}"
-                             src="{{ product.featured_image | img_url: 'small' }}" 
-                             alt="{{ product.title | escape }}"
-                             width="570"
-                             height="760">
-                        {% if product.images[1] %}
-                          <img class="img-hover lazyload" 
-                               data-src="{{ product.images[1] | img_url: 'master' }}"
-                               src="{{ product.images[1] | img_url: 'small' }}" 
-                               alt="{{ product.title | escape }}"
-                               width="570"
-                               height="760">
-                        {% endif %}
-                      </a>
-                      
-                      {% if product.compare_at_price > product.price %}
-                        <div class="on-sale-wrap">
-                          <span class="on-sale-item">
-                            {{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}% Off
-                          </span>
-                        </div>
-                      {% endif %}
-
-                      <ul class="list-product-btn">
-                        <li>
-                          <a href="#" class="hover-tooltip box-icon js-add-to-cart" data-variant-id="{{ product.selected_or_first_available_variant.id }}">
-                            <span class="icon icon-cart2"></span>
-                            <span class="tooltip">{{ 'products.product.add_to_cart' | t }}</span>
-                          </a>
-                        </li>
-                        <li class="wishlist">
-                          <a href="#" class="hover-tooltip box-icon js-add-to-wishlist" data-product-handle="{{ product.handle }}">
-                            <span class="icon icon-heart2"></span>
-                            <span class="tooltip">{{ 'products.product.add_to_wishlist' | t }}</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" class="hover-tooltip box-icon quickview js-quick-view" data-product-handle="{{ product.handle }}">
-                            <span class="icon icon-view"></span>
-                            <span class="tooltip">{{ 'products.product.quick_view' | t }}</span>
-                          </a>
-                        </li>
-                        <li class="compare">
-                          <a href="#" class="hover-tooltip box-icon js-add-to-compare" data-product-handle="{{ product.handle }}">
-                            <span class="icon icon-compare"></span>
-                            <span class="tooltip">{{ 'products.product.add_to_compare' | t }}</span>
-                          </a>
-                        </li>
-                      </ul>
-
-                      {% if product.variants.size > 1 %}
-                        <ul class="size-box">
-                          {% for variant in product.variants %}
-                            {% if variant.available %}
-                              <li class="size-item text-xs text-white">{{ variant.title }}</li>
-                            {% endif %}
-                          {% endfor %}
-                        </ul>
-                      {% endif %}
-                    </div>
-
-                    <div class="card-product-info">
-                      <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
-                      <p class="price-wrap fw-medium">
-                        <span class="price-new {% if product.compare_at_price > product.price %}text-primary{% endif %}">
-                          {{ product.price | money }}
-                        </span>
-                        {% if product.compare_at_price > product.price %}
-                          <span class="price-old">{{ product.compare_at_price | money }}</span>
-                        {% endif %}
-                      </p>
-
-                      {% if product.variants.size > 1 and product.variants[0].option1 == 'Color' or product.variants[0].option1 == 'Colour' %}
-                        <ul class="list-color-product">
-                          {% for variant in product.variants %}
-                            {% if variant.available %}
-                              <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
-                                <span class="tooltip color-filter">{{ variant.title }}</span>
-                                <span class="swatch-value" style="background-color: {{ variant.title | handle }}"></span>
-                                {% if variant.image %}
-                                  <img class="lazyload" 
-                                       data-src="{{ variant.image | img_url: 'master' }}"
-                                       src="{{ variant.image | img_url: 'small' }}" 
-                                       alt="{{ variant.title | escape }}"
-                                       width="570"
-                                       height="760">
-                                {% endif %}
-                              </li>
-                            {% endif %}
-                          {% endfor %}
-                        </ul>
-                      {% endif %}
-                    </div>
-                  </div>
+                  {% render 'card-product',
+                    product: product,
+                    style: '2',
+                    class: 'card-product-size',
+                    show_sale_badge: true,
+                    sale_badge_text: product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round | append: '% Off',
+                    show_color_swatches: true
+                  %}
                 {% endfor %}
               </div>
             </div>
@@ -233,46 +143,7 @@
 {% javascript %}
   // Initialize tabs
   document.addEventListener('DOMContentLoaded', function() {
-    // Add click handlers for add to cart, wishlist, quickview and compare
-    const addToCartButtons = document.querySelectorAll('.js-add-to-cart');
-    const addToWishlistButtons = document.querySelectorAll('.js-add-to-wishlist');
-    const quickViewButtons = document.querySelectorAll('.js-quick-view');
-    const addToCompareButtons = document.querySelectorAll('.js-add-to-compare');
-
-    // Add to cart functionality
-    addToCartButtons.forEach(button => {
-      button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const variantId = this.dataset.variantId;
-        // Add your cart addition logic here
-      });
-    });
-
-    // Add to wishlist functionality
-    addToWishlistButtons.forEach(button => {
-      button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const productHandle = this.dataset.productHandle;
-        // Add your wishlist logic here
-      });
-    });
-
-    // Quick view functionality
-    quickViewButtons.forEach(button => {
-      button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const productHandle = this.dataset.productHandle;
-        // Add your quick view logic here
-      });
-    });
-
-    // Add to compare functionality
-    addToCompareButtons.forEach(button => {
-      button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const productHandle = this.dataset.productHandle;
-        // Add your compare logic here
-      });
-    });
+    // The card-product snippet handles all the product interactions
+    // No need for additional JavaScript here
   });
 {% endjavascript %} 
