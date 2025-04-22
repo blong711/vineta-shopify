@@ -101,15 +101,18 @@
               <a href="{{ block.settings.brand_link }}">
             {% endif %}
               {% if block.settings.brand_image != blank %}
+                {% comment %}Debug output{% endcomment %}
+                {% assign image = block.settings.brand_image %}
                 <img 
-                  src="{{ block.settings.brand_image | image_url }}" 
-                  alt="Brand logo"
-                  width="{{ block.settings.brand_image.width }}"
-                  height="{{ block.settings.brand_image.height }}"
+                  src="{{ image.src }}"
+                  alt="{{ image.alt | escape | default: 'Brand logo' }}"
+                  width="{{ image.width | default: 240 }}"
+                  height="{{ image.height | default: 114 }}"
                   loading="lazy"
+                  class="brand-logo"
                 >
               {% else %}
-                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg brand-logo' }}
               {% endif %}
             {% if block.settings.brand_link != blank %}
               </a>
