@@ -17,8 +17,8 @@
 <div class="s-banner-colection banner-cls-{{ section.settings.layout }} {% if section.settings.layout == 'bicycle' %}style-abs{% else %}flat-spacing-3{% endif %} {% if section.settings.layout == 'fashion-02' %}flat-spacing-6{% endif %} {% if section.settings.layout == 'phonecase' %}flat-spacing-2{% endif %}">
   <div class="container {% if section.settings.layout == 'phonecase' %}container-full{% endif %}">
     <div class="banner-content {% if section.settings.layout == 'electric' or section.settings.layout == 'fashion-02' %}tf-grid-layout tf-col-2 hover-overlay-2{% endif %} {% if section.settings.layout == 'phonecase' %}hover-shine{% endif %}">
-      {% if section.settings.layout == 'electric' or section.settings.layout == 'fashion-02' or section.settings.layout == 'phonecase' %}
-        <div class="image {% if section.settings.layout == 'fashion-02' %}img-hv-overlay{% endif %} {% if section.settings.layout == 'phonecase' %}shine-item{% endif %}">
+      {% if section.settings.layout == 'electric' or section.settings.layout == 'fashion-02' %}
+        <div class="image {% if section.settings.layout == 'fashion-02' %}img-hv-overlay{% endif %}">
           {%- if section.settings.image != blank -%}
             <img 
               src="{{ section.settings.image | img_url: 'master' }}" 
@@ -31,10 +31,24 @@
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           {%- endif -%}
         </div>
-      {% else %}
+      {% elsif section.settings.layout == 'bicycle' %}
         <video autoplay loop muted playsinline preload="auto">
           <source src="{{ section.settings.video | file_url }}" type="video/mp4">
         </video>
+      {% elsif section.settings.layout == 'phonecase' %}
+        <div class="image shine-item">
+          {%- if section.settings.image != blank -%}
+            <img 
+              src="{{ section.settings.image | img_url: 'master' }}" 
+              alt="{{ section.settings.image.alt | escape }}" 
+              class="lazyload"
+              width="{{ section.settings.image.width }}"
+              height="{{ section.settings.image.height }}"
+            >
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
       {% endif %}
       <div class="box-content {% if section.settings.layout == 'fashion-02' or section.settings.layout == 'phonecase' %}wow fadeInUp{% endif %}">
         <div class="box-title-banner {% if section.settings.layout == 'fashion-02' or section.settings.layout == 'phonecase' %}wow fadeInUp{% endif %}">
