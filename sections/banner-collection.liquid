@@ -8,14 +8,17 @@
   .banner-cls-fashion-02 {
     padding: {{ section.settings.padding_top }}px 0;
   }
+  .banner-cls-phonecase {
+    padding: {{ section.settings.padding_top }}px 0;
+  }
 {%- endstyle -%}
 
 <!-- Banner Collection-->
-<div class="s-banner-colection banner-cls-{{ section.settings.layout }} {% if section.settings.layout == 'bicycle' %}style-abs{% else %}flat-spacing-3{% endif %} {% if section.settings.layout == 'fashion-02' %}flat-spacing-6{% endif %}">
-  <div class="container">
-    <div class="banner-content {% if section.settings.layout == 'electric' or section.settings.layout == 'fashion-02' %}tf-grid-layout tf-col-2 hover-overlay-2{% endif %}">
-      {% if section.settings.layout == 'electric' or section.settings.layout == 'fashion-02' %}
-        <div class="image {% if section.settings.layout == 'fashion-02' %}img-hv-overlay{% endif %}">
+<div class="s-banner-colection banner-cls-{{ section.settings.layout }} {% if section.settings.layout == 'bicycle' %}style-abs{% else %}flat-spacing-3{% endif %} {% if section.settings.layout == 'fashion-02' %}flat-spacing-6{% endif %} {% if section.settings.layout == 'phonecase' %}flat-spacing-2{% endif %}">
+  <div class="container {% if section.settings.layout == 'phonecase' %}container-full{% endif %}">
+    <div class="banner-content {% if section.settings.layout == 'electric' or section.settings.layout == 'fashion-02' %}tf-grid-layout tf-col-2 hover-overlay-2{% endif %} {% if section.settings.layout == 'phonecase' %}hover-shine{% endif %}">
+      {% if section.settings.layout == 'electric' or section.settings.layout == 'fashion-02' or section.settings.layout == 'phonecase' %}
+        <div class="image {% if section.settings.layout == 'fashion-02' %}img-hv-overlay{% endif %} {% if section.settings.layout == 'phonecase' %}shine-item{% endif %}">
           {%- if section.settings.image != blank -%}
             <img 
               src="{{ section.settings.image | img_url: 'master' }}" 
@@ -33,19 +36,19 @@
           <source src="{{ section.settings.video | file_url }}" type="video/mp4">
         </video>
       {% endif %}
-      <div class="box-content {% if section.settings.layout == 'fashion-02' %}wow fadeInUp{% endif %}">
-        <div class="box-title-banner {% if section.settings.layout == 'fashion-02' %}wow fadeInUp{% endif %}">
-          <p class="title display-md fw-medium {% if section.settings.layout == 'bicycle' %}text-white{% endif %}">
+      <div class="box-content {% if section.settings.layout == 'fashion-02' or section.settings.layout == 'phonecase' %}wow fadeInUp{% endif %}">
+        <div class="box-title-banner {% if section.settings.layout == 'fashion-02' or section.settings.layout == 'phonecase' %}wow fadeInUp{% endif %}">
+          <p class="title display-md fw-medium {% if section.settings.layout == 'bicycle' %}text-white{% endif %} {% if section.settings.layout == 'phonecase' %}display-xl-2 text-dark-3{% endif %}">
             {{ section.settings.title }}
           </p>
-          <p class="sub {% if section.settings.layout == 'fashion-02' %}text-lg{% else %}text-md{% endif %} {% if section.settings.layout == 'bicycle' %}text-white{% else %}text-main{% endif %}">
+          <p class="sub {% if section.settings.layout == 'fashion-02' %}text-lg{% else %}text-md{% endif %} {% if section.settings.layout == 'bicycle' %}text-white{% else %}text-main{% endif %} {% if section.settings.layout == 'phonecase' %}text-xl text-dark-3{% endif %}">
             {{ section.settings.subtitle }}
           </p>
         </div>
-        <div class="box-btn-banner {% if section.settings.layout == 'fashion-02' %}wow fadeInUp{% endif %}">
-          <a href="{{ section.settings.button_link }}" class="tf-btn {% if section.settings.layout == 'bicycle' %}btn-green-2{% else %}btn-dark2{% endif %} animate-btn">
+        <div class="box-btn-banner {% if section.settings.layout == 'fashion-02' or section.settings.layout == 'phonecase' %}wow fadeInUp{% endif %}">
+          <a href="{{ section.settings.button_link }}" class="tf-btn {% if section.settings.layout == 'bicycle' %}btn-green-2{% else %}btn-dark2{% endif %} {% if section.settings.layout == 'phonecase' %}animate-btn fw-normal hover-icon{% else %}animate-btn{% endif %}">
             {{ section.settings.button_text }}
-            <i class="icon {% if section.settings.layout == 'bicycle' %}icon-arr-right3{% else %}icon-arr-right{% endif %}"></i>
+            <i class="icon {% if section.settings.layout == 'bicycle' %}icon-arr-right3{% elsif section.settings.layout == 'phonecase' %}icon-arrow1-top-left fs-12{% else %}icon-arr-right{% endif %}"></i>
           </a>
         </div>
       </div>
@@ -65,7 +68,8 @@
       "options": [
         { "value": "electric", "label": "Electric" },
         { "value": "bicycle", "label": "Bicycle" },
-        { "value": "fashion-02", "label": "Fashion 02" }
+        { "value": "fashion-02", "label": "Fashion 02" },
+        { "value": "phonecase", "label": "Phonecase" }
       ],
       "default": "electric"
     },
@@ -73,7 +77,7 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image",
-      "info": "Used for Electric and Fashion 02 layouts"
+      "info": "Used for Electric, Fashion 02, and Phonecase layouts"
     },
     {
       "type": "video",
