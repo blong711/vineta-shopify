@@ -1,0 +1,237 @@
+<!-- Just Arrivals -->
+<section class="bg-white mx_40 radius-16 flat-spacing-12">
+    <div class="container-3">
+        <div class="flat-animate-tab">
+            <div class="flat-title-tab text-center wow fadeInUp">
+                <div class="box-title">
+                    <p class="text-md fw-medium text-uppercase text-primary">{{ section.settings.subtitle }}</p>
+                    <h4 class="title">{{ section.settings.title }}</h4>
+                </div>
+                <ul class="menu-tab-line style-md justify-content-center" role="tablist">
+                    {% for block in section.blocks %}
+                        {% if block.type == 'tab' %}
+                            <li class="nav-tab-item" role="presentation" {{ block.shopify_attributes }}>
+                                <a href="#{{ block.settings.tab_id }}" 
+                                   class="tab-link {% if forloop.first %}active{% endif %}" 
+                                   data-bs-toggle="tab">
+                                    {{ block.settings.tab_title }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="tab-content">
+                {% for block in section.blocks %}
+                    {% if block.type == 'tab' %}
+                        <div class="tab-pane {% if forloop.first %}active show{% endif %}" 
+                             id="{{ block.settings.tab_id }}" 
+                             role="tabpanel" 
+                             {{ block.shopify_attributes }}>
+                            <div dir="ltr" 
+                                 class="swiper tf-swiper" 
+                                 data-swiper='{
+                                    "slidesPerView": 2,
+                                    "spaceBetween": 12,
+                                    "speed": 800,
+                                    "observer": true,
+                                    "observeParents": true,
+                                    "navigation": {
+                                        "clickable": true,
+                                        "nextEl": ".nav-next-{{ block.settings.tab_id }}",
+                                        "prevEl": ".nav-prev-{{ block.settings.tab_id }}"
+                                    },
+                                    "pagination": { 
+                                        "el": ".sw-pagination-{{ block.settings.tab_id }}", 
+                                        "clickable": true, 
+                                        "type": "progressbar" 
+                                    },
+                                    "breakpoints": {
+                                        "768": { "slidesPerView": 3, "spaceBetween": 12 },
+                                        "1200": { "slidesPerView": 4, "spaceBetween": 24}
+                                    }
+                                }'>
+                                <div class="swiper-wrapper">
+                                    {% for product in collections[block.settings.collection].products limit: block.settings.products_to_show %}
+                                        <div class="swiper-slide">
+                                            <div class="card-product style-4">
+                                                <div class="card-product-wrapper radius-16 line-2 asp-ratio-0">
+                                                    <a href="{{ product.url }}" class="product-img">
+                                                        <img class="img-product lazyload"
+                                                            data-src="{{ product.featured_image | image_url }}"
+                                                            src="{{ product.featured_image | image_url }}"
+                                                            alt="{{ product.featured_image.alt | escape }}"
+                                                            width="{{ product.featured_image.width }}"
+                                                            height="{{ product.featured_image.height }}">
+                                                        {% if product.images[1] %}
+                                                            <img class="img-hover lazyload"
+                                                                data-src="{{ product.images[1] | image_url }}"
+                                                                src="{{ product.images[1] | image_url }}"
+                                                                alt="{{ product.images[1].alt | escape }}"
+                                                                width="{{ product.images[1].width }}"
+                                                                height="{{ product.images[1].height }}">
+                                                        {% endif %}
+                                                    </a>
+                                                    <ul class="list-product-btn">
+                                                        <li>
+                                                            <a href="#shoppingCart" 
+                                                               data-bs-toggle="offcanvas"
+                                                               class="bg-surface hover-tooltip tooltip-left box-icon">
+                                                                <span class="icon icon-cart2"></span>
+                                                                <span class="tooltip">Add to Cart</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="wishlist">
+                                                            <a href="javascript:void(0);"
+                                                               class="bg-surface hover-tooltip tooltip-left box-icon">
+                                                                <span class="icon icon-heart2"></span>
+                                                                <span class="tooltip">Add to Wishlist</span>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#quickView" 
+                                                               data-bs-toggle="modal"
+                                                               class="bg-surface hover-tooltip tooltip-left box-icon quickview">
+                                                                <span class="icon icon-view"></span>
+                                                                <span class="tooltip">Quick View</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="compare">
+                                                            <a href="#compare" 
+                                                               data-bs-toggle="modal"
+                                                               class="bg-surface hover-tooltip tooltip-left box-icon">
+                                                                <span class="icon icon-compare"></span>
+                                                                <span class="tooltip">Add to Compare</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                    {% if product.compare_at_price > product.price %}
+                                                        <div class="on-sale-wrap">
+                                                            <span class="on-sale-item">
+                                                                {{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}% Off
+                                                            </span>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="card-product-info text-center">
+                                                    <a href="{{ product.url }}"
+                                                       class="name-product link fw-medium text-md">{{ product.title }}</a>
+                                                    <p class="price-wrap fw-medium">
+                                                        <span class="price-new text-primary">{{ product.price | money }}</span>
+                                                        {% if product.compare_at_price > product.price %}
+                                                            <span class="price-old">{{ product.compare_at_price | money }}</span>
+                                                        {% endif %}
+                                                    </p>
+                                                    {% if product.variants.size > 1 %}
+                                                        <ul class="list-color-product list-capacity-product justify-content-center">
+                                                            {% for variant in product.variants %}
+                                                                <li class="list-color-item color-swatch {% if forloop.first %}active{% endif %}">
+                                                                    <span class="text-quantity font-2">{{ variant.title }}</span>
+                                                                    {% if variant.image %}
+                                                                        <img class="lazyload"
+                                                                            data-src="{{ variant.image | image_url }}"
+                                                                            src="{{ variant.image | image_url }}"
+                                                                            alt="{{ variant.image.alt | escape }}"
+                                                                            width="{{ variant.image.width }}"
+                                                                            height="{{ variant.image.height }}">
+                                                                    {% endif %}
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /Just Arrivals -->
+
+{% schema %}
+{
+    "name": "Just Arrivals",
+    "settings": [
+        {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Subtitle",
+            "default": "Discover our top picks"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Just Arrivals"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "tab",
+            "name": "Tab",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "tab_title",
+                    "label": "Tab Title",
+                    "default": "iPhone"
+                },
+                {
+                    "type": "text",
+                    "id": "tab_id",
+                    "label": "Tab ID",
+                    "default": "iphone"
+                },
+                {
+                    "type": "collection",
+                    "id": "collection",
+                    "label": "Collection"
+                },
+                {
+                    "type": "range",
+                    "id": "products_to_show",
+                    "min": 4,
+                    "max": 12,
+                    "step": 1,
+                    "default": 8,
+                    "label": "Number of products to show"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Just Arrivals",
+            "blocks": [
+                {
+                    "type": "tab",
+                    "settings": {
+                        "tab_title": "iPhone",
+                        "tab_id": "iphone"
+                    }
+                },
+                {
+                    "type": "tab",
+                    "settings": {
+                        "tab_title": "Android",
+                        "tab_id": "android"
+                    }
+                },
+                {
+                    "type": "tab",
+                    "settings": {
+                        "tab_title": "Personalized",
+                        "tab_id": "personalized"
+                    }
+                }
+            ]
+        }
+    ]
+}
+{% endschema %} 

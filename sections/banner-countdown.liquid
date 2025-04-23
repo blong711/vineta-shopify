@@ -7,6 +7,8 @@
             <img src="{{ section.settings.banner_image | img_url: 'master' }}"
               data-src="{{ section.settings.banner_image | img_url: 'master' }}"
               alt="{{ section.settings.heading | escape }}"
+              width="{{ section.settings.banner_image.width }}"
+              height="{{ section.settings.banner_image.height }}"
               class="lazyload">
           {%- else -%}
             {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
@@ -14,70 +16,41 @@
         </div>
         <div class="banner-content text-center">
           <div class="box-title wow fadeInUp">
-            {% for block in section.blocks %}
-              {% case block.type %}
-                {% when 'season_text' %}
-                  {%- if block.settings.text != blank -%}
-                    <p class="season text-md fw-medium" {{ block.shopify_attributes }}>
-                      {{ block.settings.text }}
-                    </p>
-                  {%- endif -%}
-                {% when 'heading' %}
-                  {%- if block.settings.text != blank -%}
-                    <h2 class="fw-medium" {{ block.shopify_attributes }}>
-                      {{ block.settings.text }}
-                    </h2>
-                  {%- endif -%}
-                {% when 'promo_code' %}
-                  {%- if block.settings.text != blank -%}
-                    <p class="sub text-md fw-medium" {{ block.shopify_attributes }}>
-                      WITH PROMOTE CODE: {{ block.settings.text }}
-                    </p>
-                  {%- endif -%}
-                {% when 'banner_content' %}
-                  <div class="box-content" {{ block.shopify_attributes }}>
-                    <div class="box-title-banner wow fadeInUp">
-                      {%- if block.settings.title != blank -%}
-                        <p class="title display-md fw-medium">
-                          {{ block.settings.title }}
-                        </p>
-                      {%- endif -%}
-                      {%- if block.settings.subtitle != blank -%}
-                        <p class="sub text-md text-main">
-                          {{ block.settings.subtitle }}
-                        </p>
-                      {%- endif -%}
-                    </div>
-                    {%- if block.settings.button_label != blank -%}
-                      <div class="box-btn-banner wow fadeInUp">
-                        <a href="{{ block.settings.button_link }}" class="tf-btn btn-dark2 animate-btn">
-                          {{ block.settings.button_label }}
-                          <i class="icon icon-arr-right"></i>
-                        </a>
-                      </div>
-                    {%- endif -%}
-                  </div>
-                {% when 'countdown' %}
-                  {%- if block.settings.show_countdown and block.settings.end_date != blank -%}
-                    {%- assign end_date = block.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
-                    <div class="box-countdown d-flex justify-content-center wow fadeInUp" {{ block.shopify_attributes }}>
-                      <div class="wg-countdown-2">
-                        <div class="js-countdown" 
-                             data-countdown="{{ end_date }}"
-                             data-labels="Days,Hours,Mins,Secs"></div>
-                      </div>
-                    </div>
-                  {%- endif -%}
-                {% when 'button' %}
-                  {%- if block.settings.button_label != blank -%}
-                    <div class="box-btn wow fadeInUp" {{ block.shopify_attributes }}>
-                      <a href="{{ block.settings.button_link }}" class="tf-btn btn-white hover-primary">
-                        {{ block.settings.button_label }}
-                      </a>
-                    </div>
-                  {%- endif -%}
-              {% endcase %}
-            {% endfor %}
+            {%- if section.settings.season_text != blank -%}
+              <p class="season text-md fw-medium">
+                {{ section.settings.season_text }}
+              </p>
+            {%- endif -%}
+            
+            {%- if section.settings.heading != blank -%}
+              <h2 class="fw-medium">
+                {{ section.settings.heading }}
+              </h2>
+            {%- endif -%}
+            
+            {%- if section.settings.promo_code != blank -%}
+              <p class="sub text-md fw-medium">
+                WITH PROMOTE CODE: {{ section.settings.promo_code }}
+              </p>
+            {%- endif -%}
+            {%- if section.settings.show_countdown and section.settings.end_date != blank -%}
+              {%- assign end_date = section.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
+              <div class="box-countdown d-flex justify-content-center wow fadeInUp">
+                <div class="wg-countdown-2">
+                  <div class="js-countdown" 
+                       data-countdown="{{ end_date }}"
+                       data-labels="Days,Hours,Mins,Secs"></div>
+                </div>
+              </div>
+            {%- endif -%}
+            
+            {%- if section.settings.button_label != blank -%}
+              <div class="box-btn wow fadeInUp">
+                <a href="{{ section.settings.button_link }}" class="tf-btn btn-white hover-primary">
+                  {{ section.settings.button_label }}
+                </a>
+              </div>
+            {%- endif -%}
           </div>
         </div>
       </div>
@@ -103,163 +76,66 @@
       "type": "image_picker",
       "id": "banner_image",
       "label": "Banner image"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "season_text",
-      "name": "Season Text",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Text",
-          "default": "SUMMER SALE"
-        }
-      ]
     },
     {
-      "type": "heading",
-      "name": "Heading",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Text",
-          "default": "50% OFF"
-        }
-      ]
+      "type": "text",
+      "id": "season_text",
+      "label": "Season Text",
+      "default": "SUMMER SALE"
     },
     {
-      "type": "promo_code",
-      "name": "Promo Code",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Code",
-          "default": "12D34E"
-        }
-      ]
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "50% OFF"
     },
     {
-      "type": "banner_content",
-      "name": "Banner Content",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Unmatched Performance"
-        },
-        {
-          "type": "text",
-          "id": "subtitle",
-          "label": "Subtitle",
-          "default": "Upgrade your devices with cutting-edge technology."
-        },
-        {
-          "type": "text",
-          "id": "button_label",
-          "label": "Button label",
-          "default": "Shop Now"
-        },
-        {
-          "type": "url",
-          "id": "button_link",
-          "label": "Button link"
-        }
-      ]
+      "type": "text",
+      "id": "promo_code",
+      "label": "Promo Code",
+      "default": "12D34E"
     },
     {
-      "type": "countdown",
-      "name": "Countdown Timer",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "checkbox",
-          "id": "show_countdown",
-          "label": "Show countdown timer",
-          "default": true
-        },
-        {
-          "type": "text",
-          "id": "end_date",
-          "label": "End date (YYYY-MM-DD HH:MM:SS)",
-          "default": "2024-12-31 23:59:59"
-        }
-      ]
+      "type": "url",
+      "id": "banner_button_link",
+      "label": "Banner Button Link"
     },
     {
-      "type": "button",
-      "name": "Button",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "button_label",
-          "label": "Button label",
-          "default": "Shop Now"
-        },
-        {
-          "type": "url",
-          "id": "button_link",
-          "label": "Button link"
-        }
-      ]
+      "type": "checkbox",
+      "id": "show_countdown",
+      "label": "Show countdown timer",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "End date (YYYY-MM-DD HH:MM:SS)",
+      "default": "2024-12-31 23:59:59"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
     }
   ],
   "presets": [
     {
       "name": "Banner Countdown",
       "settings": {
-        "show_section": true
-      },
-      "blocks": [
-        {
-          "type": "season_text",
-          "settings": {
-            "text": "SUMMER SALE"
-          }
-        },
-        {
-          "type": "heading",
-          "settings": {
-            "text": "50% OFF"
-          }
-        },
-        {
-          "type": "promo_code",
-          "settings": {
-            "text": "12D34E"
-          }
-        },
-        {
-          "type": "banner_content",
-          "settings": {
-            "title": "Unmatched Performance",
-            "subtitle": "Upgrade your devices with cutting-edge technology.",
-            "button_label": "Shop Now"
-          }
-        },
-        {
-          "type": "countdown",
-          "settings": {
-            "show_countdown": true,
-            "end_date": "2024-12-31 23:59:59"
-          }
-        },
-        {
-          "type": "button",
-          "settings": {
-            "button_label": "Shop Now"
-          }
-        }
-      ]
+        "show_section": true,
+        "season_text": "SUMMER SALE",
+        "heading": "50% OFF",
+        "promo_code": "12D34E",
+        "show_countdown": true,
+        "end_date": "2024-12-31 23:59:59",
+        "button_label": "Shop Now"
+      }
     }
   ]
 }
