@@ -66,8 +66,54 @@
     },
     "categories": {
       "type": "categories",
+      "blocks": {
+        "category_kxi6c3": {
+          "type": "category",
+          "settings": {
+            "collection": "accessories"
+          }
+        },
+        "category_AWnmGQ": {
+          "type": "category",
+          "settings": {
+            "collection": "baby"
+          }
+        },
+        "category_aXmFGL": {
+          "type": "category",
+          "settings": {
+            "collection": "bike"
+          }
+        },
+        "category_JYpjz8": {
+          "type": "category",
+          "settings": {
+            "collection": "houseware"
+          }
+        },
+        "category_Btnhxi": {
+          "type": "category",
+          "settings": {
+            "collection": "men"
+          }
+        },
+        "category_dQ6cfh": {
+          "type": "category",
+          "settings": {
+            "collection": "women"
+          }
+        }
+      },
+      "block_order": [
+        "category_kxi6c3",
+        "category_AWnmGQ",
+        "category_aXmFGL",
+        "category_JYpjz8",
+        "category_Btnhxi",
+        "category_dQ6cfh"
+      ],
       "settings": {
-        "layout": "layout1",
+        "layout": "phonecase",
         "title": "Shop by Category",
         "button_text": "Categories",
         "products_to_show": 6,
@@ -76,23 +122,43 @@
     },
     "top-picks": {
       "type": "featured-collection",
+      "blocks": {
+        "collection_cYLyCB": {
+          "type": "collection",
+          "settings": {
+            "collection": "men",
+            "tag": "",
+            "price_new": "",
+            "price_old": "",
+            "button_text": "See Details"
+          }
+        },
+        "collection_HCAUKV": {
+          "type": "collection",
+          "settings": {
+            "collection": "women",
+            "tag": "",
+            "price_new": "",
+            "price_old": "",
+            "button_text": "See Details"
+          }
+        }
+      },
+      "block_order": [
+        "collection_cYLyCB",
+        "collection_HCAUKV"
+      ],
       "settings": {
-        "layout": "default",
-        "speed": 800
-      }
-    },
-    "featured-collection": {
-      "type": "featured-collection",
-      "settings": {
-        "layout": "default",
+        "layout": "home-phonecase",
         "speed": 800
       }
     },
     "banner-countdown": {
       "type": "banner-countdown",
       "settings": {
-        "layout": "default",
+        "layout": "home-phonecase",
         "show_section": true,
+        "banner_image": "shopify://shop_images/cd-phonecase.jpg",
         "heading": "50% OFF",
         "subheading": "Get your favorite cases at a discount",
         "season_text": "SUMMER SALE",
@@ -109,17 +175,11 @@
         "title": "Premium Quality Phone Cases"
       }
     },
-    "just-arrivals": {
-      "type": "featured-collection",
-      "settings": {
-        "layout": "default",
-        "speed": 800
-      }
-    },
     "banner-collection": {
       "type": "banner-collection",
       "settings": {
-        "layout": "electric",
+        "layout": "phonecase",
+        "image": "shopify://shop_images/case.jpg",
         "title": "New Collection",
         "subtitle": "Check out our latest designs",
         "button_text": "Shop Now",
@@ -129,6 +189,46 @@
     },
     "testimonials": {
       "type": "testimonials",
+      "blocks": {
+        "testimonial_XMWmEN": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Emily T.",
+            "product": "Crop T-shirt",
+            "product_url": "",
+            "price": "$150.00",
+            "review": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!",
+            "title": "Elegance and Comfort Combined"
+          }
+        },
+        "testimonial_BrkYTt": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Emily T.",
+            "product": "Crop T-shirt",
+            "product_url": "",
+            "price": "$150.00",
+            "review": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!",
+            "title": "Elegance and Comfort Combined"
+          }
+        },
+        "testimonial_wifQbQ": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Emily T.",
+            "product": "Crop T-shirt",
+            "product_url": "",
+            "price": "$150.00",
+            "review": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!",
+            "title": "Elegance and Comfort Combined"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_XMWmEN",
+        "testimonial_BrkYTt",
+        "testimonial_wifQbQ"
+      ],
       "settings": {
         "layout": "default",
         "title": "What Our Customers Say"
@@ -136,8 +236,39 @@
     },
     "icon-boxes": {
       "type": "icon-boxes",
+      "blocks": {
+        "icon_box_xDJaVX": {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-shipping",
+            "title": "Free shipping for order over $100",
+            "description": "Enjoy free shipping on all orders"
+          }
+        },
+        "icon_box_TfzxQX": {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-shipping",
+            "title": "Free return in 14 days",
+            "description": "Enjoy free shipping on all orders"
+          }
+        },
+        "icon_box_TjJDq4": {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-shipping",
+            "title": "Payment sercured",
+            "description": "Enjoy free shipping on all orders"
+          }
+        }
+      },
+      "block_order": [
+        "icon_box_xDJaVX",
+        "icon_box_TfzxQX",
+        "icon_box_TjJDq4"
+      ],
       "settings": {
-        "layout": "default",
+        "layout": "phonecase",
         "slides_per_view_mobile": 2,
         "slides_per_view_tablet": 3,
         "slides_per_view_desktop": 4,
@@ -150,10 +281,8 @@
     "main-slider",
     "categories",
     "top-picks",
-    "featured-collection",
     "banner-countdown",
     "banner-tagline",
-    "just-arrivals",
     "banner-collection",
     "testimonials",
     "icon-boxes"
