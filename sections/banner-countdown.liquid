@@ -33,30 +33,6 @@
                 WITH PROMOTE CODE: {{ section.settings.promo_code }}
               </p>
             {%- endif -%}
-            
-            <div class="box-content">
-              <div class="box-title-banner wow fadeInUp">
-                {%- if section.settings.banner_title != blank -%}
-                  <p class="title display-md fw-medium">
-                    {{ section.settings.banner_title }}
-                  </p>
-                {%- endif -%}
-                {%- if section.settings.banner_subtitle != blank -%}
-                  <p class="sub text-md text-main">
-                    {{ section.settings.banner_subtitle }}
-                  </p>
-                {%- endif -%}
-              </div>
-              {%- if section.settings.banner_button_label != blank -%}
-                <div class="box-btn-banner wow fadeInUp">
-                  <a href="{{ section.settings.banner_button_link }}" class="tf-btn btn-dark2 animate-btn">
-                    {{ section.settings.banner_button_label }}
-                    <i class="icon icon-arr-right"></i>
-                  </a>
-                </div>
-              {%- endif -%}
-            </div>
-            
             {%- if section.settings.show_countdown and section.settings.end_date != blank -%}
               {%- assign end_date = section.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
               <div class="box-countdown d-flex justify-content-center wow fadeInUp">
@@ -120,24 +96,6 @@
       "default": "12D34E"
     },
     {
-      "type": "text",
-      "id": "banner_title",
-      "label": "Banner Title",
-      "default": "Unmatched Performance"
-    },
-    {
-      "type": "text",
-      "id": "banner_subtitle",
-      "label": "Banner Subtitle",
-      "default": "Upgrade your devices with cutting-edge technology."
-    },
-    {
-      "type": "text",
-      "id": "banner_button_label",
-      "label": "Banner Button Label",
-      "default": "Shop Now"
-    },
-    {
       "type": "url",
       "id": "banner_button_link",
       "label": "Banner Button Link"
@@ -174,9 +132,6 @@
         "season_text": "SUMMER SALE",
         "heading": "50% OFF",
         "promo_code": "12D34E",
-        "banner_title": "Unmatched Performance",
-        "banner_subtitle": "Upgrade your devices with cutting-edge technology.",
-        "banner_button_label": "Shop Now",
         "show_countdown": true,
         "end_date": "2024-12-31 23:59:59",
         "button_label": "Shop Now"
