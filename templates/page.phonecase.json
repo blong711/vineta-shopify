@@ -114,10 +114,92 @@
       ],
       "settings": {
         "layout": "phonecase",
-        "title": "Shop by Category",
+        "title": "Categories",
         "button_text": "Categories",
         "products_to_show": 6,
         "products_per_collection": 6
+      }
+    },
+    "top_picks_8J99Uh": {
+      "type": "top-picks",
+      "blocks": {
+        "product_Rc7mw8": {
+          "type": "product",
+          "settings": {
+            "product": "accurist-mens-accurist-london",
+            "show_sale_badge": false,
+            "sale_badge_text": "Sale",
+            "show_trending_badge": false,
+            "trending_badge_text": "Trending",
+            "show_color_swatches": true,
+            "show_size_swatches": false,
+            "size_swatches": "S,M,L,XL",
+            "show_countdown": false,
+            "countdown_timer": "2024/12/31 23:59:59"
+          }
+        },
+        "product_8rCtKt": {
+          "type": "product",
+          "settings": {
+            "product": "aclla-cress",
+            "show_sale_badge": false,
+            "sale_badge_text": "Sale",
+            "show_trending_badge": false,
+            "trending_badge_text": "Trending",
+            "show_color_swatches": true,
+            "show_size_swatches": false,
+            "size_swatches": "S,M,L,XL",
+            "show_countdown": false,
+            "countdown_timer": "2024/12/31 23:59:59"
+          }
+        },
+        "product_zRQEn7": {
+          "type": "product",
+          "settings": {
+            "product": "aloe-arborescens",
+            "show_sale_badge": false,
+            "sale_badge_text": "Sale",
+            "show_trending_badge": false,
+            "trending_badge_text": "Trending",
+            "show_color_swatches": true,
+            "show_size_swatches": false,
+            "size_swatches": "S,M,L,XL",
+            "show_countdown": false,
+            "countdown_timer": "2024/12/31 23:59:59"
+          }
+        },
+        "product_tkWKkg": {
+          "type": "product",
+          "settings": {
+            "product": "analog-wall-clock",
+            "show_sale_badge": false,
+            "sale_badge_text": "Sale",
+            "show_trending_badge": false,
+            "trending_badge_text": "Trending",
+            "show_color_swatches": true,
+            "show_size_swatches": false,
+            "size_swatches": "S,M,L,XL",
+            "show_countdown": false,
+            "countdown_timer": "2024/12/31 23:59:59"
+          }
+        }
+      },
+      "block_order": [
+        "product_Rc7mw8",
+        "product_8rCtKt",
+        "product_zRQEn7",
+        "product_tkWKkg"
+      ],
+      "settings": {
+        "layout": "home-phonecase",
+        "subtitle": "Discover our top picks",
+        "title": "Top Picks You'll Love",
+        "description": "Explore our most popular pieces that customers can't get enough of",
+        "spacing": "flat-spacing-8",
+        "background_color": "bg-surface",
+        "show_view_all": true,
+        "view_all_link": "",
+        "view_all_text": "View all"
       }
     },
     "top-picks": {
@@ -164,15 +246,96 @@
         "season_text": "SUMMER SALE",
         "promo_code": "12D34E",
         "show_countdown": true,
-        "end_date": "2024-12-31",
+        "end_date": "2025-12-31",
         "button_label": "Shop Now",
         "button_link": "/collections/all"
       }
     },
     "banner-tagline": {
       "type": "banner-tagline",
+      "blocks": {
+        "feature_U6XB6A": {
+          "type": "feature",
+          "settings": {
+            "icon": "icon-protection",
+            "heading": "Durable Protection",
+            "text": "Our cases are designed to withstand drops and scratches, keeping your phone safe."
+          }
+        },
+        "feature_be4mCQ": {
+          "type": "feature",
+          "settings": {
+            "icon": "icon-designs",
+            "heading": "Stylish Designs",
+            "text": "Choose from a wide range of trendy and unique designs that suit your style."
+          }
+        },
+        "feature_UPmiKJ": {
+          "type": "feature",
+          "settings": {
+            "icon": "icon-fit",
+            "heading": "Perfect Fit",
+            "text": "Each case is precisely crafted to fit your phone model, ensuring easy access to all buttons and ports."
+          }
+        },
+        "feature_ipREbR": {
+          "type": "feature",
+          "settings": {
+            "icon": "icon-quality",
+            "heading": "Affordable Quality",
+            "text": "Enjoy premium protection without breaking the bank."
+          }
+        }
+      },
+      "block_order": [
+        "feature_U6XB6A",
+        "feature_be4mCQ",
+        "feature_UPmiKJ",
+        "feature_ipREbR"
+      ],
       "settings": {
         "title": "Premium Quality Phone Cases"
+      }
+    },
+    "just_arrivals_eHVVt6": {
+      "type": "just-arrivals",
+      "blocks": {
+        "tab_rxWaBa": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "iPhone",
+            "tab_id": "iphone",
+            "collection": "men",
+            "products_to_show": 8
+          }
+        },
+        "tab_TReczN": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Android",
+            "tab_id": "android",
+            "collection": "women",
+            "products_to_show": 8
+          }
+        },
+        "tab_iKLgji": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Personalized",
+            "tab_id": "personalized",
+            "collection": "baby",
+            "products_to_show": 8
+          }
+        }
+      },
+      "block_order": [
+        "tab_rxWaBa",
+        "tab_TReczN",
+        "tab_iKLgji"
+      ],
+      "settings": {
+        "subtitle": "Discover our top picks",
+        "title": "Just Arrivals"
       }
     },
     "banner-collection": {
@@ -280,9 +443,11 @@
   "order": [
     "main-slider",
     "categories",
+    "top_picks_8J99Uh",
     "top-picks",
     "banner-countdown",
     "banner-tagline",
+    "just_arrivals_eHVVt6",
     "banner-collection",
     "testimonials",
     "icon-boxes"
