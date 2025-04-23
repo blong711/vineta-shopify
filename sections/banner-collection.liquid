@@ -51,15 +51,24 @@
         </div>
       {% endif %}
       <div class="box-content {% if section.settings.layout == 'fashion-02' or section.settings.layout == 'phonecase' %}wow fadeInUp{% endif %}">
-        <div class="box-title-banner {% if section.settings.layout == 'fashion-02' or section.settings.layout == 'phonecase' %}wow fadeInUp{% endif %}">
-          <p class="title display-md fw-medium {% if section.settings.layout == 'bicycle' %}text-white{% endif %} {% if section.settings.layout == 'phonecase' %}display-xl-2 text-dark-3{% endif %}">
-            {{ section.settings.title }}
-          </p>
-          <p class="sub {% if section.settings.layout == 'fashion-02' %}text-lg{% else %}text-md{% endif %} {% if section.settings.layout == 'bicycle' %}text-white{% else %}text-main{% endif %} {% if section.settings.layout == 'phonecase' %}text-xl text-dark-3{% endif %}">
-            {{ section.settings.subtitle }}
-          </p>
+        <div class="box-title-banner">
+          {% if section.settings.layout == 'phonecase' %}
+            <p class="sub text-xl text-dark-3">
+              {{ section.settings.subtitle }}
+            </p>
+            <h2 class="title display-xl-2 fw-medium text-dark-3">
+              {{ section.settings.title }}
+            </h2>
+          {% else %}
+            <p class="title display-md fw-medium {% if section.settings.layout == 'bicycle' %}text-white{% endif %}">
+              {{ section.settings.title }}
+            </p>
+            <p class="sub {% if section.settings.layout == 'fashion-02' %}text-lg{% else %}text-md{% endif %} {% if section.settings.layout == 'bicycle' %}text-white{% else %}text-main{% endif %}">
+              {{ section.settings.subtitle }}
+            </p>
+          {% endif %}
         </div>
-        <div class="box-btn-banner {% if section.settings.layout == 'fashion-02' or section.settings.layout == 'phonecase' %}wow fadeInUp{% endif %}">
+        <div class="box-btn-banner {% if section.settings.layout == 'fashion-02' %}wow fadeInUp{% endif %}">
           <a href="{{ section.settings.button_link }}" class="tf-btn {% if section.settings.layout == 'bicycle' %}btn-green-2{% else %}btn-dark2{% endif %} {% if section.settings.layout == 'phonecase' %}animate-btn fw-normal hover-icon{% else %}animate-btn{% endif %}">
             {{ section.settings.button_text }}
             <i class="icon {% if section.settings.layout == 'bicycle' %}icon-arr-right3{% elsif section.settings.layout == 'phonecase' %}icon-arrow1-top-left fs-12{% else %}icon-arr-right{% endif %}"></i>
