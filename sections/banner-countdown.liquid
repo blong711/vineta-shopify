@@ -1,48 +1,50 @@
 {%- if section.settings.show_section -%}
     <section class="s-banner-countdown {% if section.settings.layout == 'home-phonecase' %}banner-cd-phonecase{% else %}banner-cd-fashion{% endif %}">
-      <div class="container">
+      {%- if section.settings.layout == 'home-phonecase' -%}
         <div class="banner-wrap">
-          {%- if section.settings.layout == 'home-phonecase' -%}
-            <div class="banner-content text-center">
-              <div class="box-title">
-                {%- if section.settings.heading != blank -%}
-                  <h4>{{ section.settings.heading }}</h4>
-                {%- endif -%}
-                {%- if section.settings.subheading != blank -%}
-                  <p class="sub text-md">{{ section.settings.subheading }}</p>
-                {%- endif -%}
+          <div class="banner-content text-center">
+            <div class="box-title">
+              {%- if section.settings.heading != blank -%}
+                <h4>{{ section.settings.heading }}</h4>
+              {%- endif -%}
+              {%- if section.settings.subheading != blank -%}
+                <p class="sub text-md">{{ section.settings.subheading }}</p>
+              {%- endif -%}
+            </div>
+            {%- if section.settings.show_countdown and section.settings.end_date != blank -%}
+              {%- assign end_date = section.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
+              <div class="box-countdown">
+                <div class="wg-countdown">
+                  <div class="js-countdown d-flex justify-content-center" 
+                       data-countdown="{{ end_date }}"
+                       data-labels="Days,Hours,Mins,Secs"></div>
+                </div>
               </div>
-              {%- if section.settings.show_countdown and section.settings.end_date != blank -%}
-                {%- assign end_date = section.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
-                <div class="box-countdown">
-                  <div class="wg-countdown">
-                    <div class="js-countdown d-flex justify-content-center" 
-                         data-countdown="{{ end_date }}"
-                         data-labels="Days,Hours,Mins,Secs"></div>
-                  </div>
-                </div>
-              {%- endif -%}
-              {%- if section.settings.button_label != blank -%}
-                <div class="box-btn">
-                  <a href="{{ section.settings.button_link }}" class="tf-btn fw-normal animate-btn">
-                    {{ section.settings.button_label }}
-                  </a>
-                </div>
-              {%- endif -%}
-            </div>
-            <div class="image">
-              {%- if section.settings.banner_image != blank -%}
-                <img src="{{ section.settings.banner_image | img_url: 'master' }}"
-                  data-src="{{ section.settings.banner_image | img_url: 'master' }}"
-                  alt="{{ section.settings.heading | escape }}"
-                  width="{{ section.settings.banner_image.width }}"
-                  height="{{ section.settings.banner_image.height }}"
-                  class="lazyload effect-paralax">
-              {%- else -%}
-                {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
-              {%- endif -%}
-            </div>
-          {%- else -%}
+            {%- endif -%}
+            {%- if section.settings.button_label != blank -%}
+              <div class="box-btn">
+                <a href="{{ section.settings.button_link }}" class="tf-btn fw-normal animate-btn">
+                  {{ section.settings.button_label }}
+                </a>
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="image">
+            {%- if section.settings.banner_image != blank -%}
+              <img src="{{ section.settings.banner_image | img_url: 'master' }}"
+                data-src="{{ section.settings.banner_image | img_url: 'master' }}"
+                alt="{{ section.settings.heading | escape }}"
+                width="{{ section.settings.banner_image.width }}"
+                height="{{ section.settings.banner_image.height }}"
+                class="lazyload effect-paralax">
+            {%- else -%}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+        </div>
+      {%- else -%}
+        <div class="container">
+          <div class="banner-wrap">
             <div class="image">
               {%- if section.settings.banner_image != blank -%}
                 <img src="{{ section.settings.banner_image | img_url: 'master' }}"
@@ -94,9 +96,9 @@
                 {%- endif -%}
               </div>
             </div>
-          {%- endif -%}
+          </div>
         </div>
-      </div>
+      {%- endif -%}
     </section>
   {%- endif -%}
   
