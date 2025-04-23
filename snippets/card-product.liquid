@@ -200,14 +200,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <div class="tf-mini-cart-item_price">
                       <p class="price-wrap text-sm fw-medium">
-                        <span class="new-price text-primary">${(item.final_price / 100).toFixed(2)} ${cartData.currency.symbol}</span>
+                        <span class="new-price text-primary">${formatMoney(item.final_price)}</span>
                       </p>
                     </div>
                     <div class="tf-mini-cart-item_quantity">
                       <div class="wg-quantity small">
-                        <span class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</span>
+                        <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
                         <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
-                        <span class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</span>
+                        <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
                       </div>
                     </div>
                   </div>
@@ -215,10 +215,58 @@ document.addEventListener('DOMContentLoaded', function() {
                 itemsContainer.appendChild(itemElement);
               });
               
+              // Add event listeners for quantity buttons
+              itemsContainer.querySelectorAll('.btn-decrease').forEach(button => {
+                button.addEventListener('click', async function() {
+                  const variantId = this.dataset.variantId;
+                  const input = this.nextElementSibling;
+                  const currentValue = parseInt(input.value);
+                  if (currentValue > 1) {
+                    await window.cart.updateQuantity(variantId, currentValue - 1, 'update');
+                  } else {
+                    await window.cart.removeItem(variantId);
+                  }
+                });
+              });
+
+              itemsContainer.querySelectorAll('.btn-increase').forEach(button => {
+                button.addEventListener('click', async function() {
+                  const variantId = this.dataset.variantId;
+                  const input = this.previousElementSibling;
+                  const currentValue = parseInt(input.value);
+                  await window.cart.updateQuantity(variantId, currentValue + 1, 'update');
+                });
+              });
+
+              itemsContainer.querySelectorAll('.quantity-product').forEach(input => {
+                input.addEventListener('change', async function() {
+                  const variantId = this.dataset.variantId;
+                  const newValue = parseInt(this.value);
+                  if (isNaN(newValue) || newValue < 1) {
+                    if (newValue <= 0) {
+                      await window.cart.removeItem(variantId);
+                    } else {
+                      this.value = 1;
+                      await window.cart.updateQuantity(variantId, 1, 'update');
+                    }
+                  } else {
+                    await window.cart.updateQuantity(variantId, newValue, 'update');
+                  }
+                });
+              });
+
+              // Add event listeners for remove buttons
+              itemsContainer.querySelectorAll('.remove').forEach(button => {
+                button.addEventListener('click', async function() {
+                  const variantId = this.dataset.variantId;
+                  await window.cart.removeItem(variantId);
+                });
+              });
+              
               // Update cart total
               const totalElement = cartDrawer.querySelector('.cart-total-price');
               if (totalElement) {
-                totalElement.textContent = `${(cartData.total_price / 100).toFixed(2)} ${cartData.currency.symbol}`;
+                totalElement.textContent = formatMoney(cartData.total_price);
               }
               
               // Update header cart count

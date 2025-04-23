@@ -874,6 +874,11 @@ class Cart {
         const itemImage = item.image || item.featured_image?.url || '/no-image.jpg';
         const itemUrl = item.url || `/products/${item.handle}`;
         
+        // Ensure prices are properly formatted
+        const formattedPrice = this.formatMoney(item.final_price || item.price);
+        const formattedOriginalPrice = item.original_price !== item.final_price ? 
+          this.formatMoney(item.original_price) : '';
+        
         itemElement.innerHTML = `
           <div class="tf-mini-cart-image">
             <a href="${itemUrl}">
@@ -889,9 +894,9 @@ class Cart {
               <div class="text-xs">${item.variant_title || ''}</div>
             </div>
             <p class="price-wrap text-sm fw-medium">
-              <span class="new-price text-primary">${this.formatMoney(item.price)}</span>
-              ${item.original_price !== item.final_price ? 
-                `<span class="old-price text-decoration-line-through text-dark-1">${this.formatMoney(item.original_price)}</span>` : 
+              <span class="new-price text-primary">${formattedPrice}</span>
+              ${formattedOriginalPrice ? 
+                `<span class="old-price text-decoration-line-through text-dark-1">${formattedOriginalPrice}</span>` : 
                 ''}
             </p>
             <div class="wg-quantity small">
@@ -931,7 +936,7 @@ class Cart {
       `;
     }
 
-    // Update total price
+    // Update total price with proper formatting
     const totalPrice = cartDrawer.querySelector('.tf-totals-total-value');
     if (totalPrice) {
       totalPrice.textContent = this.formatMoney(cartData.total_price);
