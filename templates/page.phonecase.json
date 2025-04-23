@@ -1,92 +1,146 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main-slider": {
       "type": "main-slider",
+      "blocks": {
+        "slide_7qCRap": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/slider-phonecase-1.jpg",
+            "image_position": "left",
+            "content_position": "left",
+            "subtitle": "",
+            "heading": "Protect in Style",
+            "subheading": "Find the perfect case for your phone",
+            "button_text": "Shop Collection",
+            "button_link": ""
+          }
+        },
+        "slide_LMWi7T": {
+          "type": "slide",
+          "settings": {
+            "image_position": "left",
+            "content_position": "left",
+            "subtitle": "SUMMER COLLECTION",
+            "heading": "Style Redefined",
+            "subheading": "Discover the latest trends in fashion that speak your style.",
+            "button_text": "Shop Now",
+            "button_link": ""
+          }
+        },
+        "slide_bHHNbh": {
+          "type": "slide",
+          "settings": {
+            "image_position": "left",
+            "content_position": "left",
+            "subtitle": "SUMMER COLLECTION",
+            "heading": "Style Redefined",
+            "subheading": "Discover the latest trends in fashion that speak your style.",
+            "button_text": "Shop Now",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_7qCRap",
+        "slide_LMWi7T",
+        "slide_bHHNbh"
+      ],
       "settings": {
+        "layout": "phonecase",
         "autoplay": true,
-        "autoplay_speed": 5000,
-        "arrows": true,
-        "dots": true
+        "loop": true,
+        "speed": 800
       }
     },
     "categories": {
       "type": "categories",
       "settings": {
+        "layout": "layout1",
         "title": "Shop by Category",
-        "show_view_all": true
+        "button_text": "Categories",
+        "products_to_show": 6,
+        "products_per_collection": 6
       }
     },
     "top-picks": {
       "type": "featured-collection",
       "settings": {
-        "title": "Top Picks",
-        "collection": "top-picks",
-        "products_to_show": 4,
-        "show_view_all": true
+        "layout": "default",
+        "speed": 800
       }
     },
     "featured-collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Featured Collection",
-        "collection": "featured",
-        "products_to_show": 8,
-        "show_view_all": true
+        "layout": "default",
+        "speed": 800
       }
     },
     "banner-countdown": {
       "type": "banner-countdown",
       "settings": {
-        "title": "Limited Time Offer",
-        "subtitle": "Hurry up! Sale ends in",
+        "layout": "default",
+        "show_section": true,
+        "heading": "50% OFF",
+        "subheading": "Get your favorite cases at a discount",
+        "season_text": "SUMMER SALE",
+        "promo_code": "12D34E",
+        "show_countdown": true,
         "end_date": "2024-12-31",
-        "button_text": "Shop Now",
+        "button_label": "Shop Now",
         "button_link": "/collections/all"
       }
     },
     "banner-tagline": {
       "type": "banner-tagline",
       "settings": {
-        "title": "Premium Quality Phone Cases",
-        "subtitle": "Protect your device in style",
-        "button_text": "Explore Collection",
-        "button_link": "/collections/all"
+        "title": "Premium Quality Phone Cases"
       }
     },
     "just-arrivals": {
       "type": "featured-collection",
       "settings": {
-        "title": "Just Arrived",
-        "collection": "new-arrivals",
-        "products_to_show": 4,
-        "show_view_all": true
+        "layout": "default",
+        "speed": 800
       }
     },
     "banner-collection": {
       "type": "banner-collection",
       "settings": {
+        "layout": "electric",
         "title": "New Collection",
         "subtitle": "Check out our latest designs",
-        "collection": "new-collection",
         "button_text": "Shop Now",
-        "button_link": "/collections/new-collection"
+        "button_link": "/collections/new-collection",
+        "padding_top": 36
       }
     },
     "testimonials": {
       "type": "testimonials",
       "settings": {
-        "title": "What Our Customers Say",
-        "autoplay": true,
-        "autoplay_speed": 5000,
-        "show_arrows": true,
-        "show_dots": true
+        "layout": "default",
+        "title": "What Our Customers Say"
       }
     },
     "icon-boxes": {
       "type": "icon-boxes",
       "settings": {
-        "title": "Why Choose Us",
-        "show_border": true
+        "layout": "default",
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "space_between": 10,
+        "show_pagination": true
       }
     }
   },
@@ -102,4 +156,4 @@
     "testimonials",
     "icon-boxes"
   ]
-} 
+}
