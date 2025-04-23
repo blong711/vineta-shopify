@@ -1,0 +1,105 @@
+{
+  "sections": {
+    "main-slider": {
+      "type": "main-slider",
+      "settings": {
+        "autoplay": true,
+        "autoplay_speed": 5000,
+        "arrows": true,
+        "dots": true
+      }
+    },
+    "categories": {
+      "type": "categories",
+      "settings": {
+        "title": "Shop by Category",
+        "show_view_all": true
+      }
+    },
+    "top-picks": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Top Picks",
+        "collection": "top-picks",
+        "products_to_show": 4,
+        "show_view_all": true
+      }
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Featured Collection",
+        "collection": "featured",
+        "products_to_show": 8,
+        "show_view_all": true
+      }
+    },
+    "banner-countdown": {
+      "type": "banner-countdown",
+      "settings": {
+        "title": "Limited Time Offer",
+        "subtitle": "Hurry up! Sale ends in",
+        "end_date": "2024-12-31",
+        "button_text": "Shop Now",
+        "button_link": "/collections/all"
+      }
+    },
+    "banner-tagline": {
+      "type": "banner-tagline",
+      "settings": {
+        "title": "Premium Quality Phone Cases",
+        "subtitle": "Protect your device in style",
+        "button_text": "Explore Collection",
+        "button_link": "/collections/all"
+      }
+    },
+    "just-arrivals": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Just Arrived",
+        "collection": "new-arrivals",
+        "products_to_show": 4,
+        "show_view_all": true
+      }
+    },
+    "banner-collection": {
+      "type": "banner-collection",
+      "settings": {
+        "title": "New Collection",
+        "subtitle": "Check out our latest designs",
+        "collection": "new-collection",
+        "button_text": "Shop Now",
+        "button_link": "/collections/new-collection"
+      }
+    },
+    "testimonial": {
+      "type": "testimonial",
+      "settings": {
+        "title": "What Our Customers Say",
+        "autoplay": true,
+        "autoplay_speed": 5000,
+        "show_arrows": true,
+        "show_dots": true
+      }
+    },
+    "icon-box": {
+      "type": "icon-box",
+      "settings": {
+        "title": "Why Choose Us",
+        "show_border": true
+      }
+    }
+  },
+  "order": [
+    "main-slider",
+    "categories",
+    "top-picks",
+    "featured-collection",
+    "banner-countdown",
+    "banner-tagline",
+    "just-arrivals",
+    "banner-collection",
+    "testimonial",
+    "icon-box"
+  ]
+} 
