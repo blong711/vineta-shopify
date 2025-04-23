@@ -16,9 +16,9 @@
                 {%- assign end_date = section.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
                 <div class="box-countdown">
                   <div class="wg-countdown">
-                    <span class="js-countdown d-flex justify-content-center" 
-                          data-countdown="{{ end_date }}"
-                          data-labels="Days,Hours,Mins,Secs"></span>
+                    <div class="js-countdown d-flex justify-content-center" 
+                         data-countdown="{{ end_date }}"
+                         data-labels="Days,Hours,Mins,Secs"></div>
                   </div>
                 </div>
               {%- endif -%}
