@@ -30,10 +30,10 @@
                                         <div class="content-slider {% if section.settings.layout == 'fashion-women' or section.settings.layout == 'bicycle' %}style-2{% endif %}">
                                             <div class="box-title-slider">
                                                 {% if section.settings.layout == 'home-electronic' %}
-                                                    <p class="sub text-md fw-medium fade-item fade-item-1 text-{{ section.settings.text_color }}">
+                                                    <p class="sub text-md fw-medium fade-item fade-item-1 text-{{ block.settings.text_color }}">
                                                         {{ block.settings.subtitle }}
                                                     </p>
-                                                    <h2 class="heading fw-medium fade-item fade-item-2 text-{{ section.settings.text_color }}">
+                                                    <h2 class="heading fw-medium fade-item fade-item-2 text-{{ block.settings.text_color }}">
                                                         {{ block.settings.heading }}
                                                     </h2>
                                                 {% elsif section.settings.layout == 'fashion-women' %}
@@ -54,23 +54,23 @@
                                                         {{ block.settings.subheading }}
                                                     </p>
                                                 {% elsif section.settings.layout == 'phonecase' %}
-                                                    <h2 class="heading display-xl-2 fw-medium fade-item fade-item-1 text-{{ section.settings.text_color }}">
+                                                    <h2 class="heading display-xl-2 fw-medium fade-item fade-item-1 text-{{ block.settings.text_color }}">
                                                         {{ block.settings.heading }}
                                                     </h2>
-                                                    <p class="sub text-xl fade-item fade-item-2 text-{{ section.settings.text_color }}">
+                                                    <p class="sub text-xl fade-item fade-item-2 text-{{ block.settings.text_color }}">
                                                         {{ block.settings.subheading }}
                                                     </p>
                                                 {% else %}
-                                                    <h2 class="heading fw-medium fade-item fade-item-1 text-{{ section.settings.text_color }}">
+                                                    <h2 class="heading fw-medium fade-item fade-item-1 text-{{ block.settings.text_color }}">
                                                         {{ block.settings.heading }}
                                                     </h2>
-                                                    <p class="sub text-md fade-item fade-item-2 text-{{ section.settings.text_color }}">
+                                                    <p class="sub text-md fade-item fade-item-2 text-{{ block.settings.text_color }}">
                                                         {{ block.settings.subheading }}
                                                     </p>
                                                 {% endif %}
                                             </div>
                                             <div class="box-btn-slider {% if section.settings.layout == 'fashion-women' %}fade-item fade-item-4{% else %}fade-item fade-item-3{% endif %}">
-                                                <a href="{{ block.settings.button_link }}" class="tf-btn {% if section.settings.layout == 'fashion-women' %}animate-btn font-2{% elsif section.settings.layout == 'bicycle' %}btn-space1 animate-btn btn-green-2{% elsif section.settings.layout == 'phonecase' %}fw-normal animate-btn{% else %}btn-{{ section.settings.button_color }} animate-btn{% endif %}">
+                                                <a href="{{ block.settings.button_link }}" class="tf-btn {% if section.settings.layout == 'fashion-women' %}animate-btn font-2{% elsif section.settings.layout == 'bicycle' %}btn-space1 animate-btn btn-green-2{% elsif section.settings.layout == 'phonecase' %}fw-normal animate-btn{% else %}btn-{{ block.settings.button_color }} animate-btn{% endif %}">
                                                     {{ block.settings.button_text }}
                                                     <i class="icon {% if section.settings.layout == 'bicycle' %}icon-arr-right3{% else %}icon-arrow-top-left{% endif %}"></i>
                                                 </a>
@@ -109,26 +109,6 @@
                 { "value": "phonecase", "label": "Phonecase" }
             ],
             "default": "default"
-        },
-        {
-            "type": "select",
-            "id": "text_color",
-            "label": "Text Color",
-            "options": [
-                { "value": "dark-3", "label": "Dark" },
-                { "value": "white", "label": "White" }
-            ],
-            "default": "dark-3"
-        },
-        {
-            "type": "select",
-            "id": "button_color",
-            "label": "Button Color",
-            "options": [
-                { "value": "dark2", "label": "Dark" },
-                { "value": "white", "label": "White" }
-            ],
-            "default": "dark2"
         },
         {
             "type": "checkbox",
@@ -182,6 +162,26 @@
                         { "value": "right", "label": "Right" }
                     ],
                     "default": "left"
+                },
+                {
+                    "type": "select",
+                    "id": "text_color",
+                    "label": "Text Color",
+                    "options": [
+                        { "value": "dark-3", "label": "Dark" },
+                        { "value": "white", "label": "White" }
+                    ],
+                    "default": "dark-3"
+                },
+                {
+                    "type": "select",
+                    "id": "button_color",
+                    "label": "Button Color",
+                    "options": [
+                        { "value": "dark2", "label": "Dark" },
+                        { "value": "white", "label": "White" }
+                    ],
+                    "default": "dark2"
                 },
                 {
                     "type": "text",
