@@ -163,50 +163,18 @@
     },
     "banner_countdown": {
       "type": "banner-countdown",
-      "blocks": {
-        "season_text_Nm6t3F": {
-          "type": "season_text",
-          "settings": {
-            "text": "SUMMER SALE"
-          }
-        },
-        "heading_WLAqBn": {
-          "type": "heading",
-          "settings": {
-            "text": "50% OFF"
-          }
-        },
-        "promo_code_DD47CT": {
-          "type": "promo_code",
-          "settings": {
-            "text": "12D34E"
-          }
-        },
-        "countdown_WdF7DF": {
-          "type": "countdown",
-          "settings": {
-            "show_countdown": true,
-            "end_date": "2025-12-31 23:59:59"
-          }
-        },
-        "button_cyz8ge": {
-          "type": "button",
-          "settings": {
-            "button_label": "Shop Now",
-            "button_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "season_text_Nm6t3F",
-        "heading_WLAqBn",
-        "promo_code_DD47CT",
-        "countdown_WdF7DF",
-        "button_cyz8ge"
-      ],
       "settings": {
+        "layout": "home-phonecase",
         "show_section": true,
-        "banner_image": "shopify://shop_images/fashion-1.jpg"
+        "banner_image": "shopify://shop_images/fashion-1.jpg",
+        "heading": "50% OFF",
+        "subheading": "Get your favorite cases at a discount",
+        "season_text": "SUMMER SALE",
+        "promo_code": "12D34E",
+        "show_countdown": false,
+        "end_date": "2025-12-31 23:59:59",
+        "button_label": "Shop Now",
+        "button_link": ""
       }
     },
     "categories": {
