@@ -67,29 +67,41 @@
     "featured_collection": {
       "type": "featured-collection",
       "blocks": {
-        "collection_7RRjhP": {
-          "type": "collection",
-          "settings": {
-            "collection": "accessories"
-          }
-        },
         "collection_xYCj9Y": {
           "type": "collection",
           "settings": {
-            "collection": "men"
+            "collection": "men",
+            "tag": "",
+            "price_new": "",
+            "price_old": "",
+            "button_text": "See Details"
           }
         },
         "collection_eXrWLV": {
           "type": "collection",
           "settings": {
-            "collection": "women"
+            "collection": "women",
+            "tag": "",
+            "price_new": "",
+            "price_old": "",
+            "button_text": "See Details"
+          }
+        },
+        "collection_TGPEVV": {
+          "type": "collection",
+          "settings": {
+            "collection": "baby",
+            "tag": "",
+            "price_new": "",
+            "price_old": "",
+            "button_text": "See Details"
           }
         }
       },
       "block_order": [
-        "collection_7RRjhP",
         "collection_xYCj9Y",
-        "collection_eXrWLV"
+        "collection_eXrWLV",
+        "collection_TGPEVV"
       ],
       "settings": {
         "layout": "default",
@@ -151,50 +163,18 @@
     },
     "banner_countdown": {
       "type": "banner-countdown",
-      "blocks": {
-        "season_text_Nm6t3F": {
-          "type": "season_text",
-          "settings": {
-            "text": "SUMMER SALE"
-          }
-        },
-        "heading_WLAqBn": {
-          "type": "heading",
-          "settings": {
-            "text": "50% OFF"
-          }
-        },
-        "promo_code_DD47CT": {
-          "type": "promo_code",
-          "settings": {
-            "text": "12D34E"
-          }
-        },
-        "countdown_WdF7DF": {
-          "type": "countdown",
-          "settings": {
-            "show_countdown": true,
-            "end_date": "2025-12-31 23:59:59"
-          }
-        },
-        "button_cyz8ge": {
-          "type": "button",
-          "settings": {
-            "button_label": "Shop Now",
-            "button_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "season_text_Nm6t3F",
-        "heading_WLAqBn",
-        "promo_code_DD47CT",
-        "countdown_WdF7DF",
-        "button_cyz8ge"
-      ],
       "settings": {
+        "layout": "default",
         "show_section": true,
-        "banner_image": "shopify://shop_images/fashion-1.jpg"
+        "banner_image": "shopify://shop_images/fashion-1.jpg",
+        "heading": "50% OFF",
+        "subheading": "Get your favorite cases at a discount",
+        "season_text": "SUMMER SALE",
+        "promo_code": "12D34E",
+        "show_countdown": true,
+        "end_date": "2025-12-31 23:59:59",
+        "button_label": "Shop Now",
+        "button_link": ""
       }
     },
     "categories": {

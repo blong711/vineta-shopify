@@ -192,6 +192,62 @@
           </div>
         </div>
       </section>
+    {%- when 'phonecase' -%}
+      <section class="flat-spacing-11">
+        <div class="container">
+          <div class="flat-title wow fadeInUp">
+            <h4 class="title">{{ section.settings.title }}</h4>
+          </div>
+          <div dir="ltr" class="wow fadeInUp swiper tf-swiper xl-px-26" data-swiper='{
+            "slidesPerView": 2,
+            "spaceBetween": 12,
+            "speed": 800,
+            "observer": true,
+            "observeParents": true,
+            "slidesPerGroup": 2,
+            "navigation": {
+              "clickable": true,
+              "nextEl": ".nav-next-cate",
+              "prevEl": ".nav-prev-cate"
+            },
+            "pagination": { "el": ".sw-pagination-cate", "clickable": true },
+            "breakpoints": {
+              "575": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 2 },    
+              "768": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 3 },
+              "1200": { "slidesPerView": {{ section.settings.products_to_show }}, "spaceBetween": 64, "slidesPerGroup": 3 }
+            }
+          }'>
+            <div class="swiper-wrapper">
+              {%- for block in section.blocks -%}
+                {%- assign collection = collections[block.settings.collection] -%}
+                <div class="swiper-slide" {{ block.shopify_attributes }}>
+                  <div class="wg-cls style-circle hover-img">
+                    <a href="{{ collection.url }}" class="image img-style d-block">
+                      {%- if collection.featured_image != blank -%}
+                        {{ collection.featured_image | image_url: width: 300 | image_tag:
+                          loading: 'lazy',
+                          width: 300,
+                          height: 300,
+                          class: 'lazyload',
+                          alt: collection.title
+                        }}
+                      {%- else -%}
+                        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {%- endif -%}
+                    </a>
+                    <div class="cls-content text-center">
+                      <a href="{{ collection.url }}" class="link text-xl fw-medium">{{ collection.title }}</a>
+                    </div>
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+            <span class="d-flex d-xl-none sw-dot-default sw-pagination-cate justify-content-center"></span>
+            <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-cate"></div>
+            <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-cate"></div>
+          </div>
+        </div>
+      </section>
   {%- endcase -%}
 {%- endif -%}
 
@@ -215,6 +271,10 @@
         {
           "value": "bicycle",
           "label": "Bicycle Layout"
+        },
+        {
+          "value": "phonecase",
+          "label": "Phonecase Layout"
         }
       ],
       "default": "layout1"
