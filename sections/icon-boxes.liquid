@@ -18,6 +18,10 @@
           {
             "value": "bicycle",
             "label": "Home Bicycle"
+          },
+          {
+            "value": "phonecase",
+            "label": "Home Phonecase"
           }
         ],
         "default": "default"
@@ -157,30 +161,30 @@
   }
   {% endschema %}
   
-  <div class="{% if section.settings.layout == 'home-electronic' %}line-top flat-spacing-7{% elsif section.settings.layout == 'bicycle' %}flat-spacing-2{% else %}flat-spacing-4{% endif %}">
-      <div class="container">
+  <div class="{% if section.settings.layout == 'home-electronic' %}line-top flat-spacing-7{% elsif section.settings.layout == 'bicycle' %}flat-spacing-2{% elsif section.settings.layout == 'phonecase' %}bg-white mx_40 my_20 radius-16 flat-iconbox line-2{% else %}flat-spacing-4{% endif %}">
+      <div class="{% if section.settings.layout == 'phonecase' %}container-5{% else %}container{% endif %}">
           <div dir="ltr" class="swiper tf-swiper {% if section.settings.layout == 'home-electronic' %}tf-sw-iconbox-row{% endif %}" data-swiper='{
-              "slidesPerView": {% if section.settings.layout == 'bicycle' %}1{% else %}{{ section.settings.slides_per_view_mobile }}{% endif %},
-              "spaceBetween": {% if section.settings.layout == 'bicycle' %}12{% else %}{{ section.settings.space_between }}{% endif %},
+              "slidesPerView": {% if section.settings.layout == 'bicycle' %}1{% elsif section.settings.layout == 'phonecase' %}1{% else %}{{ section.settings.slides_per_view_mobile }}{% endif %},
+              "spaceBetween": {% if section.settings.layout == 'bicycle' %}12{% elsif section.settings.layout == 'phonecase' %}12{% else %}{{ section.settings.space_between }}{% endif %},
               "speed": {% if section.settings.layout == 'bicycle' %}1000{% else %}800{% endif %},
               "observer": true,
               "observeParents": true,
-              "slidesPerGroup": {% if section.settings.layout == 'bicycle' %}1{% else %}{{ section.settings.slides_per_view_mobile }}{% endif %},
+              "slidesPerGroup": {% if section.settings.layout == 'bicycle' %}1{% elsif section.settings.layout == 'phonecase' %}1{% else %}{{ section.settings.slides_per_view_mobile }}{% endif %},
               "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
               "breakpoints": {
                   "575": { 
-                      "slidesPerView": {% if section.settings.layout == 'bicycle' %}2{% elsif section.settings.layout == 'home-electronic' %}2{% else %}{{ section.settings.slides_per_view_mobile }}{% endif %},
-                      "spaceBetween": {% if section.settings.layout == 'bicycle' %}12{% elsif section.settings.layout == 'home-electronic' %}12{% else %}{{ section.settings.space_between }}{% endif %},
+                      "slidesPerView": {% if section.settings.layout == 'bicycle' %}2{% elsif section.settings.layout == 'home-electronic' %}2{% elsif section.settings.layout == 'phonecase' %}2{% else %}{{ section.settings.slides_per_view_mobile }}{% endif %},
+                      "spaceBetween": {% if section.settings.layout == 'bicycle' %}12{% elsif section.settings.layout == 'home-electronic' %}12{% elsif section.settings.layout == 'phonecase' %}24{% else %}{{ section.settings.space_between }}{% endif %},
                       "slidesPerGroup": {% if section.settings.layout == 'bicycle' %}1{% else %}2{% endif %}
                   },
                   "768": { 
-                      "slidesPerView": {% if section.settings.layout == 'bicycle' %}2{% elsif section.settings.layout == 'home-electronic' %}3{% else %}{{ section.settings.slides_per_view_tablet }}{% endif %},
-                      "spaceBetween": {% if section.settings.layout == 'bicycle' %}12{% elsif section.settings.layout == 'home-electronic' %}24{% else %}{{ section.settings.space_between }}{% endif %},
+                      "slidesPerView": {% if section.settings.layout == 'bicycle' %}2{% elsif section.settings.layout == 'home-electronic' %}3{% elsif section.settings.layout == 'phonecase' %}2{% else %}{{ section.settings.slides_per_view_tablet }}{% endif %},
+                      "spaceBetween": {% if section.settings.layout == 'bicycle' %}12{% elsif section.settings.layout == 'home-electronic' %}24{% elsif section.settings.layout == 'phonecase' %}24{% else %}{{ section.settings.space_between }}{% endif %},
                       "slidesPerGroup": {% if section.settings.layout == 'bicycle' %}1{% else %}2{% endif %}
                   },
                   "1200": { 
-                      "slidesPerView": {% if section.settings.layout == 'bicycle' %}3{% elsif section.settings.layout == 'home-electronic' %}4{% else %}{{ section.settings.slides_per_view_desktop }}{% endif %},
-                      "spaceBetween": {% if section.settings.layout == 'bicycle' %}24{% elsif section.settings.layout == 'home-electronic' %}59{% else %}{{ section.settings.space_between }}{% endif %},
+                      "slidesPerView": {% if section.settings.layout == 'bicycle' %}3{% elsif section.settings.layout == 'home-electronic' %}4{% elsif section.settings.layout == 'phonecase' %}3{% else %}{{ section.settings.slides_per_view_desktop }}{% endif %},
+                      "spaceBetween": {% if section.settings.layout == 'bicycle' %}24{% elsif section.settings.layout == 'home-electronic' %}59{% elsif section.settings.layout == 'phonecase' %}60{% else %}{{ section.settings.space_between }}{% endif %},
                       "slidesPerGroup": {% if section.settings.layout == 'bicycle' %}1{% else %}2{% endif %}
                   }
               }
@@ -188,7 +192,7 @@
               <div class="swiper-wrapper">
                   {% for block in section.blocks %}
                       <div class="swiper-slide" {{ block.shopify_attributes }}>
-                          <div class="tf-icon-box {% if section.settings.layout == 'home-electronic' %}style-3 wow fadeInLeft{% elsif section.settings.layout == 'bicycle' %}style-lg wow fadeInLeft{% else %}style-2{% endif %}" {% if section.settings.layout != 'default' and forloop.index > 1 %}data-wow-delay="{{ forloop.index | minus: 1 | times: 0.1 }}s"{% endif %}>
+                          <div class="tf-icon-box {% if section.settings.layout == 'home-electronic' %}style-3 wow fadeInLeft{% elsif section.settings.layout == 'bicycle' %}style-lg wow fadeInLeft{% elsif section.settings.layout == 'phonecase' %}tf-icon-box-v2 justify-content-center justify-content-sm-start{% else %}style-2{% endif %}" {% if section.settings.layout != 'default' and forloop.index > 1 %}data-wow-delay="{{ forloop.index | minus: 1 | times: 0.1 }}s"{% endif %}>
                               {% if section.settings.layout == 'bicycle' %}
                                   {% case block.settings.icon %}
                                       {% when 'icon-shipping' %}
@@ -211,7 +215,7 @@
                               {% endif %}
                               <div class="content">
                                   <div class="title {% if section.settings.layout == 'home-electronic' %}text-uppercase{% endif %}">{{ block.settings.title }}</div>
-                                  {% unless section.settings.layout == 'home-electronic' %}
+                                  {% unless section.settings.layout == 'home-electronic' or section.settings.layout == 'phonecase' %}
                                       <p class="desc">{{ block.settings.description }}</p>
                                   {% endunless %}
                               </div>
