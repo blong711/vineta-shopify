@@ -426,3 +426,26 @@ function formatMoney(cents) {
 }
 </script>
 
+<style>
+.card-product .box-icon:hover .icon {
+  color: var(--white) !important;
+}
+
+.card-product .list-product-btn .hover-tooltip .tooltip {
+  right: calc(100% + 8px);
+  left: auto;
+  bottom: 50%;
+}
+
+.card-product .list-product-btn .hover-tooltip .tooltip::before {
+  right: -4px;
+  left: auto;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.card-product .list-product-btn .hover-tooltip:hover .tooltip {
+  transform: translateY(48px) translateX(-6px);
+}
+</style>
+
