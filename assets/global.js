@@ -388,27 +388,53 @@ class WishlistCompare {
   getProductData(productId) {
     console.log('getProductData called with ID:', productId);
     
+    if (!productId) {
+      console.error('No product ID provided');
+      return null;
+    }
+
     // First try to get data from product section if we're on a product page
     const productSection = document.querySelector('.tf-product-info-wrap');
     console.log('Product section found:', !!productSection);
     
     if (productSection) {
-      const productName = productSection.querySelector('.product-info-name')?.textContent?.trim();
-      // Try multiple selectors to find the product image
-      const productImage = document.querySelector('.tf-product-media-main .swiper-slide:first-child a')?.getAttribute('href') || 
-                         document.querySelector('.tf-product-media-main .swiper-slide:first-child img')?.getAttribute('data-zoom') || 
-                         document.querySelector('.tf-product-media-main .swiper-slide:first-child img')?.getAttribute('data-src') ||
-                         document.querySelector('.tf-product-media-main .swiper-slide:first-child img')?.src;
-      const productPrice = productSection.querySelector('.price-new')?.textContent?.trim();
+      // Try multiple selectors for product name
+      const productName = productSection.querySelector('.product-info-name')?.textContent?.trim() ||
+                         productSection.querySelector('.name-product')?.textContent?.trim() ||
+                         productSection.querySelector('h5.product-info-name')?.textContent?.trim() ||
+                         productSection.querySelector('h6.product-info-name')?.textContent?.trim();
+      
+      // Try multiple selectors for product image with absolute URL check
+      let productImage = document.querySelector('.tf-product-media-main .swiper-slide:first-child img')?.getAttribute('data-src') ||
+                        document.querySelector('.tf-product-media-main .swiper-slide:first-child img')?.getAttribute('src') ||
+                        document.querySelector('.product-img img')?.getAttribute('data-src') ||
+                        document.querySelector('.product-img img')?.getAttribute('src');
+
+      // Ensure image URL is absolute and valid
+      if (productImage && !productImage.startsWith('http') && !productImage.startsWith('//')) {
+        // If it's a relative URL, make it absolute
+        productImage = window.location.origin + (productImage.startsWith('/') ? '' : '/') + productImage;
+      }
+
+      // Validate image URL
+      if (productImage && productImage.includes('undefined')) {
+        productImage = null;
+      }
+      
+      // Try multiple selectors for product price
+      const productPrice = productSection.querySelector('.price-new')?.textContent?.trim() ||
+                         productSection.querySelector('.price-new.price-on-sale')?.textContent?.trim() ||
+                         productSection.querySelector('.display-sm.price-new')?.textContent?.trim() ||
+                         productSection.querySelector('.product-info-price .price-new')?.textContent?.trim();
       
       console.log('Product section data:', { productName, productImage, productPrice });
 
-      if (productId && productName) {
+      if (productId && (productName || productImage || productPrice)) {
         const productData = {
           id: productId,
-          title: productName,
+          title: productName || '',
           url: window.location.pathname,
-          image: productImage || '',
+          image: productImage || '/no-image.jpg',
           price: productPrice || '',
           comparePrice: productSection.querySelector('.price-old')?.textContent?.trim() || ''
         };
@@ -417,8 +443,52 @@ class WishlistCompare {
       }
     }
 
-    // Fallback to looking for product element in the page
-    const productElement = document.querySelector(`[data-product-id="${productId}"]`);
+    // Try to find the product in card-product elements
+    const allProducts = document.querySelectorAll('.card-product');
+    console.log('Found card-product elements:', allProducts.length);
+    
+    for (const card of allProducts) {
+      // Check for product ID in various locations
+      const cardId = card.querySelector('[data-product-id]')?.getAttribute('data-product-id') ||
+                    card.querySelector('[data-id]')?.getAttribute('data-id') ||
+                    card.querySelector('.quickview')?.getAttribute('data-product-id');
+                    
+      console.log('Checking card with ID:', cardId);
+      
+      if (cardId === productId) {
+        // Get image URL with validation
+        let cardImage = card.querySelector('.product-img img')?.getAttribute('data-src') ||
+                       card.querySelector('.product-img img')?.getAttribute('srcset') ||
+                       card.querySelector('img.img-product')?.getAttribute('data-src') ||
+                       card.querySelector('img.img-product')?.getAttribute('srcset');
+
+        // Ensure image URL is absolute and valid
+        if (cardImage && !cardImage.startsWith('http') && !cardImage.startsWith('//')) {
+          cardImage = window.location.origin + (cardImage.startsWith('/') ? '' : '/') + cardImage;
+        }
+
+        // Validate image URL
+        if (cardImage && cardImage.includes('undefined')) {
+          cardImage = null;
+        }
+
+        const productData = {
+          id: productId,
+          title: card.querySelector('.name-product')?.textContent?.trim() || '',
+          url: card.querySelector('.product-img')?.getAttribute('href') || 
+               card.querySelector('a')?.href || '',
+          image: cardImage || '',
+          price: card.querySelector('.price-new')?.textContent?.trim() || '',
+          comparePrice: card.querySelector('.price-old')?.textContent?.trim() || ''
+        };
+        
+        console.log('Returning product data from card:', productData);
+        return productData;
+      }
+    }
+
+    // If we still haven't found the product, try looking for any element with the product ID
+    const productElement = document.querySelector(`[data-product-id="${productId}"], [data-id="${productId}"]`);
     console.log('Product element found:', !!productElement);
     
     if (!productElement) {
@@ -426,13 +496,32 @@ class WishlistCompare {
       return null;
     }
 
+    // Get the closest product container
+    const container = productElement.closest('.card-product') || productElement.closest('[data-product-id]') || productElement;
+
+    // Get image URL with validation
+    let elementImage = container.querySelector('img')?.getAttribute('data-src') ||
+                      container.querySelector('img')?.getAttribute('src');
+
+    // Ensure image URL is absolute and valid
+    if (elementImage && !elementImage.startsWith('http') && !elementImage.startsWith('//')) {
+      elementImage = window.location.origin + (elementImage.startsWith('/') ? '' : '/') + elementImage;
+    }
+
+    // Validate image URL
+    if (elementImage && elementImage.includes('undefined')) {
+      elementImage = null;
+    }
+
     const productData = {
       id: productId,
-      title: productElement.getAttribute('data-product-title') || productElement.querySelector('.title')?.textContent?.trim() || '',
-      url: productElement.getAttribute('data-product-url') || productElement.querySelector('a')?.href || '',
-      image: productElement.getAttribute('data-product-image') || productElement.querySelector('img')?.src || '',
-      price: productElement.getAttribute('data-product-price') || productElement.querySelector('.price')?.textContent?.trim() || '',
-      comparePrice: productElement.getAttribute('data-product-compare-price') || productElement.querySelector('.compare-price')?.textContent?.trim() || ''
+      title: container.querySelector('.name-product')?.textContent?.trim() || 
+             container.querySelector('.title')?.textContent?.trim() || '',
+      url: container.querySelector('a')?.href || '',
+      image: elementImage || '/no-image.jpg',
+      price: container.querySelector('.price-new')?.textContent?.trim() || 
+             container.querySelector('.price')?.textContent?.trim() || '',
+      comparePrice: container.querySelector('.price-old')?.textContent?.trim() || ''
     };
 
     console.log('Returning product data from element:', productData);
