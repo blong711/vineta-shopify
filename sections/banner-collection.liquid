@@ -48,9 +48,21 @@
             {%- endif -%}
           </div>
         {% elsif section.settings.layout == 'bicycle' %}
-          <video autoplay loop muted playsinline preload="auto">
-            <source src="{{ section.settings.video | file_url }}" type="video/mp4">
-          </video>
+          {% if section.settings.video != blank %}
+            <video autoplay loop muted playsinline preload="auto">
+              <source src="{{ section.settings.video | file_url }}" type="video/mp4">
+            </video>
+          {% else %}
+            {% if section.settings.bicycle_fallback_image != blank %}
+              {{ section.settings.bicycle_fallback_image | image_url: width: 1920 | image_tag:
+                loading: 'lazy',
+                class: 'banner-image',
+                alt: section.settings.title
+              }}
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          {% endif %}
         {% endif %}
         <div class="box-content {% if section.settings.layout == 'fashion-02' %}wow fadeInUp{% endif %}">
           <div class="box-title-banner">
@@ -91,16 +103,22 @@
       "default": "electric"
     },
     {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Only used for Bicycle layout"
+    },
+    {
       "type": "image_picker",
       "id": "image",
       "label": "Image",
       "info": "Used for Electric, Fashion 02, and Phonecase layouts"
     },
     {
-      "type": "video",
-      "id": "video",
-      "label": "Video",
-      "info": "Only used for Bicycle layout"
+      "type": "image_picker",
+      "id": "bicycle_fallback_image",
+      "label": "Fallback Image",
+      "info": "Displayed if video is not available (Bicycle layout only)"
     },
     {
       "type": "text",

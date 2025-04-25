@@ -3,135 +3,255 @@
   Usage: {% render 'card-product', product: product, style: 'style-center' %}
 {%- endcomment -%}
 
-
-<div class="card-product {{ class }} {% if style == 'list' %}style-list{% else %}style-{{ style | default: 1 }}{% endif %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
-  <div class="card-product-wrapper">
-    <a href="{{ product.url }}" class="product-img">
-      {%- if product.featured_image != blank -%}
-        {{ product.featured_image | image_url: width: 400 | image_tag:
-          loading: 'lazy',
-          width: product.featured_image.width,
-          height: product.featured_image.height,
-          class: 'img-product',
-          alt: product.title
-        }}
-        {%- if product.images[1] != blank -%}
-          {{ product.images[1] | image_url: width: 400 | image_tag:
+{%- if style == 'style-2' -%}
+  {%- comment -%}Feature Section Layout{%- endcomment -%}
+  <div class="card-product {{ class }} style-border style-2" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
+    <div class="card-product-wrapper">
+      <a href="{{ product.url }}" class="product-img">
+        {%- if product.featured_image != blank -%}
+          {{ product.featured_image | image_url: width: 400 | image_tag:
             loading: 'lazy',
-            width: product.images[1].width,
-            height: product.images[1].height,
-            class: 'img-hover',
+            width: product.featured_image.width,
+            height: product.featured_image.height,
+            class: 'img-product',
             alt: product.title
           }}
+          {%- if product.images[1] != blank -%}
+            {{ product.images[1] | image_url: width: 400 | image_tag:
+              loading: 'lazy',
+              width: product.images[1].width,
+              height: product.images[1].height,
+              class: 'img-hover',
+              alt: product.title
+            }}
+          {%- endif -%}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
         {%- endif -%}
-      {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      </a>
+
+      {%- if show_sale_badge and product.compare_at_price > product.price -%}
+        <div class="on-sale-wrap">
+          <span class="on-sale-item">{{ sale_badge_text | default: 'Sale' }}</span>
+        </div>
       {%- endif -%}
-    </a>
 
-    {%- if show_sale_badge and product.compare_at_price > product.price -%}
-      <div class="on-sale-wrap">
-        <span class="on-sale-item">{{ sale_badge_text | default: 'Sale' }}</span>
-      </div>
-    {%- endif -%}
-
-    <ul class="list-product-btn">
-      <li>
-        <a href="javascript:void(0);" 
-           class="box-icon hover-tooltip tooltip-left add-to-cart" 
-           data-variant-id="{{ product.variants.first.id }}"
-           data-quantity="1"
-           aria-label="Add to cart">
-          <i class="icon icon-cart"></i>
-          <span class="tooltip">Add to Cart</span>
-        </a>
-      </li>
-      <li class="wishlist">
-        <a href="javascript:void(0);" 
-           class="box-icon hover-tooltip tooltip-left" 
-           data-wishlist 
-           data-id="{{ product.id }}" 
-           data-action="add"
-           aria-label="Add to wishlist">
-          <span class="icon icon-heart2"></span>
-          <span class="tooltip">Add to Wishlist</span>
-        </a>
-      </li>
-      <li>
-        <a href="javascript:void(0);" 
-           class="box-icon hover-tooltip tooltip-left quickview" 
-           data-product-handle="{{ product.handle }}"
-           data-product-id="{{ product.id }}"
-           data-bs-toggle="modal" 
-           data-bs-target="#quickView">
-          <span class="icon icon-view"></span>
-          <span class="tooltip">Quick View</span>
-        </a>
-      </li>
-      <li class="compare">
-        <a href="javascript:void(0);" 
-           class="box-icon hover-tooltip tooltip-left" 
-           data-compare 
-           data-id="{{ product.id }}" 
-           data-action="add"
-           aria-label="Add to compare">
-          <span class="icon icon-compare"></span>
-          <span class="tooltip">Add to Compare</span>
-        </a>
-      </li>
-    </ul>
-
-    {%- if product.variants.size > 1 and product.options contains 'Size' -%}
-      <ul class="size-box">
-        {%- for option in product.options_with_values -%}
-          {%- if option.name == 'Size' -%}
-            {%- for value in option.values -%}
-              <li class="size-item text-xs text-white">{{ value }}</li>
-            {%- endfor -%}
-          {%- endif -%}
-        {%- endfor -%}
+      <ul class="list-product-btn">
+        <li>
+          <a href="javascript:void(0);" 
+             class="box-icon hover-tooltip tooltip-left add-to-cart" 
+             data-variant-id="{{ product.variants.first.id }}"
+             data-quantity="1"
+             aria-label="Add to cart">
+            <i class="icon icon-cart"></i>
+            <span class="tooltip">Add to Cart</span>
+          </a>
+        </li>
+        <li class="wishlist">
+          <a href="javascript:void(0);" 
+             class="box-icon hover-tooltip tooltip-left" 
+             data-wishlist 
+             data-id="{{ product.id }}" 
+             data-action="add"
+             aria-label="Add to wishlist">
+            <span class="icon icon-heart2"></span>
+            <span class="tooltip">Add to Wishlist</span>
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0);" 
+             class="box-icon hover-tooltip tooltip-left quickview" 
+             data-product-handle="{{ product.handle }}"
+             data-product-id="{{ product.id }}"
+             data-bs-toggle="modal" 
+             data-bs-target="#quickView">
+            <span class="icon icon-view"></span>
+            <span class="tooltip">Quick View</span>
+          </a>
+        </li>
+        <li class="compare">
+          <a href="javascript:void(0);" 
+             class="box-icon hover-tooltip tooltip-left" 
+             data-compare 
+             data-id="{{ product.id }}" 
+             data-action="add"
+             aria-label="Add to compare">
+            <span class="icon icon-compare"></span>
+            <span class="tooltip">Add to Compare</span>
+          </a>
+        </li>
       </ul>
-    {%- endif -%}
-  </div>
+    </div>
 
-  <div class="card-product-info">
-    <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
-    {%- if vendor != blank -%}
-      <div class="vendor text-sm text-muted">{{ vendor }}</div>
-    {%- endif -%}
-    <p class="price-wrap fw-medium">
-      {%- if product.compare_at_price > product.price -%}
-        <span class="price-new text-primary">{{ product.price | money }}</span>
-        <span class="price-old">{{ product.compare_at_price | money }}</span>
-      {%- else -%}
-        <span class="price-new">{{ product.price | money }}</span>
+    <div class="card-product-info text-center">
+      {%- if vendor != blank -%}
+        <p class="type text-xs text-dark fw-medium">{{ vendor }}</p>
       {%- endif -%}
-    </p>
+      <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
+      <p class="price-wrap fw-medium">
+        {%- if product.compare_at_price > product.price -%}
+          <span class="price-new text-primary">{{ product.price | money }}</span>
+          <span class="price-old text-dark">{{ product.compare_at_price | money }}</span>
+        {%- else -%}
+          <span class="price-new">{{ product.price | money }}</span>
+        {%- endif -%}
+      </p>
 
-    {%- if show_color_swatches and product.variants.size > 1 and product.options contains 'Color' -%}
-      <ul class="list-color-product">
-        {%- for option in product.options_with_values -%}
-          {%- if option.name == 'Color' -%}
-            {%- for value in option.values -%}
-              <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
-                <span class="tooltip color-filter">{{ value }}</span>
-                <span class="swatch-value bg-{{ value | handleize }}"></span>
-                {%- assign variant = product.variants | where: 'option1', value | first -%}
-                {%- if variant.featured_image != blank -%}
-                  {{ variant.featured_image | image_url: width: 100 | image_tag:
-                    loading: 'lazy',
-                    class: 'lazyload',
-                    alt: value
-                  }}
-                {%- endif -%}
-              </li>
-            {%- endfor -%}
-          {%- endif -%}
-        {%- endfor -%}
-      </ul>
-    {%- endif -%}
+      {%- if show_color_swatches and product.variants.size > 1 and product.options contains 'Color' -%}
+        <ul class="list-color-product justify-content-center">
+          {%- for option in product.options_with_values -%}
+            {%- if option.name == 'Color' -%}
+              {%- for value in option.values -%}
+                <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
+                  <span class="tooltip color-filter">{{ value }}</span>
+                  <span class="swatch-value bg-{{ value | handleize }}"></span>
+                  {%- assign variant = product.variants | where: 'option1', value | first -%}
+                  {%- if variant.featured_image != blank -%}
+                    {{ variant.featured_image | image_url: width: 100 | image_tag:
+                      loading: 'lazy',
+                      class: 'lazyload',
+                      alt: value
+                    }}
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
   </div>
-</div>
+{%- else -%}
+  {%- comment -%}Default Layout{%- endcomment -%}
+  <div class="card-product {{ class }} {% if style == 'list' %}style-list{% else %}style-{{ style | default: 1 }}{% endif %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
+    <div class="card-product-wrapper">
+      <a href="{{ product.url }}" class="product-img">
+        {%- if product.featured_image != blank -%}
+          {{ product.featured_image | image_url: width: 400 | image_tag:
+            loading: 'lazy',
+            width: product.featured_image.width,
+            height: product.featured_image.height,
+            class: 'img-product',
+            alt: product.title
+          }}
+          {%- if product.images[1] != blank -%}
+            {{ product.images[1] | image_url: width: 400 | image_tag:
+              loading: 'lazy',
+              width: product.images[1].width,
+              height: product.images[1].height,
+              class: 'img-hover',
+              alt: product.title
+            }}
+          {%- endif -%}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </a>
+
+      {%- if show_sale_badge and product.compare_at_price > product.price -%}
+        <div class="on-sale-wrap">
+          <span class="on-sale-item">{{ sale_badge_text | default: 'Sale' }}</span>
+        </div>
+      {%- endif -%}
+
+      <ul class="list-product-btn">
+        <li>
+          <a href="javascript:void(0);" 
+             class="box-icon hover-tooltip tooltip-left add-to-cart" 
+             data-variant-id="{{ product.variants.first.id }}"
+             data-quantity="1"
+             aria-label="Add to cart">
+            <i class="icon icon-cart"></i>
+            <span class="tooltip">Add to Cart</span>
+          </a>
+        </li>
+        <li class="wishlist">
+          <a href="javascript:void(0);" 
+             class="box-icon hover-tooltip tooltip-left" 
+             data-wishlist 
+             data-id="{{ product.id }}" 
+             data-action="add"
+             aria-label="Add to wishlist">
+            <span class="icon icon-heart2"></span>
+            <span class="tooltip">Add to Wishlist</span>
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0);" 
+             class="box-icon hover-tooltip tooltip-left quickview" 
+             data-product-handle="{{ product.handle }}"
+             data-product-id="{{ product.id }}"
+             data-bs-toggle="modal" 
+             data-bs-target="#quickView">
+            <span class="icon icon-view"></span>
+            <span class="tooltip">Quick View</span>
+          </a>
+        </li>
+        <li class="compare">
+          <a href="javascript:void(0);" 
+             class="box-icon hover-tooltip tooltip-left" 
+             data-compare 
+             data-id="{{ product.id }}" 
+             data-action="add"
+             aria-label="Add to compare">
+            <span class="icon icon-compare"></span>
+            <span class="tooltip">Add to Compare</span>
+          </a>
+        </li>
+      </ul>
+
+      {%- if product.variants.size > 1 and product.options contains 'Size' -%}
+        <ul class="size-box">
+          {%- for option in product.options_with_values -%}
+            {%- if option.name == 'Size' -%}
+              {%- for value in option.values -%}
+                <li class="size-item text-xs text-white">{{ value }}</li>
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+
+    <div class="card-product-info">
+      <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
+      {%- if vendor != blank -%}
+        <div class="vendor text-sm text-muted">{{ vendor }}</div>
+      {%- endif -%}
+      <p class="price-wrap fw-medium">
+        {%- if product.compare_at_price > product.price -%}
+          <span class="price-new text-primary">{{ product.price | money }}</span>
+          <span class="price-old">{{ product.compare_at_price | money }}</span>
+        {%- else -%}
+          <span class="price-new">{{ product.price | money }}</span>
+        {%- endif -%}
+      </p>
+
+      {%- if show_color_swatches and product.variants.size > 1 and product.options contains 'Color' -%}
+        <ul class="list-color-product">
+          {%- for option in product.options_with_values -%}
+            {%- if option.name == 'Color' -%}
+              {%- for value in option.values -%}
+                <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
+                  <span class="tooltip color-filter">{{ value }}</span>
+                  <span class="swatch-value bg-{{ value | handleize }}"></span>
+                  {%- assign variant = product.variants | where: 'option1', value | first -%}
+                  {%- if variant.featured_image != blank -%}
+                    {{ variant.featured_image | image_url: width: 100 | image_tag:
+                      loading: 'lazy',
+                      class: 'lazyload',
+                      alt: value
+                    }}
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
