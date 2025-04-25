@@ -109,6 +109,36 @@
             <div class="d-flex d-lg-none sw-dot-default sw-pagination-cls justify-content-center"></div>
         </div>
     </div>
+{% elsif section.settings.layout == 'fashion-02' %}
+    <div class="tf-slideshow slider-fashion-2">
+        <div class="swiper tf-sw-slideshow" data-preview="3" data-tablet="2" data-mobile="1.5" data-space="15" data-space-mb="5">
+            <div class="swiper-wrapper">
+                {% for block in section.blocks %}
+                    {% assign collection = collections[block.settings.collection] %}
+                    <div class="swiper-slide" {{ block.shopify_attributes }}>
+                        <div class="fs-cls hover-img">
+                            {% if collection.featured_image != blank %}
+                                <div class="img-style image">
+                                    <img src="{{ collection.featured_image | img_url: 'master' }}"
+                                        data-src="{{ collection.featured_image | img_url: 'master' }}" 
+                                        alt="{{ collection.title | escape }}" 
+                                        class="lazyload"
+                                        width="{{ collection.featured_image.width }}"
+                                        height="{{ collection.featured_image.height }}">
+                                </div>
+                            {% endif %}
+                            <div class="content">
+                                <a href="{{ collection.url }}" class="tf-btn btn-white hover-icon-2 hover-dark">
+                                    {{ collection.title }}
+                                    <i class="icon-arrow-right icon"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% else %}
     <div class="pt-24">
         <div class="container">
@@ -177,7 +207,8 @@
             "options": [
                 { "value": "default", "label": "Default" },
                 { "value": "home-fashion-women", "label": "Home Fashion Women (Collection)" },
-                { "value": "home-phonecase", "label": "Home Phonecase (Collection)" }
+                { "value": "home-phonecase", "label": "Home Phonecase (Collection)" },
+                { "value": "fashion-02", "label": "Fashion 02 (Collection)" }
             ],
             "default": "default"
         },
@@ -307,6 +338,32 @@
                         "price_new": "$100.00",
                         "price_old": "$130.00",
                         "button_text": "See Details"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Fashion 02 Collection",
+            "settings": {
+                "layout": "fashion-02"
+            },
+            "blocks": [
+                {
+                    "type": "collection",
+                    "settings": {
+                        "collection": ""
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                        "collection": ""
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                        "collection": ""
                     }
                 }
             ]
