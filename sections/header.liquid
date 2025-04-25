@@ -1,206 +1,16 @@
 {%- comment -%}Header Section{%- endcomment -%}
 <header id="header" class="header-default{% if section.settings.layout == 'layout-2' %} header-2{% endif %}">
-  {%- if section.settings.layout == 'layout-2' -%}
-    <div class="header-top">
-      <div class="container">
-        <div class="row wrapper-header align-items-center">
-          <div class="col-md-4 col-3 d-xl-none">
-            <a href="#mobileMenu" class="mobile-menu" data-bs-toggle="offcanvas" aria-controls="mobileMenu">
-              <i class="icon icon-categories1"></i>
-            </a>
-          </div>
-          
-          <div class="col-xl-5 d-none d-xl-block">
-            <div class="header-language">
-              <div class="tf-languages">
-                <select class="image-select center style-default type-languages" name="language">
-                  {% for locale in shop.published_locales %}
-                    <option value="{{ locale.iso_code }}" {% if locale.primary %}selected{% endif %}>
-                      {{ locale.name }}
-                    </option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="tf-currencies">
-                <select class="image-select center style-default type-currencies" name="currency">
-                  {% for currency in shop.enabled_currencies %}
-                    <option value="{{ currency.iso_code }}" {% if currency == cart.currency %}selected{% endif %}>
-                      {{ currency.iso_code }} ({{ currency.symbol }})
-                    </option>
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xl-2 col-md-4 col-6 text-center">
-            <a href="{{ routes.root_url }}" class="logo-header">
-              {%- if section.settings.logo != blank -%}
-                <img src="{{ section.settings.logo | image_url: width: section.settings.logo_width }}"
-                  alt="{{ section.settings.logo.alt | default: shop.name }}"
-                  width="{{ section.settings.logo_width }}"
-                  height="{{ section.settings.logo_width | divided_by: section.settings.logo.aspect_ratio }}"
-                  class="logo">
-              {%- else -%}
-                <span class="h4">{{ shop.name }}</span>
-              {%- endif -%}
-            </a>
-          </div>
-
-          <div class="col-xl-5 col-md-4 col-3">
-            <ul class="nav-icon d-flex justify-content-end align-items-center">
-              {%- for block in section.blocks -%}
-                {%- if block.type == 'icons' -%}
-                  {%- if block.settings.show_search -%}
-                    <li class="nav-search">
-                      <a href="#search" data-bs-toggle="offcanvas" class="nav-icon-item">
-                        <i class="icon icon-search"></i>
-                      </a>
-                    </li>
-                  {%- endif -%}
-
-                  {%- if block.settings.show_account -%}
-                    <li class="nav-account">
-                      <a href="javascript:void(0);" class="nav-icon-item" data-bs-toggle="offcanvas" data-bs-target="#login">
-                        <i class="icon icon-user"></i>
-                      </a>
-                    </li>
-                  {%- endif -%}
-
-                  {%- if block.settings.show_wishlist -%}
-                    <li class="nav-wishlist">
-                      <a href="/pages/wishlist" class="nav-icon-item">
-                        <i class="icon icon-heart"></i>
-                        <span class="count-box wishlist-count">0</span>
-                      </a>
-                    </li>
-                  {%- endif -%}
-
-                  {%- if block.settings.show_cart -%}
-                    <li class="nav-cart">
-                      <a href="#shoppingCart" data-bs-toggle="offcanvas" class="nav-icon-item">
-                        <i class="icon icon-cart"></i>
-                        <span class="count-box">{{ cart.item_count }}</span>
-                      </a>
-                    </li>
-                  {%- endif -%}
-                {%- endif -%}
-              {%- endfor -%}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="header-bottom d-none d-xl-block">
-      <div class="container">
-        <nav class="box-navigation text-center">
-          <ul class="box-nav-menu">
-            {%- for block in section.blocks -%}
-              {%- if block.type == 'menu' -%}
-                {%- for link in linklists[block.settings.menu].links -%}
-                  <li class="menu-item{% if link.links != blank %} has-submenu{% endif %}">
-                    <a href="{{ link.url }}" class="item-link">
-                      {{ link.title }}
-                      {%- if link.links != blank -%}
-                        <i class="icon icon-arr-down"></i>
-                      {%- endif -%}
-                    </a>
-                    {%- if link.links != blank -%}
-                      <div class="sub-menu mega-menu mega-shop">
-                        <div class="wrapper-sub-menu">
-                          {%- for childlink in link.links -%}
-                            <div class="mega-menu-item">
-                              <div class="menu-heading">
-                                <a href="{{ childlink.url }}" class="menu-heading-link">
-                                  {{ childlink.title }}
-                                </a>
-                              </div>
-                              {%- if childlink.links != blank -%}
-                                <ul class="menu-list">
-                                  {%- for grandchildlink in childlink.links -%}
-                                    <li>
-                                      <a href="{{ grandchildlink.url }}" class="menu-link-text link">
-                                        {{ grandchildlink.title }}
-                                      </a>
-                                    </li>
-                                  {%- endfor -%}
-                                </ul>
-                              {%- endif -%}
-                            </div>
-                          {%- endfor -%}
-                        </div>
-                        {%- if block.settings.show_product_cards -%}
-                          <div class="wrapper-sub-collection">
-                            <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
-                              data-swiper='{
-                                "slidesPerView": 2,
-                                "spaceBetween": 24,
-                                "speed": 800,
-                                "observer": true,
-                                "observeParents": true,
-                                "slidesPerGroup": 2,
-                                "navigation": {
-                                  "clickable": true,
-                                  "nextEl": ".nav-next-cls-header",
-                                  "prevEl": ".nav-prev-cls-header"
-                                },
-                                "pagination": { "el": ".sw-pagination-cls-header", "clickable": true }
-                              }'>
-                              <div class="swiper-wrapper">
-                                {%- for i in (1..4) -%}
-                                  {%- assign product_image = 'product_image_' | append: i -%}
-                                  {%- assign product_title = 'product_title_' | append: i -%}
-                                  {%- assign product_url = 'product_url_' | append: i -%}
-                                  {%- if block.settings[product_image] != blank -%}
-                                    <div class="swiper-slide">
-                                      <div class="wg-cls style-abs asp-1 hover-img">
-                                        <a href="{{ block.settings[product_url] }}" class="image img-style d-block">
-                                          <img src="{{ block.settings[product_image] | img_url: 'master' }}"
-                                            alt="{{ block.settings[product_title] }}"
-                                            width="300"
-                                            height="300"
-                                            class="lazyload">
-                                        </a>
-                                        <div class="cls-btn text-center">
-                                          <a href="{{ block.settings[product_url] }}"
-                                            class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                            {{ block.settings[product_title] }}
-                                            <i class="icon icon-arrow-top-left"></i>
-                                          </a>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  {%- endif -%}
-                                {%- endfor -%}
-                              </div>
-                              <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center"></div>
-                              <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls-header"></div>
-                              <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls-header"></div>
-                            </div>
-                          </div>
-                        {%- endif -%}
-                      </div>
-                    {%- endif -%}
-                  </li>
-                {%- endfor -%}
-              {%- endif -%}
-            {%- endfor -%}
-          </ul>
-        </nav>
-      </div>
-    </div>
-  {%- else -%}
   <div class="container">
     <div class="row wrapper-header align-items-center">
-      <div class="col-md-4 col-3 d-xl-none">
-        <a href="#mobileMenu" class="mobile-menu" data-bs-toggle="offcanvas" aria-controls="mobileMenu">
-          <i class="icon icon-categories1"></i>
-        </a>
-      </div>
-      
       {%- for block in section.blocks -%}
         {%- case block.type -%}
+          {%- when 'mobile_menu' -%}
+            <div class="col-md-4 col-3 d-xl-none" {{ block.shopify_attributes }}>
+              <a href="#mobileMenu" class="mobile-menu" data-bs-toggle="offcanvas" aria-controls="mobileMenu">
+                <i class="icon icon-categories1"></i>
+              </a>
+            </div>
+
           {%- when 'logo' -%}
             <div class="col-xl-2 col-md-4 col-6" {{ block.shopify_attributes }}>
               <a href="{{ routes.root_url }}" class="logo-header">
@@ -215,6 +25,7 @@
                 {%- endif -%}
               </a>
             </div>
+
           {%- when 'menu' -%}
             <div class="col-xl-8 d-none d-xl-block" {{ block.shopify_attributes }}>
               <nav class="box-navigation text-center">
@@ -308,6 +119,7 @@
                 </ul>
               </nav>
             </div>
+
           {%- when 'icons' -%}
             <div class="col-xl-2 col-md-4 col-3" {{ block.shopify_attributes }}>
               <ul class="nav-icon d-flex justify-content-end align-items-center">
@@ -346,11 +158,34 @@
                 {%- endif -%}
               </ul>
             </div>
+
+          {%- when 'language_selector' -%}
+            <div class="col-xl-5 d-none d-xl-block" {{ block.shopify_attributes }}>
+              <div class="header-language">
+                <div class="tf-languages">
+                  <select class="image-select center style-default type-languages" name="language">
+                    {% for locale in shop.published_locales %}
+                      <option value="{{ locale.iso_code }}" {% if locale.primary %}selected{% endif %}>
+                        {{ locale.name }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="tf-currencies">
+                  <select class="image-select center style-default type-currencies" name="currency">
+                    {% for currency in shop.enabled_currencies %}
+                      <option value="{{ currency.iso_code }}" {% if currency == cart.currency %}selected{% endif %}>
+                        {{ currency.iso_code }} ({{ currency.symbol }})
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
         {%- endcase -%}
       {%- endfor -%}
     </div>
   </div>
-  {%- endif -%}
 </header>
 
 {% schema %}
@@ -372,30 +207,15 @@
         }
       ],
       "default": "layout-1"
-    },
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo"
-    },
-    {
-      "type": "range",
-      "id": "logo_width",
-      "min": 50,
-      "max": 250,
-      "step": 10,
-      "default": 100,
-      "unit": "px",
-      "label": "Logo width"
-    },
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Menu",
-      "default": "main-menu"
     }
   ],
   "blocks": [
+    {
+      "type": "mobile_menu",
+      "name": "Mobile Menu Button",
+      "limit": 1,
+      "settings": []
+    },
     {
       "type": "logo",
       "name": "Logo",
@@ -547,12 +367,21 @@
           "default": true
         }
       ]
+    },
+    {
+      "type": "language_selector",
+      "name": "Language Selector",
+      "limit": 1,
+      "settings": []
     }
   ],
   "presets": [
     {
       "name": "Header",
       "blocks": [
+        {
+          "type": "mobile_menu"
+        },
         {
           "type": "logo"
         },
@@ -569,6 +398,9 @@
         },
         {
           "type": "icons"
+        },
+        {
+          "type": "language_selector"
         }
       ]
     }
@@ -763,7 +595,7 @@
 .btn-cls:hover {
   transform: translateY(-3px);
 }
-{% endstylesheet %} 
+{% endstylesheet %}
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
