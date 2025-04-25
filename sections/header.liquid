@@ -1,5 +1,5 @@
 {%- comment -%}Header Section{%- endcomment -%}
-<header id="header" class="header-default{% if section.settings.layout == 'layout-2' %} header-2{% endif %}{% if section.settings.layout == 'layout-3' %} header-3{% endif %}">
+<header id="header" class="header-default{% if section.settings.layout == 'layout-2' %} header-2{% endif %}{% if section.settings.layout == 'layout-3' %} header-3{% endif %}" style="background-color: {{ section.settings.background_color }};">
   {%- if section.settings.layout == 'layout-2' -%}
     <div class="header-top">
       <div class="container">
@@ -538,6 +538,12 @@
         }
       ],
       "default": "layout-1"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
     },
     {
       "type": "image_picker",
