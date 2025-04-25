@@ -165,7 +165,7 @@
   }
   {% endschema %}
   
-  <div class="{% if section.settings.layout == 'home-electronic' %}line-top flat-spacing-7{% elsif section.settings.layout == 'bicycle' %}flat-spacing-2{% elsif section.settings.layout == 'phonecase' %}bg-white mx_40 my_20 radius-16 flat-iconbox line-2{% else %}flat-spacing-4{% endif %}">
+  <div class="{% if section.settings.layout == 'home-electronic' %}line-top flat-spacing-7{% elsif section.settings.layout == 'bicycle' %}flat-spacing-2{% elsif section.settings.layout == 'phonecase' %}bg-white mx_40 my_20 radius-16 flat-iconbox line-2{% else %}line-top flat-spacing-5{% endif %}">
       <div class="{% if section.settings.layout == 'phonecase' %}container-5{% else %}container{% endif %}">
           <div dir="ltr" class="swiper tf-swiper {% if section.settings.layout == 'home-electronic' %}tf-sw-iconbox-row{% endif %}" data-swiper='{% if section.settings.layout == "phonecase" %}{
               "slidesPerView": 1,
