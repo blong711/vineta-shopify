@@ -1,18 +1,4 @@
-{%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
-
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
-{%- endstyle -%}
-
-<section class="flat-spacing-3 {% if section.settings.layout == 'home-bicycle' %}pb-0{% endif %} section-{{ section.id }}-padding">
+<section class="flat-spacing-3 pt-0{% if section.settings.layout == 'home-bicycle' %}pb-0{% endif %} section-{{ section.id }}-padding">
   <div class="container">
     {% if section.settings.layout == 'home-bicycle' %}
       <div class="flat-title-v2 text-center justify-items-center wow fadeInUp">
