@@ -33,11 +33,6 @@
                         "prevEl": ".nav-prev-top-pick"
                     },
                     {% endif %}
-                    "pagination": { 
-                        "el": ".sw-pagination-top-pick", 
-                        "clickable": true{% if layout == 'home-phonecase' %}, 
-                        "type": "progressbar"{% endif %} 
-                    },
                     "breakpoints": {
                     "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": {% if layout == 'home-phonecase' %}1{% else %}3{% endif %} },
                     "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": {% if layout == 'home-phonecase' %}1{% else %}4{% endif %} }
@@ -151,7 +146,6 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <div class="sw-pagination-top-pick position-relative"></div>
                 </div>
             {% if layout != 'home-phonecase' %}
             <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-top-pick"></div>
