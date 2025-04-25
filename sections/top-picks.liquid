@@ -1,8 +1,11 @@
 {% assign section_spacing = section.settings.spacing | default: 'flat-spacing-8' %}
+{% if layout == 'home-fashion-02' %}
+    {% assign section_spacing = 'flat-spacing-3' %}
+{% endif %}
 {% assign section_bg = section.settings.background_color | default: 'bg-surface' %}
 {% assign layout = section.settings.layout | default: 'default' %}
 
-<section class="{{ section_spacing }} {{ section_bg }} {% if layout == 'home-phonecase' %}mx_40 radius-16{% endif %}">
+<section class="{% if layout == 'home-fashion-02' %}flat-spacing-3{% elsif layout == 'home-phonecase' %}mx_40 radius-16 flat-spacing-2 bg-white{% else %}{{ section_spacing }} {{ section_bg }}{% endif %}">
     <div class="{% if layout == 'home-phonecase' %}container-3{% else %}container{% endif %}">
         <div class="flat-title {% if layout == 'default' %}style-between align-items-end{% elsif layout == 'home-phonecase' %}style-2{% endif %} wow fadeInUp">
             {% if layout == 'home-phonecase' %}
