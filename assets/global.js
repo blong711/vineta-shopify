@@ -45,9 +45,50 @@ class WishlistCompare {
     });
     document.addEventListener('keydown', this.handleKeydown.bind(this));
     
+    // Initialize color swatch selection
+    this.initColorSwatches();
+    
     // Initialize buttons state
     this.updateButtonsState();
     this.updateWishlistCount();
+  }
+
+  /**
+   * Initialize color swatch selection functionality
+   */
+  initColorSwatches() {
+    document.querySelectorAll('.list-color-item').forEach(swatch => {
+      swatch.addEventListener('click', function() {
+        // Remove active class from all swatches in this group
+        this.closest('.list-color-product').querySelectorAll('.list-color-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        
+        // Add active class to clicked swatch
+        this.classList.add('active');
+        
+        // Get the variant ID from the swatch's data attribute
+        const variantId = this.dataset.variantId;
+        
+        // Update the add to cart button's variant ID
+        const addToCartBtn = this.closest('.card-product').querySelector('[data-variant-id]');
+        if (addToCartBtn) {
+          addToCartBtn.dataset.variantId = variantId;
+        }
+        
+        // Update the wishlist button's variant ID
+        const wishlistBtn = this.closest('.card-product').querySelector('[data-wishlist]');
+        if (wishlistBtn) {
+          wishlistBtn.dataset.id = variantId;
+        }
+
+        // Update the compare button's variant ID if it exists
+        const compareBtn = this.closest('.card-product').querySelector('[data-compare]');
+        if (compareBtn) {
+          compareBtn.dataset.id = variantId;
+        }
+      });
+    });
   }
 
   /**

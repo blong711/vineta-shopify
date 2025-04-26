@@ -29,7 +29,9 @@
                     "observer": true,
                     "observeParents": true,
                     "slidesPerGroup": {% if layout == 'home-phonecase' %}1{% else %}2{% endif %},
-                    {% if layout != 'home-phonecase' %}
+                    {% if layout == 'home-phonecase' %}
+                    "pagination": { "el": ".sw-pagination-top-pick", "clickable": true, "type": "progressbar" },
+                    {% else %}
                     "navigation": {
                         "clickable": true,
                         "nextEl": ".nav-next-top-pick",
@@ -46,110 +48,23 @@
                         {% if block.type == 'product' %}
                             {% assign product = all_products[block.settings.product] %}
                             <div class="swiper-slide" {{ block.shopify_attributes }}>
-                                <div class="card-product {% if layout == 'home-fashion-02' %}style-2{% elsif layout == 'home-phonecase' %}style-4{% else %}style-center{% endif %} {% if block.settings.show_size_swatches %}card-product-size{% endif %}">
-                                    <div class="card-product-wrapper {% if layout == 'home-phonecase' %}radius-16 line-2 asp-ratio-0{% endif %}">
-                                        <a href="{{ product.url }}" class="product-img">
-                                            <img class="img-product lazyload" 
-                                                data-src="{{ product.featured_image | image_url }}"
-                                                src="{{ product.featured_image | image_url }}"
-                                                alt="{{ product.title }}"
-                                                width="400"
-                                                height="400">
-                                            {% if product.images[1] != blank %}
-                                                <img class="img-hover lazyload"
-                                                    data-src="{{ product.images[1] | image_url }}"
-                                                    src="{{ product.images[1] | image_url }}"
-                                                    alt="{{ product.title }}"
-                                                    width="400"
-                                                    height="400">
-                                            {% endif %}
-                                        </a>
-                                        {% if block.settings.show_sale_badge or block.settings.show_trending_badge %}
-                                            <div class="on-sale-wrap {% if layout == 'home-fashion-02' %}flex-column type-2{% endif %}">
-                                                {% if block.settings.show_sale_badge and product.compare_at_price > product.price %}
-                                                    <span class="on-sale-item">{{ block.settings.sale_badge_text }}</span>
-                                                {% endif %}
-                                                {% if block.settings.show_trending_badge %}
-                                                    <span class="on-sale-item trending">{{ block.settings.trending_badge_text }}</span>
-                                                {% endif %}
-                                            </div>
-                                        {% endif %}
-                                        <ul class="list-product-btn {% if layout == 'home-fashion-02' %}hover-tooltip{% endif %}">
-                                            <li>
-                                                <a href="#shoppingCart" data-bs-toggle="offcanvas" class="{% if layout == 'home-fashion-02' %}hover-tooltip box-icon{% else %}bg-surface hover-tooltip tooltip-left box-icon{% endif %}">
-                                                    <span class="icon icon-cart2"></span>
-                                                    <span class="tooltip">{{ 'products.product.add_to_cart' | t }}</span>
-                                                </a>
-                                            </li>
-                                            <li class="wishlist">
-                                                <a href="javascript:void(0);" class="{% if layout == 'home-fashion-02' %}hover-tooltip box-icon{% else %}bg-surface hover-tooltip tooltip-left box-icon{% endif %}">
-                                                    <span class="icon icon-heart2"></span>
-                                                    <span class="tooltip">{{ 'products.product.add_to_wishlist' | t }}</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#quickView" data-bs-toggle="modal" class="{% if layout == 'home-fashion-02' %}hover-tooltip box-icon quickview{% else %}bg-surface hover-tooltip tooltip-left box-icon quickview{% endif %}">
-                                                    <span class="icon icon-view"></span>
-                                                    <span class="tooltip">{{ 'products.product.quick_view' | t }}</span>
-                                                </a>
-                                            </li>
-                                            <li class="compare">
-                                                <a href="#compare" data-bs-toggle="modal" class="{% if layout == 'home-fashion-02' %}hover-tooltip box-icon{% else %}bg-surface hover-tooltip tooltip-left box-icon{% endif %}">
-                                                    <span class="icon icon-compare"></span>
-                                                    <span class="tooltip">{{ 'products.product.add_to_compare' | t }}</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        {% if block.settings.show_size_swatches and layout == 'home-fashion-02' %}
-                                            <ul class="size-box">
-                                                {% for size in block.settings.size_swatches %}
-                                                    <li class="size-item text-xs text-white">{{ size }}</li>
-                                                {% endfor %}
-                                            </ul>
-                                        {% endif %}
-                                        {% if block.settings.show_countdown and layout == 'home-fashion-02' %}
-                                            <div class="countdown-box">
-                                                <div class="js-countdown" data-timer="{{ block.settings.countdown_timer }}" data-labels="D  :,H  :,M  :,S"></div>
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                    <div class="card-product-info {% if layout == 'default' or layout == 'home-phonecase' %}text-center{% endif %}">
-                                        <a href="{{ product.url }}" class="name-product link fw-medium text-md">
-                                            {{ product.title }}
-                                        </a>
-                                        <p class="price-wrap fw-medium">
-                                            <span class="price-new {% if product.compare_at_price > product.price %}text-primary{% endif %}">
-                                                {{ product.price | money }}
-                                            </span>
-                                            {% if product.compare_at_price > product.price %}
-                                                <span class="price-old {% if layout == 'home-fashion-02' %}old-line{% endif %}">{{ product.compare_at_price | money }}</span>
-                                            {% endif %}
-                                        </p>
-                                        {% if block.settings.show_color_swatches and product.options contains 'Color' %}
-                                            <ul class="list-color-product {% if layout == 'default' or layout == 'home-phonecase' %}justify-content-center{% endif %} {% if layout == 'home-phonecase' %}list-capacity-product{% endif %}">
-                                                {% for variant in product.variants %}
-                                                    {% if variant.option1 contains 'Color' %}
-                                                        <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %} {% if variant.option1 contains 'White' %}line{% endif %}">
-                                                            <span class="tooltip">{{ variant.option1 }}</span>
-                                                            <span class="swatch-value bg-{{ variant.option1 | handleize }}"></span>
-                                                            <img class="lazyload"
-                                                                data-src="{{ variant.image | image_url }}"
-                                                                src="{{ variant.image | image_url }}"
-                                                                alt="{{ variant.option1 }}"
-                                                                width="400"
-                                                                height="400">
-                                                        </li>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </ul>
-                                        {% endif %}
-                                    </div>
-                                </div>
+                                {% render 'card-product',
+                                    product: product,
+                                    style: layout,
+                                    show_sale_badge: block.settings.show_sale_badge,
+                                    sale_badge_text: block.settings.sale_badge_text,
+                                    show_color_swatches: block.settings.show_color_swatches,
+                                    show_size_swatches: block.settings.show_size_swatches,
+                                    size_swatches: block.settings.size_swatches
+                                %}
                             </div>
                         {% endif %}
                     {% endfor %}
                 </div>
-                </div>
+                {% if layout == 'home-phonecase' %}
+                <div class="sw-pagination-top-pick position-relative"></div>
+                {% endif %}
+            </div>
             {% if layout != 'home-phonecase' %}
             <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-top-pick"></div>
             <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-top-pick"></div>

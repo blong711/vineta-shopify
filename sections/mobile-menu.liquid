@@ -1,0 +1,112 @@
+{% comment %}
+  Mobile Menu Section
+  This section creates a mobile menu with collapsible navigation
+{% endcomment %}
+
+<div class="offcanvas offcanvas-start canvas-mb" id="mobileMenu">
+  <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  <div class="mb-canvas-content">
+    <div class="mb-body">
+      <div class="mb-content-top">
+        <form class="form-search" action="/search" method="get" role="search">
+          <input type="text" 
+                 placeholder="Search product" 
+                 class="" 
+                 name="q" 
+                 value="{{ search.terms | escape }}"
+                 aria-required="true" 
+                 required>
+          <button type="submit"><i class="icon icon-search"></i></button>
+        </form>
+        
+        {% render 'mobile-menu-navigation' %}
+      </div>
+      
+      <div class="mb-other-content">
+        <div class="group-icon">
+          <a href="/pages/wishlist" class="site-nav-icon">
+            <i class="icon icon-heart"></i>
+            Wishlist
+          </a>
+          <a href="#login" data-bs-toggle="offcanvas" class="site-nav-icon">
+            <i class="icon icon-user"></i>
+            Login
+          </a>
+        </div>
+        
+        <div class="mb-notice">
+          <a href="/pages/contact" class="text-need">Need Help?</a>
+        </div>
+        
+        <div class="mb-contact">
+          <p>{{ section.settings.address }}</p>
+        </div>
+        
+        <ul class="mb-info">
+          <li>
+            Email:
+            <b class="fw-medium">{{ section.settings.email }}</b>
+          </li>
+          <li>
+            Phone:
+            <b class="fw-medium">{{ section.settings.phone }}</b>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="mb-bottom">
+      <div class="bottom-bar-language">
+        {% if section.settings.show_currency_selector %}
+          <div class="tf-currencies">
+            {{ section.settings.currency_selector }}
+          </div>
+        {% endif %}
+        
+        {% if section.settings.show_language_selector %}
+          <div class="tf-languages">
+            {{ section.settings.language_selector }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Mobile Menu",
+  "settings": [
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Store Address",
+      "default": "123 Yarran st, Punchbowl, NSW 2196, Australia"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "clientcare@ecom.com"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone",
+      "default": "1.888.838.3022"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_currency_selector",
+      "label": "Show currency selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_language_selector",
+      "label": "Show language selector",
+      "default": true
+    }
+  ]
+}
+{% endschema %} 
