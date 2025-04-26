@@ -229,39 +229,159 @@
                 <div class="title text-xl fw-medium">Frequently Bought Together</div>
                 <form class="tf-product-form-bundle">
                   <div class="tf-bundle-products">
-                    {% for i in (1..3) %}
-                      <div class="tf-bundle-product-item item-has-checkbox{% if forloop.first %} check{% endif %}">
-                        <div class="bundle-check">
-                          <input type="checkbox"{% if forloop.first %} checked="checked"{% endif %} class="tf-check">
-                        </div>
-                        <a href="#" class="bundle-image">
-                          <img src="{{ 'product-' | append: i | append: '.jpg' | asset_url }}" alt="img-product">
-                        </a>
-                        <div class="bundle-info">
-                          <div class="bundle-title text-sm fw-medium">Product {{ i }}</div>
-                          <div class="bundle-price text-md fw-medium">
-                            <span class="new-price">${{ i | times: 100 | plus: 100 }}.00</span>
-                            <span class="old-price">${{ i | times: 100 | plus: 120 }}.00</span>
+                    {% assign collection = product.collections.first %}
+                    {% if collection %}
+                      {% assign related_products = collection.products | where: "available", true | where_not: "id", product.id | limit: 3 %}
+                      {% for related_product in related_products %}
+                        <div class="tf-bundle-product-item item-has-checkbox{% if forloop.first %} check{% endif %}">
+                          <div class="bundle-check">
+                            <input type="checkbox"{% if forloop.first %} checked="checked"{% endif %} class="tf-check" data-product-id="{{ related_product.id }}">
                           </div>
-                          <div class="bundle-variant tf-select">
-                            <select>
-                              <option selected="selected">Black / S</option>
-                              <option>Black / M</option>
-                              <option>Black / L</option>
-                            </select>
+                          <a href="{{ related_product.url }}" class="bundle-image">
+                            <img src="{{ related_product.featured_image | image_url: width: 200 }}" alt="{{ related_product.title }}">
+                          </a>
+                          <div class="bundle-info">
+                            <div class="bundle-title text-sm fw-medium">{{ related_product.title }}</div>
+                            <div class="bundle-price text-md fw-medium">
+                              <span class="new-price">{{ related_product.price | money }}</span>
+                              {% if related_product.compare_at_price > related_product.price %}
+                                <span class="old-price">{{ related_product.compare_at_price | money }}</span>
+                              {% endif %}
+                            </div>
+                            {% if related_product.has_only_default_variant == false %}
+                              <div class="bundle-variant tf-select">
+                                <select data-product-id="{{ related_product.id }}">
+                                  {% for variant in related_product.variants %}
+                                    <option value="{{ variant.id }}"{% if variant == related_product.selected_or_first_available_variant %} selected="selected"{% endif %}>
+                                      {{ variant.title }} - {{ variant.price | money }}
+                                    </option>
+                                  {% endfor %}
+                                </select>
+                              </div>
+                            {% endif %}
                           </div>
                         </div>
-                      </div>
-                    {% endfor %}
+                      {% endfor %}
+                    {% endif %}
                   </div>
                   <div class="bundle-total-submit">
                     <div class="text">Total price:</div>
-                    <span class="total-price">$51.00 USD</span>
-                    <span class="total-price-old">$53.00 USD</span>
+                    <span class="total-price">{{ product.price | money }}</span>
+                    <span class="total-price-old" style="display: none;"></span>
                   </div>
-                  <button data-bs-target="#shoppingCart" data-bs-toggle="offcanvas" class="btn-submit-total tf-btn btn-out-line-primary">Add selected to cart</button>
+                  <button type="button" class="btn-submit-total tf-btn btn-out-line-primary">Add selected to cart</button>
                 </form>
               </div>
+
+              <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                  const form = document.querySelector('.tf-product-form-bundle');
+                  const checkboxes = form.querySelectorAll('.tf-check');
+                  const totalPrice = form.querySelector('.total-price');
+                  const totalPriceOld = form.querySelector('.total-price-old');
+                  const submitButton = form.querySelector('.btn-submit-total');
+                  
+                  let selectedProducts = new Set();
+                  let total = {{ product.price }};
+                  let totalCompare = {{ product.compare_at_price | default: product.price }};
+                  
+                  // Initialize with first product if checked
+                  if (checkboxes[0]?.checked) {
+                    selectedProducts.add(checkboxes[0].dataset.productId);
+                  }
+                  
+                  function updateTotal() {
+                    let newTotal = {{ product.price }};
+                    let newTotalCompare = {{ product.compare_at_price | default: product.price }};
+                    
+                    checkboxes.forEach(checkbox => {
+                      if (checkbox.checked) {
+                        const productId = checkbox.dataset.productId;
+                        const variantSelect = form.querySelector(`select[data-product-id="${productId}"]`);
+                        if (variantSelect) {
+                          const selectedOption = variantSelect.options[variantSelect.selectedIndex];
+                          const price = parseInt(selectedOption.textContent.split(' - ')[1].replace(/[^0-9]/g, ''));
+                          newTotal += price;
+                        }
+                      }
+                    });
+                    
+                    totalPrice.textContent = formatMoney(newTotal);
+                    if (newTotalCompare > newTotal) {
+                      totalPriceOld.textContent = formatMoney(newTotalCompare);
+                      totalPriceOld.style.display = 'inline';
+                    } else {
+                      totalPriceOld.style.display = 'none';
+                    }
+                  }
+                  
+                  checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                      const productId = this.dataset.productId;
+                      if (this.checked) {
+                        selectedProducts.add(productId);
+                      } else {
+                        selectedProducts.delete(productId);
+                      }
+                      updateTotal();
+                    });
+                  });
+                  
+                  form.querySelectorAll('select').forEach(select => {
+                    select.addEventListener('change', updateTotal);
+                  });
+                  
+                  submitButton.addEventListener('click', async function() {
+                    const items = [];
+                    
+                    // Add main product
+                    items.push({
+                      id: {{ product.selected_or_first_available_variant.id }},
+                      quantity: 1
+                    });
+                    
+                    // Add selected bundle products
+                    checkboxes.forEach(checkbox => {
+                      if (checkbox.checked) {
+                        const productId = checkbox.dataset.productId;
+                        const variantSelect = form.querySelector(`select[data-product-id="${productId}"]`);
+                        if (variantSelect) {
+                          items.push({
+                            id: variantSelect.value,
+                            quantity: 1
+                          });
+                        }
+                      }
+                    });
+                    
+                    try {
+                      const response = await fetch('/cart/add.js', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ items })
+                      });
+                      
+                      if (response.ok) {
+                        // Open cart drawer
+                        const cartDrawer = new bootstrap.Offcanvas(document.getElementById('shoppingCart'));
+                        cartDrawer.show();
+                        
+                        // Refresh cart
+                        if (window.cart) {
+                          window.cart.refresh();
+                        }
+                      } else {
+                        throw new Error('Failed to add items to cart');
+                      }
+                    } catch (error) {
+                      console.error('Error adding items to cart:', error);
+                      alert('Failed to add items to cart. Please try again.');
+                    }
+                  });
+                });
+              </script>
             {% endif %}
           </div>
         </div>
@@ -281,9 +401,9 @@
             <div class="tf-sticky-atc-title fw-5 d-xl-block d-none">{{ product.title }}</div>
           </div>
           <div class="tf-sticky-atc-infos">
-            <form class="product-form" data-product-id="{{ product.id }}">
+            <form class="">
               <div class="tf-sticky-atc-variant-price text-center tf-select">
-                <select name="id" class="variant-selector">
+                <select>
                   {% for variant in product.variants %}
                     <option value="{{ variant.id }}"{% if variant == product.selected_or_first_available_variant %} selected="selected"{% endif %}>
                       {{ variant.title }} - {{ variant.price | money }}
@@ -294,16 +414,16 @@
               <div class="tf-sticky-atc-btns">
                 <div class="tf-product-info-quantity">
                   <div class="wg-quantity">
-                    <button type="button" class="btn-quantity minus-btn">-</button>
-                    <input class="quantity-product font-4" type="number" name="quantity" value="1" min="1">
-                    <button type="button" class="btn-quantity plus-btn">+</button>
+                    <button class="btn-quantity minus-btn">-</button>
+                    <input class="quantity-product font-4" type="text" name="number" value="1">
+                    <button class="btn-quantity plus-btn">+</button>
                   </div>
                 </div>
-                <button type="submit" 
+                <a href="javascript:void(0);" 
                 class="tf-btn hover-primary add-to-cart" 
                 data-variant-id="{{ product.selected_or_first_available_variant.id }}"
                 data-quantity="1"
-                aria-label="Add to cart">Add to cart</button>
+                aria-label="Add to cart">Add to cart</a>
               </div>
             </form>
           </div>
@@ -632,125 +752,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize wishlist and compare buttons state
   if (window.wishlistCompare) {
     window.wishlistCompare.updateButtonsState();
-  }
-
-  // Handle sticky add to cart form
-  const stickyForm = document.querySelector('.tf-sticky-btn-atc .product-form');
-  if (stickyForm) {
-    const variantSelect = stickyForm.querySelector('.variant-selector');
-    const quantityInput = stickyForm.querySelector('.quantity-product');
-    const addToCartBtn = stickyForm.querySelector('.add-to-cart');
-    const minusBtn = stickyForm.querySelector('.minus-btn');
-    const plusBtn = stickyForm.querySelector('.plus-btn');
-
-    // Update variant ID when selection changes
-    variantSelect.addEventListener('change', function() {
-      addToCartBtn.dataset.variantId = this.value;
-    });
-
-    // Handle quantity buttons
-    minusBtn.addEventListener('click', function() {
-      const currentValue = parseInt(quantityInput.value);
-      if (currentValue > 1) {
-        quantityInput.value = currentValue - 1;
-        addToCartBtn.dataset.quantity = quantityInput.value;
-      }
-    });
-
-    plusBtn.addEventListener('click', function() {
-      const currentValue = parseInt(quantityInput.value);
-      quantityInput.value = currentValue + 1;
-      addToCartBtn.dataset.quantity = quantityInput.value;
-    });
-
-    // Handle form submission
-    stickyForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      
-      // Prevent multiple clicks
-      if (addToCartBtn.classList.contains('loading')) {
-        return;
-      }
-      
-      const variantId = addToCartBtn.dataset.variantId;
-      const quantity = parseInt(quantityInput.value);
-      
-      try {
-        // Show loading state
-        addToCartBtn.classList.add('loading');
-        
-        // Add item to cart
-        if (window.cart) {
-          await window.cart.updateQuantity(variantId, quantity, 'add');
-          
-          // Fetch updated cart data
-          const response = await fetch('/cart.js');
-          const cartData = await response.json();
-          
-          // Update cart drawer
-          const cartDrawer = document.getElementById('shoppingCart');
-          if (cartDrawer) {
-            const itemsContainer = cartDrawer.querySelector('.tf-mini-cart-items');
-            if (itemsContainer) {
-              // Clear existing items
-              itemsContainer.innerHTML = '';
-              
-              // Add all items from cart
-              cartData.items.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'tf-mini-cart-item';
-                itemElement.innerHTML = `
-                  <div class="tf-mini-cart-item_img">
-                    <img src="${item.image}" alt="${item.title}">
-                  </div>
-                  <div class="tf-mini-cart-info">
-                    <div class="d-flex justify-content-between">
-                      <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
-                      <i class="icon icon-close remove" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
-                    </div>
-                    <div class="d-flex gap-10">
-                      <div class="text-xs">${item.variant_title || ''}</div>
-                      <a href="#" class="link edit"><i class="icon-pen"></i></a>
-                    </div>
-                    <div class="tf-mini-cart-item_price">
-                      <p class="price-wrap text-sm fw-medium">
-                        <span class="new-price text-primary">${formatMoney(item.final_price)}</span>
-                      </p>
-                    </div>
-                    <div class="tf-mini-cart-item_quantity">
-                      <div class="wg-quantity small">
-                        <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
-                        <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
-                        <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
-                      </div>
-                    </div>
-                  </div>
-                `;
-                itemsContainer.appendChild(itemElement);
-              });
-              
-              // Update cart total
-              const totalElement = cartDrawer.querySelector('.cart-total-price');
-              if (totalElement) {
-                totalElement.textContent = formatMoney(cartData.total_price);
-              }
-              
-              // Update header cart count
-              const headerCount = document.querySelector('.count-box');
-              if (headerCount) {
-                headerCount.textContent = cartData.item_count;
-              }
-            }
-          }
-        }
-      } catch (error) {
-        console.error('Error adding item to cart:', error);
-        alert('Failed to add item to cart. Please try again.');
-      } finally {
-        // Remove loading state
-        addToCartBtn.classList.remove('loading');
-      }
-    });
   }
 });
 
