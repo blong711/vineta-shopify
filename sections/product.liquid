@@ -124,12 +124,18 @@
                     <div class="variant-picker-values">
                       {% for value in option.values %}
                         {% if option.name == 'Color' %}
-                          <div class="hover-tooltip tooltip-bot color-btn btn-scroll-target{% if value == option.selected_value %} active{% endif %}" data-scroll="{{ value | handle }}">
+                          <div class="hover-tooltip tooltip-bot color-btn btn-scroll-target{% if value == option.selected_value %} active{% endif %}" 
+                               data-scroll="{{ value | handle }}" 
+                               data-option="{{ option.name | handle }}"
+                               data-value="{{ value | handle }}">
                             <span class="check-color bg-{{ value | handle }}"></span>
                             <span class="tooltip">{{ value }}</span>
                           </div>
                         {% else %}
-                          <span class="size-btn{% if value == option.selected_value %} active{% endif %}" data-size="{{ value | handle }}">{{ value }}</span>
+                          <span class="size-btn{% if value == option.selected_value %} active{% endif %}" 
+                                data-size="{{ value | handle }}"
+                                data-option="{{ option.name | handle }}"
+                                data-value="{{ value | handle }}">{{ value }}</span>
                         {% endif %}
                       {% endfor %}
                     </div>
@@ -144,7 +150,11 @@
                     <input class="quantity-product" type="text" name="number" value="1">
                     <button class="btn-quantity btn-increase">+</button>
                   </div>
-                  <a href="#shoppingCart" data-bs-toggle="offcanvas" class="tf-btn hover-primary btn-add-to-cart">Add to cart</a>
+                  <a href="javascript:void(0);" 
+                     class="tf-btn hover-primary add-to-cart" 
+                     data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                     data-quantity="1"
+                     aria-label="Add to cart">Add to cart</a>
                 </div>
                 <a href="#" class="tf-btn btn-primary w-100 animate-btn">Buy it now</a>
                 <a href="/checkout" class="more-choose-payment link">More payment options</a>
@@ -152,11 +162,29 @@
 
               {% if section.settings.show_extra_links %}
                 <div class="tf-product-info-extra-link">
-                  <a href="javascript:void(0);" class="product-extra-icon link btn-add-wishlist">
-                    <i class="icon add icon-heart"></i><span class="add">Add to wishlist</span>
-                    <i class="icon added icon-trash"></i><span class="added">Remove from wishlist</span>
+                  <a href="javascript:void(0);" 
+                  class="product-extra-icon link btn-wishlist" 
+                  data-wishlist 
+                     data-id="{{ product.id }}" 
+                     data-action="add"
+                     aria-label="Add to wishlist">
+                     <span class="wishlist-content add">
+                      <i class="icon icon-heart"></i>
+                      <span class="text">Add to wishlist</span>
+                    </span>
+                    <span class="wishlist-content remove">
+                      <i class="icon icon-trash"></i>
+                      <span class="text">Remove from wishlist</span>
+                    </span>
                   </a>
-                  <a href="#compare" data-bs-toggle="modal" class="product-extra-icon link"><i class="icon icon-compare2"></i>Compare</a>
+                  <a href="javascript:void(0);" 
+                     class="product-extra-icon link" 
+                     data-compare 
+                     data-id="{{ product.id }}" 
+                     data-action="add"
+                     aria-label="Add to compare">
+                    <i class="icon icon-compare2"></i>Compare
+                  </a>
                   <a href="#askQuestion" data-bs-toggle="modal" class="product-extra-icon link"><i class="icon icon-ask"></i>Ask a question</a>
                   <a href="#shareSocial" data-bs-toggle="modal" class="product-extra-icon link"><i class="icon icon-share"></i>Share</a>
                 </div>
@@ -281,6 +309,30 @@
   {% endif %}
 </section>
 
+<style>
+.btn-wishlist .wishlist-content {
+  display: none;
+}
+
+.btn-wishlist .wishlist-content.add {
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-wishlist[data-action="remove"] .wishlist-content.add {
+  display: none;
+}
+
+.btn-wishlist[data-action="remove"] .wishlist-content.remove {
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-wishlist .icon {
+  margin-right: 5px;
+}
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   {% if section.settings.layout == 'default' %}
@@ -336,12 +388,53 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   {% endif %}
 
+  // Store selected options
+  let selectedOptions = {
+    {% for option in product.options_with_values %}
+      '{{ option.name | handle }}': '{{ option.selected_value | handle }}',
+    {% endfor %}
+  };
+
+  // Function to find variant ID based on selected options
+  function findVariantId() {
+    const variants = {{ product.variants | json }};
+    const options = {{ product.options | json }};
+    
+    for (const variant of variants) {
+      let match = true;
+      for (let i = 0; i < options.length; i++) {
+        const optionName = options[i].toLowerCase();
+        const variantOptionValue = variant.options[i].toLowerCase();
+        if (selectedOptions[optionName] !== variantOptionValue) {
+          match = false;
+          break;
+        }
+      }
+      if (match) {
+        return variant.id;
+      }
+    }
+    return null;
+  }
+
   // Handle color variant selection
   document.querySelectorAll('.color-btn').forEach(button => {
     button.addEventListener('click', function() {
       const color = this.getAttribute('data-scroll');
       document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
       this.classList.add('active');
+      
+      // Update selected options
+      selectedOptions['color'] = this.getAttribute('data-value');
+      
+      // Find and update variant ID
+      const variantId = findVariantId();
+      if (variantId) {
+        const addToCartBtn = document.querySelector('.add-to-cart');
+        if (addToCartBtn) {
+          addToCartBtn.dataset.variantId = variantId;
+        }
+      }
     });
   });
 
@@ -351,6 +444,18 @@ document.addEventListener('DOMContentLoaded', function() {
       const size = this.getAttribute('data-size');
       document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
       this.classList.add('active');
+      
+      // Update selected options
+      selectedOptions['size'] = this.getAttribute('data-value');
+      
+      // Find and update variant ID
+      const variantId = findVariantId();
+      if (variantId) {
+        const addToCartBtn = document.querySelector('.add-to-cart');
+        if (addToCartBtn) {
+          addToCartBtn.dataset.variantId = variantId;
+        }
+      }
     });
   });
 
@@ -376,7 +481,163 @@ document.addEventListener('DOMContentLoaded', function() {
       zoomMain.style.display = 'none';
     });
   });
+
+  // Handle add to cart
+  document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', async function(e) {
+      e.preventDefault();
+      
+      // Prevent multiple clicks
+      if (this.classList.contains('loading')) {
+        return;
+      }
+      
+      const variantId = this.dataset.variantId;
+      const quantity = parseInt(this.dataset.quantity || 1);
+      
+      try {
+        // Show loading state
+        this.classList.add('loading');
+        
+        // Add item to cart
+        if (window.cart) {
+          await window.cart.updateQuantity(variantId, quantity, 'add');
+          
+          // Fetch updated cart data
+          const response = await fetch('/cart.js');
+          const cartData = await response.json();
+          
+          // Update cart drawer
+          const cartDrawer = document.getElementById('shoppingCart');
+          if (cartDrawer) {
+            const itemsContainer = cartDrawer.querySelector('.tf-mini-cart-items');
+            if (itemsContainer) {
+              // Clear existing items
+              itemsContainer.innerHTML = '';
+              
+              // Add all items from cart
+              cartData.items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'tf-mini-cart-item';
+                itemElement.style.border = 'none';
+                itemElement.style.borderBottom = 'none';
+                itemElement.innerHTML = `
+                  <div class="tf-mini-cart-image">
+                    <a href="${item.url}">
+                      <img class="lazyload" data-src="${item.image}" src="${item.image}" alt="${item.title}" loading="lazy">
+                    </a>
+                  </div>
+                  <div class="tf-mini-cart-info">
+                    <div class="d-flex justify-content-between">
+                      <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
+                      <i class="icon icon-close remove" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
+                    </div>
+                    <div class="d-flex gap-10">
+                      <div class="text-xs">${item.variant_title || ''}</div>
+                      <a href="#" class="link edit"><i class="icon-pen"></i></a>
+                    </div>
+                    <div class="tf-mini-cart-item_price">
+                      <p class="price-wrap text-sm fw-medium">
+                        <span class="new-price text-primary">${formatMoney(item.final_price)}</span>
+                      </p>
+                    </div>
+                    <div class="tf-mini-cart-item_quantity">
+                      <div class="wg-quantity small">
+                        <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
+                        <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
+                        <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
+                      </div>
+                    </div>
+                  </div>
+                `;
+                itemsContainer.appendChild(itemElement);
+              });
+              
+              // Add event listeners for quantity buttons
+              itemsContainer.querySelectorAll('.btn-decrease').forEach(button => {
+                button.addEventListener('click', async function() {
+                  const variantId = this.dataset.variantId;
+                  const input = this.nextElementSibling;
+                  const currentValue = parseInt(input.value);
+                  if (currentValue > 1) {
+                    await window.cart.updateQuantity(variantId, currentValue - 1, 'update');
+                  } else {
+                    await window.cart.removeItem(variantId);
+                  }
+                });
+              });
+  
+              itemsContainer.querySelectorAll('.btn-increase').forEach(button => {
+                button.addEventListener('click', async function() {
+                  const variantId = this.dataset.variantId;
+                  const input = this.previousElementSibling;
+                  const currentValue = parseInt(input.value);
+                  await window.cart.updateQuantity(variantId, currentValue + 1, 'update');
+                });
+              });
+
+              itemsContainer.querySelectorAll('.quantity-product').forEach(input => {
+                input.addEventListener('change', async function() {
+                  const variantId = this.dataset.variantId;
+                  const newValue = parseInt(this.value);
+                  if (isNaN(newValue) || newValue < 1) {
+                    if (newValue <= 0) {
+                      await window.cart.removeItem(variantId);
+                    } else {
+                      this.value = 1;
+                      await window.cart.updateQuantity(variantId, 1, 'update');
+                    }
+                  } else {
+                    await window.cart.updateQuantity(variantId, newValue, 'update');
+                  }
+                });
+              });
+
+              // Add event listeners for remove buttons
+              itemsContainer.querySelectorAll('.remove').forEach(button => {
+                button.addEventListener('click', async function() {
+                  const variantId = this.dataset.variantId;
+                  await window.cart.removeItem(variantId);
+                });
+              });
+              
+              // Update cart total
+              const totalElement = cartDrawer.querySelector('.cart-total-price');
+              if (totalElement) {
+                totalElement.textContent = formatMoney(cartData.total_price);
+              }
+              
+              // Update header cart count
+              const headerCount = document.querySelector('.count-box');
+              if (headerCount) {
+                headerCount.textContent = cartData.item_count;
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error adding item to cart:', error);
+        alert('Failed to add item to cart. Please try again.');
+      } finally {
+        // Remove loading state
+        this.classList.remove('loading');
+      }
+    });
+  });
+
+  // Initialize wishlist and compare buttons state
+  if (window.wishlistCompare) {
+    window.wishlistCompare.updateButtonsState();
+  }
 });
+
+// Helper function to format money
+function formatMoney(cents) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: '{{ shop.currency }}'
+  }).format(cents / 100);
+}
 </script>
 
 {% schema %}
