@@ -263,14 +263,14 @@
 {%- else -%}
   {%- comment -%}Default Layout{%- endcomment -%}
   <div class="card-product {{ class }} {% if style == 'list' %}style-list{% else %}style-{{ style | default: 1 }}{% endif %} {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
-    <div class="card-product-wrapper">
+    <div class="card-product-wrapper asp-ratio-0">
       <a href="{{ product.url }}" class="product-img">
         {%- if product.featured_image != blank -%}
           {{ product.featured_image | image_url: width: 400 | image_tag:
             loading: 'lazy',
             width: product.featured_image.width,
             height: product.featured_image.height,
-            class: 'img-product',
+            class: 'img-product ls-is-cached lazyloaded',
             alt: product.title
           }}
           {%- if product.images[1] != blank -%}
@@ -278,7 +278,7 @@
               loading: 'lazy',
               width: product.images[1].width,
               height: product.images[1].height,
-              class: 'img-hover',
+              class: 'img-hover ls-is-cached lazyloaded',
               alt: product.title
             }}
           {%- endif -%}
