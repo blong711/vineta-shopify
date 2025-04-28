@@ -138,10 +138,22 @@
         <p class="text-dark">Copyright © {{ 'now' | date: "%Y" }} by <span class="fw-medium">{{ shop.name }}</span>. All Rights Reserved.</p>
         {%- if section.settings.show_payment_icons -%}
           <ul class="tf-payment payment-icons-{{ section.settings.payment_icons_style }}" style="--payment-icon-size: {{ section.settings.payment_icons_size }}px">
-            {%- for type in shop.enabled_payment_types -%}
-              <li class="item">
-                {{ type | payment_type_svg_tag: class: 'icon' }}
-              </li>
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'payment_icon' -%}
+                <li class="item" {{ block.shopify_attributes }}>
+                  {%- if block.settings.link != blank -%}
+                    <a href="{{ block.settings.link }}" target="_blank" rel="noopener">
+                  {%- endif -%}
+                    <img src="{{ block.settings.icon | img_url: 'master' }}" 
+                         alt="{{ block.settings.alt_text | default: 'Payment method' }}"
+                         width="{{ section.settings.payment_icons_size }}"
+                         height="{{ section.settings.payment_icons_size }}"
+                         class="icon">
+                  {%- if block.settings.link != blank -%}
+                    </a>
+                  {%- endif -%}
+                </li>
+              {%- endif -%}
             {%- endfor -%}
           </ul>
         {%- endif -%}
@@ -311,6 +323,28 @@
           "label": "Menu"
         }
       ]
+    },
+    {
+      "type": "payment_icon",
+      "name": "Payment Icon",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Payment Icon Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Alt Text",
+          "info": "For accessibility"
+        }
+      ]
     }
   ],
   "presets": [
@@ -374,6 +408,14 @@
           "settings": {
             "title": "Resource",
             "menu": "footer"
+          }
+        },
+        {
+          "type": "payment_icon",
+          "settings": {
+            "icon": "https://example.com/payment-icon.png",
+            "link": "https://example.com/payment-method",
+            "alt_text": "Payment method"
           }
         }
       ]
@@ -440,6 +482,16 @@
 .tf-payment .icon {
   width: var(--payment-icon-size);
   height: var(--payment-icon-size);
+  object-fit: contain;
+}
+
+.tf-payment a {
+  display: block;
+  transition: opacity 0.3s ease;
+}
+
+.tf-payment a:hover {
+  opacity: 0.8;
 }
 
 .payment-icons-light .icon {
