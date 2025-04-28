@@ -5,7 +5,7 @@
 {% assign section_bg = section.settings.background_color | default: 'bg-surface' %}
 {% assign layout = section.settings.layout | default: 'default' %}
 
-<section class="{% if layout == 'home-fashion-02' %}flat-spacing-3{% elsif layout == 'home-phonecase' %}mx_40 radius-16 flat-spacing-2 bg-white{% else %}{{ section_spacing }} {{ section_bg }}{% endif %}">
+<section class="{% if layout == 'home-fashion-02' %}flat-spacing-3{% elsif layout == 'home-phonecase' %}flat-spacing-2 bg-white mx_40 radius-16{% else %}{{ section_spacing }} {{ section_bg }}{% endif %}">
     <div class="{% if layout == 'home-phonecase' %}container-3{% else %}container{% endif %}">
         <div class="flat-title {% if layout == 'default' %}style-between align-items-end{% elsif layout == 'home-phonecase' %}style-2{% endif %} wow fadeInUp">
             {% if layout == 'home-phonecase' %}
@@ -22,7 +22,7 @@
             {% endif %}
         </div>
         <div class="fl-control-sw">
-            <div dir="ltr" class="sw-height swiper tf-swiper" data-swiper='{
+            <div dir="ltr" class="swiper tf-swiper" data-swiper='{
                     "slidesPerView": 2,
                     "spaceBetween": 12,
                     "speed": 800,
@@ -55,6 +55,16 @@
                                         countdown_timer: block.settings.countdown_timer,
                                         available_quantity: block.settings.available_quantity,
                                         sold_percentage: block.settings.sold_percentage
+                                    %}
+                                {% elsif layout == 'home-phonecase' %}
+                                    {% render 'card-product',
+                                        product: product,
+                                        style: 'style-phonecase',
+                                        show_sale_badge: block.settings.show_sale_badge,
+                                        sale_badge_text: block.settings.sale_badge_text,
+                                        show_color_swatches: block.settings.show_color_swatches,
+                                        show_size_swatches: block.settings.show_size_swatches,
+                                        size_swatches: block.settings.size_swatches
                                     %}
                                 {% else %}
                                     {% render 'card-product',
