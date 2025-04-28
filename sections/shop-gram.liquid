@@ -2,7 +2,7 @@
 <section class="flat-spacing-4 pt-0">
   <div class="container">
     <div class="flat-title wow fadeInUp">
-      <h4 class="title">Shop by @Gram</h4>
+      <h4 class="title">{{ section.settings.title }}</h4>
     </div>
     <div dir="ltr" class="swiper tf-swiper" data-swiper='{
       "slidesPerView": 2,
@@ -21,66 +21,23 @@
         {% if shop.metafields.instafeed.user_id and shop.metafields.instafeed.access_token or section.settings.instagram_user_id != blank and section.settings.instagram_access_token != blank %}
           <!-- Instagram feed will be loaded here by Instafeed.js -->
         {% else %}
-          <!-- item 1 -->
-          <div class="swiper-slide">
-            <div class="gallery-item hover-img hover-overlay wow fadeInLeft">
-              <div class="image img-style">
-                {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% for block in section.blocks %}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <div class="gallery-item hover-img hover-overlay wow fadeInLeft" data-wow-delay="{{ forloop.index | times: 0.1 }}s">
+                <div class="image img-style">
+                  {% if block.settings.image != blank %}
+                    {{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy' }}
+                  {% else %}
+                    {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                </div>
+                <a href="{{ block.settings.link }}" class="box-icon hover-tooltip">
+                  <span class="icon icon-cart2"></span>
+                  <span class="tooltip">{{ block.settings.tooltip_text }}</span>
+                </a>
               </div>
-              <a href="#" class="box-icon hover-tooltip">
-                <span class="icon icon-cart2"></span>
-                <span class="tooltip">View Product</span>
-              </a>
             </div>
-          </div>
-          <!-- item 2 -->
-          <div class="swiper-slide">
-            <div class="gallery-item hover-img hover-overlay wow fadeInLeft" data-wow-delay="0.1s">
-              <div class="image img-style">
-                {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-              </div>
-              <a href="#" class="box-icon hover-tooltip">
-                <span class="icon icon-cart2"></span>
-                <span class="tooltip">View Product</span>
-              </a>
-            </div>
-          </div>
-          <!-- item 3 -->
-          <div class="swiper-slide">
-            <div class="gallery-item hover-img hover-overlay wow fadeInLeft" data-wow-delay="0.2s">
-              <div class="image img-style">
-                {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-              </div>
-              <a href="#" class="box-icon hover-tooltip">
-                <span class="icon icon-cart2"></span>
-                <span class="tooltip">View Product</span>
-              </a>
-            </div>
-          </div>
-          <!-- item 4 -->
-          <div class="swiper-slide">
-            <div class="gallery-item hover-img hover-overlay wow fadeInLeft" data-wow-delay="0.3s">
-              <div class="image img-style">
-                {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-              </div>
-              <a href="#" class="box-icon hover-tooltip">
-                <span class="icon icon-cart2"></span>
-                <span class="tooltip">View Product</span>
-              </a>
-            </div>
-          </div>
-          <!-- item 5 -->
-          <div class="swiper-slide">
-            <div class="gallery-item hover-img hover-overlay wow fadeInLeft" data-wow-delay="0.4s">
-              <div class="image img-style">
-                {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-              </div>
-              <a href="#" class="box-icon hover-tooltip">
-                <span class="icon icon-cart2"></span>
-                <span class="tooltip">View Product</span>
-              </a>
-            </div>
-          </div>
+          {% endfor %}
         {% endif %}
       </div>
       <span class="d-flex d-xl-none sw-dot-default sw-pagination-gallery justify-content-center"></span>
@@ -157,9 +114,50 @@
       "info": "Your Instagram Access Token (optional if using Instafeed app)"
     }
   ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "tooltip_text",
+          "label": "Tooltip Text",
+          "default": "View Product"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Shop by @Gram"
+      "name": "Shop by @Gram",
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
     }
   ]
 }
