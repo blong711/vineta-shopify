@@ -48,15 +48,25 @@
                         {% if block.type == 'product' %}
                             {% assign product = all_products[block.settings.product] %}
                             <div class="swiper-slide" {{ block.shopify_attributes }}>
-                                {% render 'card-product',
-                                    product: product,
-                                    style: layout,
-                                    show_sale_badge: block.settings.show_sale_badge,
-                                    sale_badge_text: block.settings.sale_badge_text,
-                                    show_color_swatches: block.settings.show_color_swatches,
-                                    show_size_swatches: block.settings.show_size_swatches,
-                                    size_swatches: block.settings.size_swatches
-                                %}
+                                {% if layout == 'default' %}
+                                    {% render 'card-product',
+                                        product: product,
+                                        style: 'style-hot-deals',
+                                        countdown_timer: block.settings.countdown_timer,
+                                        available_quantity: block.settings.available_quantity,
+                                        sold_percentage: block.settings.sold_percentage
+                                    %}
+                                {% else %}
+                                    {% render 'card-product',
+                                        product: product,
+                                        style: layout,
+                                        show_sale_badge: block.settings.show_sale_badge,
+                                        sale_badge_text: block.settings.sale_badge_text,
+                                        show_color_swatches: block.settings.show_color_swatches,
+                                        show_size_swatches: block.settings.show_size_swatches,
+                                        size_swatches: block.settings.size_swatches
+                                    %}
+                                {% endif %}
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -234,6 +244,22 @@
                     "label": "Countdown Timer",
                     "info": "Format: YYYY/MM/DD HH:MM:SS",
                     "default": "2024/12/31 23:59:59"
+                },
+                {
+                    "type": "number",
+                    "id": "available_quantity",
+                    "label": "Available Quantity",
+                    "default": 50
+                },
+                {
+                    "type": "range",
+                    "id": "sold_percentage",
+                    "min": 0,
+                    "max": 100,
+                    "step": 5,
+                    "unit": "%",
+                    "label": "Sold Percentage",
+                    "default": 50
                 }
             ]
         }

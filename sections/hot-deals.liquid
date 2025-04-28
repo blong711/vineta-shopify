@@ -7,7 +7,7 @@
           <p class="desc text-main text-md">{{ section.settings.description }}</p>
         </div>
         <div class="wg-countdown-2">
-          <span class="js-countdown" data-timer="{{ section.settings.global_countdown }}" data-labels="Days,Hours,Mins,Secs"></span>
+          <span class="js-countdown" data-timer="{{ section.settings.global_countdown }}" data-labels="D  :,H  :,M  :,S"></span>
         </div>
       </div>
       <div class="fl-control-sw wow fadeInUp">
@@ -32,7 +32,13 @@
           <div class="swiper-wrapper">
             {%- for block in section.blocks -%}
               <div class="swiper-slide" {{ block.shopify_attributes }}>
-                {% render 'card-product', product: block.settings.product, style: 'style-center' %}
+                {% render 'card-product', 
+                  product: block.settings.product, 
+                  style: 'style-hot-deals',
+                  countdown_timer: block.settings.countdown_timer,
+                  available_quantity: block.settings.available_quantity,
+                  sold_percentage: block.settings.sold_percentage
+                %}
               </div>
             {%- endfor -%}
           </div>
@@ -83,6 +89,28 @@
           "type": "product",
           "id": "product",
           "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "countdown_timer",
+          "label": "Individual countdown timer",
+          "info": "Leave empty to use global countdown"
+        },
+        {
+          "type": "number",
+          "id": "available_quantity",
+          "label": "Available quantity",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "sold_percentage",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Sold percentage",
+          "default": 50
         }
       ]
     }
