@@ -349,7 +349,7 @@
           <span class="price-new">{{ product.price | money }}</span>
         {%- endif -%}
       </p>
-      {%- if show_color_swatches or show_size_swatches -%}
+      {%- if show_color_swatches or show_case_type -%}
         <ul class="list-color-product list-capacity-product justify-content-center">
           {%- if show_color_swatches -%}
             {%- for option in product.options_with_values -%}
@@ -368,18 +368,21 @@
               {%- endif -%}
             {%- endfor -%}
           {%- endif -%}
-          {%- if show_size_swatches and size_swatches != blank -%}
-            {%- assign sizes = size_swatches | split: ',' -%}
-            {%- for size in sizes -%}
-              <li class="list-color-item color-swatch">
-                <span class="text-quantity font-2">{{ size }}</span>
-                <img class="lazyload" 
-                  data-src="{{ product.featured_image | img_url: 'master' }}"
-                  src="{{ product.featured_image | img_url: 'master' }}" 
-                  alt="{{ size }}"
-                  width="50"
-                  height="50">
-              </li>
+          {%- if show_case_type -%}
+            {%- for option in product.options_with_values -%}
+              {%- if option.name == 'Case Type' -%}
+                {%- for value in option.values -%}
+                  <li class="list-color-item color-swatch">
+                    <span class="text-quantity font-2">{{ value }}</span>
+                    <img class="lazyload" 
+                      data-src="{{ product.featured_image | img_url: 'master' }}"
+                      src="{{ product.featured_image | img_url: 'master' }}" 
+                      alt="{{ value }}"
+                      width="50"
+                      height="50">
+                  </li>
+                {%- endfor -%}
+              {%- endif -%}
             {%- endfor -%}
           {%- endif -%}
         </ul>
