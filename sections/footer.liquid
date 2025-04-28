@@ -137,7 +137,7 @@
       <div class="footer-bottom-wrap">
         <p class="text-dark">Copyright © {{ 'now' | date: "%Y" }} by <span class="fw-medium">{{ shop.name }}</span>. All Rights Reserved.</p>
         {%- if section.settings.show_payment_icons -%}
-          <ul class="tf-payment">
+          <ul class="tf-payment payment-icons-{{ section.settings.payment_icons_style }}" style="--payment-icon-size: {{ section.settings.payment_icons_size }}px">
             {%- for type in shop.enabled_payment_types -%}
               <li class="item">
                 {{ type | payment_type_svg_tag: class: 'icon' }}
@@ -160,10 +160,44 @@
       "label": "Logo"
     },
     {
+      "type": "header",
+      "content": "Payment Icons"
+    },
+    {
       "type": "checkbox",
       "id": "show_payment_icons",
       "label": "Show payment icons",
       "default": true
+    },
+    {
+      "type": "select",
+      "id": "payment_icons_style",
+      "label": "Payment icons style",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        },
+        {
+          "value": "monochrome",
+          "label": "Monochrome"
+        }
+      ],
+      "default": "light"
+    },
+    {
+      "type": "range",
+      "id": "payment_icons_size",
+      "min": 20,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Payment icons size",
+      "default": 30
     }
   ],
   "blocks": [
@@ -388,5 +422,35 @@
 
 .tf-social-icon.style-large .icon {
   font-size: 18px;
+}
+
+.tf-payment {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tf-payment .item {
+  display: flex;
+  align-items: center;
+}
+
+.tf-payment .icon {
+  width: var(--payment-icon-size);
+  height: var(--payment-icon-size);
+}
+
+.payment-icons-light .icon {
+  filter: brightness(0) invert(1);
+}
+
+.payment-icons-dark .icon {
+  filter: brightness(0);
+}
+
+.payment-icons-monochrome .icon {
+  filter: grayscale(100%);
 }
 {% endstylesheet %} 
