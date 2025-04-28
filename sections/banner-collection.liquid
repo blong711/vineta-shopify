@@ -52,16 +52,22 @@
             <video autoplay loop muted playsinline preload="auto">
               <source src="{{ section.settings.video | file_url }}" type="video/mp4">
             </video>
+          {% elsif section.settings.image != blank %}
+            <img 
+              src="{{ section.settings.image | img_url: 'master' }}" 
+              alt="{{ section.settings.image.alt | escape }}" 
+              class="lazyload banner-image"
+              width="{{ section.settings.image.width }}"
+              height="{{ section.settings.image.height }}"
+            >
+          {% elsif section.settings.bicycle_fallback_image != blank %}
+            {{ section.settings.bicycle_fallback_image | image_url: width: 1920 | image_tag:
+              loading: 'lazy',
+              class: 'banner-image',
+              alt: section.settings.title
+            }}
           {% else %}
-            {% if section.settings.bicycle_fallback_image != blank %}
-              {{ section.settings.bicycle_fallback_image | image_url: width: 1920 | image_tag:
-                loading: 'lazy',
-                class: 'banner-image',
-                alt: section.settings.title
-              }}
-            {% else %}
-              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-            {% endif %}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           {% endif %}
         {% endif %}
         <div class="box-content {% if section.settings.layout == 'fashion-02' %}wow fadeInUp{% endif %}">
@@ -112,7 +118,7 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image",
-      "info": "Used for Electric, Fashion 02, and Phonecase layouts"
+      "info": "Used for all layouts except when video is selected for Bicycle layout"
     },
     {
       "type": "image_picker",
