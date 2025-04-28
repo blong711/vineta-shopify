@@ -96,7 +96,12 @@
                       {{ product.price | money }}
                     </p>
                   </div>
-                  <a href="#quickView" data-bs-toggle="modal" class="btn-lookbook hover-tooltip" data-product-handle="{{ product.handle }}">
+                  <a href="javascript:void(0);" 
+                  class="quickview hover-tooltip btn-lookbook" 
+                  data-product-handle="{{ product.handle }}"
+                  data-product-id="{{ product.id }}"
+                  data-bs-toggle="modal" 
+                  data-bs-target="#quickView">
                     <i class="icon-view"></i>
                     <span class="tooltip">Quick view</span>
                   </a>
