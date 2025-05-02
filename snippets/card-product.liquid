@@ -36,6 +36,12 @@
       </div>
     {%- endif -%}
 
+    {%- if product.tags contains 'trending' -%}
+      <div class="on-sale-wrap">
+        <span class="on-sale-item trending">Trending</span>
+      </div>
+    {%- endif -%}
+
     <ul class="list-product-btn">
       <li>
         <a href="javascript:void(0);" 
@@ -232,9 +238,7 @@
               <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}"
                   data-variant-id="{{ variant.id }}"
                   data-option-name="{{ option.name }}"
-                  data-option-value="{{ value | escape }}"
-                  data-variant-image="{{ variant.featured_image | image_url: width: 400 }}"
-                  data-variant-hover-image="{{ variant.images[1] | image_url: width: 400 | default: variant.featured_image | image_url: width: 400 }}">
+                  data-option-value="{{ value | escape }}">
                 <span class="tooltip">{{ value }}</span>
                 <span class="swatch-value bg-{{ value | handleize }}"></span>
                 {%- if variant.featured_image != blank -%}
@@ -538,6 +542,12 @@
       </div>
     {%- endif -%}
 
+    {%- if product.tags contains 'trending' -%}
+      <div class="on-sale-wrap">
+        <span class="on-sale-item trending">Trending</span>
+      </div>
+    {%- endif -%}
+
     <ul class="list-product-btn">
       <li>
         <a href="javascript:void(0);" 
@@ -622,9 +632,7 @@
               <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}"
                   data-variant-id="{{ variant.id }}"
                   data-option-name="{{ option.name }}"
-                  data-option-value="{{ value | escape }}"
-                  data-variant-image="{{ variant.featured_image | image_url: width: 400 }}"
-                  data-variant-hover-image="{{ variant.images[1] | image_url: width: 400 | default: variant.featured_image | image_url: width: 400 }}">
+                  data-option-value="{{ value | escape }}">
                 <span class="tooltip color-filter">{{ value }}</span>
                 <span class="swatch-value bg-{{ value | handleize }}"></span>
                 {%- if variant.featured_image != blank -%}
