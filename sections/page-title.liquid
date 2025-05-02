@@ -1,14 +1,7 @@
 {%- comment -%}Page Title Section{%- endcomment -%}
-<section class="tf-page-title">
+<section class="page-title">
   <div class="container">
-    <div class="box-title text-center">
-      <h4 class="title">{% if template == 'list-collections' %}Collections{% else %}{{ page_title | default: settings.title }}{% endif %}</h4>
-      <div class="breadcrumb-list">
-        <a class="breadcrumb-item" href="/">Home</a>
-        <div class="breadcrumb-item dot"><span></span></div>
-        <div class="breadcrumb-item current">{% if template == 'list-collections' %}Collections{% else %}{{ page_title | default: settings.title }}{% endif %}</div>
-      </div>
-    </div>
+      <h4 class="s-title letter-0 text-center flat-spacing-2">{% if template == 'list-collections' %}Collections{% else %}{{ page_title | default: settings.title }}{% endif %}</h4>
   </div>
 </section>
 
@@ -21,12 +14,6 @@
       "id": "title",
       "label": "Title",
       "default": "Shopping Cart"
-    },
-    {
-      "type": "text",
-      "id": "breadcrumb_text",
-      "label": "Breadcrumb Text",
-      "default": "Current Page"
     }
   ]
 }
