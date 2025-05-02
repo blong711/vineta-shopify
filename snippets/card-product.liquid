@@ -232,7 +232,9 @@
               <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}"
                   data-variant-id="{{ variant.id }}"
                   data-option-name="{{ option.name }}"
-                  data-option-value="{{ value | escape }}">
+                  data-option-value="{{ value | escape }}"
+                  data-variant-image="{{ variant.featured_image | image_url: width: 400 }}"
+                  data-variant-hover-image="{{ variant.images[1] | image_url: width: 400 | default: variant.featured_image | image_url: width: 400 }}">
                 <span class="tooltip">{{ value }}</span>
                 <span class="swatch-value bg-{{ value | handleize }}"></span>
                 {%- if variant.featured_image != blank -%}
@@ -620,7 +622,9 @@
               <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}"
                   data-variant-id="{{ variant.id }}"
                   data-option-name="{{ option.name }}"
-                  data-option-value="{{ value | escape }}">
+                  data-option-value="{{ value | escape }}"
+                  data-variant-image="{{ variant.featured_image | image_url: width: 400 }}"
+                  data-variant-hover-image="{{ variant.images[1] | image_url: width: 400 | default: variant.featured_image | image_url: width: 400 }}">
                 <span class="tooltip color-filter">{{ value }}</span>
                 <span class="swatch-value bg-{{ value | handleize }}"></span>
                 {%- if variant.featured_image != blank -%}
