@@ -57,19 +57,20 @@
               <div class="tf-cart-tax text-sm opacity-8">Taxes and shipping calculated at checkout</div>
               <div class="tf-cart-checkbox">
                 <div class="tf-checkbox-wrapp">
-                  <input type="checkbox" id="CartDrawer-Form_agree" name="agree_checkbox">
+                  <input type="checkbox" id="CartDrawer-Form_agree" name="agree_checkbox" required>
                   <div>
                     <i class="icon-check"></i>
                   </div>
                 </div>
                 <label for="CartDrawer-Form_agree" class="text-sm">
                   I agree with the
-                <a href="/pages/terms-and-conditions" title="Terms of Service" class="fw-medium">terms and conditions</a>
+                  <a href="/pages/terms-and-conditions" title="Terms of Service" class="fw-medium">terms and conditions</a>
                 </label>
               </div>
               <div class="tf-mini-cart-view-checkout">
-              <a href="/cart" class="tf-btn animate-btn d-inline-flex bg-dark-2 w-100 justify-content-center">View cart</a>
-              <a href="/checkout" class="tf-btn btn-out-line-dark2 w-100 justify-content-center"><span>Check out</span></a>
+                <a href="/cart" class="tf-btn animate-btn d-inline-flex bg-dark-2 w-100 justify-content-center">View cart</a>
+                <button type="button" class="tf-btn btn-out-line-dark2 w-100 justify-content-center checkout-btn" id="checkout-button" disabled>Check out</button>
+              </div>
             </div>
           </div>
         </div>
@@ -208,6 +209,22 @@
   flex-direction: column;
   pointer-events: auto;
   z-index: 1050 !important;
+}
+
+.checkout-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkout-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 </style>
 
@@ -460,5 +477,25 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   });
+
+  // Handle terms checkbox and checkout button
+  const termsCheckbox = document.getElementById('CartDrawer-Form_agree');
+  const checkoutButton = document.getElementById('checkout-button');
+  
+  if (termsCheckbox && checkoutButton) {
+    termsCheckbox.addEventListener('change', function() {
+      if (this.checked) {
+        checkoutButton.disabled = false;
+        checkoutButton.classList.remove('disabled');
+        checkoutButton.onclick = function() {
+          window.location.href = '/checkout';
+        };
+      } else {
+        checkoutButton.disabled = true;
+        checkoutButton.classList.add('disabled');
+        checkoutButton.onclick = null;
+      }
+    });
+  }
 });
 </script>
