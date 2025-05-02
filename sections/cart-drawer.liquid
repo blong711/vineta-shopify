@@ -1,5 +1,5 @@
 {%- comment -%}Cart Drawer Section{%- endcomment -%}
-<div class="offcanvas offcanvas-end popup-style-1 popup-shopping-cart" id="shoppingCart" data-bs-backdrop="false">
+<div class="offcanvas offcanvas-end popup-style-1 popup-shopping-cart" id="shoppingCart">
   <div class="canvas-wrapper">
     <div class="popup-header">
       <span class="title">Shopping cart</span>
@@ -224,22 +224,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const cartDrawer = document.getElementById('shoppingCart');
   if (!cartDrawer) return;
   
-  // Override Bootstrap's offcanvas behavior
-  const originalShowFn = bootstrap.Offcanvas.prototype.show;
-  const originalHideFn = bootstrap.Offcanvas.prototype.hide;
-  
-  // Override show method to prevent full screen backdrop
-  bootstrap.Offcanvas.prototype.show = function() {
-    // Call original method
-    originalShowFn.call(this);
-    
-    // Remove full screen backdrop
-    const fullBackdrop = document.querySelector('.offcanvas-backdrop');
-    if (fullBackdrop) {
-      fullBackdrop.remove();
-    }
-  };
-  
   // Remove any existing event listeners by cloning elements
   const closeBtn = cartDrawer.querySelector('.icon-close-popup');
   if (closeBtn) {
@@ -256,11 +240,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // Custom open/close functions for cart drawer
   window.openCartDrawer = function() {
     cartDrawer.classList.add('show');
-    // Remove any existing full-screen backdrop
-    const fullBackdrop = document.querySelector('.offcanvas-backdrop');
-    if (fullBackdrop) {
-      fullBackdrop.remove();
-    }
   };
   
   window.closeCartDrawer = function() {

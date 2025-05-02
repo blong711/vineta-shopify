@@ -4,343 +4,603 @@
 {%- endcomment -%}
 
 {%- if style == 'style-2' -%}
-  {%- comment -%}Feature Section Layout{%- endcomment -%}
-  <div class="card-product {{ class }} style-border style-2 {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
-    <div class="card-product-wrapper">
-      <a href="{{ product.url }}" class="product-img">
-        {%- if product.featured_image != blank -%}
-          {{ product.featured_image | image_url: width: 400 | image_tag:
+{%- comment -%}Feature Section Layout{%- endcomment -%}
+<div class="card-product {{ class }} style-border style-2 {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
+  <div class="card-product-wrapper">
+    <a href="{{ product.url }}" class="product-img">
+      {%- if product.featured_image != blank -%}
+        {{ product.featured_image | image_url: width: 400 | image_tag:
+          loading: 'lazy',
+          width: product.featured_image.width,
+          height: product.featured_image.height,
+          class: 'img-product',
+          alt: product.title
+        }}
+        {%- if product.images[1] != blank -%}
+          {{ product.images[1] | image_url: width: 400 | image_tag:
             loading: 'lazy',
-            width: product.featured_image.width,
-            height: product.featured_image.height,
-            class: 'img-product',
+            width: product.images[1].width,
+            height: product.images[1].height,
+            class: 'img-hover',
             alt: product.title
           }}
-          {%- if product.images[1] != blank -%}
-            {{ product.images[1] | image_url: width: 400 | image_tag:
-              loading: 'lazy',
-              width: product.images[1].width,
-              height: product.images[1].height,
-              class: 'img-hover',
-              alt: product.title
-            }}
-          {%- endif -%}
-        {%- else -%}
-          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
         {%- endif -%}
-      </a>
-
-      {%- if show_sale_badge and product.compare_at_price > product.price -%}
-        <div class="on-sale-wrap">
-          <span class="on-sale-item">{{ sale_badge_text | default: 'Sale' }}</span>
-        </div>
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
       {%- endif -%}
+    </a>
 
-      <ul class="list-product-btn">
-        <li>
-          <a href="javascript:void(0);" 
-             class="box-icon hover-tooltip tooltip-left add-to-cart" 
-             data-variant-id="{{ product.variants.first.id }}"
-             data-quantity="1"
-             aria-label="Add to cart">
-            <i class="icon icon-cart"></i>
-            <span class="tooltip">Add to Cart</span>
-          </a>
-        </li>
-        <li class="wishlist">
-          <a href="javascript:void(0);" 
-             class="box-icon hover-tooltip tooltip-left" 
-             data-wishlist 
-             data-id="{{ product.id }}" 
-             data-action="add"
-             aria-label="Add to wishlist">
-            <span class="icon icon-heart2"></span>
-            <span class="tooltip">Add to Wishlist</span>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0);" 
-             class="box-icon hover-tooltip tooltip-left quickview" 
-             data-product-handle="{{ product.handle }}"
-             data-product-id="{{ product.id }}"
-             data-bs-toggle="modal" 
-             data-bs-target="#quickView">
-            <span class="icon icon-view"></span>
-            <span class="tooltip">Quick View</span>
-          </a>
-        </li>
-        <li class="compare">
-          <a href="javascript:void(0);" 
-             class="box-icon hover-tooltip tooltip-left" 
-             data-compare 
-             data-id="{{ product.id }}" 
-             data-action="add"
-             aria-label="Add to compare">
-            <span class="icon icon-compare"></span>
-            <span class="tooltip">Add to Compare</span>
-          </a>
-        </li>
-      </ul>
-    </div>
+    {%- if show_sale_badge and product.compare_at_price > product.price -%}
+      <div class="on-sale-wrap">
+        <span class="on-sale-item">{{ sale_badge_text | default: 'Sale' }}</span>
+      </div>
+    {%- endif -%}
 
-    <div class="card-product-info text-center">
-      {%- if vendor != blank -%}
-        <p class="type text-xs text-dark fw-medium">{{ vendor }}</p>
-      {%- endif -%}
-      <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
-      {%- if product.available -%}
-        <p class="price-wrap fw-medium">
-          {%- if product.compare_at_price > product.price -%}
-            <span class="price-new text-primary">{{ product.price | money }}</span>
-            <span class="price-old text-dark">{{ product.compare_at_price | money }}</span>
-          {%- else -%}
-            <span class="price-new">{{ product.price | money }}</span>
-          {%- endif -%}
-        </p>
-      {%- endif -%}
-
-      {%- if show_color_swatches and product.variants.size > 1 and product.options contains 'Color' -%}
-        <ul class="list-color-product justify-content-center">
-          {%- for option in product.options_with_values -%}
-            {%- if option.name == 'Color' -%}
-              {%- for value in option.values -%}
-                {%- assign variant = product.variants | where: 'option1', value | first -%}
-                <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}"
-                    data-variant-id="{{ variant.id }}"
-                    data-option-name="{{ option.name }}"
-                    data-option-value="{{ value | escape }}">
-                  <span class="tooltip color-filter">{{ value }}</span>
-                  <span class="swatch-value bg-{{ value | handleize }}"></span>
-                  {%- if variant.featured_image != blank -%}
-                    {{ variant.featured_image | image_url: width: 100 | image_tag:
-                      loading: 'lazy',
-                      class: 'lazyload',
-                      alt: value
-                    }}
-                  {%- endif -%}
-                </li>
-              {%- endfor -%}
-            {%- endif -%}
-          {%- endfor -%}
-        </ul>
-      {%- endif -%}
-    </div>
+    <ul class="list-product-btn">
+      <li>
+        <a href="javascript:void(0);" 
+           class="box-icon hover-tooltip tooltip-left add-to-cart" 
+           data-variant-id="{{ product.variants.first.id }}"
+           data-quantity="1"
+           aria-label="Add to cart">
+          <i class="icon icon-cart"></i>
+          <span class="tooltip">Add to Cart</span>
+        </a>
+      </li>
+      <li class="wishlist">
+        <a href="javascript:void(0);" 
+           class="box-icon hover-tooltip tooltip-left" 
+           data-wishlist 
+           data-id="{{ product.id }}" 
+           data-action="add"
+           aria-label="Add to wishlist">
+          <span class="icon icon-heart2"></span>
+          <span class="tooltip">Add to Wishlist</span>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0);" 
+           class="box-icon hover-tooltip tooltip-left quickview" 
+           data-product-handle="{{ product.handle }}"
+           data-product-id="{{ product.id }}"
+           data-bs-toggle="modal" 
+           data-bs-target="#quickView">
+          <span class="icon icon-view"></span>
+          <span class="tooltip">Quick View</span>
+        </a>
+      </li>
+      <li class="compare">
+        <a href="javascript:void(0);" 
+           class="box-icon hover-tooltip tooltip-left" 
+           data-compare 
+           data-id="{{ product.id }}" 
+           data-action="add"
+           aria-label="Add to compare">
+          <span class="icon icon-compare"></span>
+          <span class="tooltip">Add to Compare</span>
+        </a>
+      </li>
+    </ul>
   </div>
+
+  <div class="card-product-info text-center">
+    {%- if vendor != blank -%}
+      <p class="type text-xs text-dark fw-medium">{{ vendor }}</p>
+    {%- endif -%}
+    <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
+    {%- if product.available -%}
+      <p class="price-wrap fw-medium">
+        {%- if product.compare_at_price > product.price -%}
+          <span class="price-new text-primary">{{ product.price | money }}</span>
+          <span class="price-old text-dark">{{ product.compare_at_price | money }}</span>
+        {%- else -%}
+          <span class="price-new">{{ product.price | money }}</span>
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+
+    {%- if show_color_swatches and product.variants.size > 1 and product.options contains 'Color' -%}
+      <ul class="list-color-product justify-content-center">
+        {%- for option in product.options_with_values -%}
+          {%- if option.name == 'Color' -%}
+            {%- for value in option.values -%}
+              {%- assign variant = product.variants | where: 'option1', value | first -%}
+              <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}"
+                  data-variant-id="{{ variant.id }}"
+                  data-option-name="{{ option.name }}"
+                  data-option-value="{{ value | escape }}">
+                <span class="tooltip color-filter">{{ value }}</span>
+                <span class="swatch-value bg-{{ value | handleize }}"></span>
+                {%- if variant.featured_image != blank -%}
+                  {{ variant.featured_image | image_url: width: 100 | image_tag:
+                    loading: 'lazy',
+                    class: 'lazyload',
+                    alt: value
+                  }}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</div>
 {%- elsif style == 'style-hot-deals' -%}
-  {%- comment -%}Hot Deals Layout{%- endcomment -%}
-  <div class="card-product {{ class }} style-center {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
-    <div class="card-product-wrapper">
-      <a href="{{ product.url }}" class="product-img">
-        {%- if product.featured_image != blank -%}
-          {{ product.featured_image | image_url: width: 400 | image_tag:
+{%- comment -%}Hot Deals Layout{%- endcomment -%}
+<div class="card-product {{ class }} style-center {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
+  <div class="card-product-wrapper">
+    <a href="{{ product.url }}" class="product-img">
+      {%- if product.featured_image != blank -%}
+        {{ product.featured_image | image_url: width: 400 | image_tag:
+          loading: 'lazy',
+          width: product.featured_image.width,
+          height: product.featured_image.height,
+          class: 'img-product',
+          alt: product.title
+        }}
+        {%- if product.images[1] != blank -%}
+          {{ product.images[1] | image_url: width: 400 | image_tag:
             loading: 'lazy',
-            width: product.featured_image.width,
-            height: product.featured_image.height,
-            class: 'img-product',
+            width: product.images[1].width,
+            height: product.images[1].height,
+            class: 'img-hover',
             alt: product.title
           }}
-          {%- if product.images[1] != blank -%}
-            {{ product.images[1] | image_url: width: 400 | image_tag:
-              loading: 'lazy',
-              width: product.images[1].width,
-              height: product.images[1].height,
-              class: 'img-hover',
-              alt: product.title
-            }}
-          {%- endif -%}
-        {%- else -%}
-          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
         {%- endif -%}
-      </a>
-
-      {%- if product.compare_at_price > product.price -%}
-        <div class="on-sale-wrap">
-          <span class="on-sale-item">{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}% Off</span>
-        </div>
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
       {%- endif -%}
+    </a>
 
-      <ul class="list-product-btn">
-        <li>
-          <a href="javascript:void(0);" 
-             class="bg-surface hover-tooltip tooltip-left box-icon add-to-cart" 
-             data-variant-id="{{ product.variants.first.id }}"
-             data-quantity="1"
-             aria-label="Add to cart">
-            <span class="icon icon-cart2"></span>
-            <span class="tooltip">Add to Cart</span>
-          </a>
-        </li>
-        <li class="wishlist">
-          <a href="javascript:void(0);" 
-             class="bg-surface hover-tooltip tooltip-left box-icon" 
-             data-wishlist 
-             data-id="{{ product.id }}" 
-             data-action="add"
-             aria-label="Add to wishlist">
-            <span class="icon icon-heart2"></span>
-            <span class="tooltip">Add to Wishlist</span>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0);" 
-             class="bg-surface hover-tooltip tooltip-left box-icon quickview" 
-             data-product-handle="{{ product.handle }}"
-             data-product-id="{{ product.id }}"
-             data-bs-toggle="modal" 
-             data-bs-target="#quickView">
-            <span class="icon icon-view"></span>
-            <span class="tooltip">Quick View</span>
-          </a>
-        </li>
-        <li class="compare">
-          <a href="javascript:void(0);" 
-             class="bg-surface hover-tooltip tooltip-left box-icon" 
-             data-compare 
-             data-id="{{ product.id }}" 
-             data-action="add"
-             aria-label="Add to compare">
-            <span class="icon icon-compare"></span>
-            <span class="tooltip">Add to Compare</span>
-          </a>
-        </li>
-      </ul>
-
-      <div class="countdown-box style-2">
-        <div class="js-countdown" data-timer="{{ countdown_timer | default: '46556' }}" data-labels="D  :,H  :,M  :,S"></div>
+    {%- if product.compare_at_price > product.price -%}
+      <div class="on-sale-wrap">
+        <span class="on-sale-item">{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}% Off</span>
       </div>
-    </div>
+    {%- endif -%}
 
-    <div class="card-product-info text-center">
-      <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
-      {%- if product.available -%}
-        <p class="price-wrap fw-medium">
-          {%- if product.compare_at_price > product.price -%}
-            <span class="price-new text-primary">{{ product.price | money }}</span>
-            <span class="price-old old-line">{{ product.compare_at_price | money }}</span>
-          {%- else -%}
-            <span class="price-new">{{ product.price | money }}</span>
-          {%- endif -%}
-        </p>
-      {%- endif -%}
+    <ul class="list-product-btn">
+      <li>
+        <a href="javascript:void(0);" 
+           class="bg-surface hover-tooltip tooltip-left box-icon add-to-cart" 
+           data-variant-id="{{ product.variants.first.id }}"
+           data-quantity="1"
+           aria-label="Add to cart">
+          <span class="icon icon-cart2"></span>
+          <span class="tooltip">Add to Cart</span>
+        </a>
+      </li>
+      <li class="wishlist">
+        <a href="javascript:void(0);" 
+           class="bg-surface hover-tooltip tooltip-left box-icon" 
+           data-wishlist 
+           data-id="{{ product.id }}" 
+           data-action="add"
+           aria-label="Add to wishlist">
+          <span class="icon icon-heart2"></span>
+          <span class="tooltip">Add to Wishlist</span>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0);" 
+           class="bg-surface hover-tooltip tooltip-left box-icon quickview" 
+           data-product-handle="{{ product.handle }}"
+           data-product-id="{{ product.id }}"
+           data-bs-toggle="modal" 
+           data-bs-target="#quickView">
+          <span class="icon icon-view"></span>
+          <span class="tooltip">Quick View</span>
+        </a>
+      </li>
+      <li class="compare">
+        <a href="javascript:void(0);" 
+           class="bg-surface hover-tooltip tooltip-left box-icon" 
+           data-compare 
+           data-id="{{ product.id }}" 
+           data-action="add"
+           aria-label="Add to compare">
+          <span class="icon icon-compare"></span>
+          <span class="tooltip">Add to Compare</span>
+        </a>
+      </li>
+    </ul>
 
-      {%- if product.variants.size > 1 and product.options contains 'Color' -%}
-        <ul class="list-color-product justify-content-center">
-          {%- for option in product.options_with_values -%}
-            {%- if option.name == 'Color' -%}
-              {%- for value in option.values -%}
-                {%- assign variant = product.variants | where: 'option1', value | first -%}
-                <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}"
-                    data-variant-id="{{ variant.id }}"
-                    data-option-name="{{ option.name }}"
-                    data-option-value="{{ value | escape }}">
-                  <span class="tooltip">{{ value }}</span>
-                  <span class="swatch-value bg-{{ value | handleize }}"></span>
-                  {%- if variant.featured_image != blank -%}
-                    {{ variant.featured_image | image_url: width: 100 | image_tag:
-                      loading: 'lazy',
-                      class: 'lazyload',
-                      alt: value,
-                      width: 50,
-                      height: 50
-                    }}
-                  {%- endif -%}
-                </li>
-              {%- endfor -%}
-            {%- endif -%}
-          {%- endfor -%}
-        </ul>
-      {%- endif -%}
-
-      <div class="product-progress-sale">
-        <div class="progress-sold progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-          <div class="progress-bar {% if available_quantity < 10 %}bg-red-3{% elsif available_quantity < 30 %}bg-orange-3{% else %}bg-green-2{% endif %}" 
-            style="width: {{ sold_percentage | default: 50 }}%"></div>
-        </div>
-        <p class="text-avaiable text-sm">Available: <span class="fw-medium {% if available_quantity < 10 %}text-red-2{% elsif available_quantity < 30 %}text-orange-3{% else %}text-success-5{% endif %}">{{ available_quantity | default: 50 }}</span></p>
-      </div>
+    <div class="countdown-box style-2">
+      <div class="js-countdown" data-timer="{{ countdown_timer | default: '46556' }}" data-labels="D  :,H  :,M  :,S"></div>
     </div>
   </div>
+
+  <div class="card-product-info text-center">
+    <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
+    {%- if product.available -%}
+      <p class="price-wrap fw-medium">
+        {%- if product.compare_at_price > product.price -%}
+          <span class="price-new text-primary">{{ product.price | money }}</span>
+          <span class="price-old old-line">{{ product.compare_at_price | money }}</span>
+        {%- else -%}
+          <span class="price-new">{{ product.price | money }}</span>
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+
+    {%- if product.variants.size > 1 and product.options contains 'Color' -%}
+      <ul class="list-color-product justify-content-center">
+        {%- for option in product.options_with_values -%}
+          {%- if option.name == 'Color' -%}
+            {%- for value in option.values -%}
+              {%- assign variant = product.variants | where: 'option1', value | first -%}
+              <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}"
+                  data-variant-id="{{ variant.id }}"
+                  data-option-name="{{ option.name }}"
+                  data-option-value="{{ value | escape }}">
+                <span class="tooltip">{{ value }}</span>
+                <span class="swatch-value bg-{{ value | handleize }}"></span>
+                {%- if variant.featured_image != blank -%}
+                  {{ variant.featured_image | image_url: width: 100 | image_tag:
+                    loading: 'lazy',
+                    class: 'lazyload',
+                    alt: value,
+                    width: 50,
+                    height: 50
+                  }}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    <div class="product-progress-sale">
+      <div class="progress-sold progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar {% if available_quantity < 10 %}bg-red-3{% elsif available_quantity < 30 %}bg-orange-3{% else %}bg-green-2{% endif %}" 
+          style="width: {{ sold_percentage | default: 50 }}%"></div>
+      </div>
+      <p class="text-avaiable text-sm">Available: <span class="fw-medium {% if available_quantity < 10 %}text-red-2{% elsif available_quantity < 30 %}text-orange-3{% else %}text-success-5{% endif %}">{{ available_quantity | default: 50 }}</span></p>
+    </div>
+  </div>
+</div>
 {%- elsif style == 'style-phonecase' -%}
-  <div class="card-product style-4">
-    <div class="card-product-wrapper radius-16 line-2 asp-ratio-0">
-      <a href="{{ product.url }}" class="product-img">
-        {%- if product.featured_image -%}
-          <img class="img-product lazyload"
+<div class="card-product style-4">
+  <div class="card-product-wrapper radius-16 line-2 asp-ratio-0">
+    <a href="{{ product.url }}" class="product-img">
+      {%- if product.featured_image -%}
+        <img class="img-product lazyload"
+          data-src="{{ product.featured_image | img_url: 'master' }}"
+          src="{{ product.featured_image | img_url: 'master' }}" 
+          alt="{{ product.featured_image.alt | escape }}"
+          width="400"
+          height="400">
+        {%- if product.images.size > 1 -%}
+          <img class="img-hover lazyload"
+            data-src="{{ product.images[1] | img_url: 'master' }}"
+            src="{{ product.images[1] | img_url: 'master' }}" 
+            alt="{{ product.images[1].alt | escape }}"
+            width="400"
+            height="400">
+        {%- else -%}
+          <img class="img-hover lazyload"
             data-src="{{ product.featured_image | img_url: 'master' }}"
             src="{{ product.featured_image | img_url: 'master' }}" 
             alt="{{ product.featured_image.alt | escape }}"
             width="400"
             height="400">
-          {%- if product.images.size > 1 -%}
-            <img class="img-hover lazyload"
-              data-src="{{ product.images[1] | img_url: 'master' }}"
-              src="{{ product.images[1] | img_url: 'master' }}" 
-              alt="{{ product.images[1].alt | escape }}"
-              width="400"
-              height="400">
-          {%- else -%}
-            <img class="img-hover lazyload"
-              data-src="{{ product.featured_image | img_url: 'master' }}"
-              src="{{ product.featured_image | img_url: 'master' }}" 
-              alt="{{ product.featured_image.alt | escape }}"
-              width="400"
-              height="400">
-          {%- endif -%}
         {%- endif -%}
-      </a>
-      {%- if show_sale_badge and product.compare_at_price > product.price -%}
-        <div class="on-sale-wrap">
-          <span class="on-sale-item">{{ sale_badge_text }}</span>
-        </div>
       {%- endif -%}
-      <ul class="list-product-btn">
-        <li>
-          <a href="javascript:void(0);" 
-             class="bg-surface hover-tooltip tooltip-left box-icon add-to-cart" 
-             data-variant-id="{{ product.variants.first.id }}"
-             data-quantity="1"
-             aria-label="Add to cart">
-            <span class="icon icon-cart2"></span>
-            <span class="tooltip">Add to Cart</span>
-          </a>
-        </li>
-        <li class="wishlist">
-          <a href="javascript:void(0);" 
-             class="bg-surface hover-tooltip tooltip-left box-icon" 
-             data-wishlist 
-             data-id="{{ product.id }}" 
-             data-action="add"
-             aria-label="Add to wishlist">
-            <span class="icon icon-heart2"></span>
-            <span class="tooltip">Add to Wishlist</span>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0);" 
-             class="bg-surface hover-tooltip tooltip-left box-icon quickview" 
-             data-product-handle="{{ product.handle }}"
-             data-product-id="{{ product.id }}"
-             data-bs-toggle="modal" 
-             data-bs-target="#quickView">
-            <span class="icon icon-view"></span>
-            <span class="tooltip">Quick View</span>
-          </a>
-        </li>
-        <li class="compare">
-          <a href="javascript:void(0);" 
-             class="bg-surface hover-tooltip tooltip-left box-icon" 
-             data-compare 
-             data-id="{{ product.id }}" 
-             data-action="add"
-             aria-label="Add to compare">
-            <span class="icon icon-compare"></span>
-            <span class="tooltip">Add to Compare</span>
-          </a>
-        </li>
+    </a>
+    {%- if show_sale_badge and product.compare_at_price > product.price -%}
+      <div class="on-sale-wrap">
+        <span class="on-sale-item">{{ sale_badge_text }}</span>
+      </div>
+    {%- endif -%}
+    <ul class="list-product-btn">
+      <li>
+        <a href="javascript:void(0);" 
+           class="bg-surface hover-tooltip tooltip-left box-icon add-to-cart" 
+           data-variant-id="{{ product.variants.first.id }}"
+           data-quantity="1"
+           aria-label="Add to cart">
+          <span class="icon icon-cart2"></span>
+          <span class="tooltip">Add to Cart</span>
+        </a>
+      </li>
+      <li class="wishlist">
+        <a href="javascript:void(0);" 
+           class="bg-surface hover-tooltip tooltip-left box-icon" 
+           data-wishlist 
+           data-id="{{ product.id }}" 
+           data-action="add"
+           aria-label="Add to wishlist">
+          <span class="icon icon-heart2"></span>
+          <span class="tooltip">Add to Wishlist</span>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0);" 
+           class="bg-surface hover-tooltip tooltip-left box-icon quickview" 
+           data-product-handle="{{ product.handle }}"
+           data-product-id="{{ product.id }}"
+           data-bs-toggle="modal" 
+           data-bs-target="#quickView">
+          <span class="icon icon-view"></span>
+          <span class="tooltip">Quick View</span>
+        </a>
+      </li>
+      <li class="compare">
+        <a href="javascript:void(0);" 
+           class="bg-surface hover-tooltip tooltip-left box-icon" 
+           data-compare 
+           data-id="{{ product.id }}" 
+           data-action="add"
+           aria-label="Add to compare">
+          <span class="icon icon-compare"></span>
+          <span class="tooltip">Add to Compare</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-product-info text-center">
+    <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
+    <p class="price-wrap fw-medium">
+      {%- if product.compare_at_price > product.price -%}
+        <span class="price-new text-primary">{{ product.price | money }}</span>
+        <span class="price-old">{{ product.compare_at_price | money }}</span>
+      {%- else -%}
+        <span class="price-new">{{ product.price | money }}</span>
+      {%- endif -%}
+    </p>
+    {%- if show_color_swatches or show_case_type -%}
+      <ul class="list-color-product list-capacity-product justify-content-center">
+        {%- if show_color_swatches -%}
+          {%- for option in product.options_with_values -%}
+            {%- if option.name == 'Color' or option.name == 'Colour' -%}
+              {%- for value in option.values -%}
+                <li class="list-color-item color-swatch">
+                  <span class="text-quantity font-2">{{ value }}</span>
+                  <img class="lazyload" 
+                    data-src="{{ product.featured_image | img_url: 'master' }}"
+                    src="{{ product.featured_image | img_url: 'master' }}" 
+                    alt="{{ value }}"
+                    width="50"
+                    height="50">
+                </li>
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+        {%- if show_case_type -%}
+          {%- for option in product.options_with_values -%}
+            {%- if option.name == 'Case Type' -%}
+              {%- for value in option.values -%}
+                <li class="list-color-item color-swatch">
+                  <span class="text-quantity font-2">{{ value }}</span>
+                  <img class="lazyload" 
+                    data-src="{{ product.featured_image | img_url: 'master' }}"
+                    src="{{ product.featured_image | img_url: 'master' }}" 
+                    alt="{{ value }}"
+                    width="50"
+                    height="50">
+                </li>
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
       </ul>
+    {%- endif -%}
+  </div>
+</div>
+{%- elsif style == 'style-3' -%}
+{%- comment -%}Search Drawer Layout{%- endcomment -%}
+<div class="card-product {{ class }} style-3 {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
+  <div class="card-product-wrapper">
+    <a href="{{ product.url }}" class="product-img">
+      {%- if product.featured_image != blank -%}
+        {{ product.featured_image | image_url: width: 400 | image_tag:
+          loading: 'lazy',
+          width: product.featured_image.width,
+          height: product.featured_image.height,
+          class: 'img-product',
+          alt: product.title
+        }}
+        {%- if product.images[1] != blank -%}
+          {{ product.images[1] | image_url: width: 400 | image_tag:
+            loading: 'lazy',
+            width: product.images[1].width,
+            height: product.images[1].height,
+            class: 'img-hover',
+            alt: product.title
+          }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </a>
+
+    <ul class="list-product-btn">
+      <li>
+        <a href="javascript:void(0);" 
+           class="box-icon hover-tooltip add-to-cart" 
+           data-variant-id="{{ product.variants.first.id }}"
+           data-quantity="1"
+           aria-label="Add to cart">
+          <i class="icon icon-cart"></i>
+          <span class="tooltip">Add to Cart</span>
+        </a>
+      </li>
+      <li class="wishlist">
+        <a href="javascript:void(0);" 
+           class="box-icon hover-tooltip" 
+           data-wishlist 
+           data-id="{{ product.id }}" 
+           data-action="add"
+           aria-label="Add to wishlist">
+          <span class="icon icon-heart2"></span>
+          <span class="tooltip">Add to Wishlist</span>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0);" 
+           class="box-icon hover-tooltip quickview" 
+           data-product-handle="{{ product.handle }}"
+           data-product-id="{{ product.id }}"
+           data-bs-toggle="modal" 
+           data-bs-target="#quickView">
+          <span class="icon icon-view"></span>
+          <span class="tooltip">Quick View</span>
+        </a>
+      </li>
+      <li class="compare">
+        <a href="javascript:void(0);" 
+           class="box-icon hover-tooltip" 
+           data-compare 
+           data-id="{{ product.id }}" 
+           data-action="add"
+           aria-label="Add to compare">
+          <span class="icon icon-compare"></span>
+          <span class="tooltip">Add to Compare</span>
+        </a>
+      </li>
+    </ul>
+    <div class="product-btn-main">
+      <a class="btn-main-product add-to-cart" 
+              data-variant-id="{{ product.variants.first.id }}"
+              data-quantity="1"
+              aria-label="Add to cart">
+        <span class="icon icon-cart2"></span>
+        <span class="text-md fw-medium">Add to Cart</span>
+      </a>
     </div>
-    <div class="card-product-info text-center">
-      <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
+    {%- if product.variants.size > 1 -%}
+      <ul class="size-box">
+        {%- for variant in product.variants -%}
+          {%- if variant.option1 != blank -%}
+            <li class="size-item text-xs text-white">{{ variant.option1 }}</li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+  <div class="card-product-info">
+    <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
+    <p class="price-wrap fw-medium">
+      <span class="price-new text-primary">{{ product.price | money }}</span>
+      {%- if product.compare_at_price > product.price -%}
+        <span class="price-old">{{ product.compare_at_price | money }}</span>
+      {%- endif -%}
+    </p>
+    {%- if product.variants.size > 1 -%}
+      <ul class="list-color-product">
+        {%- for variant in product.variants -%}
+          {%- if variant.option2 != blank -%}
+            <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
+              <span class="tooltip color-filter">{{ variant.option2 }}</span>
+              <span class="swatch-value bg-{{ variant.option2 | handle }}"></span>
+              <img class="lazyload" data-src="{{ variant.image | img_url: '300x' }}" src="{{ variant.image | img_url: '300x' }}" alt="{{ variant.title | escape }}" width="300" height="300">
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</div>
+{%- else -%}
+{%- comment -%}Default Layout{%- endcomment -%}
+<div class="card-product {{ class }} {% if style == 'list' %}style-list{% else %}style-{{ style | default: 1 }}{% endif %} {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
+  <div class="card-product-wrapper asp-ratio-0">
+    <a href="{{ product.url }}" class="product-img">
+      {%- if product.featured_image != blank -%}
+        {{ product.featured_image | image_url: width: 400 | image_tag:
+          loading: 'lazy',
+          width: product.featured_image.width,
+          height: product.featured_image.height,
+          class: 'img-product ls-is-cached lazyloaded',
+          alt: product.title
+        }}
+        {%- if product.images[1] != blank -%}
+          {{ product.images[1] | image_url: width: 400 | image_tag:
+            loading: 'lazy',
+            width: product.images[1].width,
+            height: product.images[1].height,
+            class: 'img-hover ls-is-cached lazyloaded',
+            alt: product.title
+          }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </a>
+
+    {%- if show_sale_badge and product.compare_at_price > product.price -%}
+      <div class="on-sale-wrap">
+        <span class="on-sale-item">{{ sale_badge_text | default: 'Sale' }}</span>
+      </div>
+    {%- endif -%}
+
+    <ul class="list-product-btn">
+      <li>
+        <a href="javascript:void(0);" 
+           class="box-icon hover-tooltip tooltip-left add-to-cart" 
+           data-variant-id="{{ product.variants.first.id }}"
+           data-quantity="1"
+           aria-label="Add to cart">
+          <i class="icon icon-cart"></i>
+          <span class="tooltip">Add to Cart</span>
+        </a>
+      </li>
+      <li class="wishlist">
+        <a href="javascript:void(0);" 
+           class="box-icon hover-tooltip tooltip-left" 
+           data-wishlist 
+           data-id="{{ product.id }}" 
+           data-action="add"
+           aria-label="Add to wishlist">
+          <span class="icon icon-heart2"></span>
+          <span class="tooltip">Add to Wishlist</span>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0);" 
+           class="box-icon hover-tooltip tooltip-left quickview" 
+           data-product-handle="{{ product.handle }}"
+           data-product-id="{{ product.id }}"
+           data-bs-toggle="modal" 
+           data-bs-target="#quickView">
+          <span class="icon icon-view"></span>
+          <span class="tooltip">Quick View</span>
+        </a>
+      </li>
+      <li class="compare">
+        <a href="javascript:void(0);" 
+           class="box-icon hover-tooltip tooltip-left" 
+           data-compare 
+           data-id="{{ product.id }}" 
+           data-action="add"
+           aria-label="Add to compare">
+          <span class="icon icon-compare"></span>
+          <span class="tooltip">Add to Compare</span>
+        </a>
+      </li>
+    </ul>
+
+    {%- if product.variants.size > 1 and product.options contains 'Size' -%}
+      <ul class="size-box">
+        {%- for option in product.options_with_values -%}
+          {%- if option.name == 'Size' -%}
+            {%- for value in option.values -%}
+              <li class="size-item text-xs text-white">{{ value }}</li>
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+
+  <div class="card-product-info">
+    <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
+    {%- if vendor != blank -%}
+      <div class="vendor text-sm text-muted">{{ vendor }}</div>
+    {%- endif -%}
+    {%- if product.available -%}
       <p class="price-wrap fw-medium">
         {%- if product.compare_at_price > product.price -%}
           <span class="price-new text-primary">{{ product.price | money }}</span>
@@ -349,588 +609,326 @@
           <span class="price-new">{{ product.price | money }}</span>
         {%- endif -%}
       </p>
-      {%- if show_color_swatches or show_case_type -%}
-        <ul class="list-color-product list-capacity-product justify-content-center">
-          {%- if show_color_swatches -%}
-            {%- for option in product.options_with_values -%}
-              {%- if option.name == 'Color' or option.name == 'Colour' -%}
-                {%- for value in option.values -%}
-                  <li class="list-color-item color-swatch">
-                    <span class="text-quantity font-2">{{ value }}</span>
-                    <img class="lazyload" 
-                      data-src="{{ product.featured_image | img_url: 'master' }}"
-                      src="{{ product.featured_image | img_url: 'master' }}" 
-                      alt="{{ value }}"
-                      width="50"
-                      height="50">
-                  </li>
-                {%- endfor -%}
-              {%- endif -%}
-            {%- endfor -%}
-          {%- endif -%}
-          {%- if show_case_type -%}
-            {%- for option in product.options_with_values -%}
-              {%- if option.name == 'Case Type' -%}
-                {%- for value in option.values -%}
-                  <li class="list-color-item color-swatch">
-                    <span class="text-quantity font-2">{{ value }}</span>
-                    <img class="lazyload" 
-                      data-src="{{ product.featured_image | img_url: 'master' }}"
-                      src="{{ product.featured_image | img_url: 'master' }}" 
-                      alt="{{ value }}"
-                      width="50"
-                      height="50">
-                  </li>
-                {%- endfor -%}
-              {%- endif -%}
-            {%- endfor -%}
-          {%- endif -%}
-        </ul>
-      {%- endif -%}
-    </div>
-  </div>
-{%- elsif style == 'style-3' -%}
-  {%- comment -%}Search Drawer Layout{%- endcomment -%}
-  <div class="card-product {{ class }} style-3 {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
-    <div class="card-product-wrapper">
-      <a href="{{ product.url }}" class="product-img">
-        {%- if product.featured_image != blank -%}
-          {{ product.featured_image | image_url: width: 400 | image_tag:
-            loading: 'lazy',
-            width: product.featured_image.width,
-            height: product.featured_image.height,
-            class: 'img-product',
-            alt: product.title
-          }}
-          {%- if product.images[1] != blank -%}
-            {{ product.images[1] | image_url: width: 400 | image_tag:
-              loading: 'lazy',
-              width: product.images[1].width,
-              height: product.images[1].height,
-              class: 'img-hover',
-              alt: product.title
-            }}
-          {%- endif -%}
-        {%- else -%}
-          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-        {%- endif -%}
-      </a>
+    {%- endif -%}
 
-      <ul class="list-product-btn">
-        <li>
-          <a href="javascript:void(0);" 
-             class="box-icon hover-tooltip add-to-cart" 
-             data-variant-id="{{ product.variants.first.id }}"
-             data-quantity="1"
-             aria-label="Add to cart">
-            <i class="icon icon-cart"></i>
-            <span class="tooltip">Add to Cart</span>
-          </a>
-        </li>
-        <li class="wishlist">
-          <a href="javascript:void(0);" 
-             class="box-icon hover-tooltip" 
-             data-wishlist 
-             data-id="{{ product.id }}" 
-             data-action="add"
-             aria-label="Add to wishlist">
-            <span class="icon icon-heart2"></span>
-            <span class="tooltip">Add to Wishlist</span>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0);" 
-             class="box-icon hover-tooltip quickview" 
-             data-product-handle="{{ product.handle }}"
-             data-product-id="{{ product.id }}"
-             data-bs-toggle="modal" 
-             data-bs-target="#quickView">
-            <span class="icon icon-view"></span>
-            <span class="tooltip">Quick View</span>
-          </a>
-        </li>
-        <li class="compare">
-          <a href="javascript:void(0);" 
-             class="box-icon hover-tooltip" 
-             data-compare 
-             data-id="{{ product.id }}" 
-             data-action="add"
-             aria-label="Add to compare">
-            <span class="icon icon-compare"></span>
-            <span class="tooltip">Add to Compare</span>
-          </a>
-        </li>
-      </ul>
-      <div class="product-btn-main">
-        <a class="btn-main-product add-to-cart" 
-                data-variant-id="{{ product.variants.first.id }}"
-                data-quantity="1"
-                aria-label="Add to cart">
-          <span class="icon icon-cart2"></span>
-          <span class="text-md fw-medium">Add to Cart</span>
-        </a>
-      </div>
-      {%- if product.variants.size > 1 -%}
-        <ul class="size-box">
-          {%- for variant in product.variants -%}
-            {%- if variant.option1 != blank -%}
-              <li class="size-item text-xs text-white">{{ variant.option1 }}</li>
-            {%- endif -%}
-          {%- endfor -%}
-        </ul>
-      {%- endif -%}
-    </div>
-    <div class="card-product-info">
-      <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
-      <p class="price-wrap fw-medium">
-        <span class="price-new text-primary">{{ product.price | money }}</span>
-        {%- if product.compare_at_price > product.price -%}
-          <span class="price-old">{{ product.compare_at_price | money }}</span>
-        {%- endif -%}
-      </p>
-      {%- if product.variants.size > 1 -%}
-        <ul class="list-color-product">
-          {%- for variant in product.variants -%}
-            {%- if variant.option2 != blank -%}
-              <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
-                <span class="tooltip color-filter">{{ variant.option2 }}</span>
-                <span class="swatch-value bg-{{ variant.option2 | handle }}"></span>
-                <img class="lazyload" data-src="{{ variant.image | img_url: '300x' }}" src="{{ variant.image | img_url: '300x' }}" alt="{{ variant.title | escape }}" width="300" height="300">
+    {%- if show_color_swatches and product.variants.size > 1 and product.options contains 'Color' -%}
+      <ul class="list-color-product justify-content-center">
+        {%- for option in product.options_with_values -%}
+          {%- if option.name == 'Color' -%}
+            {%- for value in option.values -%}
+              {%- assign variant = product.variants | where: 'option1', value | first -%}
+              <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}"
+                  data-variant-id="{{ variant.id }}"
+                  data-option-name="{{ option.name }}"
+                  data-option-value="{{ value | escape }}">
+                <span class="tooltip color-filter">{{ value }}</span>
+                <span class="swatch-value bg-{{ value | handleize }}"></span>
+                {%- if variant.featured_image != blank -%}
+                  {{ variant.featured_image | image_url: width: 100 | image_tag:
+                    loading: 'lazy',
+                    class: 'lazyload',
+                    alt: value
+                  }}
+                {%- endif -%}
               </li>
-            {%- endif -%}
-          {%- endfor -%}
-        </ul>
-      {%- endif -%}
-    </div>
-  </div>
-{%- else -%}
-  {%- comment -%}Default Layout{%- endcomment -%}
-  <div class="card-product {{ class }} {% if style == 'list' %}style-list{% else %}style-{{ style | default: 1 }}{% endif %} {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
-    <div class="card-product-wrapper asp-ratio-0">
-      <a href="{{ product.url }}" class="product-img">
-        {%- if product.featured_image != blank -%}
-          {{ product.featured_image | image_url: width: 400 | image_tag:
-            loading: 'lazy',
-            width: product.featured_image.width,
-            height: product.featured_image.height,
-            class: 'img-product ls-is-cached lazyloaded',
-            alt: product.title
-          }}
-          {%- if product.images[1] != blank -%}
-            {{ product.images[1] | image_url: width: 400 | image_tag:
-              loading: 'lazy',
-              width: product.images[1].width,
-              height: product.images[1].height,
-              class: 'img-hover ls-is-cached lazyloaded',
-              alt: product.title
-            }}
+            {%- endfor -%}
           {%- endif -%}
-        {%- else -%}
-          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-        {%- endif -%}
-      </a>
-
-      {%- if show_sale_badge and product.compare_at_price > product.price -%}
-        <div class="on-sale-wrap">
-          <span class="on-sale-item">{{ sale_badge_text | default: 'Sale' }}</span>
-        </div>
-      {%- endif -%}
-
-      <ul class="list-product-btn">
-        <li>
-          <a href="javascript:void(0);" 
-             class="box-icon hover-tooltip tooltip-left add-to-cart" 
-             data-variant-id="{{ product.variants.first.id }}"
-             data-quantity="1"
-             aria-label="Add to cart">
-            <i class="icon icon-cart"></i>
-            <span class="tooltip">Add to Cart</span>
-          </a>
-        </li>
-        <li class="wishlist">
-          <a href="javascript:void(0);" 
-             class="box-icon hover-tooltip tooltip-left" 
-             data-wishlist 
-             data-id="{{ product.id }}" 
-             data-action="add"
-             aria-label="Add to wishlist">
-            <span class="icon icon-heart2"></span>
-            <span class="tooltip">Add to Wishlist</span>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0);" 
-             class="box-icon hover-tooltip tooltip-left quickview" 
-             data-product-handle="{{ product.handle }}"
-             data-product-id="{{ product.id }}"
-             data-bs-toggle="modal" 
-             data-bs-target="#quickView">
-            <span class="icon icon-view"></span>
-            <span class="tooltip">Quick View</span>
-          </a>
-        </li>
-        <li class="compare">
-          <a href="javascript:void(0);" 
-             class="box-icon hover-tooltip tooltip-left" 
-             data-compare 
-             data-id="{{ product.id }}" 
-             data-action="add"
-             aria-label="Add to compare">
-            <span class="icon icon-compare"></span>
-            <span class="tooltip">Add to Compare</span>
-          </a>
-        </li>
+        {%- endfor -%}
       </ul>
-
-      {%- if product.variants.size > 1 and product.options contains 'Size' -%}
-        <ul class="size-box">
-          {%- for option in product.options_with_values -%}
-            {%- if option.name == 'Size' -%}
-              {%- for value in option.values -%}
-                <li class="size-item text-xs text-white">{{ value }}</li>
-              {%- endfor -%}
-            {%- endif -%}
-          {%- endfor -%}
-        </ul>
-      {%- endif -%}
-    </div>
-
-    <div class="card-product-info">
-      <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
-      {%- if vendor != blank -%}
-        <div class="vendor text-sm text-muted">{{ vendor }}</div>
-      {%- endif -%}
-      {%- if product.available -%}
-        <p class="price-wrap fw-medium">
-          {%- if product.compare_at_price > product.price -%}
-            <span class="price-new text-primary">{{ product.price | money }}</span>
-            <span class="price-old">{{ product.compare_at_price | money }}</span>
-          {%- else -%}
-            <span class="price-new">{{ product.price | money }}</span>
-          {%- endif -%}
-        </p>
-      {%- endif -%}
-
-      {%- if show_color_swatches and product.variants.size > 1 and product.options contains 'Color' -%}
-        <ul class="list-color-product justify-content-center">
-          {%- for option in product.options_with_values -%}
-            {%- if option.name == 'Color' -%}
-              {%- for value in option.values -%}
-                {%- assign variant = product.variants | where: 'option1', value | first -%}
-                <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}"
-                    data-variant-id="{{ variant.id }}"
-                    data-option-name="{{ option.name }}"
-                    data-option-value="{{ value | escape }}">
-                  <span class="tooltip color-filter">{{ value }}</span>
-                  <span class="swatch-value bg-{{ value | handleize }}"></span>
-                  {%- if variant.featured_image != blank -%}
-                    {{ variant.featured_image | image_url: width: 100 | image_tag:
-                      loading: 'lazy',
-                      class: 'lazyload',
-                      alt: value
-                    }}
-                  {%- endif -%}
-                </li>
-              {%- endfor -%}
-            {%- endif -%}
-          {%- endfor -%}
-        </ul>
-      {%- endif -%}
-    </div>
+    {%- endif -%}
   </div>
+</div>
 {%- endif -%}
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Clear any existing event listeners on add-to-cart buttons
-  document.querySelectorAll('.add-to-cart').forEach(button => {
-    // Clone the node to remove all event listeners
-    const newButton = button.cloneNode(true);
-    button.parentNode.replaceChild(newButton, button);
-  });
-  
-  // Re-attach event listeners
-  document.querySelectorAll('.add-to-cart').forEach(button => {
-    button.addEventListener('click', async function(e) {
-      e.preventDefault();
-      e.stopPropagation(); // Stop event propagation
+// Clear any existing event listeners on add-to-cart buttons
+document.querySelectorAll('.add-to-cart').forEach(button => {
+  // Clone the node to remove all event listeners
+  const newButton = button.cloneNode(true);
+  button.parentNode.replaceChild(newButton, button);
+});
+
+// Re-attach event listeners
+document.querySelectorAll('.add-to-cart').forEach(button => {
+  button.addEventListener('click', async function(e) {
+    e.preventDefault();
+    e.stopPropagation(); // Stop event propagation
+    
+    // Prevent multiple clicks
+    if (this.classList.contains('loading')) {
+      return;
+    }
+    
+    const variantId = this.dataset.variantId;
+    const quantity = parseInt(this.dataset.quantity || 1);
+    
+    try {
+      // Show loading state
+      this.classList.add('loading');
       
-      // Prevent multiple clicks
-      if (this.classList.contains('loading')) {
-        return;
-      }
-      
-      const variantId = this.dataset.variantId;
-      const quantity = parseInt(this.dataset.quantity || 1);
-      
-      try {
-        // Show loading state
-        this.classList.add('loading');
+      // Add item to cart exactly once
+      if (window.cart) {
+        console.log(`Adding to cart: variant ${variantId}, quantity ${quantity}`);
+        await window.cart.updateQuantity(variantId, quantity, 'add');
         
-        // Add item to cart exactly once
-        if (window.cart) {
-          console.log(`Adding to cart: variant ${variantId}, quantity ${quantity}`);
-          await window.cart.updateQuantity(variantId, quantity, 'add');
-          
-          // Fetch updated cart data
-          const response = await fetch('/cart.js');
-          const cartData = await response.json();
-          
-          // Update cart drawer with all items
-          const cartDrawer = document.getElementById('shoppingCart');
-          if (cartDrawer) {
-            const itemsContainer = cartDrawer.querySelector('.tf-mini-cart-items');
-            if (itemsContainer) {
-              // Clear existing items
-              itemsContainer.innerHTML = '';
-              
-              // Add all items from cart
-              cartData.items.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'tf-mini-cart-item';
-                itemElement.style.border = 'none';
-                itemElement.style.borderBottom = 'none';
-                itemElement.innerHTML = `
-                  <div class="tf-mini-cart-image">
-                    <a href="${item.url}">
-                      <img class="lazyload" data-src="${item.image}" src="${item.image}" alt="${item.title}" loading="lazy">
-                    </a>
+        // Fetch updated cart data
+        const response = await fetch('/cart.js');
+        const cartData = await response.json();
+        
+        // Update cart drawer with all items
+        const cartDrawer = document.getElementById('shoppingCart');
+        if (cartDrawer) {
+          const itemsContainer = cartDrawer.querySelector('.tf-mini-cart-items');
+          if (itemsContainer) {
+            // Clear existing items
+            itemsContainer.innerHTML = '';
+            
+            // Add all items from cart
+            cartData.items.forEach(item => {
+              const itemElement = document.createElement('div');
+              itemElement.className = 'tf-mini-cart-item';
+              itemElement.style.border = 'none';
+              itemElement.style.borderBottom = 'none';
+              itemElement.innerHTML = `
+                <div class="tf-mini-cart-image">
+                  <a href="${item.url}">
+                    <img class="lazyload" data-src="${item.image}" src="${item.image}" alt="${item.title}" loading="lazy">
+                  </a>
+                </div>
+                <div class="tf-mini-cart-info">
+                  <div class="d-flex justify-content-between">
+                    <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
+                    <i class="icon icon-close remove fs-12" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
                   </div>
-                  <div class="tf-mini-cart-info">
-                    <div class="d-flex justify-content-between">
-                      <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
-                      <i class="icon icon-close remove fs-12" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
-                    </div>
-                    <div class="d-flex gap-10">
-                      <div class="text-xs">${item.variant_title || ''}</div>
-                      <a href="#" class="link edit"><i class="icon-pen"></i></a>
-                    </div>
-                    <div class="tf-mini-cart-item_price">
-                      <p class="price-wrap text-sm fw-medium">
-                        <span class="new-price text-primary">${formatMoney(item.final_price)}</span>
-                      </p>
-                    </div>
-                    <div class="tf-mini-cart-item_quantity">
-                      <div class="wg-quantity small">
-                        <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
-                        <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
-                        <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
-                      </div>
+                  <div class="d-flex gap-10">
+                    <div class="text-xs">${item.variant_title || ''}</div>
+                    <a href="#" class="link edit"><i class="icon-pen"></i></a>
+                  </div>
+                  <div class="tf-mini-cart-item_price">
+                    <p class="price-wrap text-sm fw-medium">
+                      <span class="new-price text-primary">${formatMoney(item.final_price)}</span>
+                    </p>
+                  </div>
+                  <div class="tf-mini-cart-item_quantity">
+                    <div class="wg-quantity small">
+                      <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
+                      <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
+                      <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
                     </div>
                   </div>
-                `;
-                itemsContainer.appendChild(itemElement);
-              });
-              
-              // Add event listeners for quantity buttons
-              itemsContainer.querySelectorAll('.btn-decrease').forEach(button => {
-                button.addEventListener('click', async function() {
-                  const variantId = this.dataset.variantId;
-                  const input = this.nextElementSibling;
-                  const currentValue = parseInt(input.value);
-                  if (currentValue > 1) {
-                    await window.cart.updateQuantity(variantId, currentValue - 1, 'update');
-                  } else {
-                    await window.cart.removeItem(variantId);
-                  }
-                });
-              });
-  
-              itemsContainer.querySelectorAll('.btn-increase').forEach(button => {
-                button.addEventListener('click', async function() {
-                  const variantId = this.dataset.variantId;
-                  const input = this.previousElementSibling;
-                  const currentValue = parseInt(input.value);
-                  await window.cart.updateQuantity(variantId, currentValue + 1, 'update');
-                });
-              });
-
-              itemsContainer.querySelectorAll('.quantity-product').forEach(input => {
-                input.addEventListener('change', async function() {
-                  const variantId = this.dataset.variantId;
-                  const newValue = parseInt(this.value);
-                  if (isNaN(newValue) || newValue < 1) {
-                    if (newValue <= 0) {
-                      await window.cart.removeItem(variantId);
-                    } else {
-                      this.value = 1;
-                      await window.cart.updateQuantity(variantId, 1, 'update');
-                    }
-                  } else {
-                    await window.cart.updateQuantity(variantId, newValue, 'update');
-                  }
-                });
-              });
-
-              // Add event listeners for remove buttons
-              itemsContainer.querySelectorAll('.remove').forEach(button => {
-                button.addEventListener('click', async function() {
-                  const variantId = this.dataset.variantId;
-                  await window.cart.removeItem(variantId);
-                });
-              });
-              
-              // Update cart total
-              const totalElement = cartDrawer.querySelector('.cart-total-price');
-              if (totalElement) {
-                totalElement.textContent = formatMoney(cartData.total_price);
-              }
-              
-              // Update header cart count
-              const headerCount = document.querySelector('.count-box');
-              if (headerCount) {
-                headerCount.textContent = cartData.item_count;
-              }
-
-              // Update shipping threshold progress bar
-              const progressBar = cartDrawer.querySelector('.tf-progress-bar .value');
-              if (progressBar) {
-                const threshold = 100 * 100; // $100 in cents
-                const progress = Math.min(100, (cartData.total_price / threshold) * 100);
-                progressBar.style.width = `${progress}%`;
-                progressBar.setAttribute('data-progress', progress);
-              }
-
-              // Update shipping threshold text
-              const thresholdText = cartDrawer.querySelector('.tf-mini-cart-threshold .text');
-              if (thresholdText) {
-                const threshold = 100 * 100; // $100 in cents
-                const remaining = Math.max(0, threshold - cartData.total_price) / 100;
-                if (cartData.total_price >= threshold) {
-                  thresholdText.innerHTML = 'Congratulations! You\'ve unlocked <span class="fw-medium">Free Shipping</span>';
+                </div>
+              `;
+              itemsContainer.appendChild(itemElement);
+            });
+            
+            // Add event listeners for quantity buttons
+            itemsContainer.querySelectorAll('.btn-decrease').forEach(button => {
+              button.addEventListener('click', async function() {
+                const variantId = this.dataset.variantId;
+                const input = this.nextElementSibling;
+                const currentValue = parseInt(input.value);
+                if (currentValue > 1) {
+                  await window.cart.updateQuantity(variantId, currentValue - 1, 'update');
                 } else {
-                  thresholdText.innerHTML = `Spend <span class="fw-medium">$${remaining.toFixed(2)}</span> more to get <span class="fw-medium">Free Shipping</span>`;
+                  await window.cart.removeItem(variantId);
                 }
+              });
+            });
+
+            itemsContainer.querySelectorAll('.btn-increase').forEach(button => {
+              button.addEventListener('click', async function() {
+                const variantId = this.dataset.variantId;
+                const input = this.previousElementSibling;
+                const currentValue = parseInt(input.value);
+                await window.cart.updateQuantity(variantId, currentValue + 1, 'update');
+              });
+            });
+
+            itemsContainer.querySelectorAll('.quantity-product').forEach(input => {
+              input.addEventListener('change', async function() {
+                const variantId = this.dataset.variantId;
+                const newValue = parseInt(this.value);
+                if (isNaN(newValue) || newValue < 1) {
+                  if (newValue <= 0) {
+                    await window.cart.removeItem(variantId);
+                  } else {
+                    this.value = 1;
+                    await window.cart.updateQuantity(variantId, 1, 'update');
+                  }
+                } else {
+                  await window.cart.updateQuantity(variantId, newValue, 'update');
+                }
+              });
+            });
+
+            // Add event listeners for remove buttons
+            itemsContainer.querySelectorAll('.remove').forEach(button => {
+              button.addEventListener('click', async function() {
+                const variantId = this.dataset.variantId;
+                await window.cart.removeItem(variantId);
+              });
+            });
+            
+            // Update cart total
+            const totalElement = cartDrawer.querySelector('.cart-total-price');
+            if (totalElement) {
+              totalElement.textContent = formatMoney(cartData.total_price);
+            }
+            
+            // Update header cart count
+            const headerCount = document.querySelector('.count-box');
+            if (headerCount) {
+              headerCount.textContent = cartData.item_count;
+            }
+
+            // Update shipping threshold progress bar
+            const progressBar = cartDrawer.querySelector('.tf-progress-bar .value');
+            if (progressBar) {
+              const threshold = 100 * 100; // $100 in cents
+              const progress = Math.min(100, (cartData.total_price / threshold) * 100);
+              progressBar.style.width = `${progress}%`;
+              progressBar.setAttribute('data-progress', progress);
+            }
+
+            // Update shipping threshold text
+            const thresholdText = cartDrawer.querySelector('.tf-mini-cart-threshold .text');
+            if (thresholdText) {
+              const threshold = 100 * 100; // $100 in cents
+              const remaining = Math.max(0, threshold - cartData.total_price) / 100;
+              if (cartData.total_price >= threshold) {
+                thresholdText.innerHTML = 'Congratulations! You\'ve unlocked <span class="fw-medium">Free Shipping</span>';
+              } else {
+                thresholdText.innerHTML = `Spend <span class="fw-medium">$${remaining.toFixed(2)}</span> more to get <span class="fw-medium">Free Shipping</span>`;
               }
             }
           }
         }
-      } catch (error) {
-        console.error('Error adding item to cart:', error);
-        alert('Failed to add item to cart. Please try again.');
-      } finally {
-        // Remove loading state
-        this.classList.remove('loading');
       }
-    }, { once: false }); // Use once:false but with other protections
-  });
+    } catch (error) {
+      console.error('Error adding item to cart:', error);
+      alert('Failed to add item to cart. Please try again.');
+    } finally {
+      // Remove loading state
+      this.classList.remove('loading');
+    }
+  }, { once: false }); // Use once:false but with other protections
+});
 
-  // Handle quickview clicks
-  document.querySelectorAll('.quickview').forEach(button => {
-    button.addEventListener('click', async function(e) {
-      e.preventDefault();
-      const productHandle = this.dataset.productHandle;
-      const productId = this.dataset.productId;
+// Handle quickview clicks
+document.querySelectorAll('.quickview').forEach(button => {
+  button.addEventListener('click', async function(e) {
+    e.preventDefault();
+    const productHandle = this.dataset.productHandle;
+    const productId = this.dataset.productId;
+    
+    try {
+      // Fetch product data
+      const response = await fetch(`/products/${productHandle}.js`);
+      const product = await response.json();
       
-      try {
-        // Fetch product data
-        const response = await fetch(`/products/${productHandle}.js`);
-        const product = await response.json();
+      // Update modal with product data
+      const modal = document.getElementById('quickView');
+      if (modal) {
+        // Update product title
+        modal.querySelector('.product-info-name').textContent = product.title;
         
-        // Update modal with product data
-        const modal = document.getElementById('quickView');
-        if (modal) {
-          // Update product title
-          modal.querySelector('.product-info-name').textContent = product.title;
-          
-          // Update price
-          const priceContainer = modal.querySelector('.product-info-price');
-          if (product.compare_at_price > product.price) {
-            priceContainer.innerHTML = `
-              <h6 class="price-new price-on-sale">${formatMoney(product.price)}</h6>
-              <h6 class="price-old">${formatMoney(product.compare_at_price)}</h6>
-            `;
-          } else {
-            priceContainer.innerHTML = `
-              <h6 class="price-new">${formatMoney(product.price)}</h6>
-            `;
-          }
-          
-          // Update description
-          modal.querySelector('.text').textContent = product.description.replace(/<[^>]*>/g, '').split(' ').slice(0, 30).join(' ') + '...';
-          
-          // Update media gallery
-          const swiperWrapper = modal.querySelector('.swiper-wrapper');
-          swiperWrapper.innerHTML = product.media.map(media => `
-            <div class="swiper-slide" data-media-id="${media.id}">
-              <div class="item">
-                ${media.media_type === 'image' 
-                  ? `<img class="lazyload" data-src="${media.src}" src="${media.src}" alt="${media.alt || product.title}">`
-                  : `<video controls class="w-100"><source src="${media.sources[0].url}" type="video/mp4"></video>`
-                }
+        // Update price
+        const priceContainer = modal.querySelector('.product-info-price');
+        if (product.compare_at_price > product.price) {
+          priceContainer.innerHTML = `
+            <h6 class="price-new price-on-sale">${formatMoney(product.price)}</h6>
+            <h6 class="price-old">${formatMoney(product.compare_at_price)}</h6>
+          `;
+        } else {
+          priceContainer.innerHTML = `
+            <h6 class="price-new">${formatMoney(product.price)}</h6>
+          `;
+        }
+        
+        // Update description
+        modal.querySelector('.text').textContent = product.description.replace(/<[^>]*>/g, '').split(' ').slice(0, 30).join(' ') + '...';
+        
+        // Update media gallery
+        const swiperWrapper = modal.querySelector('.swiper-wrapper');
+        swiperWrapper.innerHTML = product.media.map(media => `
+          <div class="swiper-slide" data-media-id="${media.id}">
+            <div class="item">
+              ${media.media_type === 'image' 
+                ? `<img class="lazyload" data-src="${media.src}" src="${media.src}" alt="${media.alt || product.title}">`
+                : `<video controls class="w-100"><source src="${media.sources[0].url}" type="video/mp4"></video>`
+              }
+            </div>
+          </div>
+        `).join('');
+        
+        // Update variant options
+        const variantContainer = modal.querySelector('.tf-product-info-variant');
+        if (product.variants.length > 1) {
+          variantContainer.innerHTML = product.options.map(option => `
+            <div class="variant-picker-item variant-${option.name.toLowerCase()}">
+              <div class="variant-picker-label">
+                ${option.name}:<span class="variant-picker-label-value value-current${option.name.toLowerCase()}">${option.values[0]}</span>
+              </div>
+              <div class="variant-picker-values">
+                ${option.values.map(value => `
+                  ${option.name.toLowerCase() === 'color' || option.name.toLowerCase() === 'colour'
+                    ? `<div class="hover-tooltip color-btn" data-option-name="${option.name}" data-option-value="${value}">
+                        <span class="check-color bg-${value.toLowerCase()}"></span>
+                        <span class="tooltip">${value}</span>
+                      </div>`
+                    : `<span class="size-btn" data-option-name="${option.name}" data-option-value="${value}">${value}</span>`
+                  }
+                `).join('')}
               </div>
             </div>
           `).join('');
-          
-          // Update variant options
-          const variantContainer = modal.querySelector('.tf-product-info-variant');
-          if (product.variants.length > 1) {
-            variantContainer.innerHTML = product.options.map(option => `
-              <div class="variant-picker-item variant-${option.name.toLowerCase()}">
-                <div class="variant-picker-label">
-                  ${option.name}:<span class="variant-picker-label-value value-current${option.name.toLowerCase()}">${option.values[0]}</span>
-                </div>
-                <div class="variant-picker-values">
-                  ${option.values.map(value => `
-                    ${option.name.toLowerCase() === 'color' || option.name.toLowerCase() === 'colour'
-                      ? `<div class="hover-tooltip color-btn" data-option-name="${option.name}" data-option-value="${value}">
-                          <span class="check-color bg-${value.toLowerCase()}"></span>
-                          <span class="tooltip">${value}</span>
-                        </div>`
-                      : `<span class="size-btn" data-option-name="${option.name}" data-option-value="${value}">${value}</span>`
-                    }
-                  `).join('')}
-                </div>
-              </div>
-            `).join('');
-          } else {
-            variantContainer.innerHTML = '';
-          }
-          
-          // Update product links
-          modal.querySelectorAll('a[href]').forEach(link => {
-            if (link.href.includes('/products/')) {
-              link.href = product.url;
-            }
-          });
-          
-          // Update product ID on buttons
-          modal.querySelector('.add-to-cart-btn').dataset.productId = product.id;
-          modal.querySelector('.buy-now-btn').dataset.productId = product.id;
-          
-          // Initialize swiper
-          if (window.swiper) {
-            window.swiper.destroy();
-          }
-          window.swiper = new Swiper('.tf-single-slide', {
-            slidesPerView: 1,
-            spaceBetween: 0,
-            loop: true,
-            navigation: {
-              nextEl: '.single-slide-next',
-              prevEl: '.single-slide-prev',
-            }
-          });
+        } else {
+          variantContainer.innerHTML = '';
         }
-      } catch (error) {
-        console.error('Error loading product data:', error);
+        
+        // Update product links
+        modal.querySelectorAll('a[href]').forEach(link => {
+          if (link.href.includes('/products/')) {
+            link.href = product.url;
+          }
+        });
+        
+        // Update product ID on buttons
+        modal.querySelector('.add-to-cart-btn').dataset.productId = product.id;
+        modal.querySelector('.buy-now-btn').dataset.productId = product.id;
+        
+        // Initialize swiper
+        if (window.swiper) {
+          window.swiper.destroy();
+        }
+        window.swiper = new Swiper('.tf-single-slide', {
+          slidesPerView: 1,
+          spaceBetween: 0,
+          loop: true,
+          navigation: {
+            nextEl: '.single-slide-next',
+            prevEl: '.single-slide-prev',
+          }
+        });
       }
-    });
+    } catch (error) {
+      console.error('Error loading product data:', error);
+    }
   });
+});
 
-  // Initialize wishlist and compare buttons state
-  if (window.wishlistCompare) {
-    window.wishlistCompare.updateButtonsState();
-  }
+// Initialize wishlist and compare buttons state
+if (window.wishlistCompare) {
+  window.wishlistCompare.updateButtonsState();
+}
 });
 
 // Helper function to format money
 function formatMoney(cents) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: '{{ shop.currency }}'
-  }).format(cents / 100);
+return new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: '{{ shop.currency }}'
+}).format(cents / 100);
 }
 </script>
-
-

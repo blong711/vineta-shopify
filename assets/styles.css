@@ -6277,7 +6277,7 @@ button.animate-btn::after,
 .offcanvas-backdrop {
   background-color: var(--backdrop);
   z-index: 2000;
-  cursor: url(../images/cursor-close.svg), auto;
+  cursor: url(/assets/cursor-close.svg), auto;
 }
 .offcanvas-backdrop.show {
   opacity: 1;
@@ -6294,13 +6294,12 @@ button.animate-btn::after,
 .modal-backdrop.show {
   opacity: 1;
 }
-
 .modal-dialog-centered {
   min-height: calc(100% - 60px);
 }
 
 .modal {
-  cursor: url(../images/cursor-close.svg), auto;
+  cursor: url(/assets/cursor-close.svg), auto;
 }
 .modal .icon-close,
 .modal .icon-close-popup {
@@ -14272,7 +14271,7 @@ button.animate-btn::after,
 .offcanvas-backdrop {
   background-color: var(--backdrop);
   z-index: 2000;
-  cursor: url(../images/cursor-close.svg), auto;
+  cursor: url(/assets/cursor-close.svg), auto;
 }
 .offcanvas-backdrop.show {
   opacity: 1;
@@ -14295,7 +14294,7 @@ button.animate-btn::after,
 }
 
 .modal {
-  cursor: url(../images/cursor-close.svg), auto;
+  cursor: url(/assets/cursor-close.svg), auto;
 }
 .modal .icon-close,
 .modal .icon-close-popup {
