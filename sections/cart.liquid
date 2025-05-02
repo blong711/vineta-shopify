@@ -39,7 +39,7 @@
                     <tr class="tf-cart-item file-delete" data-item-id="{{ item.key }}" data-variant-id="{{ item.variant.id }}">
                       <td class="tf-cart-item_product">
                         <a href="{{ item.url }}" class="img-box">
-                          <img src="{{ item.image | img_url: '150x' }}" alt="{{ item.title | escape }}" loading="lazy">
+                          <img src="{{ item.image | img_url: '150x' }}" alt="{{ item.title | escape }}" loading="lazy" width="150" height="150">
                         </a>
                         <div class="cart-info">
                           <a href="{{ item.url }}" class="name text-md link fw-medium">{{ item.product.title }}</a>
@@ -196,16 +196,16 @@
               <p class="text-center text-sm text-dark-1">We accept</p>
               <div class="cart-list-social">
                 <div class="payment-card">
-                  <img src="{{ 'Visa.png' | asset_url }}" alt="Visa">
+                  <img src="{{ 'Visa.png' | asset_url }}" alt="Visa" width="40" height="25">
                 </div>
                 <div class="payment-card">
-                  <img src="{{ 'DinersClub.png' | asset_url }}" alt="Diners Club">
+                  <img src="{{ 'DinersClub.png' | asset_url }}" alt="Diners Club" width="40" height="25">
                 </div>
                 <div class="payment-card">
-                  <img src="{{ 'Mastercard.png' | asset_url }}" alt="Mastercard">
+                  <img src="{{ 'Mastercard.png' | asset_url }}" alt="Mastercard" width="40" height="25">
                 </div>
                 <div class="payment-card">
-                  <img src="{{ 'Stripe.png' | asset_url }}" alt="Stripe">
+                  <img src="{{ 'Stripe.png' | asset_url }}" alt="Stripe" width="40" height="25">
                 </div>
               </div>
             </div>
@@ -238,7 +238,7 @@
                           <p class="text-review text-md text-main">{{ block.settings.review }}</p>
                           <div class="box-author">
                             <div class="img">
-                              <img src="{{ block.settings.author_image | img_url: '100x' }}" alt="{{ block.settings.author_name }}">
+                              <img src="{{ block.settings.author_image | img_url: '100x' }}" alt="{{ block.settings.author_name }}" width="{{ block.settings.author_image.width }}" height="{{ block.settings.author_image.height }}">
                             </div>
                             <span class="name text-sm fw-medium">{{ block.settings.author_name }}</span>
                           </div>
@@ -586,6 +586,162 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!termsCheckbox.checked) {
         e.preventDefault();
         alert('Please agree to the terms and conditions before proceeding to checkout.');
+      }
+    });
+  }
+
+  // Handle shipping estimates
+  const shippingForm = document.querySelector('.shipping-cart-box');
+  const estimateButton = shippingForm?.querySelector('button[type="button"]');
+  
+  if (estimateButton) {
+    estimateButton.addEventListener('click', async function() {
+      const country = document.getElementById('country').value;
+      const state = document.getElementById('state').value;
+      const zipcode = document.getElementById('code').value;
+      
+      if (!country || !state || !zipcode) {
+        alert('Please fill in all shipping fields');
+        return;
+      }
+
+      try {
+        const response = await fetch('/cart/shipping_rates.json', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            shipping_address: {
+              country: country,
+              province: state,
+              zip: zipcode
+            }
+          })
+        });
+
+        const data = await response.json();
+        if (data.shipping_rates && data.shipping_rates.length > 0) {
+          // Display shipping rates
+          const shippingRates = data.shipping_rates.map(rate => 
+            `${rate.name}: ${rate.price}`
+          ).join('\n');
+          alert('Available shipping rates:\n' + shippingRates);
+        } else {
+          alert('No shipping rates available for this location');
+        }
+      } catch (error) {
+        console.error('Error fetching shipping rates:', error);
+        alert('Failed to calculate shipping rates. Please try again.');
+      }
+    });
+  }
+
+  // Handle gift wrap
+  const giftWrapCheckbox = document.getElementById('checkGift');
+  const GIFT_WRAP_PRICE = 10.00;
+  const GIFT_WRAP_TITLE = 'Gift Wrap';
+  
+  if (giftWrapCheckbox) {
+    giftWrapCheckbox.addEventListener('change', async function() {
+      try {
+        if (this.checked) {
+          // Add gift wrap to cart
+          await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              items: [{
+                title: GIFT_WRAP_TITLE,
+                price: GIFT_WRAP_PRICE * 100, // Convert to cents
+                quantity: 1
+              }]
+            })
+          });
+        } else {
+          // Remove gift wrap from cart
+          const cartItems = await fetch('/cart.js').then(res => res.json());
+          const giftWrapItem = cartItems.items.find(item => item.title === GIFT_WRAP_TITLE);
+          if (giftWrapItem) {
+            await fetch('/cart/change.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                id: giftWrapItem.id,
+                quantity: 0
+              })
+            });
+          }
+        }
+        
+        // Refresh cart to update totals
+        window.location.reload();
+      } catch (error) {
+        console.error('Error updating gift wrap:', error);
+        alert('Failed to update gift wrap. Please try again.');
+      }
+    });
+  }
+
+  // Handle discount code
+  const discountForm = document.querySelector('.box-ip-discount');
+  const discountInput = discountForm?.querySelector('input[name="discount_code"]');
+  const applyButton = discountForm?.querySelector('button');
+  
+  if (applyButton && discountInput) {
+    applyButton.addEventListener('click', async function() {
+      const code = discountInput.value.trim();
+      if (!code) {
+        alert('Please enter a discount code');
+        return;
+      }
+
+      try {
+        const response = await fetch('/cart/update.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            discount_code: code
+          })
+        });
+
+        const data = await response.json();
+        if (data.token) {
+          alert('Discount code applied successfully!');
+          window.location.reload();
+        } else {
+          alert('Invalid discount code');
+        }
+      } catch (error) {
+        console.error('Error applying discount code:', error);
+        alert('Failed to apply discount code. Please try again.');
+      }
+    });
+  }
+
+  // Handle cart note
+  const cartNote = document.getElementById('note');
+  if (cartNote) {
+    cartNote.addEventListener('change', async function() {
+      try {
+        await fetch('/cart/update.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            note: this.value
+          })
+        });
+      } catch (error) {
+        console.error('Error updating cart note:', error);
+        alert('Failed to update cart note. Please try again.');
       }
     });
   }
