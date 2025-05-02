@@ -1,4 +1,23 @@
 {%- comment -%}Cart Section{%- endcomment -%}
+<div class="flat-spacing-24">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-4 col-sm-8">
+        <div class="tf-cart-head text-center">
+          <p class="text-xl-3 title text-dark-4">Spend <span class="fw-medium">$100</span> more to get
+            <span class="fw-medium">Free Shipping</span>
+          </p>
+          <div class="progress-sold tf-progress-ship">
+            <div class="value" style="width: 0%;" data-progress="0">
+              <i class="icon icon-car"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="flat-spacing-2 pt-0">
   <div class="container">
     <div class="row">
@@ -155,7 +174,7 @@
             <button type="button" class="tf-btn btn-dark2 animate-btn w-100">Estimate</button>
           </form>
 
-          <form action="/checkout" method="post" class="cart-box checkout-cart-box">
+          <form action="/checkout" method="post" class="cart-box checkout-cart-box" id="checkout-form">
             <div class="cart-head">
               <div class="total-discount text-xl fw-medium">
                 <span>Total:</span>
@@ -170,7 +189,7 @@
             </div>
 
             <div class="checkout-btn">
-              <button type="submit" class="tf-btn btn-dark2 animate-btn w-100">Checkout</button>
+              <button type="submit" class="tf-btn btn-dark2 animate-btn w-100" id="checkout-button" disabled>Checkout</button>
             </div>
 
             <div class="cart-imgtrust">
@@ -316,6 +335,39 @@ document.addEventListener('DOMContentLoaded', function() {
       headerCount.textContent = cartCount.textContent;
     }
   }
+
+  // Function to update shipping threshold progress
+  function updateShippingProgress() {
+    const cartTotal = parseFloat(document.querySelector('.total').textContent.replace(/[^0-9.-]+/g, ''));
+    const threshold = 100; // $100 threshold
+    const progress = Math.min(100, (cartTotal / threshold) * 100);
+    const progressBar = document.querySelector('.tf-progress-ship .value');
+    const progressText = document.querySelector('.tf-cart-head .title');
+    
+    if (progressBar) {
+      progressBar.style.width = progress + '%';
+      progressBar.setAttribute('data-progress', progress);
+    }
+    
+    if (progressText) {
+      if (cartTotal >= threshold) {
+        progressText.innerHTML = 'Congratulations! You\'ve unlocked <span class="fw-medium">Free Shipping</span>';
+      } else {
+        const remaining = threshold - cartTotal;
+        progressText.innerHTML = `Spend <span class="fw-medium">$${remaining.toFixed(2)}</span> more to get <span class="fw-medium">Free Shipping</span>`;
+      }
+    }
+  }
+
+  // Update progress on page load
+  updateShippingProgress();
+
+  // Update progress when cart changes
+  document.addEventListener('cart:change', function(e) {
+    if (e.detail && e.detail.cart) {
+      updateShippingProgress();
+    }
+  });
 
   // Handle remove buttons in cart
   document.querySelectorAll('.remove-cart').forEach(button => {
@@ -514,5 +566,28 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+  // Handle terms checkbox and checkout button
+  const termsCheckbox = document.getElementById('check-agree');
+  const checkoutButton = document.getElementById('checkout-button');
+  const checkoutForm = document.getElementById('checkout-form');
+  
+  if (termsCheckbox && checkoutButton && checkoutForm) {
+    // Initial state
+    checkoutButton.disabled = true;
+    
+    // Handle checkbox change
+    termsCheckbox.addEventListener('change', function() {
+      checkoutButton.disabled = !this.checked;
+    });
+    
+    // Handle form submission
+    checkoutForm.addEventListener('submit', function(e) {
+      if (!termsCheckbox.checked) {
+        e.preventDefault();
+        alert('Please agree to the terms and conditions before proceeding to checkout.');
+      }
+    });
+  }
 });
 {% endjavascript %}
