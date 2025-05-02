@@ -389,6 +389,120 @@
       {%- endif -%}
     </div>
   </div>
+{%- elsif style == 'style-3' -%}
+  {%- comment -%}Search Drawer Layout{%- endcomment -%}
+  <div class="card-product {{ class }} style-3 {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
+    <div class="card-product-wrapper">
+      <a href="{{ product.url }}" class="product-img">
+        {%- if product.featured_image != blank -%}
+          {{ product.featured_image | image_url: width: 400 | image_tag:
+            loading: 'lazy',
+            width: product.featured_image.width,
+            height: product.featured_image.height,
+            class: 'img-product',
+            alt: product.title
+          }}
+          {%- if product.images[1] != blank -%}
+            {{ product.images[1] | image_url: width: 400 | image_tag:
+              loading: 'lazy',
+              width: product.images[1].width,
+              height: product.images[1].height,
+              class: 'img-hover',
+              alt: product.title
+            }}
+          {%- endif -%}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </a>
+
+      <ul class="list-product-btn">
+        <li>
+          <a href="javascript:void(0);" 
+             class="box-icon hover-tooltip add-to-cart" 
+             data-variant-id="{{ product.variants.first.id }}"
+             data-quantity="1"
+             aria-label="Add to cart">
+            <i class="icon icon-cart"></i>
+            <span class="tooltip">Add to Cart</span>
+          </a>
+        </li>
+        <li class="wishlist">
+          <a href="javascript:void(0);" 
+             class="box-icon hover-tooltip" 
+             data-wishlist 
+             data-id="{{ product.id }}" 
+             data-action="add"
+             aria-label="Add to wishlist">
+            <span class="icon icon-heart2"></span>
+            <span class="tooltip">Add to Wishlist</span>
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0);" 
+             class="box-icon hover-tooltip quickview" 
+             data-product-handle="{{ product.handle }}"
+             data-product-id="{{ product.id }}"
+             data-bs-toggle="modal" 
+             data-bs-target="#quickView">
+            <span class="icon icon-view"></span>
+            <span class="tooltip">Quick View</span>
+          </a>
+        </li>
+        <li class="compare">
+          <a href="javascript:void(0);" 
+             class="box-icon hover-tooltip" 
+             data-compare 
+             data-id="{{ product.id }}" 
+             data-action="add"
+             aria-label="Add to compare">
+            <span class="icon icon-compare"></span>
+            <span class="tooltip">Add to Compare</span>
+          </a>
+        </li>
+      </ul>
+      <div class="product-btn-main">
+        <a class="btn-main-product add-to-cart" 
+                data-variant-id="{{ product.variants.first.id }}"
+                data-quantity="1"
+                aria-label="Add to cart">
+          <span class="icon icon-cart2"></span>
+          <span class="text-md fw-medium">Add to Cart</span>
+        </a>
+      </div>
+      {%- if product.variants.size > 1 -%}
+        <ul class="size-box">
+          {%- for variant in product.variants -%}
+            {%- if variant.option1 != blank -%}
+              <li class="size-item text-xs text-white">{{ variant.option1 }}</li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+    <div class="card-product-info">
+      <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
+      <p class="price-wrap fw-medium">
+        <span class="price-new text-primary">{{ product.price | money }}</span>
+        {%- if product.compare_at_price > product.price -%}
+          <span class="price-old">{{ product.compare_at_price | money }}</span>
+        {%- endif -%}
+      </p>
+      {%- if product.variants.size > 1 -%}
+        <ul class="list-color-product">
+          {%- for variant in product.variants -%}
+            {%- if variant.option2 != blank -%}
+              <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
+                <span class="tooltip color-filter">{{ variant.option2 }}</span>
+                <span class="swatch-value bg-{{ variant.option2 | handle }}"></span>
+                <img class="lazyload" data-src="{{ variant.image | img_url: '300x' }}" src="{{ variant.image | img_url: '300x' }}" alt="{{ variant.title | escape }}" width="300" height="300">
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
 {%- else -%}
   {%- comment -%}Default Layout{%- endcomment -%}
   <div class="card-product {{ class }} {% if style == 'list' %}style-list{% else %}style-{{ style | default: 1 }}{% endif %} {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
@@ -819,26 +933,4 @@ function formatMoney(cents) {
 }
 </script>
 
-<style>
-.card-product .box-icon:hover .icon {
-  color: var(--white) !important;
-}
-
-.card-product .list-product-btn .hover-tooltip .tooltip {
-  right: calc(100% + 8px);
-  left: auto;
-  bottom: 50%;
-}
-
-.card-product .list-product-btn .hover-tooltip .tooltip::before {
-  right: -4px;
-  left: auto;
-  top: 50%;
-  transform: translateY(-50%) rotate(45deg);
-}
-
-.card-product .list-product-btn .hover-tooltip:hover .tooltip {
-  transform: translateY(10px) translateX(-2px);
-}
-</style>
 

@@ -111,17 +111,18 @@
                         <div class="wrapper-sub-menu">
                           {%- for childlink in link.links -%}
                             <div class="mega-menu-item">
-                              <div class="menu-heading">
-                                <a href="{{ childlink.url }}" class="menu-heading-link">
-                                  {{ childlink.title }}
-                                </a>
-                              </div>
+                              <div class="menu-heading">{{ childlink.title }}</div>
                               {%- if childlink.links != blank -%}
                                 <ul class="menu-list">
                                   {%- for grandchildlink in childlink.links -%}
                                     <li>
                                       <a href="{{ grandchildlink.url }}" class="menu-link-text link">
                                         {{ grandchildlink.title }}
+                                        {%- if grandchildlink.title contains 'Hot' or grandchildlink.title contains 'New' -%}
+                                          <span class="demo-label{% if grandchildlink.title contains 'Hot' %} demo-hot{% endif %}">
+                                            {%- if grandchildlink.title contains 'Hot' -%}Hot{%- else -%}New{%- endif -%}
+                                          </span>
+                                        {%- endif -%}
                                       </a>
                                     </li>
                                   {%- endfor -%}
@@ -216,17 +217,18 @@
                           <div class="wrapper-sub-menu">
                             {%- for childlink in link.links -%}
                               <div class="mega-menu-item">
-                                <div class="menu-heading">
-                                  <a href="{{ childlink.url }}" class="menu-heading-link">
-                                    {{ childlink.title }}
-                                  </a>
-                                </div>
+                                <div class="menu-heading">{{ childlink.title }}</div>
                                 {%- if childlink.links != blank -%}
                                   <ul class="menu-list">
                                     {%- for grandchildlink in childlink.links -%}
                                       <li>
                                         <a href="{{ grandchildlink.url }}" class="menu-link-text link">
                                           {{ grandchildlink.title }}
+                                          {%- if grandchildlink.title contains 'Hot' or grandchildlink.title contains 'New' -%}
+                                            <span class="demo-label{% if grandchildlink.title contains 'Hot' %} demo-hot{% endif %}">
+                                              {%- if grandchildlink.title contains 'Hot' -%}Hot{%- else -%}New{%- endif -%}
+                                            </span>
+                                          {%- endif -%}
                                         </a>
                                       </li>
                                     {%- endfor -%}
@@ -394,17 +396,18 @@
                           <div class="wrapper-sub-menu">
                             {%- for childlink in link.links -%}
                               <div class="mega-menu-item">
-                                <div class="menu-heading">
-                                  <a href="{{ childlink.url }}" class="menu-heading-link">
-                                    {{ childlink.title }}
-                                  </a>
-                                </div>
+                                <div class="menu-heading">{{ childlink.title }}</div>
                                 {%- if childlink.links != blank -%}
                                   <ul class="menu-list">
                                     {%- for grandchildlink in childlink.links -%}
                                       <li>
                                         <a href="{{ grandchildlink.url }}" class="menu-link-text link">
                                           {{ grandchildlink.title }}
+                                          {%- if grandchildlink.title contains 'Hot' or grandchildlink.title contains 'New' -%}
+                                            <span class="demo-label{% if grandchildlink.title contains 'Hot' %} demo-hot{% endif %}">
+                                              {%- if grandchildlink.title contains 'Hot' -%}Hot{%- else -%}New{%- endif -%}
+                                            </span>
+                                          {%- endif -%}
                                         </a>
                                       </li>
                                     {%- endfor -%}
@@ -747,213 +750,6 @@
   ]
 }
 {% endschema %}
-
-{% stylesheet %}
-.header-2 {
-  .header-top {
-    border-bottom: 1px solid var(--line);
-  }
-  .header-bottom {
-    .box-nav-menu {
-      gap: 32px;
-      .item-link {
-        font-size: 14px;
-        line-height: 21px;
-        font-weight: 500;
-        color: var(--dark);
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        .icon {
-          font-size: 12px;
-        }
-      }
-    }
-  }
-}
-
-.header-3 {
-  .box-nav-menu {
-    gap: 32px;
-    .item-link {
-      font-size: 14px;
-      line-height: 21px;
-      font-weight: 500;
-      color: var(--dark);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      .icon {
-        font-size: 12px;
-      }
-    }
-  }
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.header-right-wrap {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.header-search {
-  position: relative;
-}
-
-.header-search-form {
-  display: flex;
-  align-items: center;
-}
-
-.header-search-form input {
-  width: 200px;
-  padding: 8px 15px;
-  border: 1px solid #eee;
-  border-radius: 4px;
-}
-
-.header-search-btn {
-  background: none;
-  border: none;
-  padding: 8px;
-  cursor: pointer;
-}
-
-.header-cart {
-  position: relative;
-}
-
-.cart-button {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  text-decoration: none;
-  color: inherit;
-}
-
-.cart-count {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: var(--primary-color);
-  color: #fff;
-  font-size: 12px;
-  padding: 2px 6px;
-  border-radius: 10px;
-  min-width: 18px;
-  text-align: center;
-}
-
-.menu-heading {
-  margin-bottom: 15px;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
-.menu-heading-link {
-  color: #000;
-  text-decoration: none;
-  transition: color 0.3s ease;
-  display: block;
-  font-size: 14px;
-  letter-spacing: 0.5px;
-}
-
-.menu-heading-link:hover {
-  color: var(--primary-color);
-}
-
-.menu-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.menu-list li {
-  margin-bottom: 8px;
-}
-
-.menu-link-text {
-  color: #666;
-  text-decoration: none;
-  transition: color 0.3s ease;
-  font-size: 14px;
-  display: block;
-}
-
-.menu-link-text:hover {
-  color: var(--primary-color);
-}
-
-.demo-label {
-  display: inline-block;
-  padding: 2px 6px;
-  background: #ff4444;
-  color: #fff;
-  font-size: 10px;
-  border-radius: 3px;
-  margin-left: 5px;
-  text-transform: uppercase;
-  font-weight: 500;
-}
-
-.wrapper-sub-collection {
-  margin-top: 20px;
-}
-
-.wg-cls {
-  position: relative;
-  overflow: hidden;
-}
-
-.wg-cls .image {
-  display: block;
-  position: relative;
-  padding-top: 100%;
-}
-
-.wg-cls .image img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.wg-cls:hover .image img {
-  transform: scale(1.1);
-}
-
-.cls-btn {
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  right: 0;
-  text-align: center;
-}
-
-.btn-cls {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 10px 20px;
-  border-radius: 4px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.btn-cls:hover {
-  transform: translateY(-3px);
-}
-{% endstylesheet %} 
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

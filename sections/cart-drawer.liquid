@@ -178,6 +178,44 @@
 .empty-cart p {
   margin-bottom: 20px;
 }
+
+.cart-drawer-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 100vh;
+  z-index: 1050 !important;
+  pointer-events: none;
+}
+
+.cart-drawer-backdrop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: auto;
+  z-index: 1045 !important;
+}
+
+.cart-drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--white);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+  z-index: 1050 !important;
+}
 </style>
 
 <script>
