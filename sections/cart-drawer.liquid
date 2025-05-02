@@ -75,9 +75,10 @@
         </div>
         <div class="tf-mini-cart-tool-openable add-gift">
           <div class="overplay tf-mini-cart-tool-close"></div>
-          <form action="#" class="tf-mini-cart-tool-content">
+          <form action="/cart" method="post" class="tf-mini-cart-tool-content">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">Add gift wrap</div>
             <div class="tf-mini-cart-tool-text1 text-dark-1">The product will be wrapped carefully. Free is only <span class="text fw-medium text-dark">$10.00</span>. Do you want a gift wrap?</div>
+            <input type="hidden" name="attributes[gift_wrap]" value="true">
             <div class="tf-cart-tool-btns">
               <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Save</button>
               <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">Close</div>
@@ -86,9 +87,9 @@
         </div>
         <div class="tf-mini-cart-tool-openable add-note">
           <div class="overplay tf-mini-cart-tool-close"></div>
-          <form action="#" class="tf-mini-cart-tool-content">
+          <form action="/cart" method="post" class="tf-mini-cart-tool-content">
             <label for="Cart-note" class="tf-mini-cart-tool-text text-sm fw-medium">Order note</label>
-            <textarea name="note" id="Cart-note" placeholder="Instruction for seller..."></textarea>
+            <textarea name="note" id="Cart-note" placeholder="Instruction for seller...">{{ cart.note }}</textarea>
             <div class="tf-cart-tool-btns">
               <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Save</button>
               <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">Close</div>
@@ -97,50 +98,42 @@
         </div>
         <div class="tf-mini-cart-tool-openable coupon">
           <div class="overplay tf-mini-cart-tool-close"></div>
-          <form action="#" class="tf-mini-cart-tool-content">
+          <form action="/cart" method="post" class="tf-mini-cart-tool-content">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">Add coupon</div>
             <div class="tf-mini-cart-tool-text1 text-dark-1">* Discount will be calculated and applied at checkout</div>
-            <input type="text" name="text" placeholder="">
+            <input type="text" name="discount" placeholder="Enter coupon code">
             <div class="tf-cart-tool-btns">
-              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Add a Gift Wrap</button>
+              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Apply Coupon</button>
               <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">Cancel</div>
             </div>
           </form>
         </div>
         <div class="tf-mini-cart-tool-openable estimate-shipping">
           <div class="overplay tf-mini-cart-tool-close"></div>
-          <form id="shipping-form" class="tf-mini-cart-tool-content">
+          <form id="shipping-form" class="tf-mini-cart-tool-content" data-shipping-calculator>
             <div class="tf-mini-cart-tool-text text-sm fw-medium">Shipping estimates</div>
             <div class="field">
               <p class="text-sm">Country</p>
               <div class="tf-select">
-                <select class="w-100" id="shipping-country-form" name="address[country]" data-default="">
-                  <option value="Australia" data-provinces='[["Australian Capital Territory","Australian Capital Territory"],["New South Wales","New South Wales"],["Northern Territory","Northern Territory"],["Queensland","Queensland"],["South Australia","South Australia"],["Tasmania","Tasmania"],["Victoria","Victoria"],["Western Australia","Western Australia"]]'>Australia</option>
-                  <option value="Canada" data-provinces='[["Ontario","Ontario"],["Quebec","Quebec"]]'>Canada</option>
-                  <option selected value="United States" data-provinces='[["Alabama","Alabama"],["California","California"],["Florida","Florida"]]'>United States</option>
-                  <option value="United Kingdom" data-provinces='[["England","England"],["Scotland","Scotland"],["Wales","Wales"],["Northern Ireland","Northern Ireland"]]'>United Kingdom</option>
+                <select class="w-100" id="shipping-country-form" name="address[country]" data-default="{{ customer.default_address.country }}">
+                  {{ country_option_tags }}
                 </select>
               </div>
             </div>
             <div class="field">
               <p class="text-sm">State/Province</p>
               <div class="tf-select">
-                <select id="shipping-province-form" name="address[province]" data-default=""></select>
+                <select id="shipping-province-form" name="address[province]" data-default="{{ customer.default_address.province }}"></select>
               </div>
             </div>
             <div class="field">
               <p class="text-sm">Zipcode</p>
-              <input type="text" data-opend-focus id="zipcode" name="address[zip]" value="">
+              <input type="text" data-opend-focus id="zipcode" name="address[zip]" value="{{ customer.default_address.zip }}">
             </div>
-            <div id="zipcode-message" class="error" style="display: none;">
-              We found one shipping rate available for undefined.
-            </div>
-            <div id="zipcode-success" class="success" style="display: none;">
-              <p>We found one shipping rate available for your address:</p>
-              <p class="standard">Standard at <span>$0.00</span> USD</p>
-            </div>
+            <div id="zipcode-message" class="error" style="display: none;"></div>
+            <div id="zipcode-success" class="success" style="display: none;"></div>
             <div class="tf-cart-tool-btns">
-              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Save</button>
+              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Calculate Shipping</button>
               <div class="tf-mini-cart-tool-primary text-center fw-6 w-100 tf-mini-cart-tool-close">Cancel</div>
             </div>
           </form>
@@ -366,5 +359,106 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Start observing the document body for added nodes
   observer.observe(document.body, { childList: true });
+
+  // Handle shipping calculator
+  const shippingForm = document.getElementById('shipping-form');
+  if (shippingForm) {
+    shippingForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(shippingForm);
+      const address = {
+        country: formData.get('address[country]'),
+        province: formData.get('address[province]'),
+        zip: formData.get('address[zip]')
+      };
+
+      fetch('/cart/shipping_rates.json', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ address })
+      })
+      .then(response => response.json())
+      .then(data => {
+        const successDiv = document.getElementById('zipcode-success');
+        const errorDiv = document.getElementById('zipcode-message');
+        
+        if (data.shipping_rates && data.shipping_rates.length > 0) {
+          const rate = data.shipping_rates[0];
+          successDiv.innerHTML = `
+            <p>We found shipping rates available for your address:</p>
+            <p class="standard">${rate.name} at <span>${(rate.price / 100).toFixed(2)}</span> ${rate.currency}</p>
+          `;
+          successDiv.style.display = 'block';
+          errorDiv.style.display = 'none';
+        } else {
+          errorDiv.textContent = 'No shipping rates available for this address.';
+          errorDiv.style.display = 'block';
+          successDiv.style.display = 'none';
+        }
+      })
+      .catch(error => {
+        const errorDiv = document.getElementById('zipcode-message');
+        errorDiv.textContent = 'Error calculating shipping rates. Please try again.';
+        errorDiv.style.display = 'block';
+        document.getElementById('zipcode-success').style.display = 'none';
+      });
+    });
+  }
+
+  // Handle country/province selection
+  const countrySelect = document.getElementById('shipping-country-form');
+  const provinceSelect = document.getElementById('shipping-province-form');
+
+  if (countrySelect && provinceSelect) {
+    countrySelect.addEventListener('change', function() {
+      const country = this.value;
+      const provinces = this.options[this.selectedIndex].dataset.provinces;
+      
+      if (provinces) {
+        const provincesList = JSON.parse(provinces);
+        provinceSelect.innerHTML = '';
+        provincesList.forEach(province => {
+          const option = document.createElement('option');
+          option.value = province[0];
+          option.textContent = province[1];
+          provinceSelect.appendChild(option);
+        });
+      }
+    });
+  }
+
+  // Handle form submissions with AJAX
+  document.querySelectorAll('.tf-mini-cart-tool-content form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      
+      fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          // Close the tool panel
+          this.closest('.tf-mini-cart-tool-openable').classList.remove('active');
+          // Refresh cart
+          if (window.cart) {
+            window.cart.refresh();
+          }
+        } else {
+          alert('Error: ' + (data.message || 'Something went wrong'));
+        }
+      })
+      .catch(error => {
+        alert('Error: ' + error.message);
+      });
+    });
+  });
 });
 </script>
