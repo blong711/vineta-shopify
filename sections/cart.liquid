@@ -18,7 +18,7 @@
   </div>
 </div>
 
-<div class="flat-spacing-2 pt-0">
+<div class="flat-spacing-2 pt-0"> 
   <div class="container">
     <div class="row">
       <div class="col-xl-8">
@@ -327,15 +327,7 @@
 
 {% javascript %}
 document.addEventListener('DOMContentLoaded', function() {
-  // Function to update header cart count
-  function updateHeaderCartCount() {
-    const headerCount = document.querySelector('.count-box');
-    const cartCount = document.querySelector('.cart-count');
-    if (headerCount && cartCount) {
-      headerCount.textContent = cartCount.textContent;
-    }
-  }
-
+  // Function to update shipping progress
   // Function to update shipping threshold progress
   function updateShippingProgress() {
     const cartTotal = parseFloat(document.querySelector('.total').textContent.replace(/[^0-9.-]+/g, ''));
@@ -368,6 +360,71 @@ document.addEventListener('DOMContentLoaded', function() {
       updateShippingProgress();
     }
   });
+
+  // Function to fetch and update cart data
+  async function fetchCartData() {
+    try {
+      const response = await fetch('/cart.js');
+      const cartData = await response.json();
+      
+      // Update cart items with proper image data
+      cartData.items.forEach(item => {
+        const cartItem = document.querySelector(`[data-variant-id="${item.variant_id}"]`);
+        if (cartItem) {
+          const imgElement = cartItem.querySelector('.img-box img');
+          if (imgElement && item.image) {
+            imgElement.src = item.image;
+            imgElement.alt = item.title;
+          }
+        }
+      });
+
+      // Update cart totals
+      const cartTotal = document.querySelector('.total');
+      if (cartTotal) {
+        cartTotal.textContent = (cartData.total_price / 100).toFixed(2);
+      }
+
+      // Update cart count
+      const cartCount = document.querySelector('.cart-count');
+      if (cartCount) {
+        cartCount.textContent = cartData.item_count;
+      }
+
+      // Update shipping progress immediately
+      updateShippingProgress();
+    } catch (error) {
+      console.error('Error fetching cart data:', error);
+    }
+  }
+
+  // Fetch cart data on page load
+  fetchCartData();
+
+  // Update progress when cart changes
+  document.addEventListener('cart:change', function(e) {
+    if (e.detail && e.detail.cart) {
+      setTimeout(updateShippingProgress, 100);
+    }
+  });
+
+  // Also update progress when quantity changes or items are removed
+  document.addEventListener('quantity:change', function() {
+    setTimeout(updateShippingProgress, 100);
+  });
+
+  document.addEventListener('item:removed', function() {
+    setTimeout(updateShippingProgress, 100);
+  });
+
+  // Function to update header cart count
+  function updateHeaderCartCount() {
+    const headerCount = document.querySelector('.count-box');
+    const cartCount = document.querySelector('.cart-count');
+    if (headerCount && cartCount) {
+      headerCount.textContent = cartCount.textContent;
+    }
+  }
 
   // Handle remove buttons in cart
   document.querySelectorAll('.remove-cart').forEach(button => {
