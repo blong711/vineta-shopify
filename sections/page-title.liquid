@@ -8,7 +8,7 @@
         <div class="breadcrumb-item dot">
           <span></span>
         </div>
-        <span class="breadcrumb-item current">{% if template == 'list-collections' %}Collections{% else %}{{ section.settings.custom_title | default: page_title | default: settings.title }}{% endif %}</span>
+      <span class="breadcrumb-item current">{% if template == 'list-collections' %}Collections{% else %}{{ page_title | default: settings.title }}{% endif %}</span>
       </div>
     </div>
   </div>
