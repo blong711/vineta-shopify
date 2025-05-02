@@ -85,8 +85,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (wishlistIds.length === 0) {
       emptyWishlist.style.display = 'block';
-    return;
-  }
+      return;
+    }
 
     emptyWishlist.style.display = 'none';
     
@@ -101,9 +101,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to fetch all products with pagination
     function fetchAllProducts(page = 1, limit = 250) {
       return fetch(`/products.json?page=${page}&limit=${limit}`)
-    .then(response => response.json())
-    .then(data => {
-      const products = data.products;
+        .then(response => response.json())
+        .then(data => {
+          const products = data.products;
           if (products.length === limit) {
             // If we got a full page, there might be more
             return fetchAllProducts(page + 1, limit)
@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="card-product grid file-delete style-wishlist style-3 ${!product.variants[0].available ? 'out-of-stock' : ''}" data-product-id="${product.id}">
         <i class="icon icon-close remove" data-wishlist data-id="${product.id}" data-action="remove"></i>
             <div class="card-product-wrapper">
-              <a href="${product.url}" class="product-img">
+              <a href="/products/${product.handle}" class="product-img">
                 <img class="img-product lazyload"
               data-src="${product.featured_image ? product.featured_image.src : product.images[0].src}"
               src="${product.featured_image ? product.featured_image.src : product.images[0].src}"
@@ -196,53 +196,76 @@ document.addEventListener('DOMContentLoaded', function() {
           </a>
           <ul class="list-product-btn">
             <li>
-              <a href="#shoppingCart" data-bs-toggle="offcanvas" class="box-icon hover-tooltip">
+              <a href="javascript:void(0);" 
+                 class="box-icon hover-tooltip tooltip-left add-to-cart" 
+                 data-variant-id="${product.variants[0].id}"
+                 data-quantity="1"
+                 aria-label="Add to cart">
                 <span class="icon icon-cart2"></span>
                 <span class="tooltip">Add to Cart</span>
               </a>
             </li>
             <li>
-              <a href="#quickView" data-bs-toggle="modal" class="box-icon hover-tooltip quickview" 
+              <a href="javascript:void(0);" 
+                 class="box-icon hover-tooltip tooltip-left quickview" 
                  data-product-handle="${product.handle}"
-                 data-product-id="${product.id}">
+                 data-product-id="${product.id}"
+                 data-bs-toggle="modal" 
+                 data-bs-target="#quickView">
                 <span class="icon icon-view"></span>
                 <span class="tooltip">Quick View</span>
               </a>
             </li>
-            <li>
-              <a href="#compare" data-bs-toggle="modal" class="box-icon hover-tooltip" 
-                 data-compare data-id="${product.id}" data-action="add">
+            <li class="compare">
+              <a href="javascript:void(0);" 
+                 class="box-icon hover-tooltip tooltip-left" 
+                 data-compare 
+                 data-id="${product.id}" 
+                 data-action="add"
+                 aria-label="Add to compare">
                 <span class="icon icon-compare"></span>
                 <span class="tooltip">Add to Compare</span>
-                  </a>
-                </li>
-              </ul>
+              </a>
+            </li>
+          </ul>
           ${!product.variants[0].available ? '<div class="sold-out-badge">Sold Out</div>' : ''}
             </div>
             <div class="card-product-info">
-              <a href="${product.url}" class="name-product link fw-medium text-md">${product.title}</a>
+              <a href="/products/${product.handle}" class="name-product link fw-medium text-md">${product.title}</a>
               <p class="price-wrap fw-medium">
-            <span class="price-new text-primary">${formatMoney(product.variants[0].price)}</span>
-            ${product.variants[0].compare_at_price > product.variants[0].price ? 
-              `<span class="price-old">${formatMoney(product.variants[0].compare_at_price)}</span>` : ''}
-          </p>
-          ${product.variants.length > 1 ? `
-            <ul class="list-color-product">
-              ${product.variants.map(variant => {
-                const colorOption = variant.option1;
-                if (colorOption && (colorOption.toLowerCase().includes('color') || colorOption.toLowerCase().includes('colour'))) {
-                  return `
-                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                      <span class="tooltip color-filter">${colorOption}</span>
-                      <span class="swatch-value bg-${colorOption.toLowerCase().replace(/\s+/g, '-')}"></span>
-                    </li>
-                  `;
-                }
-                return '';
-              }).join('')}
-            </ul>
-          ` : ''}
-        </div>
+                <span class="price-new text-primary">${formatMoney(product.variants[0].price * 100)}</span>
+                ${product.variants[0].compare_at_price > product.variants[0].price ? 
+                  `<span class="price-old">${formatMoney(product.variants[0].compare_at_price * 100)}</span>` : ''}
+              </p>
+              ${product.variants.length > 1 ? `
+                <ul class="list-color-product">
+                  ${product.options.map(option => {
+                    if (option.name.toLowerCase() === 'color' || option.name.toLowerCase() === 'colour') {
+                      return option.values.map(value => {
+                        const variant = product.variants.find(v => v.option1 === value);
+                        return `
+                          <li class="list-color-item color-swatch hover-tooltip tooltip-bot ${value === option.values[0] ? 'active' : ''}"
+                              data-variant-id="${variant.id}"
+                              data-option-name="${option.name}"
+                              data-option-value="${value}">
+                            <span class="tooltip color-filter">${value}</span>
+                            <span class="swatch-value bg-${value.toLowerCase().replace(/\s+/g, '-')}"></span>
+                            ${variant.featured_image ? `
+                              <img class="lazyload" 
+                                data-src="${variant.featured_image.src}" 
+                                src="${variant.featured_image.src}" 
+                                alt="${value}"
+                                loading="lazy">
+                            ` : ''}
+                          </li>
+                        `;
+                      }).join('');
+                    }
+                    return '';
+                  }).join('')}
+                </ul>
+              ` : ''}
+            </div>
         </div>
       `;
     });
@@ -287,6 +310,282 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     });
+
+    // Clear any existing event listeners on add-to-cart buttons
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      // Clone the node to remove all event listeners
+      const newButton = button.cloneNode(true);
+      button.parentNode.replaceChild(newButton, button);
+    });
+    
+    // Re-attach event listeners for add-to-cart buttons
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', async function(e) {
+        e.preventDefault();
+        e.stopPropagation(); // Stop event propagation
+        
+        // Prevent multiple clicks
+        if (this.classList.contains('loading')) {
+          return;
+        }
+        
+        const variantId = this.dataset.variantId;
+        const quantity = parseInt(this.dataset.quantity || 1);
+        
+        try {
+          // Show loading state
+          this.classList.add('loading');
+          
+          // Add item to cart exactly once
+          if (window.cart) {
+            console.log(`Adding to cart: variant ${variantId}, quantity ${quantity}`);
+            await window.cart.updateQuantity(variantId, quantity, 'add');
+            
+            // Fetch updated cart data
+            const response = await fetch('/cart.js');
+            const cartData = await response.json();
+            
+            // Update cart drawer with all items
+            const cartDrawer = document.getElementById('shoppingCart');
+            if (cartDrawer) {
+              const itemsContainer = cartDrawer.querySelector('.tf-mini-cart-items');
+              if (itemsContainer) {
+                // Clear existing items
+                itemsContainer.innerHTML = '';
+                
+                // Add all items from cart
+                cartData.items.forEach(item => {
+                  const itemElement = document.createElement('div');
+                  itemElement.className = 'tf-mini-cart-item';
+                  itemElement.style.border = 'none';
+                  itemElement.style.borderBottom = 'none';
+                  itemElement.innerHTML = `
+                    <div class="tf-mini-cart-image">
+                      <a href="${item.url}">
+                        <img class="lazyload" data-src="${item.image}" src="${item.image}" alt="${item.title}" loading="lazy">
+                      </a>
+                    </div>
+                    <div class="tf-mini-cart-info">
+                      <div class="d-flex justify-content-between">
+                        <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
+                        <i class="icon icon-close remove fs-12" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
+                      </div>
+                      <div class="d-flex gap-10">
+                        <div class="text-xs">${item.variant_title || ''}</div>
+                        <a href="#" class="link edit"><i class="icon-pen"></i></a>
+                      </div>
+                      <div class="tf-mini-cart-item_price">
+                        <p class="price-wrap text-sm fw-medium">
+                          <span class="new-price text-primary">${formatMoney(item.final_price)}</span>
+                        </p>
+                      </div>
+                      <div class="tf-mini-cart-item_quantity">
+                        <div class="wg-quantity small">
+                          <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
+                          <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
+                          <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                  itemsContainer.appendChild(itemElement);
+                });
+                
+                // Add event listeners for quantity buttons
+                itemsContainer.querySelectorAll('.btn-decrease').forEach(button => {
+                  button.addEventListener('click', async function() {
+                    const variantId = this.dataset.variantId;
+                    const input = this.nextElementSibling;
+                    const currentValue = parseInt(input.value);
+                    if (currentValue > 1) {
+                      await window.cart.updateQuantity(variantId, currentValue - 1, 'update');
+                    } else {
+                      await window.cart.removeItem(variantId);
+                    }
+                  });
+                });
+
+                itemsContainer.querySelectorAll('.btn-increase').forEach(button => {
+                  button.addEventListener('click', async function() {
+                    const variantId = this.dataset.variantId;
+                    const input = this.previousElementSibling;
+                    const currentValue = parseInt(input.value);
+                    await window.cart.updateQuantity(variantId, currentValue + 1, 'update');
+                  });
+                });
+
+                itemsContainer.querySelectorAll('.quantity-product').forEach(input => {
+                  input.addEventListener('change', async function() {
+                    const variantId = this.dataset.variantId;
+                    const newValue = parseInt(this.value);
+                    if (isNaN(newValue) || newValue < 1) {
+                      if (newValue <= 0) {
+                        await window.cart.removeItem(variantId);
+                      } else {
+                        this.value = 1;
+                        await window.cart.updateQuantity(variantId, 1, 'update');
+                      }
+                    } else {
+                      await window.cart.updateQuantity(variantId, newValue, 'update');
+                    }
+                  });
+                });
+
+                // Add event listeners for remove buttons
+                itemsContainer.querySelectorAll('.remove').forEach(button => {
+                  button.addEventListener('click', async function() {
+                    const variantId = this.dataset.variantId;
+                    await window.cart.removeItem(variantId);
+                  });
+                });
+                
+                // Update cart total
+                const totalElement = cartDrawer.querySelector('.cart-total-price');
+                if (totalElement) {
+                  totalElement.textContent = formatMoney(cartData.total_price);
+                }
+                
+                // Update header cart count
+                const headerCount = document.querySelector('.count-box');
+                if (headerCount) {
+                  headerCount.textContent = cartData.item_count;
+                }
+
+                // Update shipping threshold progress bar
+                const progressBar = cartDrawer.querySelector('.tf-progress-bar .value');
+                if (progressBar) {
+                  const threshold = 100 * 100; // $100 in cents
+                  const progress = Math.min(100, (cartData.total_price / threshold) * 100);
+                  progressBar.style.width = `${progress}%`;
+                  progressBar.setAttribute('data-progress', progress);
+                }
+
+                // Update shipping threshold text
+                const thresholdText = cartDrawer.querySelector('.tf-mini-cart-threshold .text');
+                if (thresholdText) {
+                  const threshold = 100 * 100; // $100 in cents
+                  const remaining = Math.max(0, threshold - cartData.total_price) / 100;
+                  if (cartData.total_price >= threshold) {
+                    thresholdText.innerHTML = 'Congratulations! You\'ve unlocked <span class="fw-medium">Free Shipping</span>';
+                  } else {
+                    thresholdText.innerHTML = `Spend <span class="fw-medium">$${remaining.toFixed(2)}</span> more to get <span class="fw-medium">Free Shipping</span>`;
+                  }
+                }
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error adding item to cart:', error);
+          alert('Failed to add item to cart. Please try again.');
+        } finally {
+          // Remove loading state
+          this.classList.remove('loading');
+        }
+      }, { once: false }); // Use once:false but with other protections
+    });
+
+    // Handle quickview clicks
+    document.querySelectorAll('.quickview').forEach(button => {
+      button.addEventListener('click', async function(e) {
+        e.preventDefault();
+        const productHandle = this.dataset.productHandle;
+        const productId = this.dataset.productId;
+        
+        try {
+          // Fetch product data
+          const response = await fetch(`/products/${productHandle}.js`);
+          const product = await response.json();
+          
+          // Update modal with product data
+          const modal = document.getElementById('quickView');
+          if (modal) {
+            // Update product title
+            modal.querySelector('.product-info-name').textContent = product.title;
+            
+            // Update price
+            const priceContainer = modal.querySelector('.product-info-price');
+            if (product.compare_at_price > product.price) {
+              priceContainer.innerHTML = `
+                <h6 class="price-new price-on-sale">${formatMoney(product.price)}</h6>
+                <h6 class="price-old">${formatMoney(product.compare_at_price)}</h6>
+              `;
+            } else {
+              priceContainer.innerHTML = `
+                <h6 class="price-new">${formatMoney(product.price)}</h6>
+              `;
+            }
+            
+            // Update description
+            modal.querySelector('.text').textContent = product.description.replace(/<[^>]*>/g, '').split(' ').slice(0, 30).join(' ') + '...';
+            
+            // Update media gallery
+            const swiperWrapper = modal.querySelector('.swiper-wrapper');
+            swiperWrapper.innerHTML = product.media.map(media => `
+              <div class="swiper-slide" data-media-id="${media.id}">
+                <div class="item">
+                  ${media.media_type === 'image' 
+                    ? `<img class="lazyload" data-src="${media.src}" src="${media.src}" alt="${media.alt || product.title}">`
+                    : `<video controls class="w-100"><source src="${media.sources[0].url}" type="video/mp4"></video>`
+                  }
+                </div>
+              </div>
+            `).join('');
+            
+            // Update variant options
+            const variantContainer = modal.querySelector('.tf-product-info-variant');
+            if (product.variants.length > 1) {
+              variantContainer.innerHTML = product.options.map(option => `
+                <div class="variant-picker-item variant-${option.name.toLowerCase()}">
+                  <div class="variant-picker-label">
+                    ${option.name}:<span class="variant-picker-label-value value-current${option.name.toLowerCase()}">${option.values[0]}</span>
+                  </div>
+                  <div class="variant-picker-values">
+                    ${option.values.map(value => `
+                      ${option.name.toLowerCase() === 'color' || option.name.toLowerCase() === 'colour'
+                        ? `<div class="hover-tooltip color-btn" data-option-name="${option.name}" data-option-value="${value}">
+                            <span class="check-color bg-${value.toLowerCase()}"></span>
+                            <span class="tooltip">${value}</span>
+                          </div>`
+                        : `<span class="size-btn" data-option-name="${option.name}" data-option-value="${value}">${value}</span>`
+                      }
+                    `).join('')}
+                  </div>
+                </div>
+              `).join('');
+            } else {
+              variantContainer.innerHTML = '';
+            }
+            
+            // Update product links
+            modal.querySelectorAll('a[href]').forEach(link => {
+              if (link.href.includes('/products/')) {
+                link.href = product.url;
+              }
+            });
+            
+            // Update product ID on buttons
+            modal.querySelector('.add-to-cart-btn').dataset.productId = product.id;
+            modal.querySelector('.buy-now-btn').dataset.productId = product.id;
+            
+            // Initialize swiper
+            if (window.swiper) {
+              window.swiper.destroy();
+            }
+            window.swiper = new Swiper('.tf-single-slide', {
+              slidesPerView: 1,
+              spaceBetween: 0,
+              loop: true,
+              navigation: {
+                nextEl: '.single-slide-next',
+                prevEl: '.single-slide-prev',
+              }
+            });
+          }
+        } catch (error) {
+          console.error('Error loading product data:', error);
+        }
+      });
+    });
     
     // Initialize lazy loading
     if (typeof LazyLoad !== 'undefined') {
@@ -297,6 +596,47 @@ document.addEventListener('DOMContentLoaded', function() {
     if (window.wishlistCompare) {
       window.wishlistCompare.updateButtonsState();
     }
+
+    // Add color variant selection handlers
+    document.querySelectorAll('.list-color-item').forEach(button => {
+      button.addEventListener('click', function() {
+        const optionName = this.dataset.optionName;
+        const optionValue = this.dataset.optionValue;
+        const variantId = this.dataset.variantId;
+        const productCard = this.closest('.card-product');
+        
+        // Update active state
+        productCard.querySelectorAll('.list-color-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        this.classList.add('active');
+        
+        // Update add to cart button
+        const addToCartBtn = productCard.querySelector('.add-to-cart');
+        addToCartBtn.dataset.variantId = variantId;
+        
+        // Find the variant
+        const variant = product.variants.find(v => v.id.toString() === variantId);
+        if (variant) {
+          // Update price
+          const priceContainer = productCard.querySelector('.price-wrap');
+          priceContainer.innerHTML = `
+            <span class="price-new text-primary">${formatMoney(variant.price * 100)}</span>
+            ${variant.compare_at_price > variant.price ? 
+              `<span class="price-old">${formatMoney(variant.compare_at_price * 100)}</span>` : ''}
+          `;
+          
+          // Update availability
+          if (!variant.available) {
+            productCard.classList.add('out-of-stock');
+            productCard.querySelector('.sold-out-badge').style.display = 'block';
+          } else {
+            productCard.classList.remove('out-of-stock');
+            productCard.querySelector('.sold-out-badge').style.display = 'none';
+          }
+        }
+      });
+    });
   }
 
   // Initial update
@@ -306,10 +646,11 @@ document.addEventListener('DOMContentLoaded', function() {
   document.addEventListener('wishlist:updated', updateWishlistDisplay);
 });
 
+// Helper function to format money
 function formatMoney(cents) {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: '{{ shop.currency }}'
-  }).format(cents / 100);
+  }).format(cents);
 }
 </script>
