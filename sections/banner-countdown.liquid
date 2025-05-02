@@ -76,25 +76,25 @@
                 WITH PROMOTE CODE: {{ section.settings.promo_code }}
               </p>
             {%- endif -%}
-            {%- if section.settings.show_countdown and section.settings.end_date != blank -%}
-              {%- assign end_date = section.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
-              <div class="box-countdown d-flex justify-content-center wow fadeInUp">
-                <div class="wg-countdown-2">
-                  <div class="js-countdown" 
-                       data-countdown="{{ end_date }}"
-                       data-labels="Days,Hours,Mins,Secs"></div>
-                </div>
-              </div>
-            {%- endif -%}
-            
-            {%- if section.settings.button_label != blank -%}
-              <div class="box-btn wow fadeInUp">
-                <a href="{{ section.settings.button_link }}" class="tf-btn btn-white hover-primary">
-                  {{ section.settings.button_label }}
-                </a>
-              </div>
-            {%- endif -%}
           </div>
+          {%- if section.settings.show_countdown and section.settings.end_date != blank -%}
+            {%- assign end_date = section.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
+            <div class="box-countdown d-flex justify-content-center wow fadeInUp">
+              <div class="wg-countdown-2">
+                <div class="js-countdown" 
+                     data-countdown="{{ end_date }}"
+                     data-labels="Days,Hours,Mins,Secs"></div>
+              </div>
+            </div>
+          {%- endif -%}
+          
+          {%- if section.settings.button_label != blank -%}
+            <div class="box-btn wow fadeInUp">
+              <a href="{{ section.settings.button_link }}" class="tf-btn btn-white hover-primary">
+                {{ section.settings.button_label }}
+              </a>
+            </div>
+          {%- endif -%}
         </div>
       </div>
     </div>
