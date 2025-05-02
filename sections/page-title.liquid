@@ -1,7 +1,16 @@
 {%- comment -%}Page Title Section{%- endcomment -%}
-<section class="page-title">
+<section class="tf-page-title">
   <div class="container">
-      <h4 class="s-title letter-0 text-center flat-spacing-2">{% if template == 'list-collections' %}Collections{% else %}{{ page_title | default: settings.title }}{% endif %}</h4>
+    <div class="box-title text-center">
+      <h4 class="title">{% if template == 'list-collections' %}Collections{% else %}{{ page_title | default: settings.title }}{% endif %}</h4>
+      <div class="breadcrumb-list">
+        <a class="breadcrumb-item" href="/">Home</a>
+        <div class="breadcrumb-item dot">
+          <span></span>
+        </div>
+        <span class="breadcrumb-item current">{% if template == 'list-collections' %}Collections{% else %}{{ page_title | default: settings.title }}{% endif %}</span>
+      </div>
+    </div>
   </div>
 </section>
 
