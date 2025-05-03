@@ -114,7 +114,10 @@
               <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}"
                   data-variant-id="{{ variant.id }}"
                   data-option-name="{{ option.name }}"
-                  data-option-value="{{ value | escape }}">
+                  data-option-value="{{ value | escape }}"
+                  {%- if variant.featured_image != blank -%}
+                    data-variant-image="{{ variant.featured_image | image_url: width: 400 }}"
+                  {%- endif -%}>
                 <span class="tooltip color-filter">{{ value }}</span>
                 <span class="swatch-value bg-{{ value | handleize }}"></span>
                 {%- if variant.featured_image != blank -%}
@@ -238,7 +241,10 @@
               <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}"
                   data-variant-id="{{ variant.id }}"
                   data-option-name="{{ option.name }}"
-                  data-option-value="{{ value | escape }}">
+                  data-option-value="{{ value | escape }}"
+                  {%- if variant.featured_image != blank -%}
+                    data-variant-image="{{ variant.featured_image | image_url: width: 400 }}"
+                  {%- endif -%}>
                 <span class="tooltip">{{ value }}</span>
                 <span class="swatch-value bg-{{ value | handleize }}"></span>
                 {%- if variant.featured_image != blank -%}
@@ -632,7 +638,10 @@
               <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}"
                   data-variant-id="{{ variant.id }}"
                   data-option-name="{{ option.name }}"
-                  data-option-value="{{ value | escape }}">
+                  data-option-value="{{ value | escape }}"
+                  {%- if variant.featured_image != blank -%}
+                    data-variant-image="{{ variant.featured_image | image_url: width: 400 }}"
+                  {%- endif -%}>
                 <span class="tooltip color-filter">{{ value }}</span>
                 <span class="swatch-value bg-{{ value | handleize }}"></span>
                 {%- if variant.featured_image != blank -%}
@@ -682,57 +691,44 @@ function initializeVariantImageSwitching() {
     let originalHoverDataSrcset = hoverImage ? hoverImage.getAttribute('data-srcset') : '';
 
     swatches.forEach(swatch => {
-      // Store variant image URL in data attribute
-      const variantImage = swatch.querySelector('img');
-      if (variantImage) {
-        const variantImageUrl = variantImage.getAttribute('src');
+      // Store variant image URL in data attribute (now set in HTML)
+      const variantImageUrl = swatch.dataset.variantImage;
+      if (variantImageUrl) {
         swatch.dataset.variantImage = variantImageUrl;
+      } else {
+        // fallback for swatches without data-variant-image
+        const variantImage = swatch.querySelector('img');
+        if (variantImage) {
+          swatch.dataset.variantImage = variantImage.getAttribute('src');
+        }
       }
 
       // Handle hover events
       swatch.addEventListener('mouseenter', function(e) {
         e.preventDefault();
         e.stopPropagation();
+        // Remove active from all swatches in this group
+        swatches.forEach(s => s.classList.remove('active'));
+        // Add active to hovered swatch
+        this.classList.add('active');
+        // Update image
         if (this.dataset.variantImage) {
           updateImage(mainImage, this.dataset.variantImage);
           updateImage(hoverImage, this.dataset.variantImage);
         }
-      });
-
-      swatch.addEventListener('mouseleave', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        if (mainImage) {
-          updateImage(mainImage, originalMainSrc);
-          if (originalMainSrcset) mainImage.setAttribute('srcset', originalMainSrcset);
-          if (originalMainDataSrc) mainImage.setAttribute('data-src', originalMainDataSrc);
-          if (originalMainDataSrcset) mainImage.setAttribute('data-srcset', originalMainDataSrcset);
-        }
-        if (hoverImage) {
-          updateImage(hoverImage, originalHoverSrc);
-          if (originalHoverSrcset) hoverImage.setAttribute('srcset', originalHoverSrcset);
-          if (originalHoverDataSrc) hoverImage.setAttribute('data-src', originalHoverDataSrc);
-          if (originalHoverDataSrcset) hoverImage.setAttribute('data-srcset', originalHoverDataSrcset);
+        // Update Add to Cart button(s) with this swatch's variant ID
+        const variantId = this.dataset.variantId || this.getAttribute('data-variant-id');
+        if (variantId) {
+          card.querySelectorAll('.add-to-cart').forEach(btn => {
+            btn.setAttribute('data-variant-id', variantId);
+          });
         }
       });
 
-      // Handle click events
-      swatch.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        if (this.dataset.variantImage) {
-          originalMainSrc = this.dataset.variantImage;
-          originalHoverSrc = this.dataset.variantImage;
-          originalMainSrcset = this.dataset.variantImage;
-          originalHoverSrcset = this.dataset.variantImage;
-          originalMainDataSrc = this.dataset.variantImage;
-          originalHoverDataSrc = this.dataset.variantImage;
-          originalMainDataSrcset = this.dataset.variantImage;
-          originalHoverDataSrcset = this.dataset.variantImage;
-          updateImage(mainImage, this.dataset.variantImage);
-          updateImage(hoverImage, this.dataset.variantImage);
-        }
-      });
+      // On mouseleave, do nothing (keep active and image as is)
+      // swatch.addEventListener('mouseleave', function(e) {});
+
+      // Click event is not needed for selection
     });
   });
 }
