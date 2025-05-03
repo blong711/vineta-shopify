@@ -624,7 +624,7 @@
     {%- endif -%}
 
     {%- if show_color_swatches and product.variants.size > 1 and product.options contains 'Color' -%}
-      <ul class="list-color-product justify-content-center">
+      <ul class="list-color-product">
         {%- for option in product.options_with_values -%}
           {%- if option.name == 'Color' -%}
             {%- for value in option.values -%}
@@ -654,6 +654,92 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+// Add variant image switching functionality
+function updateImage(img, url) {
+  if (!img) return;
+  img.src = url;
+  img.setAttribute('src', url);
+  if (img.hasAttribute('srcset')) img.setAttribute('srcset', url);
+  if (img.hasAttribute('data-src')) img.setAttribute('data-src', url);
+  if (img.hasAttribute('data-srcset')) img.setAttribute('data-srcset', url);
+  img.classList.remove('lazyload');
+}
+
+function initializeVariantImageSwitching() {
+  document.querySelectorAll('.card-product').forEach(card => {
+    const mainImage = card.querySelector('.img-product');
+    const hoverImage = card.querySelector('.img-hover');
+    const swatches = card.querySelectorAll('.color-swatch');
+    
+    // Store original image URLs
+    let originalMainSrc = mainImage ? mainImage.getAttribute('src') : '';
+    let originalHoverSrc = hoverImage ? hoverImage.getAttribute('src') : '';
+    let originalMainSrcset = mainImage ? mainImage.getAttribute('srcset') : '';
+    let originalHoverSrcset = hoverImage ? hoverImage.getAttribute('srcset') : '';
+    let originalMainDataSrc = mainImage ? mainImage.getAttribute('data-src') : '';
+    let originalHoverDataSrc = hoverImage ? hoverImage.getAttribute('data-src') : '';
+    let originalMainDataSrcset = mainImage ? mainImage.getAttribute('data-srcset') : '';
+    let originalHoverDataSrcset = hoverImage ? hoverImage.getAttribute('data-srcset') : '';
+
+    swatches.forEach(swatch => {
+      // Store variant image URL in data attribute
+      const variantImage = swatch.querySelector('img');
+      if (variantImage) {
+        const variantImageUrl = variantImage.getAttribute('src');
+        swatch.dataset.variantImage = variantImageUrl;
+      }
+
+      // Handle hover events
+      swatch.addEventListener('mouseenter', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (this.dataset.variantImage) {
+          updateImage(mainImage, this.dataset.variantImage);
+          updateImage(hoverImage, this.dataset.variantImage);
+        }
+      });
+
+      swatch.addEventListener('mouseleave', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (mainImage) {
+          updateImage(mainImage, originalMainSrc);
+          if (originalMainSrcset) mainImage.setAttribute('srcset', originalMainSrcset);
+          if (originalMainDataSrc) mainImage.setAttribute('data-src', originalMainDataSrc);
+          if (originalMainDataSrcset) mainImage.setAttribute('data-srcset', originalMainDataSrcset);
+        }
+        if (hoverImage) {
+          updateImage(hoverImage, originalHoverSrc);
+          if (originalHoverSrcset) hoverImage.setAttribute('srcset', originalHoverSrcset);
+          if (originalHoverDataSrc) hoverImage.setAttribute('data-src', originalHoverDataSrc);
+          if (originalHoverDataSrcset) hoverImage.setAttribute('data-srcset', originalHoverDataSrcset);
+        }
+      });
+
+      // Handle click events
+      swatch.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (this.dataset.variantImage) {
+          originalMainSrc = this.dataset.variantImage;
+          originalHoverSrc = this.dataset.variantImage;
+          originalMainSrcset = this.dataset.variantImage;
+          originalHoverSrcset = this.dataset.variantImage;
+          originalMainDataSrc = this.dataset.variantImage;
+          originalHoverDataSrc = this.dataset.variantImage;
+          originalMainDataSrcset = this.dataset.variantImage;
+          originalHoverDataSrcset = this.dataset.variantImage;
+          updateImage(mainImage, this.dataset.variantImage);
+          updateImage(hoverImage, this.dataset.variantImage);
+        }
+      });
+    });
+  });
+}
+
+// Initialize variant image switching
+initializeVariantImageSwitching();
+
 // Clear any existing event listeners on add-to-cart buttons
 document.querySelectorAll('.add-to-cart').forEach(button => {
   // Clone the node to remove all event listeners

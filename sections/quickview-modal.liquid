@@ -26,6 +26,8 @@
                                         <img class="lazyload" 
                                             data-src="{{ media | img_url: 'master' }}"
                                             src="{{ media | img_url: '400x' }}" 
+                                            width="{{ media.width }}"
+                                            height="{{ media.height }}"
                                             alt="{{ media.alt | escape }}">
                                     {%- elsif media.media_type == 'video' -%}
                                         {{ media | video_tag: controls: true, class: 'w-100' }}
@@ -88,7 +90,7 @@
                                 <input class="quantity-product font-4" type="text" name="quantity" value="1" min="1">
                                 <button class="btn-quantity plus-btn">+</button>
                             </div>
-                            <button type="button" class="tf-btn hover-primary add-to-cart-btn" data-product-id="{{ product.id }}">
+                            <button type="button" class="tf-btn hover-primary add-to-cart" data-product-id="{{ product.id }}" data-variant-id="{{ product.variants.first.id }}">
                                 Add to cart
                             </button>
                         </div>
@@ -103,192 +105,329 @@
         </div>
     </div>
 </div>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let currentProduct = {{ product | json }};
-        let selectedVariant = null;
-        let swiper = null;
+document.addEventListener('DOMContentLoaded', function() {
+  let selectedVariant = null;
+  let currentProduct = null;
 
-        // Initialize Swiper
-        function initSwiper() {
-            if (swiper) {
-                swiper.destroy();
-            }
-            swiper = new Swiper('.tf-single-slide', {
-                slidesPerView: 1,
-                spaceBetween: 0,
-                loop: true,
-                navigation: {
-                    nextEl: '.single-slide-next',
-                    prevEl: '.single-slide-prev',
-                },
-                on: {
-                    init: function() {
-                        this.update();
+  // Handle variant selection
+  document.querySelectorAll('.quickview').forEach(button => {
+    button.addEventListener('click', async function(e) {
+      e.preventDefault();
+      const productHandle = this.dataset.productHandle;
+      const productId = this.dataset.productId;
+      
+      try {
+        // Fetch product data
+        const response = await fetch(`/products/${productHandle}.js`);
+        currentProduct = await response.json();
+        
+        // Set initial selected variant
+        selectedVariant = currentProduct.variants[0];
+        
+        // Update modal with product data
+        const modal = document.getElementById('quickView');
+        if (modal) {
+          // Update product title
+          modal.querySelector('.product-info-name').textContent = currentProduct.title;
+          
+          // Update price
+          const priceContainer = modal.querySelector('.product-info-price');
+          if (selectedVariant.compare_at_price > selectedVariant.price) {
+            priceContainer.innerHTML = `
+              <h6 class="price-new price-on-sale">${formatMoney(selectedVariant.price)}</h6>
+              <h6 class="price-old">${formatMoney(selectedVariant.compare_at_price)}</h6>
+            `;
+          } else {
+            priceContainer.innerHTML = `
+              <h6 class="price-new">${formatMoney(selectedVariant.price)}</h6>
+            `;
+          }
+          
+          // Update description
+          modal.querySelector('.text').textContent = currentProduct.description.replace(/<[^>]*>/g, '').split(' ').slice(0, 30).join(' ') + '...';
+          
+          // Update media gallery
+          const swiperWrapper = modal.querySelector('.swiper-wrapper');
+          swiperWrapper.innerHTML = currentProduct.media.map(media => `
+            <div class="swiper-slide" data-media-id="${media.id}">
+              <div class="item">
+                ${media.media_type === 'image' 
+                  ? `<img class="lazyload" data-src="${media.src}" src="${media.src}" alt="${media.alt || currentProduct.title}">`
+                  : `<video controls class="w-100"><source src="${media.sources[0].url}" type="video/mp4"></video>`
+                }
+              </div>
+            </div>
+          `).join('');
+          
+          // Update variant options
+          const variantContainer = modal.querySelector('.tf-product-info-variant');
+          if (currentProduct.variants.length > 1) {
+            variantContainer.innerHTML = currentProduct.options.map(option => `
+              <div class="variant-picker-item variant-${option.name.toLowerCase()}">
+                <div class="variant-picker-label">
+                  ${option.name}:<span class="variant-picker-label-value value-current${option.name.toLowerCase()}">${option.values[0]}</span>
+                </div>
+                <div class="variant-picker-values">
+                  ${option.values.map(value => `
+                    ${option.name.toLowerCase() === 'color' || option.name.toLowerCase() === 'colour'
+                      ? `<div class="hover-tooltip color-btn" data-option-name="${option.name}" data-option-value="${value}">
+                          <span class="check-color bg-${value.toLowerCase()}"></span>
+                          <span class="tooltip">${value}</span>
+                        </div>`
+                      : `<span class="size-btn" data-option-name="${option.name}" data-option-value="${value}">${value}</span>`
                     }
+                  `).join('')}
+                </div>
+              </div>
+            `).join('');
+
+            // Add variant selection event listeners
+            variantContainer.querySelectorAll('.color-btn, .size-btn').forEach(button => {
+              button.addEventListener('click', function() {
+                const optionName = this.dataset.optionName;
+                const optionValue = this.dataset.optionValue;
+                
+                // Update selected value display
+                const valueDisplay = variantContainer.querySelector(`.value-current${optionName.toLowerCase()}`);
+                if (valueDisplay) {
+                  valueDisplay.textContent = optionValue;
                 }
-            });
-        }
-
-        // Handle quantity buttons
-        const quantityInput = document.querySelector('.quantity-product');
-        const minusBtn = document.querySelector('.minus-btn');
-        const plusBtn = document.querySelector('.plus-btn');
-
-        if (quantityInput && minusBtn && plusBtn) {
-            minusBtn.addEventListener('click', () => {
-                const currentValue = parseInt(quantityInput.value);
-                if (currentValue > 1) {
-                    quantityInput.value = currentValue - 1;
-                }
-            });
-
-            plusBtn.addEventListener('click', () => {
-                const currentValue = parseInt(quantityInput.value);
-                quantityInput.value = currentValue + 1;
-            });
-        }
-
-        // Handle variant selection
-        document.querySelectorAll('.variant-picker-values .color-btn, .variant-picker-values .size-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const parent = this.closest('.variant-picker-values');
-                parent.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
+                
+                // Update active state
+                variantContainer.querySelectorAll(`[data-option-name="${optionName}"]`).forEach(btn => {
+                  btn.classList.remove('active');
+                });
                 this.classList.add('active');
                 
-                const labelValue = this.closest('.variant-picker-item').querySelector('.variant-picker-label-value');
-                if (labelValue) {
-                    labelValue.textContent = this.textContent.trim();
-                }
-
-                // Update selected variant
-                updateSelectedVariant();
-            });
-        });
-
-        // Update selected variant
-        function updateSelectedVariant() {
-            const selectedOptions = {};
-            document.querySelectorAll('.variant-picker-item').forEach(item => {
-                const optionName = item.querySelector('.variant-picker-label').textContent.replace(':', '');
-                const selectedValue = item.querySelector('.active').dataset.optionValue;
-                selectedOptions[optionName] = selectedValue;
-            });
-
-            selectedVariant = currentProduct.variants.find(variant => {
-                return Object.entries(selectedOptions).every(([option, value]) => {
-                    return variant[option.toLowerCase()] === value;
+                // Find matching variant
+                const selectedOptions = {};
+                variantContainer.querySelectorAll('.variant-picker-item').forEach(item => {
+                  const name = item.querySelector('.variant-picker-label').textContent.split(':')[0];
+                  const value = item.querySelector('.active').dataset.optionValue;
+                  selectedOptions[name] = value;
                 });
+                
+                selectedVariant = currentProduct.variants.find(variant => {
+                  return Object.keys(selectedOptions).every(option => 
+                    variant[`option${currentProduct.options.findIndex(o => o.name === option) + 1}`] === selectedOptions[option]
+                  );
+                });
+                
+                // Update price
+                if (selectedVariant) {
+                  if (selectedVariant.compare_at_price > selectedVariant.price) {
+                    priceContainer.innerHTML = `
+                      <h6 class="price-new price-on-sale">${formatMoney(selectedVariant.price)}</h6>
+                      <h6 class="price-old">${formatMoney(selectedVariant.compare_at_price)}</h6>
+                    `;
+                  } else {
+                    priceContainer.innerHTML = `
+                      <h6 class="price-new">${formatMoney(selectedVariant.price)}</h6>
+                    `;
+                  }
+                }
+              });
             });
-
-            if (selectedVariant) {
-                updatePrice(selectedVariant);
-                updateAddToCartButton(selectedVariant);
+          } else {
+            variantContainer.innerHTML = '';
+          }
+          
+          // Update product links
+          modal.querySelectorAll('a[href]').forEach(link => {
+            if (link.href.includes('/products/')) {
+              link.href = currentProduct.url;
             }
+          });
+          
+          // Initialize swiper
+          if (window.swiper) {
+            window.swiper.destroy();
+          }
+          window.swiper = new Swiper('.tf-single-slide', {
+            slidesPerView: 1,
+            spaceBetween: 0,
+            loop: true,
+            navigation: {
+              nextEl: '.single-slide-next',
+              prevEl: '.single-slide-prev',
+            }
+          });
         }
-
-        // Update price display
-        function updatePrice(variant) {
-            const priceContainer = document.querySelector('.product-info-price');
-            if (variant.compare_at_price > variant.price) {
-                priceContainer.innerHTML = `
-                    <h6 class="price-new price-on-sale">${formatMoney(variant.price)}</h6>
-                    <h6 class="price-old">${formatMoney(variant.compare_at_price)}</h6>
-                `;
-            } else {
-                priceContainer.innerHTML = `
-                    <h6 class="price-new">${formatMoney(variant.price)}</h6>
-                `;
-            }
-        }
-
-        // Format money
-        function formatMoney(cents) {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: '{{ shop.currency }}'
-            }).format(cents / 100);
-        }
-
-        // Update add to cart button state
-        function updateAddToCartButton(variant) {
-            const addToCartBtn = document.querySelector('.add-to-cart-btn');
-            const buyNowBtn = document.querySelector('.buy-now-btn');
-            
-            if (variant.available) {
-                addToCartBtn.disabled = false;
-                buyNowBtn.disabled = false;
-            } else {
-                addToCartBtn.disabled = true;
-                buyNowBtn.disabled = true;
-            }
-        }
-
-        // Handle add to cart
-        document.querySelector('.add-to-cart-btn').addEventListener('click', async function() {
-            if (!selectedVariant) return;
-            
-            const quantity = parseInt(quantityInput.value);
-            const formData = {
-                items: [{
-                    id: selectedVariant.id,
-                    quantity: quantity
-                }]
-            };
-
-            try {
-                const response = await fetch('/cart/add.js', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                if (response.ok) {
-                    // Trigger cart update event
-                    document.dispatchEvent(new CustomEvent('cart:refresh'));
-                    // Close modal
-                    bootstrap.Modal.getInstance(document.getElementById('quickView')).hide();
-                }
-            } catch (error) {
-                console.error('Error adding to cart:', error);
-            }
-        });
-
-        // Handle buy now
-        document.querySelector('.buy-now-btn').addEventListener('click', async function() {
-            if (!selectedVariant) return;
-            
-            const quantity = parseInt(quantityInput.value);
-            const formData = {
-                items: [{
-                    id: selectedVariant.id,
-                    quantity: quantity
-                }]
-            };
-
-            try {
-                const response = await fetch('/cart/add.js', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                if (response.ok) {
-                    window.location.href = '/checkout';
-                }
-            } catch (error) {
-                console.error('Error adding to cart:', error);
-            }
-        });
-
-        // Initialize
-        initSwiper();
-        updateSelectedVariant();
+      } catch (error) {
+        console.error('Error loading product data:', error);
+      }
     });
+  });
+
+  // Handle quantity buttons
+  document.querySelectorAll('.quickview-modal .btn-quantity').forEach(button => {
+    button.addEventListener('click', function() {
+      const input = this.parentElement.querySelector('.quantity-product');
+      const currentValue = parseInt(input.value);
+      
+      if (this.classList.contains('minus-btn')) {
+        if (currentValue > 1) {
+          input.value = currentValue - 1;
+        }
+      } else if (this.classList.contains('plus-btn')) {
+        input.value = currentValue + 1;
+      }
+    });
+  });
+
+  // Handle add to cart
+  document.querySelectorAll('.quickview-modal .add-to-cart').forEach(button => {
+    button.addEventListener('click', async function(e) {
+      e.preventDefault();
+      
+      if (!selectedVariant) {
+        alert('Please select a variant');
+        return;
+      }
+      
+      const quantity = parseInt(document.querySelector('.quickview-modal .quantity-product').value);
+      
+      try {
+        // Show loading state
+        this.classList.add('loading');
+        
+        // Add item to cart
+        if (window.cart) {
+          await window.cart.updateQuantity(selectedVariant.id, quantity, 'add');
+          
+          // Fetch updated cart data
+          const response = await fetch('/cart.js');
+          const cartData = await response.json();
+          
+          // Update cart drawer
+          const cartDrawer = document.getElementById('shoppingCart');
+          if (cartDrawer) {
+            const itemsContainer = cartDrawer.querySelector('.tf-mini-cart-items');
+            if (itemsContainer) {
+              // Clear existing items
+              itemsContainer.innerHTML = '';
+              
+              // Add all items from cart
+              cartData.items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'tf-mini-cart-item';
+                itemElement.innerHTML = `
+                  <div class="tf-mini-cart-image">
+                    <a href="${item.url}">
+                      <img class="lazyload" data-src="${item.image}" src="${item.image}" alt="${item.title}" loading="lazy">
+                    </a>
+                  </div>
+                  <div class="tf-mini-cart-info">
+                    <div class="d-flex justify-content-between">
+                      <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
+                      <i class="icon icon-close remove" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
+                    </div>
+                    <div class="d-flex gap-10">
+                      <div class="text-xs">${item.variant_title || ''}</div>
+                      <a href="#" class="link edit"><i class="icon-pen"></i></a>
+                    </div>
+                    <div class="tf-mini-cart-item_price">
+                      <p class="price-wrap text-sm fw-medium">
+                        <span class="new-price text-primary">${formatMoney(item.final_price)}</span>
+                      </p>
+                    </div>
+                    <div class="tf-mini-cart-item_quantity">
+                      <div class="wg-quantity small">
+                        <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
+                        <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
+                        <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
+                      </div>
+                    </div>
+                  </div>
+                `;
+                itemsContainer.appendChild(itemElement);
+              });
+              
+              // Update cart total
+              const totalElement = cartDrawer.querySelector('.cart-total-price');
+              if (totalElement) {
+                totalElement.textContent = formatMoney(cartData.total_price);
+              }
+              
+              // Update header cart count
+              const headerCount = document.querySelector('.count-box');
+              if (headerCount) {
+                headerCount.textContent = cartData.item_count;
+              }
+            }
+          }
+          
+          // Close quickview modal
+          const modal = document.getElementById('quickView');
+          if (modal) {
+            const bsModal = bootstrap.Modal.getInstance(modal);
+            if (bsModal) {
+              bsModal.hide();
+            }
+          }
+          
+          // Show cart drawer
+          const cartDrawer = document.getElementById('shoppingCart');
+          if (cartDrawer) {
+            const bsOffcanvas = bootstrap.Offcanvas.getInstance(cartDrawer);
+            if (bsOffcanvas) {
+              bsOffcanvas.show();
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error adding item to cart:', error);
+        alert('Failed to add item to cart. Please try again.');
+      } finally {
+        // Remove loading state
+        this.classList.remove('loading');
+      }
+    });
+  });
+
+  // Handle buy now button
+  document.querySelectorAll('.quickview-modal .buy-now-btn').forEach(button => {
+    button.addEventListener('click', async function(e) {
+      e.preventDefault();
+      
+      if (!selectedVariant) {
+        alert('Please select a variant');
+        return;
+      }
+      
+      const quantity = parseInt(document.querySelector('.quickview-modal .quantity-product').value);
+      
+      try {
+        // Show loading state
+        this.classList.add('loading');
+        
+        // Add item to cart
+        if (window.cart) {
+          await window.cart.updateQuantity(selectedVariant.id, quantity, 'add');
+          
+          // Redirect to checkout
+          window.location.href = '/checkout';
+        }
+      } catch (error) {
+        console.error('Error adding item to cart:', error);
+        alert('Failed to add item to cart. Please try again.');
+      } finally {
+        // Remove loading state
+        this.classList.remove('loading');
+      }
+    });
+  });
+});
+
+// Helper function to format money
+function formatMoney(cents) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: '{{ shop.currency }}'
+  }).format(cents / 100);
+}
 </script>
 
 {% schema %}    
