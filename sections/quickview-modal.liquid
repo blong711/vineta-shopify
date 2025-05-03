@@ -291,16 +291,21 @@ document.addEventListener('DOMContentLoaded', function() {
       // Find matching variant
       const selectedOptions = {};
       variantContainer.querySelectorAll('.variant-picker-item').forEach(item => {
-        const name = item.querySelector('.variant-picker-label').textContent.split(':')[0];
-        const value = item.querySelector('.active').dataset.optionValue;
-        selectedOptions[name] = value;
+        const name = item.querySelector('.variant-picker-label').textContent.split(':')[0].trim();
+        const activeBtn = item.querySelector('.active');
+        if (activeBtn) {
+          const value = activeBtn.dataset.optionValue;
+          selectedOptions[name] = value;
+        }
       });
+      console.log('Selected options:', selectedOptions);
       
       selectedVariant = currentProduct.variants.find(variant => {
         return Object.keys(selectedOptions).every(option => 
           variant[`option${currentProduct.options.findIndex(o => o.name === option) + 1}`] === selectedOptions[option]
         );
       });
+      console.log('Selected variant:', selectedVariant);
       
       // Update price
       if (selectedVariant) {
@@ -318,16 +323,58 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Update product image if variant has an image
         if (selectedVariant.featured_image) {
+          console.log('Variant has featured image:', selectedVariant.featured_image);
           const swiperWrapper = modal.querySelector('.swiper-wrapper');
-          const firstSlide = swiperWrapper.querySelector('.swiper-slide');
-          if (firstSlide) {
-            const img = firstSlide.querySelector('img');
-            if (img) {
-              img.setAttribute('data-src', selectedVariant.featured_image.src);
-              img.setAttribute('src', selectedVariant.featured_image.src);
-              img.setAttribute('alt', selectedVariant.featured_image.alt || currentProduct.title);
+          const slides = swiperWrapper.querySelectorAll('.swiper-slide');
+          
+          console.log('Total slides:', slides.length);
+          
+          // Find the index of the slide with the variant image
+          let variantSlideIndex = -1;
+          slides.forEach((slide, index) => {
+            const mediaId = slide.dataset.mediaId;
+            console.log('Checking slide', index, 'with mediaId:', mediaId);
+            const matchingMedia = currentProduct.media.find(m => m.id === parseInt(mediaId));
+            console.log('Matching media:', matchingMedia);
+            if (matchingMedia?.id === selectedVariant.featured_image.id) {
+              variantSlideIndex = index;
+              console.log('Found matching slide at index:', index);
+            }
+          });
+
+          console.log('Final variant slide index:', variantSlideIndex);
+
+          if (variantSlideIndex !== -1) {
+            // Update swiper to show the variant image
+            if (window.swiper) {
+              console.log('Sliding to index:', variantSlideIndex);
+              window.swiper.slideTo(variantSlideIndex, 300);
+            } else {
+              console.log('Swiper not found');
+            }
+          } else {
+            console.log('Variant image not found in slides, updating first slide');
+            // If variant image not found, update the first slide
+            const firstSlide = slides[0];
+            if (firstSlide) {
+              const images = firstSlide.querySelectorAll('img');
+              images.forEach(img => {
+                img.setAttribute('data-src', selectedVariant.featured_image.src);
+                img.setAttribute('src', selectedVariant.featured_image.src);
+                img.setAttribute('alt', selectedVariant.featured_image.alt || currentProduct.title);
+              });
+              
+              // Slide to first slide
+              if (window.swiper) {
+                console.log('Sliding to first slide');
+                window.swiper.slideTo(0, 300);
+              } else {
+                console.log('Swiper not found');
+              }
             }
           }
+        } else {
+          console.log('Variant has no featured image');
         }
       }
     });
