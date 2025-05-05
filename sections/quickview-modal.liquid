@@ -192,6 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Update modal content
   function updateModalContent(modal) {
+    console.log('updateModalContent called');
     // Update product title
     modal.querySelector('.product-info-name').textContent = currentProduct.title;
     
@@ -231,12 +232,89 @@ document.addEventListener('DOMContentLoaded', function() {
     quickviewSwiper = new Swiper('.tf-single-slide', {
       slidesPerView: 1,
       spaceBetween: 0,
-      loop: true,
+      loop: false,
       navigation: {
         nextEl: '.single-slide-next',
         prevEl: '.single-slide-prev',
       }
     });
+    console.log('Swiper initialized:', quickviewSwiper);
+    quickviewSwiper.on('slideChange', function () {
+      console.log('Swiper slideChange event fired');
+      const modal = document.getElementById('quickView');
+      const activeSlide = modal.querySelector('.swiper-slide.swiper-slide-active');
+      if (!activeSlide) return;
+      const mediaId = parseInt(activeSlide.getAttribute('data-media-id'));
+      console.log('Active slide mediaId:', mediaId);
+      // Log all product media and all variant featured_images
+      console.log('currentProduct.media:', currentProduct.media);
+      console.log('All variant featured_images:', currentProduct.variants.map(v => v.featured_image));
+      // Try to match by id first, then by src
+      let matchingVariant = currentProduct.variants.find(v => v.featured_image && v.featured_image.id == mediaId);
+      if (!matchingVariant) {
+        // Fallback: match by image src
+        const activeSlideImg = activeSlide.querySelector('img');
+        if (activeSlideImg) {
+          const slideSrc = activeSlideImg.getAttribute('src');
+          matchingVariant = currentProduct.variants.find(
+            v => v.featured_image && v.featured_image.src === slideSrc
+          );
+          if (matchingVariant) {
+            console.log('Found matching variant by src:', matchingVariant);
+          }
+        }
+      }
+      console.log('matchingVariant:', matchingVariant);
+      if (!matchingVariant) {
+        console.log('No matching variant for mediaId:', mediaId);
+      }
+      if (matchingVariant) {
+        selectedVariant = matchingVariant;
+        // Update only the color/image option in the variant picker UI
+        const variantContainer = modal.querySelector('.tf-product-info-variant');
+        if (variantContainer) {
+          // Find the color option index
+          const colorOptionIndex = currentProduct.options.findIndex(
+            o => o.name.toLowerCase() === 'color' || o.name.toLowerCase() === 'colour'
+          );
+          if (colorOptionIndex !== -1) {
+            const colorOption = currentProduct.options[colorOptionIndex];
+            const colorValue = matchingVariant[`option${colorOptionIndex + 1}`];
+            variantContainer.querySelectorAll(`[data-option-name="${colorOption.name}"]`).forEach(btn => {
+              if (
+                btn.dataset.optionValue &&
+                btn.dataset.optionValue.toLowerCase().trim() === String(colorValue).toLowerCase().trim()
+              ) {
+                btn.classList.add('active');
+                const label = variantContainer.querySelector(`.value-current${colorOption.name.toLowerCase()}`);
+                if (label) label.textContent = colorValue;
+              } else {
+                btn.classList.remove('active');
+              }
+            });
+          }
+        }
+        // Update price and add-to-cart button
+        const priceContainer = modal.querySelector('.product-info-price');
+        if (priceContainer) {
+          if (selectedVariant.compare_at_price > selectedVariant.price) {
+            priceContainer.innerHTML = `
+              <h6 class="price-new price-on-sale">${formatMoney(selectedVariant.price)}</h6>
+              <h6 class="price-old">${formatMoney(selectedVariant.compare_at_price)}</h6>
+            `;
+          } else {
+            priceContainer.innerHTML = `
+              <h6 class="price-new">${formatMoney(selectedVariant.price)}</h6>
+            `;
+          }
+        }
+        const addToCartBtn = modal.querySelector('.add-to-cart');
+        if (addToCartBtn) {
+          addToCartBtn.dataset.variantId = selectedVariant.id;
+        }
+      }
+    });
+    console.log('slideChange event handler attached');
     
     // Update variant options
     const variantContainer = modal.querySelector('.tf-product-info-variant');
@@ -251,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="variant-picker-item variant-${option.name.toLowerCase()}">
           <div class="variant-picker-label">
             <div>
-              ${option.name}:<span class="variant-picker-label-value value-current${option.name.toLowerCase()}">${option.values[0]}</span>
+              ${option.name}:<span class="variant-picker-label-value value-current${option.name.toLowerCase()}">{{ option.values[0] }}</span>
             </div>
           </div>
           <div class="variant-picker-values">
