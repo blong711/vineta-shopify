@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </li>
             <li class="compare">
               <a href="javascript:void(0);" 
-                 class="box-icon hover-tooltip" 
+                 class="box-icon hover-tooltip tooltip-left" 
                  data-compare 
                  data-id="${product.id}" 
                  data-action="add"
@@ -953,54 +953,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add color variant selection handlers
     document.querySelectorAll('.list-color-item').forEach(button => {
-      // Handle hover events
-      button.addEventListener('mouseenter', function() {
-        const variantId = this.dataset.variantId;
-        const productCard = this.closest('.card-product');
-        const productId = productCard.dataset.productId;
-        const mainImage = productCard.querySelector('.img-product');
-        const hoverImage = productCard.querySelector('.img-hover');
-        
-        // Find the product and variant from the sorted products array
-        const product = sortedProducts.find(p => p.id.toString() === productId);
-        if (product) {
-          const variant = product.variants.find(v => v.id.toString() === variantId);
-          if (variant && variant.featured_image) {
-            // Store original image sources
-            if (!mainImage.dataset.originalSrc) {
-              mainImage.dataset.originalSrc = mainImage.src;
-            }
-            if (!hoverImage.dataset.originalSrc) {
-              hoverImage.dataset.originalSrc = hoverImage.src;
-            }
-            
-            // Update images
-            mainImage.src = variant.featured_image.src;
-            if (hoverImage) {
-              hoverImage.src = variant.featured_image.src;
-            }
-          }
-        }
-      });
-
-      button.addEventListener('mouseleave', function() {
-        const productCard = this.closest('.card-product');
-        const mainImage = productCard.querySelector('.img-product');
-        const hoverImage = productCard.querySelector('.img-hover');
-        
-        // Restore original images
-        if (mainImage.dataset.originalSrc) {
-          mainImage.src = mainImage.dataset.originalSrc;
-        }
-        if (hoverImage && hoverImage.dataset.originalSrc) {
-          hoverImage.src = hoverImage.dataset.originalSrc;
-        }
-      });
-
-      // Handle click events
       button.addEventListener('click', function() {
-        const optionName = this.dataset.optionName;
-        const optionValue = this.dataset.optionValue;
         const variantId = this.dataset.variantId;
         const productCard = this.closest('.card-product');
         const productId = productCard.dataset.productId;
@@ -1011,52 +964,35 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         this.classList.add('active');
         
-        // Update add to cart button
-        const addToCartBtn = productCard.querySelector('.add-to-cart');
-        addToCartBtn.dataset.variantId = variantId;
-        
         // Find the product and variant from the sorted products array
         const product = sortedProducts.find(p => p.id.toString() === productId);
         if (product) {
           const variant = product.variants.find(v => v.id.toString() === variantId);
           if (variant) {
-            // Update price
-            const priceContainer = productCard.querySelector('.price-wrap');
-            priceContainer.innerHTML = `
-              <span class="price-new text-primary">${formatMoney(variant.price * 100)}</span>
-              ${variant.compare_at_price > variant.price ? 
-                `<span class="price-old">${formatMoney(variant.compare_at_price * 100)}</span>` : ''}
-            `;
-            
-            // Update availability
-            if (!variant.available) {
-              productCard.classList.add('out-of-stock');
-              productCard.querySelector('.sold-out-badge').style.display = 'block';
-            } else {
-              productCard.classList.remove('out-of-stock');
-              productCard.querySelector('.sold-out-badge').style.display = 'none';
-            }
-
-            // Update product images
-            const mainImage = productCard.querySelector('.img-product');
-            const hoverImage = productCard.querySelector('.img-hover');
-            
-            if (variant.featured_image) {
-              // Store original images if not already stored
-              if (!mainImage.dataset.originalSrc) {
-                mainImage.dataset.originalSrc = mainImage.src;
-              }
-              if (!hoverImage.dataset.originalSrc) {
-                hoverImage.dataset.originalSrc = hoverImage.src;
-              }
-              
-              // Update images
-              mainImage.src = variant.featured_image.src;
-              if (hoverImage) {
-                hoverImage.src = variant.featured_image.src;
-              }
+            // Update compare button with current variant data
+            const compareBtn = productCard.querySelector('[data-compare]');
+            if (compareBtn) {
+              compareBtn.dataset.variantId = variantId;
+              compareBtn.dataset.variantImage = variant.featured_image ? variant.featured_image.src : product.featured_image.src;
+              compareBtn.dataset.variantTitle = variant.title;
             }
           }
+        }
+      });
+    });
+
+    // Add compare button click handlers
+    document.querySelectorAll('[data-compare]').forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const productId = this.dataset.id;
+        const action = this.dataset.action;
+
+        if (window.wishlistCompare) {
+          window.wishlistCompare.handleCompareClick({
+            productId,
+            action
+          });
         }
       });
     });
