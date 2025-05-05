@@ -1,159 +1,6 @@
 {%- comment -%}Compare Page Section{%- endcomment -%}
-<style>
-.tf-compare-table {
-    width: 100%;
-    overflow-x: auto;
-}
 
-.tf-compare-row {
-    display: flex;
-    border-bottom: 1px solid #eee;
-    min-width: fit-content;
-}
-
-.tf-compare-grid {
-    border-bottom: none;
-}
-
-.tf-compare-col {
-    width: 300px;
-    flex: 0 0 300px;
-    padding: 15px;
-    position: relative;
-}
-
-.tf-compare-col.d-md-block {
-    width: 150px;
-    flex: 0 0 150px;
-}
-
-.tf-compare-item {
-    position: relative;
-    text-align: center;
-    padding: 15px;
-}
-
-.tf-compare-image {
-    display: block;
-    margin-bottom: 15px;
-    width: 100%;
-    height: 300px;
-    background: #f8f8f8;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.tf-compare-image img {
-    max-width: 100%;
-    height: auto;
-    object-fit: contain;
-}
-
-.tf-compare-item .tf-compare-remove .tf-btn-icon {
-    position: absolute;
-    z-index: 5;
-    top: 12px;
-    right: 12px;
-    width: 48px;
-    height: 48px;
-    border: 1px solid var(--line);
-    background-color: var(--white);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    color: #000;
-    opacity: 1;
-    cursor: pointer;
-    padding: 0;
-}
-
-.tf-compare-btn {
-    margin-top: 15px;
-}
-
-.tf-compare-field {
-    display: flex;
-    align-items: center;
-    height: 100%;
-}
-
-.tf-compare-stock {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.tf-compare-stock .icon {
-    display: flex;
-    align-items: center;
-}
-
-.tf-compare-value {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-}
-
-.tf-compare-title {
-    display: block;
-    margin-bottom: 10px;
-}
-
-.price-wrap {
-    margin-bottom: 15px;
-}
-
-.price-old {
-    text-decoration: line-through;
-    margin-left: 8px;
-    opacity: 0.7;
-}
-
-.tf-btn-icon.line {
-    position: absolute;
-    z-index: 5;
-    top: 12px;
-    right: 12px;
-    width: 48px;
-    height: 48px;
-    border: 1px solid #eee;
-    background-color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    color: #000;
-    opacity: 1;
-    cursor: pointer;
-    padding: 0;
-    transition: all 0.3s ease;
-}
-
-.tf-btn-icon.line:hover {
-    border-color: #000;
-    background-color: #fff;   
-    color: #fff;
-}
-
-@media (max-width: 767px) {
-    .tf-compare-col {
-        width: 250px;
-        flex: 0 0 250px;
-    }
-
-    .tf-compare-image {
-        height: 250px;
-    }
-}
-</style>
-
-<section class="flat-spacing-15 pt-0">
+<section class="flat-spacing-13">
     <div class="container">
         <div class="tf-compare-table" id="compareTable">
             <div id="compareContent">
@@ -198,13 +45,11 @@
                         </div>
                     </div>
                     <div class="tf-compare-remove">
-                        <button type="button" 
-                            class="tf-btn-icon line d-inline-flex" 
-                            data-compare 
-                            data-id="{{ product.id }}" 
-                            data-action="remove">
+                        <span class="tf-btn-icon line d-inline-flex" data-compare 
+                        data-id="{{ product.id }}" 
+                        data-action="remove">
                             <i class="icon-close"></i>
-                        </button>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -258,16 +103,24 @@
         {% for product in collections.all.products %}
             <div class="tf-compare-col tf-compare-value text-center" data-product-id="{{ product.id }}">
                 <p class="text-sm">
-                    {% assign colors = '' %}
-                    {% for variant in product.variants %}
-                        {% if variant.option1 contains 'Color' %}
-                            {% assign colors = colors | append: variant.option1 %}
-                            {% unless forloop.last %}
-                                {% assign colors = colors | append: ', ' %}
-                            {% endunless %}
-                        {% endif %}
-                    {% endfor %}
-                    {{ colors | default: 'N/A' }}
+                    {%- assign color_option_index = nil -%}
+                    {%- for option in product.options_with_values -%}
+                        {%- if option.name == 'Color' or option.name == 'Colour' -%}
+                            {%- assign color_option_index = forloop.index0 -%}
+                        {%- endif -%}
+                    {%- endfor -%}
+                    {%- assign color_values = '' -%}
+                    {%- if color_option_index != nil -%}
+                        {%- for variant in product.variants -%}
+                            {%- assign color = variant.options[color_option_index] -%}
+                            {%- unless color_values contains color -%}
+                                {%- assign color_values = color_values | append: color | append: ', ' -%}
+                            {%- endunless -%}
+                        {%- endfor -%}
+                        {{ color_values | remove_last: ', ' | default: 'N/A' }}
+                    {%- else -%}
+                        N/A
+                    {%- endif -%}
                 </p>
             </div>
         {% endfor %}

@@ -23303,7 +23303,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .tf-compare-table {
   border: 1px solid var(--line);
-  border-radius: 2.5px;
+  border-radius: 16px;
   overflow-x: scroll;
 }
 .tf-compare-table::-webkit-scrollbar {
@@ -23320,6 +23320,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 }
 
 .tf-compare-col {
+  max-width: 240px;
   min-width: 240px;
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
