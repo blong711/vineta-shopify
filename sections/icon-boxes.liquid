@@ -167,6 +167,9 @@
   
   <div class="{% if section.settings.layout == 'home-electronic' %}line-top flat-spacing-7{% elsif section.settings.layout == 'bicycle' %}flat-spacing-2{% elsif section.settings.layout == 'phonecase' %}bg-white mx_40 my_20 radius-16 flat-iconbox line-2{% else %}line-top flat-spacing-5{% endif %}">
       <div class="{% if section.settings.layout == 'phonecase' %}container-5{% else %}container{% endif %}">
+          {% if section.settings.layout == 'default' %}
+              <div class="mw-1 m-auto">
+          {% endif %}
           <div dir="ltr" class="swiper tf-swiper {% if section.settings.layout == 'home-electronic' %}tf-sw-iconbox-row{% endif %}" data-swiper='{% if section.settings.layout == "phonecase" %}{
               "slidesPerView": 1,
               "spaceBetween": 12,
@@ -200,8 +203,8 @@
                       "slidesPerGroup": {% if section.settings.layout == 'bicycle' %}1{% else %}2{% endif %}
                   },
                   "1200": { 
-                      "slidesPerView": {% if section.settings.layout == 'bicycle' %}3{% elsif section.settings.layout == 'home-electronic' %}4{% else %}{{ section.settings.slides_per_view_desktop }}{% endif %},
-                      "spaceBetween": {% if section.settings.layout == 'bicycle' %}24{% elsif section.settings.layout == 'home-electronic' %}59{% else %}{{ section.settings.space_between }}{% endif %},
+                      "slidesPerView": {% if section.settings.layout == 'bicycle' %}3{% elsif section.settings.layout == 'home-electronic' %}4{% else %}4{% endif %},
+                      "spaceBetween": {% if section.settings.layout == 'bicycle' %}24{% elsif section.settings.layout == 'home-electronic' %}59{% else %}42{% endif %},
                       "slidesPerGroup": {% if section.settings.layout == 'bicycle' %}1{% else %}2{% endif %}
                   }
               }
@@ -251,5 +254,8 @@
                   <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
               {% endif %}
           </div>
+          {% if section.settings.layout == 'default' %}
+              </div>
+          {% endif %}
       </div>
   </div> 

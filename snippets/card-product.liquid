@@ -42,6 +42,12 @@
       </div>
     {%- endif -%}
 
+    {%- if product.tags contains 'countdown' -%}
+      <div class="countdown-box">
+        <div class="js-countdown" data-timer="{{ countdown_timer | default: '46556' }}" data-labels="D  :,H  :,M  :,S"></div>
+      </div>
+    {%- endif -%}
+
     <ul class="list-product-btn">
       <li>
         <a href="javascript:void(0);" 
@@ -551,6 +557,12 @@
     {%- if product.tags contains 'trending' -%}
       <div class="on-sale-wrap">
         <span class="on-sale-item trending">Trending</span>
+      </div>
+    {%- endif -%}
+
+    {%- if product.tags contains 'countdown' -%}
+      <div class="countdown-box">
+        <div class="js-countdown" data-timer="{{ countdown_timer | default: '46556' }}" data-labels="D  :,H  :,M  :,S"></div>
       </div>
     {%- endif -%}
 
