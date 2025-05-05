@@ -18,12 +18,15 @@
                 <div dir="ltr" class="swiper tf-product-media-thumbs other-image-zoom" data-preview="4" data-direction="vertical">
                   <div class="swiper-wrapper stagger-wrap">
                     {% for image in product.images %}
-                      <div class="swiper-slide stagger-item" data-color="{{ image.alt | default: 'default' }}">
+                      {% assign matched_variant = product.variants | where: 'featured_image', image | first %}
+                      <div class="swiper-slide stagger-item" data-color="{% if matched_variant %}{{ matched_variant.option1 }}{% else %}{{ image.alt | default: 'default' }}{% endif %}">
                         <div class="item">
                           <img class="lazyload"
                             data-src="{{ image | image_url: width: 800 }}"
                             src="{{ image | image_url: width: 400 }}"
-                            alt="{{ image.alt | default: product.title }}">
+                            alt="{{ image.alt | default: product.title }}"
+                            width="400"
+                            height="600">
                         </div>
                       </div>
                     {% endfor %}
@@ -33,13 +36,16 @@
                   <div dir="ltr" class="swiper tf-product-media-main" id="gallery-swiper-started">
                     <div class="swiper-wrapper">
                       {% for image in product.images %}
-                        <div class="swiper-slide" data-color="{{ image.alt | default: 'default' }}">
+                        {% assign matched_variant = product.variants | where: 'featured_image', image | first %}
+                        <div class="swiper-slide" data-color="{% if matched_variant %}{{ matched_variant.option1 }}{% else %}{{ image.alt | default: 'default' }}{% endif %}">
                           <a href="{{ image | image_url: width: 1200 }}" target="_blank" class="item" data-pswp-width="552px" data-pswp-height="827px">
                             <img class="tf-image-zoom lazyload"
                               data-zoom="{{ image | image_url: width: 1200 }}"
                               data-src="{{ image | image_url: width: 800 }}"
                               src="{{ image | image_url: width: 400 }}"
-                              alt="{{ image.alt | default: product.title }}">
+                              alt="{{ image.alt | default: product.title }}"
+                              width="400"
+                              height="600">
                           </a>
                         </div>
                       {% endfor %}
@@ -459,7 +465,11 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM Content Loaded - Initializing product page');
+  
   {% if section.settings.layout == 'default' %}
+    console.log('Initializing default layout with Swiper');
+    
     // Default layout with Swiper
     const galleryThumbs = new Swiper('.tf-product-media-thumbs', {
       direction: 'vertical',
@@ -490,8 +500,61 @@ document.addEventListener('DOMContentLoaded', function() {
       navigation: {
         nextEl: '.thumbs-next',
         prevEl: '.thumbs-prev',
+      },
+      on: {
+        slideChange: function() {
+          console.log('Slide changed to index:', this.activeIndex);
+          const activeSlide = this.slides[this.activeIndex];
+          const color = activeSlide.getAttribute('data-color');
+          console.log('Active slide color:', color);
+          
+          // Update color swatch
+          document.querySelectorAll('.color-btn').forEach(btn => {
+            if (
+              btn.getAttribute('data-scroll') &&
+              color &&
+              btn.getAttribute('data-scroll').toLowerCase() === color.toLowerCase()
+            ) {
+              btn.classList.add('active');
+            } else {
+              btn.classList.remove('active');
+            }
+          });
+
+          // Find variant for this color
+          const variant = findVariantByColor(color);
+          console.log('Found variant for color:', variant);
+          if (variant) {
+            updateVariantSelection(variant);
+          }
+        }
       }
     });
+
+    // Disable navigation buttons when at start/end
+    function updateNavigationButtons() {
+      console.log('Updating navigation buttons');
+      console.log('Is beginning:', galleryMain.isBeginning);
+      console.log('Is end:', galleryMain.isEnd);
+      
+      const prevButton = document.querySelector('.thumbs-prev');
+      const nextButton = document.querySelector('.thumbs-next');
+      
+      if (galleryMain.isBeginning) {
+        prevButton.classList.add('swiper-button-disabled');
+      } else {
+        prevButton.classList.remove('swiper-button-disabled');
+      }
+      
+      if (galleryMain.isEnd) {
+        nextButton.classList.add('swiper-button-disabled');
+      } else {
+        nextButton.classList.remove('swiper-button-disabled');
+      }
+    }
+
+    galleryMain.on('slideChange', updateNavigationButtons);
+    updateNavigationButtons();
   {% else %}
     // Grid and Stacked layout functionality
     const galleryItems = document.querySelectorAll('.item-scroll-target');
@@ -518,45 +581,98 @@ document.addEventListener('DOMContentLoaded', function() {
       '{{ option.name | handle }}': '{{ option.selected_value | handle }}',
     {% endfor %}
   };
+  console.log('Initial selected options:', selectedOptions);
 
-  // Function to find variant ID based on selected options
-  function findVariantId() {
+  // Function to find variant by color
+  function findVariantByColor(color) {
+    console.log('Finding variant for color:', color);
     const variants = {{ product.variants | json }};
     const options = {{ product.options | json }};
+    console.log('Available variants:', variants);
+    console.log('Product options:', options);
     
     for (const variant of variants) {
-      let match = true;
       for (let i = 0; i < options.length; i++) {
-        const optionName = options[i].toLowerCase();
-        const variantOptionValue = variant.options[i].toLowerCase();
-        if (selectedOptions[optionName] !== variantOptionValue) {
-          match = false;
-          break;
+        if (options[i].toLowerCase() === 'color' && 
+            variant.options[i].toLowerCase() === color.toLowerCase()) {
+          console.log('Found matching variant:', variant);
+          return variant;
         }
       }
-      if (match) {
-        return variant.id;
-      }
     }
+    console.log('No variant found for color:', color);
     return null;
   }
 
-  // Handle color variant selection
+  // Function to update variant selection
+  function updateVariantSelection(variant) {
+    console.log('Updating variant selection:', variant);
+    if (!variant) {
+      console.log('No variant provided, skipping update');
+      return;
+    }
+
+    // Update add to cart button
+    const addToCartBtn = document.querySelector('.add-to-cart');
+    if (addToCartBtn) {
+      console.log('Updating add to cart button variant ID:', variant.id);
+      addToCartBtn.dataset.variantId = variant.id;
+    } else {
+      console.log('Add to cart button not found');
+    }
+
+    // Update price
+    const priceElement = document.querySelector('.price-new');
+    const oldPriceElement = document.querySelector('.price-old');
+    if (priceElement) {
+      console.log('Updating price to:', formatMoney(variant.price));
+      priceElement.textContent = formatMoney(variant.price);
+    }
+    if (oldPriceElement) {
+      if (variant.compare_at_price > variant.price) {
+        console.log('Updating compare at price to:', formatMoney(variant.compare_at_price));
+        oldPriceElement.textContent = formatMoney(variant.compare_at_price);
+        oldPriceElement.style.display = 'inline';
+      } else {
+        oldPriceElement.style.display = 'none';
+      }
+    }
+
+    // Update selected options
+    variant.options.forEach((option, index) => {
+      const optionName = {{ product.options | json }}[index].toLowerCase();
+      selectedOptions[optionName] = option.toLowerCase();
+    });
+    console.log('Updated selected options:', selectedOptions);
+  }
+
+  // Handle color swatch clicks
   document.querySelectorAll('.color-btn').forEach(button => {
     button.addEventListener('click', function() {
+      console.log('Color button clicked:', this);
       const color = this.getAttribute('data-scroll');
+      console.log('Selected color:', color);
+      
+      // Update active state
       document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
       this.classList.add('active');
       
-      // Update selected options
-      selectedOptions['color'] = this.getAttribute('data-value');
-      
-      // Find and update variant ID
-      const variantId = findVariantId();
-      if (variantId) {
-        const addToCartBtn = document.querySelector('.add-to-cart');
-        if (addToCartBtn) {
-          addToCartBtn.dataset.variantId = variantId;
+      // Find and update variant
+      const variant = findVariantByColor(color);
+      console.log('Found variant for clicked color:', variant);
+      if (variant) {
+        updateVariantSelection(variant);
+      }
+
+      // Update main image
+      const mainSwiper = document.querySelector('.tf-product-media-main').swiper;
+      const slides = mainSwiper.slides;
+      console.log('Total slides:', slides.length);
+      for (let i = 0; i < slides.length; i++) {
+        if (slides[i].getAttribute('data-color') === color) {
+          console.log('Found matching slide at index:', i);
+          mainSwiper.slideTo(i);
+          break;
         }
       }
     });
@@ -752,6 +868,21 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize wishlist and compare buttons state
   if (window.wishlistCompare) {
     window.wishlistCompare.updateButtonsState();
+  }
+
+  // Auto-select the color swatch for the initially selected variant
+  const initialVariant = {{ product.selected_or_first_available_variant | json }};
+  if (initialVariant && initialVariant.option1) {
+    const initialColor = initialVariant.option1.toLowerCase();
+    const colorBtn = Array.from(document.querySelectorAll('.color-btn')).find(
+      btn => btn.getAttribute('data-scroll') && btn.getAttribute('data-scroll').toLowerCase() === initialColor
+    );
+    if (colorBtn) {
+      colorBtn.click();
+      console.log('Auto-selected color swatch for:', initialColor);
+    } else {
+      console.log('No color swatch found for initial color:', initialColor);
+    }
   }
 });
 
