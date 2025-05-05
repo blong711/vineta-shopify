@@ -691,6 +691,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Initialize everything
   initQuickview();
+
+  // Add quantity button handlers
+  document.addEventListener('click', function(e) {
+    const modal = document.getElementById('quickView');
+    if (!modal) return;
+
+    if (e.target.classList.contains('plus-btn')) {
+      e.preventDefault();
+      e.stopPropagation();
+      const input = e.target.previousElementSibling;
+      const currentValue = parseInt(input.value) || 1;
+      input.value = currentValue + 1;
+      input.dispatchEvent(new Event('change'));
+    } else if (e.target.classList.contains('minus-btn')) {
+      e.preventDefault();
+      e.stopPropagation();
+      const input = e.target.nextElementSibling;
+      const currentValue = parseInt(input.value) || 1;
+      if (currentValue > 1) {
+        input.value = currentValue - 1;
+        input.dispatchEvent(new Event('change'));
+      }
+    }
+  }, true);
 });
 
 // Helper function to format money

@@ -611,6 +611,31 @@ document.addEventListener('DOMContentLoaded', function() {
             if (addToCartBtn) {
               addToCartBtn.dataset.productId = product.id;
               addToCartBtn.dataset.variantId = product.variants[0].id;
+              
+              // Add click handler for add to cart button
+              addToCartBtn.addEventListener('click', async function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (this.classList.contains('loading')) return;
+                
+                const variantId = this.dataset.variantId;
+                const quantityInput = modal.querySelector('.quantity-product');
+                const quantity = parseInt(quantityInput ? quantityInput.value : 1);
+                
+                try {
+                  this.classList.add('loading');
+                  if (window.cart) {
+                    await window.cart.updateQuantity(variantId, quantity, 'add');
+                    // Rest of the cart update code...
+                  }
+                } catch (error) {
+                  console.error('Error adding item to cart:', error);
+                  alert('Failed to add item to cart. Please try again.');
+                } finally {
+                  this.classList.remove('loading');
+                }
+              });
             }
             
             const buyNowBtn = modal.querySelector('.buy-now-btn');
@@ -868,18 +893,46 @@ document.addEventListener('DOMContentLoaded', function() {
             if (quantityContainer && !quantityContainer._quantityDelegationAttached) {
               quantityContainer.addEventListener('click', function(e) {
                 if (e.target.classList.contains('plus-btn')) {
+                  e.preventDefault();
+                  e.stopPropagation();
                   const quantityInput = modal.querySelector('.quantity-product');
                   let value = parseInt(quantityInput.value) || 1;
                   value++;
                   quantityInput.value = value;
+                  // Update add-to-cart button data-quantity
+                  const addToCartBtn = modal.querySelector('.add-to-cart');
+                  if (addToCartBtn) {
+                    addToCartBtn.dataset.quantity = value;
+                  }
+                  quantityInput.dispatchEvent(new Event('change'));
                 } else if (e.target.classList.contains('minus-btn')) {
+                  e.preventDefault();
+                  e.stopPropagation();
                   const quantityInput = modal.querySelector('.quantity-product');
                   let value = parseInt(quantityInput.value) || 1;
                   if (value > 1) value--;
                   quantityInput.value = value;
+                  // Update add-to-cart button data-quantity
+                  const addToCartBtn = modal.querySelector('.add-to-cart');
+                  if (addToCartBtn) {
+                    addToCartBtn.dataset.quantity = value;
+                  }
+                  quantityInput.dispatchEvent(new Event('change'));
+                }
+              }, true);
+              quantityContainer._quantityDelegationAttached = true;
+            }
+
+            // Also handle direct input changes
+            const quantityInput = modal.querySelector('.quantity-product');
+            if (quantityInput) {
+              quantityInput.addEventListener('change', function() {
+                const value = parseInt(this.value) || 1;
+                const addToCartBtn = modal.querySelector('.add-to-cart');
+                if (addToCartBtn) {
+                  addToCartBtn.dataset.quantity = value;
                 }
               });
-              quantityContainer._quantityDelegationAttached = true;
             }
           }
         } catch (error) {
