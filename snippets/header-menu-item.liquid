@@ -52,183 +52,150 @@
       {% when 'shop' %}
         <div class="sub-menu mega-menu mega-shop">
           <div class="wrapper-sub-menu">
-            <div class="mega-menu-item">
-              <div class="menu-heading">SHOP LAYOUT</div>
-              <ul class="menu-list">
-                {% for child in link.links %}
-                  <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
-                {% endfor %}
-              </ul>
-            </div>
-            <div class="mega-menu-item">
-              <div class="menu-heading">SHOP PAGES</div>
-              <ul class="menu-list">
-                {% for child in link.links offset: 5 %}
-                  <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
-                {% endfor %}
-              </ul>
-            </div>
-            <div class="mega-menu-item">
-              <div class="menu-heading">SHOP PAGES</div>
-              <ul class="menu-list">
-                {% for child in link.links offset: 10 %}
-                  <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
-                {% endfor %}
-              </ul>
-            </div>
+            {% for child in link.links %}
+              <div class="mega-menu-item">
+                <div class="menu-heading">{{ child.title }}</div>
+                {% if child.links != blank %}
+                  <ul class="menu-list">
+                    {% for grandchild in child.links %}
+                      <li>
+                        <a href="{{ grandchild.url }}" class="menu-link-text link">{{ grandchild.title }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </div>
+            {% endfor %}
           </div>
           <div class="wrapper-sub-collection">
-            <div class="swiper-slide">
-              <div class="wg-cls style-abs asp-1 hover-img">
-                <a href="#" class="image img-style d-block">
-                  <img src="https://via.placeholder.com/200x200" alt="img-collection" class="lazyload" width="200" height="200">
-                </a>
-                <div class="cls-btn text-center">
-                  <a href="#" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                    Fashion
-                    <i class="icon icon-arrow-top-left"></i>
-                  </a>
+            {% assign block = section.blocks | where: "type", "mega_menu_shop" | where: "title", link.title | first %}
+            {% if block and block.settings.collections != blank %}
+              <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
+                data-swiper='{
+                  "slidesPerView": 2,
+                  "spaceBetween": 24,
+                  "speed": 800,
+                  "observer": true,
+                  "observeParents": true,
+                  "slidesPerGroup": 2,
+                  "navigation": {
+                    "clickable": true,
+                    "nextEl": ".nav-next-cls-header",
+                    "prevEl": ".nav-prev-cls-header"
+                  },
+                  "pagination": { "el": ".sw-pagination-cls-header", "clickable": true }
+                }'>
+                <div class="swiper-wrapper">
+                  {% for collection in block.settings.collections %}
+                    <div class="swiper-slide">
+                      <div class="wg-cls style-abs asp-1 hover-img">
+                        <a href="{{ collection.url }}" class="image img-style d-block">
+                          <img src="{{ collection.featured_image | image_url: width: 200 }}" alt="{{ collection.title }}" class="lazyload" width="200" height="200">
+                        </a>
+                        <div class="cls-btn text-center">
+                          <a href="{{ collection.url }}" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                            {{ collection.title }}
+                            <i class="icon icon-arrow-top-left"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
                 </div>
+                <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center"></div>
+                <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls-header"></div>
+                <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls-header"></div>
               </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="wg-cls style-abs asp-1 hover-img">
-                <a href="#" class="image img-style d-block">
-                  <img src="https://via.placeholder.com/200x200" alt="img-collection" class="lazyload" width="200" height="200">
-                </a>
-                <div class="cls-btn text-center">
-                  <a href="#" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                    Furniture
-                    <i class="icon icon-arrow-top-left"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="wg-cls style-abs asp-1 hover-img">
-                <a href="#" class="image img-style d-block">
-                  <img src="https://via.placeholder.com/200x200" alt="img-collection" class="lazyload" width="200" height="200">
-                </a>
-                <div class="cls-btn text-center">
-                  <a href="#" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                    Electronics
-                    <i class="icon icon-arrow-top-left"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="wg-cls style-abs asp-1 hover-img">
-                <a href="#" class="image img-style d-block">
-                  <img src="https://via.placeholder.com/200x200" alt="img-collection" class="lazyload" width="200" height="200">
-                </a>
-                <div class="cls-btn text-center">
-                  <a href="#" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                    Accessories
-                    <i class="icon icon-arrow-top-left"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
+            {% endif %}
           </div>
         </div>
       {% when 'products' %}
         <div class="sub-menu mega-menu mega-product">
           <div class="wrapper-sub-menu">
-            <div class="mega-menu-item">
-              <div class="menu-heading">PRODUCT LAYOUTS</div>
-              <ul class="menu-list">
-                {% for child in link.links %}
-                  <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
-                {% endfor %}
-              </ul>
-            </div>
-            <div class="mega-menu-item">
-              <div class="menu-heading">PRODUCT PAGES</div>
-              <ul class="menu-list">
-                {% for child in link.links offset: 5 %}
-                  <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
-                {% endfor %}
-              </ul>
-            </div>
-            <div class="mega-menu-item">
-              <div class="menu-heading">PRODUCT PAGES</div>
-              <ul class="menu-list">
-                {% for child in link.links offset: 10 %}
-                  <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
-                {% endfor %}
-              </ul>
-            </div>
+            {% for child in link.links %}
+              <div class="mega-menu-item">
+                <div class="menu-heading">{{ child.title }}</div>
+                {% if child.links != blank %}
+                  <ul class="menu-list">
+                    {% for grandchild in child.links %}
+                      <li>
+                        <a href="{{ grandchild.url }}" class="menu-link-text link">{{ grandchild.title }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </div>
+            {% endfor %}
           </div>
           <div class="wrapper-sub-product">
-            <div class="swiper-slide">
-              <div class="wg-cls style-abs asp-1 hover-img">
-                <a href="#" class="image img-style d-block">
-                  <img src="https://via.placeholder.com/200x200" alt="img-product" class="lazyload" width="200" height="200">
-                </a>
-                <div class="cls-btn text-center">
-                  <a href="#" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                    Product 1
-                    <i class="icon icon-arrow-top-left"></i>
-                  </a>
+            {% assign block = section.blocks | where: "type", "mega_menu_product" | where: "title", link.title | first %}
+            {% if block and block.settings.products != blank %}
+              <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
+                data-swiper='{
+                  "slidesPerView": 2,
+                  "spaceBetween": 24,
+                  "speed": 800,
+                  "observer": true,
+                  "observeParents": true,
+                  "slidesPerGroup": 2,
+                  "navigation": {
+                    "clickable": true,
+                    "nextEl": ".nav-next-cls-header",
+                    "prevEl": ".nav-prev-cls-header"
+                  },
+                  "pagination": { "el": ".sw-pagination-cls-header", "clickable": true }
+                }'>
+                <div class="swiper-wrapper">
+                  {% for product in block.settings.products %}
+                    <div class="swiper-slide">
+                      <div class="wg-cls style-abs asp-1 hover-img">
+                        <a href="{{ product.url }}" class="image img-style d-block">
+                          <img src="{{ product.featured_image | image_url: width: 200 }}" alt="{{ product.title }}" class="lazyload" width="200" height="200">
+                        </a>
+                        <div class="cls-btn text-center">
+                          <a href="{{ product.url }}" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                            {{ product.title }}
+                            <i class="icon icon-arrow-top-left"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
                 </div>
+                <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center"></div>
+                <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls-header"></div>
+                <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls-header"></div>
               </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="wg-cls style-abs asp-1 hover-img">
-                <a href="#" class="image img-style d-block">
-                  <img src="https://via.placeholder.com/200x200" alt="img-product" class="lazyload" width="200" height="200">
-                </a>
-                <div class="cls-btn text-center">
-                  <a href="#" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                    Product 2
-                    <i class="icon icon-arrow-top-left"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="wg-cls style-abs asp-1 hover-img">
-                <a href="#" class="image img-style d-block">
-                  <img src="https://via.placeholder.com/200x200" alt="img-product" class="lazyload" width="200" height="200">
-                </a>
-                <div class="cls-btn text-center">
-                  <a href="#" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                    Product 3
-                    <i class="icon icon-arrow-top-left"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="wg-cls style-abs asp-1 hover-img">
-                <a href="#" class="image img-style d-block">
-                  <img src="https://via.placeholder.com/200x200" alt="img-product" class="lazyload" width="200" height="200">
-                </a>
-                <div class="cls-btn text-center">
-                  <a href="#" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                    Product 4
-                    <i class="icon icon-arrow-top-left"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
+            {% endif %}
           </div>
         </div>
       {% when 'pages' %}
         <div class="sub-menu sub-menu-style-2">
           <ul class="menu-list">
             {% for child in link.links %}
-              <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
+              <li>
+                <a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a>
+              </li>
             {% endfor %}
           </ul>
           <div class="banner hover-img">
-            <a href="#" class="img-style">
-              <img src="https://via.placeholder.com/300x120" alt="banner" width="300" height="120">
-            </a>
+            {% assign block = section.blocks | where: "type", "mega_menu_pages" | where: "title", link.title | first %}
+            {% if block and block.settings.banner_image != blank %}
+              <a href="{{ block.settings.banner_link }}" class="img-style">
+                <img src="{{ block.settings.banner_image | image_url: width: 300 }}" alt="{{ block.settings.title }}" width="300" height="120">
+              </a>
+            {% endif %}
             <div class="content">
-              <div class="title">Unveiling the latest gear</div>
-              <a href="#" class="box-icon animate-btn"><i class="icon icon-arrow-top-left"></i></a>
+              <div class="title">
+                {% if block and block.settings.title != blank %}
+                  {{ block.settings.title }}
+                {% else %}
+                  Unveiling the latest gear
+                {% endif %}
+              </div>
+              {% if block and block.settings.banner_link != blank %}
+                <a href="{{ block.settings.banner_link }}" class="box-icon animate-btn"><i class="icon icon-arrow-top-left"></i></a>
+              {% endif %}
             </div>
           </div>
         </div>
