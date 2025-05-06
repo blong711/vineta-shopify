@@ -20,7 +20,7 @@
       <img src="{{ section.settings.welcome_image | img_url: 'master' }}" 
            data-src="{{ section.settings.welcome_image | img_url: 'master' }}" 
            alt="{{ section.settings.welcome_image.alt | escape }}" 
-           class="lazyload">
+           class="lazyload" width="600" height="400">
     </div>
   </div>
 </section>
@@ -58,7 +58,7 @@
           <img src="{{ section.settings.why_choose_image | img_url: 'master' }}" 
                data-src="{{ section.settings.why_choose_image | img_url: 'master' }}" 
                alt="{{ section.settings.why_choose_image.alt | escape }}" 
-               class="lazyload w-100 h-100 object-fit-cover">
+               class="lazyload w-100 h-100 object-fit-cover" width="600" height="400">
         </div>
       </div>
     </div>
@@ -135,7 +135,7 @@
       <div class="box-author">
         <div class="avt">
           <img src="{{ section.settings.testimonial_author_image | img_url: 'master' }}" 
-               alt="{{ section.settings.testimonial_author_name | escape }}">
+               alt="{{ section.settings.testimonial_author_name | escape }}" width="100" height="100">
         </div>
         <p class="text-md lh-xl-26 fw-medium">
           {{ section.settings.testimonial_author_name }}
@@ -162,10 +162,10 @@
       "default": "The Ultimate Fashion Destination"
     },
     {
-      "type": "richtext",
+      "type": "text",
       "id": "welcome_text",
       "label": "Welcome Text",
-      "default": "<p>At Vineta, we bring you thoughtfully curated collections that blend contemporary designs with timeless elegance. With over 15 years of experience, we cater to fashion enthusiasts who appreciate quality, style, and versatility.</p>"
+      "default": "At Vineta, we bring you thoughtfully curated collections that blend contemporary designs with timeless elegance. With over 15 years of experience, we cater to fashion enthusiasts who appreciate quality, style, and versatility."
     },
     {
       "type": "image_picker",
