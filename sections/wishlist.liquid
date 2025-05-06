@@ -4,58 +4,11 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="wrapper-shop tf-grid-layout tf-col-2 lg-col-3 xl-col-4 style-1" id="gridLayout">
-          <div class="empty-wishlist" style="display: none; text-align: center; padding: 60px 0;">
-            <span class="icon icon-heart" style="font-size: 48px; color: #999; margin-bottom: 20px; display: block;"></span>
-            <h3 style="font-size: 24px; margin-bottom: 15px; color: #333;">Your wishlist is empty</h3>
-            <p style="color: #666; margin-bottom: 25px;">Add items to your wishlist to see them here</p>
-            <a href="{{ routes.all_products_collection_url }}" class="btn" style="display: inline-block; padding: 12px 30px; background: #333; color: #fff; text-decoration: none; border-radius: 4px; transition: background 0.3s;">Continue Shopping</a>
-            </div>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-<style>
-
-.empty-wishlist {
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.empty-wishlist .icon-heart {
-  font-size: 48px;
-  color: #999;
-  margin-bottom: 20px;
-  display: block;
-}
-
-.empty-wishlist h3 {
-  font-size: 24px;
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.empty-wishlist p {
-  color: #666;
-  margin-bottom: 25px;
-}
-
-.empty-wishlist .btn {
-  display: inline-block;
-  padding: 12px 30px;
-  background: #333;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 4px;
-  transition: background 0.3s;
-}
-
-.empty-wishlist .btn:hover {
-  background: #555;
-}
-</style>
 
 {% schema %}
 {
@@ -77,19 +30,16 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const gridLayout = document.getElementById('gridLayout');
-  const emptyWishlist = gridLayout.querySelector('.empty-wishlist');
   
   function updateWishlistDisplay() {
     const wishlistIds = localStorage.getItem('theme4:wishlist:id') ? localStorage.getItem('theme4:wishlist:id').split(',') : [];
     console.log('Wishlist IDs from localStorage:', wishlistIds);
     
     if (wishlistIds.length === 0) {
-      emptyWishlist.style.display = 'block';
+      gridLayout.innerHTML = '';
       return;
     }
 
-    emptyWishlist.style.display = 'none';
-    
     // Clean up the IDs and ensure they're numbers
     const cleanWishlistIds = wishlistIds.map(id => id.trim()).filter(id => id);
     console.log('Cleaned wishlist IDs:', cleanWishlistIds);
@@ -155,14 +105,14 @@ document.addEventListener('DOMContentLoaded', function() {
       })
       .catch(error => {
         console.error('Error fetching wishlist products:', error);
-        emptyWishlist.style.display = 'block';
+        gridLayout.innerHTML = '';
       });
   }
 
   function displayProducts(products, cleanWishlistIds) {
     if (products.length === 0) {
       console.log('No matching products found');
-      emptyWishlist.style.display = 'block';
+      gridLayout.innerHTML = '';
       return;
     }
     
@@ -270,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
       `;
     });
 
-    gridLayout.innerHTML = wishlistHTML.join('') + emptyWishlist.outerHTML;
+    gridLayout.innerHTML = wishlistHTML.join('');
     
     // Add click event listeners to remove buttons
     const removeButtons = gridLayout.querySelectorAll('[data-wishlist][data-action="remove"]');
@@ -298,9 +248,6 @@ document.addEventListener('DOMContentLoaded', function() {
           // Remove all product cards
           const allProductCards = gridLayout.querySelectorAll('.card-product');
           allProductCards.forEach(card => card.remove());
-          
-          // Show empty state message
-          emptyWishlist.style.display = 'block';
           
           // Remove the event listener to prevent refresh
           document.removeEventListener('wishlist:updated', updateWishlistDisplay);

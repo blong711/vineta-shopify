@@ -2,13 +2,33 @@
 <section class="tf-page-title">
   <div class="container">
     <div class="box-title text-center">
-      <h4 class="title">{% if template == 'list-collections' %}Collections{% else %}{{ section.settings.custom_title | default: page_title | default: settings.title }}{% endif %}</h4>
+      <h4 class="title">
+        {% if template == 'list-collections' %}
+          Collections
+        {% elsif template == 'page.contact' %}
+          {{ section.settings.contact_title | default: page_title }}
+        {% elsif template == 'page.about' %}
+          {{ section.settings.about_title | default: page_title }}
+        {% elsif template == 'page.wishlist' %}
+          {{ section.settings.wishlist_title | default: page_title }}
+        {% elsif template == 'page.compare' %}
+          {{ section.settings.compare_title | default: page_title }}
+        {% else %}
+          {{ section.settings.custom_title | default: page_title | default: settings.title }}
+        {% endif %}
+      </h4>
       <div class="breadcrumb-list">
         <a class="breadcrumb-item" href="/">Home</a>
         <div class="breadcrumb-item dot">
           <span></span>
         </div>
-      <span class="breadcrumb-item current">{% if template == 'list-collections' %}Collections{% else %}{{ page_title | default: settings.title }}{% endif %}</span>
+        <span class="breadcrumb-item current">
+          {% if template == 'list-collections' %}
+            Collections
+          {% else %}
+            {{ page_title | default: settings.title }}
+          {% endif %}
+        </span>
       </div>
     </div>
   </div>
@@ -21,8 +41,32 @@
     {
       "type": "text",
       "id": "custom_title",
-      "label": "Custom Title",
+      "label": "Default Custom Title",
       "info": "Leave blank to use default page title"
+    },
+    {
+      "type": "text",
+      "id": "contact_title",
+      "label": "Contact Page Title",
+      "info": "Title for contact page"
+    },
+    {
+      "type": "text",
+      "id": "about_title",
+      "label": "About Page Title",
+      "info": "Title for about page"
+    },
+    {
+      "type": "text",
+      "id": "wishlist_title",
+      "label": "Wishlist Page Title",
+      "info": "Title for wishlist page"
+    },
+    {
+      "type": "text",
+      "id": "compare_title",
+      "label": "Compare Page Title",
+      "info": "Title for compare page"
     }
   ]
 }
