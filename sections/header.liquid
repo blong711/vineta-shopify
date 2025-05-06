@@ -101,103 +101,102 @@
                   {%- endif -%}
                 </a>
                 {%- if link.links != blank -%}
+                  {%- assign block = section.blocks | where: "title", link.title | first -%}
                   <div class="sub-menu mega-menu mega-shop">
                     <div class="wrapper-sub-menu">
-                      {%- for block in section.blocks -%}
+                      {%- if block -%}
                         {%- case block.type -%}
                           {%- when 'mega_menu_html' -%}
-                            {%- if block.settings.title == link.title -%}
-                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                                {{ block.settings.html_content }}
-                              </div>
-                            {%- endif -%}
-                          
+                            <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                              {{ block.settings.html_content }}
+                            </div>
                           {%- when 'mega_menu_shop' -%}
-                            {%- if block.settings.title == link.title -%}
-                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                                {%- if block.settings.collections != blank -%}
-                                  <div class="menu-heading">{{ block.settings.title }}</div>
-                                  <ul class="menu-list">
-                                    {%- for collection in block.settings.collections -%}
-                                      <li>
-                                        <a href="{{ collection.url }}" class="menu-link-text link">
-                                          {{ collection.title }}
-                                        </a>
-                                      </li>
-                                    {%- endfor -%}
-                                  </ul>
-                                {%- endif -%}
-                                {%- if block.settings.banner_image != blank -%}
-                                  <div class="mega-menu-banner">
-                                    <a href="{{ block.settings.banner_link }}">
-                                      <img src="{{ block.settings.banner_image | img_url: 'master' }}"
-                                        alt="{{ block.settings.title }}"
-                                        class="lazyload">
-                                    </a>
-                                  </div>
-                                {%- endif -%}
-                              </div>
-                            {%- endif -%}
-                          
+                            <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                              {%- if block.settings.collections != blank -%}
+                                <div class="menu-heading">{{ block.settings.title }}</div>
+                                <ul class="menu-list">
+                                  {%- for collection in block.settings.collections -%}
+                                    <li>
+                                      <a href="{{ collection.url }}" class="menu-link-text link">
+                                        {{ collection.title }}
+                                      </a>
+                                    </li>
+                                  {%- endfor -%}
+                                </ul>
+                              {%- endif -%}
+                              {%- if block.settings.banner_image != blank -%}
+                                <div class="mega-menu-banner">
+                                  <a href="{{ block.settings.banner_link }}">
+                                    <img src="{{ block.settings.banner_image | img_url: 'master' }}"
+                                      alt="{{ block.settings.title }}"
+                                      class="lazyload">
+                                  </a>
+                                </div>
+                              {%- endif -%}
+                            </div>
                           {%- when 'mega_menu_product' -%}
-                            {%- if block.settings.title == link.title -%}
-                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                                {%- if block.settings.products != blank -%}
-                                  <div class="menu-heading">{{ block.settings.title }}</div>
-                                  <div class="mega-menu-products">
-                                    {%- for product in block.settings.products -%}
-                                      <div class="mega-menu-product">
-                                        <a href="{{ product.url }}">
-                                          <img src="{{ product.featured_image | img_url: 'medium' }}"
-                                            alt="{{ product.title }}"
-                                            class="lazyload">
-                                          <h4>{{ product.title }}</h4>
-                                          <p class="price">{{ product.price | money }}</p>
-                                        </a>
-                                      </div>
-                                    {%- endfor -%}
-                                  </div>
-                                {%- endif -%}
-                                {%- if block.settings.banner_image != blank -%}
-                                  <div class="mega-menu-banner">
-                                    <a href="{{ block.settings.banner_link }}">
-                                      <img src="{{ block.settings.banner_image | img_url: 'master' }}"
-                                        alt="{{ block.settings.title }}"
-                                        class="lazyload">
-                                    </a>
-                                  </div>
-                                {%- endif -%}
-                              </div>
-                            {%- endif -%}
-                          
+                            <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                              {%- if block.settings.products != blank -%}
+                                <div class="menu-heading">{{ block.settings.products_list_title }}</div>
+                                <div class="mega-menu-products">
+                                  {%- for product in block.settings.products -%}
+                                    <div class="mega-menu-product">
+                                      <a href="{{ product.url }}">
+                                        <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" class="lazyload">
+                                        <h4>{{ product.title }}</h4>
+                                        <p class="price">{{ product.price | money }}</p>
+                                      </a>
+                                    </div>
+                                  {%- endfor -%}
+                                </div>
+                              {%- endif -%}
+                              {%- if block.settings.banner_image != blank -%}
+                                <div class="mega-menu-banner">
+                                  <a href="{{ block.settings.banner_link }}">
+                                    <img src="{{ block.settings.banner_image | img_url: 'master' }}"
+                                      alt="{{ block.settings.title }}"
+                                      class="lazyload">
+                                  </a>
+                                </div>
+                              {%- endif -%}
+                            </div>
                           {%- when 'mega_menu_pages' -%}
-                            {%- if block.settings.title == link.title -%}
-                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                                {%- if block.settings.menu != blank -%}
-                                  <div class="menu-heading">{{ block.settings.title }}</div>
-                                  <ul class="menu-list">
-                                    {%- for link in linklists[block.settings.menu].links -%}
-                                      <li>
-                                        <a href="{{ link.url }}" class="menu-link-text link">
-                                          {{ link.title }}
-                                        </a>
-                                      </li>
-                                    {%- endfor -%}
-                                  </ul>
-                                {%- endif -%}
-                                {%- if block.settings.banner_image != blank -%}
-                                  <div class="mega-menu-banner">
-                                    <a href="{{ block.settings.banner_link }}">
-                                      <img src="{{ block.settings.banner_image | img_url: 'master' }}"
-                                        alt="{{ block.settings.title }}"
-                                        class="lazyload">
-                                    </a>
-                                  </div>
-                                {%- endif -%}
-                              </div>
-                            {%- endif -%}
+                            <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                              {%- if block.settings.menu != blank -%}
+                                <div class="menu-heading">{{ block.settings.title }}</div>
+                                <ul class="menu-list">
+                                  {%- for pagelink in linklists[block.settings.menu].links -%}
+                                    <li>
+                                      <a href="{{ pagelink.url }}" class="menu-link-text link">
+                                        {{ pagelink.title }}
+                                      </a>
+                                    </li>
+                                  {%- endfor -%}
+                                </ul>
+                              {%- endif -%}
+                              {%- if block.settings.banner_image != blank -%}
+                                <div class="mega-menu-banner">
+                                  <a href="{{ block.settings.banner_link }}">
+                                    <img src="{{ block.settings.banner_image | img_url: 'master' }}"
+                                      alt="{{ block.settings.title }}"
+                                      class="lazyload">
+                                  </a>
+                                </div>
+                              {%- endif -%}
+                            </div>
                         {%- endcase -%}
-                      {%- endfor -%}
+                      {%- endif -%}
+                      <div class="mega-menu-item">
+                        <ul class="menu-list">
+                          {%- for childlink in link.links -%}
+                            <li>
+                              <a href="{{ childlink.url }}" class="menu-link-text link">
+                                {{ childlink.title }}
+                              </a>
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 {%- endif -%}
@@ -227,103 +226,75 @@
                     {%- endif -%}
                   </a>
                   {%- if link.links != blank -%}
+                    {%- assign block = section.blocks | where: "title", link.title | first -%}
                     <div class="sub-menu mega-menu mega-shop">
                       <div class="wrapper-sub-menu">
-                        {%- for block in section.blocks -%}
+                        {%- if block -%}
                           {%- case block.type -%}
                             {%- when 'mega_menu_html' -%}
-                              {%- if block.settings.title == link.title -%}
-                                <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                                  {{ block.settings.html_content }}
-                                </div>
-                              {%- endif -%}
-                            
+                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                {{ block.settings.html_content }}
+                              </div>
                             {%- when 'mega_menu_shop' -%}
-                              {%- if block.settings.title == link.title -%}
-                                <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                                  {%- if block.settings.collections != blank -%}
-                                    <div class="menu-heading">{{ block.settings.title }}</div>
-                                    <ul class="menu-list">
-                                      {%- for collection in block.settings.collections -%}
-                                        <li>
-                                          <a href="{{ collection.url }}" class="menu-link-text link">
-                                            {{ collection.title }}
-                                          </a>
-                                        </li>
-                                      {%- endfor -%}
-                                    </ul>
-                                  {%- endif -%}
-                                  {%- if block.settings.banner_image != blank -%}
-                                    <div class="mega-menu-banner">
-                                      <a href="{{ block.settings.banner_link }}">
-                                        <img src="{{ block.settings.banner_image | img_url: 'master' }}"
-                                          alt="{{ block.settings.title }}"
-                                          class="lazyload">
-                                      </a>
-                                    </div>
-                                  {%- endif -%}
-                                </div>
-                              {%- endif -%}
-                            
+                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                {%- if block.settings.collections != blank -%}
+                                  <div class="menu-heading">{{ block.settings.title }}</div>
+                                  <ul class="menu-list">
+                                    {%- for collection in block.settings.collections -%}
+                                      <li>
+                                        <a href="{{ collection.url }}" class="menu-link-text link">
+                                          {{ collection.title }}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                              </div>
                             {%- when 'mega_menu_product' -%}
-                              {%- if block.settings.title == link.title -%}
-                                <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                                  {%- if block.settings.products != blank -%}
-                                    <div class="menu-heading">{{ block.settings.title }}</div>
-                                    <div class="mega-menu-products">
-                                      {%- for product in block.settings.products -%}
-                                        <div class="mega-menu-product">
-                                          <a href="{{ product.url }}">
-                                            <img src="{{ product.featured_image | img_url: 'medium' }}"
-                                              alt="{{ product.title }}"
-                                              class="lazyload">
-                                            <h4>{{ product.title }}</h4>
-                                            <p class="price">{{ product.price | money }}</p>
-                                          </a>
-                                        </div>
-                                      {%- endfor -%}
-                                    </div>
-                                  {%- endif -%}
-                                  {%- if block.settings.banner_image != blank -%}
-                                    <div class="mega-menu-banner">
-                                      <a href="{{ block.settings.banner_link }}">
-                                        <img src="{{ block.settings.banner_image | img_url: 'master' }}"
-                                          alt="{{ block.settings.title }}"
-                                          class="lazyload">
-                                      </a>
-                                    </div>
-                                  {%- endif -%}
-                                </div>
-                              {%- endif -%}
-                            
+                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                {%- if block.settings.products != blank -%}
+                                  <div class="menu-heading">{{ block.settings.products_list_title }}</div>
+                                  <div class="mega-menu-products">
+                                    {%- for product in block.settings.products -%}
+                                      <div class="mega-menu-product">
+                                        <a href="{{ product.url }}">
+                                          <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" class="lazyload">
+                                          <h4>{{ product.title }}</h4>
+                                          <p class="price">{{ product.price | money }}</p>
+                                        </a>
+                                      </div>
+                                    {%- endfor -%}
+                                  </div>
+                                {%- endif -%}
+                              </div>
                             {%- when 'mega_menu_pages' -%}
-                              {%- if block.settings.title == link.title -%}
-                                <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                                  {%- if block.settings.menu != blank -%}
-                                    <div class="menu-heading">{{ block.settings.title }}</div>
-                                    <ul class="menu-list">
-                                      {%- for link in linklists[block.settings.menu].links -%}
-                                        <li>
-                                          <a href="{{ link.url }}" class="menu-link-text link">
-                                            {{ link.title }}
-                                          </a>
-                                        </li>
-                                      {%- endfor -%}
-                                    </ul>
-                                  {%- endif -%}
-                                  {%- if block.settings.banner_image != blank -%}
-                                    <div class="mega-menu-banner">
-                                      <a href="{{ block.settings.banner_link }}">
-                                        <img src="{{ block.settings.banner_image | img_url: 'master' }}"
-                                          alt="{{ block.settings.title }}"
-                                          class="lazyload">
-                                      </a>
-                                    </div>
-                                  {%- endif -%}
-                                </div>
-                              {%- endif -%}
+                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                {%- if block.settings.menu != blank -%}
+                                  <div class="menu-heading">{{ block.settings.title }}</div>
+                                  <ul class="menu-list">
+                                    {%- for pagelink in linklists[block.settings.menu].links -%}
+                                      <li>
+                                        <a href="{{ pagelink.url }}" class="menu-link-text link">
+                                          {{ pagelink.title }}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                              </div>
                           {%- endcase -%}
-                        {%- endfor -%}
+                        {%- endif -%}
+                        <div class="mega-menu-item">
+                          <ul class="menu-list">
+                            {%- for childlink in link.links -%}
+                              <li>
+                                <a href="{{ childlink.url }}" class="menu-link-text link">
+                                  {{ childlink.title }}
+                                </a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   {%- endif -%}
@@ -413,115 +384,7 @@
           <nav class="box-navigation text-center">
             <ul class="box-nav-menu">
               {%- for link in linklists[section.settings.menu].links -%}
-                <li class="menu-item{% if link.links != blank %} has-submenu{% endif %}">
-                  <a href="{{ link.url }}" class="item-link">
-                    {{ link.title }}
-                    {%- if link.links != blank -%}
-                      <i class="icon icon-arr-down"></i>
-                    {%- endif -%}
-                  </a>
-                  {%- if link.links != blank -%}
-                    <div class="sub-menu mega-menu mega-shop">
-                      <div class="wrapper-sub-menu">
-                        {%- for block in section.blocks -%}
-                          {%- case block.type -%}
-                            {%- when 'mega_menu_html' -%}
-                              {%- if block.settings.title == link.title -%}
-                                <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                                  {{ block.settings.html_content }}
-                                </div>
-                              {%- endif -%}
-                            
-                            {%- when 'mega_menu_shop' -%}
-                              {%- if block.settings.title == link.title -%}
-                                <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                                  {%- if block.settings.collections != blank -%}
-                                    <div class="menu-heading">{{ block.settings.title }}</div>
-                                    <ul class="menu-list">
-                                      {%- for collection in block.settings.collections -%}
-                                        <li>
-                                          <a href="{{ collection.url }}" class="menu-link-text link">
-                                            {{ collection.title }}
-                                          </a>
-                                        </li>
-                                      {%- endfor -%}
-                                    </ul>
-                                  {%- endif -%}
-                                  {%- if block.settings.banner_image != blank -%}
-                                    <div class="mega-menu-banner">
-                                      <a href="{{ block.settings.banner_link }}">
-                                        <img src="{{ block.settings.banner_image | img_url: 'master' }}"
-                                          alt="{{ block.settings.title }}"
-                                          class="lazyload">
-                                      </a>
-                                    </div>
-                                  {%- endif -%}
-                                </div>
-                              {%- endif -%}
-                            
-                            {%- when 'mega_menu_product' -%}
-                              {%- if block.settings.title == link.title -%}
-                                <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                                  {%- if block.settings.products != blank -%}
-                                    <div class="menu-heading">{{ block.settings.title }}</div>
-                                    <div class="mega-menu-products">
-                                      {%- for product in block.settings.products -%}
-                                        <div class="mega-menu-product">
-                                          <a href="{{ product.url }}">
-                                            <img src="{{ product.featured_image | img_url: 'medium' }}"
-                                              alt="{{ product.title }}"
-                                              class="lazyload">
-                                            <h4>{{ product.title }}</h4>
-                                            <p class="price">{{ product.price | money }}</p>
-                                          </a>
-                                        </div>
-                                      {%- endfor -%}
-                                    </div>
-                                  {%- endif -%}
-                                  {%- if block.settings.banner_image != blank -%}
-                                    <div class="mega-menu-banner">
-                                      <a href="{{ block.settings.banner_link }}">
-                                        <img src="{{ block.settings.banner_image | img_url: 'master' }}"
-                                          alt="{{ block.settings.title }}"
-                                          class="lazyload">
-                                      </a>
-                                    </div>
-                                  {%- endif -%}
-                                </div>
-                              {%- endif -%}
-                            
-                            {%- when 'mega_menu_pages' -%}
-                              {%- if block.settings.title == link.title -%}
-                                <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                                  {%- if block.settings.menu != blank -%}
-                                    <div class="menu-heading">{{ block.settings.title }}</div>
-                                    <ul class="menu-list">
-                                      {%- for link in linklists[block.settings.menu].links -%}
-                                        <li>
-                                          <a href="{{ link.url }}" class="menu-link-text link">
-                                            {{ link.title }}
-                                          </a>
-                                        </li>
-                                      {%- endfor -%}
-                                    </ul>
-                                  {%- endif -%}
-                                  {%- if block.settings.banner_image != blank -%}
-                                    <div class="mega-menu-banner">
-                                      <a href="{{ block.settings.banner_link }}">
-                                        <img src="{{ block.settings.banner_image | img_url: 'master' }}"
-                                          alt="{{ block.settings.title }}"
-                                          class="lazyload">
-                                      </a>
-                                    </div>
-                                  {%- endif -%}
-                                </div>
-                              {%- endif -%}
-                          {%- endcase -%}
-                        {%- endfor -%}
-                      </div>
-                    </div>
-                  {%- endif -%}
-                </li>
+                {% render 'header-menu-item', link: link, section: section %}
               {%- endfor -%}
             </ul>
           </nav>
@@ -729,6 +592,39 @@
       "type": "url",
       "id": "product_url_4",
       "label": "Product URL"
+    },
+    {
+      "type": "header",
+      "content": "Menu Item Images"
+    },
+    {
+      "type": "paragraph",
+      "content": "Add images for menu items. The handle of each menu item will be used to match with its image."
+    },
+    {
+      "type": "image_picker",
+      "id": "menu_image_home",
+      "label": "Home Menu Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "menu_image_shop",
+      "label": "Shop Menu Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "menu_image_products",
+      "label": "Products Menu Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "menu_image_pages",
+      "label": "Pages Menu Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "menu_image_blog",
+      "label": "Blog Menu Image"
     }
   ],
   "blocks": [

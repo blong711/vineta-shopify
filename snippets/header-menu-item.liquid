@@ -1,0 +1,284 @@
+{%- assign menu_title = link.title | downcase -%}
+<li class="menu-item{% if link.links != blank %} has-submenu{% endif %}{% if menu_title == 'pages' or menu_title == 'blog' %} position-relative{% endif %}">
+  <a href="{{ link.url }}" class="item-link">{{ link.title }}{% if link.links != blank %}<i class="icon icon-arr-down"></i>{% endif %}</a>
+  {% if link.links != blank %}
+    {% case menu_title %}
+      {% when 'home' %}
+        <div class="sub-menu mega-menu mega-home">
+          <div class="box-search">
+            <div class="tf-select">
+              <select name="pagetype" id="pagetype">
+                <option value="">Page Type</option>
+                <option value="fashion">Fashion</option>
+                <option value="furniture">Furniture</option>
+                <option value="electronics">Electronics</option>
+                <option value="accessories">Accessories</option>
+                <option value="food">Food & Drink</option>
+                <option value="georgia">Other</option>
+              </select>
+            </div>
+            <form class="form-search">
+              <input type="text" placeholder="Search demo..." tabindex="0" aria-required="true" required>
+              <button type="submit"><i class="icon icon-search"></i></button>
+            </form>
+          </div>
+          {% if link.links != blank %}
+            <div class="row-demo">
+              {% for child in link.links %}
+                {% assign image_key = 'menu_image_' | append: child.handle %}
+                {% assign menu_image = section.settings[image_key] %}
+                <div class="demo-item">
+                  <a href="{{ child.url }}" class="demo-image">
+                    {% if menu_image != blank %}
+                      <img src="{{ menu_image | image_url: width: 200 }}" alt="{{ child.title }}" width="200" height="120">
+                    {% else %}
+                      <img src="https://via.placeholder.com/200x120" alt="{{ child.title }}" width="200" height="120">
+                    {% endif %}
+                    <div class="demo-label"><span>New</span></div>
+                  </a>
+                  <a href="{{ child.url }}" class="demo-name link">{{ child.title }}</a>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+          <div class="view-all-demo text-center">
+            <a href="#modalDemo" data-bs-toggle="modal" class="tf-btn btn-primary animate-btn">
+              Explore all demos (17+)
+              <i class="icon icon-arr-right"></i>
+            </a>
+          </div>
+        </div>
+      {% when 'shop' %}
+        <div class="sub-menu mega-menu mega-shop">
+          <div class="wrapper-sub-menu">
+            <div class="mega-menu-item">
+              <div class="menu-heading">SHOP LAYOUT</div>
+              <ul class="menu-list">
+                {% for child in link.links %}
+                  <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="mega-menu-item">
+              <div class="menu-heading">SHOP PAGES</div>
+              <ul class="menu-list">
+                {% for child in link.links offset: 5 %}
+                  <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="mega-menu-item">
+              <div class="menu-heading">SHOP PAGES</div>
+              <ul class="menu-list">
+                {% for child in link.links offset: 10 %}
+                  <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          <div class="wrapper-sub-collection">
+            <div class="swiper-slide">
+              <div class="wg-cls style-abs asp-1 hover-img">
+                <a href="#" class="image img-style d-block">
+                  <img src="https://via.placeholder.com/200x200" alt="img-collection" class="lazyload" width="200" height="200">
+                </a>
+                <div class="cls-btn text-center">
+                  <a href="#" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                    Fashion
+                    <i class="icon icon-arrow-top-left"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="wg-cls style-abs asp-1 hover-img">
+                <a href="#" class="image img-style d-block">
+                  <img src="https://via.placeholder.com/200x200" alt="img-collection" class="lazyload" width="200" height="200">
+                </a>
+                <div class="cls-btn text-center">
+                  <a href="#" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                    Furniture
+                    <i class="icon icon-arrow-top-left"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="wg-cls style-abs asp-1 hover-img">
+                <a href="#" class="image img-style d-block">
+                  <img src="https://via.placeholder.com/200x200" alt="img-collection" class="lazyload" width="200" height="200">
+                </a>
+                <div class="cls-btn text-center">
+                  <a href="#" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                    Electronics
+                    <i class="icon icon-arrow-top-left"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="wg-cls style-abs asp-1 hover-img">
+                <a href="#" class="image img-style d-block">
+                  <img src="https://via.placeholder.com/200x200" alt="img-collection" class="lazyload" width="200" height="200">
+                </a>
+                <div class="cls-btn text-center">
+                  <a href="#" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                    Accessories
+                    <i class="icon icon-arrow-top-left"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% when 'products' %}
+        <div class="sub-menu mega-menu mega-product">
+          <div class="wrapper-sub-menu">
+            <div class="mega-menu-item">
+              <div class="menu-heading">PRODUCT LAYOUTS</div>
+              <ul class="menu-list">
+                {% for child in link.links %}
+                  <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="mega-menu-item">
+              <div class="menu-heading">PRODUCT PAGES</div>
+              <ul class="menu-list">
+                {% for child in link.links offset: 5 %}
+                  <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="mega-menu-item">
+              <div class="menu-heading">PRODUCT PAGES</div>
+              <ul class="menu-list">
+                {% for child in link.links offset: 10 %}
+                  <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          <div class="wrapper-sub-product">
+            <div class="swiper-slide">
+              <div class="wg-cls style-abs asp-1 hover-img">
+                <a href="#" class="image img-style d-block">
+                  <img src="https://via.placeholder.com/200x200" alt="img-product" class="lazyload" width="200" height="200">
+                </a>
+                <div class="cls-btn text-center">
+                  <a href="#" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                    Product 1
+                    <i class="icon icon-arrow-top-left"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="wg-cls style-abs asp-1 hover-img">
+                <a href="#" class="image img-style d-block">
+                  <img src="https://via.placeholder.com/200x200" alt="img-product" class="lazyload" width="200" height="200">
+                </a>
+                <div class="cls-btn text-center">
+                  <a href="#" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                    Product 2
+                    <i class="icon icon-arrow-top-left"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="wg-cls style-abs asp-1 hover-img">
+                <a href="#" class="image img-style d-block">
+                  <img src="https://via.placeholder.com/200x200" alt="img-product" class="lazyload" width="200" height="200">
+                </a>
+                <div class="cls-btn text-center">
+                  <a href="#" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                    Product 3
+                    <i class="icon icon-arrow-top-left"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="wg-cls style-abs asp-1 hover-img">
+                <a href="#" class="image img-style d-block">
+                  <img src="https://via.placeholder.com/200x200" alt="img-product" class="lazyload" width="200" height="200">
+                </a>
+                <div class="cls-btn text-center">
+                  <a href="#" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                    Product 4
+                    <i class="icon icon-arrow-top-left"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% when 'pages' %}
+        <div class="sub-menu sub-menu-style-2">
+          <ul class="menu-list">
+            {% for child in link.links %}
+              <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
+            {% endfor %}
+          </ul>
+          <div class="banner hover-img">
+            <a href="#" class="img-style">
+              <img src="https://via.placeholder.com/300x120" alt="banner" width="300" height="120">
+            </a>
+            <div class="content">
+              <div class="title">Unveiling the latest gear</div>
+              <a href="#" class="box-icon animate-btn"><i class="icon icon-arrow-top-left"></i></a>
+            </div>
+          </div>
+        </div>
+      {% when 'blog' %}
+        <div class="sub-menu sub-menu-style-3">
+          <ul class="menu-list">
+            {% for child in link.links %}
+              <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
+            {% endfor %}
+          </ul>
+          <div class="wrapper-sub-blog">
+            <div class="menu-heading">Recent Posts</div>
+            <ul class="list-recent-blog">
+              <li class="item">
+                <a href="#" class="img-box">
+                  <img src="https://via.placeholder.com/80x80" alt="img-recent-blog" width="80" height="80">
+                </a>
+                <div class="content">
+                  <a href="#" class="fw-medium text-sm link title">Sample Blog Post 1</a>
+                  <span class="text-xxs text-grey date-post">Sep 19 2024</span>
+                </div>
+              </li>
+              <li class="item">
+                <a href="#" class="img-box">
+                  <img src="https://via.placeholder.com/80x80" alt="img-recent-blog" width="80" height="80">
+                </a>
+                <div class="content">
+                  <a href="#" class="fw-medium text-sm link title">Sample Blog Post 2</a>
+                  <span class="text-xxs text-grey date-post">Sep 19 2024</span>
+                </div>
+              </li>
+              <li class="item">
+                <a href="#" class="img-box">
+                  <img src="https://via.placeholder.com/80x80" alt="img-recent-blog" width="80" height="80">
+                </a>
+                <div class="content">
+                  <a href="#" class="fw-medium text-sm link title">Sample Blog Post 3</a>
+                  <span class="text-xxs text-grey date-post">Sep 19 2024</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      {% else %}
+        <div class="sub-menu">
+          <ul class="menu-list">
+            {% for child in link.links %}
+              <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+    {% endcase %}
+  {% endif %}
+</li> 
