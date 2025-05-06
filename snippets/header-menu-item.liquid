@@ -25,12 +25,13 @@
           {% if link.links != blank %}
             <div class="row-demo">
               {% for child in link.links %}
-                {% assign image_key = 'menu_image_' | append: child.handle %}
-                {% assign menu_image = section.settings[image_key] %}
+                {% assign child_handle = child.title | handleize %}
+                {% assign image_key = 'home_image_' | append: child_handle %}
+                {% assign subitem_image = section.settings[image_key] %}
                 <div class="demo-item">
                   <a href="{{ child.url }}" class="demo-image">
-                    {% if menu_image != blank %}
-                      <img src="{{ menu_image | image_url: width: 200 }}" alt="{{ child.title }}" width="200" height="120">
+                    {% if subitem_image != blank %}
+                      <img src="{{ subitem_image | image_url: width: 200 }}" alt="{{ child.title }}" width="200" height="120">
                     {% else %}
                       <img src="https://via.placeholder.com/200x120" alt="{{ child.title }}" width="200" height="120">
                     {% endif %}
