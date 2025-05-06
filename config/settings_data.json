@@ -20,12 +20,86 @@
       },
       "header": {
         "type": "header",
+        "blocks": {
+          "mega_menu_html_LJ8FpY": {
+            "type": "mega_menu_html",
+            "settings": {
+              "title": "Home",
+              "html_content": "",
+              "content_page": "",
+              "color_scheme": "scheme-1",
+              "submenu_position": "center",
+              "mega_menu_width": "fullwidth",
+              "mega_menu_custom_width": 1200
+            }
+          },
+          "mega_menu_shop_hHyEJb": {
+            "type": "mega_menu_shop",
+            "settings": {
+              "title": "Shop",
+              "collections": [],
+              "image_ratio": "asos",
+              "full_image": false,
+              "items_per_row": "default",
+              "enable_carousel": false,
+              "use_prev_next": false,
+              "color_scheme": "scheme-1",
+              "submenu_position": "default",
+              "mega_menu_width": "fullwidth",
+              "mega_menu_custom_width": 1200
+            }
+          },
+          "mega_menu_product_pmHmWP": {
+            "type": "mega_menu_product",
+            "settings": {
+              "title": "Products",
+              "products_list_title": "BEST SELLER",
+              "products": [],
+              "image_ratio": "asos",
+              "full_image": false,
+              "use_prev_next": false,
+              "color_scheme": "scheme-1",
+              "submenu_position": "default",
+              "mega_menu_width": "fullwidth",
+              "mega_menu_custom_width": 1200
+            }
+          },
+          "mega_menu_pages_XAFBYb": {
+            "type": "mega_menu_pages",
+            "settings": {
+              "title": "Pages",
+              "color_scheme": "scheme-1",
+              "submenu_position": "default",
+              "mega_menu_width": "fullwidth",
+              "mega_menu_custom_width": 1200
+            }
+          }
+        },
+        "block_order": [
+          "mega_menu_html_LJ8FpY",
+          "mega_menu_shop_hHyEJb",
+          "mega_menu_product_pmHmWP",
+          "mega_menu_pages_XAFBYb"
+        ],
         "settings": {
           "layout": "layout-1",
           "background_color": "#ffffff",
           "logo": "shopify://shop_images/logo.svg",
           "logo_width": 100,
-          "menu": "main-menu"
+          "menu": "main-menu",
+          "show_search": true,
+          "show_account": true,
+          "show_wishlist": true,
+          "show_cart": true,
+          "show_product_cards": true,
+          "product_title_1": "Men",
+          "product_url_1": "",
+          "product_title_2": "Women",
+          "product_url_2": "",
+          "product_title_3": "Accessories",
+          "product_url_3": "",
+          "product_title_4": "Sportwear",
+          "product_url_4": ""
         }
       },
       "footer": {
