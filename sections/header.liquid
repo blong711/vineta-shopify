@@ -103,78 +103,102 @@
                 {%- if link.links != blank -%}
                   <div class="sub-menu mega-menu mega-shop">
                     <div class="wrapper-sub-menu">
-                      {%- for childlink in link.links -%}
-                        <div class="mega-menu-item">
-                          <div class="menu-heading">{{ childlink.title }}</div>
-                          {%- if childlink.links != blank -%}
-                            <ul class="menu-list">
-                              {%- for grandchildlink in childlink.links -%}
-                                <li>
-                                  <a href="{{ grandchildlink.url }}" class="menu-link-text link">
-                                    {{ grandchildlink.title }}
-                                    {%- if grandchildlink.title contains 'Hot' or grandchildlink.title contains 'New' -%}
-                                      <span class="demo-label{% if grandchildlink.title contains 'Hot' %} demo-hot{% endif %}">
-                                        {%- if grandchildlink.title contains 'Hot' -%}Hot{%- else -%}New{%- endif -%}
-                                      </span>
-                                    {%- endif -%}
-                                  </a>
-                                </li>
-                              {%- endfor -%}
-                            </ul>
-                          {%- endif -%}
-                        </div>
-                      {%- endfor -%}
-                    </div>
-                    {%- if section.settings.show_product_cards -%}
-                      <div class="wrapper-sub-collection">
-                        <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
-                          data-swiper='{
-                            "slidesPerView": 2,
-                            "spaceBetween": 24,
-                            "speed": 800,
-                            "observer": true,
-                            "observeParents": true,
-                            "slidesPerGroup": 2,
-                            "navigation": {
-                              "clickable": true,
-                              "nextEl": ".nav-next-cls-header",
-                              "prevEl": ".nav-prev-cls-header"
-                            },
-                            "pagination": { "el": ".sw-pagination-cls-header", "clickable": true }
-                          }'>
-                          <div class="swiper-wrapper">
-                            {%- for i in (1..4) -%}
-                              {%- assign product_image = 'product_image_' | append: i -%}
-                              {%- assign product_title = 'product_title_' | append: i -%}
-                              {%- assign product_url = 'product_url_' | append: i -%}
-                              {%- if section.settings[product_image] != blank -%}
-                                <div class="swiper-slide">
-                                  <div class="wg-cls style-abs asp-1 hover-img">
-                                    <a href="{{ section.settings[product_url] }}" class="image img-style d-block">
-                                      <img src="{{ section.settings[product_image] | img_url: 'master' }}"
-                                        alt="{{ section.settings[product_title] }}"
-                                        width="300"
-                                        height="300"
+                      {%- for block in section.blocks -%}
+                        {%- case block.type -%}
+                          {%- when 'mega_menu_html' -%}
+                            {%- if block.settings.title == link.title -%}
+                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                {{ block.settings.html_content }}
+                              </div>
+                            {%- endif -%}
+                          
+                          {%- when 'mega_menu_shop' -%}
+                            {%- if block.settings.title == link.title -%}
+                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                {%- if block.settings.collections != blank -%}
+                                  <div class="menu-heading">{{ block.settings.title }}</div>
+                                  <ul class="menu-list">
+                                    {%- for collection in block.settings.collections -%}
+                                      <li>
+                                        <a href="{{ collection.url }}" class="menu-link-text link">
+                                          {{ collection.title }}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                                {%- if block.settings.banner_image != blank -%}
+                                  <div class="mega-menu-banner">
+                                    <a href="{{ block.settings.banner_link }}">
+                                      <img src="{{ block.settings.banner_image | img_url: 'master' }}"
+                                        alt="{{ block.settings.title }}"
                                         class="lazyload">
                                     </a>
-                                    <div class="cls-btn text-center">
-                                      <a href="{{ section.settings[product_url] }}"
-                                        class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                        {{ section.settings[product_title] }}
-                                        <i class="icon icon-arrow-top-left"></i>
-                                      </a>
-                                    </div>
                                   </div>
-                                </div>
-                              {%- endif -%}
-                            {%- endfor -%}
-                          </div>
-                          <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center"></div>
-                          <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls-header"></div>
-                          <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls-header"></div>
-                        </div>
-                      </div>
-                    {%- endif -%}
+                                {%- endif -%}
+                              </div>
+                            {%- endif -%}
+                          
+                          {%- when 'mega_menu_product' -%}
+                            {%- if block.settings.title == link.title -%}
+                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                {%- if block.settings.products != blank -%}
+                                  <div class="menu-heading">{{ block.settings.title }}</div>
+                                  <div class="mega-menu-products">
+                                    {%- for product in block.settings.products -%}
+                                      <div class="mega-menu-product">
+                                        <a href="{{ product.url }}">
+                                          <img src="{{ product.featured_image | img_url: 'medium' }}"
+                                            alt="{{ product.title }}"
+                                            class="lazyload">
+                                          <h4>{{ product.title }}</h4>
+                                          <p class="price">{{ product.price | money }}</p>
+                                        </a>
+                                      </div>
+                                    {%- endfor -%}
+                                  </div>
+                                {%- endif -%}
+                                {%- if block.settings.banner_image != blank -%}
+                                  <div class="mega-menu-banner">
+                                    <a href="{{ block.settings.banner_link }}">
+                                      <img src="{{ block.settings.banner_image | img_url: 'master' }}"
+                                        alt="{{ block.settings.title }}"
+                                        class="lazyload">
+                                    </a>
+                                  </div>
+                                {%- endif -%}
+                              </div>
+                            {%- endif -%}
+                          
+                          {%- when 'mega_menu_pages' -%}
+                            {%- if block.settings.title == link.title -%}
+                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                {%- if block.settings.menu != blank -%}
+                                  <div class="menu-heading">{{ block.settings.title }}</div>
+                                  <ul class="menu-list">
+                                    {%- for link in linklists[block.settings.menu].links -%}
+                                      <li>
+                                        <a href="{{ link.url }}" class="menu-link-text link">
+                                          {{ link.title }}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                                {%- if block.settings.banner_image != blank -%}
+                                  <div class="mega-menu-banner">
+                                    <a href="{{ block.settings.banner_link }}">
+                                      <img src="{{ block.settings.banner_image | img_url: 'master' }}"
+                                        alt="{{ block.settings.title }}"
+                                        class="lazyload">
+                                    </a>
+                                  </div>
+                                {%- endif -%}
+                              </div>
+                            {%- endif -%}
+                        {%- endcase -%}
+                      {%- endfor -%}
+                    </div>
                   </div>
                 {%- endif -%}
               </li>
@@ -205,78 +229,102 @@
                   {%- if link.links != blank -%}
                     <div class="sub-menu mega-menu mega-shop">
                       <div class="wrapper-sub-menu">
-                        {%- for childlink in link.links -%}
-                          <div class="mega-menu-item">
-                            <div class="menu-heading">{{ childlink.title }}</div>
-                            {%- if childlink.links != blank -%}
-                              <ul class="menu-list">
-                                {%- for grandchildlink in childlink.links -%}
-                                  <li>
-                                    <a href="{{ grandchildlink.url }}" class="menu-link-text link">
-                                      {{ grandchildlink.title }}
-                                      {%- if grandchildlink.title contains 'Hot' or grandchildlink.title contains 'New' -%}
-                                        <span class="demo-label{% if grandchildlink.title contains 'Hot' %} demo-hot{% endif %}">
-                                          {%- if grandchildlink.title contains 'Hot' -%}Hot{%- else -%}New{%- endif -%}
-                                        </span>
-                                      {%- endif -%}
-                                    </a>
-                                  </li>
-                                {%- endfor -%}
-                              </ul>
-                            {%- endif -%}
-                          </div>
-                        {%- endfor -%}
-                      </div>
-                      {%- if section.settings.show_product_cards -%}
-                        <div class="wrapper-sub-collection">
-                          <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
-                            data-swiper='{
-                              "slidesPerView": 2,
-                              "spaceBetween": 24,
-                              "speed": 800,
-                              "observer": true,
-                              "observeParents": true,
-                              "slidesPerGroup": 2,
-                              "navigation": {
-                                "clickable": true,
-                                "nextEl": ".nav-next-cls-header",
-                                "prevEl": ".nav-prev-cls-header"
-                              },
-                              "pagination": { "el": ".sw-pagination-cls-header", "clickable": true }
-                            }'>
-                            <div class="swiper-wrapper">
-                              {%- for i in (1..4) -%}
-                                {%- assign product_image = 'product_image_' | append: i -%}
-                                {%- assign product_title = 'product_title_' | append: i -%}
-                                {%- assign product_url = 'product_url_' | append: i -%}
-                                {%- if section.settings[product_image] != blank -%}
-                                  <div class="swiper-slide">
-                                    <div class="wg-cls style-abs asp-1 hover-img">
-                                      <a href="{{ section.settings[product_url] }}" class="image img-style d-block">
-                                        <img src="{{ section.settings[product_image] | img_url: 'master' }}"
-                                          alt="{{ section.settings[product_title] }}"
-                                          width="300"
-                                          height="300"
+                        {%- for block in section.blocks -%}
+                          {%- case block.type -%}
+                            {%- when 'mega_menu_html' -%}
+                              {%- if block.settings.title == link.title -%}
+                                <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                  {{ block.settings.html_content }}
+                                </div>
+                              {%- endif -%}
+                            
+                            {%- when 'mega_menu_shop' -%}
+                              {%- if block.settings.title == link.title -%}
+                                <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                  {%- if block.settings.collections != blank -%}
+                                    <div class="menu-heading">{{ block.settings.title }}</div>
+                                    <ul class="menu-list">
+                                      {%- for collection in block.settings.collections -%}
+                                        <li>
+                                          <a href="{{ collection.url }}" class="menu-link-text link">
+                                            {{ collection.title }}
+                                          </a>
+                                        </li>
+                                      {%- endfor -%}
+                                    </ul>
+                                  {%- endif -%}
+                                  {%- if block.settings.banner_image != blank -%}
+                                    <div class="mega-menu-banner">
+                                      <a href="{{ block.settings.banner_link }}">
+                                        <img src="{{ block.settings.banner_image | img_url: 'master' }}"
+                                          alt="{{ block.settings.title }}"
                                           class="lazyload">
                                       </a>
-                                      <div class="cls-btn text-center">
-                                        <a href="{{ section.settings[product_url] }}"
-                                          class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                          {{ section.settings[product_title] }}
-                                          <i class="icon icon-arrow-top-left"></i>
-                                        </a>
-                                      </div>
                                     </div>
-                                  </div>
-                                {%- endif -%}
-                              {%- endfor -%}
-                            </div>
-                            <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center"></div>
-                            <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls-header"></div>
-                            <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls-header"></div>
-                          </div>
-                        </div>
-                      {%- endif -%}
+                                  {%- endif -%}
+                                </div>
+                              {%- endif -%}
+                            
+                            {%- when 'mega_menu_product' -%}
+                              {%- if block.settings.title == link.title -%}
+                                <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                  {%- if block.settings.products != blank -%}
+                                    <div class="menu-heading">{{ block.settings.title }}</div>
+                                    <div class="mega-menu-products">
+                                      {%- for product in block.settings.products -%}
+                                        <div class="mega-menu-product">
+                                          <a href="{{ product.url }}">
+                                            <img src="{{ product.featured_image | img_url: 'medium' }}"
+                                              alt="{{ product.title }}"
+                                              class="lazyload">
+                                            <h4>{{ product.title }}</h4>
+                                            <p class="price">{{ product.price | money }}</p>
+                                          </a>
+                                        </div>
+                                      {%- endfor -%}
+                                    </div>
+                                  {%- endif -%}
+                                  {%- if block.settings.banner_image != blank -%}
+                                    <div class="mega-menu-banner">
+                                      <a href="{{ block.settings.banner_link }}">
+                                        <img src="{{ block.settings.banner_image | img_url: 'master' }}"
+                                          alt="{{ block.settings.title }}"
+                                          class="lazyload">
+                                      </a>
+                                    </div>
+                                  {%- endif -%}
+                                </div>
+                              {%- endif -%}
+                            
+                            {%- when 'mega_menu_pages' -%}
+                              {%- if block.settings.title == link.title -%}
+                                <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                  {%- if block.settings.menu != blank -%}
+                                    <div class="menu-heading">{{ block.settings.title }}</div>
+                                    <ul class="menu-list">
+                                      {%- for link in linklists[block.settings.menu].links -%}
+                                        <li>
+                                          <a href="{{ link.url }}" class="menu-link-text link">
+                                            {{ link.title }}
+                                          </a>
+                                        </li>
+                                      {%- endfor -%}
+                                    </ul>
+                                  {%- endif -%}
+                                  {%- if block.settings.banner_image != blank -%}
+                                    <div class="mega-menu-banner">
+                                      <a href="{{ block.settings.banner_link }}">
+                                        <img src="{{ block.settings.banner_image | img_url: 'master' }}"
+                                          alt="{{ block.settings.title }}"
+                                          class="lazyload">
+                                      </a>
+                                    </div>
+                                  {%- endif -%}
+                                </div>
+                              {%- endif -%}
+                          {%- endcase -%}
+                        {%- endfor -%}
+                      </div>
                     </div>
                   {%- endif -%}
                 </li>
@@ -375,78 +423,102 @@
                   {%- if link.links != blank -%}
                     <div class="sub-menu mega-menu mega-shop">
                       <div class="wrapper-sub-menu">
-                        {%- for childlink in link.links -%}
-                          <div class="mega-menu-item">
-                            <div class="menu-heading">{{ childlink.title }}</div>
-                            {%- if childlink.links != blank -%}
-                              <ul class="menu-list">
-                                {%- for grandchildlink in childlink.links -%}
-                                  <li>
-                                    <a href="{{ grandchildlink.url }}" class="menu-link-text link">
-                                      {{ grandchildlink.title }}
-                                      {%- if grandchildlink.title contains 'Hot' or grandchildlink.title contains 'New' -%}
-                                        <span class="demo-label{% if grandchildlink.title contains 'Hot' %} demo-hot{% endif %}">
-                                          {%- if grandchildlink.title contains 'Hot' -%}Hot{%- else -%}New{%- endif -%}
-                                        </span>
-                                      {%- endif -%}
-                                    </a>
-                                  </li>
-                                {%- endfor -%}
-                              </ul>
-                            {%- endif -%}
-                          </div>
-                        {%- endfor -%}
-                      </div>
-                      {%- if section.settings.show_product_cards -%}
-                        <div class="wrapper-sub-collection">
-                          <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
-                            data-swiper='{
-                              "slidesPerView": 2,
-                              "spaceBetween": 24,
-                              "speed": 800,
-                              "observer": true,
-                              "observeParents": true,
-                              "slidesPerGroup": 2,
-                              "navigation": {
-                                "clickable": true,
-                                "nextEl": ".nav-next-cls-header",
-                                "prevEl": ".nav-prev-cls-header"
-                              },
-                              "pagination": { "el": ".sw-pagination-cls-header", "clickable": true }
-                            }'>
-                            <div class="swiper-wrapper">
-                              {%- for i in (1..4) -%}
-                                {%- assign product_image = 'product_image_' | append: i -%}
-                                {%- assign product_title = 'product_title_' | append: i -%}
-                                {%- assign product_url = 'product_url_' | append: i -%}
-                                {%- if section.settings[product_image] != blank -%}
-                                  <div class="swiper-slide">
-                                    <div class="wg-cls style-abs asp-1 hover-img">
-                                      <a href="{{ section.settings[product_url] }}" class="image img-style d-block">
-                                        <img src="{{ section.settings[product_image] | img_url: 'master' }}"
-                                          alt="{{ section.settings[product_title] }}"
-                                          width="300"
-                                          height="300"
+                        {%- for block in section.blocks -%}
+                          {%- case block.type -%}
+                            {%- when 'mega_menu_html' -%}
+                              {%- if block.settings.title == link.title -%}
+                                <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                  {{ block.settings.html_content }}
+                                </div>
+                              {%- endif -%}
+                            
+                            {%- when 'mega_menu_shop' -%}
+                              {%- if block.settings.title == link.title -%}
+                                <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                  {%- if block.settings.collections != blank -%}
+                                    <div class="menu-heading">{{ block.settings.title }}</div>
+                                    <ul class="menu-list">
+                                      {%- for collection in block.settings.collections -%}
+                                        <li>
+                                          <a href="{{ collection.url }}" class="menu-link-text link">
+                                            {{ collection.title }}
+                                          </a>
+                                        </li>
+                                      {%- endfor -%}
+                                    </ul>
+                                  {%- endif -%}
+                                  {%- if block.settings.banner_image != blank -%}
+                                    <div class="mega-menu-banner">
+                                      <a href="{{ block.settings.banner_link }}">
+                                        <img src="{{ block.settings.banner_image | img_url: 'master' }}"
+                                          alt="{{ block.settings.title }}"
                                           class="lazyload">
                                       </a>
-                                      <div class="cls-btn text-center">
-                                        <a href="{{ section.settings[product_url] }}"
-                                          class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                          {{ section.settings[product_title] }}
-                                          <i class="icon icon-arrow-top-left"></i>
-                                        </a>
-                                      </div>
                                     </div>
-                                  </div>
-                                {%- endif -%}
-                              {%- endfor -%}
-                            </div>
-                            <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center"></div>
-                            <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls-header"></div>
-                            <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls-header"></div>
-                          </div>
-                        </div>
-                      {%- endif -%}
+                                  {%- endif -%}
+                                </div>
+                              {%- endif -%}
+                            
+                            {%- when 'mega_menu_product' -%}
+                              {%- if block.settings.title == link.title -%}
+                                <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                  {%- if block.settings.products != blank -%}
+                                    <div class="menu-heading">{{ block.settings.title }}</div>
+                                    <div class="mega-menu-products">
+                                      {%- for product in block.settings.products -%}
+                                        <div class="mega-menu-product">
+                                          <a href="{{ product.url }}">
+                                            <img src="{{ product.featured_image | img_url: 'medium' }}"
+                                              alt="{{ product.title }}"
+                                              class="lazyload">
+                                            <h4>{{ product.title }}</h4>
+                                            <p class="price">{{ product.price | money }}</p>
+                                          </a>
+                                        </div>
+                                      {%- endfor -%}
+                                    </div>
+                                  {%- endif -%}
+                                  {%- if block.settings.banner_image != blank -%}
+                                    <div class="mega-menu-banner">
+                                      <a href="{{ block.settings.banner_link }}">
+                                        <img src="{{ block.settings.banner_image | img_url: 'master' }}"
+                                          alt="{{ block.settings.title }}"
+                                          class="lazyload">
+                                      </a>
+                                    </div>
+                                  {%- endif -%}
+                                </div>
+                              {%- endif -%}
+                            
+                            {%- when 'mega_menu_pages' -%}
+                              {%- if block.settings.title == link.title -%}
+                                <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                  {%- if block.settings.menu != blank -%}
+                                    <div class="menu-heading">{{ block.settings.title }}</div>
+                                    <ul class="menu-list">
+                                      {%- for link in linklists[block.settings.menu].links -%}
+                                        <li>
+                                          <a href="{{ link.url }}" class="menu-link-text link">
+                                            {{ link.title }}
+                                          </a>
+                                        </li>
+                                      {%- endfor -%}
+                                    </ul>
+                                  {%- endif -%}
+                                  {%- if block.settings.banner_image != blank -%}
+                                    <div class="mega-menu-banner">
+                                      <a href="{{ block.settings.banner_link }}">
+                                        <img src="{{ block.settings.banner_image | img_url: 'master' }}"
+                                          alt="{{ block.settings.title }}"
+                                          class="lazyload">
+                                      </a>
+                                    </div>
+                                  {%- endif -%}
+                                </div>
+                              {%- endif -%}
+                          {%- endcase -%}
+                        {%- endfor -%}
+                      </div>
                     </div>
                   {%- endif -%}
                 </li>
@@ -659,9 +731,127 @@
       "label": "Product URL"
     }
   ],
+  "blocks": [
+    {
+      "type": "mega_menu_html",
+      "name": "Mega Menu HTML",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Menu Title",
+          "default": "Mega Menu HTML"
+        },
+        {
+          "type": "html",
+          "id": "html_content",
+          "label": "HTML Content",
+          "default": "<div class='mega-menu-html'>Add your HTML content here</div>"
+        }
+      ]
+    },
+    {
+      "type": "mega_menu_shop",
+      "name": "Mega Menu Shop",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Menu Title",
+          "default": "Mega Menu Shop"
+        },
+        {
+          "type": "collection_list",
+          "id": "collections",
+          "label": "Collections",
+          "limit": 6
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image",
+          "label": "Banner Image"
+        },
+        {
+          "type": "url",
+          "id": "banner_link",
+          "label": "Banner Link"
+        }
+      ]
+    },
+    {
+      "type": "mega_menu_product",
+      "name": "Mega Menu Product",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Menu Title",
+          "default": "Mega Menu Product"
+        },
+        {
+          "type": "product_list",
+          "id": "products",
+          "label": "Products",
+          "limit": 4
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image",
+          "label": "Banner Image"
+        },
+        {
+          "type": "url",
+          "id": "banner_link",
+          "label": "Banner Link"
+        }
+      ]
+    },
+    {
+      "type": "mega_menu_pages",
+      "name": "Mega Menu Pages",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Menu Title",
+          "default": "Mega Menu Pages"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "footer"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image",
+          "label": "Banner Image"
+        },
+        {
+          "type": "url",
+          "id": "banner_link",
+          "label": "Banner Link"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
       "name": "Header",
+      "blocks": [
+        {
+          "type": "mega_menu_html"
+        },
+        {
+          "type": "mega_menu_shop"
+        },
+        {
+          "type": "mega_menu_product"
+        },
+        {
+          "type": "mega_menu_pages"
+        }
+      ],
       "settings": {
         "layout": "layout-1",
         "background_color": "#ffffff",
