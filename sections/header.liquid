@@ -473,6 +473,100 @@
                 </ul>
               </nav>
             </div>
+          {%- when 'mega_menu' -%}
+            <div class="col-xl-8 d-none d-xl-block" {{ block.shopify_attributes }}>
+              <nav class="box-navigation text-center">
+                <ul class="box-nav-menu">
+                  {%- for link in linklists[block.settings.menu].links -%}
+                    <li class="menu-item{% if link.links != blank %} has-submenu{% endif %}">
+                      <a href="{{ link.url }}" class="item-link">
+                        {{ link.title }}
+                        {%- if link.links != blank -%}
+                          <i class="icon icon-arr-down"></i>
+                        {%- endif -%}
+                      </a>
+                      {%- if link.links != blank -%}
+                        <div class="sub-menu mega-menu mega-shop">
+                          <div class="wrapper-sub-menu">
+                            {%- for childlink in link.links -%}
+                              <div class="mega-menu-item">
+                                <div class="menu-heading">{{ childlink.title }}</div>
+                                {%- if childlink.links != blank -%}
+                                  <ul class="menu-list">
+                                    {%- for grandchildlink in childlink.links -%}
+                                      <li>
+                                        <a href="{{ grandchildlink.url }}" class="menu-link-text link">
+                                          {{ grandchildlink.title }}
+                                          {%- if grandchildlink.title contains 'Hot' or grandchildlink.title contains 'New' -%}
+                                            <span class="demo-label{% if grandchildlink.title contains 'Hot' %} demo-hot{% endif %}">
+                                              {%- if grandchildlink.title contains 'Hot' -%}Hot{%- else -%}New{%- endif -%}
+                                            </span>
+                                          {%- endif -%}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                              </div>
+                            {%- endfor -%}
+                          </div>
+                          {%- if block.settings.show_product_cards -%}
+                            <div class="wrapper-sub-collection">
+                              <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
+                                data-swiper='{
+                                  "slidesPerView": 2,
+                                  "spaceBetween": 24,
+                                  "speed": 800,
+                                  "observer": true,
+                                  "observeParents": true,
+                                  "slidesPerGroup": 2,
+                                  "navigation": {
+                                    "clickable": true,
+                                    "nextEl": ".nav-next-cls-header",
+                                    "prevEl": ".nav-prev-cls-header"
+                                  },
+                                  "pagination": { "el": ".sw-pagination-cls-header", "clickable": true }
+                                }'>
+                                <div class="swiper-wrapper">
+                                  {%- for i in (1..4) -%}
+                                    {%- assign product_image = 'product_image_' | append: i -%}
+                                    {%- assign product_title = 'product_title_' | append: i -%}
+                                    {%- assign product_url = 'product_url_' | append: i -%}
+                                    {%- if block.settings[product_image] != blank -%}
+                                      <div class="swiper-slide">
+                                        <div class="wg-cls style-abs asp-1 hover-img">
+                                          <a href="{{ block.settings[product_url] }}" class="image img-style d-block">
+                                            <img src="{{ block.settings[product_image] | img_url: 'master' }}"
+                                              alt="{{ block.settings[product_title] }}"
+                                              width="300"
+                                              height="300"
+                                              class="lazyload">
+                                          </a>
+                                          <div class="cls-btn text-center">
+                                            <a href="{{ block.settings[product_url] }}"
+                                              class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                                              {{ block.settings[product_title] }}
+                                              <i class="icon icon-arrow-top-left"></i>
+                                            </a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    {%- endif -%}
+                                  {%- endfor -%}
+                                </div>
+                                <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center"></div>
+                                <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls-header"></div>
+                                <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls-header"></div>
+                              </div>
+                            </div>
+                          {%- endif -%}
+                        </div>
+                      {%- endif -%}
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </nav>
+            </div>
           {%- when 'icons' -%}
             <div class="col-xl-2 col-md-4 col-3" {{ block.shopify_attributes }}>
               <ul class="nav-icon d-flex justify-content-end align-items-center">
@@ -720,6 +814,104 @@
           "id": "show_cart",
           "label": "Show cart",
           "default": true
+        }
+      ]
+    },
+    {
+      "type": "mega_menu",
+      "name": "Mega Menu",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Mega Menu",
+          "default": "main-menu"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_product_cards",
+          "label": "Show Product Cards in Mega Menu",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Product 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image_1",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "product_title_1",
+          "label": "Product Title",
+          "default": "Men"
+        },
+        {
+          "type": "url",
+          "id": "product_url_1",
+          "label": "Product URL"
+        },
+        {
+          "type": "header",
+          "content": "Product 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image_2",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "product_title_2",
+          "label": "Product Title",
+          "default": "Women"
+        },
+        {
+          "type": "url",
+          "id": "product_url_2",
+          "label": "Product URL"
+        },
+        {
+          "type": "header",
+          "content": "Product 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image_3",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "product_title_3",
+          "label": "Product Title",
+          "default": "Accessories"
+        },
+        {
+          "type": "url",
+          "id": "product_url_3",
+          "label": "Product URL"
+        },
+        {
+          "type": "header",
+          "content": "Product 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image_4",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "product_title_4",
+          "label": "Product Title",
+          "default": "Sportwear"
+        },
+        {
+          "type": "url",
+          "id": "product_url_4",
+          "label": "Product URL"
         }
       ]
     }
