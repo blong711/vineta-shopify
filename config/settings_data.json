@@ -12,35 +12,6 @@
     "sections": {
       "top-bar": {
         "type": "top-bar",
-        "blocks": {
-          "social_media_nDgnrD": {
-            "type": "social_media",
-            "settings": {
-              "facebook_url": "https://www.facebook.com/",
-              "instagram_url": "https://www.instagram.com/",
-              "twitter_url": "https://x.com/",
-              "snapchat_url": "https://www.snapchat.com/"
-            }
-          },
-          "announcement_P889Cn": {
-            "type": "announcement",
-            "settings": {
-              "announcements": "Return extended to 60 days\nLife-time Guarantees\nLimited-Time Offer"
-            }
-          },
-          "language_currency_w6VaFM": {
-            "type": "language_currency",
-            "settings": {
-              "show_language": true,
-              "show_currency": true
-            }
-          }
-        },
-        "block_order": [
-          "social_media_nDgnrD",
-          "announcement_P889Cn",
-          "language_currency_w6VaFM"
-        ],
         "settings": {
           "background_color": "#1a1a1a",
           "text_color": "#ffffff",
@@ -50,31 +21,14 @@
       "header": {
         "type": "header",
         "blocks": {
-          "logo_WL9xnd": {
-            "type": "logo",
+          "menu_item_MWyMUp": {
+            "type": "menu_item",
             "settings": {
-              "logo": "shopify://shop_images/logo.svg",
-              "logo_width": 150
+              "label": "",
+              "link": ""
             }
           },
-          "menu_dq3qkq": {
-            "type": "menu",
-            "settings": {
-              "menu": "main-menu",
-              "show_product_cards": true,
-              "product_image_1": "shopify://shop_images/5711707751_2_1_1.jpg",
-              "product_title_1": "Men",
-              "product_url_1": "",
-              "product_image_2": "shopify://shop_images/5713200620_2_5_1.jpg",
-              "product_title_2": "Women",
-              "product_url_2": "",
-              "product_title_3": "Accessories",
-              "product_url_3": "",
-              "product_title_4": "Sportwear",
-              "product_url_4": ""
-            }
-          },
-          "icons_U3LLHC": {
+          "icons_zVYVqb": {
             "type": "icons",
             "settings": {
               "show_search": true,
@@ -85,9 +39,8 @@
           }
         },
         "block_order": [
-          "logo_WL9xnd",
-          "menu_dq3qkq",
-          "icons_U3LLHC"
+          "menu_item_MWyMUp",
+          "icons_zVYVqb"
         ],
         "settings": {
           "layout": "layout-1",
@@ -99,172 +52,9 @@
       },
       "footer": {
         "type": "footer",
-        "blocks": {
-          "payment_icon_3zjrzD": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/payment1.png",
-              "link": "",
-              "alt_text": ""
-            }
-          },
-          "payment_icon_qqWVMG": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/payment2.png",
-              "link": "",
-              "alt_text": ""
-            }
-          },
-          "payment_icon_DP6drM": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/payment3.png",
-              "link": "",
-              "alt_text": ""
-            }
-          },
-          "payment_icon_UBxYqV": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/payment4.png",
-              "link": "",
-              "alt_text": ""
-            }
-          },
-          "payment_icon_rhUyMx": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/payment5.png",
-              "link": "",
-              "alt_text": ""
-            }
-          },
-          "payment_icon_xXBVjT": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/payment6.png",
-              "link": "",
-              "alt_text": ""
-            }
-          },
-          "payment_icon_4AkgcP": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/payment7.png",
-              "link": "",
-              "alt_text": ""
-            }
-          },
-          "payment_icon_8gyA3V": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/payment8.png",
-              "link": "",
-              "alt_text": ""
-            }
-          },
-          "payment_icon_PbgYGJ": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/payment9.png",
-              "link": "",
-              "alt_text": ""
-            }
-          },
-          "payment_icon_WXEcT9": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/payment10.png",
-              "link": "",
-              "alt_text": ""
-            }
-          },
-          "social_8n7Fzq": {
-            "type": "social",
-            "settings": {
-              "platform": "fb",
-              "url": ""
-            }
-          },
-          "social_3tTfcT": {
-            "type": "social",
-            "settings": {
-              "platform": "instagram",
-              "url": ""
-            }
-          },
-          "social_V937tP": {
-            "type": "social",
-            "settings": {
-              "platform": "linkedin",
-              "url": ""
-            }
-          },
-          "social_CccqAh": {
-            "type": "social",
-            "settings": {
-              "platform": "x",
-              "url": ""
-            }
-          },
-          "contact_ejH97X": {
-            "type": "contact",
-            "settings": {
-              "title": "Business Contact",
-              "address": "123 Yarran st, Punchbowl, NSW 2196, Australia",
-              "phone": "(64) 8342 1245",
-              "email": "support@example.com",
-              "map_link": "https://www.google.com/maps?q=15Yarranst,Punchbowl,NSW,Australia"
-            }
-          },
-          "newsletter_xqWN4z": {
-            "type": "newsletter",
-            "settings": {
-              "title": "Subscribe Newsletter",
-              "text": "We invite you to register to read the latest news, offers and events about our company. We promise not spam your inbox.",
-              "placeholder": "Email address"
-            }
-          },
-          "menu_NxrzEc": {
-            "type": "menu",
-            "settings": {
-              "title": "About Us",
-              "menu": "about-us"
-            }
-          },
-          "menu_LbXiiP": {
-            "type": "menu",
-            "settings": {
-              "title": "Resource",
-              "menu": "resource"
-            }
-          }
-        },
-        "block_order": [
-          "payment_icon_3zjrzD",
-          "payment_icon_qqWVMG",
-          "payment_icon_DP6drM",
-          "payment_icon_UBxYqV",
-          "payment_icon_rhUyMx",
-          "payment_icon_xXBVjT",
-          "payment_icon_4AkgcP",
-          "payment_icon_8gyA3V",
-          "payment_icon_PbgYGJ",
-          "payment_icon_WXEcT9",
-          "social_8n7Fzq",
-          "social_3tTfcT",
-          "social_V937tP",
-          "social_CccqAh",
-          "contact_ejH97X",
-          "newsletter_xqWN4z",
-          "menu_NxrzEc",
-          "menu_LbXiiP"
-        ],
         "settings": {
-          "logo": "shopify://shop_images/logo_1.svg",
           "show_payment_icons": true,
-          "payment_icons_size": 40
+          "payment_icons_size": 30
         }
       },
       "cart-drawer": {
@@ -289,6 +79,16 @@
         "type": "register-drawer",
         "settings": {
           "title": "Create account"
+        }
+      },
+      "mobile-menu": {
+        "type": "mobile-menu",
+        "settings": {
+          "address": "123 Yarran st, Punchbowl, NSW 2196, Australia",
+          "email": "clientcare@ecom.com",
+          "phone": "1.888.838.3022",
+          "show_currency_selector": true,
+          "show_language_selector": true
         }
       },
       "compare-drawer": {
@@ -321,16 +121,6 @@
           "show_snapchat": true
         }
       },
-      "mobile-menu": {
-        "type": "mobile-menu",
-        "settings": {
-          "address": "123 Yarran st, Punchbowl, NSW 2196, Australia",
-          "email": "clientcare@ecom.com",
-          "phone": "1.888.838.3022",
-          "show_currency_selector": true,
-          "show_language_selector": true
-        }
-      },
       "mobile-toolbar": {
         "type": "mobile-toolbar",
         "settings": {
@@ -338,88 +128,6 @@
           "show_account": true,
           "show_shop": true,
           "show_home": true
-        }
-      },
-      "breadcrumb": {
-        "type": "breadcrumb",
-        "settings": {
-          "show_breadcrumb": true
-        }
-      },
-      "page-title": {
-        "type": "page-title",
-        "settings": {
-          "custom_title": "",
-          "contact_title": "Contact Us",
-          "about_title": "",
-          "wishlist_title": "My Wishlist",
-          "compare_title": "Compare Products"
-        }
-      },
-      "product": {
-        "type": "product",
-        "settings": {
-          "layout": "default",
-          "show_trust_seal": true,
-          "trust_seal_text": "Guarantee Safe Checkout:",
-          "show_sold_count": true,
-          "sold_count_text": "30 sold in last 24 hours",
-          "show_stock_count": true,
-          "show_size_guide": true,
-          "show_extra_links": true,
-          "show_delivery_info": true,
-          "delivery_time": "3-5 days international",
-          "free_shipping_text": "all orders over $150",
-          "show_fbt": true,
-          "show_sticky_cart": true
-        }
-      },
-      "product-details": {
-        "type": "product-details",
-        "settings": {
-          "show_description": true,
-          "show_materials": true,
-          "show_return_policies": true
-        }
-      },
-      "people-also-bought": {
-        "type": "people-also-bought",
-        "settings": {
-          "title": "People Also Bought"
-        }
-      },
-      "recently-viewed": {
-        "type": "recently-viewed",
-        "settings": {
-          "title": "Recently Viewed"
-        }
-      },
-      "wishlist": {
-        "type": "wishlist",
-        "settings": {
-          "products_per_page": 12
-        }
-      },
-      "compare-page": {
-        "type": "compare-page",
-        "settings": {}
-      },
-      "about-us": {
-        "type": "about-us",
-        "settings": {
-          "welcome_title": "Welcome to Vineta",
-          "welcome_subtitle": "The Ultimate Fashion Destination",
-          "welcome_text": "At Vineta, we bring you thoughtfully curated collections that blend contemporary designs with timeless elegance. With over 15 years of experience, we cater to fashion enthusiasts who appreciate quality, style, and versatility.",
-          "welcome_image": "shopify://shop_images/about.jpg",
-          "why_choose_title": "Why Choose Vineta",
-          "why_choose_text": "<p>Our products are crafted with innovation and an eye for the latest trends. We push the boundaries of traditional fashion, delivering bold, fresh designs that inspire confidence and individuality.</p>",
-          "why_choose_image": "shopify://shop_images/about-2.jpg",
-          "style_title": "Style Curated Just for You",
-          "style_subtitle": "Style Curated Just for You",
-          "style_text": "<p>Our skilled stylists have thoughtfully assembled seasonal outfits that are both trendy and timeless. With a variety of looks, they're here to inspire your next fashion-forward ensemble.</p>",
-          "testimonial_text": "\"I've ordered from many places, but I have to say, this shop offers the best shipping experience ever. Thank you so much for the outstanding service!\"",
-          "testimonial_author_name": "Vincent P",
-          "testimonial_author_image": "shopify://shop_images/tes-about.jpg"
         }
       }
     },
