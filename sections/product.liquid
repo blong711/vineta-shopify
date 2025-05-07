@@ -33,13 +33,13 @@
                   </div>
                 </div>
                 <div class="flat-wrap-media-product">
-                  <div dir="ltr" class="swiper tf-product-media-main" id="gallery-swiper-started">
+                  <div dir="ltr" class="swiper tf-product-media-main tf-product-zoom-inner" id="gallery-swiper-started">
                     <div class="swiper-wrapper">
                       {% for image in product.images %}
                         {% assign matched_variant = product.variants | where: 'featured_image', image | first %}
                         <div class="swiper-slide" data-color="{% if matched_variant %}{{ matched_variant.option1 }}{% else %}{{ image.alt | default: 'default' }}{% endif %}">
                           <a href="{{ image | image_url: width: 1200 }}" target="_blank" class="item" data-pswp-width="552px" data-pswp-height="827px">
-                            <img class="tf-image-zoom lazyload"
+                            <img class="tf-image-zoom-inner lazyload"
                               data-zoom="{{ image | image_url: width: 1200 }}"
                               data-src="{{ image | image_url: width: 800 }}"
                               src="{{ image | image_url: width: 400 }}"
@@ -460,6 +460,58 @@
 
 .btn-wishlist .icon {
   margin-right: 5px;
+}
+
+/* Add zoom styles */
+.tf-product-media-wrap {
+  position: relative;
+}
+
+.tf-zoom-main {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 100%;
+  height: 100%;
+  background-size: 200%;
+  background-repeat: no-repeat;
+  display: none;
+  z-index: 10;
+  pointer-events: none;
+  margin-left: 20px;
+  border: 1px solid #eee;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.tf-image-zoom,
+.tf-image-zoom-inner {
+  cursor: zoom-in;
+  transition: opacity 0.3s ease;
+}
+
+.tf-image-zoom:hover,
+.tf-image-zoom-inner:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 991px) {
+  .tf-zoom-main {
+    display: none !important;
+  }
+}
+
+/* --- Image Zoom at Cursor --- */
+.tf-image-zoom,
+.tf-image-zoom-inner {
+  transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+  will-change: transform;
+  cursor: pointer;
+}
+.tf-image-zoom.zoomed,
+.tf-image-zoom-inner.zoomed {
+  transform: scale(2); /* Adjust zoom level as needed */
+  z-index: 2;
+  cursor: pointer;
 }
 </style>
 
@@ -884,6 +936,22 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log('No color swatch found for initial color:', initialColor);
     }
   }
+
+  // Remove .tf-zoom-main logic (no longer needed)
+  // Add new zoom-at-cursor logic for all .tf-image-zoom and .tf-image-zoom-inner
+  document.querySelectorAll('.tf-image-zoom, .tf-image-zoom-inner').forEach(image => {
+    image.addEventListener('mousemove', function(e) {
+      const rect = this.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      this.style.transformOrigin = `${x}% ${y}%`;
+      this.classList.add('zoomed');
+    });
+    image.addEventListener('mouseleave', function() {
+      this.classList.remove('zoomed');
+      this.style.transformOrigin = 'center center';
+    });
+  });
 });
 
 // Helper function to format money
