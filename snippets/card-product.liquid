@@ -112,7 +112,7 @@
     {%- endif -%}
 
     {%- if show_color_swatches and product.variants.size > 1 and product.options contains 'Color' -%}
-      <ul class="list-color-product justify-content-center">
+      <ul class="list-color-product {{ text_alignment | default: 'text-left' | replace: 'text-', 'justify-content-' }}">
         {%- for option in product.options_with_values -%}
           {%- if option.name == 'Color' -%}
             {%- for value in option.values -%}
@@ -642,7 +642,7 @@
     {%- endif -%}
 
     {%- if show_color_swatches and product.variants.size > 1 and product.options contains 'Color' -%}
-      <ul class="list-color-product">
+      <ul class="list-color-product {{ text_alignment | default: 'text-left' | replace: 'text-', 'justify-content-' }}">
         {%- for option in product.options_with_values -%}
           {%- if option.name == 'Color' -%}
             {%- for value in option.values -%}

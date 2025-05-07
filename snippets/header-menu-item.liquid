@@ -130,7 +130,7 @@
           <div class="wrapper-sub-product">
             {% assign block = section.blocks | where: "type", "mega_menu_product" | first %}
             {% if block and block.settings.products != blank %}
-              <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
+              <div dir="ltr" class="swiper tf-swiper wrap-sw-over wow fadeInUp"
                 data-swiper='{
                   "slidesPerView": 2,
                   "spaceBetween": 24,
@@ -140,10 +140,10 @@
                   "slidesPerGroup": 2,
                   "navigation": {
                     "clickable": true,
-                    "nextEl": ".nav-next-cls-header",
-                    "prevEl": ".nav-prev-cls-header"
+                    "nextEl": ".nav-next-product-header",
+                    "prevEl": ".nav-prev-product-header"
                   },
-                  "pagination": { "el": ".sw-pagination-cls-header", "clickable": true }
+                  "pagination": { "el": ".sw-pagination-product-header", "clickable": true }
                 }'>
                 <div class="swiper-wrapper">
                   {% for product in block.settings.products %}
@@ -158,7 +158,7 @@
                     </div>
                   {% endfor %}
                 </div>
-                <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center"></div>
+                <div class="sw-dot-default sw-pagination-product-header justify-content-center"></div>
               </div>
             {% endif %}
           </div>
