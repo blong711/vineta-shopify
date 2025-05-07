@@ -78,18 +78,24 @@
                                 </video>
                               </div>
                             {% when 'model' %}
-                              <div class="item position-relative">
-                                <div class="wrap-btn-viewer">
-                                  <i class="icon icon-btn3d"></i>
+                              <div class="item">
+                                <div class="tf-model-viewer">
+                                  <model-viewer
+                                    src="{{ media.sources[0].url }}"
+                                    alt="{{ media.alt | default: product.title }}"
+                                    ar
+                                    camera-controls
+                                    poster="{{ media.preview_image | image_url: width: 800 }}"
+                                    class="tf-model-viewer-ui disabled" tabindex="1"
+                                    data-js-focus-visible="" ar-status="not-presenting"
+                                    >
+                                  </model-viewer>
                                 </div>
-                                <model-viewer
-                                  src="{{ media.sources[0].url }}"
-                                  alt="{{ media.alt | default: product.title }}"
-                                  ar
-                                  camera-controls
-                                  poster="{{ media.preview_image | image_url: width: 800 }}"
-                                  style="width:400px; height:600px;">
-                                </model-viewer>
+                                <div class="tf-model-viewer-ui-button">
+                                  <div class="wrap-btn-viewer">
+                                      <i class="icon icon-btn3d"></i>
+                                  </div>
+                              </div>
                               </div>
                           {% endcase %}
                         </div>
@@ -125,20 +131,24 @@
                         Your browser does not support the video tag.
                       </video>
                     </div>
-                  {% when 'model' %}
-                    <div class="item position-relative">
-                      <div class="wrap-btn-viewer">
-                        <i class="icon icon-btn3d"></i>
+                    {% when 'model' %}
+                      <div class="item">
+                        <div class="tf-model-viewer">
+                          <model-viewer
+                            src="{{ media.sources[0].url }}"
+                            alt="{{ media.alt | default: product.title }}"
+                            ar
+                            camera-controls
+                            poster="{{ media.preview_image | image_url: width: 800 }}"
+                            >
+                          </model-viewer>
+                        </div>
+                        <div class="tf-model-viewer-ui-button">
+                          <div class="wrap-btn-viewer">
+                              <i class="icon icon-btn3d"></i>
+                          </div>
                       </div>
-                      <model-viewer
-                        src="{{ media.sources[0].url }}"
-                        alt="{{ media.alt | default: product.title }}"
-                        ar
-                        camera-controls
-                        poster="{{ media.preview_image | image_url: width: 800 }}"
-                        style="width:400px; height:600px;">
-                      </model-viewer>
-                    </div>
+                      </div>
                 {% endcase %}
               {% endfor %}
             </div>
@@ -1049,6 +1059,26 @@ document.addEventListener('DOMContentLoaded', function() {
     image.addEventListener('mouseleave', function() {
       this.classList.remove('zoomed');
       this.style.transformOrigin = 'center center';
+    });
+  });
+
+  document.querySelectorAll('.tf-model-viewer-ui-button .icon-btn3d').forEach(function(icon) {
+    icon.addEventListener('click', function() {
+      const item = icon.closest('.item');
+      if (!item) return;
+      const modelViewer = item.querySelector('model-viewer');
+      if (modelViewer) {
+        modelViewer.classList.remove('disabled');
+      }
+      const iconButton = item.querySelector('.tf-model-viewer-ui-button');
+      if (iconButton) {
+        iconButton.style.display = 'none';
+      }
+      // Disable swiper drag when 3D is enabled
+      let swiperEl = item.closest('.swiper');
+      if (swiperEl && swiperEl.swiper) {
+        swiperEl.swiper.allowTouchMove = false;
+      }
     });
   });
 });

@@ -1,7 +1,23 @@
 {%- comment -%}Search Drawer Section{%- endcomment -%}
 <style>
 .offcanvas-search {
-  z-index: 1030 !important;
+  z-index: 1060 !important;
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.offcanvas-backdrop {
+  z-index: 0 !important;
+}
+
+.offcanvas-search.show {
+  transform: translateY(0);
 }
 </style>
 <div class="offcanvas offcanvas-top offcanvas-search" id="search">
