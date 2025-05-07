@@ -562,9 +562,32 @@ document.addEventListener('DOMContentLoaded', function() {
         slideChange: function() {
           console.log('Slide changed to index:', this.activeIndex);
           const activeSlide = this.slides[this.activeIndex];
-          const color = activeSlide.getAttribute('data-color');
-          console.log('Active slide color:', color);
-          
+          const mediaId = parseInt(activeSlide.getAttribute('data-media-id'));
+          const productMedia = {{ product.media | json }};
+          const media = productMedia.find(m => m.id === mediaId);
+
+          // Find the variant that matches this media (by variant_ids or src)
+          let matchedVariant = null;
+          const variants = {{ product.variants | json }};
+          if (media && media.variant_ids && media.variant_ids.length > 0) {
+            matchedVariant = variants.find(v => media.variant_ids.includes(v.id));
+          }
+          if (!matchedVariant && media && media.src) {
+            matchedVariant = variants.find(v => v.featured_image && v.featured_image.src === media.src);
+          }
+
+          // Update color swatch active state
+          if (matchedVariant && matchedVariant.option1) {
+            const color = matchedVariant.option1.toLowerCase();
+            document.querySelectorAll('.color-btn').forEach(btn => {
+              if (btn.getAttribute('data-scroll') && btn.getAttribute('data-scroll').toLowerCase() === color) {
+                btn.classList.add('active');
+              } else {
+                btn.classList.remove('active');
+              }
+            });
+          }
+
           // Pause all videos first
           this.slides.forEach(slide => {
             const video = slide.querySelector('video');
@@ -579,26 +602,6 @@ document.addEventListener('DOMContentLoaded', function() {
             activeVideo.play().catch(error => {
               console.log('Error playing video:', error);
             });
-          }
-          
-          // Update color swatch
-          document.querySelectorAll('.color-btn').forEach(btn => {
-            if (
-              btn.getAttribute('data-scroll') &&
-              color &&
-              btn.getAttribute('data-scroll').toLowerCase() === color.toLowerCase()
-            ) {
-              btn.classList.add('active');
-            } else {
-              btn.classList.remove('active');
-            }
-          });
-
-          // Find variant for this color
-          const variant = findVariantByColor(color);
-          console.log('Found variant for color:', variant);
-          if (variant) {
-            updateVariantSelection(variant);
           }
         }
       }
