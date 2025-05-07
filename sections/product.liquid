@@ -917,13 +917,12 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Handle quantity buttons
-  document.querySelectorAll('.btn-increase').forEach(button => {
-    button.addEventListener('click', function() {
+  document.querySelectorAll('.tf-product-info-list .btn-increase').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
       const input = this.previousElementSibling;
       const currentValue = parseInt(input.value) || 1;
-      input.value = currentValue + 1;
-      
-      // Update main add to cart button quantity
+      input.value = currentValue;
       const mainAddToCartBtn = document.querySelector('.tf-product-info-list .add-to-cart');
       if (mainAddToCartBtn) {
         mainAddToCartBtn.dataset.quantity = currentValue + 1;
@@ -931,14 +930,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  document.querySelectorAll('.btn-decrease').forEach(button => {
-    button.addEventListener('click', function() {
+  document.querySelectorAll('.tf-product-info-list .btn-decrease').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
       const input = this.nextElementSibling;
       const currentValue = parseInt(input.value) || 1;
       if (currentValue > 1) {
-        input.value = currentValue - 1;
-        
-        // Update main add to cart button quantity
+        input.value = currentValue;
         const mainAddToCartBtn = document.querySelector('.tf-product-info-list .add-to-cart');
         if (mainAddToCartBtn) {
           mainAddToCartBtn.dataset.quantity = currentValue - 1;
@@ -996,14 +994,17 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.add-to-cart').forEach(button => {
     button.addEventListener('click', async function(e) {
       e.preventDefault();
-      
       // Prevent multiple clicks
       if (this.classList.contains('loading')) {
         return;
       }
-      
       const variantId = this.dataset.variantId;
-      const quantity = parseInt(this.dataset.quantity || 1);
+      let quantity = 1;
+      // Always read from the main product info input
+      const mainQuantityInput = document.querySelector('.tf-product-info-list .quantity-product');
+      if (mainQuantityInput) {
+        quantity = parseInt(mainQuantityInput.value) || 1;
+      }
       
       try {
         // Show loading state
