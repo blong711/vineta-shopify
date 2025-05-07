@@ -659,6 +659,11 @@ document.addEventListener('DOMContentLoaded', function() {
   // Function to find variant by color
   function findVariantByColor(color) {
     console.log('Finding variant for color:', color);
+    if (!color) {
+      console.log('No color provided, returning null');
+      return null;
+    }
+
     const variants = {{ product.variants | json }};
     const options = {{ product.options | json }};
     console.log('Available variants:', variants);
@@ -666,8 +671,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     for (const variant of variants) {
       for (let i = 0; i < options.length; i++) {
-        if (options[i].toLowerCase() === 'color' && 
-            variant.options[i].toLowerCase() === color.toLowerCase()) {
+        if (options[i] && options[i].toLowerCase() === 'color' && 
+            variant.options[i] && variant.options[i].toLowerCase() === color.toLowerCase()) {
           console.log('Found matching variant:', variant);
           return variant;
         }
@@ -712,11 +717,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Update selected options
-    variant.options.forEach((option, index) => {
-      const optionName = {{ product.options | json }}[index].toLowerCase();
-      selectedOptions[optionName] = option.toLowerCase();
-    });
-    console.log('Updated selected options:', selectedOptions);
+    if (variant.options && Array.isArray(variant.options)) {
+      variant.options.forEach((option, index) => {
+        const optionName = {{ product.options | json }}[index];
+        if (optionName) {
+          selectedOptions[optionName.toLowerCase()] = option ? option.toLowerCase() : '';
+        }
+      });
+      console.log('Updated selected options:', selectedOptions);
+    }
   }
 
   // Handle color swatch clicks
@@ -725,6 +734,11 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log('Color button clicked:', this);
       const color = this.getAttribute('data-scroll');
       console.log('Selected color:', color);
+      
+      if (!color) {
+        console.log('No color value found on button');
+        return;
+      }
       
       // Update active state
       document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
@@ -738,14 +752,17 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       // Update main image
-      const mainSwiper = document.querySelector('.tf-product-media-main').swiper;
-      const slides = mainSwiper.slides;
-      console.log('Total slides:', slides.length);
-      for (let i = 0; i < slides.length; i++) {
-        if (slides[i].getAttribute('data-color') === color) {
-          console.log('Found matching slide at index:', i);
-          mainSwiper.slideTo(i);
-          break;
+      const mainSwiper = document.querySelector('.tf-product-media-main')?.swiper;
+      if (mainSwiper) {
+        const slides = mainSwiper.slides;
+        console.log('Total slides:', slides.length);
+        for (let i = 0; i < slides.length; i++) {
+          const slideColor = slides[i].getAttribute('data-color');
+          if (slideColor && slideColor === color) {
+            console.log('Found matching slide at index:', i);
+            mainSwiper.slideTo(i);
+            break;
+          }
         }
       }
     });
