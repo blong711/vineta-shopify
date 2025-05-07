@@ -17,16 +17,35 @@
               <div class="thumbs-slider">
                 <div dir="ltr" class="swiper tf-product-media-thumbs other-image-zoom" data-preview="4" data-direction="vertical">
                   <div class="swiper-wrapper stagger-wrap">
-                    {% for image in product.images %}
-                      {% assign matched_variant = product.variants | where: 'featured_image', image | first %}
-                      <div class="swiper-slide stagger-item" data-color="{% if matched_variant %}{{ matched_variant.option1 }}{% else %}{{ image.alt | default: 'default' }}{% endif %}">
-                        <div class="item">
-                          <img class="lazyload"
-                            data-src="{{ image | image_url: width: 800 }}"
-                            src="{{ image | image_url: width: 400 }}"
-                            alt="{{ image.alt | default: product.title }}"
-                            width="400"
-                            height="600">
+                    {% for media in product.media %}
+                      <div class="swiper-slide stagger-item" data-media-type="{{ media.media_type }}">
+                        <div class="item position-relative">
+                          {% case media.media_type %}
+                            {% when 'image' %}
+                              <img class="tf-image-zoom lazyload"
+                                src="{{ media | image_url: width: 100 }}"
+                                alt="{{ media.alt | default: product.title }}"
+                                width="100"
+                                height="150">
+                            {% when 'video' %}
+                              <div class="wrap-btn-viewer style-video">
+                                <i class="icon icon-video"></i>
+                              </div>
+                              <img class="tf-image-zoom lazyload"
+                                src="{{ media.preview_image | image_url: width: 100 }}"
+                                alt="Video thumbnail"
+                                width="100"
+                                height="150">
+                            {% when 'model' %}
+                              <div class="wrap-btn-viewer">
+                                <i class="icon icon-btn3d"></i>
+                              </div>
+                              <img class="tf-image-zoom lazyload"
+                                src="{{ media.preview_image | image_url: width: 100 }}"
+                                alt="3D model thumbnail"
+                                width="100"
+                                height="150">
+                          {% endcase %}
                         </div>
                       </div>
                     {% endfor %}
@@ -35,18 +54,45 @@
                 <div class="flat-wrap-media-product">
                   <div dir="ltr" class="swiper tf-product-media-main tf-product-zoom-inner" id="gallery-swiper-started">
                     <div class="swiper-wrapper">
-                      {% for image in product.images %}
-                        {% assign matched_variant = product.variants | where: 'featured_image', image | first %}
-                        <div class="swiper-slide" data-color="{% if matched_variant %}{{ matched_variant.option1 }}{% else %}{{ image.alt | default: 'default' }}{% endif %}">
-                          <a href="{{ image | image_url: width: 1200 }}" target="_blank" class="item" data-pswp-width="552px" data-pswp-height="827px">
-                            <img class="tf-image-zoom-inner lazyload"
-                              data-zoom="{{ image | image_url: width: 1200 }}"
-                              data-src="{{ image | image_url: width: 800 }}"
-                              src="{{ image | image_url: width: 400 }}"
-                              alt="{{ image.alt | default: product.title }}"
-                              width="400"
-                              height="600">
-                          </a>
+                      {% for media in product.media %}
+                        <div class="swiper-slide" data-media-type="{{ media.media_type }}">
+                          {% case media.media_type %}
+                            {% when 'image' %}
+                              <a href="{{ media | image_url: width: 1200 }}" target="_blank" class="item" data-pswp-width="552px" data-pswp-height="827px">
+                                <img class="tf-image-zoom-inner lazyload"
+                                  src="{{ media | image_url: width: 800 }}"
+                                  alt="{{ media.alt | default: product.title }}"
+                                  width="400"
+                                  height="600">
+                              </a>
+                            {% when 'video' %}
+                              <div class="item position-relative">
+                                <div class="wrap-btn-viewer style-video">
+                                  <i class="icon icon-video"></i>
+                                </div>
+                                <video controls
+                                  width="400"
+                                  height="600"
+                                  poster="{{ media.preview_image | image_url: width: 800 }}">
+                                  <source src="{{ media.sources[0].url }}" type="{{ media.sources[0].mime_type }}">
+                                  Your browser does not support the video tag.
+                                </video>
+                              </div>
+                            {% when 'model' %}
+                              <div class="item position-relative">
+                                <div class="wrap-btn-viewer">
+                                  <i class="icon icon-btn3d"></i>
+                                </div>
+                                <model-viewer
+                                  src="{{ media.sources[0].url }}"
+                                  alt="{{ media.alt | default: product.title }}"
+                                  ar
+                                  camera-controls
+                                  poster="{{ media.preview_image | image_url: width: 800 }}"
+                                  style="width:400px; height:600px;">
+                                </model-viewer>
+                              </div>
+                          {% endcase %}
                         </div>
                       {% endfor %}
                     </div>
@@ -58,14 +104,44 @@
             </div>
           {% else %}
             <div class="wrapper-gallery-scroll flat-single-grid{% if section.settings.layout == 'stacked' %} flat-single-stacked{% endif %}" id="gallery-started">
-              {% for image in product.images %}
-                <a href="{{ image | image_url: width: 1200 }}" data-scroll="{{ image.alt | default: 'default' }}" target="_blank" class="item item-scroll-target" data-pswp-width="552px" data-pswp-height="827px">
-                  <img class="tf-image-zoom lazyload"
-                    data-zoom="{{ image | image_url: width: 1200 }}"
-                    data-src="{{ image | image_url: width: 800 }}"
-                    src="{{ image | image_url: width: 400 }}"
-                    alt="{{ image.alt | default: product.title }}">
-                </a>
+              {% for media in product.media %}
+                {% case media.media_type %}
+                  {% when 'image' %}
+                    <a href="{{ media | image_url: width: 1200 }}" data-scroll="{{ media.alt | default: 'default' }}" target="_blank" class="item item-scroll-target" data-pswp-width="552px" data-pswp-height="827px">
+                      <img class="tf-image-zoom lazyload"
+                        src="{{ media | image_url: width: 800 }}"
+                        alt="{{ media.alt | default: product.title }}"
+                        width="400"
+                        height="600">
+                    </a>
+                  {% when 'video' %}
+                    <div class="item position-relative">
+                      <div class="wrap-btn-viewer style-video">
+                        <i class="icon icon-video"></i>
+                      </div>
+                      <video controls
+                        width="400"
+                        height="600"
+                        poster="{{ media.preview_image | image_url: width: 800 }}">
+                        <source src="{{ media.sources[0].url }}" type="{{ media.sources[0].mime_type }}">
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                  {% when 'model' %}
+                    <div class="item position-relative">
+                      <div class="wrap-btn-viewer">
+                        <i class="icon icon-btn3d"></i>
+                      </div>
+                      <model-viewer
+                        src="{{ media.sources[0].url }}"
+                        alt="{{ media.alt | default: product.title }}"
+                        ar
+                        camera-controls
+                        poster="{{ media.preview_image | image_url: width: 800 }}"
+                        style="width:400px; height:600px;">
+                      </model-viewer>
+                    </div>
+                {% endcase %}
               {% endfor %}
             </div>
           {% endif %}
