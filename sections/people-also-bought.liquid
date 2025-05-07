@@ -1,4 +1,26 @@
 {%- comment -%}People Also Bought Section{%- endcomment -%}
+{%- assign has_products = false -%}
+{%- for block in section.blocks -%}
+  {%- case block.type -%}
+    {%- when 'related_products' -%}
+      {%- assign related_products = product.collections.first.products | where: "id" | is_not: product.id | limit: block.settings.products_to_show -%}
+      {%- if related_products.size > 0 -%}
+        {%- assign has_products = true -%}
+      {%- endif -%}
+    {%- when 'featured_collection' -%}
+      {%- assign collection = collections[block.settings.collection] -%}
+      {%- if collection.products.size > 0 -%}
+        {%- assign has_products = true -%}
+      {%- endif -%}
+    {%- when 'recently_viewed' -%}
+      {%- assign recently_viewed = product.recently_viewed | limit: block.settings.products_to_show -%}
+      {%- if recently_viewed.size > 0 -%}
+        {%- assign has_products = true -%}
+      {%- endif -%}
+  {%- endcase -%}
+{%- endfor -%}
+
+{%- if has_products -%}
 <section>
   <div class="container">
     <div class="flat-title wow fadeInUp">
@@ -64,6 +86,7 @@
     {%- endfor -%}
   </div>
 </section>
+{%- endif -%}
 
 {% schema %}
 {
