@@ -62,19 +62,18 @@
                                 <img class="tf-image-zoom-inner lazyload"
                                   src="{{ media | image_url: width: 800 }}"
                                   alt="{{ media.alt | default: product.title }}"
-                                  width="400"
-                                  height="600">
+                                  width="auto"
+                                  height="auto">
                               </a>
                             {% when 'video' %}
                               <div class="item position-relative">
-                                <div class="wrap-btn-viewer style-video">
-                                  <i class="icon icon-video"></i>
-                                </div>
-                                <video controls
+                                <video controls muted
                                   width="400"
                                   height="600"
                                   poster="{{ media.preview_image | image_url: width: 800 }}">
-                                  <source src="{{ media.sources[0].url }}" type="{{ media.sources[0].mime_type }}">
+                                  {% for source in media.sources %}
+                                    <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                                  {% endfor %}
                                   Your browser does not support the video tag.
                                 </video>
                               </div>
@@ -116,14 +115,13 @@
                     </a>
                   {% when 'video' %}
                     <div class="item position-relative">
-                      <div class="wrap-btn-viewer style-video">
-                        <i class="icon icon-video"></i>
-                      </div>
-                      <video controls
+                      <video controls muted
                         width="400"
                         height="600"
                         poster="{{ media.preview_image | image_url: width: 800 }}">
-                        <source src="{{ media.sources[0].url }}" type="{{ media.sources[0].mime_type }}">
+                        {% for source in media.sources %}
+                          <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                        {% endfor %}
                         Your browser does not support the video tag.
                       </video>
                     </div>
@@ -630,11 +628,36 @@ document.addEventListener('DOMContentLoaded', function() {
         prevEl: '.thumbs-prev',
       },
       on: {
+        init: function() {
+          // Pause all videos initially
+          this.slides.forEach(slide => {
+            const video = slide.querySelector('video');
+            if (video) {
+              video.pause();
+            }
+          });
+        },
         slideChange: function() {
           console.log('Slide changed to index:', this.activeIndex);
           const activeSlide = this.slides[this.activeIndex];
           const color = activeSlide.getAttribute('data-color');
           console.log('Active slide color:', color);
+          
+          // Pause all videos first
+          this.slides.forEach(slide => {
+            const video = slide.querySelector('video');
+            if (video) {
+              video.pause();
+            }
+          });
+
+          // Play video in active slide if it exists
+          const activeVideo = activeSlide.querySelector('video');
+          if (activeVideo) {
+            activeVideo.play().catch(error => {
+              console.log('Error playing video:', error);
+            });
+          }
           
           // Update color swatch
           document.querySelectorAll('.color-btn').forEach(btn => {
