@@ -182,13 +182,13 @@
             {% assign block = section.blocks | where: "type", "mega_menu_pages" | where: "title", link.title | first %}
             {% if block and block.settings.banner_image != blank %}
               <a href="{{ block.settings.banner_link }}" class="img-style">
-                <img src="{{ block.settings.banner_image | image_url: width: 300 }}" alt="{{ block.settings.title }}" width="300" height="120">
+                <img src="{{ block.settings.banner_image | image_url: width: 300 }}" alt="{{ block.settings.banner_title }}" width="300" height="120">
               </a>
             {% endif %}
             <div class="content">
               <div class="title">
-                {% if block and block.settings.title != blank %}
-                  {{ block.settings.title }}
+                {% if block and block.settings.banner_title != blank %}
+                  {{ block.settings.banner_title }}
                 {% else %}
                   Unveiling the latest gear
                 {% endif %}
