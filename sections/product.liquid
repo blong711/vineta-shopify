@@ -315,7 +315,7 @@
                         {% for icon_block in section.blocks %}
                           {% if icon_block.type == 'payment_icon' and icon_block.settings.icon != blank %}
                             <li class="card-item">
-                              <img src="{{ icon_block.settings.icon | image_url: width: 60 }}" alt="Payment Method" width="60" height="40" loading="lazy">
+                              <img class="lazyload" data-src="{{ icon_block.settings.icon | image_url: width: 60 }}" src="{{ icon_block.settings.icon | image_url: width: 10 }}" alt="Payment Method" width="60" height="40">
                             </li>
                           {% endif %}
                         {% endfor %}
