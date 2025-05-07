@@ -117,7 +117,7 @@
           {%- if option.name == 'Color' -%}
             {%- for value in option.values -%}
               {%- assign variant = product.variants | where: 'option1', value | first -%}
-              <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}"
+              <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if value == 'White' %}line{% endif %} {% if forloop.first %}active{% endif %}"
                   data-variant-id="{{ variant.id }}"
                   data-option-name="{{ option.name }}"
                   data-option-value="{{ value | escape }}"
@@ -244,7 +244,7 @@
           {%- if option.name == 'Color' -%}
             {%- for value in option.values -%}
               {%- assign variant = product.variants | where: 'option1', value | first -%}
-              <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}"
+              <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if value == 'White' %}line{% endif %} {% if forloop.first %}active{% endif %}"
                   data-variant-id="{{ variant.id }}"
                   data-option-name="{{ option.name }}"
                   data-option-value="{{ value | escape }}"
@@ -510,7 +510,7 @@
       <ul class="list-color-product">
         {%- for variant in product.variants -%}
           {%- if variant.option2 != blank -%}
-            <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}">
+            <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if variant.option2 == 'White' %}line{% endif %} {% if forloop.first %}active{% endif %}">
               <span class="tooltip color-filter">{{ variant.option2 }}</span>
               <span class="swatch-value bg-{{ variant.option2 | handle }}"></span>
               <img class="lazyload" data-src="{{ variant.image | img_url: '300x' }}" src="{{ variant.image | img_url: '300x' }}" alt="{{ variant.title | escape }}" width="300" height="300">
@@ -647,7 +647,7 @@
           {%- if option.name == 'Color' -%}
             {%- for value in option.values -%}
               {%- assign variant = product.variants | where: 'option1', value | first -%}
-              <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if forloop.first %}active{% endif %}"
+              <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if value == 'White' %}line{% endif %} {% if forloop.first %}active{% endif %}"
                   data-variant-id="{{ variant.id }}"
                   data-option-name="{{ option.name }}"
                   data-option-value="{{ value | escape }}"
