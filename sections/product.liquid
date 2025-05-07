@@ -312,16 +312,10 @@
                     <div class="tf-product-info-trust-seal text-center" {{ block.shopify_attributes }}>
                       <p class="text-md text-dark-2 text-seal fw-medium">{{ block.settings.trust_seal_text }}</p>
                       <ul class="list-card">
-                        {% for i in (1..20) %}
-                          {% assign icon = 'payment_icon_' | append: i %}
-                          {% if block.settings[icon] != blank %}
+                        {% for icon_block in section.blocks %}
+                          {% if icon_block.type == 'payment_icon' and icon_block.settings.icon != blank %}
                             <li class="card-item">
-                              <img 
-                                src="{{ block.settings[icon] | image_url: width: 60 }}" 
-                                alt="Payment Method" 
-                                loading="lazy"
-                                width="60"
-                                height="40">
+                              <img src="{{ icon_block.settings.icon | image_url: width: 60 }}" alt="Payment Method" width="60" height="40" loading="lazy">
                             </li>
                           {% endif %}
                         {% endfor %}
@@ -1065,129 +1059,17 @@ function formatMoney(cents) {
           "id": "trust_seal_text",
           "label": "Trust Seal Text",
           "default": "Guarantee Safe Checkout:"
-        },
-        {
-          "type": "header",
-          "content": "Payment Icons"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_1",
-          "label": "Payment Icon 1",
-          "info": "Recommended size: 60x40px"
-        },
+        }
+      ]
+    },
+    {
+      "type": "payment_icon",
+      "name": "Payment Icon",
+      "settings": [
         {
           "type": "image_picker",
-          "id": "payment_icon_2",
-          "label": "Payment Icon 2",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_3",
-          "label": "Payment Icon 3",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_4",
-          "label": "Payment Icon 4",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_5",
-          "label": "Payment Icon 5",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_6",
-          "label": "Payment Icon 6",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_7",
-          "label": "Payment Icon 7",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_8",
-          "label": "Payment Icon 8",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_9",
-          "label": "Payment Icon 9",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_10",
-          "label": "Payment Icon 10",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_11",
-          "label": "Payment Icon 11",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_12",
-          "label": "Payment Icon 12",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_13",
-          "label": "Payment Icon 13",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_14",
-          "label": "Payment Icon 14",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_15",
-          "label": "Payment Icon 15",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_16",
-          "label": "Payment Icon 16",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_17",
-          "label": "Payment Icon 17",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_18",
-          "label": "Payment Icon 18",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_19",
-          "label": "Payment Icon 19",
-          "info": "Recommended size: 60x40px"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment_icon_20",
-          "label": "Payment Icon 20",
+          "id": "icon",
+          "label": "Payment Icon",
           "info": "Recommended size: 60x40px"
         }
       ]
