@@ -68,7 +68,7 @@
             {% endfor %}
           </div>
           <div class="wrapper-sub-collection">
-            {% assign block = section.blocks | where: "type", "mega_menu_shop" | where: "title", link.title | first %}
+            {% assign block = section.blocks | where: "type", "mega_menu_shop" | first %}
             {% if block and block.settings.collections != blank %}
               <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
                 data-swiper='{
@@ -128,7 +128,7 @@
             {% endfor %}
           </div>
           <div class="wrapper-sub-product">
-            {% assign block = section.blocks | where: "type", "mega_menu_product" | where: "title", link.title | first %}
+            {% assign block = section.blocks | where: "type", "mega_menu_product" | first %}
             {% if block and block.settings.products != blank %}
               <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp"
                 data-swiper='{
@@ -148,17 +148,13 @@
                 <div class="swiper-wrapper">
                   {% for product in block.settings.products %}
                     <div class="swiper-slide">
-                      <div class="wg-cls style-abs asp-1 hover-img">
-                        <a href="{{ product.url }}" class="image img-style d-block">
-                          <img src="{{ product.featured_image | image_url: width: 200 }}" alt="{{ product.title }}" class="lazyload" width="200" height="200">
-                        </a>
-                        <div class="cls-btn text-center">
-                          <a href="{{ product.url }}" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                            {{ product.title }}
-                            <i class="icon icon-arrow-top-left"></i>
-                          </a>
-                        </div>
-                      </div>
+                      {% render 'card-product', 
+                        product: product,
+                        style: 'style-4',
+                        show_sale_badge: true,
+                        show_color_swatches: true,
+                        text_alignment: block.settings.text_alignment
+                      %}
                     </div>
                   {% endfor %}
                 </div>
@@ -179,7 +175,7 @@
             {% endfor %}
           </ul>
           <div class="banner hover-img">
-            {% assign block = section.blocks | where: "type", "mega_menu_pages" | where: "title", link.title | first %}
+            {% assign block = section.blocks | where: "type", "mega_menu_pages" | first %}
             <!-- Debug output -->
             <div style="display: none;">
               Debug: 
