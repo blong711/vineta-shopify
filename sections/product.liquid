@@ -308,16 +308,18 @@
                       </div>
                     {% endif %}
 
-                  {% when 'trust_seal' %}
+                  {% when 'trust_and_payment' %}
                     <div class="tf-product-info-trust-seal text-center" {{ block.shopify_attributes }}>
                       <p class="text-md text-dark-2 text-seal fw-medium">{{ block.settings.trust_seal_text }}</p>
                       <ul class="list-card">
-                        {% for block in section.blocks %}
-                          {% if block.type == 'payment_icon' and block.settings.image != blank %}
-                            <li class="card-item" {{ block.shopify_attributes }}>
+                        {% for i in (1..5) %}
+                          {% assign icon = 'payment_icon_' | append: i %}
+                          {% assign title = 'payment_title_' | append: i %}
+                          {% if block.settings[icon] != blank %}
+                            <li class="card-item">
                               <img 
-                                src="{{ block.settings.image | image_url: width: 60 }}" 
-                                alt="{{ block.settings.image.alt | default: block.settings.title }}" 
+                                src="{{ block.settings[icon] | image_url: width: 60 }}" 
+                                alt="{{ block.settings[title] }}" 
                                 loading="lazy"
                                 width="60"
                                 height="40">
@@ -1055,8 +1057,8 @@ function formatMoney(cents) {
       ]
     },
     {
-      "type": "trust_seal",
-      "name": "Trust Seal",
+      "type": "trust_and_payment",
+      "name": "Trust & Payment",
       "limit": 1,
       "settings": [
         {
@@ -1064,24 +1066,69 @@ function formatMoney(cents) {
           "id": "trust_seal_text",
           "label": "Trust Seal Text",
           "default": "Guarantee Safe Checkout:"
-        }
-      ]
-    },
-    {
-      "type": "payment_icon",
-      "name": "Payment Icon",
-      "limit": 7,
-      "settings": [
+        },
+        {
+          "type": "header",
+          "content": "Payment Icons"
+        },
         {
           "type": "image_picker",
-          "id": "image",
-          "label": "Payment Icon Image",
+          "id": "payment_icon_1",
+          "label": "Payment Icon 1",
           "info": "Recommended size: 60x40px"
         },
         {
           "type": "text",
-          "id": "title",
-          "label": "Payment Method Name",
+          "id": "payment_title_1",
+          "label": "Payment Method 1 Name",
+          "default": "Payment Method"
+        },
+        {
+          "type": "image_picker",
+          "id": "payment_icon_2",
+          "label": "Payment Icon 2",
+          "info": "Recommended size: 60x40px"
+        },
+        {
+          "type": "text",
+          "id": "payment_title_2",
+          "label": "Payment Method 2 Name",
+          "default": "Payment Method"
+        },
+        {
+          "type": "image_picker",
+          "id": "payment_icon_3",
+          "label": "Payment Icon 3",
+          "info": "Recommended size: 60x40px"
+        },
+        {
+          "type": "text",
+          "id": "payment_title_3",
+          "label": "Payment Method 3 Name",
+          "default": "Payment Method"
+        },
+        {
+          "type": "image_picker",
+          "id": "payment_icon_4",
+          "label": "Payment Icon 4",
+          "info": "Recommended size: 60x40px"
+        },
+        {
+          "type": "text",
+          "id": "payment_title_4",
+          "label": "Payment Method 4 Name",
+          "default": "Payment Method"
+        },
+        {
+          "type": "image_picker",
+          "id": "payment_icon_5",
+          "label": "Payment Icon 5",
+          "info": "Recommended size: 60x40px"
+        },
+        {
+          "type": "text",
+          "id": "payment_title_5",
+          "label": "Payment Method 5 Name",
           "default": "Payment Method"
         }
       ]
@@ -1211,10 +1258,7 @@ function formatMoney(cents) {
           "type": "rating"
         },
         {
-          "type": "trust_seal"
-        },
-        {
-          "type": "payment_icon"
+          "type": "trust_and_payment"
         },
         {
           "type": "sold_count"
