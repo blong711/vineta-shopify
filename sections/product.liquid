@@ -673,18 +673,72 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('All variants:', variants);
     console.log('Product options:', options);
     
+    // Get current size selection
+    const activeSizeBtn = document.querySelector('.size-btn.active');
+    const selectedSize = activeSizeBtn ? activeSizeBtn.getAttribute('data-value') : null;
+    console.log('Current selected size:', selectedSize);
+    
+    // Find variant that matches both color and size
     for (const variant of variants) {
       console.log('Checking variant:', variant);
-      console.log('Variant option1:', variant.option1);
-      console.log('Comparing:', variant.option1?.toLowerCase(), 'with', color.toLowerCase());
+      const matchesColor = variant.option1 && variant.option1.toLowerCase() === color.toLowerCase();
+      const matchesSize = !selectedSize || (variant.option2 && variant.option2.toLowerCase() === selectedSize.toLowerCase());
       
-      if (variant.option1 && variant.option1.toLowerCase() === color.toLowerCase()) {
+      console.log('Variant matches:', {
+        color: matchesColor,
+        size: matchesSize,
+        variantColor: variant.option1,
+        variantSize: variant.option2
+      });
+      
+      if (matchesColor && matchesSize) {
         console.log('Found matching variant:', variant);
         return variant;
       }
     }
     console.log('No variant found for color:', color);
     return null;
+  }
+
+  // Function to find variant ID based on selected options
+  function findVariantId() {
+    console.log('=== findVariantId ===');
+    console.log('Current selected options:', selectedOptions);
+    
+    const variants = {{ product.variants | json }};
+    const options = {{ product.options | json }};
+    
+    // Get current selections
+    const activeColorBtn = document.querySelector('.color-btn.active');
+    const activeSizeBtn = document.querySelector('.size-btn.active');
+    const selectedColor = activeColorBtn ? activeColorBtn.getAttribute('data-scroll') : null;
+    const selectedSize = activeSizeBtn ? activeSizeBtn.getAttribute('data-value') : null;
+    
+    console.log('Current selections:', {
+      color: selectedColor,
+      size: selectedSize
+    });
+    
+    // Find variant that matches all selected options
+    const matchingVariant = variants.find(variant => {
+      const matchesColor = !selectedColor || 
+        (variant.option1 && variant.option1.toLowerCase() === selectedColor.toLowerCase());
+      const matchesSize = !selectedSize || 
+        (variant.option2 && variant.option2.toLowerCase() === selectedSize.toLowerCase());
+      
+      console.log('Checking variant:', {
+        id: variant.id,
+        option1: variant.option1,
+        option2: variant.option2,
+        matchesColor,
+        matchesSize
+      });
+      
+      return matchesColor && matchesSize;
+    });
+    
+    console.log('Found matching variant:', matchingVariant);
+    return matchingVariant ? matchingVariant.id : null;
   }
 
   // Function to update variant selection
@@ -701,6 +755,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (addToCartBtn) {
       console.log('Updating add to cart button variant ID:', variant.id);
       addToCartBtn.dataset.variantId = variant.id;
+      
+      // Update quantity in add to cart button
+      const quantityInput = document.querySelector('.quantity-product');
+      if (quantityInput) {
+        const quantity = parseInt(quantityInput.value) || 1;
+        addToCartBtn.dataset.quantity = quantity;
+      }
     }
 
     // Update price
@@ -722,6 +783,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update selected options
     selectedOptions['color'] = variant.option1 ? variant.option1.toLowerCase() : '';
+    selectedOptions['size'] = variant.option2 ? variant.option2.toLowerCase() : '';
     console.log('Updated selected options:', selectedOptions);
 
     // Update main image gallery
@@ -795,6 +857,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     }
+
+    // Set the active size button based on the selected size
+    if (variant && variant.option2) {
+      const size = variant.option2.toLowerCase();
+      document.querySelectorAll('.size-btn').forEach(btn => {
+        if (btn.getAttribute('data-value') && btn.getAttribute('data-value').toLowerCase() === size) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    // Update main add to cart button only
+    updateMainAddToCartButton(variant);
   }
 
   // Use event delegation for color swatch clicks
@@ -806,6 +883,68 @@ document.addEventListener('DOMContentLoaded', function() {
     if (variant) {
       updateVariantSelection(variant);
     }
+  });
+
+  // Handle size variant selection
+  document.querySelectorAll('.size-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const size = this.getAttribute('data-value');
+      document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+      
+      // Update selected options
+      selectedOptions['size'] = size;
+      
+      // Find and update variant ID
+      const variantId = findVariantId();
+      if (variantId) {
+        const variants = {{ product.variants | json }};
+        const variant = variants.find(v => v.id === variantId);
+        updateMainAddToCartButton(variant);
+      }
+    });
+  });
+
+  // Handle quantity changes
+  document.querySelectorAll('.quantity-product').forEach(input => {
+    input.addEventListener('change', function() {
+      const quantity = parseInt(this.value) || 1;
+      const mainAddToCartBtn = document.querySelector('.tf-product-info-list .add-to-cart');
+      if (mainAddToCartBtn) {
+        mainAddToCartBtn.dataset.quantity = quantity;
+      }
+    });
+  });
+
+  // Handle quantity buttons
+  document.querySelectorAll('.btn-increase').forEach(button => {
+    button.addEventListener('click', function() {
+      const input = this.previousElementSibling;
+      const currentValue = parseInt(input.value) || 1;
+      input.value = currentValue + 1;
+      
+      // Update main add to cart button quantity
+      const mainAddToCartBtn = document.querySelector('.tf-product-info-list .add-to-cart');
+      if (mainAddToCartBtn) {
+        mainAddToCartBtn.dataset.quantity = currentValue + 1;
+      }
+    });
+  });
+
+  document.querySelectorAll('.btn-decrease').forEach(button => {
+    button.addEventListener('click', function() {
+      const input = this.nextElementSibling;
+      const currentValue = parseInt(input.value) || 1;
+      if (currentValue > 1) {
+        input.value = currentValue - 1;
+        
+        // Update main add to cart button quantity
+        const mainAddToCartBtn = document.querySelector('.tf-product-info-list .add-to-cart');
+        if (mainAddToCartBtn) {
+          mainAddToCartBtn.dataset.quantity = currentValue - 1;
+        }
+      }
+    });
   });
 
   // Only set the active class for initial page load
@@ -829,27 +968,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   }
-
-  // Handle size variant selection
-  document.querySelectorAll('.size-btn').forEach(button => {
-    button.addEventListener('click', function() {
-      const size = this.getAttribute('data-size');
-      document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
-      this.classList.add('active');
-      
-      // Update selected options
-      selectedOptions['size'] = this.getAttribute('data-value');
-      
-      // Find and update variant ID
-      const variantId = findVariantId();
-      if (variantId) {
-        const addToCartBtn = document.querySelector('.add-to-cart');
-        if (addToCartBtn) {
-          addToCartBtn.dataset.variantId = variantId;
-        }
-      }
-    });
-  });
 
   // Initialize image zoom
   const zoomMain = document.querySelector('.tf-zoom-main');
@@ -1065,6 +1183,20 @@ function formatMoney(cents) {
     style: 'currency',
     currency: '{{ shop.currency }}'
   }).format(cents / 100);
+}
+
+// Function to update main add to cart button (not sticky bar)
+function updateMainAddToCartButton(variant) {
+  const mainAddToCartBtn = document.querySelector('.tf-product-info-list .add-to-cart');
+  if (mainAddToCartBtn && variant) {
+    mainAddToCartBtn.dataset.variantId = variant.id;
+    // Update quantity
+    const quantityInput = document.querySelector('.tf-product-info-list .quantity-product');
+    if (quantityInput) {
+      const quantity = parseInt(quantityInput.value) || 1;
+      mainAddToCartBtn.dataset.quantity = quantity;
+    }
+  }
 }
 </script>
 
