@@ -437,6 +437,10 @@
   "name": "Header",
   "settings": [
     {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
       "type": "select",
       "id": "layout",
       "label": "Header Layout",
@@ -457,10 +461,152 @@
       "default": "layout-1"
     },
     {
+      "type": "select",
+      "id": "header_width",
+      "label": "Header Width",
+      "options": [
+        {
+          "value": "container",
+          "label": "Contained"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Full Width"
+        }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "range",
+      "id": "header_padding",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Header Padding",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Color Settings"
+    },
+    {
       "type": "color",
       "id": "background_color",
-      "label": "Background color",
+      "label": "Background Color",
       "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link Hover Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "icon_hover_color",
+      "label": "Icon Hover Color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Typography Settings"
+    },
+    {
+      "type": "select",
+      "id": "menu_font_family",
+      "label": "Menu Font Family",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary Font"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary Font"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "range",
+      "id": "menu_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Menu Font Size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "menu_font_weight",
+      "label": "Menu Font Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "select",
+      "id": "menu_text_transform",
+      "label": "Menu Text Transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "header",
+      "content": "Logo Settings"
     },
     {
       "type": "image_picker",
@@ -478,10 +624,38 @@
       "label": "Logo width"
     },
     {
+      "type": "header",
+      "content": "Menu Settings"
+    },
+    {
       "type": "link_list",
       "id": "menu",
       "label": "Menu",
       "default": "main-menu"
+    },
+    {
+      "type": "select",
+      "id": "menu_alignment",
+      "label": "Menu Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Icon Settings"
     },
     {
       "type": "checkbox",
@@ -508,10 +682,46 @@
       "default": true
     },
     {
+      "type": "range",
+      "id": "icon_size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon Size",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Sticky Header Settings"
+    },
+    {
       "type": "checkbox",
-      "id": "show_product_cards",
-      "label": "Show Product Cards in Submenu",
+      "id": "enable_sticky",
+      "label": "Enable Sticky Header",
       "default": true
+    },
+    {
+      "type": "color",
+      "id": "sticky_background_color",
+      "label": "Sticky Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "sticky_text_color",
+      "label": "Sticky Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "sticky_padding",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "label": "Sticky Header Padding",
+      "default": 10
     },
     {
       "type": "header",
@@ -1047,16 +1257,28 @@
       ],
       "settings": {
         "layout": "layout-1",
+        "header_width": "container",
+        "header_padding": 20,
         "background_color": "#ffffff",
+        "text_color": "#333333",
+        "link_color": "#333333",
+        "link_hover_color": "#666666",
+        "icon_color": "#333333",
+        "icon_hover_color": "#666666",
+        "menu_font_family": "primary",
+        "menu_font_size": 14,
+        "menu_font_weight": "500",
+        "menu_text_transform": "uppercase",
+        "menu_alignment": "center",
+        "icon_size": 24,
+        "enable_sticky": true,
+        "sticky_background_color": "#ffffff",
+        "sticky_text_color": "#333333",
+        "sticky_padding": 10,
         "show_search": true,
         "show_account": true,
         "show_wishlist": true,
-        "show_cart": true,
-        "show_product_cards": true,
-        "product_title_1": "Men",
-        "product_title_2": "Women",
-        "product_title_3": "Accessories",
-        "product_title_4": "Sportwear"
+        "show_cart": true
       }
     }
   ]
@@ -1071,6 +1293,7 @@ document.addEventListener('DOMContentLoaded', function() {
     new Swiper(element, options);
   });
 
+  {% if section.settings.enable_sticky %}
   // Header scroll behavior
   const header = document.getElementById('header');
   let lastScrollTop = 0;
@@ -1093,18 +1316,62 @@ document.addEventListener('DOMContentLoaded', function() {
     
     lastScrollTop = scrollTop;
   });
+  {% endif %}
 });
 </script>
 
 <style>
-.header-hidden {
-  transform: translateY(-100%);
+.header-default {
+  padding: {{ section.settings.header_padding }}px 0;
+  background-color: {{ section.settings.background_color }};
+  color: {{ section.settings.text_color }};
+  transition: all 0.3s ease;
 }
+
+.header-default .box-nav-menu > li > a {
+  color: {{ section.settings.link_color }};
+  font-family: var(--font-{{ section.settings.menu_font_family }});
+  font-size: {{ section.settings.menu_font_size }}px;
+  font-weight: {{ section.settings.menu_font_weight }};
+  text-transform: {{ section.settings.menu_text_transform }};
+}
+
+.header-default .box-nav-menu > li > a:hover {
+  color: {{ section.settings.link_hover_color }};
+}
+
+.header-default .nav-icon-item {
+  color: {{ section.settings.icon_color }};
+  font-size: {{ section.settings.icon_size }}px;
+}
+
+.header-default .nav-icon-item:hover {
+  color: {{ section.settings.icon_hover_color }};
+}
+
+.header-default .box-nav-menu {
+  justify-content: {{ section.settings.menu_alignment }};
+}
+
+{% if section.settings.enable_sticky %}
 .header-visible {
-  transform: translateY(0);
+  background-color: {{ section.settings.sticky_background_color }};
+  color: {{ section.settings.sticky_text_color }};
+  padding: {{ section.settings.sticky_padding }}px 0;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+{% endif %}
+
+.header-hidden {
+  transform: translateY(-100%);
+}
+
+.header-visible {
+  transform: translateY(0);
 }
 </style> 
