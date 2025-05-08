@@ -27,7 +27,8 @@
               {% for child in link.links %}
                 {% assign child_handle = child.title | handleize %}
                 {% assign image_key = 'home_image_' | append: child_handle %}
-                {% assign subitem_image = section.settings[image_key] %}
+                {% assign block = section.blocks | where: "type", "mega_menu_html" | first %}
+                {% assign subitem_image = block.settings[image_key] %}
                 <div class="demo-item">
                   <a href="{{ child.url }}" class="demo-image">
                     {% if subitem_image != blank %}
