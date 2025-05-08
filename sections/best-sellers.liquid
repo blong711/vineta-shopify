@@ -1,15 +1,20 @@
-<section class="flat-spacing-3 overflow-hidden">
+<section class="flat-spacing-3 overflow-hidden" style="background-color: {{ section.settings.section_bg_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   <div class="container">
-    <div class="flat-title wow fadeInUp">
-      <h4 class="title">{{ section.settings.section_title }}</h4>
+    <div class="flat-title {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
+      <h4 class="title {% if section.settings.enable_custom_fonts %}{{ section.settings.title_font }} {{ section.settings.title_size }} {{ section.settings.title_weight }}{% endif %}" style="color: {{ section.settings.title_color }};">
+        {{ section.settings.section_title }}
+      </h4>
     </div>
-    <div class="fl-control-sw2 pos2 wow fadeInUp">
+    <div class="fl-control-sw2 pos2 {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
       <div dir="ltr" class="swiper tf-swiper wrap-sw-over" 
         data-swiper='{
           "slidesPerView": 2,
-          "spaceBetween": 12,
-          "speed": 800,
+          "spaceBetween": {{ section.settings.space_between }},
+          "speed": {{ section.settings.speed }},
           "slidesPerGroup": 2,
+          "autoplay": {% if section.settings.autoplay %}true{% else %}false{% endif %},
+          "autoplayDelay": {{ section.settings.autoplay_speed }},
+          "loop": {% if section.settings.loop %}true{% else %}false{% endif %},
           "navigation": {
             "clickable": true,
             "nextEl": ".nav-next-seller",
@@ -22,12 +27,12 @@
           "breakpoints": {
             "768": { 
               "slidesPerView": 3, 
-              "spaceBetween": 12, 
+              "spaceBetween": {{ section.settings.space_between }}, 
               "slidesPerGroup": 3 
             },
             "1200": { 
               "slidesPerView": {{ section.settings.products_to_show }}, 
-              "spaceBetween": 24, 
+              "spaceBetween": {{ section.settings.space_between }}, 
               "slidesPerGroup": {{ section.settings.products_to_show }}
             }
           }
@@ -37,18 +42,24 @@
             <div class="swiper-slide" {{ block.shopify_attributes }}>
               {% render 'card-product',
                 product: block.settings.product,
-                style: 'style-4',
-                show_sale_badge: true,
-                show_color_swatches: true,
+                style: block.settings.product_card_style,
+                show_sale_badge: block.settings.show_sale_badge,
+                show_color_swatches: block.settings.show_color_swatches,
+                show_quick_view: block.settings.show_quick_view,
+                show_wishlist: block.settings.show_wishlist,
                 selected_variant: block.settings.product.selected_or_first_available_variant
               %}
             </div>
           {%- endfor -%}
         </div>
+        {% if section.settings.show_dots %}
         <div class="d-flex d-xl-none sw-dot-default sw-pagination-seller justify-content-center"></div>
+        {% endif %}
       </div>
+      {% if section.settings.show_arrows %}
       <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-seller"></div>
       <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-seller"></div>
+      {% endif %}
     </div>
   </div>
 </section>

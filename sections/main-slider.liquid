@@ -1,8 +1,18 @@
 <!-- Slider -->
-<section class="tf-slideshow {% if section.settings.layout == 'home-electronic' %}slider-electronic{% elsif section.settings.layout == 'fashion-women' %}slider-fashion-3{% elsif section.settings.layout == 'bicycle' %}slider-bicycle{% elsif section.settings.layout == 'phonecase' %}slider-phonecase{% else %}slider-fashion-1{% endif %} slider-default {% if section.settings.layout == 'fashion-women' %}space-abs-header{% endif %}">
-    <div class="swiper tf-sw-slideshow slider-effect-fade" data-effect="fade" data-preview="1" data-tablet="1"
-        data-mobile="1" data-centered="false" data-space="0" data-space-mb="0" data-loop="{{ section.settings.loop }}"
-        data-auto-play="{{ section.settings.autoplay }}" data-speed="{{ section.settings.speed }}">
+<section class="tf-slideshow {% if section.settings.layout == 'home-electronic' %}slider-electronic{% elsif section.settings.layout == 'fashion-women' %}slider-fashion-3{% elsif section.settings.layout == 'bicycle' %}slider-bicycle{% elsif section.settings.layout == 'phonecase' %}slider-phonecase{% else %}slider-fashion-1{% endif %} slider-default {% if section.settings.layout == 'fashion-women' %}space-abs-header{% endif %}"
+    style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+    <div class="swiper tf-sw-slideshow slider-effect-{{ section.settings.animation_effect }}" 
+        data-effect="{{ section.settings.animation_effect }}" 
+        data-preview="1" 
+        data-tablet="1"
+        data-mobile="1" 
+        data-centered="false" 
+        data-space="0" 
+        data-space-mb="0" 
+        data-loop="{{ section.settings.loop }}"
+        data-auto-play="{{ section.settings.autoplay }}" 
+        data-speed="{{ section.settings.speed }}"
+        data-autoplay-delay="{{ section.settings.autoplay_speed }}">
         <div class="swiper-wrapper">
             {% for block in section.blocks %}
                 {% assign slide_class = '' %}
@@ -18,7 +28,7 @@
                                 <img src="{{ block.settings.image | img_url: 'master' }}"
                                     data-src="{{ block.settings.image | img_url: 'master' }}" 
                                     alt="{{ block.settings.image.alt | escape }}" 
-                                    class="lazyload"
+                                    class="lazyload {% if section.settings.enable_parallax %}effect-paralax{% endif %}"
                                     width="{{ block.settings.image.width }}"
                                     height="{{ block.settings.image.height }}">
                             {% endif %}
@@ -30,47 +40,62 @@
                                         <div class="content-slider {% if section.settings.layout == 'fashion-women' or section.settings.layout == 'bicycle' %}style-2{% endif %}">
                                             <div class="box-title-slider {% if section.settings.layout == 'fashion-women' %}text-center{% endif %}">
                                                 {% if section.settings.layout == 'home-electronic' %}
-                                                    <p class="sub text-md fw-medium fade-item fade-item-1 text-{{ block.settings.text_color }}">
+                                                    <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-md fw-medium{% endif %} fade-item fade-item-1"
+                                                       style="color: {{ block.settings.subtitle_color }};">
                                                         {{ block.settings.subtitle }}
                                                     </p>
-                                                    <h2 class="heading fw-medium fade-item fade-item-2 text-{{ block.settings.text_color }}">
+                                                    <h2 class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}fw-medium{% endif %} fade-item fade-item-2"
+                                                        style="color: {{ block.settings.heading_color }};">
                                                         {{ block.settings.heading }}
                                                     </h2>
                                                 {% elsif section.settings.layout == 'fashion-women' %}
-                                                    <p class="body-text-2 fw-semibold fade-item fade-item-1 font-2"></p>
+                                                    <p class="body-text-2 {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}fw-semibold{% endif %} fade-item fade-item-1"
+                                                       style="color: {{ block.settings.subtitle_color }};">
                                                         {{ block.settings.subtitle }}
                                                     </p>
-                                                    <div class="heading display-lg-3 fade-item fade-item-2 font-2">
+                                                    <div class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}display-lg-3{% endif %} fade-item fade-item-2"
+                                                         style="color: {{ block.settings.heading_color }};">
                                                         {{ block.settings.heading }}
                                                     </div>
-                                                    <p class="sub text-md fade-item fade-item-3 text-main">
+                                                    <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-md{% endif %} fade-item fade-item-3"
+                                                       style="color: {{ block.settings.subheading_color }};">
                                                         {{ block.settings.subheading }}
                                                     </p>
                                                 {% elsif section.settings.layout == 'bicycle' %}
-                                                    <h2 class="heading display-xl-2 fw-medium fade-item fade-item-2">
+                                                    <h2 class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}display-xl-2 fw-medium{% endif %} fade-item fade-item-2"
+                                                        style="color: {{ block.settings.heading_color }};">
                                                         {{ block.settings.heading }}
                                                     </h2>
-                                                    <p class="sub text-xl-2 text-main fade-item fade-item-3">
+                                                    <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-xl-2{% endif %} fade-item fade-item-3"
+                                                       style="color: {{ block.settings.subheading_color }};">
                                                         {{ block.settings.subheading }}
                                                     </p>
                                                 {% elsif section.settings.layout == 'phonecase' %}
-                                                    <h2 class="heading display-xl-2 fw-medium fade-item fade-item-1 text-{{ block.settings.text_color }}">
+                                                    <h2 class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}display-xl-2 fw-medium{% endif %} fade-item fade-item-1"
+                                                        style="color: {{ block.settings.heading_color }};">
                                                         {{ block.settings.heading }}
                                                     </h2>
-                                                    <p class="sub text-xl fade-item fade-item-2 text-{{ block.settings.text_color }}">
+                                                    <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-xl{% endif %} fade-item fade-item-2"
+                                                       style="color: {{ block.settings.subheading_color }};">
                                                         {{ block.settings.subheading }}
                                                     </p>
                                                 {% else %}
-                                                    <h2 class="heading fw-medium fade-item fade-item-1 text-{{ block.settings.text_color }}">
+                                                    <h2 class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}fw-medium{% endif %} fade-item fade-item-1"
+                                                        style="color: {{ block.settings.heading_color }};">
                                                         {{ block.settings.heading }}
                                                     </h2>
-                                                    <p class="sub text-md fade-item fade-item-2 text-{{ block.settings.text_color }}">
+                                                    <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-md{% endif %} fade-item fade-item-2"
+                                                       style="color: {{ block.settings.subtitle_color }};">
                                                         {{ block.settings.subheading }}
                                                     </p>
                                                 {% endif %}
                                             </div>
                                             <div class="box-btn-slider {% if section.settings.layout == 'fashion-women' %}fade-item fade-item-4{% else %}fade-item fade-item-3{% endif %} {% if section.settings.layout == 'fashion-women' %}text-center{% endif %}">
-                                                <a href="{{ block.settings.button_link }}" class="tf-btn {% if section.settings.layout == 'fashion-women' %}animate-btn font-2{% elsif section.settings.layout == 'bicycle' %}btn-space1 animate-btn btn-green-2{% elsif section.settings.layout == 'phonecase' %}fw-normal animate-btn{% elsif block.settings.button_color == 'white' %}btn-white fw-normal hover-primary{% else %}btn-dark2 animate-btn{% endif %}">
+                                                <a href="{{ block.settings.button_link }}" 
+                                                   class="tf-btn {% if section.settings.layout == 'fashion-women' %}animate-btn font-2{% elsif section.settings.layout == 'bicycle' %}btn-space1 animate-btn btn-green-2{% elsif section.settings.layout == 'phonecase' %}fw-normal animate-btn{% elsif block.settings.button_color == 'white' %}btn-white fw-normal hover-primary{% else %}btn-dark2 animate-btn{% endif %}"
+                                                   style="background-color: {{ block.settings.button_bg_color }}; color: {{ block.settings.button_text_color }};"
+                                                   onmouseover="this.style.backgroundColor='{{ block.settings.button_hover_bg_color }}'; this.style.color='{{ block.settings.button_hover_text_color }}';"
+                                                   onmouseout="this.style.backgroundColor='{{ block.settings.button_bg_color }}'; this.style.color='{{ block.settings.button_text_color }}';">
                                                     {{ block.settings.button_text }}
                                                     <i class="icon {% if section.settings.layout == 'bicycle' %}icon-arr-right3{% else %}icon-arr-right{% endif %}"></i>
                                                 </a>
@@ -84,11 +109,17 @@
                 </div>
             {% endfor %}
         </div>
+        {% if section.settings.show_dots %}
         <div class="wrap-pagination">
             <div class="container">
                 <div class="sw-dots sw-pagination-slider justify-content-center swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal {% if section.settings.layout == 'bicycle' or section.settings.layout == 'phonecase' %}style-2{% endif %}"></div>
             </div>
         </div>
+        {% endif %}
+        {% if section.settings.show_arrows %}
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        {% endif %}
     </div>
 </section>
 <!-- /Slider -->

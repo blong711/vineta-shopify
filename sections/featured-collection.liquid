@@ -27,13 +27,17 @@
                                 <img src="{{ collection.featured_image | img_url: 'master' }}"
                                     data-src="{{ collection.featured_image | img_url: 'master' }}" 
                                     alt="{{ collection.title | escape }}" 
-                                    class="lazyload"
+                                    class="lazyload {% if section.settings.enable_lazy_loading %}lazyload{% endif %}"
                                     width="{{ collection.featured_image.width }}"
                                     height="{{ collection.featured_image.height }}">
                             </div>
                         {% endif %}
-                        <div class="content wow fadeInUp">
-                            <a href="{{ collection.url }}" class="tf-btn font-2 btn-white hover-icon-2 hover-dark">
+                        <div class="content {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
+                            <a href="{{ collection.url }}" 
+                               class="tf-btn {% if block.settings.enable_custom_fonts %}{{ block.settings.title_font }} {{ block.settings.title_size }} {{ block.settings.title_weight }}{% else %}font-2{% endif %} btn-white hover-icon-2 hover-dark"
+                               style="color: {{ block.settings.button_text_color }}; background-color: {{ block.settings.button_bg_color }};"
+                               onmouseover="this.style.backgroundColor='{{ block.settings.button_hover_bg_color }}'; this.style.color='{{ block.settings.button_hover_text_color }}';"
+                               onmouseout="this.style.backgroundColor='{{ block.settings.button_bg_color }}'; this.style.color='{{ block.settings.button_text_color }}';">
                                 {{ collection.title }}
                                 <i class="icon-arrow-right icon"></i>
                             </a>
@@ -48,7 +52,7 @@
     <div class="mx_40 my_24">
         <div dir="ltr" class="swiper tf-swiper" data-swiper='{
                 "slidesPerView": 1,
-                "spaceBetween": 12,
+                "spaceBetween": {{ section.settings.space_between }},
                 "speed": {{ section.settings.speed }},
                 "observer": true,
                 "observeParents": true,
@@ -60,8 +64,8 @@
                 },
                 "pagination": { "el": ".sw-pagination-cls", "clickable": true },
                 "breakpoints": {
-                "768": { "slidesPerView": 1, "spaceBetween": 12, "slidesPerGroup": 2 },
-                "1024": { "slidesPerView": 2, "spaceBetween": 24, "slidesPerGroup": 2}
+                "768": { "slidesPerView": 1, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 2 },
+                "1024": { "slidesPerView": 2, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 2}
                 }
             }'>
             <div class="swiper-wrapper">
@@ -74,30 +78,40 @@
                                     <img src="{{ collection.featured_image | img_url: 'master' }}"
                                         data-src="{{ collection.featured_image | img_url: 'master' }}" 
                                         alt="{{ collection.title | escape }}" 
-                                        class="lazyload"
+                                        class="lazyload {% if section.settings.enable_lazy_loading %}lazyload{% endif %}"
                                         width="{{ collection.featured_image.width }}"
                                         height="{{ collection.featured_image.height }}">
                                 </a>
                             {% endif %}
                             <div class="content">
-                                <div class="box-title wow fadeInUp">
+                                <div class="box-title {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
                                     {% if block.settings.tag != blank %}
-                                        <span class="tag text-sm text-white animate-btn">{{ block.settings.tag }}</span>
+                                        <span class="tag text-sm text-white animate-btn" style="background-color: {{ block.settings.tag_bg_color }}; color: {{ block.settings.tag_text_color }};">
+                                            {{ block.settings.tag }}
+                                        </span>
                                     {% endif %}
-                                    <a href="{{ collection.url }}" class="title link">{{ collection.title }}</a>
+                                    <a href="{{ collection.url }}" 
+                                       class="title link {% if block.settings.enable_custom_fonts %}{{ block.settings.title_font }} {{ block.settings.title_size }} {{ block.settings.title_weight }}{% endif %}"
+                                       style="color: {{ block.settings.title_color }};">
+                                        {{ collection.title }}
+                                    </a>
                                     {% if block.settings.price_new != blank or block.settings.price_old != blank %}
                                         <div class="box-price">
                                             {% if block.settings.price_new != blank %}
-                                                <span class="price-new display-xs fw-medium text-primary">{{ block.settings.price_new }}</span>
+                                                <span class="price-new display-xs fw-medium" style="color: {{ block.settings.price_color }};">{{ block.settings.price_new }}</span>
                                             {% endif %}
                                             {% if block.settings.price_old != blank %}
-                                                <span class="price-old">{{ block.settings.price_old }}</span>
+                                                <span class="price-old" style="color: {{ block.settings.price_color }};">{{ block.settings.price_old }}</span>
                                             {% endif %}
                                         </div>
                                     {% endif %}
                                 </div>
                                 <a href="{{ collection.url }}"
-                                    class="wow fadeInUp tf-btn btn-cls btn-out-line-dark hover-icon-2">
+                                   class="{% if section.settings.enable_wow %}wow fadeInUp{% endif %} tf-btn btn-cls btn-out-line-dark hover-icon-2"
+                                   {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}
+                                   style="color: {{ block.settings.button_text_color }}; border-color: {{ block.settings.button_bg_color }};"
+                                   onmouseover="this.style.backgroundColor='{{ block.settings.button_hover_bg_color }}'; this.style.color='{{ block.settings.button_hover_text_color }}';"
+                                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='{{ block.settings.button_text_color }}';">
                                     {{ block.settings.button_text | default: 'See Details' }}
                                     <i class="icon icon-arrow-top-left"></i>
                                 </a>
@@ -111,7 +125,7 @@
     </div>
 {% elsif section.settings.layout == 'fashion-02' %}
     <div class="tf-slideshow slider-fashion-2">
-        <div class="swiper tf-sw-slideshow" data-preview="3" data-tablet="2" data-mobile="1.5" data-space="15" data-space-mb="5">
+        <div class="swiper tf-sw-slideshow" data-preview="3" data-tablet="2" data-mobile="1.5" data-space="{{ section.settings.space_between }}" data-space-mb="{{ section.settings.space_between_mobile }}">
             <div class="swiper-wrapper">
                 {% for block in section.blocks %}
                     {% assign collection = collections[block.settings.collection] %}
@@ -122,13 +136,17 @@
                                     <img src="{{ collection.featured_image | img_url: 'master' }}"
                                         data-src="{{ collection.featured_image | img_url: 'master' }}" 
                                         alt="{{ collection.title | escape }}" 
-                                        class="lazyload"
+                                        class="lazyload {% if section.settings.enable_lazy_loading %}lazyload{% endif %}"
                                         width="{{ collection.featured_image.width }}"
                                         height="{{ collection.featured_image.height }}">
                                 </div>
                             {% endif %}
-                            <div class="content">
-                                <a href="{{ collection.url }}" class="tf-btn btn-white hover-icon-2 hover-dark">
+                            <div class="content {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
+                                <a href="{{ collection.url }}" 
+                                   class="tf-btn {% if block.settings.enable_custom_fonts %}{{ block.settings.title_font }} {{ block.settings.title_size }} {{ block.settings.title_weight }}{% else %}btn-white{% endif %} hover-icon-2 hover-dark"
+                                   style="color: {{ block.settings.button_text_color }}; background-color: {{ block.settings.button_bg_color }};"
+                                   onmouseover="this.style.backgroundColor='{{ block.settings.button_hover_bg_color }}'; this.style.color='{{ block.settings.button_hover_text_color }}';"
+                                   onmouseout="this.style.backgroundColor='{{ block.settings.button_bg_color }}'; this.style.color='{{ block.settings.button_text_color }}';">
                                     {{ collection.title }}
                                     <i class="icon-arrow-right icon"></i>
                                 </a>
@@ -142,9 +160,11 @@
 {% else %}
     <div class="pt-24">
         <div class="container">
-            <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp" data-swiper='{
+            <div dir="ltr" class="swiper tf-swiper hover-sw-nav {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" 
+                 {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}
+                 data-swiper='{
                     "slidesPerView": 1,
-                    "spaceBetween": 12,
+                    "spaceBetween": {{ section.settings.space_between }},
                     "speed": {{ section.settings.speed }},
                     "observer": true,
                     "observeParents": true,
@@ -156,9 +176,9 @@
                     },
                     "pagination": { "el": ".sw-pagination-cls", "clickable": true },
                     "breakpoints": {
-                    "575": { "slidesPerView": 2, "spaceBetween": 12 ,"slidesPerGroup": 2 },
-                    "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
-                    "1200": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3}
+                    "575": { "slidesPerView": 2, "spaceBetween": {{ section.settings.space_between }} ,"slidesPerGroup": 2 },
+                    "768": { "slidesPerView": 3, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 3 },
+                    "1200": { "slidesPerView": 3, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 3}
                     }
                 }'>
                 <div class="swiper-wrapper">
@@ -171,14 +191,17 @@
                                         <img src="{{ collection.featured_image | img_url: 'master' }}"
                                             data-src="{{ collection.featured_image | img_url: 'master' }}" 
                                             alt="{{ collection.title | escape }}" 
-                                            class="lazyload"
+                                            class="lazyload {% if section.settings.enable_lazy_loading %}lazyload{% endif %}"
                                             width="{{ collection.featured_image.width }}"
                                             height="{{ collection.featured_image.height }}">
                                     </a>
                                 {% endif %}
                                 <div class="cls-btn text-center">
                                     <a href="{{ collection.url }}"
-                                        class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                                        class="tf-btn btn-cls {% if block.settings.enable_custom_fonts %}{{ block.settings.title_font }} {{ block.settings.title_size }} {{ block.settings.title_weight }}{% else %}btn-white{% endif %} hover-dark hover-icon-2"
+                                        style="color: {{ block.settings.button_text_color }}; background-color: {{ block.settings.button_bg_color }};"
+                                        onmouseover="this.style.backgroundColor='{{ block.settings.button_hover_bg_color }}'; this.style.color='{{ block.settings.button_hover_text_color }}';"
+                                        onmouseout="this.style.backgroundColor='{{ block.settings.button_bg_color }}'; this.style.color='{{ block.settings.button_text_color }}';">
                                         {{ collection.title }}
                                         <i class="icon icon-arrow-top-left"></i>
                                     </a>
