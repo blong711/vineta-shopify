@@ -22,9 +22,9 @@
           {%- assign end_date = section.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
           <div class="box-countdown {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
             <div class="wg-countdown" style="background-color: {{ section.settings.countdown_bg_color }}; color: {{ section.settings.countdown_text_color }};">
-              <div class="js-countdown d-flex justify-content-center" 
-                   data-countdown="{{ end_date }}"
-                   data-labels="Days,Hours,Mins,Secs"></div>
+              <span class="js-countdown" 
+                    data-timer="{{ end_date }}"
+                    data-labels="Days,Hours,Mins,Secs"></span>
             </div>
           </div>
         {%- endif -%}
@@ -95,9 +95,9 @@
             {%- assign end_date = section.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
             <div class="box-countdown d-flex justify-content-center {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
               <div class="wg-countdown-2" style="background-color: {{ section.settings.countdown_bg_color }}; color: {{ section.settings.countdown_text_color }};">
-                <div class="js-countdown" 
-                     data-countdown="{{ end_date }}"
-                     data-labels="Days,Hours,Mins,Secs"></div>
+                <span class="js-countdown" 
+                      data-timer="{{ end_date }}"
+                      data-labels="Days,Hours,Mins,Secs"></span>
               </div>
             </div>
           {%- endif -%}
