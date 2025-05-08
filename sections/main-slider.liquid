@@ -1,106 +1,104 @@
 <!-- Slider -->
 <section class="tf-slideshow {% if section.settings.layout == 'home-electronic' %}slider-electronic{% elsif section.settings.layout == 'fashion-women' %}slider-fashion-3{% elsif section.settings.layout == 'bicycle' %}slider-bicycle{% elsif section.settings.layout == 'phonecase' %}slider-phonecase{% else %}slider-fashion-1{% endif %} slider-default {% if section.settings.layout == 'fashion-women' %}space-abs-header{% endif %}"
-    style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;"
-    data-color-scheme="{{ section.settings.color_scheme }}">
-    <div class="swiper tf-sw-slideshow slider-effect-{{ section.settings.animation_effect }}" 
-        data-effect="{{ section.settings.animation_effect }}" 
-        data-preview="1" 
-        data-tablet="1"
-        data-mobile="1" 
-        data-centered="false" 
-        data-space="0" 
-        data-space-mb="0" 
-        data-loop="{{ section.settings.loop }}"
-        data-auto-play="{{ section.settings.autoplay }}" 
-        data-speed="{{ section.settings.speed }}"
-        data-autoplay-delay="{{ section.settings.autoplay_speed }}">
-        <div class="swiper-wrapper">
-            {% for block in section.blocks %}
-                {% assign slide_class = '' %}
-                {% if section.settings.layout == 'home-electronic' and block.settings.image_position == 'right' %}
-                    {% assign slide_class = 'type-image-right' %}
-                {% elsif section.settings.layout == 'home-electronic' and forloop.index == 2 %}
-                    {% assign slide_class = 'reverse-slide' %}
-                {% endif %}
-                <div class="swiper-slide" {{ block.shopify_attributes }}>
-                    <div class="slider-wrap bg-type-{{ forloop.index }} {{ slide_class }}">
-                        <div class="image">
-                            {% if block.settings.image != blank %}
-                                <img src="{{ block.settings.image | img_url: 'master' }}"
-                                    data-src="{{ block.settings.image | img_url: 'master' }}" 
-                                    alt="{{ block.settings.image.alt | escape }}" 
-                                    class="lazyload {% if section.settings.enable_parallax %}effect-paralax{% endif %}"
-                                    width="{{ block.settings.image.width }}"
-                                    height="{{ block.settings.image.height }}">
-                            {% endif %}
-                        </div>
-                        <div class="box-content">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="{% if section.settings.layout == 'home-electronic' and block.settings.content_position == 'right' %}offset-lg-8 col-lg-4 col-sm-6 offset-6{% elsif section.settings.layout == 'fashion-women' %}col-lg-5 col-md-6 col-sm-7 col-10{% elsif section.settings.layout == 'bicycle' %}col-lg-5 col-md-6 col-sm-10{% elsif section.settings.layout == 'phonecase' %}col-lg-5 col-md-6 col-sm-10{% else %}col-lg-12 col-sm-6{% endif %} col-12">
-                                        <div class="content-slider {% if section.settings.layout == 'fashion-women' or section.settings.layout == 'bicycle' %}style-2{% endif %}">
-                                            <div class="box-title-slider {% if section.settings.layout == 'fashion-women' %}text-center{% endif %}">
-                                                {% if section.settings.layout == 'home-electronic' %}
-                                                    <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-md fw-medium{% endif %} fade-item fade-item-1"
-                                                       style="color: {{ section.settings.color_scheme.settings.text }};">
-                                                        {{ block.settings.subtitle }}
-                                                    </p>
-                                                    <h2 class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}fw-medium{% endif %} fade-item fade-item-2"
-                                                        style="color: {{ section.settings.color_scheme.settings.text }};">
-                                                        {{ block.settings.heading }}
-                                                    </h2>
-                                                {% elsif section.settings.layout == 'fashion-women' %}
-                                                    <p class="body-text-2 {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}fw-semibold{% endif %} fade-item fade-item-1"
-                                                       style="color: {{ section.settings.color_scheme.settings.text }};">
-                                                        {{ block.settings.subtitle }}
-                                                    </p>
-                                                    <div class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}display-lg-3{% endif %} fade-item fade-item-2"
-                                                         style="color: {{ section.settings.color_scheme.settings.text }};">
-                                                        {{ block.settings.heading }}
-                                                    </div>
-                                                    <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-md{% endif %} fade-item fade-item-3"
-                                                       style="color: {{ section.settings.color_scheme.settings.text }};">
-                                                        {{ block.settings.subheading }}
-                                                    </p>
-                                                {% elsif section.settings.layout == 'bicycle' %}
-                                                    <h2 class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}display-xl-2 fw-medium{% endif %} fade-item fade-item-2"
-                                                        style="color: {{ section.settings.color_scheme.settings.text }};">
-                                                        {{ block.settings.heading }}
-                                                    </h2>
-                                                    <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-xl-2{% endif %} fade-item fade-item-3"
-                                                       style="color: {{ section.settings.color_scheme.settings.text }};">
-                                                        {{ block.settings.subheading }}
-                                                    </p>
-                                                {% elsif section.settings.layout == 'phonecase' %}
-                                                    <h2 class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}display-xl-2 fw-medium{% endif %} fade-item fade-item-1"
-                                                        style="color: {{ section.settings.color_scheme.settings.text }};">
-                                                        {{ block.settings.heading }}
-                                                    </h2>
-                                                    <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-xl{% endif %} fade-item fade-item-2"
-                                                       style="color: {{ section.settings.color_scheme.settings.text }};">
-                                                        {{ block.settings.subheading }}
-                                                    </p>
-                                                {% else %}
-                                                    <h2 class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}fw-medium{% endif %} fade-item fade-item-1"
-                                                        style="color: {{ section.settings.color_scheme.settings.text }};">
-                                                        {{ block.settings.heading }}
-                                                    </h2>
-                                                    <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-md{% endif %} fade-item fade-item-2"
-                                                       style="color: {{ section.settings.color_scheme.settings.text }};">
-                                                        {{ block.settings.subheading }}
-                                                    </p>
-                                                {% endif %}
-                                            </div>
-                                            <div class="box-btn-slider {% if section.settings.layout == 'fashion-women' %}fade-item fade-item-4{% else %}fade-item fade-item-3{% endif %} {% if section.settings.layout == 'fashion-women' %}text-center{% endif %}">
-                                                <a href="{{ block.settings.button_link }}" 
-                                                   class="tf-btn {% if section.settings.layout == 'fashion-women' %}animate-btn font-2{% elsif section.settings.layout == 'bicycle' %}btn-space1 animate-btn btn-green-2{% elsif section.settings.layout == 'phonecase' %}fw-normal animate-btn{% else %}btn-dark2 animate-btn{% endif %}"
-                                                   style="background-color: {{ section.settings.color_scheme.settings.primary_button }}; color: {{ section.settings.color_scheme.settings.on_primary_button }};"
-                                                   onmouseover="this.style.backgroundColor='{{ section.settings.color_scheme.settings.secondary_button }}'; this.style.color='{{ section.settings.color_scheme.settings.on_secondary_button }}';"
-                                                   onmouseout="this.style.backgroundColor='{{ section.settings.color_scheme.settings.primary_button }}'; this.style.color='{{ section.settings.color_scheme.settings.on_primary_button }}';">
-                                                    {{ block.settings.button_text }}
-                                                    <i class="icon {% if section.settings.layout == 'bicycle' %}icon-arr-right3{% else %}icon-arr-right{% endif %}"></i>
-                                                </a>
-                                            </div>
+style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+<div class="swiper tf-sw-slideshow slider-effect-{{ section.settings.animation_effect }}" 
+    data-effect="{{ section.settings.animation_effect }}" 
+    data-preview="1" 
+    data-tablet="1"
+    data-mobile="1" 
+    data-centered="false" 
+    data-space="0" 
+    data-space-mb="0" 
+    data-loop="{{ section.settings.loop }}"
+    data-auto-play="{{ section.settings.autoplay }}" 
+    data-speed="{{ section.settings.speed }}"
+    data-autoplay-delay="{{ section.settings.autoplay_speed }}">
+    <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+            {% assign slide_class = '' %}
+            {% if section.settings.layout == 'home-electronic' and block.settings.image_position == 'right' %}
+                {% assign slide_class = 'type-image-right' %}
+            {% elsif section.settings.layout == 'home-electronic' and forloop.index == 2 %}
+                {% assign slide_class = 'reverse-slide' %}
+            {% endif %}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+                <div class="slider-wrap bg-type-{{ forloop.index }} {{ slide_class }}">
+                    <div class="image">
+                        {% if block.settings.image != blank %}
+                            <img src="{{ block.settings.image | img_url: 'master' }}"
+                                data-src="{{ block.settings.image | img_url: 'master' }}" 
+                                alt="{{ block.settings.image.alt | escape }}" 
+                                class="lazyload {% if section.settings.enable_parallax %}effect-paralax{% endif %}"
+                                width="{{ block.settings.image.width }}"
+                                height="{{ block.settings.image.height }}">
+                        {% endif %}
+                    </div>
+                    <div class="box-content">
+                        <div class="container">
+                            <div class="row">
+                                <div class="{% if section.settings.layout == 'home-electronic' and block.settings.content_position == 'right' %}offset-lg-8 col-lg-4 col-sm-6 offset-6{% elsif section.settings.layout == 'fashion-women' %}col-lg-5 col-md-6 col-sm-7 col-10{% elsif section.settings.layout == 'bicycle' %}col-lg-5 col-md-6 col-sm-10{% elsif section.settings.layout == 'phonecase' %}col-lg-5 col-md-6 col-sm-10{% else %}col-lg-12 col-sm-6{% endif %} col-12">
+                                    <div class="content-slider {% if section.settings.layout == 'fashion-women' or section.settings.layout == 'bicycle' %}style-2{% endif %}">
+                                        <div class="box-title-slider {% if section.settings.layout == 'fashion-women' %}text-center{% endif %}">
+                                            {% if section.settings.layout == 'home-electronic' %}
+                                                <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-md fw-medium{% endif %} fade-item fade-item-1"
+                                                   style="color: {{ block.settings.subtitle_color }};">
+                                                    {{ block.settings.subtitle }}
+                                                </p>
+                                                <h2 class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}fw-medium{% endif %} fade-item fade-item-2"
+                                                    style="color: {{ block.settings.heading_color }};">
+                                                    {{ block.settings.heading }}
+                                                </h2>
+                                            {% elsif section.settings.layout == 'fashion-women' %}
+                                                <p class="body-text-2 {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}fw-semibold{% endif %} fade-item fade-item-1"
+                                                   style="color: {{ block.settings.subtitle_color }};">
+                                                    {{ block.settings.subtitle }}
+                                                </p>
+                                                <div class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}display-lg-3{% endif %} fade-item fade-item-2"
+                                                     style="color: {{ block.settings.heading_color }};">
+                                                    {{ block.settings.heading }}
+                                                </div>
+                                                <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-md{% endif %} fade-item fade-item-3"
+                                                   style="color: {{ block.settings.subheading_color }};">
+                                                    {{ block.settings.subheading }}
+                                                </p>
+                                            {% elsif section.settings.layout == 'bicycle' %}
+                                                <h2 class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}display-xl-2 fw-medium{% endif %} fade-item fade-item-2"
+                                                    style="color: {{ block.settings.heading_color }};">
+                                                    {{ block.settings.heading }}
+                                                </h2>
+                                                <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-xl-2{% endif %} fade-item fade-item-3"
+                                                   style="color: {{ block.settings.subheading_color }};">
+                                                    {{ block.settings.subheading }}
+                                                </p>
+                                            {% elsif section.settings.layout == 'phonecase' %}
+                                                <h2 class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}display-xl-2 fw-medium{% endif %} fade-item fade-item-1"
+                                                    style="color: {{ block.settings.heading_color }};">
+                                                    {{ block.settings.heading }}
+                                                </h2>
+                                                <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-xl{% endif %} fade-item fade-item-2"
+                                                   style="color: {{ block.settings.subheading_color }};">
+                                                    {{ block.settings.subheading }}
+                                                </p>
+                                            {% else %}
+                                                <h2 class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}fw-medium{% endif %} fade-item fade-item-1"
+                                                    style="color: {{ block.settings.heading_color }};">
+                                                    {{ block.settings.heading }}
+                                                </h2>
+                                                <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-md{% endif %} fade-item fade-item-2"
+                                                   style="color: {{ block.settings.subtitle_color }};">
+                                                    {{ block.settings.subheading }}
+                                                </p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="box-btn-slider {% if section.settings.layout == 'fashion-women' %}fade-item fade-item-4{% else %}fade-item fade-item-3{% endif %} {% if section.settings.layout == 'fashion-women' %}text-center{% endif %}">
+                                            <a href="{{ block.settings.button_link }}" 
+                                               class="tf-btn {% if section.settings.layout == 'fashion-women' %}animate-btn font-2{% elsif section.settings.layout == 'bicycle' %}btn-space1 animate-btn btn-green-2{% elsif section.settings.layout == 'phonecase' %}fw-normal animate-btn{% elsif block.settings.button_color == 'white' %}btn-white fw-normal hover-primary{% else %}btn-dark2 animate-btn{% endif %}"
+                                               style="background-color: {{ block.settings.button_bg_color }}; color: {{ block.settings.button_text_color }};"
+                                               onmouseover="this.style.backgroundColor='{{ block.settings.button_hover_bg_color }}'; this.style.color='{{ block.settings.button_hover_text_color }}';"
+                                               onmouseout="this.style.backgroundColor='{{ block.settings.button_bg_color }}'; this.style.color='{{ block.settings.button_text_color }}';">
+                                                {{ block.settings.button_text }}
+                                                <i class="icon {% if section.settings.layout == 'bicycle' %}icon-arr-right3{% else %}icon-arr-right{% endif %}"></i>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -108,343 +106,384 @@
                         </div>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
-        {% if section.settings.show_dots %}
-        <div class="wrap-pagination">
-            <div class="container">
-                <div class="sw-dots sw-pagination-slider justify-content-center swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal {% if section.settings.layout == 'bicycle' or section.settings.layout == 'phonecase' %}style-2{% endif %}"></div>
             </div>
-        </div>
-        {% endif %}
-        {% if section.settings.show_arrows %}
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-        {% endif %}
+        {% endfor %}
     </div>
+    {% if section.settings.show_dots %}
+    <div class="wrap-pagination">
+        <div class="container">
+            <div class="sw-dots sw-pagination-slider justify-content-center swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal {% if section.settings.layout == 'bicycle' or section.settings.layout == 'phonecase' %}style-2{% endif %}"></div>
+        </div>
+    </div>
+    {% endif %}
+    {% if section.settings.show_arrows %}
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    {% endif %}
+</div>
 </section>
 <!-- /Slider -->
 
 {% schema %}
 {
-    "name": "Hero Slider",
-    "settings": [
-        {
-            "type": "select",
-            "id": "layout",
-            "label": "Section Layout",
-            "options": [
-                { "value": "default", "label": "Default Fashion" },
-                { "value": "home-electronic", "label": "Home Electronic" },
-                { "value": "fashion-women", "label": "Fashion Women" },
-                { "value": "bicycle", "label": "Bicycle" },
-                { "value": "phonecase", "label": "Phonecase" }
-            ],
-            "default": "default"
-        },
-        {
-            "type": "color_scheme",
-            "id": "color_scheme",
-            "label": "Color scheme",
-            "default": "background-1"
-        },
-        {
-            "type": "header",
-            "content": "Slider Settings"
-        },
-        {
-            "type": "checkbox",
-            "id": "autoplay",
-            "label": "Enable autoplay",
-            "default": true
-        },
-        {
-            "type": "checkbox",
-            "id": "loop",
-            "label": "Enable loop",
-            "default": true
-        },
-        {
-            "type": "range",
-            "id": "speed",
-            "min": 100,
-            "max": 2000,
-            "step": 100,
-            "unit": "ms",
-            "label": "Transition speed",
-            "default": 800
-        },
-        {
-            "type": "range",
-            "id": "autoplay_speed",
-            "min": 2000,
-            "max": 9000,
-            "step": 500,
-            "unit": "ms",
-            "label": "Autoplay delay",
-            "default": 5000
-        },
-        {
-            "type": "checkbox",
-            "id": "show_arrows",
-            "label": "Show navigation arrows",
-            "default": true
-        },
-        {
-            "type": "checkbox",
-            "id": "show_dots",
-            "label": "Show pagination dots",
-            "default": true
-        },
-        {
-            "type": "header",
-            "content": "Responsive Settings"
-        },
-        {
-            "type": "range",
-            "id": "padding_top",
-            "min": 0,
-            "max": 100,
-            "step": 4,
-            "unit": "px",
-            "label": "Top padding",
-            "default": 0
-        },
-        {
-            "type": "range",
-            "id": "padding_bottom",
-            "min": 0,
-            "max": 100,
-            "step": 4,
-            "unit": "px",
-            "label": "Bottom padding",
-            "default": 0
-        },
-        {
-            "type": "header",
-            "content": "Animation Settings"
-        },
-        {
-            "type": "select",
-            "id": "animation_effect",
-            "label": "Animation effect",
-            "options": [
-                { "value": "fade", "label": "Fade" },
-                { "value": "slide", "label": "Slide" },
-                { "value": "zoom", "label": "Zoom" }
-            ],
-            "default": "fade"
-        },
-        {
-            "type": "checkbox",
-            "id": "enable_parallax",
-            "label": "Enable parallax effect",
-            "default": false
-        }
-    ],
-    "blocks": [
-        {
-            "type": "slide",
-            "name": "Slide",
-            "settings": [
-                {
-                    "type": "image_picker",
-                    "id": "image",
-                    "label": "Slide image"
-                },
-                {
-                    "type": "header",
-                    "content": "Typography"
-                },
-                {
-                    "type": "checkbox",
-                    "id": "enable_custom_fonts",
-                    "label": "Enable custom fonts",
-                    "default": false
-                },
-                {
-                    "type": "select",
-                    "id": "heading_font",
-                    "label": "Heading font",
-                    "options": [
-                        { "value": "font-1", "label": "Font 1" },
-                        { "value": "font-2", "label": "Font 2" }
-                    ],
-                    "default": "font-1",
-                    "info": "Only applies when custom fonts are enabled"
-                },
-                {
-                    "type": "select",
-                    "id": "heading_size",
-                    "label": "Heading size",
-                    "options": [
-                        { "value": "text-lg", "label": "Large" },
-                        { "value": "text-xl", "label": "Extra Large" },
-                        { "value": "display-sm", "label": "Display Small" },
-                        { "value": "display-md", "label": "Display Medium" },
-                        { "value": "display-lg", "label": "Display Large" }
-                    ],
-                    "default": "display-md",
-                    "info": "Only applies when custom fonts are enabled"
-                },
-                {
-                    "type": "select",
-                    "id": "heading_weight",
-                    "label": "Heading weight",
-                    "options": [
-                        { "value": "fw-normal", "label": "Normal" },
-                        { "value": "fw-medium", "label": "Medium" },
-                        { "value": "fw-semibold", "label": "Semibold" },
-                        { "value": "fw-bold", "label": "Bold" }
-                    ],
-                    "default": "fw-medium",
-                    "info": "Only applies when custom fonts are enabled"
-                },
-                {
-                    "type": "select",
-                    "id": "subtitle_font",
-                    "label": "Subtitle font",
-                    "options": [
-                        { "value": "font-1", "label": "Font 1" },
-                        { "value": "font-2", "label": "Font 2" }
-                    ],
-                    "default": "font-1",
-                    "info": "Only applies when custom fonts are enabled"
-                },
-                {
-                    "type": "select",
-                    "id": "subtitle_size",
-                    "label": "Subtitle size",
-                    "options": [
-                        { "value": "text-sm", "label": "Small" },
-                        { "value": "text-md", "label": "Medium" },
-                        { "value": "text-lg", "label": "Large" }
-                    ],
-                    "default": "text-md",
-                    "info": "Only applies when custom fonts are enabled"
-                },
-                {
-                    "type": "select",
-                    "id": "subtitle_weight",
-                    "label": "Subtitle weight",
-                    "options": [
-                        { "value": "fw-normal", "label": "Normal" },
-                        { "value": "fw-medium", "label": "Medium" },
-                        { "value": "fw-semibold", "label": "Semibold" }
-                    ],
-                    "default": "fw-medium",
-                    "info": "Only applies when custom fonts are enabled"
-                },
-                {
-                    "type": "select",
-                    "id": "image_position",
-                    "label": "Image Position",
-                    "options": [
-                        { "value": "left", "label": "Left" },
-                        { "value": "right", "label": "Right" }
-                    ],
-                    "default": "left"
-                },
-                {
-                    "type": "select",
-                    "id": "content_position",
-                    "label": "Content Position",
-                    "options": [
-                        { "value": "left", "label": "Left" },
-                        { "value": "right", "label": "Right" }
-                    ],
-                    "default": "left"
-                },
-                {
-                    "type": "text",
-                    "id": "subtitle",
-                    "label": "Subtitle",
-                    "default": "SUMMER COLLECTION"
-                },
-                {
-                    "type": "text",
-                    "id": "heading",
-                    "label": "Heading",
-                    "default": "Style Redefined"
-                },
-                {
-                    "type": "text",
-                    "id": "subheading",
-                    "label": "Subheading",
-                    "default": "Discover the latest trends in fashion that speak your style."
-                },
-                {
-                    "type": "text",
-                    "id": "button_text",
-                    "label": "Button text",
-                    "default": "Shop Now"
-                },
-                {
-                    "type": "url",
-                    "id": "button_link",
-                    "label": "Button link"
-                }
-            ]
-        }
-    ],
-    "presets": [
-        {
-            "name": "Hero Slider",
-            "settings": {
-                "layout": "fashion-women"
+"name": "Hero Slider",
+"settings": [
+    {
+        "type": "select",
+        "id": "layout",
+        "label": "Section Layout",
+        "options": [
+            { "value": "default", "label": "Default Fashion" },
+            { "value": "home-electronic", "label": "Home Electronic" },
+            { "value": "fashion-women", "label": "Fashion Women" },
+            { "value": "bicycle", "label": "Bicycle" },
+            { "value": "phonecase", "label": "Phonecase" }
+        ],
+        "default": "default"
+    },
+    {
+        "type": "header",
+        "content": "Slider Settings"
+    },
+    {
+        "type": "checkbox",
+        "id": "autoplay",
+        "label": "Enable autoplay",
+        "default": true
+    },
+    {
+        "type": "checkbox",
+        "id": "loop",
+        "label": "Enable loop",
+        "default": true
+    },
+    {
+        "type": "range",
+        "id": "speed",
+        "min": 100,
+        "max": 2000,
+        "step": 100,
+        "unit": "ms",
+        "label": "Transition speed",
+        "default": 800
+    },
+    {
+        "type": "range",
+        "id": "autoplay_speed",
+        "min": 2000,
+        "max": 9000,
+        "step": 500,
+        "unit": "ms",
+        "label": "Autoplay delay",
+        "default": 5000
+    },
+    {
+        "type": "checkbox",
+        "id": "show_arrows",
+        "label": "Show navigation arrows",
+        "default": true
+    },
+    {
+        "type": "checkbox",
+        "id": "show_dots",
+        "label": "Show pagination dots",
+        "default": true
+    },
+    {
+        "type": "header",
+        "content": "Responsive Settings"
+    },
+    {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "Top padding",
+        "default": 0
+    },
+    {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "Bottom padding",
+        "default": 0
+    },
+    {
+        "type": "header",
+        "content": "Animation Settings"
+    },
+    {
+        "type": "select",
+        "id": "animation_effect",
+        "label": "Animation effect",
+        "options": [
+            { "value": "fade", "label": "Fade" },
+            { "value": "slide", "label": "Slide" },
+            { "value": "zoom", "label": "Zoom" }
+        ],
+        "default": "fade"
+    },
+    {
+        "type": "checkbox",
+        "id": "enable_parallax",
+        "label": "Enable parallax effect",
+        "default": false
+    }
+],
+"blocks": [
+    {
+        "type": "slide",
+        "name": "Slide",
+        "settings": [
+            {
+                "type": "image_picker",
+                "id": "image",
+                "label": "Slide image"
             },
-            "blocks": [
-                {
-                    "type": "slide",
-                    "settings": {
-                        "subtitle": "SUMMER COLLECTION",
-                        "heading": "Everyday Essentials",
-                        "subheading": "Versatile pieces for all-day style",
-                        "button_text": "Shop Collection"
-                    }
-                }
-            ]
-        },
-        {
-            "name": "Bicycle Slider",
-            "settings": {
-                "layout": "bicycle"
+            {
+                "type": "header",
+                "content": "Typography"
             },
-            "blocks": [
-                {
-                    "type": "slide",
-                    "settings": {
-                        "heading": "Ride Into Adventure",
-                        "subheading": "Find your perfect bike today",
-                        "button_text": "Shop Collection"
-                    }
-                },
-                {
-                    "type": "slide",
-                    "settings": {
-                        "heading": "Adventure Awaits",
-                        "subheading": "Find the perfect bike for your outdoor journeys",
-                        "button_text": "Shop Collection"
-                    }
-                }
-            ]
-        },
-        {
-            "name": "Phonecase Slider",
-            "settings": {
-                "layout": "phonecase"
+            {
+                "type": "checkbox",
+                "id": "enable_custom_fonts",
+                "label": "Enable custom fonts",
+                "default": false
             },
-            "blocks": [
-                {
-                    "type": "slide",
-                    "settings": {
-                        "heading": "Protect in Style",
-                        "subheading": "Find the perfect case for your phone",
-                        "button_text": "Shop Collection"
-                    }
+            {
+                "type": "select",
+                "id": "heading_font",
+                "label": "Heading font",
+                "options": [
+                    { "value": "font-1", "label": "Font 1" },
+                    { "value": "font-2", "label": "Font 2" }
+                ],
+                "default": "font-1",
+                "info": "Only applies when custom fonts are enabled"
+            },
+            {
+                "type": "select",
+                "id": "heading_size",
+                "label": "Heading size",
+                "options": [
+                    { "value": "text-lg", "label": "Large" },
+                    { "value": "text-xl", "label": "Extra Large" },
+                    { "value": "display-sm", "label": "Display Small" },
+                    { "value": "display-md", "label": "Display Medium" },
+                    { "value": "display-lg", "label": "Display Large" }
+                ],
+                "default": "display-md",
+                "info": "Only applies when custom fonts are enabled"
+            },
+            {
+                "type": "select",
+                "id": "heading_weight",
+                "label": "Heading weight",
+                "options": [
+                    { "value": "fw-normal", "label": "Normal" },
+                    { "value": "fw-medium", "label": "Medium" },
+                    { "value": "fw-semibold", "label": "Semibold" },
+                    { "value": "fw-bold", "label": "Bold" }
+                ],
+                "default": "fw-medium",
+                "info": "Only applies when custom fonts are enabled"
+            },
+            {
+                "type": "select",
+                "id": "subtitle_font",
+                "label": "Subtitle font",
+                "options": [
+                    { "value": "font-1", "label": "Font 1" },
+                    { "value": "font-2", "label": "Font 2" }
+                ],
+                "default": "font-1",
+                "info": "Only applies when custom fonts are enabled"
+            },
+            {
+                "type": "select",
+                "id": "subtitle_size",
+                "label": "Subtitle size",
+                "options": [
+                    { "value": "text-sm", "label": "Small" },
+                    { "value": "text-md", "label": "Medium" },
+                    { "value": "text-lg", "label": "Large" }
+                ],
+                "default": "text-md",
+                "info": "Only applies when custom fonts are enabled"
+            },
+            {
+                "type": "select",
+                "id": "subtitle_weight",
+                "label": "Subtitle weight",
+                "options": [
+                    { "value": "fw-normal", "label": "Normal" },
+                    { "value": "fw-medium", "label": "Medium" },
+                    { "value": "fw-semibold", "label": "Semibold" }
+                ],
+                "default": "fw-medium",
+                "info": "Only applies when custom fonts are enabled"
+            },
+            {
+                "type": "header",
+                "content": "Colors"
+            },
+            {
+                "type": "color",
+                "id": "heading_color",
+                "label": "Heading color",
+                "default": "#000000"
+            },
+            {
+                "type": "color",
+                "id": "subtitle_color",
+                "label": "Subtitle color",
+                "default": "#666666"
+            },
+            {
+                "type": "color",
+                "id": "subheading_color",
+                "label": "Subheading color",
+                "default": "#666666"
+            },
+            {
+                "type": "color",
+                "id": "button_bg_color",
+                "label": "Button background color",
+                "default": "#000000"
+            },
+            {
+                "type": "color",
+                "id": "button_text_color",
+                "label": "Button text color",
+                "default": "#FFFFFF"
+            },
+            {
+                "type": "color",
+                "id": "button_hover_bg_color",
+                "label": "Button hover background color",
+                "default": "#333333"
+            },
+            {
+                "type": "color",
+                "id": "button_hover_text_color",
+                "label": "Button hover text color",
+                "default": "#FFFFFF"
+            },
+            {
+                "type": "select",
+                "id": "image_position",
+                "label": "Image Position",
+                "options": [
+                    { "value": "left", "label": "Left" },
+                    { "value": "right", "label": "Right" }
+                ],
+                "default": "left"
+            },
+            {
+                "type": "select",
+                "id": "content_position",
+                "label": "Content Position",
+                "options": [
+                    { "value": "left", "label": "Left" },
+                    { "value": "right", "label": "Right" }
+                ],
+                "default": "left"
+            },
+            {
+                "type": "text",
+                "id": "subtitle",
+                "label": "Subtitle",
+                "default": "SUMMER COLLECTION"
+            },
+            {
+                "type": "text",
+                "id": "heading",
+                "label": "Heading",
+                "default": "Style Redefined"
+            },
+            {
+                "type": "text",
+                "id": "subheading",
+                "label": "Subheading",
+                "default": "Discover the latest trends in fashion that speak your style."
+            },
+            {
+                "type": "text",
+                "id": "button_text",
+                "label": "Button text",
+                "default": "Shop Now"
+            },
+            {
+                "type": "url",
+                "id": "button_link",
+                "label": "Button link"
+            }
+        ]
+    }
+],
+"presets": [
+    {
+        "name": "Hero Slider",
+        "settings": {
+            "layout": "fashion-women"
+        },
+        "blocks": [
+            {
+                "type": "slide",
+                "settings": {
+                    "subtitle": "SUMMER COLLECTION",
+                    "heading": "Everyday Essentials",
+                    "subheading": "Versatile pieces for all-day style",
+                    "button_text": "Shop Collection"
                 }
-            ]
-        }
-    ]
+            }
+        ]
+    },
+    {
+        "name": "Bicycle Slider",
+        "settings": {
+            "layout": "bicycle"
+        },
+        "blocks": [
+            {
+                "type": "slide",
+                "settings": {
+                    "heading": "Ride Into Adventure",
+                    "subheading": "Find your perfect bike today",
+                    "button_text": "Shop Collection"
+                }
+            },
+            {
+                "type": "slide",
+                "settings": {
+                    "heading": "Adventure Awaits",
+                    "subheading": "Find the perfect bike for your outdoor journeys",
+                    "button_text": "Shop Collection"
+                }
+            }
+        ]
+    },
+    {
+        "name": "Phonecase Slider",
+        "settings": {
+            "layout": "phonecase"
+        },
+        "blocks": [
+            {
+                "type": "slide",
+                "settings": {
+                    "heading": "Protect in Style",
+                    "subheading": "Find the perfect case for your phone",
+                    "button_text": "Shop Collection"
+                }
+            }
+        ]
+    }
+]
 }
 {% endschema %} 
