@@ -31,37 +31,41 @@
         "type": "color_scheme_group",
         "id": "color_schemes",
         "role": {
-          "background": "background-1",
-          "text": "background-2",
-          "primary_button": "accent-1",
-          "secondary_button": "accent-2",
-          "primary_button_border": "accent-1",
-          "secondary_button_border": "accent-2",
-          "on_primary_button": "background-1",
-          "on_secondary_button": "background-1",
-          "links": "accent-1",
-          "icons": "accent-1"
+          "background": "scheme-1",
+          "text": "scheme-2",
+          "primary_button": "scheme-3",
+          "secondary_button": "scheme-4",
+          "primary_button_border": "scheme-3",
+          "secondary_button_border": "scheme-4",
+          "on_primary_button": "scheme-1",
+          "on_secondary_button": "scheme-1",
+          "links": "scheme-3",
+          "icons": "scheme-3"
         },
         "definition": [
           {
             "type": "color",
-            "id": "background-1",
-            "label": "Background 1"
+            "id": "scheme-1",
+            "label": "Scheme 1",
+            "default": "#313030"
           },
           {
             "type": "color",
-            "id": "background-2",
-            "label": "Background 2"
+            "id": "scheme-2",
+            "label": "Scheme 2",
+            "default": "#7c8c47"
           },
           {
             "type": "color",
-            "id": "accent-1",
-            "label": "Accent 1"
+            "id": "scheme-3",
+            "label": "Scheme 3",
+            "default": "#d47b62"
           },
           {
             "type": "color",
-            "id": "accent-2",
-            "label": "Accent 2"
+            "id": "scheme-4",
+            "label": "Scheme 4",
+            "default": "#3f7b25"
           }
         ]
       }
