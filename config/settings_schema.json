@@ -28,304 +28,42 @@
     "name": "Colors",
     "settings": [
       {
-        "type": "header",
-        "content": "Color Sets"
-      },
-      {
-        "type": "select",
-        "id": "color_scheme",
-        "label": "Color Scheme",
-        "options": [
+        "type": "color_scheme_group",
+        "id": "color_schemes",
+        "role": {
+          "background": "background-1",
+          "text": "background-2",
+          "primary_button": "accent-1",
+          "secondary_button": "accent-2",
+          "primary_button_border": "accent-1",
+          "secondary_button_border": "accent-2",
+          "on_primary_button": "background-1",
+          "on_secondary_button": "background-1",
+          "links": "accent-1",
+          "icons": "accent-1"
+        },
+        "definition": [
           {
-            "value": "light",
-            "label": "Light"
+            "type": "color",
+            "id": "background-1",
+            "label": "Background 1"
           },
           {
-            "value": "dark",
-            "label": "Dark"
+            "type": "color",
+            "id": "background-2",
+            "label": "Background 2"
           },
           {
-            "value": "custom",
-            "label": "Custom"
+            "type": "color",
+            "id": "accent-1",
+            "label": "Accent 1"
+          },
+          {
+            "type": "color",
+            "id": "accent-2",
+            "label": "Accent 2"
           }
-        ],
-        "default": "light"
-      },
-      {
-        "type": "header",
-        "content": "Primary Color Set"
-      },
-      {
-        "type": "color",
-        "id": "primary_background",
-        "label": "Background",
-        "default": "#ffffff"
-      },
-      {
-        "type": "color",
-        "id": "primary_text",
-        "label": "Text",
-        "default": "#333333"
-      },
-      {
-        "type": "color",
-        "id": "primary_button",
-        "label": "Button",
-        "default": "#000000"
-      },
-      {
-        "type": "color",
-        "id": "primary_button_text",
-        "label": "Button Text",
-        "default": "#ffffff"
-      },
-      {
-        "type": "color",
-        "id": "primary_button_outline",
-        "label": "Button Outline",
-        "default": "#000000"
-      },
-      {
-        "type": "color",
-        "id": "primary_border",
-        "label": "Border",
-        "default": "#e5e5e5"
-      },
-      {
-        "type": "color",
-        "id": "primary_icon",
-        "label": "Icon",
-        "default": "#666666"
-      },
-      {
-        "type": "header",
-        "content": "Secondary Color Set"
-      },
-      {
-        "type": "color",
-        "id": "secondary_background",
-        "label": "Background",
-        "default": "#f5f5f5"
-      },
-      {
-        "type": "color",
-        "id": "secondary_text",
-        "label": "Text",
-        "default": "#666666"
-      },
-      {
-        "type": "color",
-        "id": "secondary_button",
-        "label": "Button",
-        "default": "#333333"
-      },
-      {
-        "type": "color",
-        "id": "secondary_button_text",
-        "label": "Button Text",
-        "default": "#ffffff"
-      },
-      {
-        "type": "color",
-        "id": "secondary_button_outline",
-        "label": "Button Outline",
-        "default": "#333333"
-      },
-      {
-        "type": "color",
-        "id": "secondary_border",
-        "label": "Border",
-        "default": "#dddddd"
-      },
-      {
-        "type": "color",
-        "id": "secondary_icon",
-        "label": "Icon",
-        "default": "#999999"
-      },
-      {
-        "type": "header",
-        "content": "Accent Color Set"
-      },
-      {
-        "type": "color",
-        "id": "accent_background",
-        "label": "Background",
-        "default": "#f8f8f8"
-      },
-      {
-        "type": "color",
-        "id": "accent_text",
-        "label": "Text",
-        "default": "#ff0000"
-      },
-      {
-        "type": "color",
-        "id": "accent_button",
-        "label": "Button",
-        "default": "#ff0000"
-      },
-      {
-        "type": "color",
-        "id": "accent_button_text",
-        "label": "Button Text",
-        "default": "#ffffff"
-      },
-      {
-        "type": "color",
-        "id": "accent_button_outline",
-        "label": "Button Outline",
-        "default": "#ff0000"
-      },
-      {
-        "type": "color",
-        "id": "accent_border",
-        "label": "Border",
-        "default": "#ffcccc"
-      },
-      {
-        "type": "color",
-        "id": "accent_icon",
-        "label": "Icon",
-        "default": "#ff0000"
-      },
-      {
-        "type": "header",
-        "content": "Dark Color Set"
-      },
-      {
-        "type": "color",
-        "id": "dark_background",
-        "label": "Background",
-        "default": "#1a1a1a"
-      },
-      {
-        "type": "color",
-        "id": "dark_text",
-        "label": "Text",
-        "default": "#ffffff"
-      },
-      {
-        "type": "color",
-        "id": "dark_button",
-        "label": "Button",
-        "default": "#ffffff"
-      },
-      {
-        "type": "color",
-        "id": "dark_button_text",
-        "label": "Button Text",
-        "default": "#000000"
-      },
-      {
-        "type": "color",
-        "id": "dark_button_outline",
-        "label": "Button Outline",
-        "default": "#ffffff"
-      },
-      {
-        "type": "color",
-        "id": "dark_border",
-        "label": "Border",
-        "default": "#333333"
-      },
-      {
-        "type": "color",
-        "id": "dark_icon",
-        "label": "Icon",
-        "default": "#ffffff"
-      },
-      {
-        "type": "header",
-        "content": "Success Color Set"
-      },
-      {
-        "type": "color",
-        "id": "success_background",
-        "label": "Background",
-        "default": "#f0fff0"
-      },
-      {
-        "type": "color",
-        "id": "success_text",
-        "label": "Text",
-        "default": "#008000"
-      },
-      {
-        "type": "color",
-        "id": "success_button",
-        "label": "Button",
-        "default": "#008000"
-      },
-      {
-        "type": "color",
-        "id": "success_button_text",
-        "label": "Button Text",
-        "default": "#ffffff"
-      },
-      {
-        "type": "color",
-        "id": "success_button_outline",
-        "label": "Button Outline",
-        "default": "#008000"
-      },
-      {
-        "type": "color",
-        "id": "success_border",
-        "label": "Border",
-        "default": "#ccffcc"
-      },
-      {
-        "type": "color",
-        "id": "success_icon",
-        "label": "Icon",
-        "default": "#008000"
-      },
-      {
-        "type": "header",
-        "content": "Error Color Set"
-      },
-      {
-        "type": "color",
-        "id": "error_background",
-        "label": "Background",
-        "default": "#fff0f0"
-      },
-      {
-        "type": "color",
-        "id": "error_text",
-        "label": "Text",
-        "default": "#ff0000"
-      },
-      {
-        "type": "color",
-        "id": "error_button",
-        "label": "Button",
-        "default": "#ff0000"
-      },
-      {
-        "type": "color",
-        "id": "error_button_text",
-        "label": "Button Text",
-        "default": "#ffffff"
-      },
-      {
-        "type": "color",
-        "id": "error_button_outline",
-        "label": "Button Outline",
-        "default": "#ff0000"
-      },
-      {
-        "type": "color",
-        "id": "error_border",
-        "label": "Border",
-        "default": "#ffcccc"
-      },
-      {
-        "type": "color",
-        "id": "error_icon",
-        "label": "Icon",
-        "default": "#ff0000"
+        ]
       }
     ]
   },
