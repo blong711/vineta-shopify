@@ -12,9 +12,10 @@
                 <ul class="menu-tab-line justify-content-center" role="tablist">
                   {% for block in section.blocks %}
                     <li class="nav-tab-item" role="presentation" {{ block.shopify_attributes }}>
-                      <a href="#collection-{{ block.id }}" class="tab-link {% if forloop.first %}active{% endif %} {% if section.settings.enable_custom_fonts %}{{ section.settings.tab_font }} {{ section.settings.tab_size }} {{ section.settings.tab_weight }}{% endif %}" 
+                      <a href="#collection-{{ block.id }}" 
+                         class="tab-link {% if forloop.first %}active{% endif %} {% if section.settings.enable_custom_fonts %}{{ section.settings.tab_font }} {{ section.settings.tab_size }} {{ section.settings.tab_weight }}{% endif %}" 
                          data-bs-toggle="tab"
-                         style="color: {{ section.settings.tab_color }};">
+                         style="color: {% if forloop.first %}{{ section.settings.tab_active_color }}{% else %}{{ section.settings.tab_color }}{% endif %};">
                         {{ collections[block.settings.collection].title }}
                       </a>
                     </li>
@@ -535,8 +536,14 @@
     {
       "type": "color",
       "id": "tab_color",
-      "label": "Tab color",
+      "label": "Tab color (inactive)",
       "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_color",
+      "label": "Tab color (active)",
+      "default": "#000000"
     },
     {
       "type": "color",
