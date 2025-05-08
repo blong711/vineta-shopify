@@ -7,6 +7,38 @@
     <meta name="theme-color" content="{{ settings.primary_button }}">
     <link rel="canonical" href="{{ canonical_url }}">
 
+    <!-- SEO Meta Tags -->
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="{{ shop.name }}">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="{{ shop.name }}">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:site_name" content="{{ shop.name }}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:title" content="{{ page_title }}">
+    <meta property="og:type" content="website">
+    {% if page_description %}
+      <meta property="og:description" content="{{ page_description | escape }}">
+    {% endif %}
+    {% if page_image %}
+      <meta property="og:image" content="{{ page_image | img_url: '1200x1200' }}">
+      <meta property="og:image:secure_url" content="{{ page_image | img_url: '1200x1200' }}">
+    {% endif %}
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ page_title }}">
+    {% if page_description %}
+      <meta name="twitter:description" content="{{ page_description | escape }}">
+    {% endif %}
+    {% if page_image %}
+      <meta name="twitter:image" content="{{ page_image | img_url: '1200x1200' }}">
+    {% endif %}
+
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | img_url: '32x32' }}">
     {%- endif -%}
@@ -28,16 +60,14 @@
 
     {% render 'meta-tags' %}
 
-    {{ 'theme-settings.css' | asset_url | stylesheet_tag }}
-    <script src="{{ 'theme-settings.js' | asset_url }}" defer></script>
-
-    {{ content_for_header }}
-
-    <script>
-      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
-    </script>
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="{{ 'theme-settings.css' | asset_url }}" as="style">
+    <link rel="preload" href="{{ 'theme-settings.js' | asset_url }}" as="script">
+    <link rel="preload" href="{{ 'theme.css' | asset_url }}" as="style">
+    <link rel="preload" href="{{ 'main.js' | asset_url }}" as="script">
 
     <!-- Core CSS -->
+    {{ 'theme-settings.css' | asset_url | stylesheet_tag }}
     {{ 'fonts.css' | asset_url | stylesheet_tag }}
     {{ 'font-icons.css' | asset_url | stylesheet_tag }}
     {{ 'font-classes.css' | asset_url | stylesheet_tag }}
@@ -50,6 +80,31 @@
     {{ 'animate.css' | asset_url | stylesheet_tag }}
     {{ 'theme.css' | asset_url | stylesheet_tag }}
     {{ 'styles.css' | asset_url | stylesheet_tag }}
+
+    {{ content_for_header }}
+
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    </script>
+  </head>
+
+  <body class="gradient">
+    <a class="skip-to-content-link button visually-hidden" href="#MainContent">
+      {{ "accessibility.skip_to_text" | t }}
+    </a>
+
+    {% section 'top-bar' %}
+    {% section 'header' %}
+
+    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+
+    <ul hidden>
+      <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
+    </ul>
 
     <!-- Core JavaScript -->
     <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
@@ -81,54 +136,6 @@
     <script src="{{ 'global.js' | asset_url }}" defer></script>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Initialize jQuery plugins after jQuery is loaded
-        var checkJQuery = setInterval(function() {
-          if (window.jQuery) {
-            clearInterval(checkJQuery);
-            
-            // Initialize bootstrap-select
-            if ($.fn.selectpicker) {
-              $('.selectpicker').selectpicker();
-            }
-            
-            // Initialize other jQuery-dependent features
-            if (typeof selectImages === 'function') {
-              selectImages();
-            }
-            
-            // Initialize any other jQuery plugins
-            if (typeof filterProducts === 'function') {
-              filterProducts();
-            }
-          }
-        }, 100);
-      });
-    </script>
-  
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
-</head>
-
-  <body class="gradient">
-    <a class="skip-to-content-link button visually-hidden" href="#MainContent">
-      {{ "accessibility.skip_to_text" | t }}
-    </a>
-
-    {% section 'top-bar' %}
-    {% section 'header' %}
-
-    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
-      {{ content_for_layout }}
-    </main>
-
-    {% section 'footer' %}
-
-    <ul hidden>
-      <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
-    </ul>
-
-    <script>
       window.shopUrl = '{{ request.origin }}';
       window.routes = {
         cart_add_url: '{{ routes.cart_add_url }}',
@@ -157,6 +164,19 @@
         recipientFormExpanded: `{{ 'recipient.form.expanded' | t }}`,
         recipientFormCollapsed: `{{ 'recipient.form.collapsed' | t }}`,
       }
+
+      // Initialize features without jQuery
+      document.addEventListener('DOMContentLoaded', function() {
+        var checkJQuery = setInterval(function() {
+          if (window.jQuery) {
+            clearInterval(checkJQuery);
+            // Initialize bootstrap-select
+            if ($.fn.selectpicker) {
+              $('.selectpicker').selectpicker();
+            }
+          }
+        }, 100);
+      });
     </script>
   </body>
 </html> 
