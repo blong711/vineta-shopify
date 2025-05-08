@@ -92,78 +92,90 @@
       <div class="container">
         <nav class="box-navigation {{ section.settings.text_alignment }}">
           <ul class="box-nav-menu">
-            {%- for link in linklists[section.settings.menu].links -%}
-              <li class="menu-item{% if link.links != blank %} has-submenu{% endif %}">
-                <a href="{{ link.url }}" class="item-link {{ section.settings.font_weight }}">
-                  {{ link.title }}
+            {%- if section.settings.menu != blank and linklists[section.settings.menu].links != blank -%}
+              {%- for link in linklists[section.settings.menu].links -%}
+                <li class="menu-item{% if link.links != blank %} has-submenu{% endif %}">
+                  <a href="{{ link.url }}" class="item-link {{ section.settings.font_weight }}">
+                    {{ link.title }}
+                    {%- if link.links != blank -%}
+                      <i class="icon icon-arr-down"></i>
+                    {%- endif -%}
+                  </a>
                   {%- if link.links != blank -%}
-                    <i class="icon icon-arr-down"></i>
-                  {%- endif -%}
-                </a>
-                {%- if link.links != blank -%}
-                  {%- assign block = section.blocks | where: "title", link.title | first -%}
-                  <div class="sub-menu mega-menu mega-shop">
-                    <div class="wrapper-sub-menu">
-                      {%- if block -%}
-                        {%- case block.type -%}
-                          {%- when 'mega_menu_html' -%}
-                            <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                              {{ block.settings.html_content }}
-                            </div>
-                          {%- when 'mega_menu_shop' -%}
-                            <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                              {%- if block.settings.collections != blank -%}
-                                <div class="menu-heading {{ section.settings.font_weight }}">{{ block.settings.title }}</div>
-                                <ul class="menu-list">
-                                  {%- for collection in block.settings.collections -%}
-                                    <li>
-                                      <a href="{{ collection.url }}" class="menu-link-text link {{ section.settings.font_weight }}">
-                                        {{ collection.title }}
-                                      </a>
-                                    </li>
-                                  {%- endfor -%}
-                                </ul>
-                              {%- endif -%}
-                            </div>
-                          {%- when 'mega_menu_product' -%}
-                            <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                              {%- if block.settings.products != blank -%}
-                                <div class="menu-heading {{ section.settings.font_weight }}">{{ block.settings.products_list_title }}</div>
-                                <div class="mega-menu-products">
-                                  {%- for product in block.settings.products -%}
-                                    <div class="mega-menu-product">
-                                      <a href="{{ product.url }}">
-                                        <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" class="lazyload">
-                                        <h4 class="{{ section.settings.font_weight }}">{{ product.title }}</h4>
-                                        <p class="price {{ section.settings.font_weight }}">{{ product.price | money }}</p>
-                                      </a>
-                                    </div>
-                                  {%- endfor -%}
-                                </div>
-                              {%- endif -%}
-                            </div>
-                          {%- when 'mega_menu_pages' -%}
-                            <div class="mega-menu-item" {{ block.shopify_attributes }}>
-                              {%- if block.settings.menu != blank -%}
-                                <div class="menu-heading {{ section.settings.font_weight }}">{{ block.settings.title }}</div>
-                                <ul class="menu-list">
-                                  {%- for pagelink in linklists[block.settings.menu].links -%}
-                                    <li>
-                                      <a href="{{ pagelink.url }}" class="menu-link-text link {{ section.settings.font_weight }}">
-                                        {{ pagelink.title }}
-                                      </a>
-                                    </li>
-                                  {%- endfor -%}
-                                </ul>
-                              {%- endif -%}
-                            </div>
-                        {%- endcase -%}
-                      {%- endif -%}
+                    {%- assign block = section.blocks | where: "title", link.title | first -%}
+                    <div class="sub-menu mega-menu mega-shop">
+                      <div class="wrapper-sub-menu">
+                        {%- if block -%}
+                          {%- case block.type -%}
+                            {%- when 'mega_menu_html' -%}
+                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                {{ block.settings.html_content }}
+                              </div>
+                            {%- when 'mega_menu_shop' -%}
+                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                {%- if block.settings.collections != blank -%}
+                                  <div class="menu-heading {{ section.settings.font_weight }}">{{ block.settings.title }}</div>
+                                  <ul class="menu-list">
+                                    {%- for collection in block.settings.collections -%}
+                                      <li>
+                                        <a href="{{ collection.url }}" class="menu-link-text link {{ section.settings.font_weight }}">
+                                          {{ collection.title }}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                              </div>
+                            {%- when 'mega_menu_product' -%}
+                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                {%- if block.settings.products != blank -%}
+                                  <div class="menu-heading {{ section.settings.font_weight }}">{{ block.settings.products_list_title }}</div>
+                                  <div class="mega-menu-products">
+                                    {%- for product in block.settings.products -%}
+                                      <div class="mega-menu-product">
+                                        <a href="{{ product.url }}">
+                                          <img src="{{ product.featured_image | img_url: 'medium' }}" 
+                                               alt="{{ product.title }}" 
+                                               width="300"
+                                               height="300"
+                                               class="lazyload">
+                                          <h4 class="{{ section.settings.font_weight }}">{{ product.title }}</h4>
+                                          <p class="price {{ section.settings.font_weight }}">{{ product.price | money }}</p>
+                                        </a>
+                                      </div>
+                                    {%- endfor -%}
+                                  </div>
+                                {%- endif -%}
+                              </div>
+                            {%- when 'mega_menu_pages' -%}
+                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                {%- if block.settings.menu != blank -%}
+                                  <div class="menu-heading {{ section.settings.font_weight }}">{{ block.settings.title }}</div>
+                                  <ul class="menu-list">
+                                    {%- for pagelink in linklists[block.settings.menu].links -%}
+                                      <li>
+                                        <a href="{{ pagelink.url }}" class="menu-link-text link {{ section.settings.font_weight }}">
+                                          {{ pagelink.title }}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                              </div>
+                          {%- endcase -%}
+                        {%- endif -%}
+                      </div>
                     </div>
-                  </div>
-                {%- endif -%}
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            {%- else -%}
+              <li class="menu-item">
+                <a href="#" class="item-link {{ section.settings.font_weight }}">
+                  Please add a menu in theme settings
+                </a>
               </li>
-            {%- endfor -%}
+            {%- endif -%}
           </ul>
         </nav>
       </div>
