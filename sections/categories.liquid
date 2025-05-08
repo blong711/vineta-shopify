@@ -1,16 +1,20 @@
 {%- if section.blocks.size > 0 -%}
   {%- case section.settings.layout -%}
     {%- when 'layout1' -%}
-      <section class="flat-spacing-3">
+      <section class="flat-spacing-3" style="background-color: {{ section.settings.section_bg_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
         <div class="container">
           <div class="flat-animate-tab">
-            <div class="flat-title-tab-categories wow fadeInUp text-center">
-              <h4 class="title">{{ section.settings.title }}</h4>
+            <div class="flat-title-tab-categories {% if section.settings.enable_wow %}wow fadeInUp{% endif %} text-center" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
+              <h4 class="title {% if section.settings.enable_custom_fonts %}{{ section.settings.title_font }} {{ section.settings.title_size }} {{ section.settings.title_weight }}{% endif %}" style="color: {{ section.settings.title_color }};">
+                {{ section.settings.title }}
+              </h4>
               {% if section.blocks.size > 0 %}
                 <ul class="menu-tab-line justify-content-center" role="tablist">
                   {% for block in section.blocks %}
                     <li class="nav-tab-item" role="presentation" {{ block.shopify_attributes }}>
-                      <a href="#collection-{{ block.id }}" class="tab-link {% if forloop.first %}active{% endif %}" data-bs-toggle="tab">
+                      <a href="#collection-{{ block.id }}" class="tab-link {% if forloop.first %}active{% endif %} {% if section.settings.enable_custom_fonts %}{{ section.settings.tab_font }} {{ section.settings.tab_size }} {{ section.settings.tab_weight }}{% endif %}" 
+                         data-bs-toggle="tab"
+                         style="color: {{ section.settings.tab_color }};">
                         {{ collections[block.settings.collection].title }}
                       </a>
                     </li>
@@ -24,11 +28,14 @@
                   <div dir="ltr" class="swiper tf-swiper" 
                     data-swiper='{
                       "slidesPerView": 2,
-                      "spaceBetween": 12,
-                      "speed": 800,
+                      "spaceBetween": {{ section.settings.space_between }},
+                      "speed": {{ section.settings.speed }},
                       "observer": true,
                       "observeParents": true,
                       "slidesPerGroup": 2,
+                      "autoplay": {% if section.settings.autoplay %}true{% else %}false{% endif %},
+                      "autoplayDelay": {{ section.settings.autoplay_speed }},
+                      "loop": {% if section.settings.loop %}true{% else %}false{% endif %},
                       "pagination": { 
                         "el": ".sw-pagination-{{ block.id }}", 
                         "clickable": true 
@@ -36,17 +43,17 @@
                       "breakpoints": {
                         "575": { 
                           "slidesPerView": 3, 
-                          "spaceBetween": 12,
+                          "spaceBetween": {{ section.settings.space_between }},
                           "slidesPerGroup": 2 
                         },    
                         "768": { 
                           "slidesPerView": 4, 
-                          "spaceBetween": 24, 
+                          "spaceBetween": {{ section.settings.space_between }}, 
                           "slidesPerGroup": 3 
                         },
                         "1200": { 
                           "slidesPerView": {{ section.settings.products_to_show }}, 
-                          "spaceBetween": 64, 
+                          "spaceBetween": {{ section.settings.space_between }}, 
                           "slidesPerGroup": {{ section.settings.products_to_show }}
                         }
                       }
@@ -68,13 +75,19 @@
                               {% endif %}
                             </a>
                             <div class="cls-content text-center">
-                              <a href="{{ product.url }}" class="link text-md fw-medium">{{ product.title }}</a>
+                              <a href="{{ product.url }}" 
+                                 class="link {% if section.settings.enable_custom_fonts %}{{ section.settings.product_font }} {{ section.settings.product_size }} {{ section.settings.product_weight }}{% else %}text-md fw-medium{% endif %}"
+                                 style="color: {{ section.settings.product_color }};">
+                                {{ product.title }}
+                              </a>
                             </div>
                           </div>
                         </div>
                       {% endfor %}
                     </div>
+                    {% if section.settings.show_dots %}
                     <span class="d-flex d-xl-none sw-dot-default sw-pagination-{{ block.id }} justify-content-center"></span>
+                    {% endif %}
                   </div>
                 </div>
               {% endfor %}
@@ -83,20 +96,25 @@
         </div>
       </section>
     {%- when 'layout2' -%}
-      <section class="flat-spacing-3">
+      <section class="flat-spacing-3" style="background-color: {{ section.settings.section_bg_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
         <div class="container">
-          <div class="flat-title text-start wow fadeInUp">
-            <h4 class="title">{{ section.settings.title }}</h4>
+          <div class="flat-title text-start {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
+            <h4 class="title {% if section.settings.enable_custom_fonts %}{{ section.settings.title_font }} {{ section.settings.title_size }} {{ section.settings.title_weight }}{% endif %}" style="color: {{ section.settings.title_color }};">
+              {{ section.settings.title }}
+            </h4>
           </div>
-          <div class="wow fadeInUp">
+          <div class="{% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
             <div class="fl-control-sw pos1">
               <div dir="ltr" class="swiper tf-swiper" data-swiper='{
                 "slidesPerView": 2,
-                "spaceBetween": 12,
-                "speed": 800,
+                "spaceBetween": {{ section.settings.space_between }},
+                "speed": {{ section.settings.speed }},
                 "observer": true,
                 "observeParents": true,
                 "slidesPerGroup": 2,
+                "autoplay": {% if section.settings.autoplay %}true{% else %}false{% endif %},
+                "autoplayDelay": {{ section.settings.autoplay_speed }},
+                "loop": {% if section.settings.loop %}true{% else %}false{% endif %},
                 "navigation": {
                   "clickable": true,
                   "nextEl": ".nav-next-categories",
@@ -104,10 +122,10 @@
                 },
                 "pagination": { "el": ".sw-pagination-categories", "clickable": true },
                 "breakpoints": {
-                  "575": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
-                  "768": { "slidesPerView": 4, "spaceBetween": 12, "slidesPerGroup": 4 },
-                  "992": { "slidesPerView": 5, "spaceBetween": 24, "slidesPerGroup": 4 },
-                  "1200": { "slidesPerView": 6, "spaceBetween": 24, "slidesPerGroup": 4 }
+                  "575": { "slidesPerView": 3, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 3 },
+                  "768": { "slidesPerView": 4, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 4 },
+                  "992": { "slidesPerView": 5, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 4 },
+                  "1200": { "slidesPerView": 6, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 4 }
                 }
               }'>
                 <div class="swiper-wrapper">
@@ -126,26 +144,38 @@
                           {%- endif -%}
                         </a>
                         <div class="cls-content text-center">
-                          <a href="{{ collection.url }}" class="link text-md fw-medium">{{ collection.title }}</a>
+                          <a href="{{ collection.url }}" 
+                             class="link {% if section.settings.enable_custom_fonts %}{{ section.settings.product_font }} {{ section.settings.product_size }} {{ section.settings.product_weight }}{% else %}text-md fw-medium{% endif %}"
+                             style="color: {{ section.settings.product_color }};">
+                            {{ collection.title }}
+                          </a>
                         </div>
                       </div>
                     </div>
                   {%- endfor -%}
                 </div>
+                {% if section.settings.show_dots %}
                 <div class="d-flex d-xl-none sw-dot-default sw-pagination-categories justify-content-center"></div>
+                {% endif %}
               </div>
+              {% if section.settings.show_arrows %}
               <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-categories"></div>
               <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-categories"></div>
+              {% endif %}
             </div>
           </div>
         </div>
       </section>
     {%- when 'bicycle' -%}
-      <section>
+      <section style="background-color: {{ section.settings.section_bg_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
         <div class="container">
-          <div class="flat-title-v2 style-2 text-center justify-items-center wow fadeInUp">
-            <a href="{{ routes.collections_url }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.button_text }}</a>
-            <h4>
+          <div class="flat-title-v2 style-2 text-center justify-items-center {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
+            <a href="{{ routes.collections_url }}" 
+               class="tf-btn btn-out-line-green btn-small text-uppercase {% if section.settings.enable_custom_fonts %}{{ section.settings.button_font }} {{ section.settings.button_size }} {{ section.settings.button_weight }}{% endif %}"
+               style="color: {{ section.settings.button_text_color }}; border-color: {{ section.settings.button_border_color }};">
+              {{ section.settings.button_text }}
+            </a>
+            <h4 class="{% if section.settings.enable_custom_fonts %}{{ section.settings.title_font }} {{ section.settings.title_size }} {{ section.settings.title_weight }}{% endif %}" style="color: {{ section.settings.title_color }};">
               {{ section.settings.title | newline_to_br }}
             </h4>
           </div>
@@ -153,16 +183,19 @@
         <div class="slider-layout-right">
           <div dir="ltr" class="swiper tf-swiper tf-sw-right" data-swiper='{
             "slidesPerView": 2,
-            "spaceBetween": 12,
-            "speed": 1000,
+            "spaceBetween": {{ section.settings.space_between }},
+            "speed": {{ section.settings.speed }},
             "observer": true,
             "observeParents": true,
             "slidesPerGroup": 2,
+            "autoplay": {% if section.settings.autoplay %}true{% else %}false{% endif %},
+            "autoplayDelay": {{ section.settings.autoplay_speed }},
+            "loop": {% if section.settings.loop %}true{% else %}false{% endif %},
             "pagination": { "el": ".sw-pagination-cls-2", "clickable": true },
             "breakpoints": {
-              "768": { "slidesPerView": 2.7, "spaceBetween": 12, "slidesPerGroup": 2 },
-              "992": { "slidesPerView": 3.7, "spaceBetween": 24, "slidesPerGroup": 3 },
-              "1200": { "slidesPerView": 4.7, "spaceBetween": 24, "slidesPerGroup": 3}
+              "768": { "slidesPerView": 2.7, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 2 },
+              "992": { "slidesPerView": 3.7, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 3 },
+              "1200": { "slidesPerView": 4.7, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 3}
             }
           }'>
             <div class="swiper-wrapper">
@@ -180,41 +213,54 @@
                       {%- endif -%}
                     </a>
                     <div class="cls-btn text-center">
-                      <a href="{{ collection.url }}" class="tf-btn btn-cls btn-white hover-dark">{{ collection.title }}</a>
+                      <a href="{{ collection.url }}" 
+                         class="tf-btn btn-cls btn-white hover-dark {% if section.settings.enable_custom_fonts %}{{ section.settings.product_font }} {{ section.settings.product_size }} {{ section.settings.product_weight }}{% endif %}"
+                         style="color: {{ section.settings.product_color }};">
+                        {{ collection.title }}
+                      </a>
                     </div>
                   </div>
                 </div>
               {%- endfor -%}
             </div>
+            {% if section.settings.show_dots %}
             <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-2 justify-content-center"></div>
+            {% endif %}
           </div>
         </div>
       </section>
     {%- when 'phonecase' -%}
-      <section class="flat-spacing-11">
+      <section class="flat-spacing-11" style="background-color: {{ section.settings.section_bg_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
         <div class="container">
-          <div class="flat-title wow fadeInUp">
-            <h4 class="title">{{ section.settings.title }}</h4>
+          <div class="flat-title {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
+            <h4 class="title {% if section.settings.enable_custom_fonts %}{{ section.settings.title_font }} {{ section.settings.title_size }} {{ section.settings.title_weight }}{% endif %}" style="color: {{ section.settings.title_color }};">
+              {{ section.settings.title }}
+            </h4>
           </div>
-          <div dir="ltr" class="wow fadeInUp swiper tf-swiper xl-px-26" data-swiper='{
-            "slidesPerView": 2,
-            "spaceBetween": 12,
-            "speed": 800,
-            "observer": true,
-            "observeParents": true,
-            "slidesPerGroup": 2,
-            "navigation": {
-              "clickable": true,
-              "nextEl": ".nav-next-cate",
-              "prevEl": ".nav-prev-cate"
-            },
-            "pagination": { "el": ".sw-pagination-cate", "clickable": true },
-            "breakpoints": {
-              "575": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 2 },    
-              "768": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 3 },
-              "1200": { "slidesPerView": {{ section.settings.products_to_show }}, "spaceBetween": 64, "slidesPerGroup": 3 }
-            }
-          }'>
+          <div dir="ltr" class="{% if section.settings.enable_wow %}wow fadeInUp{% endif %} swiper tf-swiper xl-px-26" 
+               {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}
+               data-swiper='{
+                "slidesPerView": 2,
+                "spaceBetween": {{ section.settings.space_between }},
+                "speed": {{ section.settings.speed }},
+                "observer": true,
+                "observeParents": true,
+                "slidesPerGroup": 2,
+                "autoplay": {% if section.settings.autoplay %}true{% else %}false{% endif %},
+                "autoplayDelay": {{ section.settings.autoplay_speed }},
+                "loop": {% if section.settings.loop %}true{% else %}false{% endif %},
+                "navigation": {
+                  "clickable": true,
+                  "nextEl": ".nav-next-cate",
+                  "prevEl": ".nav-prev-cate"
+                },
+                "pagination": { "el": ".sw-pagination-cate", "clickable": true },
+                "breakpoints": {
+                  "575": { "slidesPerView": 3, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 2 },    
+                  "768": { "slidesPerView": 4, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 3 },
+                  "1200": { "slidesPerView": {{ section.settings.products_to_show }}, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 3 }
+                }
+              }'>
             <div class="swiper-wrapper">
               {%- for block in section.blocks -%}
                 {%- assign collection = collections[block.settings.collection] -%}
@@ -234,15 +280,23 @@
                       {%- endif -%}
                     </a>
                     <div class="cls-content text-center">
-                      <a href="{{ collection.url }}" class="link text-xl fw-medium">{{ collection.title }}</a>
+                      <a href="{{ collection.url }}" 
+                         class="link {% if section.settings.enable_custom_fonts %}{{ section.settings.product_font }} {{ section.settings.product_size }} {{ section.settings.product_weight }}{% else %}text-xl fw-medium{% endif %}"
+                         style="color: {{ section.settings.product_color }};">
+                        {{ collection.title }}
+                      </a>
                     </div>
                   </div>
                 </div>
               {%- endfor -%}
             </div>
+            {% if section.settings.show_dots %}
             <span class="d-flex d-xl-none sw-dot-default sw-pagination-cate justify-content-center"></span>
+            {% endif %}
+            {% if section.settings.show_arrows %}
             <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-cate"></div>
             <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-cate"></div>
+            {% endif %}
           </div>
         </div>
       </section>
@@ -308,6 +362,303 @@
       "label": "Products per collection",
       "default": 6,
       "info": "Number of products to show from each collection"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_fonts",
+      "label": "Enable custom fonts",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "title_font",
+      "label": "Title font",
+      "options": [
+        { "value": "font-1", "label": "Font 1" },
+        { "value": "font-2", "label": "Font 2" }
+      ],
+      "default": "font-1",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "select",
+      "id": "title_size",
+      "label": "Title size",
+      "options": [
+        { "value": "text-lg", "label": "Large" },
+        { "value": "text-xl", "label": "Extra Large" },
+        { "value": "display-sm", "label": "Display Small" },
+        { "value": "display-md", "label": "Display Medium" }
+      ],
+      "default": "text-xl",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title weight",
+      "options": [
+        { "value": "fw-normal", "label": "Normal" },
+        { "value": "fw-medium", "label": "Medium" },
+        { "value": "fw-semibold", "label": "Semibold" },
+        { "value": "fw-bold", "label": "Bold" }
+      ],
+      "default": "fw-medium",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "select",
+      "id": "tab_font",
+      "label": "Tab font",
+      "options": [
+        { "value": "font-1", "label": "Font 1" },
+        { "value": "font-2", "label": "Font 2" }
+      ],
+      "default": "font-1",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "select",
+      "id": "tab_size",
+      "label": "Tab size",
+      "options": [
+        { "value": "text-sm", "label": "Small" },
+        { "value": "text-md", "label": "Medium" },
+        { "value": "text-lg", "label": "Large" }
+      ],
+      "default": "text-md",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "select",
+      "id": "tab_weight",
+      "label": "Tab weight",
+      "options": [
+        { "value": "fw-normal", "label": "Normal" },
+        { "value": "fw-medium", "label": "Medium" },
+        { "value": "fw-semibold", "label": "Semibold" }
+      ],
+      "default": "fw-medium",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "select",
+      "id": "product_font",
+      "label": "Product font",
+      "options": [
+        { "value": "font-1", "label": "Font 1" },
+        { "value": "font-2", "label": "Font 2" }
+      ],
+      "default": "font-1",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "select",
+      "id": "product_size",
+      "label": "Product size",
+      "options": [
+        { "value": "text-sm", "label": "Small" },
+        { "value": "text-md", "label": "Medium" },
+        { "value": "text-lg", "label": "Large" },
+        { "value": "text-xl", "label": "Extra Large" }
+      ],
+      "default": "text-md",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "select",
+      "id": "product_weight",
+      "label": "Product weight",
+      "options": [
+        { "value": "fw-normal", "label": "Normal" },
+        { "value": "fw-medium", "label": "Medium" },
+        { "value": "fw-semibold", "label": "Semibold" }
+      ],
+      "default": "fw-medium",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "select",
+      "id": "button_font",
+      "label": "Button font",
+      "options": [
+        { "value": "font-1", "label": "Font 1" },
+        { "value": "font-2", "label": "Font 2" }
+      ],
+      "default": "font-1",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "options": [
+        { "value": "text-sm", "label": "Small" },
+        { "value": "text-md", "label": "Medium" },
+        { "value": "text-lg", "label": "Large" }
+      ],
+      "default": "text-md",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "select",
+      "id": "button_weight",
+      "label": "Button weight",
+      "options": [
+        { "value": "fw-normal", "label": "Normal" },
+        { "value": "fw-medium", "label": "Medium" },
+        { "value": "fw-semibold", "label": "Semibold" }
+      ],
+      "default": "fw-medium",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "tab_color",
+      "label": "Tab color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "product_color",
+      "label": "Product color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button border color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Slider Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 2000,
+      "max": 9000,
+      "step": 500,
+      "unit": "ms",
+      "label": "Autoplay delay",
+      "default": 5000
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Enable loop",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 100,
+      "max": 2000,
+      "step": 100,
+      "unit": "ms",
+      "label": "Transition speed",
+      "default": 800
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show pagination dots",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "space_between",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Space between items",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_wow",
+      "label": "Enable fade-in animation",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "wow_delay",
+      "label": "Animation delay",
+      "options": [
+        { "value": "0s", "label": "None" },
+        { "value": "0.2s", "label": "Short" },
+        { "value": "0.5s", "label": "Medium" },
+        { "value": "0.8s", "label": "Long" }
+      ],
+      "default": "0.2s"
     }
   ],
   "max_blocks": 12,
