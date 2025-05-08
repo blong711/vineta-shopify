@@ -1,5 +1,5 @@
 {%- comment -%}Header Section{%- endcomment -%}
-<header id="header" class="header-default{% if section.settings.layout == 'layout-2' %} header-2{% endif %}{% if section.settings.layout == 'layout-3' %} header-3{% endif %}" data-color-scheme="{{ section.settings.color_scheme }}">
+<header id="header" class="header-default{% if section.settings.layout == 'layout-2' %} header-2{% endif %}{% if section.settings.layout == 'layout-3' %} header-3{% endif %}" style="background-color: {{ section.settings.color_scheme.settings.background }}; color: {{ section.settings.color_scheme.settings.text }};">
   {%- if section.settings.layout == 'layout-2' -%}
     <div class="header-top">
       <div class="container">
@@ -1202,17 +1202,37 @@ document.addEventListener('DOMContentLoaded', function() {
   margin: 0;
 }
 
+.box-nav-menu .menu-item > a {
+  color: {{ section.settings.color_scheme.settings.text }};
+}
+
+.box-nav-menu .menu-item > a:hover {
+  color: {{ section.settings.color_scheme.settings.links }};
+}
+
 /* Submenu Styles */
 .sub-menu {
   padding: {{ section.settings.dropdown_padding }}px;
   font-size: {{ section.settings.submenu_font_size }}px;
+  background-color: {{ section.settings.color_scheme.settings.background }};
+  color: {{ section.settings.color_scheme.settings.text }};
 }
 
 /* Mobile Menu Styles */
 @media (max-width: 1199px) {
   .mobile-menu {
     font-size: {{ section.settings.mobile_menu_font_size }}px;
+    background-color: {{ section.settings.color_scheme.settings.background }};
+    color: {{ section.settings.color_scheme.settings.text }};
   }
+}
+
+.nav-icon-item {
+  color: {{ section.settings.color_scheme.settings.icons }};
+}
+
+.nav-icon-item:hover {
+  color: {{ section.settings.color_scheme.settings.links }};
 }
 
 /* Animation Styles */
