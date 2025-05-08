@@ -94,6 +94,74 @@
       },
       {
         "type": "header",
+        "content": "Font Assignments"
+      },
+      {
+        "type": "select",
+        "id": "heading_font_role",
+        "label": "Heading Font Role",
+        "options": [
+          {
+            "value": "heading_font",
+            "label": "Heading Font"
+          },
+          {
+            "value": "body_font",
+            "label": "Body Font"
+          }
+        ],
+        "default": "heading_font"
+      },
+      {
+        "type": "select",
+        "id": "body_text_font_role",
+        "label": "Body Text Font Role",
+        "options": [
+          {
+            "value": "heading_font",
+            "label": "Heading Font"
+          },
+          {
+            "value": "body_font",
+            "label": "Body Font"
+          }
+        ],
+        "default": "body_font"
+      },
+      {
+        "type": "select",
+        "id": "button_text_font_role",
+        "label": "Button Text Font Role",
+        "options": [
+          {
+            "value": "heading_font",
+            "label": "Heading Font"
+          },
+          {
+            "value": "body_font",
+            "label": "Body Font"
+          }
+        ],
+        "default": "body_font"
+      },
+      {
+        "type": "select",
+        "id": "navigation_font_role",
+        "label": "Navigation Font Role",
+        "options": [
+          {
+            "value": "heading_font",
+            "label": "Heading Font"
+          },
+          {
+            "value": "body_font",
+            "label": "Body Font"
+          }
+        ],
+        "default": "body_font"
+      },
+      {
+        "type": "header",
         "content": "Font Sizes"
       },
       {
