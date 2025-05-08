@@ -82,6 +82,12 @@
       "content": "Typography"
     },
     {
+      "type": "checkbox",
+      "id": "enable_custom_fonts",
+      "label": "Enable custom fonts",
+      "default": false
+    },
+    {
       "type": "select",
       "id": "title_font",
       "label": "Title font",
@@ -89,7 +95,8 @@
         { "value": "font-1", "label": "Font 1" },
         { "value": "font-2", "label": "Font 2" }
       ],
-      "default": "font-1"
+      "default": "font-1",
+      "info": "Only applies when custom fonts are enabled"
     },
     {
       "type": "select",
@@ -101,7 +108,8 @@
         { "value": "display-sm", "label": "Display Small" },
         { "value": "display-md", "label": "Display Medium" }
       ],
-      "default": "text-xl"
+      "default": "text-xl",
+      "info": "Only applies when custom fonts are enabled"
     },
     {
       "type": "select",
@@ -113,7 +121,8 @@
         { "value": "fw-semibold", "label": "Semibold" },
         { "value": "fw-bold", "label": "Bold" }
       ],
-      "default": "fw-medium"
+      "default": "fw-medium",
+      "info": "Only applies when custom fonts are enabled"
     },
     {
       "type": "header",
