@@ -213,6 +213,10 @@
             "default": "default"
         },
         {
+            "type": "header",
+            "content": "Slider Settings"
+        },
+        {
             "type": "range",
             "id": "speed",
             "min": 100,
@@ -221,6 +225,107 @@
             "unit": "ms",
             "label": "Transition speed",
             "default": 800
+        },
+        {
+            "type": "checkbox",
+            "id": "autoplay",
+            "label": "Enable autoplay",
+            "default": true
+        },
+        {
+            "type": "range",
+            "id": "autoplay_speed",
+            "min": 2000,
+            "max": 9000,
+            "step": 500,
+            "unit": "ms",
+            "label": "Autoplay delay",
+            "default": 5000
+        },
+        {
+            "type": "checkbox",
+            "id": "loop",
+            "label": "Enable loop",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_arrows",
+            "label": "Show navigation arrows",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_dots",
+            "label": "Show pagination dots",
+            "default": true
+        },
+        {
+            "type": "header",
+            "content": "Responsive Settings"
+        },
+        {
+            "type": "range",
+            "id": "space_between",
+            "min": 0,
+            "max": 50,
+            "step": 2,
+            "unit": "px",
+            "label": "Space between slides",
+            "default": 12
+        },
+        {
+            "type": "range",
+            "id": "space_between_mobile",
+            "min": 0,
+            "max": 30,
+            "step": 2,
+            "unit": "px",
+            "label": "Space between slides (Mobile)",
+            "default": 6
+        },
+        {
+            "type": "header",
+            "content": "Animation Settings"
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_wow",
+            "label": "Enable fade-in animation",
+            "default": true
+        },
+        {
+            "type": "select",
+            "id": "wow_delay",
+            "label": "Animation delay",
+            "options": [
+                { "value": "0s", "label": "None" },
+                { "value": "0.2s", "label": "Short" },
+                { "value": "0.5s", "label": "Medium" },
+                { "value": "0.8s", "label": "Long" }
+            ],
+            "default": "0.2s"
+        },
+        {
+            "type": "header",
+            "content": "Image Settings"
+        },
+        {
+            "type": "select",
+            "id": "image_ratio",
+            "label": "Image ratio",
+            "options": [
+                { "value": "1:1", "label": "Square (1:1)" },
+                { "value": "4:3", "label": "Standard (4:3)" },
+                { "value": "16:9", "label": "Widescreen (16:9)" }
+            ],
+            "default": "1:1"
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_lazy_loading",
+            "label": "Enable lazy loading",
+            "default": true
         }
     ],
     "blocks": [
@@ -232,6 +337,96 @@
                     "type": "collection",
                     "id": "collection",
                     "label": "Collection"
+                },
+                {
+                    "type": "header",
+                    "content": "Typography"
+                },
+                {
+                    "type": "select",
+                    "id": "title_font",
+                    "label": "Title font",
+                    "options": [
+                        { "value": "font-1", "label": "Font 1" },
+                        { "value": "font-2", "label": "Font 2" }
+                    ],
+                    "default": "font-1"
+                },
+                {
+                    "type": "select",
+                    "id": "title_size",
+                    "label": "Title size",
+                    "options": [
+                        { "value": "text-sm", "label": "Small" },
+                        { "value": "text-md", "label": "Medium" },
+                        { "value": "text-lg", "label": "Large" },
+                        { "value": "text-xl", "label": "Extra Large" }
+                    ],
+                    "default": "text-md"
+                },
+                {
+                    "type": "select",
+                    "id": "title_weight",
+                    "label": "Title weight",
+                    "options": [
+                        { "value": "fw-normal", "label": "Normal" },
+                        { "value": "fw-medium", "label": "Medium" },
+                        { "value": "fw-semibold", "label": "Semibold" },
+                        { "value": "fw-bold", "label": "Bold" }
+                    ],
+                    "default": "fw-medium"
+                },
+                {
+                    "type": "header",
+                    "content": "Colors"
+                },
+                {
+                    "type": "color",
+                    "id": "title_color",
+                    "label": "Title color",
+                    "default": "#000000"
+                },
+                {
+                    "type": "color",
+                    "id": "tag_bg_color",
+                    "label": "Tag background color",
+                    "default": "#000000"
+                },
+                {
+                    "type": "color",
+                    "id": "tag_text_color",
+                    "label": "Tag text color",
+                    "default": "#FFFFFF"
+                },
+                {
+                    "type": "color",
+                    "id": "price_color",
+                    "label": "Price color",
+                    "default": "#000000"
+                },
+                {
+                    "type": "color",
+                    "id": "button_bg_color",
+                    "label": "Button background color",
+                    "default": "#000000"
+                },
+                {
+                    "type": "color",
+                    "id": "button_text_color",
+                    "label": "Button text color",
+                    "default": "#FFFFFF"
+                },
+                {
+                    "type": "color",
+                    "id": "button_hover_bg_color",
+                    "label": "Button hover background color",
+                    "default": "#333333"
+                },
+                {
+                    "type": "color",
+                    "id": "button_hover_text_color",
+                    "label": "Button hover text color",
+                    "default": "#FFFFFF"
                 },
                 {
                     "type": "text",
