@@ -1136,10 +1136,26 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Initialize wishlist and compare buttons state
+  // Initialize wishlist buttons state
   if (window.wishlistCompare) {
     window.wishlistCompare.updateButtonsState();
   }
+
+  // Add compare button click handler
+  document.querySelectorAll('[data-compare]').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const productId = this.dataset.id;
+      const action = this.dataset.action;
+
+      if (window.wishlistCompare) {
+        window.wishlistCompare.handleCompareClick({
+          productId,
+          action
+        });
+      }
+    });
+  });
 
   // Remove .tf-zoom-main logic (no longer needed)
   // Add new zoom-at-cursor logic for all .tf-image-zoom and .tf-image-zoom-inner
