@@ -111,6 +111,10 @@
             "default": "default"
         },
         {
+            "type": "header",
+            "content": "Slider Settings"
+        },
+        {
             "type": "checkbox",
             "id": "autoplay",
             "label": "Enable autoplay",
@@ -131,6 +135,73 @@
             "unit": "ms",
             "label": "Transition speed",
             "default": 800
+        },
+        {
+            "type": "range",
+            "id": "autoplay_speed",
+            "min": 2000,
+            "max": 9000,
+            "step": 500,
+            "unit": "ms",
+            "label": "Autoplay delay",
+            "default": 5000
+        },
+        {
+            "type": "checkbox",
+            "id": "show_arrows",
+            "label": "Show navigation arrows",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_dots",
+            "label": "Show pagination dots",
+            "default": true
+        },
+        {
+            "type": "header",
+            "content": "Responsive Settings"
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 4,
+            "unit": "px",
+            "label": "Top padding",
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 4,
+            "unit": "px",
+            "label": "Bottom padding",
+            "default": 0
+        },
+        {
+            "type": "header",
+            "content": "Animation Settings"
+        },
+        {
+            "type": "select",
+            "id": "animation_effect",
+            "label": "Animation effect",
+            "options": [
+                { "value": "fade", "label": "Fade" },
+                { "value": "slide", "label": "Slide" },
+                { "value": "zoom", "label": "Zoom" }
+            ],
+            "default": "fade"
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_parallax",
+            "label": "Enable parallax effect",
+            "default": false
         }
     ],
     "blocks": [
