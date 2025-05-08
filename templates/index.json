@@ -16,10 +16,22 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/slide1_home01.webp",
+            "enable_custom_fonts": false,
+            "heading_font": "font-1",
+            "heading_size": "display-md",
+            "heading_weight": "fw-medium",
+            "subtitle_font": "font-1",
+            "subtitle_size": "text-md",
+            "subtitle_weight": "fw-medium",
+            "heading_color": "#000000",
+            "subtitle_color": "#666666",
+            "subheading_color": "#666666",
+            "button_bg_color": "#000000",
+            "button_text_color": "#ffffff",
+            "button_hover_bg_color": "#333333",
+            "button_hover_text_color": "#ffffff",
             "image_position": "left",
             "content_position": "left",
-            "text_color": "dark-3",
-            "button_color": "dark2",
             "subtitle": "SUMMER COLLECTION",
             "heading": "Style<br>Redefined",
             "subheading": "Discover the latest trends in fashion that speak your style.",
@@ -31,10 +43,22 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/slide2_home01.webp",
+            "enable_custom_fonts": false,
+            "heading_font": "font-1",
+            "heading_size": "display-md",
+            "heading_weight": "fw-medium",
+            "subtitle_font": "font-1",
+            "subtitle_size": "text-md",
+            "subtitle_weight": "fw-medium",
+            "heading_color": "#000000",
+            "subtitle_color": "#666666",
+            "subheading_color": "#666666",
+            "button_bg_color": "#000000",
+            "button_text_color": "#ffffff",
+            "button_hover_bg_color": "#333333",
+            "button_hover_text_color": "#ffffff",
             "image_position": "left",
             "content_position": "left",
-            "text_color": "dark-3",
-            "button_color": "dark2",
             "subtitle": "SUMMER COLLECTION",
             "heading": "Elegance<br>Redefined",
             "subheading": "Discover timeless styles for every occasion.",
@@ -46,10 +70,22 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/slide3_home01.webp",
+            "enable_custom_fonts": false,
+            "heading_font": "font-1",
+            "heading_size": "display-md",
+            "heading_weight": "fw-medium",
+            "subtitle_font": "font-1",
+            "subtitle_size": "text-md",
+            "subtitle_weight": "fw-medium",
+            "heading_color": "#000000",
+            "subtitle_color": "#666666",
+            "subheading_color": "#666666",
+            "button_bg_color": "#000000",
+            "button_text_color": "#ffffff",
+            "button_hover_bg_color": "#333333",
+            "button_hover_text_color": "#ffffff",
             "image_position": "left",
             "content_position": "left",
-            "text_color": "dark-3",
-            "button_color": "dark2",
             "subtitle": "SUMMER COLLECTION",
             "heading": "Elevate Your<br>Wardrobe",
             "subheading": "Timeless pieces to refresh your look for every season.",
@@ -67,7 +103,14 @@
         "layout": "default",
         "autoplay": true,
         "loop": true,
-        "speed": 800
+        "speed": 800,
+        "autoplay_speed": 5000,
+        "show_arrows": false,
+        "show_dots": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "animation_effect": "fade",
+        "enable_parallax": false
       }
     },
     "featured_collection": {
@@ -77,6 +120,18 @@
           "type": "collection",
           "settings": {
             "collection": "top",
+            "enable_custom_fonts": false,
+            "title_font": "font-1",
+            "title_size": "text-md",
+            "title_weight": "fw-medium",
+            "title_color": "#000000",
+            "tag_bg_color": "#ffffff",
+            "tag_text_color": "#000000",
+            "price_color": "#000000",
+            "button_bg_color": "#ffffff",
+            "button_text_color": "#000000",
+            "button_hover_bg_color": "#000000",
+            "button_hover_text_color": "#ffffff",
             "tag": "",
             "price_new": "",
             "price_old": "",
@@ -87,6 +142,18 @@
           "type": "collection",
           "settings": {
             "collection": "accessories",
+            "enable_custom_fonts": false,
+            "title_font": "font-1",
+            "title_size": "text-md",
+            "title_weight": "fw-medium",
+            "title_color": "#000000",
+            "tag_bg_color": "#ffffff",
+            "tag_text_color": "#000000",
+            "price_color": "#000000",
+            "button_bg_color": "#ffffff",
+            "button_text_color": "#000000",
+            "button_hover_bg_color": "#000000",
+            "button_hover_text_color": "#ffffff",
             "tag": "",
             "price_new": "",
             "price_old": "",
@@ -97,6 +164,18 @@
           "type": "collection",
           "settings": {
             "collection": "sportwear",
+            "enable_custom_fonts": false,
+            "title_font": "font-1",
+            "title_size": "text-md",
+            "title_weight": "fw-medium",
+            "title_color": "#000000",
+            "tag_bg_color": "#ffffff",
+            "tag_text_color": "#000000",
+            "price_color": "#000000",
+            "button_bg_color": "#ffffff",
+            "button_text_color": "#000000",
+            "button_hover_bg_color": "#000000",
+            "button_hover_text_color": "#ffffff",
             "tag": "",
             "price_new": "",
             "price_old": "",
@@ -107,6 +186,18 @@
           "type": "collection",
           "settings": {
             "collection": "men",
+            "enable_custom_fonts": false,
+            "title_font": "font-1",
+            "title_size": "text-md",
+            "title_weight": "fw-medium",
+            "title_color": "#000000",
+            "tag_bg_color": "#ffffff",
+            "tag_text_color": "#000000",
+            "price_color": "#000000",
+            "button_bg_color": "#ffffff",
+            "button_text_color": "#000000",
+            "button_hover_bg_color": "#000000",
+            "button_hover_text_color": "#ffffff",
             "tag": "",
             "price_new": "",
             "price_old": "",
@@ -117,6 +208,18 @@
           "type": "collection",
           "settings": {
             "collection": "women",
+            "enable_custom_fonts": false,
+            "title_font": "font-1",
+            "title_size": "text-md",
+            "title_weight": "fw-medium",
+            "title_color": "#000000",
+            "tag_bg_color": "#ffffff",
+            "tag_text_color": "#000000",
+            "price_color": "#000000",
+            "button_bg_color": "#ffffff",
+            "button_text_color": "#000000",
+            "button_hover_bg_color": "#000000",
+            "button_hover_text_color": "#ffffff",
             "tag": "",
             "price_new": "",
             "price_old": "",
@@ -133,7 +236,18 @@
       ],
       "settings": {
         "layout": "default",
-        "speed": 800
+        "speed": 800,
+        "autoplay": true,
+        "autoplay_speed": 5000,
+        "loop": true,
+        "show_arrows": true,
+        "show_dots": true,
+        "space_between": 12,
+        "space_between_mobile": 6,
+        "enable_wow": true,
+        "wow_delay": "0.2s",
+        "image_ratio": "1:1",
+        "enable_lazy_loading": true
       }
     },
     "best_sellers": {
@@ -142,31 +256,56 @@
         "product_PM8ych": {
           "type": "product",
           "settings": {
-            "product": "turtleneck-t-shirt"
+            "product": "turtleneck-t-shirt",
+            "show_sale_badge": true,
+            "show_color_swatches": true,
+            "show_quick_view": true,
+            "show_wishlist": true,
+            "product_card_style": "style-4"
           }
         },
         "product_ED3yMn": {
           "type": "product",
           "settings": {
-            "product": "loose-fit-tee"
+            "product": "loose-fit-tee",
+            "show_sale_badge": true,
+            "show_color_swatches": true,
+            "show_quick_view": true,
+            "show_wishlist": true,
+            "product_card_style": "style-4"
           }
         },
         "product_BErxeB": {
           "type": "product",
           "settings": {
-            "product": "crop-t-shirt"
+            "product": "crop-t-shirt",
+            "show_sale_badge": true,
+            "show_color_swatches": true,
+            "show_quick_view": true,
+            "show_wishlist": true,
+            "product_card_style": "style-4"
           }
         },
         "product_RnR4fH": {
           "type": "product",
           "settings": {
-            "product": "short-sleeve-sweat"
+            "product": "short-sleeve-sweat",
+            "show_sale_badge": true,
+            "show_color_swatches": true,
+            "show_quick_view": true,
+            "show_wishlist": true,
+            "product_card_style": "style-4"
           }
         },
         "product_qfBjzE": {
           "type": "product",
           "settings": {
-            "product": "round-neck-boxy-t-shirt"
+            "product": "round-neck-boxy-t-shirt",
+            "show_sale_badge": true,
+            "show_color_swatches": true,
+            "show_quick_view": true,
+            "show_wishlist": true,
+            "product_card_style": "style-4"
           }
         }
       },
@@ -179,7 +318,22 @@
       ],
       "settings": {
         "section_title": "Best Sellers",
-        "products_to_show": 4
+        "products_to_show": 4,
+        "enable_custom_fonts": false,
+        "title_font": "font-1",
+        "title_size": "text-xl",
+        "title_weight": "fw-medium",
+        "title_color": "#000000",
+        "section_bg_color": "#ffffff",
+        "autoplay": true,
+        "autoplay_speed": 5000,
+        "loop": true,
+        "speed": 800,
+        "show_arrows": true,
+        "show_dots": true,
+        "padding_top": 100,
+        "padding_bottom": 100,
+        "space_between": 24
       }
     },
     "banner_countdown": {
@@ -187,6 +341,23 @@
       "settings": {
         "layout": "default",
         "show_section": true,
+        "enable_custom_fonts": false,
+        "heading_font": "font-1",
+        "heading_size": "display-md",
+        "heading_weight": "fw-medium",
+        "subheading_font": "font-1",
+        "subheading_size": "text-md",
+        "subheading_weight": "fw-medium",
+        "heading_color": "#000000",
+        "subheading_color": "#666666",
+        "season_text_color": "#666666",
+        "promo_code_color": "#000000",
+        "countdown_bg_color": "#000000",
+        "countdown_text_color": "#ffffff",
+        "button_bg_color": "#000000",
+        "button_text_color": "#ffffff",
+        "button_hover_bg_color": "#333333",
+        "button_hover_text_color": "#ffffff",
         "banner_image": "shopify://shop_images/bg_home01.webp",
         "heading": "50% OFF",
         "subheading": "Get your favorite cases at a discount",
@@ -195,7 +366,12 @@
         "show_countdown": true,
         "end_date": "2025-12-31 23:59:59",
         "button_label": "Shop Now",
-        "button_link": "shopify://collections"
+        "button_link": "shopify://collections",
+        "enable_parallax": false,
+        "enable_wow": true,
+        "wow_delay": "0.2s",
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "categories": {
