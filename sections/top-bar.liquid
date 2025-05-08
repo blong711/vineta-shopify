@@ -1,110 +1,102 @@
 {%- comment -%}Top Bar Section{%- endcomment -%}
-<div class="tf-topbar topbar-bg fade-in" style="background-color: {{ section.settings.background_color }};">
+<div class="tf-topbar topbar-bg" style="background-color: {{ section.settings.background_color }};">
   <div class="container">
     <div class="topbar-wraper">
-      {%- if section.blocks.size > 0 -%}
-        {%- for block in section.blocks -%}
-          {%- case block.type -%}
-            {%- when 'social_media' -%}
-              <div class="d-none d-xl-block flex-shrink-0" {{ block.shopify_attributes }}>
-                <ul class="tf-social-icon topbar-left">
-                  {%- if block.settings.facebook_url != blank -%}
-                    <li>
-                      <a href="{{ block.settings.facebook_url }}" class="social-item social-facebook" target="_blank" rel="noopener" style="color: {{ section.settings.text_color }};">
-                        <i class="icon icon-fb"></i>
-                      </a>
-                    </li>
-                  {%- endif -%}
-                  {%- if block.settings.instagram_url != blank -%}
-                    <li>
-                      <a href="{{ block.settings.instagram_url }}" class="social-item social-instagram" target="_blank" rel="noopener" style="color: {{ section.settings.text_color }};">
-                        <i class="icon icon-instagram"></i>
-                      </a>
-                    </li>
-                  {%- endif -%}
-                  {%- if block.settings.twitter_url != blank -%}
-                    <li>
-                      <a href="{{ block.settings.twitter_url }}" class="social-item social-x" target="_blank" rel="noopener" style="color: {{ section.settings.text_color }};">
-                        <i class="icon icon-x"></i>
-                      </a>
-                    </li>
-                  {%- endif -%}
-                  {%- if block.settings.snapchat_url != blank -%}
-                    <li>
-                      <a href="{{ block.settings.snapchat_url }}" class="social-item social-snapchat" target="_blank" rel="noopener" style="color: {{ section.settings.text_color }};">
-                        <i class="icon icon-snapchat"></i>
-                      </a>
-                    </li>
-                  {%- endif -%}
-                </ul>
-              </div>
-            {%- when 'announcement' -%}
-              <div class="overflow-hidden" {{ block.shopify_attributes }}>
-                <div class="topbar-center marquee-wrapper">
-                  <div class="initial-child-container">
-                    {%- for i in (1..3) -%}
-                      {%- assign announcements = block.settings.announcements | split: '\n' -%}
-                      {%- for announcement in announcements -%}
-                        <div class="marquee-child-item">
-                          <p class="text-primary {{ section.settings.font_weight }}" style="color: {{ section.settings.text_color }};">{{ announcement }}</p>
-                        </div>
-                        {%- unless forloop.last -%}
-                          <div class="marquee-child-item"><span class="dot" style="background-color: {{ section.settings.text_color }};"></span></div>
-                        {%- endunless -%}
-                      {%- endfor -%}
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'social_media' -%}
+            <div class="d-none d-xl-block flex-shrink-0" {{ block.shopify_attributes }}>
+              <ul class="tf-social-icon topbar-left">
+                {%- if block.settings.facebook_url != blank -%}
+                  <li>
+                    <a href="{{ block.settings.facebook_url }}" class="social-item social-facebook" target="_blank" rel="noopener" style="color: {{ section.settings.text_color }};">
+                      <i class="icon icon-fb"></i>
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if block.settings.instagram_url != blank -%}
+                  <li>
+                    <a href="{{ block.settings.instagram_url }}" class="social-item social-instagram" target="_blank" rel="noopener" style="color: {{ section.settings.text_color }};">
+                      <i class="icon icon-instagram"></i>
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if block.settings.twitter_url != blank -%}
+                  <li>
+                    <a href="{{ block.settings.twitter_url }}" class="social-item social-x" target="_blank" rel="noopener" style="color: {{ section.settings.text_color }};">
+                      <i class="icon icon-x"></i>
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if block.settings.snapchat_url != blank -%}
+                  <li>
+                    <a href="{{ block.settings.snapchat_url }}" class="social-item social-snapchat" target="_blank" rel="noopener" style="color: {{ section.settings.text_color }};">
+                      <i class="icon icon-snapchat"></i>
+                    </a>
+                  </li>
+                {%- endif -%}
+              </ul>
+            </div>
+          {%- when 'announcement' -%}
+            <div class="overflow-hidden" {{ block.shopify_attributes }}>
+              <div class="topbar-center marquee-wrapper">
+                <div class="initial-child-container">
+                  {%- for i in (1..3) -%}
+                    {%- assign announcements = block.settings.announcements | split: '\n' -%}
+                    {%- for announcement in announcements -%}
+                      <div class="marquee-child-item">
+                        <p style="color: {{ section.settings.text_color }};">{{ announcement }}</p>
+                      </div>
+                      {%- unless forloop.last -%}
+                        <div class="marquee-child-item"><span class="dot" style="background-color: {{ section.settings.text_color }};"></span></div>
+                      {%- endunless -%}
                     {%- endfor -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            </div>
+          {%- when 'language_currency' -%}
+            <div class="d-none d-xl-block flex-shrink-0" {{ block.shopify_attributes }}>
+              <div class="topbar-right">
+                {%- if block.settings.show_language -%}
+                  <div class="tf-languages">
+                    <select class="image-select center style-default type-languages" name="language" style="color: {{ section.settings.text_color }};">
+                      {% for locale in shop.published_locales %}
+                        <option value="{{ locale.iso_code }}" {% if locale.primary %}selected{% endif %}>
+                          {{ locale.name }}
+                        </option>
+                      {% endfor %}
+                    </select>
                   </div>
-                </div>
+                {%- endif -%}
+                {%- if block.settings.show_currency -%}
+                  <div class="tf-currencies">
+                    <select class="image-select center style-default type-currencies" name="currency" style="color: {{ section.settings.text_color }};">
+                      {% for currency in shop.enabled_currencies %}
+                        {% assign country_name = "" %}
+                        {% assign thumbnail_path = "" %}
+                        {% case currency.iso_code %}
+                          {% when 'USD' %}
+                            {% assign country_name = "United States" %}
+                            {% assign thumbnail_path = "us.png" | asset_url %}
+                          {% when 'EUR' %}
+                            {% assign country_name = "France" %}
+                          {% when 'VND' %}
+                            {% assign country_name = "Vietnam" %}
+                          {% else %}
+                            {% assign country_name = currency.name %}
+                        {% endcase %}
+                        <option value="{{ currency.iso_code }}" {% if currency == cart.currency %}selected{% endif %} {% if thumbnail_path != blank %}data-thumbnail="{{ thumbnail_path }}"{% endif %}>
+                          {{ country_name }} ({{ currency.iso_code }} {{ currency.symbol }})
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                {%- endif -%}
               </div>
-            {%- when 'language_currency' -%}
-              <div class="d-none d-xl-block flex-shrink-0" {{ block.shopify_attributes }}>
-                <div class="topbar-right">
-                  {%- if block.settings.show_language -%}
-                    <div class="tf-languages">
-                      <select class="image-select center style-default type-languages {{ section.settings.font_weight }}" name="language" style="color: {{ section.settings.text_color }};">
-                        {% for locale in shop.published_locales %}
-                          <option value="{{ locale.iso_code }}" {% if locale.primary %}selected{% endif %}>
-                            {{ locale.name }}
-                          </option>
-                        {% endfor %}
-                      </select>
-                    </div>
-                  {%- endif -%}
-                  {%- if block.settings.show_currency -%}
-                    <div class="tf-currencies">
-                      <select class="image-select center style-default type-currencies {{ section.settings.font_weight }}" name="currency" style="color: {{ section.settings.text_color }};">
-                        {% for currency in shop.enabled_currencies %}
-                          {% assign country_name = "" %}
-                          {% assign thumbnail_path = "" %}
-                          {% case currency.iso_code %}
-                            {% when 'USD' %}
-                              {% assign country_name = "United States" %}
-                              {% assign thumbnail_path = "us.png" | asset_url %}
-                            {% when 'EUR' %}
-                              {% assign country_name = "France" %}
-                            {% when 'VND' %}
-                              {% assign country_name = "Vietnam" %}
-                            {% else %}
-                              {% assign country_name = currency.name %}
-                          {% endcase %}
-                          <option value="{{ currency.iso_code }}" {% if currency == cart.currency %}selected{% endif %} {% if thumbnail_path != blank %}data-thumbnail="{{ thumbnail_path }}"{% endif %}>
-                            {{ country_name }} ({{ currency.iso_code }} {{ currency.symbol }})
-                          </option>
-                        {% endfor %}
-                      </select>
-                    </div>
-                  {%- endif -%}
-                </div>
-              </div>
-          {%- endcase -%}
-        {%- endfor -%}
-      {%- else -%}
-        <div class="topbar-center">
-          <p class="text-primary {{ section.settings.font_weight }}" style="color: {{ section.settings.text_color }};">
-            Please add blocks in theme settings to display content
-          </p>
-        </div>
-      {%- endif -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
     </div>
   </div>
 </div>
@@ -135,54 +127,6 @@
       "id": "hover_color",
       "label": "Hover color",
       "default": "#FF4444"
-    },
-    {
-      "type": "header",
-      "content": "Typography"
-    },
-    {
-      "type": "select",
-      "id": "text_alignment",
-      "label": "Text alignment",
-      "options": [
-        {
-          "value": "text-left",
-          "label": "Left"
-        },
-        {
-          "value": "text-center",
-          "label": "Center"
-        },
-        {
-          "value": "text-right",
-          "label": "Right"
-        }
-      ],
-      "default": "text-center"
-    },
-    {
-      "type": "select",
-      "id": "font_weight",
-      "label": "Font weight",
-      "options": [
-        {
-          "value": "font-light",
-          "label": "Light"
-        },
-        {
-          "value": "font-regular",
-          "label": "Regular"
-        },
-        {
-          "value": "font-medium",
-          "label": "Medium"
-        },
-        {
-          "value": "font-bold",
-          "label": "Bold"
-        }
-      ],
-      "default": "font-regular"
     }
   ],
   "blocks": [
@@ -265,9 +209,7 @@
       "settings": {
         "background_color": "#1A1A1A",
         "text_color": "#FFFFFF",
-        "hover_color": "#FF4444",
-        "text_alignment": "text-center",
-        "font_weight": "font-regular"
+        "hover_color": "#FF4444"
       },
       "blocks": [
         {
@@ -293,4 +235,3 @@
   ]
 }
 {% endschema %}
-
