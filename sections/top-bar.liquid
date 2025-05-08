@@ -1,5 +1,5 @@
 {%- comment -%}Top Bar Section{%- endcomment -%}
-<div class="tf-topbar topbar-bg" data-color-scheme="{{ section.settings.color_scheme }}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; font-family: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }}; font-size: {{ section.settings.font_size }}px; font-weight: {{ section.settings.font_weight }};">
+<div class="tf-topbar topbar-bg" data-color-scheme="{{ section.settings.color_scheme }}" style="background-color: {{ section.settings.color_scheme | color: 'background' }}; color: {{ section.settings.color_scheme | color: 'text' }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; font-family: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }}; font-size: {{ section.settings.font_size }}px; font-weight: {{ section.settings.font_weight }};">
   <div class="container">
     <div class="topbar-wraper">
       {%- for block in section.blocks -%}
@@ -45,9 +45,9 @@
                     {%- assign announcements = block.settings.announcements | split: '\n' -%}
                     {%- for announcement in announcements -%}
                       <div class="marquee-child-item">
-                        <p style="font-family: {{ block.settings.font.family }}, {{ block.settings.font.fallback_families }};">{{ announcement }}</p>
+                        <p style="font-family: {{ block.settings.font.family }}, {{ block.settings.font.fallback_families }}; color: {{ section.settings.color_scheme | color: 'text' }};">{{ announcement }}</p>
                       </div>
-                        <div class="marquee-child-item"><span class="dot"></span></div>
+                        <div class="marquee-child-item"><span class="dot" style="background-color: {{ section.settings.color_scheme | color: 'text' }};"></span></div>
                     {%- endfor -%}
                   {%- endfor -%}
                 </div>
@@ -58,7 +58,7 @@
               <div class="topbar-right">
                 {%- if block.settings.show_language -%}
                   <div class="tf-languages">
-                    <select class="image-select center style-default type-languages" name="language" style="font-family: {{ block.settings.font.family }}, {{ block.settings.font.fallback_families }};">
+                    <select class="image-select center style-default type-languages" name="language" style="font-family: {{ block.settings.font.family }}, {{ block.settings.font.fallback_families }}; color: {{ section.settings.color_scheme | color: 'text' }};">
                       {% for locale in shop.published_locales %}
                         <option value="{{ locale.iso_code }}" {% if locale.primary %}selected{% endif %}>
                           {{ locale.name }}
@@ -69,7 +69,7 @@
                 {%- endif -%}
                 {%- if block.settings.show_currency -%}
                   <div class="tf-currencies">
-                    <select class="image-select center style-default type-currencies" name="currency" style="font-family: {{ block.settings.font.family }}, {{ block.settings.font.fallback_families }};">
+                    <select class="image-select center style-default type-currencies" name="currency" style="font-family: {{ block.settings.font.family }}, {{ block.settings.font.fallback_families }}; color: {{ section.settings.color_scheme | color: 'text' }};">
                       {% for currency in shop.enabled_currencies %}
                         {% assign country_name = "" %}
                         {% assign thumbnail_path = "" %}
