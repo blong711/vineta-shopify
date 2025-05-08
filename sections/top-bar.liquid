@@ -45,11 +45,9 @@
                     {%- assign announcements = block.settings.announcements | split: '\n' -%}
                     {%- for announcement in announcements -%}
                       <div class="marquee-child-item">
-                        <p style="color: {{ section.settings.text_color }}; font-family: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }};">{{ announcement }}</p>
+                        <p style="color: {{ section.settings.text_color }}; font-family: {{ block.settings.font.family }}, {{ block.settings.font.fallback_families }};">{{ announcement }}</p>
                       </div>
-                      {%- unless forloop.last -%}
                         <div class="marquee-child-item"><span class="dot" style="background-color: {{ section.settings.text_color }};"></span></div>
-                      {%- endunless -%}
                     {%- endfor -%}
                   {%- endfor -%}
                 </div>
@@ -60,7 +58,7 @@
               <div class="topbar-right">
                 {%- if block.settings.show_language -%}
                   <div class="tf-languages">
-                    <select class="image-select center style-default type-languages" name="language" style="color: {{ section.settings.text_color }}; font-family: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }};">
+                    <select class="image-select center style-default type-languages" name="language" style="color: {{ section.settings.text_color }}; font-family: {{ block.settings.font.family }}, {{ block.settings.font.fallback_families }};">
                       {% for locale in shop.published_locales %}
                         <option value="{{ locale.iso_code }}" {% if locale.primary %}selected{% endif %}>
                           {{ locale.name }}
@@ -71,7 +69,7 @@
                 {%- endif -%}
                 {%- if block.settings.show_currency -%}
                   <div class="tf-currencies">
-                    <select class="image-select center style-default type-currencies" name="currency" style="color: {{ section.settings.text_color }}; font-family: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }};">
+                    <select class="image-select center style-default type-currencies" name="currency" style="color: {{ section.settings.text_color }}; font-family: {{ block.settings.font.family }}, {{ block.settings.font.fallback_families }};">
                       {% for currency in shop.enabled_currencies %}
                         {% assign country_name = "" %}
                         {% assign thumbnail_path = "" %}
@@ -142,7 +140,7 @@
       "type": "font_picker",
       "id": "body_font",
       "label": "Body font",
-      "default": "assistant_n4"
+      "default": "dm_sans_n4"
     },
     {
       "type": "range",
@@ -278,6 +276,12 @@
           "label": "Announcements",
           "info": "Enter each announcement on a new line",
           "default": "Return extended to 60 days\nLife-time Guarantees\nLimited-Time Offer"
+        },
+        {
+          "type": "font_picker",
+          "id": "font",
+          "label": "Announcement font",
+          "default": "dm_sans_n4"
         }
       ]
     },
@@ -297,6 +301,12 @@
           "id": "show_currency",
           "label": "Show currency selector",
           "default": true
+        },
+        {
+          "type": "font_picker",
+          "id": "font",
+          "label": "Selector font",
+          "default": "poppins_n4"
         }
       ]
     }
