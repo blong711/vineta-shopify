@@ -15,6 +15,8 @@
                       <a href="#collection-{{ block.id }}" 
                          class="tab-link {% if forloop.first %}active{% endif %} {% if section.settings.enable_custom_fonts %}{{ section.settings.tab_font }} {{ section.settings.tab_size }} {{ section.settings.tab_weight }}{% endif %}" 
                          data-bs-toggle="tab"
+                         data-active-color="{{ section.settings.tab_active_color }}"
+                         data-inactive-color="{{ section.settings.tab_color }}"
                          style="color: {% if forloop.first %}{{ section.settings.tab_active_color }}{% else %}{{ section.settings.tab_color }}{% endif %};">
                         {{ collections[block.settings.collection].title }}
                       </a>
@@ -304,6 +306,26 @@
   {%- endcase -%}
 {%- endif -%}
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const tabLinks = document.querySelectorAll('.tab-link');
+    
+    tabLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        // Remove active class and set inactive color from all tabs
+        tabLinks.forEach(tab => {
+          tab.classList.remove('active');
+          tab.style.color = tab.getAttribute('data-inactive-color');
+        });
+        
+        // Add active class and set active color to clicked tab
+        this.classList.add('active');
+        this.style.color = this.getAttribute('data-active-color');
+      });
+    });
+  });
+</script>
+
 {% schema %}
 {
   "name": "Categories",
@@ -537,13 +559,15 @@
       "type": "color",
       "id": "tab_color",
       "label": "Tab color (inactive)",
-      "default": "#666666"
+      "default": "#666666",
+      "info": "Color for inactive tabs"
     },
     {
       "type": "color",
       "id": "tab_active_color",
       "label": "Tab color (active)",
-      "default": "#000000"
+      "default": "#000000",
+      "info": "Color for active tab"
     },
     {
       "type": "color",
