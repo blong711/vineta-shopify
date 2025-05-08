@@ -6,8 +6,8 @@
       "link": "Continue shopping"
     },
     "accessibility": {
-      "skip_to_content": "Skip to content",
-      "close": "Close"
+      "skip_to_text": "Skip to content",
+      "refresh_page": "Refresh page"
     },
     "meta": {
       "tags": "Tagged \"{{ tags }}\"",
@@ -35,6 +35,9 @@
       "title": "Search",
       "placeholder": "Search our store",
       "submit": "Search"
+    },
+    "share": {
+      "success_message": "Link copied to clipboard"
     }
   },
   "blogs": {
@@ -67,23 +70,57 @@
       "update": "Update Cart",
       "checkout": "Check Out",
       "empty": "Your cart is currently empty.",
-      "continue_browsing_html": "Continue browsing <a href=\"/collections/all\">here</a>."
+      "continue_browsing_html": "Continue browsing <a href=\"/collections/all\">here</a>.",
+      "cart_error": "There was an error while updating your cart. Please try again.",
+      "cart_quantity_error_html": "You can only add [quantity] of this item to your cart."
     }
   },
   "products": {
     "product": {
       "regular_price": "Regular price",
-      "sold_out": "Sold Out",
+      "sold_out": "Sold out",
       "unavailable": "Unavailable",
       "on_sale": "Sale",
       "quantity": "Quantity",
-      "add_to_cart": "Add to Cart",
+      "add_to_cart": "Add to cart",
       "back_to_collection": "Back to {{ collection }}",
       "add_to_wishlist": "Add to wishlist",
       "remove_from_wishlist": "Remove from wishlist",
       "compare": "Compare",
       "ask_question": "Ask a question",
-      "share": "Share"
+      "share": "Share",
+      "media": {
+        "image_available": "Image {index} of {count}"
+      }
+    }
+  },
+  "sections": {
+    "header": {
+      "announcement": "Announcement"
+    },
+    "announcement-bar": {
+      "name": "Announcement bar",
+      "settings": {
+        "show_announcement": {
+          "label": "Show announcement"
+        },
+        "text": {
+          "label": "Announcement text"
+        },
+        "link": {
+          "label": "Announcement link"
+        }
+      }
+    },
+    "slideshow": {
+      "pause_slideshow": "Pause slideshow",
+      "play_slideshow": "Play slideshow"
+    }
+  },
+  "recipient": {
+    "form": {
+      "expanded": "Recipient information form expanded",
+      "collapsed": "Recipient information form collapsed"
     }
   }
 } 

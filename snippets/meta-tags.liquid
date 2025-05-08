@@ -1,0 +1,35 @@
+{%- if settings.favicon != blank -%}
+  <link rel="icon" type="image/png" href="{{ settings.favicon | img_url: '32x32' }}">
+{%- endif -%}
+
+{%- if settings.apple_touch_icon != blank -%}
+  <link rel="apple-touch-icon" href="{{ settings.apple_touch_icon | img_url: '180x180' }}">
+{%- endif -%}
+
+<meta name="theme-color" content="{{ settings.primary_button }}">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="canonical" href="{{ canonical_url }}">
+
+{%- if page_description -%}
+  <meta name="description" content="{{ page_description | escape }}">
+{%- endif -%}
+
+<meta property="og:site_name" content="{{ shop.name }}">
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:title" content="{{ page_title | escape }}">
+{%- if page_description -%}
+  <meta property="og:description" content="{{ page_description | escape }}">
+{%- endif -%}
+{%- if page_image -%}
+  <meta property="og:image" content="{{ page_image | img_url: '1200x1200' }}">
+{%- endif -%}
+<meta property="og:type" content="website">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ page_title | escape }}">
+{%- if page_description -%}
+  <meta name="twitter:description" content="{{ page_description | escape }}">
+{%- endif -%}
+{%- if page_image -%}
+  <meta name="twitter:image" content="{{ page_image | img_url: '1200x1200' }}">
+{%- endif -%} 
