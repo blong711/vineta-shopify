@@ -548,26 +548,30 @@
         "label": "Animation Style",
         "options": [
           {
-            "value": "fade",
-            "label": "Fade"
+            "value": "ease",
+            "label": "Ease"
           },
           {
-            "value": "slide",
-            "label": "Slide"
+            "value": "ease-in",
+            "label": "Ease In"
           },
           {
-            "value": "zoom",
-            "label": "Zoom"
+            "value": "ease-out",
+            "label": "Ease Out"
+          },
+          {
+            "value": "ease-in-out",
+            "label": "Ease In Out"
           }
         ],
-        "default": "fade"
+        "default": "ease-out"
       },
       {
         "type": "range",
         "id": "animation_duration",
         "min": 200,
         "max": 1000,
-        "step": 100,
+        "step": 50,
         "unit": "ms",
         "label": "Animation Duration",
         "default": 500

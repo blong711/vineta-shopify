@@ -1,5 +1,5 @@
 {%- comment -%}Top Bar Section{%- endcomment -%}
-<div class="tf-topbar topbar-bg" style="background-color: {{ section.settings.background_color }};">
+<div class="tf-topbar topbar-bg fade-in" style="background-color: {{ section.settings.background_color }};">
   <div class="container">
     <div class="topbar-wraper">
       {%- for block in section.blocks -%}
@@ -45,7 +45,7 @@
                     {%- assign announcements = block.settings.announcements | split: '\n' -%}
                     {%- for announcement in announcements -%}
                       <div class="marquee-child-item">
-                        <p style="color: {{ section.settings.text_color }};">{{ announcement }}</p>
+                        <p class="text-primary" style="color: {{ section.settings.text_color }};">{{ announcement }}</p>
                       </div>
                       {%- unless forloop.last -%}
                         <div class="marquee-child-item"><span class="dot" style="background-color: {{ section.settings.text_color }};"></span></div>
@@ -127,6 +127,54 @@
       "id": "hover_color",
       "label": "Hover color",
       "default": "#FF4444"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "text-left",
+          "label": "Left"
+        },
+        {
+          "value": "text-center",
+          "label": "Center"
+        },
+        {
+          "value": "text-right",
+          "label": "Right"
+        }
+      ],
+      "default": "text-center"
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "font-light",
+          "label": "Light"
+        },
+        {
+          "value": "font-regular",
+          "label": "Regular"
+        },
+        {
+          "value": "font-medium",
+          "label": "Medium"
+        },
+        {
+          "value": "font-bold",
+          "label": "Bold"
+        }
+      ],
+      "default": "font-regular"
     }
   ],
   "blocks": [
@@ -209,7 +257,9 @@
       "settings": {
         "background_color": "#1A1A1A",
         "text_color": "#FFFFFF",
-        "hover_color": "#FF4444"
+        "hover_color": "#FF4444",
+        "text_alignment": "text-center",
+        "font_weight": "font-regular"
       },
       "blocks": [
         {

@@ -1,5 +1,5 @@
 {%- comment -%}Header Section{%- endcomment -%}
-<header id="header" class="header-default{% if section.settings.layout == 'layout-2' %} header-2{% endif %}{% if section.settings.layout == 'layout-3' %} header-3{% endif %}" style="background-color: {{ section.settings.background_color }};">
+<header id="header" class="header-default{% if section.settings.layout == 'layout-2' %} header-2{% endif %}{% if section.settings.layout == 'layout-3' %} header-3{% endif %} slide-in" style="background-color: {{ section.settings.background_color }};">
   {%- if section.settings.layout == 'layout-2' -%}
     <div class="header-top">
       <div class="container">
@@ -13,7 +13,7 @@
           <div class="col-xl-5 d-none d-xl-block">
             <div class="header-language">
               <div class="tf-languages">
-                <select class="image-select center style-default type-languages" name="language">
+                <select class="image-select center style-default type-languages {{ section.settings.font_weight }}" name="language">
                   {% for locale in shop.published_locales %}
                     <option value="{{ locale.iso_code }}" {% if locale.primary %}selected{% endif %}>
                       {{ locale.name }}
@@ -22,7 +22,7 @@
                 </select>
               </div>
               <div class="tf-currencies">
-                <select class="image-select center style-default type-currencies" name="currency">
+                <select class="image-select center style-default type-currencies {{ section.settings.font_weight }}" name="currency">
                   {% for currency in shop.enabled_currencies %}
                     <option value="{{ currency.iso_code }}" {% if currency == cart.currency %}selected{% endif %}>
                       {{ currency.iso_code }} ({{ currency.symbol }})
@@ -42,7 +42,7 @@
                   height="{{ section.settings.logo_width | divided_by: section.settings.logo.aspect_ratio }}"
                   class="logo">
               {%- else -%}
-                <span class="h4">{{ shop.name }}</span>
+                <span class="h4 {{ section.settings.font_weight }}">{{ shop.name }}</span>
               {%- endif -%}
             </a>
           </div>
@@ -90,11 +90,11 @@
 
     <div class="header-bottom d-none d-xl-block">
       <div class="container">
-        <nav class="box-navigation text-center">
+        <nav class="box-navigation {{ section.settings.text_alignment }}">
           <ul class="box-nav-menu">
             {%- for link in linklists[section.settings.menu].links -%}
               <li class="menu-item{% if link.links != blank %} has-submenu{% endif %}">
-                <a href="{{ link.url }}" class="item-link">
+                <a href="{{ link.url }}" class="item-link {{ section.settings.font_weight }}">
                   {{ link.title }}
                   {%- if link.links != blank -%}
                     <i class="icon icon-arr-down"></i>
@@ -113,90 +113,52 @@
                           {%- when 'mega_menu_shop' -%}
                             <div class="mega-menu-item" {{ block.shopify_attributes }}>
                               {%- if block.settings.collections != blank -%}
-                                <div class="menu-heading">{{ block.settings.title }}</div>
+                                <div class="menu-heading {{ section.settings.font_weight }}">{{ block.settings.title }}</div>
                                 <ul class="menu-list">
                                   {%- for collection in block.settings.collections -%}
                                     <li>
-                                      <a href="{{ collection.url }}" class="menu-link-text link">
+                                      <a href="{{ collection.url }}" class="menu-link-text link {{ section.settings.font_weight }}">
                                         {{ collection.title }}
                                       </a>
                                     </li>
                                   {%- endfor -%}
                                 </ul>
                               {%- endif -%}
-                              {%- if block.settings.banner_image != blank -%}
-                                <div class="mega-menu-banner">
-                                  <a href="{{ block.settings.banner_link }}">
-                                    <img src="{{ block.settings.banner_image | img_url: 'master' }}"
-                                      alt="{{ block.settings.title }}"
-                                      class="lazyload">
-                                  </a>
-                                </div>
-                              {%- endif -%}
                             </div>
                           {%- when 'mega_menu_product' -%}
                             <div class="mega-menu-item" {{ block.shopify_attributes }}>
                               {%- if block.settings.products != blank -%}
-                                <div class="menu-heading">{{ block.settings.products_list_title }}</div>
+                                <div class="menu-heading {{ section.settings.font_weight }}">{{ block.settings.products_list_title }}</div>
                                 <div class="mega-menu-products">
                                   {%- for product in block.settings.products -%}
                                     <div class="mega-menu-product">
                                       <a href="{{ product.url }}">
                                         <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" class="lazyload">
-                                        <h4>{{ product.title }}</h4>
-                                        <p class="price">{{ product.price | money }}</p>
+                                        <h4 class="{{ section.settings.font_weight }}">{{ product.title }}</h4>
+                                        <p class="price {{ section.settings.font_weight }}">{{ product.price | money }}</p>
                                       </a>
                                     </div>
                                   {%- endfor -%}
-                                </div>
-                              {%- endif -%}
-                              {%- if block.settings.banner_image != blank -%}
-                                <div class="mega-menu-banner">
-                                  <a href="{{ block.settings.banner_link }}">
-                                    <img src="{{ block.settings.banner_image | img_url: 'master' }}"
-                                      alt="{{ block.settings.title }}"
-                                      class="lazyload">
-                                  </a>
                                 </div>
                               {%- endif -%}
                             </div>
                           {%- when 'mega_menu_pages' -%}
                             <div class="mega-menu-item" {{ block.shopify_attributes }}>
                               {%- if block.settings.menu != blank -%}
-                                <div class="menu-heading">{{ block.settings.title }}</div>
+                                <div class="menu-heading {{ section.settings.font_weight }}">{{ block.settings.title }}</div>
                                 <ul class="menu-list">
                                   {%- for pagelink in linklists[block.settings.menu].links -%}
                                     <li>
-                                      <a href="{{ pagelink.url }}" class="menu-link-text link">
+                                      <a href="{{ pagelink.url }}" class="menu-link-text link {{ section.settings.font_weight }}">
                                         {{ pagelink.title }}
                                       </a>
                                     </li>
                                   {%- endfor -%}
                                 </ul>
                               {%- endif -%}
-                              {%- if block.settings.banner_image != blank -%}
-                                <div class="mega-menu-banner">
-                                  <a href="{{ block.settings.banner_link }}">
-                                    <img src="{{ block.settings.banner_image | img_url: 'master' }}"
-                                      alt="{{ block.settings.title }}"
-                                      class="lazyload">
-                                  </a>
-                                </div>
-                              {%- endif -%}
                             </div>
                         {%- endcase -%}
                       {%- endif -%}
-                      <div class="mega-menu-item">
-                        <ul class="menu-list">
-                          {%- for childlink in link.links -%}
-                            <li>
-                              <a href="{{ childlink.url }}" class="menu-link-text link">
-                                {{ childlink.title }}
-                              </a>
-                            </li>
-                          {%- endfor -%}
-                        </ul>
-                      </div>
                     </div>
                   </div>
                 {%- endif -%}
@@ -482,6 +444,58 @@
       "id": "menu",
       "label": "Menu",
       "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "text-left",
+          "label": "Left"
+        },
+        {
+          "value": "text-center",
+          "label": "Center"
+        },
+        {
+          "value": "text-right",
+          "label": "Right"
+        }
+      ],
+      "default": "text-center"
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "font-light",
+          "label": "Light"
+        },
+        {
+          "value": "font-regular",
+          "label": "Regular"
+        },
+        {
+          "value": "font-medium",
+          "label": "Medium"
+        },
+        {
+          "value": "font-bold",
+          "label": "Bold"
+        }
+      ],
+      "default": "font-regular"
+    },
+    {
+      "type": "header",
+      "content": "Features"
     },
     {
       "type": "checkbox",
@@ -1048,6 +1062,8 @@
       "settings": {
         "layout": "layout-1",
         "background_color": "#ffffff",
+        "text_alignment": "text-center",
+        "font_weight": "font-regular",
         "show_search": true,
         "show_account": true,
         "show_wishlist": true,

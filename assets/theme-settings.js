@@ -40,22 +40,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0) scale(1)';
+          entry.target.classList.add('animate');
           observer.unobserve(entry.target);
         }
       });
     }, {
-      threshold: 0.1
+      threshold: 0.1,
+      rootMargin: '50px'
     });
 
     animatedElements.forEach(element => {
-      element.style.opacity = '0';
-      if (element.classList.contains('slide-in')) {
-        element.style.transform = 'translateY(20px)';
-      } else if (element.classList.contains('zoom-in')) {
-        element.style.transform = 'scale(0.95)';
-      }
       observer.observe(element);
     });
   }
