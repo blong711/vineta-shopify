@@ -9,6 +9,7 @@
  */
 {
   "current": {
+    "favicon": "shopify://shop_images/favicon.png",
     "sections": {
       "top-bar": {
         "type": "top-bar",
@@ -44,7 +45,9 @@
           "language_currency_AWmzDb"
         ],
         "settings": {
-          "color_scheme": "scheme-1",
+          "background_color": "#313030",
+          "text_color": "#ffffff",
+          "hover_color": "#ff4444",
           "padding_top": 0,
           "padding_bottom": 0,
           "announcement_speed": "normal"
@@ -138,7 +141,14 @@
           "layout": "layout-1",
           "header_height": 87,
           "sticky_header_height": 87,
-          "color_scheme": "scheme-1",
+          "background_color": "#ffffff",
+          "text_color": "#333333",
+          "link_color": "#333333",
+          "link_hover_color": "#666666",
+          "icon_color": "#333333",
+          "icon_hover_color": "#666666",
+          "dropdown_background": "#ffffff",
+          "dropdown_text_color": "#333333",
           "font_family": "primary",
           "menu_font_size": 14,
           "menu_font_weight": "500",
@@ -153,6 +163,8 @@
           "show_wishlist": true,
           "show_cart": true,
           "mobile_menu_font_size": 16,
+          "mobile_menu_background": "#ffffff",
+          "mobile_menu_text_color": "#333333",
           "dropdown_animation": "fade",
           "animation_duration": 200
         }
@@ -560,34 +572,34 @@
     "color_schemes": {
       "scheme-1": {
         "settings": {
-          "background-1": "#313030",
-          "background-2": "#313030",
-          "accent-1": "#313030",
-          "accent-2": "#313030"
+          "scheme-1": "#313030",
+          "scheme-2": "#7c8c47",
+          "scheme-3": "#d47b62",
+          "scheme-4": "#3f7b25"
         }
       },
       "scheme-2": {
         "settings": {
-          "background-1": "",
-          "background-2": "",
-          "accent-1": "",
-          "accent-2": ""
+          "scheme-1": "#313030",
+          "scheme-2": "#7c8c47",
+          "scheme-3": "#d47b62",
+          "scheme-4": "#3f7b25"
         }
       },
       "scheme-3": {
         "settings": {
-          "background-1": "",
-          "background-2": "",
-          "accent-1": "",
-          "accent-2": ""
+          "scheme-1": "#313030",
+          "scheme-2": "#7c8c47",
+          "scheme-3": "#d47b62",
+          "scheme-4": "#3f7b25"
         }
       },
       "scheme-4": {
         "settings": {
-          "background-1": "",
-          "background-2": "",
-          "accent-1": "",
-          "accent-2": ""
+          "scheme-1": "#313030",
+          "scheme-2": "#7c8c47",
+          "scheme-3": "#d47b62",
+          "scheme-4": "#3f7b25"
         }
       }
     }
