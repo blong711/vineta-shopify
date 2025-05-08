@@ -1,5 +1,5 @@
 {%- comment -%}Footer Section{%- endcomment -%}
-<footer id="footer" class="footer-default xl-pb-70">
+<footer id="footer" class="footer-default xl-pb-70" style="background-color: {{ section.settings.footer_bg_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   <div class="footer-top">
     <div class="container">
       <div class="footer-top-wrap">
@@ -8,7 +8,7 @@
             {%- if section.settings.logo != blank -%}
               <img src="{{ section.settings.logo | img_url: 'master' }}" class="logo" alt="{{ section.settings.logo.alt | default: shop.name }}">
             {%- else -%}
-              <span class="h2">{{ shop.name }}</span>
+              <span class="h2" style="color: {{ section.settings.footer_heading_color }};">{{ shop.name }}</span>
             {%- endif -%}
           </a>
         </div>
@@ -16,7 +16,7 @@
           {%- for block in section.blocks -%}
             {%- if block.type == 'social' -%}
               <li {{ block.shopify_attributes }}>
-                <a href="{{ block.settings.url }}" class="social-item social-{{ block.settings.platform }}" target="_blank" rel="noopener">
+                <a href="{{ block.settings.url }}" class="social-item social-{{ block.settings.platform }}" target="_blank" rel="noopener" style="color: {{ section.settings.footer_link_color }};">
                   <i class="icon icon-{{ block.settings.platform }}"></i>
                 </a>
               </li>
@@ -28,12 +28,12 @@
   </div>
   <div class="footer-body">
     <div class="container">
-      <div class="row-footer">
+      <div class="row-footer" style="gap: {{ section.settings.column_gap }}px;">
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'contact' -%}
               <div class="footer-col-block s1" {{ block.shopify_attributes }}>
-                <div class="footer-heading footer-heading-mobile text-xl fw-medium">
+                <div class="footer-heading footer-heading-mobile {% if section.settings.enable_custom_fonts %}{{ section.settings.heading_font }} {{ section.settings.heading_size }} {{ section.settings.heading_weight }}{% else %}text-xl fw-medium{% endif %}" style="color: {{ section.settings.footer_heading_color }};">
                   {{ block.settings.title }}
                 </div>
                 <div class="tf-collapse-content">
@@ -43,11 +43,11 @@
                         <li class="item">
                           <span class="box-icon">
                             <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M10.1869 1.73431C9.06854 0.61592 7.58155 0 5.99993 0C4.4183 0 2.93129 0.61592 1.81292 1.73431C0.694534 2.85273 0.0786133 4.33969 0.0786133 5.92129C0.0786133 9.12084 3.10388 11.7821 4.72917 13.2118C4.95504 13.4105 5.15008 13.582 5.30547 13.7272C5.50016 13.9091 5.75006 14 5.9999 14C6.24979 14 6.49964 13.9091 6.69435 13.7272C6.84975 13.582 7.04479 13.4105 7.27065 13.2118C8.89594 11.7821 11.9212 9.12084 11.9212 5.92129C11.9212 4.33969 11.3053 2.85273 10.1869 1.73431ZM6.72897 12.5961C6.49816 12.7991 6.29885 12.9744 6.13451 13.1279C6.05902 13.1984 5.94078 13.1984 5.86526 13.1279C5.70095 12.9744 5.50161 12.7991 5.2708 12.596C3.74283 11.2519 0.898656 8.75001 0.898656 5.92131C0.898656 3.1085 3.18704 0.820124 5.99987 0.820124C8.81268 0.820124 11.1011 3.1085 11.1011 5.92131C11.1011 8.75001 8.25694 11.2519 6.72897 12.5961Z" fill="#0D0D0D"/>
-                              <path d="M6.00008 3.08887C4.56122 3.08887 3.39062 4.25943 3.39062 5.69829C3.39062 7.13715 4.56122 8.30772 6.00008 8.30772C7.43894 8.30772 8.6095 7.13715 8.6095 5.69829C8.6095 4.25943 7.43894 3.08887 6.00008 3.08887ZM6.00008 7.48759C5.01343 7.48759 4.21072 6.68489 4.21072 5.69826C4.21072 4.71164 5.01343 3.90894 6.00008 3.90894C6.98673 3.90894 7.7894 4.71164 7.7894 5.69826C7.7894 6.68489 6.98673 7.48759 6.00008 7.48759Z" fill="#0D0D0D"/>
+                              <path d="M10.1869 1.73431C9.06854 0.61592 7.58155 0 5.99993 0C4.4183 0 2.93129 0.61592 1.81292 1.73431C0.694534 2.85273 0.0786133 4.33969 0.0786133 5.92129C0.0786133 9.12084 3.10388 11.7821 4.72917 13.2118C4.95504 13.4105 5.15008 13.582 5.30547 13.7272C5.50016 13.9091 5.75006 14 5.9999 14C6.24979 14 6.49964 13.9091 6.69435 13.7272C6.84975 13.582 7.04479 13.4105 7.27065 13.2118C8.89594 11.7821 11.9212 9.12084 11.9212 5.92129C11.9212 4.33969 11.3053 2.85273 10.1869 1.73431ZM6.72897 12.5961C6.49816 12.7991 6.29885 12.9744 6.13451 13.1279C6.05902 13.1984 5.94078 13.1984 5.86526 13.1279C5.70095 12.9744 5.50161 12.7991 5.2708 12.596C3.74283 11.2519 0.898656 8.75001 0.898656 5.92131C0.898656 3.1085 3.18704 0.820124 5.99987 0.820124C8.81268 0.820124 11.1011 3.1085 11.1011 5.92131C11.1011 8.75001 8.25694 11.2519 6.72897 12.5961Z" fill="{{ section.settings.footer_text_color }}"/>
+                              <path d="M6.00008 3.08887C4.56122 3.08887 3.39062 4.25943 3.39062 5.69829C3.39062 7.13715 4.56122 8.30772 6.00008 8.30772C7.43894 8.30772 8.6095 7.13715 8.6095 5.69829C8.6095 4.25943 7.43894 3.08887 6.00008 3.08887ZM6.00008 7.48759C5.01343 7.48759 4.21072 6.68489 4.21072 5.69826C4.21072 4.71164 5.01343 3.90894 6.00008 3.90894C6.98673 3.90894 7.7894 4.71164 7.7894 5.69826C7.7894 6.68489 6.98673 7.48759 6.00008 7.48759Z" fill="{{ section.settings.footer_text_color }}"/>
                             </svg>
                           </span>
-                          <a target="_blank" href="https://www.google.com/maps?q={{ block.settings.address | url_encode }}">
+                          <a target="_blank" href="https://www.google.com/maps?q={{ block.settings.address | url_encode }}" style="color: {{ section.settings.footer_link_color }};">
                             {{ block.settings.address }}
                           </a>
                         </li>
@@ -56,25 +56,25 @@
                         <li class="item">
                           <span class="box-icon">
                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M11.6666 9.4091L10.9841 8.4641C10.7324 8.12417 10.3574 7.89649 9.93972 7.82996C9.522 7.76343 9.09484 7.86335 8.74998 8.10827L8.09081 8.59243C7.13399 7.73698 6.36526 6.69214 5.83331 5.5241L6.49248 5.04577C6.837 4.79478 7.06794 4.41741 7.13464 3.99641C7.20135 3.5754 7.09838 3.14513 6.84831 2.79993L6.18331 1.86077C5.93339 1.51663 5.55703 1.28582 5.13698 1.21909C4.71693 1.15236 4.28757 1.25518 3.94331 1.50493L2.91664 2.23993C2.58681 2.47798 2.33009 2.80349 2.17547 3.17972C2.02086 3.55595 1.9745 3.96792 2.04164 4.3691C2.33803 6.09644 3.02915 7.73206 4.06118 9.14856C5.0932 10.5651 6.43827 11.7242 7.99164 12.5358C8.30603 12.696 8.65376 12.78 9.00664 12.7808C9.46814 12.7804 9.91756 12.6333 10.29 12.3608L11.3108 11.6666C11.4837 11.5428 11.6302 11.3858 11.7419 11.2048C11.8535 11.0238 11.9281 10.8224 11.9612 10.6123C11.9943 10.4023 11.9853 10.1877 11.9347 9.98113C11.8842 9.77457 11.793 9.58012 11.6666 9.4091Z" fill="#0D0D0D"/>
+                              <path d="M11.6666 9.4091L10.9841 8.4641C10.7324 8.12417 10.3574 7.89649 9.93972 7.82996C9.522 7.76343 9.09484 7.86335 8.74998 8.10827L8.09081 8.59243C7.13399 7.73698 6.36526 6.69214 5.83331 5.5241L6.49248 5.04577C6.837 4.79478 7.06794 4.41741 7.13464 3.99641C7.20135 3.5754 7.09838 3.14513 6.84831 2.79993L6.18331 1.86077C5.93339 1.51663 5.55703 1.28582 5.13698 1.21909C4.71693 1.15236 4.28757 1.25518 3.94331 1.50493L2.91664 2.23993C2.58681 2.47798 2.33009 2.80349 2.17547 3.17972C2.02086 3.55595 1.9745 3.96792 2.04164 4.3691C2.33803 6.09644 3.02915 7.73206 4.06118 9.14856C5.0932 10.5651 6.43827 11.7242 7.99164 12.5358C8.30603 12.696 8.65376 12.78 9.00664 12.7808C9.46814 12.7804 9.91756 12.6333 10.29 12.3608L11.3108 11.6666C11.4837 11.5428 11.6302 11.3858 11.7419 11.2048C11.8535 11.0238 11.9281 10.8224 11.9612 10.6123C11.9943 10.4023 11.9853 10.1877 11.9347 9.98113C11.8842 9.77457 11.793 9.58012 11.6666 9.4091Z" fill="{{ section.settings.footer_text_color }}"/>
                             </svg>
                           </span>
-                          <a href="tel:{{ block.settings.phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' }}">{{ block.settings.phone }}</a>
+                          <a href="tel:{{ block.settings.phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' }}" style="color: {{ section.settings.footer_link_color }};">{{ block.settings.phone }}</a>
                         </li>
                       {%- endif -%}
                       {%- if block.settings.email != blank -%}
                         <li class="item">
                           <span class="box-icon">
                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M11.8125 2.625H2.1875C1.8394 2.625 1.50556 2.76328 1.25942 3.00942C1.01328 3.25556 0.875 3.5894 0.875 3.9375V10.0625C0.875 10.4106 1.01328 10.7444 1.25942 10.9906C1.50556 11.2367 1.8394 11.375 2.1875 11.375H11.8125C12.1606 11.375 12.4944 11.2367 12.7406 10.9906C12.9867 10.7444 13.125 10.4106 13.125 10.0625V3.9375C13.125 3.5894 12.9867 3.25556 12.7406 3.00942C12.4944 2.76328 12.1606 2.625 11.8125 2.625Z" fill="#0D0D0D"/>
+                              <path d="M11.8125 2.625H2.1875C1.8394 2.625 1.50556 2.76328 1.25942 3.00942C1.01328 3.25556 0.875 3.5894 0.875 3.9375V10.0625C0.875 10.4106 1.01328 10.7444 1.25942 10.9906C1.50556 11.2367 1.8394 11.375 2.1875 11.375H11.8125C12.1606 11.375 12.4944 11.2367 12.7406 10.9906C12.9867 10.7444 13.125 10.4106 13.125 10.0625V3.9375C13.125 3.5894 12.9867 3.25556 12.7406 3.00942C12.4944 2.76328 12.1606 2.625 11.8125 2.625Z" fill="{{ section.settings.footer_text_color }}"/>
                             </svg>
                           </span>
-                          {{ block.settings.email }}
+                          <span style="color: {{ section.settings.footer_text_color }};">{{ block.settings.email }}</span>
                         </li>
                       {%- endif -%}
                     </ul>
                     {%- if block.settings.map_link != blank -%}
-                      <a href="{{ block.settings.map_link }}" class="tf-btn btn-line-dark fw-normal" target="_blank" rel="noopener">
+                      <a href="{{ block.settings.map_link }}" class="tf-btn btn-line-dark fw-normal" target="_blank" rel="noopener" style="border-color: {{ section.settings.footer_border_color }}; color: {{ section.settings.footer_link_color }};">
                         <span class="text-sm">Get direction</span>
                         <i class="icon-arrow-top-left fs-8"></i>
                       </a>
@@ -84,16 +84,16 @@
               </div>
             {%- when 'newsletter' -%}
               <div class="footer-inner-wrap footer-col-block s2" {{ block.shopify_attributes }}>
-                <div class="footer-heading footer-heading-mobile text-xl fw-medium">
+                <div class="footer-heading footer-heading-mobile {% if section.settings.enable_custom_fonts %}{{ section.settings.heading_font }} {{ section.settings.heading_size }} {{ section.settings.heading_weight }}{% else %}text-xl fw-medium{% endif %}" style="color: {{ section.settings.footer_heading_color }};">
                   {{ block.settings.title }}
                 </div>
                 <div class="tf-collapse-content">
                   <div class="footer-newsletter">
-                    <p>{{ block.settings.text }}</p>
+                    <p class="{% if section.settings.enable_custom_fonts %}{{ section.settings.text_font }} {{ section.settings.text_size }} {{ section.settings.text_weight }}{% endif %}" style="color: {{ section.settings.footer_text_color }};">{{ block.settings.text }}</p>
                     {%- form 'customer', class: 'form-newsletter' -%}
                       <div class="subscribe-content">
                         <fieldset class="email">
-                          <input type="email" name="contact[email]" class="subscribe-email" placeholder="{{ block.settings.placeholder }}" required>
+                          <input type="email" name="contact[email]" class="subscribe-email" placeholder="{{ block.settings.placeholder }}" required style="border-color: {{ section.settings.footer_border_color }}; color: {{ section.settings.footer_text_color }};">
                         </fieldset>
                         <div class="button-submit">
                           <button class="subscribe-button animate-btn" type="submit">
@@ -112,12 +112,12 @@
                 <div class="footer-inner-wrap s3">
               {%- endif -%}
                   <div class="footer-col-block inner-col" {{ block.shopify_attributes }}>
-                    <div class="footer-heading footer-heading-mobile text-xl fw-medium">{{ block.settings.title }}</div>
+                    <div class="footer-heading footer-heading-mobile {% if section.settings.enable_custom_fonts %}{{ section.settings.heading_font }} {{ section.settings.heading_size }} {{ section.settings.heading_weight }}{% else %}text-xl fw-medium{% endif %}" style="color: {{ section.settings.footer_heading_color }};">{{ block.settings.title }}</div>
                     <div class="tf-collapse-content">
                       <ul class="footer-menu-list">
                         {%- for link in linklists[block.settings.menu].links -%}
                           <li>
-                            <a href="{{ link.url }}">{{ link.title }}</a>
+                            <a href="{{ link.url }}" class="{% if section.settings.enable_custom_fonts %}{{ section.settings.text_font }} {{ section.settings.text_size }} {{ section.settings.text_weight }}{% endif %}" style="color: {{ section.settings.footer_link_color }};">{{ link.title }}</a>
                           </li>
                         {%- endfor -%}
                       </ul>
@@ -135,7 +135,7 @@
   <div class="footer-bottom">
     <div class="container">
       <div class="footer-bottom-wrap">
-        <p class="text-dark">Copyright © {{ 'now' | date: "%Y" }} by <span class="fw-medium">{{ shop.name }}</span>. All Rights Reserved.</p>
+        <p class="{% if section.settings.enable_custom_fonts %}{{ section.settings.text_font }} {{ section.settings.text_size }} {{ section.settings.text_weight }}{% endif %}" style="color: {{ section.settings.footer_text_color }};">Copyright © {{ 'now' | date: "%Y" }} by <span class="fw-medium">{{ shop.name }}</span>. All Rights Reserved.</p>
         {%- if section.settings.show_payment_icons -%}
           <ul class="tf-payment" style="--payment-icon-size: {{ section.settings.payment_icons_size }}px">
             {%- for block in section.blocks -%}
@@ -170,6 +170,161 @@
       "type": "image_picker",
       "id": "logo",
       "label": "Logo"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_fonts",
+      "label": "Enable custom fonts",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "options": [
+        { "value": "font-1", "label": "Font 1" },
+        { "value": "font-2", "label": "Font 2" }
+      ],
+      "default": "font-1",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "text-lg", "label": "Large" },
+        { "value": "text-xl", "label": "Extra Large" },
+        { "value": "display-sm", "label": "Display Small" },
+        { "value": "display-md", "label": "Display Medium" }
+      ],
+      "default": "text-xl",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "options": [
+        { "value": "fw-normal", "label": "Normal" },
+        { "value": "fw-medium", "label": "Medium" },
+        { "value": "fw-semibold", "label": "Semibold" },
+        { "value": "fw-bold", "label": "Bold" }
+      ],
+      "default": "fw-medium",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "select",
+      "id": "text_font",
+      "label": "Text font",
+      "options": [
+        { "value": "font-1", "label": "Font 1" },
+        { "value": "font-2", "label": "Font 2" }
+      ],
+      "default": "font-1",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        { "value": "text-sm", "label": "Small" },
+        { "value": "text-md", "label": "Medium" },
+        { "value": "text-lg", "label": "Large" }
+      ],
+      "default": "text-md",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "select",
+      "id": "text_weight",
+      "label": "Text weight",
+      "options": [
+        { "value": "fw-normal", "label": "Normal" },
+        { "value": "fw-medium", "label": "Medium" }
+      ],
+      "default": "fw-normal",
+      "info": "Only applies when custom fonts are enabled"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "footer_bg_color",
+      "label": "Footer background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "footer_text_color",
+      "label": "Footer text color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "footer_heading_color",
+      "label": "Footer heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "footer_link_color",
+      "label": "Footer link color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "footer_link_hover_color",
+      "label": "Footer link hover color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "footer_border_color",
+      "label": "Footer border color",
+      "default": "#EEEEEE"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Column gap",
+      "default": 24
     },
     {
       "type": "header",
