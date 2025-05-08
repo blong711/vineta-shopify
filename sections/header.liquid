@@ -603,12 +603,12 @@
     {
       "type": "range",
       "id": "menu_item_spacing",
-      "min": 10,
+      "min": 0,
       "max": 50,
       "step": 1,
       "unit": "px",
       "label": "Menu item spacing",
-      "default": 30
+      "default": 0
     },
     {
       "type": "range",
@@ -1165,7 +1165,7 @@
         "menu_font_size": 14,
         "menu_font_weight": "500",
         "submenu_font_size": 13,
-        "menu_item_spacing": 30,
+        "menu_item_spacing": 0,
         "dropdown_padding": 20,
         "mobile_menu_font_size": 16,
         "mobile_menu_background": "#ffffff",
@@ -1246,7 +1246,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 .box-nav-menu .menu-item {
-  margin: 0 {{ section.settings.menu_item_spacing | divided_by: 2 }}px;
+  margin: 0;
 }
 
 .box-nav-menu .menu-item > a {
