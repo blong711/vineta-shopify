@@ -359,40 +359,6 @@
         "label": "Enable Animations",
         "default": true
       },
-      {
-        "type": "select",
-        "id": "animation_style",
-        "label": "Animation Style",
-        "options": [
-          {
-            "value": "ease",
-            "label": "Ease"
-          },
-          {
-            "value": "ease-in",
-            "label": "Ease In"
-          },
-          {
-            "value": "ease-out",
-            "label": "Ease Out"
-          },
-          {
-            "value": "ease-in-out",
-            "label": "Ease In Out"
-          }
-        ],
-        "default": "ease-out"
-      },
-      {
-        "type": "range",
-        "id": "animation_duration",
-        "min": 200,
-        "max": 1000,
-        "step": 50,
-        "unit": "ms",
-        "label": "Animation Duration",
-        "default": 500
-      }
     ]
   },
   {
