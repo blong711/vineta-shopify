@@ -146,6 +146,25 @@
       .text-md {
         font-size: {{ settings.body_font_size_desktop }}px !important;
       }
+      #MainContent, .container {
+        max-width: {{ settings.container_width }};
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        padding-left: {{ settings.container_padding }};
+        padding-right: {{ settings.container_padding }};
+      }
+      .grid, .grid-cols {
+        grid-gap: {{ settings.grid_gap }}px;
+        gap: {{ settings.grid_gap }}px;
+        grid-template-columns: repeat({{ settings.grid_columns }}, 1fr);
+      }
+      .section {
+        margin-bottom: {{ settings.section_spacing }}px;
+      }
+      .element, .element-spacing {
+        margin-bottom: {{ settings.element_spacing }}px;
+      }
     </style>
   </head>
 
