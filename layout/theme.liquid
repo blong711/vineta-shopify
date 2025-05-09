@@ -105,7 +105,22 @@
   
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css">
   <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
-</head>
+
+    <style>
+      body {
+        font-family: {{ settings.body_font_family | default: settings.body_font.family }}, {{ settings.body_font.fallback_families }};
+        font-weight: {{ settings.body_font_weight | default: settings.body_font.weight }};
+        line-height: {{ settings.body_line_height }};
+        letter-spacing: {{ settings.body_letter_spacing }}%;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-family: {{ settings.heading_font_family | default: settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
+        font-weight: {{ settings.heading_font_weight | default: settings.heading_font.weight }};
+        line-height: {{ settings.heading_line_height }};
+        letter-spacing: {{ settings.heading_letter_spacing }}%;
+      }
+    </style>
+  </head>
 
   <body class="gradient">
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
