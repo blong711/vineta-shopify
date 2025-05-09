@@ -167,9 +167,10 @@
       {% if settings.enable_animations %}
         /* Animations enabled: use section styles as defined in each section */
       {% else %}
-        .section, [data-section-animate] {
+        .section, [data-section-animate], .slider-effect-fade, .fadeInUp, .wow, .fadeInLeft, .fade-item, .fade-item-1, .fade-item-2, .fade-item-3, .animated {
           animation: none !important;
           transition: none !important;
+          opacity: 1 !important;
         }
       {% endif %}
     </style>
