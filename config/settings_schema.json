@@ -280,28 +280,11 @@
         "default": "1488px"
       },
       {
-        "type": "select",
+        "type": "text",
         "id": "container_padding",
         "label": "Container Padding",
-        "options": [
-          {
-            "value": "0",
-            "label": "None"
-          },
-          {
-            "value": "15px",
-            "label": "Small"
-          },
-          {
-            "value": "30px",
-            "label": "Medium"
-          },
-          {
-            "value": "60px",
-            "label": "Large"
-          }
-        ],
-        "default": "30px"
+        "default": "24px",
+        "info": "Enter a value with units, e.g. 30px, 2em, 5%"
       },
       {
         "type": "header",
