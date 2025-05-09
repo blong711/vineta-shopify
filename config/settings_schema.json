@@ -120,7 +120,8 @@
         "type": "font_picker",
         "id": "heading_font",
         "label": "Heading font",
-        "default": "helvetica_n4"
+        "default": "helvetica_n4",
+        "visible_if": "{{ settings.font_library == 'shopify' }}"
       },
       {
         "type": "font_picker",
