@@ -1,17 +1,16 @@
 {%- comment -%}Top Bar Section{%- endcomment -%}
-{% assign cs = section.settings.color_scheme | color_scheme %}
 <style>
   .tf-topbar {
-    --color-background: {{ cs.background }};
-    --color-text: {{ cs.text }};
-    --color-primary-button: {{ cs.primary_button }};
-    --color-primary-button-text: {{ cs.on_primary_button }};
-    --color-primary-button-border: {{ cs.primary_button_border }};
-    --color-secondary-button: {{ cs.secondary_button }};
-    --color-secondary-button-text: {{ cs.on_secondary_button }};
-    --color-secondary-button-border: {{ cs.secondary_button_border }};
-    --color-links: {{ cs.links }};
-    --color-icons: {{ cs.icons }};
+    --color-background: {{ settings.background_color }};
+    --color-text: {{ settings.text_color }};
+    --color-primary-button: {{ settings.primary_button_color }};
+    --color-primary-button-text: {{ settings.primary_button_text_color }};
+    --color-primary-button-border: {{ settings.primary_button_border_color }};
+    --color-secondary-button: {{ settings.secondary_button_color }};
+    --color-secondary-button-text: {{ settings.secondary_button_text_color }};
+    --color-secondary-button-border: {{ settings.secondary_button_border_color }};
+    --color-links: {{ settings.links_color }};
+    --color-icons: {{ settings.icons_color }};
   }
   .tf-topbar {
     background: var(--color-background);
@@ -126,18 +125,11 @@
     </div>
   </div>
 </div>
-
 {% schema %}
 {
   "name": "Top bar",
   "max_blocks": 3,
   "settings": [
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "default"
-    },
     {
       "type": "header",
       "content": "Spacing"

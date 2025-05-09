@@ -28,82 +28,64 @@
     "name": "Colors",
     "settings": [
       {
-        "type": "color_scheme_group",
-        "id": "color_schemes",
-        "role": {
-          "background": "background",
-          "text": "text",
-          "primary_button": "primary_button",
-          "on_primary_button": "primary_button_text",
-          "primary_button_border": "primary_button_border",
-          "secondary_button": "secondary_button",
-          "on_secondary_button": "secondary_button_text",
-          "secondary_button_border": "secondary_button_border",
-          "links": "links",
-          "icons": "icons"
-        },
-        "definition": [
-          {
-            "type": "color",
-            "id": "background",
-            "label": "Background",
-            "default": "#ffffff"
-          },
-          {
-            "type": "color",
-            "id": "text",
-            "label": "Text",
-            "default": "#222222"
-          },
-          {
-            "type": "color",
-            "id": "primary_button",
-            "label": "Primary Button",
-            "default": "#007bff"
-          },
-          {
-            "type": "color",
-            "id": "primary_button_text",
-            "label": "Primary Button Text",
-            "default": "#ffffff"
-          },
-          {
-            "type": "color",
-            "id": "primary_button_border",
-            "label": "Primary Button Border",
-            "default": "#007bff"
-          },
-          {
-            "type": "color",
-            "id": "secondary_button",
-            "label": "Secondary Button",
-            "default": "#f8f9fa"
-          },
-          {
-            "type": "color",
-            "id": "secondary_button_text",
-            "label": "Secondary Button Text",
-            "default": "#222222"
-          },
-          {
-            "type": "color",
-            "id": "secondary_button_border",
-            "label": "Secondary Button Border",
-            "default": "#ced4da"
-          },
-          {
-            "type": "color",
-            "id": "links",
-            "label": "Links",
-            "default": "#007bff"
-          },
-          {
-            "type": "color",
-            "id": "icons",
-            "label": "Icons",
-            "default": "#222222"
-          }
-        ]
+        "type": "color",
+        "id": "background_color",
+        "label": "Background color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text color",
+        "default": "#222222"
+      },
+      {
+        "type": "color",
+        "id": "primary_button_color",
+        "label": "Primary button color",
+        "default": "#007bff"
+      },
+      {
+        "type": "color",
+        "id": "primary_button_text_color",
+        "label": "Primary button text color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "primary_button_border_color",
+        "label": "Primary button border color",
+        "default": "#007bff"
+      },
+      {
+        "type": "color",
+        "id": "secondary_button_color",
+        "label": "Secondary button color",
+        "default": "#f8f9fa"
+      },
+      {
+        "type": "color",
+        "id": "secondary_button_text_color",
+        "label": "Secondary button text color",
+        "default": "#222222"
+      },
+      {
+        "type": "color",
+        "id": "secondary_button_border_color",
+        "label": "Secondary button border color",
+        "default": "#ced4da"
+      },
+      {
+        "type": "color",
+        "id": "links_color",
+        "label": "Links color",
+        "default": "#007bff"
+      },
+      {
+        "type": "color",
+        "id": "icons_color",
+        "label": "Icons color",
+        "default": "#222222"
       }
     ]
   },
