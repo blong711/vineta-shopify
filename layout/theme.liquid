@@ -113,10 +113,10 @@
             {{ settings.body_font_family }}
           {% else %}
             {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }}
-          {% endif %};
-        font-weight: {{ settings.body_font_weight | default: settings.body_font.weight }};
-        line-height: {{ settings.body_line_height }};
-        letter-spacing: {{ settings.body_letter_spacing }}%;
+          {% endif %} !important;
+        font-weight: {{ settings.body_font_weight | default: settings.body_font.weight }} !important;
+        line-height: {{ settings.body_line_height }} !important;
+        letter-spacing: {{ settings.body_letter_spacing | divided_by: 100.0 }}em !important;
       }
       h1, h2, h3, h4, h5, h6 {
         font-family: 
@@ -124,10 +124,10 @@
             {{ settings.heading_font_family }}
           {% else %}
             {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }}
-          {% endif %};
-        font-weight: {{ settings.heading_font_weight | default: settings.heading_font.weight }};
-        line-height: {{ settings.heading_line_height }};
-        letter-spacing: {{ settings.heading_letter_spacing }}%;
+          {% endif %} !important;
+        font-weight: {{ settings.heading_font_weight | default: settings.heading_font.weight }} !important;
+        line-height: {{ settings.heading_line_height }} !important;
+        letter-spacing: {{ settings.heading_letter_spacing | divided_by: 100.0 }}em !important;
       }
     </style>
   </head>
