@@ -79,109 +79,132 @@
         "content": "Font Settings"
       },
       {
+        "type": "radio",
+        "id": "font_library",
+        "label": "Font library",
+        "options": [
+          { "value": "shopify", "label": "Shopify" },
+          { "value": "google", "label": "Google" }
+        ],
+        "default": "shopify"
+      },
+      {
         "type": "font_picker",
         "id": "heading_font",
-        "default": "helvetica_n4",
-        "label": "Heading Font",
-        "info": "Select font for headings"
+        "label": "Heading font",
+        "default": "helvetica_n4"
       },
       {
         "type": "font_picker",
         "id": "body_font",
-        "default": "helvetica_n4",
-        "label": "Body Font",
-        "info": "Select font for body text"
+        "label": "Body font",
+        "default": "helvetica_n4"
       },
       {
-        "type": "header",
-        "content": "Font Assignments"
-      },
-      {
-        "type": "select",
-        "id": "heading_font_role",
-        "label": "Heading Font Role",
-        "options": [
-          {
-            "value": "heading_font",
-            "label": "Heading Font"
-          },
-          {
-            "value": "body_font",
-            "label": "Body Font"
-          }
-        ],
-        "default": "heading_font"
-      },
-      {
-        "type": "select",
-        "id": "body_text_font_role",
-        "label": "Body Text Font Role",
-        "options": [
-          {
-            "value": "heading_font",
-            "label": "Heading Font"
-          },
-          {
-            "value": "body_font",
-            "label": "Body Font"
-          }
-        ],
-        "default": "body_font"
-      },
-      {
-        "type": "select",
-        "id": "button_text_font_role",
-        "label": "Button Text Font Role",
-        "options": [
-          {
-            "value": "heading_font",
-            "label": "Heading Font"
-          },
-          {
-            "value": "body_font",
-            "label": "Body Font"
-          }
-        ],
-        "default": "body_font"
-      },
-      {
-        "type": "select",
-        "id": "navigation_font_role",
-        "label": "Navigation Font Role",
-        "options": [
-          {
-            "value": "heading_font",
-            "label": "Heading Font"
-          },
-          {
-            "value": "body_font",
-            "label": "Body Font"
-          }
-        ],
-        "default": "body_font"
-      },
-      {
-        "type": "header",
-        "content": "Font Sizes"
+        "type": "text",
+        "id": "heading_font_family",
+        "label": "Heading font family",
+        "default": "'Helvetica Neue', Helvetica, Arial, sans-serif"
       },
       {
         "type": "range",
-        "id": "base_font_size",
-        "min": 12,
-        "max": 20,
+        "id": "heading_font_weight",
+        "label": "Heading font weight",
+        "min": 100,
+        "max": 900,
+        "step": 100,
+        "default": 400
+      },
+      {
+        "type": "text",
+        "id": "body_font_family",
+        "label": "Body font family",
+        "default": "'Helvetica Neue', Helvetica, Arial, sans-serif"
+      },
+      {
+        "type": "range",
+        "id": "body_font_weight",
+        "label": "Body font weight",
+        "min": 100,
+        "max": 900,
+        "step": 100,
+        "default": 400
+      },
+      {
+        "type": "header",
+        "content": "Headings"
+      },
+      {
+        "type": "range",
+        "id": "heading_font_size_scale",
+        "label": "Font size scale",
+        "min": 80,
+        "max": 200,
         "step": 1,
-        "unit": "px",
-        "label": "Base Font Size",
-        "default": 16
+        "unit": "%",
+        "default": 100
       },
       {
         "type": "range",
-        "id": "heading_scale",
+        "id": "heading_line_height",
+        "label": "Line height",
         "min": 1,
         "max": 2,
-        "step": 0.1,
-        "label": "Heading Scale",
+        "step": 0.01,
         "default": 1.2
+      },
+      {
+        "type": "range",
+        "id": "heading_letter_spacing",
+        "label": "Letter spacing",
+        "min": -5,
+        "max": 10,
+        "step": 1,
+        "unit": "%",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Body"
+      },
+      {
+        "type": "range",
+        "id": "body_font_size_mobile",
+        "label": "Base size (mobile)",
+        "min": 10,
+        "max": 24,
+        "step": 1,
+        "unit": "px",
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "body_font_size_desktop",
+        "label": "Base size (tablet and desktop)",
+        "min": 10,
+        "max": 24,
+        "step": 1,
+        "unit": "px",
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "body_line_height",
+        "label": "Line height",
+        "min": 1,
+        "max": 2,
+        "step": 0.01,
+        "default": 1.6
+      },
+      {
+        "type": "range",
+        "id": "body_letter_spacing",
+        "label": "Letter spacing",
+        "min": -5,
+        "max": 10,
+        "step": 1,
+        "unit": "%",
+        "default": 0
       }
     ]
   },
