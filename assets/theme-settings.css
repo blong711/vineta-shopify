@@ -21,6 +21,16 @@
   --base-font-size: {{ settings.base_font_size }}px;
   --heading-scale: {{ settings.heading_scale }};
   
+  /* Font Weights */
+  --heading-font-weight: {{ settings.heading_font.weight }};
+  --body-font-weight: {{ settings.body_font.weight }};
+  
+  /* Font Roles */
+  --heading-font-role: {{ settings.heading_font_role }};
+  --body-text-font-role: {{ settings.body_text_font_role }};
+  --button-text-font-role: {{ settings.button_text_font_role }};
+  --navigation-font-role: {{ settings.navigation_font_role }};
+  
   /* Primary Colors */
   --primary-bg: {{ settings.primary_background }};
   --primary-text: {{ settings.primary_text }};
@@ -110,7 +120,7 @@ body {
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--heading-font);
-  font-weight: {{ settings.heading_font.weight }};
+  font-weight: var(--heading-font-weight);
   line-height: 1.2;
   margin: 0 0 1rem;
   color: var(--primary-text);
@@ -126,7 +136,7 @@ h6 { font-size: calc(var(--base-font-size) * var(--heading-scale)); }
 /* Body Text */
 p, li, td, th, input, textarea, select, button {
   font-family: var(--body-font);
-  font-weight: {{ settings.body_font.weight }};
+  font-weight: var(--body-font-weight);
   font-size: var(--base-font-size);
   line-height: 1.6;
   color: var(--primary-text);
