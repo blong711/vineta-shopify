@@ -29,157 +29,6 @@
         },
         {
             "type": "header",
-            "content": "Typography"
-        },
-        {
-            "type": "checkbox",
-            "id": "enable_custom_fonts",
-            "label": "Enable custom fonts",
-            "default": false
-        },
-        {
-            "type": "select",
-            "id": "title_font",
-            "label": "Title font",
-            "options": [
-                { "value": "font-1", "label": "Font 1" },
-                { "value": "font-2", "label": "Font 2" }
-            ],
-            "default": "font-1",
-            "info": "Only applies when custom fonts are enabled"
-        },
-        {
-            "type": "select",
-            "id": "title_size",
-            "label": "Title size",
-            "options": [
-                { "value": "text-lg", "label": "Large" },
-                { "value": "text-xl", "label": "Extra Large" },
-                { "value": "display-sm", "label": "Display Small" },
-                { "value": "display-md", "label": "Display Medium" }
-            ],
-            "default": "text-xl",
-            "info": "Only applies when custom fonts are enabled"
-        },
-        {
-            "type": "select",
-            "id": "title_weight",
-            "label": "Title weight",
-            "options": [
-                { "value": "fw-normal", "label": "Normal" },
-                { "value": "fw-medium", "label": "Medium" },
-                { "value": "fw-semibold", "label": "Semibold" },
-                { "value": "fw-bold", "label": "Bold" }
-            ],
-            "default": "fw-medium",
-            "info": "Only applies when custom fonts are enabled"
-        },
-        {
-            "type": "select",
-            "id": "subtitle_font",
-            "label": "Subtitle font",
-            "options": [
-                { "value": "font-1", "label": "Font 1" },
-                { "value": "font-2", "label": "Font 2" }
-            ],
-            "default": "font-1",
-            "info": "Only applies when custom fonts are enabled"
-        },
-        {
-            "type": "select",
-            "id": "subtitle_size",
-            "label": "Subtitle size",
-            "options": [
-                { "value": "text-sm", "label": "Small" },
-                { "value": "text-md", "label": "Medium" },
-                { "value": "text-lg", "label": "Large" }
-            ],
-            "default": "text-md",
-            "info": "Only applies when custom fonts are enabled"
-        },
-        {
-            "type": "select",
-            "id": "subtitle_weight",
-            "label": "Subtitle weight",
-            "options": [
-                { "value": "fw-normal", "label": "Normal" },
-                { "value": "fw-medium", "label": "Medium" },
-                { "value": "fw-semibold", "label": "Semibold" }
-            ],
-            "default": "fw-medium",
-            "info": "Only applies when custom fonts are enabled"
-        },
-        {
-            "type": "select",
-            "id": "review_font",
-            "label": "Review text font",
-            "options": [
-                { "value": "font-1", "label": "Font 1" },
-                { "value": "font-2", "label": "Font 2" }
-            ],
-            "default": "font-1",
-            "info": "Only applies when custom fonts are enabled"
-        },
-        {
-            "type": "select",
-            "id": "review_size",
-            "label": "Review text size",
-            "options": [
-                { "value": "text-sm", "label": "Small" },
-                { "value": "text-md", "label": "Medium" },
-                { "value": "text-lg", "label": "Large" }
-            ],
-            "default": "text-sm",
-            "info": "Only applies when custom fonts are enabled"
-        },
-        {
-            "type": "select",
-            "id": "review_weight",
-            "label": "Review text weight",
-            "options": [
-                { "value": "fw-normal", "label": "Normal" },
-                { "value": "fw-medium", "label": "Medium" }
-            ],
-            "default": "fw-normal",
-            "info": "Only applies when custom fonts are enabled"
-        },
-        {
-            "type": "select",
-            "id": "author_font",
-            "label": "Author name font",
-            "options": [
-                { "value": "font-1", "label": "Font 1" },
-                { "value": "font-2", "label": "Font 2" }
-            ],
-            "default": "font-1",
-            "info": "Only applies when custom fonts are enabled"
-        },
-        {
-            "type": "select",
-            "id": "author_size",
-            "label": "Author name size",
-            "options": [
-                { "value": "text-sm", "label": "Small" },
-                { "value": "text-md", "label": "Medium" },
-                { "value": "text-lg", "label": "Large" }
-            ],
-            "default": "text-sm",
-            "info": "Only applies when custom fonts are enabled"
-        },
-        {
-            "type": "select",
-            "id": "author_weight",
-            "label": "Author name weight",
-            "options": [
-                { "value": "fw-normal", "label": "Normal" },
-                { "value": "fw-medium", "label": "Medium" },
-                { "value": "fw-semibold", "label": "Semibold" }
-            ],
-            "default": "fw-medium",
-            "info": "Only applies when custom fonts are enabled"
-        },
-        {
-            "type": "header",
             "content": "Colors"
         },
         {
@@ -413,11 +262,11 @@
         {% if section.settings.layout != 'home-fashion-women' %}
             <div class="flat-title {% if section.settings.layout == 'home-electronic' %}text-start{% elsif section.settings.layout == 'home-phonecase' %}gap-10{% endif %} {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
                 {% if section.settings.layout == 'home-phonecase' %}
-                    <p class="desc {% if section.settings.enable_custom_fonts %}{{ section.settings.subtitle_font }} {{ section.settings.subtitle_size }} {{ section.settings.subtitle_weight }}{% else %}text-md{% endif %}" style="color: {{ section.settings.subtitle_color }};">
+                    <p class="desc text-md" style="color: {{ section.settings.subtitle_color }};">
                         {{ section.settings.subtitle }}
                     </p>
                 {% endif %}
-                <h4 class="title {% if section.settings.enable_custom_fonts %}{{ section.settings.title_font }} {{ section.settings.title_size }} {{ section.settings.title_weight }}{% endif %}" style="color: {{ section.settings.title_color }};">
+                <h4 class="title" style="color: {{ section.settings.title_color }};">
                     {{ section.settings.title }}
                 </h4>
             </div>
@@ -447,7 +296,7 @@
                                 <div class="content">
                                     <div class="content-top">
                                         <div class="box-author">
-                                            <p class="name-author {% if section.settings.enable_custom_fonts %}{{ section.settings.author_font }} {{ section.settings.author_size }} {{ section.settings.author_weight }}{% else %}text-sm fw-medium{% endif %}" style="color: {{ section.settings.author_name_color }};">{{ block.settings.name }}</p>
+                                            <p class="name-author text-sm fw-medium" style="color: {{ section.settings.author_name_color }};">{{ block.settings.name }}</p>
                                             <div class="box-verified text-main">
                                                 <i class="icon-verifi"></i>
                                                 <p class="text-xs fst-italic">Verified Buyer</p>
@@ -460,7 +309,7 @@
                                             <i class="icon-star"></i>
                                             <i class="icon-star"></i>
                                         </div>
-                                        <p class="text-review {% if section.settings.enable_custom_fonts %}{{ section.settings.review_font }} {{ section.settings.review_size }} {{ section.settings.review_weight }}{% else %}text-sm{% endif %}" style="color: {{ section.settings.review_text_color }};">{{ block.settings.review }}</p>
+                                        <p class="text-review text-sm" style="color: {{ section.settings.review_text_color }};">{{ block.settings.review }}</p>
                                     </div>
                                     <span class="br-line d-block"></span>
                                     <div class="box-avt">
@@ -518,8 +367,8 @@
                                                 <i class="icon-star"></i>
                                                 <i class="icon-star"></i>
                                             </div>
-                                            <div class="title-review {% if section.settings.enable_custom_fonts %}{{ section.settings.title_font }} {{ section.settings.title_size }} {{ section.settings.title_weight }}{% endif %}" style="color: {{ section.settings.title_color }};">{{ block.settings.title }}</div>
-                                            <p class="text-review {% if section.settings.enable_custom_fonts %}{{ section.settings.review_font }} {{ section.settings.review_size }} {{ section.settings.review_weight }}{% else %}display-xs{% endif %}" style="color: {{ section.settings.review_text_color }};">{{ block.settings.review }}</p>
+                                            <div class="title-review" style="color: {{ section.settings.title_color }};">{{ block.settings.title }}</div>
+                                            <p class="text-review display-xs" style="color: {{ section.settings.review_text_color }};">{{ block.settings.review }}</p>
                                             <div class="box-author">
                                                 <div class="img d-md-none">
                                                     {% if block.settings.image != blank %}
@@ -535,7 +384,7 @@
                                                     {% endif %}
                                                 </div>
                                                 <div class="info">
-                                                    <div class="name {% if section.settings.enable_custom_fonts %}{{ section.settings.author_font }} {{ section.settings.author_size }} {{ section.settings.author_weight }}{% else %}text-md fw-medium{% endif %}" style="color: {{ section.settings.author_name_color }};">{{ block.settings.name }}</div>
+                                                    <div class="name text-md fw-medium" style="color: {{ section.settings.author_name_color }};">{{ block.settings.name }}</div>
                                                     <a href="{{ block.settings.product_url }}" class="meta link" style="color: {{ section.settings.product_name_color }};">Purchase item: <span class="fw-medium">{{ block.settings.product }}</span></a>
                                                 </div>
                                             </div>
@@ -610,7 +459,7 @@
                                     <div class="content">
                                         <div class="content-top">
                                             <div class="box-author">
-                                                <p class="name-author {% if section.settings.enable_custom_fonts %}{{ section.settings.author_font }} {{ section.settings.author_size }} {{ section.settings.author_weight }}{% else %}text-sm fw-medium{% endif %}" style="color: {{ section.settings.author_name_color }};">{{ block.settings.name }}</p>
+                                                <p class="name-author text-sm fw-medium" style="color: {{ section.settings.author_name_color }};">{{ block.settings.name }}</p>
                                                 <div class="box-verified text-main">
                                                     <i class="icon-verifi"></i>
                                                     <p class="text-xs fst-italic">Verified Buyer</p>
@@ -623,7 +472,7 @@
                                                 <i class="icon-star"></i>
                                                 <i class="icon-star"></i>
                                             </div>
-                                            <p class="text-review {% if section.settings.enable_custom_fonts %}{{ section.settings.review_font }} {{ section.settings.review_size }} {{ section.settings.review_weight }}{% else %}text-sm{% endif %}" style="color: {{ section.settings.review_text_color }};">{{ block.settings.review }}</p>
+                                            <p class="text-review text-sm" style="color: {{ section.settings.review_text_color }};">{{ block.settings.review }}</p>
                                         </div>
                                         <span class="br-line d-block"></span>
                                         <div class="box-avt">
@@ -698,7 +547,7 @@
                                 <div class="content">
                                     <div class="content-top">
                                         <div class="box-author">
-                                            <p class="name-author {% if section.settings.enable_custom_fonts %}{{ section.settings.author_font }} {{ section.settings.author_size }} {{ section.settings.author_weight }}{% else %}text-sm fw-medium{% endif %}" style="color: {{ section.settings.author_name_color }};">{{ block.settings.name }}</p>
+                                            <p class="name-author text-sm fw-medium" style="color: {{ section.settings.author_name_color }};">{{ block.settings.name }}</p>
                                             <div class="box-verified text-main">
                                                 <i class="icon-verifi"></i>
                                                 <p class="text-xs fst-italic">Verified Buyer</p>
@@ -711,7 +560,7 @@
                                             <i class="icon-star"></i>
                                             <i class="icon-star"></i>
                                         </div>
-                                        <p class="text-review {% if section.settings.enable_custom_fonts %}{{ section.settings.review_font }} {{ section.settings.review_size }} {{ section.settings.review_weight }}{% else %}text-sm{% endif %}" style="color: {{ section.settings.review_text_color }};">
+                                        <p class="text-review text-sm" style="color: {{ section.settings.review_text_color }};">
                                             {{ block.settings.review }}
                                         </p>
                                     </div>

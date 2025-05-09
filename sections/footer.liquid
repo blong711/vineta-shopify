@@ -33,7 +33,7 @@
           {%- case block.type -%}
             {%- when 'contact' -%}
               <div class="footer-col-block s1" {{ block.shopify_attributes }}>
-                <div class="footer-heading footer-heading-mobile {% if section.settings.enable_custom_fonts %}{{ section.settings.heading_font }} {{ section.settings.heading_size }} {{ section.settings.heading_weight }}{% else %}text-xl fw-medium{% endif %}" style="color: {{ section.settings.footer_heading_color }};">
+                <div class="footer-heading footer-heading-mobile text-xl fw-medium" style="color: {{ section.settings.footer_heading_color }};">
                   {{ block.settings.title }}
                 </div>
                 <div class="tf-collapse-content">
@@ -84,12 +84,12 @@
               </div>
             {%- when 'newsletter' -%}
               <div class="footer-inner-wrap footer-col-block s2" {{ block.shopify_attributes }}>
-                <div class="footer-heading footer-heading-mobile {% if section.settings.enable_custom_fonts %}{{ section.settings.heading_font }} {{ section.settings.heading_size }} {{ section.settings.heading_weight }}{% else %}text-xl fw-medium{% endif %}" style="color: {{ section.settings.footer_heading_color }};">
+                <div class="footer-heading footer-heading-mobile text-xl fw-medium" style="color: {{ section.settings.footer_heading_color }};">
                   {{ block.settings.title }}
                 </div>
                 <div class="tf-collapse-content">
                   <div class="footer-newsletter">
-                    <p class="{% if section.settings.enable_custom_fonts %}{{ section.settings.text_font }} {{ section.settings.text_size }} {{ section.settings.text_weight }}{% endif %}" style="color: {{ section.settings.footer_text_color }};">{{ block.settings.text }}</p>
+                    <p style="color: {{ section.settings.footer_text_color }};">{{ block.settings.text }}</p>
                     {%- form 'customer', class: 'form-newsletter' -%}
                       <div class="subscribe-content">
                         <fieldset class="email">
@@ -112,12 +112,12 @@
                 <div class="footer-inner-wrap s3">
               {%- endif -%}
                   <div class="footer-col-block inner-col" {{ block.shopify_attributes }}>
-                    <div class="footer-heading footer-heading-mobile {% if section.settings.enable_custom_fonts %}{{ section.settings.heading_font }} {{ section.settings.heading_size }} {{ section.settings.heading_weight }}{% else %}text-xl fw-medium{% endif %}" style="color: {{ section.settings.footer_heading_color }};">{{ block.settings.title }}</div>
+                    <div class="footer-heading footer-heading-mobile text-xl fw-medium" style="color: {{ section.settings.footer_heading_color }};">{{ block.settings.title }}</div>
                     <div class="tf-collapse-content">
                       <ul class="footer-menu-list">
                         {%- for link in linklists[block.settings.menu].links -%}
                           <li>
-                            <a href="{{ link.url }}" class="{% if section.settings.enable_custom_fonts %}{{ section.settings.text_font }} {{ section.settings.text_size }} {{ section.settings.text_weight }}{% endif %}" style="color: {{ section.settings.footer_link_color }};">{{ link.title }}</a>
+                            <a href="{{ link.url }}" style="color: {{ section.settings.footer_link_color }};">{{ link.title }}</a>
                           </li>
                         {%- endfor -%}
                       </ul>
@@ -135,7 +135,7 @@
   <div class="footer-bottom">
     <div class="container">
       <div class="footer-bottom-wrap">
-        <p class="{% if section.settings.enable_custom_fonts %}{{ section.settings.text_font }} {{ section.settings.text_size }} {{ section.settings.text_weight }}{% endif %}" style="color: {{ section.settings.footer_text_color }};">Copyright © {{ 'now' | date: "%Y" }} by <span class="fw-medium">{{ shop.name }}</span>. All Rights Reserved.</p>
+        <p style="color: {{ section.settings.footer_text_color }};">Copyright © {{ 'now' | date: "%Y" }} by <span class="fw-medium">{{ shop.name }}</span>. All Rights Reserved.</p>
         {%- if section.settings.show_payment_icons -%}
           <ul class="tf-payment" style="--payment-icon-size: {{ section.settings.payment_icons_size }}px">
             {%- for block in section.blocks -%}
@@ -170,87 +170,6 @@
       "type": "image_picker",
       "id": "logo",
       "label": "Logo"
-    },
-    {
-      "type": "header",
-      "content": "Typography"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_custom_fonts",
-      "label": "Enable custom fonts",
-      "default": false
-    },
-    {
-      "type": "select",
-      "id": "heading_font",
-      "label": "Heading font",
-      "options": [
-        { "value": "font-1", "label": "Font 1" },
-        { "value": "font-2", "label": "Font 2" }
-      ],
-      "default": "font-1",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "heading_size",
-      "label": "Heading size",
-      "options": [
-        { "value": "text-lg", "label": "Large" },
-        { "value": "text-xl", "label": "Extra Large" },
-        { "value": "display-sm", "label": "Display Small" },
-        { "value": "display-md", "label": "Display Medium" }
-      ],
-      "default": "text-xl",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "heading_weight",
-      "label": "Heading weight",
-      "options": [
-        { "value": "fw-normal", "label": "Normal" },
-        { "value": "fw-medium", "label": "Medium" },
-        { "value": "fw-semibold", "label": "Semibold" },
-        { "value": "fw-bold", "label": "Bold" }
-      ],
-      "default": "fw-medium",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "text_font",
-      "label": "Text font",
-      "options": [
-        { "value": "font-1", "label": "Font 1" },
-        { "value": "font-2", "label": "Font 2" }
-      ],
-      "default": "font-1",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "text_size",
-      "label": "Text size",
-      "options": [
-        { "value": "text-sm", "label": "Small" },
-        { "value": "text-md", "label": "Medium" },
-        { "value": "text-lg", "label": "Large" }
-      ],
-      "default": "text-md",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "text_weight",
-      "label": "Text weight",
-      "options": [
-        { "value": "fw-normal", "label": "Normal" },
-        { "value": "fw-medium", "label": "Medium" }
-      ],
-      "default": "fw-normal",
-      "info": "Only applies when custom fonts are enabled"
     },
     {
       "type": "header",

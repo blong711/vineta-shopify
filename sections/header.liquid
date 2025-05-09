@@ -534,70 +534,6 @@
     },
     {
       "type": "header",
-      "content": "Typography"
-    },
-    {
-      "type": "select",
-      "id": "font_family",
-      "label": "Font family",
-      "options": [
-        {
-          "value": "primary",
-          "label": "Primary font"
-        },
-        {
-          "value": "secondary",
-          "label": "Secondary font"
-        }
-      ],
-      "default": "primary"
-    },
-    {
-      "type": "range",
-      "id": "menu_font_size",
-      "min": 12,
-      "max": 24,
-      "step": 1,
-      "unit": "px",
-      "label": "Menu font size",
-      "default": 14
-    },
-    {
-      "type": "select",
-      "id": "menu_font_weight",
-      "label": "Menu font weight",
-      "options": [
-        {
-          "value": "400",
-          "label": "Regular"
-        },
-        {
-          "value": "500",
-          "label": "Medium"
-        },
-        {
-          "value": "600",
-          "label": "Semi-bold"
-        },
-        {
-          "value": "700",
-          "label": "Bold"
-        }
-      ],
-      "default": "500"
-    },
-    {
-      "type": "range",
-      "id": "submenu_font_size",
-      "min": 12,
-      "max": 20,
-      "step": 1,
-      "unit": "px",
-      "label": "Submenu font size",
-      "default": 13
-    },
-    {
-      "type": "header",
       "content": "Spacing"
     },
     {
@@ -680,16 +616,6 @@
     {
       "type": "header",
       "content": "Mobile Settings"
-    },
-    {
-      "type": "range",
-      "id": "mobile_menu_font_size",
-      "min": 12,
-      "max": 24,
-      "step": 1,
-      "unit": "px",
-      "label": "Mobile menu font size",
-      "default": 16
     },
     {
       "type": "color",
@@ -1162,12 +1088,8 @@
         "icon_hover_color": "#666666",
         "dropdown_background": "#ffffff",
         "dropdown_text_color": "#333333",
-        "menu_font_size": 14,
-        "menu_font_weight": "500",
-        "submenu_font_size": 13,
         "menu_item_spacing": 0,
         "dropdown_padding": 20,
-        "mobile_menu_font_size": 16,
         "mobile_menu_background": "#ffffff",
         "mobile_menu_text_color": "#333333",
         "dropdown_animation": "fade",
@@ -1232,7 +1154,6 @@ document.addEventListener('DOMContentLoaded', function() {
   height: {{ section.settings.header_height }}px;
   background-color: {{ section.settings.background_color }};
   color: {{ section.settings.text_color }};
-  font-family: var(--font-{{ section.settings.font_family }});
 }
 
 #header.header-visible {
@@ -1240,11 +1161,6 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 /* Menu Styles */
-.box-nav-menu {
-  font-size: {{ section.settings.menu_font_size }}px;
-  font-weight: {{ section.settings.menu_font_weight }};
-}
-
 .box-nav-menu .menu-item {
   margin: 0;
 }
@@ -1262,7 +1178,6 @@ document.addEventListener('DOMContentLoaded', function() {
   background-color: {{ section.settings.dropdown_background }};
   color: {{ section.settings.dropdown_text_color }};
   padding: {{ section.settings.dropdown_padding }}px;
-  font-size: {{ section.settings.submenu_font_size }}px;
 }
 
 /* Icon Styles */
@@ -1277,7 +1192,6 @@ document.addEventListener('DOMContentLoaded', function() {
 /* Mobile Menu Styles */
 @media (max-width: 1199px) {
   .mobile-menu {
-    font-size: {{ section.settings.mobile_menu_font_size }}px;
     background-color: {{ section.settings.mobile_menu_background }};
     color: {{ section.settings.mobile_menu_text_color }};
   }

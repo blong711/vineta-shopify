@@ -34,7 +34,7 @@
                         {% endif %}
                         <div class="content {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
                             <a href="{{ collection.url }}" 
-                               class="tf-btn {% if block.settings.enable_custom_fonts %}{{ block.settings.title_font }} {{ block.settings.title_size }} {{ block.settings.title_weight }}{% else %}font-2{% endif %} btn-white hover-icon-2 hover-dark"
+                               class="tf-btn font-2 btn-white hover-icon-2 hover-dark"
                                style="color: {{ block.settings.button_text_color }}; background-color: {{ block.settings.button_bg_color }};"
                                onmouseover="this.style.backgroundColor='{{ block.settings.button_hover_bg_color }}'; this.style.color='{{ block.settings.button_hover_text_color }}';"
                                onmouseout="this.style.backgroundColor='{{ block.settings.button_bg_color }}'; this.style.color='{{ block.settings.button_text_color }}';">
@@ -91,7 +91,7 @@
                                         </span>
                                     {% endif %}
                                     <a href="{{ collection.url }}" 
-                                       class="title link {% if block.settings.enable_custom_fonts %}{{ block.settings.title_font }} {{ block.settings.title_size }} {{ block.settings.title_weight }}{% endif %}"
+                                       class="title link"
                                        style="color: {{ block.settings.title_color }};">
                                         {{ collection.title }}
                                     </a>
@@ -143,7 +143,7 @@
                             {% endif %}
                             <div class="content {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
                                 <a href="{{ collection.url }}" 
-                                   class="tf-btn {% if block.settings.enable_custom_fonts %}{{ block.settings.title_font }} {{ block.settings.title_size }} {{ block.settings.title_weight }}{% else %}btn-white{% endif %} hover-icon-2 hover-dark"
+                                   class="tf-btn btn-white hover-icon-2 hover-dark"
                                    style="color: {{ block.settings.button_text_color }}; background-color: {{ block.settings.button_bg_color }};"
                                    onmouseover="this.style.backgroundColor='{{ block.settings.button_hover_bg_color }}'; this.style.color='{{ block.settings.button_hover_text_color }}';"
                                    onmouseout="this.style.backgroundColor='{{ block.settings.button_bg_color }}'; this.style.color='{{ block.settings.button_text_color }}';">
@@ -198,7 +198,7 @@
                                 {% endif %}
                                 <div class="cls-btn text-center">
                                     <a href="{{ collection.url }}"
-                                        class="tf-btn btn-cls {% if block.settings.enable_custom_fonts %}{{ block.settings.title_font }} {{ block.settings.title_size }} {{ block.settings.title_weight }}{% else %}btn-white{% endif %} hover-dark hover-icon-2"
+                                        class="tf-btn btn-cls btn-white hover-dark hover-icon-2"
                                         style="color: {{ block.settings.button_text_color }}; background-color: {{ block.settings.button_bg_color }};"
                                         onmouseover="this.style.backgroundColor='{{ block.settings.button_hover_bg_color }}'; this.style.color='{{ block.settings.button_hover_text_color }}';"
                                         onmouseout="this.style.backgroundColor='{{ block.settings.button_bg_color }}'; this.style.color='{{ block.settings.button_text_color }}';">
@@ -360,53 +360,6 @@
                     "type": "collection",
                     "id": "collection",
                     "label": "Collection"
-                },
-                {
-                    "type": "header",
-                    "content": "Typography"
-                },
-                {
-                    "type": "checkbox",
-                    "id": "enable_custom_fonts",
-                    "label": "Enable custom fonts",
-                    "default": false
-                },
-                {
-                    "type": "select",
-                    "id": "title_font",
-                    "label": "Title font",
-                    "options": [
-                        { "value": "font-1", "label": "Font 1" },
-                        { "value": "font-2", "label": "Font 2" }
-                    ],
-                    "default": "font-1",
-                    "info": "Only applies when custom fonts are enabled"
-                },
-                {
-                    "type": "select",
-                    "id": "title_size",
-                    "label": "Title size",
-                    "options": [
-                        { "value": "text-sm", "label": "Small" },
-                        { "value": "text-md", "label": "Medium" },
-                        { "value": "text-lg", "label": "Large" },
-                        { "value": "text-xl", "label": "Extra Large" }
-                    ],
-                    "default": "text-md",
-                    "info": "Only applies when custom fonts are enabled"
-                },
-                {
-                    "type": "select",
-                    "id": "title_weight",
-                    "label": "Title weight",
-                    "options": [
-                        { "value": "fw-normal", "label": "Normal" },
-                        { "value": "fw-medium", "label": "Medium" },
-                        { "value": "fw-semibold", "label": "Semibold" },
-                        { "value": "fw-bold", "label": "Bold" }
-                    ],
-                    "default": "fw-medium",
-                    "info": "Only applies when custom fonts are enabled"
                 },
                 {
                     "type": "header",

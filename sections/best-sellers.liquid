@@ -1,7 +1,7 @@
 <section class="flat-spacing-3 overflow-hidden" style="background-color: {{ section.settings.section_bg_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   <div class="container">
     <div class="flat-title {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
-      <h4 class="title {% if section.settings.enable_custom_fonts %}{{ section.settings.title_font }} {{ section.settings.title_size }} {{ section.settings.title_weight }}{% endif %}" style="color: {{ section.settings.title_color }};">
+      <h4 class="title" style="color: {{ section.settings.title_color }};">
         {{ section.settings.section_title }}
       </h4>
     </div>
@@ -87,53 +87,6 @@
       "label": "Products to show at once",
       "default": 4,
       "info": "Number of products visible in the slider at the same time"
-    },
-    {
-      "type": "header",
-      "content": "Typography"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_custom_fonts",
-      "label": "Enable custom fonts",
-      "default": false
-    },
-    {
-      "type": "select",
-      "id": "title_font",
-      "label": "Title font",
-      "options": [
-        { "value": "font-1", "label": "Font 1" },
-        { "value": "font-2", "label": "Font 2" }
-      ],
-      "default": "font-1",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "title_size",
-      "label": "Title size",
-      "options": [
-        { "value": "text-lg", "label": "Large" },
-        { "value": "text-xl", "label": "Extra Large" },
-        { "value": "display-sm", "label": "Display Small" },
-        { "value": "display-md", "label": "Display Medium" }
-      ],
-      "default": "text-xl",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "title_weight",
-      "label": "Title weight",
-      "options": [
-        { "value": "fw-normal", "label": "Normal" },
-        { "value": "fw-medium", "label": "Medium" },
-        { "value": "fw-semibold", "label": "Semibold" },
-        { "value": "fw-bold", "label": "Bold" }
-      ],
-      "default": "fw-medium",
-      "info": "Only applies when custom fonts are enabled"
     },
     {
       "type": "header",

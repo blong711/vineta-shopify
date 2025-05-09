@@ -40,51 +40,51 @@ style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ sec
                                     <div class="content-slider {% if section.settings.layout == 'fashion-women' or section.settings.layout == 'bicycle' %}style-2{% endif %}">
                                         <div class="box-title-slider {% if section.settings.layout == 'fashion-women' %}text-center{% endif %}">
                                             {% if section.settings.layout == 'home-electronic' %}
-                                                <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-md fw-medium{% endif %} fade-item fade-item-1"
+                                                <p class="sub text-md fw-medium fade-item fade-item-1"
                                                    style="color: {{ block.settings.subtitle_color }};">
                                                     {{ block.settings.subtitle }}
                                                 </p>
-                                                <h2 class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}fw-medium{% endif %} fade-item fade-item-2"
+                                                <h2 class="heading fw-medium fade-item fade-item-2"
                                                     style="color: {{ block.settings.heading_color }};">
                                                     {{ block.settings.heading }}
                                                 </h2>
                                             {% elsif section.settings.layout == 'fashion-women' %}
-                                                <p class="body-text-2 {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}fw-semibold{% endif %} fade-item fade-item-1"
+                                                <p class="body-text-2 fw-semibold fade-item fade-item-1"
                                                    style="color: {{ block.settings.subtitle_color }};">
                                                     {{ block.settings.subtitle }}
                                                 </p>
-                                                <div class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}display-lg-3{% endif %} fade-item fade-item-2"
+                                                <div class="heading display-lg-3 fade-item fade-item-2"
                                                      style="color: {{ block.settings.heading_color }};">
                                                     {{ block.settings.heading }}
                                                 </div>
-                                                <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-md{% endif %} fade-item fade-item-3"
+                                                <p class="sub text-md fade-item fade-item-3"
                                                    style="color: {{ block.settings.subheading_color }};">
                                                     {{ block.settings.subheading }}
                                                 </p>
                                             {% elsif section.settings.layout == 'bicycle' %}
-                                                <h2 class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}display-xl-2 fw-medium{% endif %} fade-item fade-item-2"
+                                                <h2 class="heading display-xl-2 fw-medium fade-item fade-item-2"
                                                     style="color: {{ block.settings.heading_color }};">
                                                     {{ block.settings.heading }}
                                                 </h2>
-                                                <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-xl-2{% endif %} fade-item fade-item-3"
+                                                <p class="sub text-xl-2 fade-item fade-item-3"
                                                    style="color: {{ block.settings.subheading_color }};">
                                                     {{ block.settings.subheading }}
                                                 </p>
                                             {% elsif section.settings.layout == 'phonecase' %}
-                                                <h2 class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}display-xl-2 fw-medium{% endif %} fade-item fade-item-1"
+                                                <h2 class="heading display-xl-2 fw-medium fade-item fade-item-1"
                                                     style="color: {{ block.settings.heading_color }};">
                                                     {{ block.settings.heading }}
                                                 </h2>
-                                                <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-xl{% endif %} fade-item fade-item-2"
+                                                <p class="sub text-xl fade-item fade-item-2"
                                                    style="color: {{ block.settings.subheading_color }};">
                                                     {{ block.settings.subheading }}
                                                 </p>
                                             {% else %}
-                                                <h2 class="heading {% if block.settings.enable_custom_fonts %}{{ block.settings.heading_font }} {{ block.settings.heading_size }} {{ block.settings.heading_weight }}{% else %}fw-medium{% endif %} fade-item fade-item-1"
+                                                <h2 class="heading fw-medium fade-item fade-item-1"
                                                     style="color: {{ block.settings.heading_color }};">
                                                     {{ block.settings.heading }}
                                                 </h2>
-                                                <p class="sub {% if block.settings.enable_custom_fonts %}{{ block.settings.subtitle_font }} {{ block.settings.subtitle_size }} {{ block.settings.subtitle_weight }}{% else %}text-md{% endif %} fade-item fade-item-2"
+                                                <p class="sub text-md fade-item fade-item-2"
                                                    style="color: {{ block.settings.subtitle_color }};">
                                                     {{ block.settings.subheading }}
                                                 </p>
@@ -244,89 +244,6 @@ style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ sec
                 "type": "image_picker",
                 "id": "image",
                 "label": "Slide image"
-            },
-            {
-                "type": "header",
-                "content": "Typography"
-            },
-            {
-                "type": "checkbox",
-                "id": "enable_custom_fonts",
-                "label": "Enable custom fonts",
-                "default": false
-            },
-            {
-                "type": "select",
-                "id": "heading_font",
-                "label": "Heading font",
-                "options": [
-                    { "value": "font-1", "label": "Font 1" },
-                    { "value": "font-2", "label": "Font 2" }
-                ],
-                "default": "font-1",
-                "info": "Only applies when custom fonts are enabled"
-            },
-            {
-                "type": "select",
-                "id": "heading_size",
-                "label": "Heading size",
-                "options": [
-                    { "value": "text-lg", "label": "Large" },
-                    { "value": "text-xl", "label": "Extra Large" },
-                    { "value": "display-sm", "label": "Display Small" },
-                    { "value": "display-md", "label": "Display Medium" },
-                    { "value": "display-lg", "label": "Display Large" }
-                ],
-                "default": "display-md",
-                "info": "Only applies when custom fonts are enabled"
-            },
-            {
-                "type": "select",
-                "id": "heading_weight",
-                "label": "Heading weight",
-                "options": [
-                    { "value": "fw-normal", "label": "Normal" },
-                    { "value": "fw-medium", "label": "Medium" },
-                    { "value": "fw-semibold", "label": "Semibold" },
-                    { "value": "fw-bold", "label": "Bold" }
-                ],
-                "default": "fw-medium",
-                "info": "Only applies when custom fonts are enabled"
-            },
-            {
-                "type": "select",
-                "id": "subtitle_font",
-                "label": "Subtitle font",
-                "options": [
-                    { "value": "font-1", "label": "Font 1" },
-                    { "value": "font-2", "label": "Font 2" }
-                ],
-                "default": "font-1",
-                "info": "Only applies when custom fonts are enabled"
-            },
-            {
-                "type": "select",
-                "id": "subtitle_size",
-                "label": "Subtitle size",
-                "options": [
-                    { "value": "text-sm", "label": "Small" },
-                    { "value": "text-md", "label": "Medium" },
-                    { "value": "text-lg", "label": "Large" }
-                ],
-                "default": "text-md",
-                "info": "Only applies when custom fonts are enabled"
-            },
-            {
-                "type": "select",
-                "id": "subtitle_weight",
-                "label": "Subtitle weight",
-                "options": [
-                    { "value": "fw-normal", "label": "Normal" },
-                    { "value": "fw-medium", "label": "Medium" },
-                    { "value": "fw-semibold", "label": "Semibold" }
-                ],
-                "default": "fw-medium",
-                "info": "Only applies when custom fonts are enabled"
             },
             {
                 "type": "header",

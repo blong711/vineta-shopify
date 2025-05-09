@@ -5,7 +5,7 @@
         <div class="container">
           <div class="flat-animate-tab">
             <div class="flat-title-tab-categories {% if section.settings.enable_wow %}wow fadeInUp{% endif %} text-center" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
-              <h4 class="title {% if section.settings.enable_custom_fonts %}{{ section.settings.title_font }} {{ section.settings.title_size }} {{ section.settings.title_weight }}{% endif %}" style="color: {{ section.settings.title_color }};">
+              <h4 class="title" style="color: {{ section.settings.title_color }};">
                 {{ section.settings.title }}
               </h4>
               {% if section.blocks.size > 0 %}
@@ -13,7 +13,7 @@
                   {% for block in section.blocks %}
                     <li class="nav-tab-item" role="presentation" {{ block.shopify_attributes }}>
                       <a href="#collection-{{ block.id }}" 
-                         class="tab-link {% if forloop.first %}active{% endif %} {% if section.settings.enable_custom_fonts %}{{ section.settings.tab_font }} {{ section.settings.tab_size }} {{ section.settings.tab_weight }}{% endif %}" 
+                         class="tab-link {% if forloop.first %}active{% endif %}" 
                          data-bs-toggle="tab"
                          data-active-color="{{ section.settings.tab_active_color }}"
                          data-inactive-color="{{ section.settings.tab_color }}"
@@ -79,7 +79,7 @@
                             </a>
                             <div class="cls-content text-center">
                               <a href="{{ product.url }}" 
-                                 class="link {% if section.settings.enable_custom_fonts %}{{ section.settings.product_font }} {{ section.settings.product_size }} {{ section.settings.product_weight }}{% else %}text-md fw-medium{% endif %}"
+                                 class="link text-md fw-medium"
                                  style="color: {{ section.settings.product_color }};">
                                 {{ product.title }}
                               </a>
@@ -102,7 +102,7 @@
       <section class="flat-spacing-3" style="background-color: {{ section.settings.section_bg_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
         <div class="container">
           <div class="flat-title text-start {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
-            <h4 class="title {% if section.settings.enable_custom_fonts %}{{ section.settings.title_font }} {{ section.settings.title_size }} {{ section.settings.title_weight }}{% endif %}" style="color: {{ section.settings.title_color }};">
+            <h4 class="title" style="color: {{ section.settings.title_color }};">
               {{ section.settings.title }}
             </h4>
           </div>
@@ -148,7 +148,7 @@
                         </a>
                         <div class="cls-content text-center">
                           <a href="{{ collection.url }}" 
-                             class="link {% if section.settings.enable_custom_fonts %}{{ section.settings.product_font }} {{ section.settings.product_size }} {{ section.settings.product_weight }}{% else %}text-md fw-medium{% endif %}"
+                             class="link text-md fw-medium"
                              style="color: {{ section.settings.product_color }};">
                             {{ collection.title }}
                           </a>
@@ -174,11 +174,11 @@
         <div class="container">
           <div class="flat-title-v2 style-2 text-center justify-items-center {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
             <a href="{{ routes.collections_url }}" 
-               class="tf-btn btn-out-line-green btn-small text-uppercase {% if section.settings.enable_custom_fonts %}{{ section.settings.button_font }} {{ section.settings.button_size }} {{ section.settings.button_weight }}{% endif %}"
+               class="tf-btn btn-out-line-green btn-small text-uppercase"
                style="color: {{ section.settings.button_text_color }}; border-color: {{ section.settings.button_border_color }};">
               {{ section.settings.button_text }}
             </a>
-            <h4 class="{% if section.settings.enable_custom_fonts %}{{ section.settings.title_font }} {{ section.settings.title_size }} {{ section.settings.title_weight }}{% endif %}" style="color: {{ section.settings.title_color }};">
+            <h4 style="color: {{ section.settings.title_color }};">
               {{ section.settings.title | newline_to_br }}
             </h4>
           </div>
@@ -217,7 +217,7 @@
                     </a>
                     <div class="cls-btn text-center">
                       <a href="{{ collection.url }}" 
-                         class="tf-btn btn-cls btn-white hover-dark {% if section.settings.enable_custom_fonts %}{{ section.settings.product_font }} {{ section.settings.product_size }} {{ section.settings.product_weight }}{% endif %}"
+                         class="tf-btn btn-cls btn-white hover-dark"
                          style="color: {{ section.settings.product_color }};">
                         {{ collection.title }}
                       </a>
@@ -236,7 +236,7 @@
       <section class="flat-spacing-11" style="background-color: {{ section.settings.section_bg_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
         <div class="container">
           <div class="flat-title {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
-            <h4 class="title {% if section.settings.enable_custom_fonts %}{{ section.settings.title_font }} {{ section.settings.title_size }} {{ section.settings.title_weight }}{% endif %}" style="color: {{ section.settings.title_color }};">
+            <h4 class="title" style="color: {{ section.settings.title_color }};">
               {{ section.settings.title }}
             </h4>
           </div>
@@ -284,7 +284,7 @@
                     </a>
                     <div class="cls-content text-center">
                       <a href="{{ collection.url }}" 
-                         class="link {% if section.settings.enable_custom_fonts %}{{ section.settings.product_font }} {{ section.settings.product_size }} {{ section.settings.product_weight }}{% else %}text-xl fw-medium{% endif %}"
+                         class="link text-xl fw-medium"
                          style="color: {{ section.settings.product_color }};">
                         {{ collection.title }}
                       </a>
@@ -385,159 +385,6 @@
       "label": "Products per collection",
       "default": 6,
       "info": "Number of products to show from each collection"
-    },
-    {
-      "type": "header",
-      "content": "Typography"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_custom_fonts",
-      "label": "Enable custom fonts",
-      "default": false
-    },
-    {
-      "type": "select",
-      "id": "title_font",
-      "label": "Title font",
-      "options": [
-        { "value": "font-1", "label": "Font 1" },
-        { "value": "font-2", "label": "Font 2" }
-      ],
-      "default": "font-1",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "title_size",
-      "label": "Title size",
-      "options": [
-        { "value": "text-lg", "label": "Large" },
-        { "value": "text-xl", "label": "Extra Large" },
-        { "value": "display-sm", "label": "Display Small" },
-        { "value": "display-md", "label": "Display Medium" }
-      ],
-      "default": "text-xl",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "title_weight",
-      "label": "Title weight",
-      "options": [
-        { "value": "fw-normal", "label": "Normal" },
-        { "value": "fw-medium", "label": "Medium" },
-        { "value": "fw-semibold", "label": "Semibold" },
-        { "value": "fw-bold", "label": "Bold" }
-      ],
-      "default": "fw-medium",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "tab_font",
-      "label": "Tab font",
-      "options": [
-        { "value": "font-1", "label": "Font 1" },
-        { "value": "font-2", "label": "Font 2" }
-      ],
-      "default": "font-1",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "tab_size",
-      "label": "Tab size",
-      "options": [
-        { "value": "text-sm", "label": "Small" },
-        { "value": "text-md", "label": "Medium" },
-        { "value": "text-lg", "label": "Large" }
-      ],
-      "default": "text-md",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "tab_weight",
-      "label": "Tab weight",
-      "options": [
-        { "value": "fw-normal", "label": "Normal" },
-        { "value": "fw-medium", "label": "Medium" },
-        { "value": "fw-semibold", "label": "Semibold" }
-      ],
-      "default": "fw-medium",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "product_font",
-      "label": "Product font",
-      "options": [
-        { "value": "font-1", "label": "Font 1" },
-        { "value": "font-2", "label": "Font 2" }
-      ],
-      "default": "font-1",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "product_size",
-      "label": "Product size",
-      "options": [
-        { "value": "text-sm", "label": "Small" },
-        { "value": "text-md", "label": "Medium" },
-        { "value": "text-lg", "label": "Large" },
-        { "value": "text-xl", "label": "Extra Large" }
-      ],
-      "default": "text-md",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "product_weight",
-      "label": "Product weight",
-      "options": [
-        { "value": "fw-normal", "label": "Normal" },
-        { "value": "fw-medium", "label": "Medium" },
-        { "value": "fw-semibold", "label": "Semibold" }
-      ],
-      "default": "fw-medium",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "button_font",
-      "label": "Button font",
-      "options": [
-        { "value": "font-1", "label": "Font 1" },
-        { "value": "font-2", "label": "Font 2" }
-      ],
-      "default": "font-1",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "button_size",
-      "label": "Button size",
-      "options": [
-        { "value": "text-sm", "label": "Small" },
-        { "value": "text-md", "label": "Medium" },
-        { "value": "text-lg", "label": "Large" }
-      ],
-      "default": "text-md",
-      "info": "Only applies when custom fonts are enabled"
-    },
-    {
-      "type": "select",
-      "id": "button_weight",
-      "label": "Button weight",
-      "options": [
-        { "value": "fw-normal", "label": "Normal" },
-        { "value": "fw-medium", "label": "Medium" },
-        { "value": "fw-semibold", "label": "Semibold" }
-      ],
-      "default": "fw-medium",
-      "info": "Only applies when custom fonts are enabled"
     },
     {
       "type": "header",
