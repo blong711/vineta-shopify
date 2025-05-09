@@ -117,6 +117,12 @@
         font-weight: {{ settings.body_font_weight | default: settings.body_font.weight }} !important;
         line-height: {{ settings.body_line_height }} !important;
         letter-spacing: {{ settings.body_letter_spacing | divided_by: 100.0 }}em !important;
+        font-size: {{ settings.body_font_size_mobile }}px !important;
+      }
+      @media (min-width: 768px) {
+        body {
+          font-size: {{ settings.body_font_size_desktop }}px !important;
+        }
       }
       h1, h2, h3, h4, h5, h6 {
         font-family: 
@@ -128,6 +134,7 @@
         font-weight: {{ settings.heading_font_weight | default: settings.heading_font.weight }} !important;
         line-height: {{ settings.heading_line_height }} !important;
         letter-spacing: {{ settings.heading_letter_spacing | divided_by: 100.0 }}em !important;
+        font-size: calc({{ settings.body_font_size_desktop }}px * {{ settings.heading_font_size_scale | divided_by: 100.0 }}) !important;
       }
     </style>
   </head>
