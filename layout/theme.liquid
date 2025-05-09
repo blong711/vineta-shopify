@@ -107,7 +107,22 @@
   <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
 
     <style>
+      :root {
+        --color-background: {{ settings.color_schemes.background }};
+        --color-text: {{ settings.color_schemes.text }};
+        --color-primary-button: {{ settings.color_schemes.primary_button }};
+        --color-primary-button-text: {{ settings.color_schemes.primary_button_text }};
+        --color-primary-button-border: {{ settings.color_schemes.primary_button_border }};
+        --color-secondary-button: {{ settings.color_schemes.secondary_button }};
+        --color-secondary-button-text: {{ settings.color_schemes.secondary_button_text }};
+        --color-secondary-button-border: {{ settings.color_schemes.secondary_button_border }};
+        --color-links: {{ settings.color_schemes.links }};
+        --color-icons: {{ settings.color_schemes.icons }};
+      }
+
       body {
+        background: var(--color-background);
+        color: var(--color-text);
         font-family: 
           {% if settings.font_library == 'google' and settings.body_font_family != blank %}
             {{ settings.body_font_family }}
@@ -173,6 +188,26 @@
           opacity: 1 !important;
         }
       {% endif %}
+
+      a, .link {
+        color: var(--color-links);
+      }
+
+      .icon {
+        color: var(--color-icons);
+      }
+
+      .button, .btn, .primary-btn {
+        background: var(--color-primary-button);
+        color: var(--color-primary-button-text);
+        border-color: var(--color-primary-button-border);
+      }
+
+      .button.secondary, .btn-secondary, .secondary-btn {
+        background: var(--color-secondary-button);
+        color: var(--color-secondary-button-text);
+        border-color: var(--color-secondary-button-border);
+      }
     </style>
   </head>
 
