@@ -108,13 +108,23 @@
 
     <style>
       body {
-        font-family: {{ settings.body_font_family | default: settings.body_font.family }}, {{ settings.body_font.fallback_families }};
+        font-family: 
+          {% if settings.font_library == 'google' and settings.body_font_family != blank %}
+            {{ settings.body_font_family }}
+          {% else %}
+            {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }}
+          {% endif %};
         font-weight: {{ settings.body_font_weight | default: settings.body_font.weight }};
         line-height: {{ settings.body_line_height }};
         letter-spacing: {{ settings.body_letter_spacing }}%;
       }
       h1, h2, h3, h4, h5, h6 {
-        font-family: {{ settings.heading_font_family | default: settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
+        font-family: 
+          {% if settings.font_library == 'google' and settings.heading_font_family != blank %}
+            {{ settings.heading_font_family }}
+          {% else %}
+            {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }}
+          {% endif %};
         font-weight: {{ settings.heading_font_weight | default: settings.heading_font.weight }};
         line-height: {{ settings.heading_line_height }};
         letter-spacing: {{ settings.heading_letter_spacing }}%;
