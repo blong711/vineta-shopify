@@ -10,6 +10,8 @@
 {
   "current": {
     "favicon": "shopify://shop_images/favicon.png",
+    "heading_font": "sans-serif",
+    "body_font": "sans-serif",
     "sections": {
       "top-bar": {
         "type": "top-bar",
@@ -26,16 +28,14 @@
           "announcement_cU4bA4": {
             "type": "announcement",
             "settings": {
-              "announcements": "Return extended to 60 days\nLife-time Guarantees\nLimited-Time Offer",
-              "font": "dm_sans_n4"
+              "announcements": "Return extended to 60 days\nLife-time Guarantees\nLimited-Time Offer"
             }
           },
           "language_currency_AWmzDb": {
             "type": "language_currency",
             "settings": {
               "show_language": true,
-              "show_currency": true,
-              "font": "poppins_n4"
+              "show_currency": true
             }
           }
         },
@@ -149,10 +149,6 @@
           "icon_hover_color": "#666666",
           "dropdown_background": "#ffffff",
           "dropdown_text_color": "#333333",
-          "font_family": "primary",
-          "menu_font_size": 14,
-          "menu_font_weight": "500",
-          "submenu_font_size": 13,
           "menu_item_spacing": 10,
           "dropdown_padding": 20,
           "logo": "shopify://shop_images/logo.svg",
@@ -162,7 +158,6 @@
           "show_account": true,
           "show_wishlist": true,
           "show_cart": true,
-          "mobile_menu_font_size": 16,
           "mobile_menu_background": "#ffffff",
           "mobile_menu_text_color": "#333333",
           "dropdown_animation": "fade",
@@ -335,13 +330,6 @@
         ],
         "settings": {
           "logo": "shopify://shop_images/logo.svg",
-          "enable_custom_fonts": false,
-          "heading_font": "font-1",
-          "heading_size": "text-xl",
-          "heading_weight": "fw-medium",
-          "text_font": "font-1",
-          "text_size": "text-md",
-          "text_weight": "fw-normal",
           "footer_bg_color": "#ffffff",
           "footer_text_color": "#666666",
           "footer_heading_color": "#000000",
