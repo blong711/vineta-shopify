@@ -28,9 +28,6 @@
 
     {% render 'meta-tags' %}
 
-    {{ 'theme-settings.css' | asset_url | stylesheet_tag }}
-    <script src="{{ 'theme-settings.js' | asset_url }}" defer></script>
-
     {{ content_for_header }}
 
     <script>
@@ -38,7 +35,6 @@
     </script>
 
     <!-- Core CSS -->
-    {{ 'styles.css' | asset_url | stylesheet_tag }}
     {{ 'fonts.css' | asset_url | stylesheet_tag }}
     {{ 'font-icons.css' | asset_url | stylesheet_tag }}
     {{ 'font-classes.css' | asset_url | stylesheet_tag }}
@@ -50,6 +46,7 @@
     {{ 'image-compare-viewer.min.css' | asset_url | stylesheet_tag }}
     {{ 'animate.css' | asset_url | stylesheet_tag }}
     {{ 'theme.css' | asset_url | stylesheet_tag }}
+    {{ 'styles.css' | asset_url | stylesheet_tag }}
 
     <!-- Core JavaScript -->
     <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
@@ -160,3 +157,4 @@
     </script>
   </body>
 </html> 
+
