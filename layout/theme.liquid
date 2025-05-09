@@ -134,7 +134,6 @@
         font-weight: {{ settings.heading_font_weight | default: settings.heading_font.weight }} !important;
         line-height: {{ settings.heading_line_height }} !important;
         letter-spacing: {{ settings.heading_letter_spacing | divided_by: 100.0 }}em !important;
-        font-size: calc({{ settings.body_font_size_desktop }}px * {{ settings.heading_font_size_scale | divided_by: 100.0 }}) !important;
       }
     </style>
   </head>
