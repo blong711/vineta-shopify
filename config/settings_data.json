@@ -10,6 +10,9 @@
 {
   "current": {
     "favicon": "shopify://shop_images/favicon.png",
+    "background_color": "#313130",
+    "icons_color": "#ffffff",
+    "links_hover_color": "#ff6f61",
     "font_library": "google",
     "heading_font": "sans-serif",
     "body_font": "sans-serif",
@@ -18,6 +21,64 @@
     "body_font_size_mobile": 16,
     "body_font_size_desktop": 16,
     "enable_animations": true,
+    "color_schemes": {
+      "scheme-1": {
+        "settings": {
+          "background": "#222222",
+          "text": "#222222",
+          "primary_button": "#007bff",
+          "primary_button_text": "#ffffff",
+          "primary_button_border": "#007bff",
+          "secondary_button": "#f8f9fa",
+          "secondary_button_text": "#222222",
+          "secondary_button_border": "#ced4da",
+          "links": "#007bff",
+          "icons": "#222222"
+        }
+      },
+      "scheme-2": {
+        "settings": {
+          "background": "#ffffff",
+          "text": "#222222",
+          "primary_button": "#007bff",
+          "primary_button_text": "#ffffff",
+          "primary_button_border": "#007bff",
+          "secondary_button": "#f8f9fa",
+          "secondary_button_text": "#222222",
+          "secondary_button_border": "#ced4da",
+          "links": "#007bff",
+          "icons": "#222222"
+        }
+      },
+      "scheme-3": {
+        "settings": {
+          "background": "#ffffff",
+          "text": "#222222",
+          "primary_button": "#007bff",
+          "primary_button_text": "#ffffff",
+          "primary_button_border": "#007bff",
+          "secondary_button": "#f8f9fa",
+          "secondary_button_text": "#222222",
+          "secondary_button_border": "#ced4da",
+          "links": "#007bff",
+          "icons": "#222222"
+        }
+      },
+      "scheme-4": {
+        "settings": {
+          "background": "#ffffff",
+          "text": "#222222",
+          "primary_button": "#007bff",
+          "primary_button_text": "#ffffff",
+          "primary_button_border": "#007bff",
+          "secondary_button": "#f8f9fa",
+          "secondary_button_text": "#222222",
+          "secondary_button_border": "#ced4da",
+          "links": "#007bff",
+          "icons": "#222222"
+        }
+      }
+    },
     "sections": {
       "top-bar": {
         "type": "top-bar",
@@ -51,7 +112,6 @@
           "language_currency_AWmzDb"
         ],
         "settings": {
-          "color_schemes": "scheme-1",
           "padding_top": 0,
           "padding_bottom": 0,
           "announcement_speed": "normal"
@@ -560,64 +620,6 @@
         }
       }
     },
-    "content_for_index": [],
-    "color_schemes": {
-      "scheme-1": {
-        "settings": {
-          "background": "#222222",
-          "text": "#222222",
-          "primary_button": "#007bff",
-          "primary_button_text": "#ffffff",
-          "primary_button_border": "#007bff",
-          "secondary_button": "#f8f9fa",
-          "secondary_button_text": "#222222",
-          "secondary_button_border": "#ced4da",
-          "links": "#007bff",
-          "icons": "#222222"
-        }
-      },
-      "scheme-2": {
-        "settings": {
-          "background": "#ffffff",
-          "text": "#222222",
-          "primary_button": "#007bff",
-          "primary_button_text": "#ffffff",
-          "primary_button_border": "#007bff",
-          "secondary_button": "#f8f9fa",
-          "secondary_button_text": "#222222",
-          "secondary_button_border": "#ced4da",
-          "links": "#007bff",
-          "icons": "#222222"
-        }
-      },
-      "scheme-3": {
-        "settings": {
-          "background": "#ffffff",
-          "text": "#222222",
-          "primary_button": "#007bff",
-          "primary_button_text": "#ffffff",
-          "primary_button_border": "#007bff",
-          "secondary_button": "#f8f9fa",
-          "secondary_button_text": "#222222",
-          "secondary_button_border": "#ced4da",
-          "links": "#007bff",
-          "icons": "#222222"
-        }
-      },
-      "scheme-4": {
-        "settings": {
-          "background": "#ffffff",
-          "text": "#222222",
-          "primary_button": "#007bff",
-          "primary_button_text": "#ffffff",
-          "primary_button_border": "#007bff",
-          "secondary_button": "#f8f9fa",
-          "secondary_button_text": "#222222",
-          "secondary_button_border": "#ced4da",
-          "links": "#007bff",
-          "icons": "#222222"
-        }
-      }
-    }
+    "content_for_index": []
   }
 }
