@@ -164,6 +164,14 @@
       .element, .element-spacing {
         margin-bottom: {{ settings.element_spacing }}px;
       }
+      {% if settings.enable_animations %}
+        /* Animations enabled: use section styles as defined in each section */
+      {% else %}
+        .section, [data-section-animate] {
+          animation: none !important;
+          transition: none !important;
+        }
+      {% endif %}
     </style>
   </head>
 
