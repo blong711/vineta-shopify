@@ -135,6 +135,17 @@
         line-height: {{ settings.heading_line_height }} !important;
         letter-spacing: {{ settings.heading_letter_spacing | divided_by: 100.0 }}em !important;
       }
+      .text-sm {
+        font-size: {{ settings.body_font_size_mobile | minus: 2 }}px !important;
+      }
+      @media (min-width: 768px) {
+        .text-sm {
+          font-size: {{ settings.body_font_size_desktop | minus: 2 }}px !important;
+        }
+      }
+      .text-md {
+        font-size: {{ settings.body_font_size_desktop }}px !important;
+      }
     </style>
   </head>
 
