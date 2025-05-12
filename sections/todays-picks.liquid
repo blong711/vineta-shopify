@@ -42,14 +42,12 @@
         <div class="swiper-wrapper">
           {%- for block in section.blocks -%}
             <div class="swiper-slide" {{ block.shopify_attributes }}>
-              {% render 'card-product',
-              product: block.settings.product,
-              style: section.settings.product_style,
-              show_sale_badge: section.settings.show_sale_badge,
-              show_color_swatches: section.settings.show_color_swatches,
-              show_quick_view: section.settings.show_quick_view,
-              show_wishlist: section.settings.show_wishlist,
-              selected_variant: block.settings.product.selected_or_first_available_variant
+              {% render block,
+                style: section.settings.product_style,
+                show_sale_badge: section.settings.show_sale_badge,
+                show_color_swatches: section.settings.show_color_swatches,
+                show_quick_view: section.settings.show_quick_view,
+                show_wishlist: section.settings.show_wishlist
               %}
             </div>
           {%- endfor -%}
@@ -249,17 +247,7 @@
   ],
   "max_blocks": 12,
   "blocks": [
-    {
-      "type": "product",
-      "name": "Product",
-      "settings": [
-        {
-          "type": "product",
-          "id": "product",
-          "label": "Product"
-        }
-      ]
-    }
+    { "type": "@theme" }
   ],
   "presets": [
     {
@@ -276,18 +264,10 @@
         "show_dots": true
       },
       "blocks": [
-        {
-          "type": "product"
-        },
-        {
-          "type": "product"
-        },
-        {
-          "type": "product"
-        },
-        {
-          "type": "product"
-        }
+        { "type": "product-card" },
+        { "type": "product-card" },
+        { "type": "product-card" },
+        { "type": "product-card" }
       ]
     }
   ]

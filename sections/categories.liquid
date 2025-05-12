@@ -541,7 +541,17 @@
   ],
   "max_blocks": 12,
   "blocks": [
-    { "type": "@theme" }
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
+    }
   ],
   "presets": [
     {
@@ -552,8 +562,12 @@
         "products_per_collection": 6
       },
       "blocks": [
-        { "type": "category" },
-        { "type": "category" }
+        {
+          "type": "category"
+        },
+        {
+          "type": "category"
+        }
       ]
     }
   ]
