@@ -1,0 +1,49 @@
+<div class="brand-item">
+  {% if block.settings.brand_link != blank %}
+    <a href="{{ block.settings.brand_link }}">
+  {% endif %}
+    {% if block.settings.brand_image != blank %}
+      <img 
+        src="{{ block.settings.brand_image | img_url }}"
+        srcset="
+          {{ block.settings.brand_image | img_url: '180x' }} 180w,
+          {{ block.settings.brand_image | img_url: '360x' }} 360w
+        "
+        sizes="(max-width: 768px) 180px, 360px"
+        alt="{{ block.settings.brand_image.alt | escape | default: 'Brand logo' }}"
+        width="{{ block.settings.brand_image.width | default: 240 }}"
+        height="{{ block.settings.brand_image.height | default: 114 }}"
+        loading="lazy"
+        class="brand-logo"
+      >
+    {% else %}
+      {{ 'image' | placeholder_svg_tag: 'placeholder-svg brand-logo' }}
+    {% endif %}
+  {% if block.settings.brand_link != blank %}
+    </a>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Brand",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "brand_image",
+      "label": "Brand image",
+      "info": "Recommended size: 360px x 171px"
+    },
+    {
+      "type": "url",
+      "id": "brand_link",
+      "label": "Brand link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand"
+    }
+  ]
+}
+{% endschema %} 
