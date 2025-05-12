@@ -1,0 +1,35 @@
+{% assign collection = collections[block.settings.collection] %}
+<div class="wg-cls style-square hover-img">
+  <a href="{{ collection.url }}" class="image img-style d-block">
+    {% if collection.featured_image != blank %}
+      {{ collection.featured_image | image_url: width: 300 | image_tag:
+        loading: 'lazy',
+        width: 300,
+        height: 300,
+        class: 'lazyload'
+      }}
+    {% endif %}
+  </a>
+  <div class="cls-content text-center">
+    <a href="{{ collection.url }}" 
+       class="link text-md fw-medium">
+      {{ collection.title }}
+    </a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Category",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    }
+  ],
+  "presets": [
+    { "name": "Default" }
+  ]
+}
+{% endschema %} 
