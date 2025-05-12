@@ -292,51 +292,7 @@
                 <div class="swiper-wrapper {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
                     {% for block in section.blocks %}
                         <div class="swiper-slide" {{ block.shopify_attributes }}>
-                            <div class="wg-testimonial">
-                                <div class="content">
-                                    <div class="content-top">
-                                        <div class="box-author">
-                                            <p class="name-author text-sm fw-medium" style="color: {{ section.settings.author_name_color }};">{{ block.settings.name }}</p>
-                                            <div class="box-verified text-main">
-                                                <i class="icon-verifi"></i>
-                                                <p class="text-xs fst-italic">Verified Buyer</p>
-                                            </div>
-                                        </div>
-                                        <div class="list-star-default">
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                        </div>
-                                        <p class="text-review text-sm" style="color: {{ section.settings.review_text_color }};">{{ block.settings.review }}</p>
-                                    </div>
-                                    <span class="br-line d-block"></span>
-                                    <div class="box-avt">
-                                        <div class="avatar">
-                                            {% if block.settings.image != blank %}
-                                                <img src="{{ block.settings.image | img_url: '120x120' }}" 
-                                                     alt="{{ block.settings.name }}" 
-                                                     width="60" 
-                                                     height="60">
-                                            {% else %}
-                                                <img src="{{ 'author-fs1.jpg' | asset_url }}" 
-                                                     alt="{{ block.settings.name }}" 
-                                                     width="60" 
-                                                     height="60">
-                                            {% endif %}
-                                        </div>
-                                        <div class="box-price">
-                                            <p class="name-item text-xs">
-                                                <a href="{{ block.settings.product_url }}" class="text-line-clamp-2" style="color: {{ section.settings.product_name_color }};">Item purchased:
-                                                    <span class="fw-medium text-sm link">{{ block.settings.product }}</span>
-                                                </a>
-                                            </p>
-                                            <p class="price text-md fw-medium" style="color: {{ section.settings.price_color }};">{{ block.settings.price }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {% render block, layout: section.settings.layout %}
                         </div>
                     {% endfor %}
                 </div>
@@ -543,51 +499,7 @@
                 <div class="swiper-wrapper">
                     {% for block in section.blocks %}
                         <div class="swiper-slide" {{ block.shopify_attributes }}>
-                            <div class="wg-testimonial {% if section.settings.enable_wow %}wow fadeInLeft{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ forloop.index | times: 0.1 }}s"{% endif %}>
-                                <div class="content">
-                                    <div class="content-top">
-                                        <div class="box-author">
-                                            <p class="name-author text-sm fw-medium" style="color: {{ section.settings.author_name_color }};">{{ block.settings.name }}</p>
-                                            <div class="box-verified text-main">
-                                                <i class="icon-verifi"></i>
-                                                <p class="text-xs fst-italic">Verified Buyer</p>
-                                            </div>
-                                        </div>
-                                        <div class="list-star-default">
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                        </div>
-                                        <p class="text-review text-sm" style="color: {{ section.settings.review_text_color }};">
-                                            {{ block.settings.review }}
-                                        </p>
-                                    </div>
-                                    <span class="br-line d-block"></span>
-                                    <div class="box-avt">
-                                        <div class="avatar">
-                                            {% if block.settings.image != blank %}
-                                                <img src="{{ block.settings.image | img_url: '120x120' }}" 
-                                                     alt="{{ block.settings.name }}" 
-                                                     width="60" 
-                                                     height="60">
-                                            {% else %}
-                                                <img src="{{ 'author-fs1.jpg' | asset_url }}" 
-                                                     alt="{{ block.settings.name }}" 
-                                                     width="60" 
-                                                     height="60">
-                                            {% endif %}
-                                        </div>
-                                        <div class="box-price">
-                                            <p class="name-item text-xs">
-                                                Item purchased: <a href="{{ block.settings.product_url }}" class="fw-medium text-sm link text-line-clamp-1" style="color: {{ section.settings.product_name_color }};">{{ block.settings.product }}</a>
-                                            </p>
-                                            <p class="price text-md fw-medium" style="color: {{ section.settings.price_color }};">{{ block.settings.price }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {% render block, layout: section.settings.layout %}
                         </div>
                     {% endfor %}
                 </div>
