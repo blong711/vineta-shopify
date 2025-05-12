@@ -194,6 +194,11 @@
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>
+    {% section 'cart-drawer' %}
+    {% section 'search-drawer' %}
+    {% section 'login-drawer' %}
+    {% section 'register-drawer' %}
+    {% section 'mobile-menu' %}
 
     {% section 'footer' %}
 
