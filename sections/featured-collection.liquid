@@ -128,30 +128,8 @@
         <div class="swiper tf-sw-slideshow" data-preview="3" data-tablet="2" data-mobile="1.5" data-space="{{ section.settings.space_between }}" data-space-mb="{{ section.settings.space_between_mobile }}">
             <div class="swiper-wrapper">
                 {% for block in section.blocks %}
-                    {% assign collection = collections[block.settings.collection] %}
                     <div class="swiper-slide" {{ block.shopify_attributes }}>
-                        <div class="fs-cls hover-img">
-                            {% if collection.featured_image != blank %}
-                                <div class="img-style image">
-                                    <img src="{{ collection.featured_image | img_url: 'master' }}"
-                                        data-src="{{ collection.featured_image | img_url: 'master' }}" 
-                                        alt="{{ collection.title | escape }}" 
-                                        class="lazyload {% if section.settings.enable_lazy_loading %}lazyload{% endif %}"
-                                        width="{{ collection.featured_image.width }}"
-                                        height="{{ collection.featured_image.height }}">
-                                </div>
-                            {% endif %}
-                            <div class="content {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
-                                <a href="{{ collection.url }}" 
-                                   class="tf-btn btn-white hover-icon-2 hover-dark"
-                                   style="color: {{ block.settings.button_text_color }}; background-color: {{ block.settings.button_bg_color }};"
-                                   onmouseover="this.style.backgroundColor='{{ block.settings.button_hover_bg_color }}'; this.style.color='{{ block.settings.button_hover_text_color }}';"
-                                   onmouseout="this.style.backgroundColor='{{ block.settings.button_bg_color }}'; this.style.color='{{ block.settings.button_text_color }}';">
-                                    {{ collection.title }}
-                                    <i class="icon-arrow-right icon"></i>
-                                </a>
-                            </div>
-                        </div>
+                        {% render block %}
                     </div>
                 {% endfor %}
             </div>
@@ -183,30 +161,8 @@
                 }'>
                 <div class="swiper-wrapper">
                     {% for block in section.blocks %}
-                        {% assign collection = collections[block.settings.collection] %}
                         <div class="swiper-slide" {{ block.shopify_attributes }}>
-                            <div class="wg-cls style-abs asp-1 hover-img">
-                                {% if collection.featured_image != blank %}
-                                    <a href="{{ collection.url }}" class="image img-style d-block">
-                                        <img src="{{ collection.featured_image | img_url: 'master' }}"
-                                            data-src="{{ collection.featured_image | img_url: 'master' }}" 
-                                            alt="{{ collection.title | escape }}" 
-                                            class="lazyload {% if section.settings.enable_lazy_loading %}lazyload{% endif %}"
-                                            width="{{ collection.featured_image.width }}"
-                                            height="{{ collection.featured_image.height }}">
-                                    </a>
-                                {% endif %}
-                                <div class="cls-btn text-center">
-                                    <a href="{{ collection.url }}"
-                                        class="tf-btn btn-cls btn-white hover-dark hover-icon-2"
-                                        style="color: {{ block.settings.button_text_color }}; background-color: {{ block.settings.button_bg_color }};"
-                                        onmouseover="this.style.backgroundColor='{{ block.settings.button_hover_bg_color }}'; this.style.color='{{ block.settings.button_hover_text_color }}';"
-                                        onmouseout="this.style.backgroundColor='{{ block.settings.button_bg_color }}'; this.style.color='{{ block.settings.button_text_color }}';">
-                                        {{ collection.title }}
-                                        <i class="icon icon-arrow-top-left"></i>
-                                    </a>
-                                </div>
-                            </div>
+                            {% render block %}
                         </div>
                     {% endfor %}
                 </div>
@@ -353,92 +309,7 @@
     ],
     "blocks": [
         {
-            "type": "collection",
-            "name": "Collection",
-            "settings": [
-                {
-                    "type": "collection",
-                    "id": "collection",
-                    "label": "Collection"
-                },
-                {
-                    "type": "header",
-                    "content": "Colors"
-                },
-                {
-                    "type": "color",
-                    "id": "title_color",
-                    "label": "Title color",
-                    "default": "#000000"
-                },
-                {
-                    "type": "color",
-                    "id": "tag_bg_color",
-                    "label": "Tag background color",
-                    "default": "#000000"
-                },
-                {
-                    "type": "color",
-                    "id": "tag_text_color",
-                    "label": "Tag text color",
-                    "default": "#FFFFFF"
-                },
-                {
-                    "type": "color",
-                    "id": "price_color",
-                    "label": "Price color",
-                    "default": "#000000"
-                },
-                {
-                    "type": "color",
-                    "id": "button_bg_color",
-                    "label": "Button background color",
-                    "default": "#000000"
-                },
-                {
-                    "type": "color",
-                    "id": "button_text_color",
-                    "label": "Button text color",
-                    "default": "#FFFFFF"
-                },
-                {
-                    "type": "color",
-                    "id": "button_hover_bg_color",
-                    "label": "Button hover background color",
-                    "default": "#333333"
-                },
-                {
-                    "type": "color",
-                    "id": "button_hover_text_color",
-                    "label": "Button hover text color",
-                    "default": "#FFFFFF"
-                },
-                {
-                    "type": "text",
-                    "id": "tag",
-                    "label": "Tag Text",
-                    "info": "Optional tag text (e.g., 'Sale 50% OFF')"
-                },
-                {
-                    "type": "text",
-                    "id": "price_new",
-                    "label": "New Price",
-                    "info": "Optional new price (e.g., '$130.00')"
-                },
-                {
-                    "type": "text",
-                    "id": "price_old",
-                    "label": "Old Price",
-                    "info": "Optional old price (e.g., '$150.00')"
-                },
-                {
-                    "type": "text",
-                    "id": "button_text",
-                    "label": "Button Text",
-                    "default": "See Details",
-                    "info": "Text for the call-to-action button"
-                }
-            ]
+            "type": "@theme"
         }
     ],
     "presets": [
@@ -448,24 +319,9 @@
                 "layout": "default"
             },
             "blocks": [
-                {
-                    "type": "collection",
-                    "settings": {
-                        "collection": ""
-                    }
-                },
-                {
-                    "type": "collection",
-                    "settings": {
-                        "collection": ""
-                    }
-                },
-                {
-                    "type": "collection",
-                    "settings": {
-                        "collection": ""
-                    }
-                }
+                { "type": "collection-card", "settings": { "collection": "" } },
+                { "type": "collection-card", "settings": { "collection": "" } },
+                { "type": "collection-card", "settings": { "collection": "" } }
             ]
         },
         {
@@ -474,24 +330,9 @@
                 "layout": "home-fashion-women"
             },
             "blocks": [
-                {
-                    "type": "collection",
-                    "settings": {
-                        "collection": ""
-                    }
-                },
-                {
-                    "type": "collection",
-                    "settings": {
-                        "collection": ""
-                    }
-                },
-                {
-                    "type": "collection",
-                    "settings": {
-                        "collection": ""
-                    }
-                }
+                { "type": "collection-card", "settings": { "collection": "" } },
+                { "type": "collection-card", "settings": { "collection": "" } },
+                { "type": "collection-card", "settings": { "collection": "" } }
             ]
         },
         {
@@ -500,26 +341,8 @@
                 "layout": "home-phonecase"
             },
             "blocks": [
-                {
-                    "type": "collection",
-                    "settings": {
-                        "collection": "",
-                        "tag": "Sale 50% OFF",
-                        "price_new": "$130.00",
-                        "price_old": "$150.00",
-                        "button_text": "See Details"
-                    }
-                },
-                {
-                    "type": "collection",
-                    "settings": {
-                        "collection": "",
-                        "tag": "Sale 50% OFF",
-                        "price_new": "$100.00",
-                        "price_old": "$130.00",
-                        "button_text": "See Details"
-                    }
-                }
+                { "type": "collection-card", "settings": { "collection": "", "tag": "Sale 50% OFF", "price_new": "$130.00", "price_old": "$150.00", "button_text": "See Details" } },
+                { "type": "collection-card", "settings": { "collection": "", "tag": "Sale 50% OFF", "price_new": "$100.00", "price_old": "$130.00", "button_text": "See Details" } }
             ]
         },
         {
@@ -528,24 +351,9 @@
                 "layout": "fashion-02"
             },
             "blocks": [
-                {
-                    "type": "collection",
-                    "settings": {
-                        "collection": ""
-                    }
-                },
-                {
-                    "type": "collection",
-                    "settings": {
-                        "collection": ""
-                    }
-                },
-                {
-                    "type": "collection",
-                    "settings": {
-                        "collection": ""
-                    }
-                }
+                { "type": "collection-card", "settings": { "collection": "" } },
+                { "type": "collection-card", "settings": { "collection": "" } },
+                { "type": "collection-card", "settings": { "collection": "" } }
             ]
         }
     ]
