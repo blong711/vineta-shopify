@@ -104,12 +104,12 @@
           "settings": {
             "collection": "top",
             "button_bg_color": "#000000",
-            "button_text_color": "#FFFFFF",
+            "button_text_color": "#ffffff",
             "button_hover_bg_color": "#333333",
-            "button_hover_text_color": "#FFFFFF",
+            "button_hover_text_color": "#ffffff",
             "tag": "",
             "tag_bg_color": "#000000",
-            "tag_text_color": "#FFFFFF",
+            "tag_text_color": "#ffffff",
             "price_new": "",
             "price_old": "",
             "price_color": "#000000",
@@ -123,12 +123,12 @@
           "settings": {
             "collection": "accessories",
             "button_bg_color": "#000000",
-            "button_text_color": "#FFFFFF",
+            "button_text_color": "#ffffff",
             "button_hover_bg_color": "#333333",
-            "button_hover_text_color": "#FFFFFF",
+            "button_hover_text_color": "#ffffff",
             "tag": "",
             "tag_bg_color": "#000000",
-            "tag_text_color": "#FFFFFF",
+            "tag_text_color": "#ffffff",
             "price_new": "",
             "price_old": "",
             "price_color": "#000000",
@@ -142,12 +142,12 @@
           "settings": {
             "collection": "sportwear",
             "button_bg_color": "#000000",
-            "button_text_color": "#FFFFFF",
+            "button_text_color": "#ffffff",
             "button_hover_bg_color": "#333333",
-            "button_hover_text_color": "#FFFFFF",
+            "button_hover_text_color": "#ffffff",
             "tag": "",
             "tag_bg_color": "#000000",
-            "tag_text_color": "#FFFFFF",
+            "tag_text_color": "#ffffff",
             "price_new": "",
             "price_old": "",
             "price_color": "#000000",
@@ -161,12 +161,12 @@
           "settings": {
             "collection": "men",
             "button_bg_color": "#000000",
-            "button_text_color": "#FFFFFF",
+            "button_text_color": "#ffffff",
             "button_hover_bg_color": "#333333",
-            "button_hover_text_color": "#FFFFFF",
+            "button_hover_text_color": "#ffffff",
             "tag": "",
             "tag_bg_color": "#000000",
-            "tag_text_color": "#FFFFFF",
+            "tag_text_color": "#ffffff",
             "price_new": "",
             "price_old": "",
             "price_color": "#000000",
@@ -180,12 +180,12 @@
           "settings": {
             "collection": "women",
             "button_bg_color": "#000000",
-            "button_text_color": "#FFFFFF",
+            "button_text_color": "#ffffff",
             "button_hover_bg_color": "#333333",
-            "button_hover_text_color": "#FFFFFF",
+            "button_hover_text_color": "#ffffff",
             "tag": "",
             "tag_bg_color": "#000000",
-            "tag_text_color": "#FFFFFF",
+            "tag_text_color": "#ffffff",
             "price_new": "",
             "price_old": "",
             "price_color": "#000000",
@@ -220,8 +220,9 @@
     "best_sellers": {
       "type": "best-sellers",
       "blocks": {
-        "product_PM8ych": {
-          "type": "product",
+        "product_card_fLeGFA": {
+          "type": "product-card",
+          "name": "Default",
           "settings": {
             "product": "turtleneck-t-shirt",
             "show_sale_badge": true,
@@ -229,10 +230,12 @@
             "show_quick_view": true,
             "show_wishlist": true,
             "product_card_style": "style-4"
-          }
+          },
+          "blocks": {}
         },
-        "product_ED3yMn": {
-          "type": "product",
+        "product_card_hzmGfE": {
+          "type": "product-card",
+          "name": "Default",
           "settings": {
             "product": "loose-fit-tee",
             "show_sale_badge": true,
@@ -240,10 +243,12 @@
             "show_quick_view": true,
             "show_wishlist": true,
             "product_card_style": "style-4"
-          }
+          },
+          "blocks": {}
         },
-        "product_BErxeB": {
-          "type": "product",
+        "product_card_QNgfjm": {
+          "type": "product-card",
+          "name": "Default",
           "settings": {
             "product": "crop-t-shirt",
             "show_sale_badge": true,
@@ -251,10 +256,12 @@
             "show_quick_view": true,
             "show_wishlist": true,
             "product_card_style": "style-4"
-          }
+          },
+          "blocks": {}
         },
-        "product_RnR4fH": {
-          "type": "product",
+        "product_card_TfY3kF": {
+          "type": "product-card",
+          "name": "Default",
           "settings": {
             "product": "short-sleeve-sweat",
             "show_sale_badge": true,
@@ -262,10 +269,25 @@
             "show_quick_view": true,
             "show_wishlist": true,
             "product_card_style": "style-4"
-          }
+          },
+          "blocks": {}
         },
-        "product_qfBjzE": {
-          "type": "product",
+        "product_card_Q7XAmX": {
+          "type": "product-card",
+          "name": "Default",
+          "settings": {
+            "product": "polo-neck-t-shirt",
+            "show_sale_badge": true,
+            "show_color_swatches": true,
+            "show_quick_view": true,
+            "show_wishlist": true,
+            "product_card_style": "style-4"
+          },
+          "blocks": {}
+        },
+        "product_card_aMMDbj": {
+          "type": "product-card",
+          "name": "Default",
           "settings": {
             "product": "round-neck-boxy-t-shirt",
             "show_sale_badge": true,
@@ -273,15 +295,17 @@
             "show_quick_view": true,
             "show_wishlist": true,
             "product_card_style": "style-4"
-          }
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "product_PM8ych",
-        "product_ED3yMn",
-        "product_BErxeB",
-        "product_RnR4fH",
-        "product_qfBjzE"
+        "product_card_fLeGFA",
+        "product_card_hzmGfE",
+        "product_card_QNgfjm",
+        "product_card_TfY3kF",
+        "product_card_Q7XAmX",
+        "product_card_aMMDbj"
       ],
       "settings": {
         "section_title": "Best Sellers",
