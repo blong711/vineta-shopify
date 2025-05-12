@@ -16,13 +16,6 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/slide1_home01.webp",
-            "enable_custom_fonts": false,
-            "heading_font": "font-1",
-            "heading_size": "display-md",
-            "heading_weight": "fw-medium",
-            "subtitle_font": "font-1",
-            "subtitle_size": "text-md",
-            "subtitle_weight": "fw-medium",
             "heading_color": "#000000",
             "subtitle_color": "#666666",
             "subheading_color": "#666666",
@@ -37,19 +30,13 @@
             "subheading": "Discover the latest trends in fashion that speak your style.",
             "button_text": "Shop Collection",
             "button_link": "/collections/all"
-          }
+          },
+          "blocks": {}
         },
         "slide_JxNqNB": {
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/slide2_home01.webp",
-            "enable_custom_fonts": false,
-            "heading_font": "font-1",
-            "heading_size": "display-md",
-            "heading_weight": "fw-medium",
-            "subtitle_font": "font-1",
-            "subtitle_size": "text-md",
-            "subtitle_weight": "fw-medium",
             "heading_color": "#000000",
             "subtitle_color": "#666666",
             "subheading_color": "#666666",
@@ -64,19 +51,13 @@
             "subheading": "Discover timeless styles for every occasion.",
             "button_text": "Shop Collection",
             "button_link": "/collections/new-arrivals"
-          }
+          },
+          "blocks": {}
         },
         "slide_PrAeGV": {
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/slide3_home01.webp",
-            "enable_custom_fonts": false,
-            "heading_font": "font-1",
-            "heading_size": "display-md",
-            "heading_weight": "fw-medium",
-            "subtitle_font": "font-1",
-            "subtitle_size": "text-md",
-            "subtitle_weight": "fw-medium",
             "heading_color": "#000000",
             "subtitle_color": "#666666",
             "subheading_color": "#666666",
@@ -91,7 +72,8 @@
             "subheading": "Timeless pieces to refresh your look for every season.",
             "button_text": "Shop Collection",
             "button_link": "/collections/featured"
-          }
+          },
+          "blocks": {}
         }
       },
       "block_order": [
@@ -116,123 +98,68 @@
     "featured_collection": {
       "type": "featured-collection",
       "blocks": {
-        "collection_xYCj9Y": {
-          "type": "collection",
+        "collection_card_ceQ4Ck": {
+          "type": "collection-card",
+          "name": "Default",
           "settings": {
             "collection": "top",
-            "enable_custom_fonts": false,
-            "title_font": "font-1",
-            "title_size": "text-md",
-            "title_weight": "fw-medium",
-            "title_color": "#000000",
-            "tag_bg_color": "#ffffff",
-            "tag_text_color": "#000000",
-            "price_color": "#000000",
-            "button_bg_color": "#ffffff",
-            "button_text_color": "#000000",
-            "button_hover_bg_color": "#000000",
-            "button_hover_text_color": "#ffffff",
+            "button_bg_color": "#000000",
+            "button_text_color": "#FFFFFF",
+            "button_hover_bg_color": "#333333",
+            "button_hover_text_color": "#FFFFFF",
             "tag": "",
+            "tag_bg_color": "#000000",
+            "tag_text_color": "#FFFFFF",
             "price_new": "",
             "price_old": "",
+            "price_color": "#000000",
             "button_text": "See Details"
-          }
+          },
+          "blocks": {}
         },
-        "collection_eXrWLV": {
-          "type": "collection",
+        "collection_card_C9AwA7": {
+          "type": "collection-card",
+          "name": "Default",
           "settings": {
             "collection": "accessories",
-            "enable_custom_fonts": false,
-            "title_font": "font-1",
-            "title_size": "text-md",
-            "title_weight": "fw-medium",
-            "title_color": "#000000",
-            "tag_bg_color": "#ffffff",
-            "tag_text_color": "#000000",
-            "price_color": "#000000",
-            "button_bg_color": "#ffffff",
-            "button_text_color": "#000000",
-            "button_hover_bg_color": "#000000",
-            "button_hover_text_color": "#ffffff",
+            "button_bg_color": "#000000",
+            "button_text_color": "#FFFFFF",
+            "button_hover_bg_color": "#333333",
+            "button_hover_text_color": "#FFFFFF",
             "tag": "",
+            "tag_bg_color": "#000000",
+            "tag_text_color": "#FFFFFF",
             "price_new": "",
             "price_old": "",
+            "price_color": "#000000",
             "button_text": "See Details"
-          }
+          },
+          "blocks": {}
         },
-        "collection_TGPEVV": {
-          "type": "collection",
+        "collection_card_K9zWF3": {
+          "type": "collection-card",
+          "name": "Default",
           "settings": {
             "collection": "sportwear",
-            "enable_custom_fonts": false,
-            "title_font": "font-1",
-            "title_size": "text-md",
-            "title_weight": "fw-medium",
-            "title_color": "#000000",
-            "tag_bg_color": "#ffffff",
-            "tag_text_color": "#000000",
-            "price_color": "#000000",
-            "button_bg_color": "#ffffff",
-            "button_text_color": "#000000",
-            "button_hover_bg_color": "#000000",
-            "button_hover_text_color": "#ffffff",
+            "button_bg_color": "#000000",
+            "button_text_color": "#FFFFFF",
+            "button_hover_bg_color": "#333333",
+            "button_hover_text_color": "#FFFFFF",
             "tag": "",
+            "tag_bg_color": "#000000",
+            "tag_text_color": "#FFFFFF",
             "price_new": "",
             "price_old": "",
-            "button_text": "See Details"
-          }
-        },
-        "collection_KeYWaw": {
-          "type": "collection",
-          "settings": {
-            "collection": "men",
-            "enable_custom_fonts": false,
-            "title_font": "font-1",
-            "title_size": "text-md",
-            "title_weight": "fw-medium",
-            "title_color": "#000000",
-            "tag_bg_color": "#ffffff",
-            "tag_text_color": "#000000",
             "price_color": "#000000",
-            "button_bg_color": "#ffffff",
-            "button_text_color": "#000000",
-            "button_hover_bg_color": "#000000",
-            "button_hover_text_color": "#ffffff",
-            "tag": "",
-            "price_new": "",
-            "price_old": "",
             "button_text": "See Details"
-          }
-        },
-        "collection_R6KPnB": {
-          "type": "collection",
-          "settings": {
-            "collection": "women",
-            "enable_custom_fonts": false,
-            "title_font": "font-1",
-            "title_size": "text-md",
-            "title_weight": "fw-medium",
-            "title_color": "#000000",
-            "tag_bg_color": "#ffffff",
-            "tag_text_color": "#000000",
-            "price_color": "#000000",
-            "button_bg_color": "#ffffff",
-            "button_text_color": "#000000",
-            "button_hover_bg_color": "#000000",
-            "button_hover_text_color": "#ffffff",
-            "tag": "",
-            "price_new": "",
-            "price_old": "",
-            "button_text": "See Details"
-          }
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "collection_xYCj9Y",
-        "collection_eXrWLV",
-        "collection_TGPEVV",
-        "collection_KeYWaw",
-        "collection_R6KPnB"
+        "collection_card_ceQ4Ck",
+        "collection_card_C9AwA7",
+        "collection_card_K9zWF3"
       ],
       "settings": {
         "layout": "default",
@@ -319,10 +246,6 @@
       "settings": {
         "section_title": "Best Sellers",
         "products_to_show": 4,
-        "enable_custom_fonts": false,
-        "title_font": "font-1",
-        "title_size": "text-xl",
-        "title_weight": "fw-medium",
         "title_color": "#000000",
         "section_bg_color": "#ffffff",
         "autoplay": false,
@@ -400,19 +323,6 @@
         "button_text": "Categories",
         "products_to_show": 6,
         "products_per_collection": 6,
-        "enable_custom_fonts": false,
-        "title_font": "font-1",
-        "title_size": "text-xl",
-        "title_weight": "fw-medium",
-        "tab_font": "font-1",
-        "tab_size": "text-md",
-        "tab_weight": "fw-medium",
-        "product_font": "font-1",
-        "product_size": "text-md",
-        "product_weight": "fw-medium",
-        "button_font": "font-1",
-        "button_size": "text-md",
-        "button_weight": "fw-medium",
         "section_bg_color": "#ffffff",
         "title_color": "#000000",
         "tab_color": "#545454",
@@ -477,10 +387,6 @@
       "settings": {
         "title": "Today's Picks",
         "products_to_show": 4,
-        "enable_custom_fonts": false,
-        "title_font": "font-1",
-        "title_size": "text-xl",
-        "title_weight": "fw-medium",
         "section_bg_color": "#ffffff",
         "title_color": "#000000",
         "product_style": "style-4",
@@ -564,13 +470,6 @@
         "layout": "default",
         "title": "Happy Customers",
         "subtitle": "Experience with our products",
-        "enable_custom_fonts": false,
-        "title_font": "font-1",
-        "title_size": "text-xl",
-        "title_weight": "fw-medium",
-        "subtitle_font": "font-1",
-        "subtitle_size": "text-md",
-        "subtitle_weight": "fw-medium",
         "section_bg_color": "#ffffff",
         "title_color": "#000000",
         "subtitle_color": "#666666",
