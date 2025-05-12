@@ -1,0 +1,67 @@
+{% render 'card-product',
+  product: block.settings.product,
+  style: block.settings.product_card_style,
+  show_sale_badge: block.settings.show_sale_badge,
+  show_color_swatches: block.settings.show_color_swatches,
+  show_quick_view: block.settings.show_quick_view,
+  show_wishlist: block.settings.show_wishlist,
+  selected_variant: block.settings.product.selected_or_first_available_variant
+%}
+
+{% schema %}
+{
+  "name": "Product Card",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "header",
+      "content": "Product Card Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sale_badge",
+      "label": "Show sale badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_color_swatches",
+      "label": "Show color swatches",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_view",
+      "label": "Show quick view button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "label": "Show wishlist button",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "product_card_style",
+      "label": "Product card style",
+      "options": [
+        { "value": "style-1", "label": "Style 1" },
+        { "value": "style-2", "label": "Style 2" },
+        { "value": "style-3", "label": "Style 3" },
+        { "value": "style-4", "label": "Style 4" }
+      ],
+      "default": "style-4"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Default"
+    }
+  ]
+}
+{% endschema %} 
