@@ -27191,3 +27191,8 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 .breadcrumb-list .current {
   color: var(--dark);
 }
+@media (min-width: 1200px) {
+  .footer-default .footer-info .item:not(:last-child) .box-icon {
+      margin-top: -3px;
+  }
+}
