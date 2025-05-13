@@ -39,7 +39,22 @@
                         <div class="box-content">
                             <div class="container">
                                 <div class="row">
-                                    <div class="{%- if block.settings.content_alignment == 'right' -%}col-lg-5 offset-lg-7 col-sm-6 offset-sm-6{%- elsif section.settings.layout == 'layout1' and block.settings.content_alignment == 'right' -%}offset-lg-8 col-lg-4 col-sm-6 offset-6{%- elsif section.settings.layout == 'layout2' -%}col-lg-5 col-md-6 col-sm-7 col-10{%- elsif section.settings.layout == 'layout3' -%}col-lg-5 col-md-6 col-sm-10{%- elsif section.settings.layout == 'layout4' -%}col-lg-5 col-md-6 col-sm-10{%- else -%}col-lg-12 col-sm-6{%- endif -%} col-12">
+                                    <div class="
+                                        {%- if block.settings.content_alignment == 'right' -%}
+                                            col-lg-5 offset-lg-7 col-sm-6 offset-sm-6
+                                        {%- elsif block.settings.content_alignment == 'center' -%}
+                                            mx-auto text-center col-lg-8 col-md-10 col-sm-12
+                                        {%- elsif section.settings.layout == 'layout1' and block.settings.content_alignment == 'right' -%}
+                                            offset-lg-8 col-lg-4 col-sm-6 offset-6
+                                        {%- elsif section.settings.layout == 'layout2' -%}
+                                            col-lg-5 col-md-6 col-sm-7 col-10
+                                        {%- elsif section.settings.layout == 'layout3' -%}
+                                            col-lg-5 col-md-6 col-sm-10
+                                        {%- elsif section.settings.layout == 'layout4' -%}
+                                            col-lg-5 col-md-6 col-sm-10
+                                        {%- else -%}
+                                            col-lg-12 col-sm-6
+                                        {%- endif -%} col-12">
                                         <div class="content-slider {% if section.settings.layout == 'layout2' or section.settings.layout == 'layout3' %}style-2{% endif %}">
                                             <div class="box-title-slider {% if section.settings.layout == 'layout2' %}text-center{% endif %}">
                                                 {% if section.settings.layout == 'layout1' %}
