@@ -216,6 +216,49 @@
             "id": "show_dots",
             "label": "Show dots (pagination)",
             "default": true
+        },
+        {
+            "type": "range",
+            "id": "padding",
+            "label": "Slider Padding (px)",
+            "min": 0,
+            "max": 100,
+            "step": 2,
+            "default": 0
+        },
+        {
+            "type": "checkbox",
+            "id": "pause_on_hover",
+            "label": "Pause autoplay on hover",
+            "default": true
+        },
+        {
+            "type": "select",
+            "id": "effect",
+            "label": "Transition effect",
+            "options": [
+                { "value": "slide", "label": "Slide" },
+                { "value": "fade", "label": "Fade" },
+                { "value": "cube", "label": "Cube" },
+                { "value": "coverflow", "label": "Coverflow" }
+            ],
+            "default": "slide"
+        },
+        {
+            "type": "select",
+            "id": "direction",
+            "label": "Transition direction",
+            "options": [
+                { "value": "horizontal", "label": "Horizontal" },
+                { "value": "vertical", "label": "Vertical" }
+            ],
+            "default": "horizontal"
+        },
+        {
+            "type": "checkbox",
+            "id": "draggable",
+            "label": "Enable drag on desktop",
+            "default": true
         }
     ],
     "blocks": [
