@@ -23,7 +23,8 @@
                                     alt="{{ block.settings.image.alt | escape }}" 
                                     class="lazyload"
                                     width="{{ block.settings.image.width }}"
-                                    height="{{ block.settings.image.height }}">
+                                    height="{{ block.settings.image.height }}"
+                                    style="{% if section.settings.image_height_mode == 'fixed' %}height: {{ section.settings.fixed_height }}px; object-fit: cover;{% endif %} {% if section.settings.mobile_image_height_mode == 'fixed' %}@media (max-width: 767px) { height: {{ section.settings.mobile_fixed_height }}px !important; object-fit: cover; }{% endif %}">
                             {% endif %}
                         </div>
                         <div class="box-content">
@@ -127,6 +128,46 @@
                 { "value": "boxed", "label": "Boxed" }
             ],
             "default": "full"
+        },
+        {
+            "type": "select",
+            "id": "image_height_mode",
+            "label": "Image height",
+            "options": [
+                { "value": "adapt", "label": "Adapt to image" },
+                { "value": "fixed", "label": "Fixed height" }
+            ],
+            "default": "adapt"
+        },
+        {
+            "type": "range",
+            "id": "fixed_height",
+            "label": "Fixed height (desktop)",
+            "min": 200,
+            "max": 1200,
+            "step": 10,
+            "unit": "px",
+            "default": 600
+        },
+        {
+            "type": "select",
+            "id": "mobile_image_height_mode",
+            "label": "Mobile image height",
+            "options": [
+                { "value": "adapt", "label": "Adapt to image" },
+                { "value": "fixed", "label": "Fixed height" }
+            ],
+            "default": "fixed"
+        },
+        {
+            "type": "range",
+            "id": "mobile_fixed_height",
+            "label": "Fixed height (mobile)",
+            "min": 100,
+            "max": 800,
+            "step": 10,
+            "unit": "px",
+            "default": 400
         },
         {
             "type": "checkbox",
