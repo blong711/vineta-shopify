@@ -86,6 +86,7 @@
                 </div>
             {% endfor %}
         </div>
+        {% if section.settings.show_dots %}
         <div class="wrap-pagination">
             {% if section.settings.width == 'boxed' %}
             <div class="container">
@@ -95,6 +96,11 @@
             </div>
             {% endif %}
         </div>
+        {% endif %}
+        {% if section.settings.show_navigation %}
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+        {% endif %}
     </div>
     {% if section.settings.width == 'boxed' %}
         </div>
@@ -192,6 +198,18 @@
             "unit": "ms",
             "label": "Transition speed",
             "default": 800
+        },
+        {
+            "type": "checkbox",
+            "id": "show_navigation",
+            "label": "Show navigation (prev/next arrows)",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_dots",
+            "label": "Show dots (pagination)",
+            "default": true
         }
     ],
     "blocks": [
