@@ -462,6 +462,58 @@
         "instagram_user_id": "",
         "instagram_access_token": ""
       }
+    },
+    "icon_boxes_6PFzU6": {
+      "type": "icon-boxes",
+      "blocks": {
+        "icon_box_aieJRm": {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-shipping",
+            "title": "Free Shipping",
+            "description": "Enjoy free shipping on all orders"
+          }
+        },
+        "icon_box_MdQMtD": {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-gift",
+            "title": "Gift Package",
+            "description": "Perfectly packaged for gifting"
+          }
+        },
+        "icon_box_mDgFET": {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-return",
+            "title": "Free Returns",
+            "description": "Within 14 days for a return"
+          }
+        },
+        "icon_box_p6rwcF": {
+          "type": "icon_box",
+          "settings": {
+            "icon": "icon-support",
+            "title": "Support Online",
+            "description": "We support customers 24/7"
+          }
+        }
+      },
+      "block_order": [
+        "icon_box_aieJRm",
+        "icon_box_MdQMtD",
+        "icon_box_mDgFET",
+        "icon_box_p6rwcF"
+      ],
+      "name": "Icon Box",
+      "settings": {
+        "layout": "default",
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "space_between": 10,
+        "show_pagination": true
+      }
     }
   },
   "order": [
@@ -473,6 +525,7 @@
     "todays_picks",
     "testimonials",
     "brands",
-    "shop_gram"
+    "shop_gram",
+    "icon_boxes_6PFzU6"
   ]
 }
