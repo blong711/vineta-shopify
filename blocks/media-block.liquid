@@ -1,0 +1,210 @@
+{% schema %}
+{
+  "name": "Media Block",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video"
+    },
+    {
+      "type": "select",
+      "id": "media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "select",
+      "id": "media_size",
+      "label": "Media size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "full",
+          "label": "Full width"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "media_fit",
+      "label": "Media fit",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Contain"
+        },
+        {
+          "value": "cover",
+          "label": "Cover"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "select",
+      "id": "media_alignment",
+      "label": "Media alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin bottom",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Media Block"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="media-block media-block--{{ block.settings.media_size }} media-block--{{ block.settings.media_alignment }}"
+     style="
+       margin-top: {{ block.settings.margin_top }}px;
+       margin-bottom: {{ block.settings.margin_bottom }}px;
+     ">
+  {% if block.settings.media_type == 'image' and block.settings.image != blank %}
+    <div class="media-block__image-wrapper" style="border-radius: {{ block.settings.border_radius }}px; overflow: hidden;">
+      {{ block.settings.image | image_url: width: 1500 | image_tag:
+        loading: 'lazy',
+        width: block.settings.image.width,
+        height: block.settings.image.height,
+        class: 'media-block__image',
+        style: 'object-fit: ' | append: block.settings.media_fit
+      }}
+    </div>
+  {% elsif block.settings.media_type == 'video' and block.settings.video != blank %}
+    <div class="media-block__video-wrapper" style="border-radius: {{ block.settings.border_radius }}px; overflow: hidden;">
+      {{ block.settings.video | video_tag:
+        controls: true,
+        class: 'media-block__video',
+        style: 'object-fit: ' | append: block.settings.media_fit
+      }}
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .media-block {
+    width: 100%;
+  }
+
+  .media-block--small {
+    max-width: 300px;
+  }
+
+  .media-block--medium {
+    max-width: 600px;
+  }
+
+  .media-block--large {
+    max-width: 900px;
+  }
+
+  .media-block--full {
+    max-width: 100%;
+  }
+
+  .media-block--left {
+    margin-right: auto;
+  }
+
+  .media-block--center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .media-block--right {
+    margin-left: auto;
+  }
+
+  .media-block__image-wrapper,
+  .media-block__video-wrapper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .media-block__image,
+  .media-block__video {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  @media screen and (max-width: 749px) {
+    .media-block--small,
+    .media-block--medium,
+    .media-block--large {
+      max-width: 100%;
+    }
+  }
+</style> 

@@ -1,0 +1,39 @@
+<div class="text-block text-block--{{ block.settings.text_style }} text-block--{{ block.settings.text_alignment }}" 
+     style="
+       font-size: {{ block.settings.text_size }}px;
+       color: {{ block.settings.text_color }};
+     ">
+  {{ block.settings.text }}
+</div>
+
+<style>
+  .text-block {
+    width: 100%;
+  }
+
+  .text-block--body {
+    font-weight: normal;
+  }
+
+  .text-block--subtitle {
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  .text-block--caption {
+    font-size: 0.875em;
+    font-weight: 300;
+  }
+
+  .text-block--left {
+    text-align: left;
+  }
+
+  .text-block--center {
+    text-align: center;
+  }
+
+  .text-block--right {
+    text-align: right;
+  }
+</style> 

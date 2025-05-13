@@ -1,0 +1,176 @@
+{% schema %}
+{
+  "name": "Button Block",
+  "settings": [
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Button"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        },
+        {
+          "value": "outline",
+          "label": "Outline"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin bottom",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Button Block"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="button-block-wrapper" 
+     style="
+       margin-top: {{ block.settings.margin_top }}px;
+       margin-bottom: {{ block.settings.margin_bottom }}px;
+     ">
+  {% if block.settings.button_label != blank %}
+    <a href="{{ block.settings.button_link }}" 
+       class="button button--{{ block.settings.button_style }} button--{{ block.settings.button_size }} {% if block.settings.full_width %}button--full-width{% endif %}"
+       style="
+         background-color: {% if block.settings.button_style == 'outline' %}transparent{% else %}{{ block.settings.button_color }}{% endif %};
+         color: {{ block.settings.button_text_color }};
+         border-radius: {{ block.settings.border_radius }}px;
+         {% if block.settings.button_style == 'outline' %}border: 2px solid {{ block.settings.button_color }};{% endif %}
+       ">
+      {{ block.settings.button_label }}
+    </a>
+  {% endif %}
+</div>
+
+<style>
+  .button-block-wrapper {
+    width: 100%;
+  }
+
+  .button {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .button--small {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .button--medium {
+    padding: 12px 24px;
+    font-size: 16px;
+  }
+
+  .button--large {
+    padding: 16px 32px;
+    font-size: 18px;
+  }
+
+  .button--full-width {
+    width: 100%;
+  }
+
+  .button--primary:hover {
+    opacity: 0.9;
+  }
+
+  .button--secondary:hover {
+    opacity: 0.9;
+  }
+
+  .button--outline:hover {
+    background-color: {{ block.settings.button_color }} !important;
+    color: {{ block.settings.button_text_color }} !important;
+  }
+</style> 

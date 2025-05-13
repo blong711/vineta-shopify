@@ -1,0 +1,501 @@
+{% schema %}
+{
+  "name": "Image with text",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "image_first",
+          "label": "Image first"
+        },
+        {
+          "value": "text_first",
+          "label": "Text first"
+        }
+      ],
+      "default": "image_first"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "label": "Desktop content position",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "middle",
+          "label": "Middle"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "middle"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        {
+          "value": "background-1",
+          "label": "Background 1"
+        },
+        {
+          "value": "background-2",
+          "label": "Background 2"
+        },
+        {
+          "value": "inverse",
+          "label": "Inverse"
+        }
+      ],
+      "default": "background-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text_block",
+      "name": "Text Block",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text content",
+          "default": "<p>Add your text here</p>"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "label": "Text style",
+          "options": [
+            {
+              "value": "body",
+              "label": "Body"
+            },
+            {
+              "value": "subtitle",
+              "label": "Subtitle"
+            },
+            {
+              "value": "caption",
+              "label": "Caption"
+            }
+          ],
+          "default": "body"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "range",
+          "id": "text_size",
+          "min": 12,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Text size",
+          "default": 16
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#000000"
+        }
+      ]
+    },
+    {
+      "type": "button_block",
+      "name": "Button Block",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Button"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primary"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "outline",
+              "label": "Outline"
+            }
+          ],
+          "default": "primary"
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "label": "Button size",
+          "options": [
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            }
+          ],
+          "default": "medium"
+        },
+        {
+          "type": "color",
+          "id": "button_color",
+          "label": "Button color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Border radius",
+          "default": 4
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Full width",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "media_block",
+      "name": "Media Block",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media type",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "video",
+              "label": "Video"
+            }
+          ],
+          "default": "image"
+        },
+        {
+          "type": "select",
+          "id": "media_size",
+          "label": "Media size",
+          "options": [
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            },
+            {
+              "value": "full",
+              "label": "Full width"
+            }
+          ],
+          "default": "medium"
+        },
+        {
+          "type": "select",
+          "id": "media_fit",
+          "label": "Media fit",
+          "options": [
+            {
+              "value": "contain",
+              "label": "Contain"
+            },
+            {
+              "value": "cover",
+              "label": "Cover"
+            }
+          ],
+          "default": "cover"
+        },
+        {
+          "type": "select",
+          "id": "media_alignment",
+          "label": "Media alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Border radius",
+          "default": 0
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text",
+      "blocks": [
+        {
+          "type": "text_block"
+        },
+        {
+          "type": "button_block"
+        },
+        {
+          "type": "media_block"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<div class="section-{{ section.id }}-padding color-{{ section.settings.color_scheme }}">
+  <div class="{% if section.settings.full_width %}full-width{% else %}page-width{% endif %}">
+    <div class="image-with-text image-with-text--{{ section.settings.layout }} grid grid--gapless grid--1-col grid--2-col-tablet">
+      {%- for block in section.blocks -%}
+        {% case block.type %}
+          {% when 'media_block' %}
+            <div class="image-with-text__media-item grid__item" {{ block.shopify_attributes }}>
+              {% include 'blocks/media-block' %}
+            </div>
+          {% when 'text_block' %}
+            <div class="image-with-text__text-item grid__item" {{ block.shopify_attributes }}>
+              <div class="image-with-text__content image-with-text__content--{{ section.settings.desktop_content_position }} image-with-text__content--{{ section.settings.content_alignment }}">
+                {% include 'blocks/text-block' %}
+              </div>
+            </div>
+          {% when 'button_block' %}
+            <div class="image-with-text__text-item grid__item" {{ block.shopify_attributes }}>
+              <div class="image-with-text__content image-with-text__content--{{ section.settings.desktop_content_position }} image-with-text__content--{{ section.settings.content_alignment }}">
+                {% include 'blocks/button-block' %}
+              </div>
+            </div>
+        {% endcase %}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .image-with-text {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .image-with-text--image_first {
+    flex-direction: row;
+  }
+
+  .image-with-text--text_first {
+    flex-direction: row-reverse;
+  }
+
+  .image-with-text__media-item {
+    flex: 1 1 50%;
+    min-width: 300px;
+  }
+
+  .image-with-text__text-item {
+    flex: 1 1 50%;
+    padding: 2rem;
+  }
+
+  .image-with-text__content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .image-with-text__content--top {
+    justify-content: flex-start;
+  }
+
+  .image-with-text__content--middle {
+    justify-content: center;
+  }
+
+  .image-with-text__content--bottom {
+    justify-content: flex-end;
+  }
+
+  .image-with-text__content--left {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .image-with-text__content--center {
+    align-items: center;
+    text-align: center;
+  }
+
+  .image-with-text__content--right {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  @media screen and (max-width: 749px) {
+    .image-with-text {
+      flex-direction: column;
+    }
+
+    .image-with-text__media-item,
+    .image-with-text__text-item {
+      flex: 1 1 100%;
+    }
+
+    .image-with-text--image_first,
+    .image-with-text--text_first {
+      flex-direction: column;
+    }
+  }
+</style> 

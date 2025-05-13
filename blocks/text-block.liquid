@@ -1,0 +1,134 @@
+{% schema %}
+{
+  "name": "Text Block",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text content",
+      "default": "<p>Add your text here</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_style",
+      "label": "Text style",
+      "options": [
+        {
+          "value": "body",
+          "label": "Body"
+        },
+        {
+          "value": "subtitle",
+          "label": "Subtitle"
+        },
+        {
+          "value": "caption",
+          "label": "Caption"
+        }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 12,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin bottom",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text Block"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="text-block text-block--{{ block.settings.text_style }} text-block--{{ block.settings.text_alignment }}" 
+     style="
+       font-size: {{ block.settings.text_size }}px;
+       color: {{ block.settings.text_color }};
+     ">
+  {{ block.settings.text }}
+</div>
+
+<style>
+  .text-block {
+    width: 100%;
+  }
+
+  .text-block--body {
+    font-weight: normal;
+  }
+
+  .text-block--subtitle {
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  .text-block--caption {
+    font-size: 0.875em;
+    font-weight: 300;
+  }
+
+  .text-block--left {
+    text-align: left;
+  }
+
+  .text-block--center {
+    text-align: center;
+  }
+
+  .text-block--right {
+    text-align: right;
+  }
+</style> 

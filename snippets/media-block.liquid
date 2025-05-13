@@ -1,0 +1,34 @@
+{% if block.settings.media_type == 'image' and block.settings.image != blank %}
+  <div class="media-block__image-wrapper" style="border-radius: {{ block.settings.border_radius }}px; overflow: hidden;">
+    {{ block.settings.image | image_url: width: 1500 | image_tag:
+      loading: 'lazy',
+      width: block.settings.image.width,
+      height: block.settings.image.height,
+      class: 'media-block__image',
+      style: 'object-fit: ' | append: block.settings.media_fit
+    }}
+  </div>
+{% elsif block.settings.media_type == 'video' and block.settings.video != blank %}
+  <div class="media-block__video-wrapper" style="border-radius: {{ block.settings.border_radius }}px; overflow: hidden;">
+    {{ block.settings.video | video_tag:
+      controls: true,
+      class: 'media-block__video',
+      style: 'object-fit: ' | append: block.settings.media_fit
+    }}
+  </div>
+{% endif %}
+
+<style>
+  .media-block__image-wrapper,
+  .media-block__video-wrapper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .media-block__image,
+  .media-block__video {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+</style> 
