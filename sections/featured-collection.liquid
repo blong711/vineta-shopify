@@ -15,9 +15,7 @@
                 "prevEl": ".nav-prev-cls"
             },
             {% endif %}
-            {% if section.settings.enable_pagination %}
             "pagination": { "el": ".sw-pagination-cls", "clickable": true },
-            {% endif %}
             {% if section.settings.enable_autoplay %}
             "autoplay": {
                 "delay": {{ section.settings.autoplay_speed }},
@@ -73,9 +71,7 @@
                     "prevEl": ".nav-prev-cls"
                 },
                 {% endif %}
-                {% if section.settings.enable_pagination %}
                 "pagination": { "el": ".sw-pagination-cls", "clickable": true },
-                {% endif %}
                 {% if section.settings.enable_autoplay %}
                 "autoplay": {
                     "delay": {{ section.settings.autoplay_speed }},
@@ -148,9 +144,7 @@
                 "prevEl": ".nav-prev-cls"
             },
             {% endif %}
-            {% if section.settings.enable_pagination %}
             "pagination": { "el": ".sw-pagination-cls", "clickable": true },
-            {% endif %}
             {% if section.settings.enable_autoplay %}
             "autoplay": {
                 "delay": {{ section.settings.autoplay_speed }},
@@ -207,9 +201,7 @@
                         "prevEl": ".nav-prev-cls"
                     },
                     {% endif %}
-                    {% if section.settings.enable_pagination %}
                     "pagination": { "el": ".sw-pagination-cls", "clickable": true },
-                    {% endif %}
                     {% if section.settings.enable_autoplay %}
                     "autoplay": {
                         "delay": {{ section.settings.autoplay_speed }},
@@ -328,12 +320,6 @@
             "type": "checkbox",
             "id": "enable_navigation",
             "label": "Enable navigation arrows",
-            "default": true
-        },
-        {
-            "type": "checkbox",
-            "id": "enable_pagination",
-            "label": "Enable pagination dots",
             "default": true
         },
         {
