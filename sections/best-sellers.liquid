@@ -1,20 +1,15 @@
-<section class="flat-spacing-3 overflow-hidden" style="background-color: {{ section.settings.section_bg_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+<section class="flat-spacing-3 overflow-hidden">
   <div class="container">
-    <div class="flat-title {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
-      <h4 class="title" style="color: {{ section.settings.title_color }};">
-        {{ section.settings.section_title }}
-      </h4>
+    <div class="flat-title wow fadeInUp">
+      <h4 class="title">{{ section.settings.section_title }}</h4>
     </div>
-    <div class="fl-control-sw2 pos2 {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
+    <div class="fl-control-sw2 pos2 wow fadeInUp">
       <div dir="ltr" class="swiper tf-swiper wrap-sw-over" 
         data-swiper='{
           "slidesPerView": 2,
-          "spaceBetween": {{ section.settings.space_between }},
-          "speed": {{ section.settings.speed }},
+          "spaceBetween": 12,
+          "speed": 800,
           "slidesPerGroup": 2,
-          "autoplay": {% if section.settings.autoplay %}true{% else %}false{% endif %},
-          "autoplayDelay": {{ section.settings.autoplay_speed }},
-          "loop": {% if section.settings.loop %}true{% else %}false{% endif %},
           "navigation": {
             "clickable": true,
             "nextEl": ".nav-next-seller",
@@ -27,31 +22,33 @@
           "breakpoints": {
             "768": { 
               "slidesPerView": 3, 
-              "spaceBetween": {{ section.settings.space_between }}, 
+              "spaceBetween": 12, 
               "slidesPerGroup": 3 
             },
             "1200": { 
               "slidesPerView": {{ section.settings.products_to_show }}, 
-              "spaceBetween": {{ section.settings.space_between }}, 
+              "spaceBetween": 24, 
               "slidesPerGroup": {{ section.settings.products_to_show }}
             }
           }
         }'>
         <div class="swiper-wrapper">
-          {% for block in section.blocks %}
+          {%- for block in section.blocks -%}
             <div class="swiper-slide" {{ block.shopify_attributes }}>
-              {% render block %}
+              {% render 'card-product',
+                product: block.settings.product,
+                style: 'style-4',
+                show_sale_badge: true,
+                show_color_swatches: true,
+                selected_variant: block.settings.product.selected_or_first_available_variant
+              %}
             </div>
-          {% endfor %}
+          {%- endfor -%}
         </div>
-        {% if section.settings.show_dots %}
         <div class="d-flex d-xl-none sw-dot-default sw-pagination-seller justify-content-center"></div>
-        {% endif %}
       </div>
-      {% if section.settings.show_arrows %}
       <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-seller"></div>
       <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-seller"></div>
-      {% endif %}
     </div>
   </div>
 </section>
@@ -60,10 +57,6 @@
 {
   "name": "Best Sellers",
   "settings": [
-    {
-      "type": "header",
-      "content": "Section Settings"
-    },
     {
       "type": "text",
       "id": "section_title",
@@ -79,109 +72,21 @@
       "label": "Products to show at once",
       "default": 4,
       "info": "Number of products visible in the slider at the same time"
-    },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color",
-      "id": "title_color",
-      "label": "Title color",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "section_bg_color",
-      "label": "Section background color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "header",
-      "content": "Slider Settings"
-    },
-    {
-      "type": "checkbox",
-      "id": "autoplay",
-      "label": "Enable autoplay",
-      "default": true
-    },
-    {
-      "type": "range",
-      "id": "autoplay_speed",
-      "min": 2000,
-      "max": 9000,
-      "step": 500,
-      "unit": "ms",
-      "label": "Autoplay delay",
-      "default": 5000
-    },
-    {
-      "type": "checkbox",
-      "id": "loop",
-      "label": "Enable loop",
-      "default": true
-    },
-    {
-      "type": "range",
-      "id": "speed",
-      "min": 100,
-      "max": 2000,
-      "step": 100,
-      "unit": "ms",
-      "label": "Transition speed",
-      "default": 800
-    },
-    {
-      "type": "checkbox",
-      "id": "show_arrows",
-      "label": "Show navigation arrows",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_dots",
-      "label": "Show pagination dots",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Spacing"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 200,
-      "step": 4,
-      "unit": "px",
-      "label": "Top padding",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 200,
-      "step": 4,
-      "unit": "px",
-      "label": "Bottom padding",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "space_between",
-      "min": 0,
-      "max": 50,
-      "step": 2,
-      "unit": "px",
-      "label": "Space between products",
-      "default": 24
     }
   ],
   "max_blocks": 12,
   "blocks": [
-    { "type": "@theme" }
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
   ],
   "presets": [
     {
@@ -191,10 +96,18 @@
         "products_to_show": 4
       },
       "blocks": [
-        { "type": "product-card" },
-        { "type": "product-card" },
-        { "type": "product-card" },
-        { "type": "product-card" }
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        }
       ]
     }
   ]
