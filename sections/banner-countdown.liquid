@@ -1,82 +1,214 @@
 {%- if section.settings.show_section -%}
-<section class="s-banner-countdown {% if section.settings.layout == 'home-phonecase' %}banner-cd-phonecase{% else %}banner-cd-fashion{% endif %}" 
-  style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
-  <div class="container">
-    <div class="s-banner-countdown-inner">
-      <div class="swiper-wrapper">
-        {%- for block in section.blocks -%}
-          <div class="swiper-slide" {{ block.shopify_attributes }}>
-            {% render block, layout: section.settings.layout %}
+<section class="s-banner-countdown {% if section.settings.layout == 'home-phonecase' %}banner-cd-phonecase{% else %}banner-cd-fashion{% endif %}">
+  {%- if section.settings.layout == 'home-phonecase' -%}
+    <div class="banner-wrap">
+      <div class="banner-content text-center">
+        <div class="box-title">
+          {%- if section.settings.heading != blank -%}
+            <h4>{{ section.settings.heading }}</h4>
+          {%- endif -%}
+          {%- if section.settings.subheading != blank -%}
+            <p class="sub text-md">{{ section.settings.subheading }}</p>
+          {%- endif -%}
+        </div>
+        {%- if section.settings.show_countdown and section.settings.end_date != blank -%}
+          {%- assign end_date = section.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
+          <div class="box-countdown">
+            <div class="wg-countdown">
+              <div class="js-countdown d-flex justify-content-center" 
+                   data-countdown="{{ end_date }}"
+                   data-labels="Days,Hours,Mins,Secs"></div>
+            </div>
           </div>
-        {%- endfor -%}
+        {%- endif -%}
+        {%- if section.settings.button_label != blank -%}
+          <div class="box-btn">
+            <a href="{{ section.settings.button_link }}" class="tf-btn fw-normal animate-btn">
+              {{ section.settings.button_label }}
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="image">
+        {%- if section.settings.banner_image != blank -%}
+          <img src="{{ section.settings.banner_image | img_url: 'master' }}"
+            data-src="{{ section.settings.banner_image | img_url: 'master' }}"
+            alt="{{ section.settings.heading | escape }}"
+            width="{{ section.settings.banner_image.width }}"
+            height="{{ section.settings.banner_image.height }}"
+            class="lazyload effect-paralax">
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
       </div>
     </div>
-  </div>
+  {%- else -%}
+    <div class="container">
+      <div class="s-banner-countdown banner-cd-fashion">
+        <div class="image">
+          {%- if section.settings.banner_image != blank -%}
+            <img src="{{ section.settings.banner_image | img_url: 'master' }}"
+              data-src="{{ section.settings.banner_image | img_url: 'master' }}"
+              alt="{{ section.settings.heading | escape }}"
+              width="{{ section.settings.banner_image.width }}"
+              height="{{ section.settings.banner_image.height }}"
+              class="lazyload">
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+        <div class="banner-content text-center">
+          <div class="box-title wow fadeInUp">
+            {%- if section.settings.season_text != blank -%}
+              <p class="season text-md fw-medium">
+                {{ section.settings.season_text }}
+              </p>
+            {%- endif -%}
+            
+            {%- if section.settings.heading != blank -%}
+              <h2 class="fw-medium">
+                {{ section.settings.heading }}
+              </h2>
+            {%- endif -%}
+            
+            {%- if section.settings.promo_code != blank -%}
+              <p class="sub text-md fw-medium">
+                WITH PROMOTE CODE: {{ section.settings.promo_code }}
+              </p>
+            {%- endif -%}
+          </div>
+          {%- if section.settings.show_countdown and section.settings.end_date != blank -%}
+            {%- assign end_date = section.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
+            <div class="box-countdown d-flex justify-content-center wow fadeInUp">
+              <div class="wg-countdown-2">
+                <div class="js-countdown" 
+                     data-countdown="{{ end_date }}"
+                     data-labels="Days,Hours,Mins,Secs"></div>
+              </div>
+            </div>
+          {%- endif -%}
+          
+          {%- if section.settings.button_label != blank -%}
+            <div class="box-btn wow fadeInUp">
+              <a href="{{ section.settings.button_link }}" class="tf-btn btn-white hover-primary">
+                {{ section.settings.button_label }}
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
 </section>
 {%- endif -%}
 
 {% schema %}
 {
-  "name": "Banner Countdown",
-  "settings": [
-    {
-      "type": "header",
-      "content": "Layout Settings"
-    },
-    {
-      "type": "select",
-      "id": "layout",
-      "label": "Section Layout",
-      "options": [
-        { "value": "default", "label": "Default" },
-        { "value": "home-phonecase", "label": "Home Phonecase" }
-      ],
-      "default": "default"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_section",
-      "label": "Show section",
-      "default": true
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Top padding",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Bottom padding",
-      "default": 0
+"name": "Banner Countdown",
+"settings": [
+  {
+    "type": "header",
+    "content": "Layout Settings"
+  },
+  {
+    "type": "select",
+    "id": "layout",
+    "label": "Section Layout",
+    "options": [
+      { "value": "default", "label": "Default" },
+      { "value": "home-phonecase", "label": "Home Phonecase" }
+    ],
+    "default": "default"
+  },
+  {
+    "type": "checkbox",
+    "id": "show_section",
+    "label": "Show section",
+    "default": true
+  },
+  {
+    "type": "header",
+    "content": "Content Settings"
+  },
+  {
+    "type": "image_picker",
+    "id": "banner_image",
+    "label": "Banner image"
+  },
+  {
+    "type": "text",
+    "id": "heading",
+    "label": "Heading",
+    "default": "50% OFF"
+  },
+  {
+    "type": "text",
+    "id": "subheading",
+    "label": "Subheading",
+    "default": "Get your favorite cases at a discount"
+  },
+  {
+    "type": "text",
+    "id": "season_text",
+    "label": "Season Text",
+    "default": "SUMMER SALE"
+  },
+  {
+    "type": "text",
+    "id": "promo_code",
+    "label": "Promo Code",
+    "default": "12D34E"
+  },
+  {
+    "type": "checkbox",
+    "id": "show_countdown",
+    "label": "Show countdown timer",
+    "default": true
+  },
+  {
+    "type": "text",
+    "id": "end_date",
+    "label": "End date (YYYY-MM-DD HH:MM:SS)",
+    "default": "2024-12-31 23:59:59"
+  },
+  {
+    "type": "text",
+    "id": "button_label",
+    "label": "Button Label",
+    "default": "Shop Now"
+  },
+  {
+    "type": "url",
+    "id": "button_link",
+    "label": "Button Link"
+  }
+],
+"presets": [
+  {
+    "name": "Banner Countdown",
+    "settings": {
+      "show_section": true,
+      "layout": "default",
+      "season_text": "SUMMER SALE",
+      "heading": "50% OFF",
+      "promo_code": "12D34E",
+      "show_countdown": true,
+      "end_date": "2024-12-31 23:59:59",
+      "button_label": "Shop Now"
     }
-  ],
-  "blocks": [
-    { "type": "@theme" }
-  ],
-  "presets": [
-    {
-      "name": "Banner Countdown",
-      "blocks": [
-        { "type": "banner-countdown-block" }
-      ]
-    },
-    {
-      "name": "Banner Countdown (Phonecase)",
-      "settings": { "layout": "home-phonecase" },
-      "blocks": [
-        { "type": "banner-countdown-block" }
-      ]
+  },
+  {
+    "name": "Banner Countdown (Phonecase)",
+    "settings": {
+      "show_section": true,
+      "layout": "home-phonecase",
+      "heading": "Limited-Time Sale",
+      "subheading": "Get your favorite cases at a discount",
+      "show_countdown": true,
+      "end_date": "2024-12-31 23:59:59",
+      "button_label": "Shop Now"
     }
-  ]
+  }
+]
 }
 {% endschema %}
