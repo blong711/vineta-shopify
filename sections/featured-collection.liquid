@@ -27,17 +27,13 @@
                                 <img src="{{ collection.featured_image | img_url: 'master' }}"
                                     data-src="{{ collection.featured_image | img_url: 'master' }}" 
                                     alt="{{ collection.title | escape }}" 
-                                    class="lazyload {% if section.settings.enable_lazy_loading %}lazyload{% endif %}"
+                                    class="lazyload"
                                     width="{{ collection.featured_image.width }}"
                                     height="{{ collection.featured_image.height }}">
                             </div>
                         {% endif %}
-                        <div class="content {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
-                            <a href="{{ collection.url }}" 
-                               class="tf-btn font-2 btn-white hover-icon-2 hover-dark"
-                               style="color: {{ block.settings.button_text_color }}; background-color: {{ block.settings.button_bg_color }};"
-                               onmouseover="this.style.backgroundColor='{{ block.settings.button_hover_bg_color }}'; this.style.color='{{ block.settings.button_hover_text_color }}';"
-                               onmouseout="this.style.backgroundColor='{{ block.settings.button_bg_color }}'; this.style.color='{{ block.settings.button_text_color }}';">
+                        <div class="content wow fadeInUp">
+                            <a href="{{ collection.url }}" class="tf-btn font-2 btn-white hover-icon-2 hover-dark">
                                 {{ collection.title }}
                                 <i class="icon-arrow-right icon"></i>
                             </a>
@@ -52,7 +48,7 @@
     <div class="mx_40 my_24">
         <div dir="ltr" class="swiper tf-swiper" data-swiper='{
                 "slidesPerView": 1,
-                "spaceBetween": {{ section.settings.space_between }},
+                "spaceBetween": 12,
                 "speed": {{ section.settings.speed }},
                 "observer": true,
                 "observeParents": true,
@@ -64,8 +60,8 @@
                 },
                 "pagination": { "el": ".sw-pagination-cls", "clickable": true },
                 "breakpoints": {
-                "768": { "slidesPerView": 1, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 2 },
-                "1024": { "slidesPerView": 2, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 2}
+                "768": { "slidesPerView": 1, "spaceBetween": 12, "slidesPerGroup": 2 },
+                "1024": { "slidesPerView": 2, "spaceBetween": 24, "slidesPerGroup": 2}
                 }
             }'>
             <div class="swiper-wrapper">
@@ -78,40 +74,30 @@
                                     <img src="{{ collection.featured_image | img_url: 'master' }}"
                                         data-src="{{ collection.featured_image | img_url: 'master' }}" 
                                         alt="{{ collection.title | escape }}" 
-                                        class="lazyload {% if section.settings.enable_lazy_loading %}lazyload{% endif %}"
+                                        class="lazyload"
                                         width="{{ collection.featured_image.width }}"
                                         height="{{ collection.featured_image.height }}">
                                 </a>
                             {% endif %}
                             <div class="content">
-                                <div class="box-title {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
+                                <div class="box-title wow fadeInUp">
                                     {% if block.settings.tag != blank %}
-                                        <span class="tag text-sm text-white animate-btn" style="background-color: {{ block.settings.tag_bg_color }}; color: {{ block.settings.tag_text_color }};">
-                                            {{ block.settings.tag }}
-                                        </span>
+                                        <span class="tag text-sm text-white animate-btn">{{ block.settings.tag }}</span>
                                     {% endif %}
-                                    <a href="{{ collection.url }}" 
-                                       class="title link"
-                                       style="color: {{ block.settings.title_color }};">
-                                        {{ collection.title }}
-                                    </a>
+                                    <a href="{{ collection.url }}" class="title link">{{ collection.title }}</a>
                                     {% if block.settings.price_new != blank or block.settings.price_old != blank %}
                                         <div class="box-price">
                                             {% if block.settings.price_new != blank %}
-                                                <span class="price-new display-xs fw-medium" style="color: {{ block.settings.price_color }};">{{ block.settings.price_new }}</span>
+                                                <span class="price-new display-xs fw-medium text-primary">{{ block.settings.price_new }}</span>
                                             {% endif %}
                                             {% if block.settings.price_old != blank %}
-                                                <span class="price-old" style="color: {{ block.settings.price_color }};">{{ block.settings.price_old }}</span>
+                                                <span class="price-old">{{ block.settings.price_old }}</span>
                                             {% endif %}
                                         </div>
                                     {% endif %}
                                 </div>
                                 <a href="{{ collection.url }}"
-                                   class="{% if section.settings.enable_wow %}wow fadeInUp{% endif %} tf-btn btn-cls btn-out-line-dark hover-icon-2"
-                                   {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}
-                                   style="color: {{ block.settings.button_text_color }}; border-color: {{ block.settings.button_bg_color }};"
-                                   onmouseover="this.style.backgroundColor='{{ block.settings.button_hover_bg_color }}'; this.style.color='{{ block.settings.button_hover_text_color }}';"
-                                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='{{ block.settings.button_text_color }}';">
+                                    class="wow fadeInUp tf-btn btn-cls btn-out-line-dark hover-icon-2">
                                     {{ block.settings.button_text | default: 'See Details' }}
                                     <i class="icon icon-arrow-top-left"></i>
                                 </a>
@@ -125,11 +111,29 @@
     </div>
 {% elsif section.settings.layout == 'fashion-02' %}
     <div class="tf-slideshow slider-fashion-2">
-        <div class="swiper tf-sw-slideshow" data-preview="3" data-tablet="2" data-mobile="1.5" data-space="{{ section.settings.space_between }}" data-space-mb="{{ section.settings.space_between_mobile }}">
+        <div class="swiper tf-sw-slideshow" data-preview="3" data-tablet="2" data-mobile="1.5" data-space="15" data-space-mb="5">
             <div class="swiper-wrapper">
                 {% for block in section.blocks %}
+                    {% assign collection = collections[block.settings.collection] %}
                     <div class="swiper-slide" {{ block.shopify_attributes }}>
-                        {% render block %}
+                        <div class="fs-cls hover-img">
+                            {% if collection.featured_image != blank %}
+                                <div class="img-style image">
+                                    <img src="{{ collection.featured_image | img_url: 'master' }}"
+                                        data-src="{{ collection.featured_image | img_url: 'master' }}" 
+                                        alt="{{ collection.title | escape }}" 
+                                        class="lazyload"
+                                        width="{{ collection.featured_image.width }}"
+                                        height="{{ collection.featured_image.height }}">
+                                </div>
+                            {% endif %}
+                            <div class="content">
+                                <a href="{{ collection.url }}" class="tf-btn btn-white hover-icon-2 hover-dark">
+                                    {{ collection.title }}
+                                    <i class="icon-arrow-right icon"></i>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 {% endfor %}
             </div>
@@ -138,11 +142,9 @@
 {% else %}
     <div class="pt-24">
         <div class="container">
-            <div dir="ltr" class="swiper tf-swiper hover-sw-nav {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" 
-                 {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}
-                 data-swiper='{
+            <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp" data-swiper='{
                     "slidesPerView": 1,
-                    "spaceBetween": {{ section.settings.space_between }},
+                    "spaceBetween": 12,
                     "speed": {{ section.settings.speed }},
                     "observer": true,
                     "observeParents": true,
@@ -154,15 +156,34 @@
                     },
                     "pagination": { "el": ".sw-pagination-cls", "clickable": true },
                     "breakpoints": {
-                    "575": { "slidesPerView": 2, "spaceBetween": {{ section.settings.space_between }} ,"slidesPerGroup": 2 },
-                    "768": { "slidesPerView": 3, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 3 },
-                    "1200": { "slidesPerView": 3, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 3}
+                    "575": { "slidesPerView": 2, "spaceBetween": 12 ,"slidesPerGroup": 2 },
+                    "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
+                    "1200": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3}
                     }
                 }'>
                 <div class="swiper-wrapper">
                     {% for block in section.blocks %}
+                        {% assign collection = collections[block.settings.collection] %}
                         <div class="swiper-slide" {{ block.shopify_attributes }}>
-                            {% render block %}
+                            <div class="wg-cls style-abs asp-1 hover-img">
+                                {% if collection.featured_image != blank %}
+                                    <a href="{{ collection.url }}" class="image img-style d-block">
+                                        <img src="{{ collection.featured_image | img_url: 'master' }}"
+                                            data-src="{{ collection.featured_image | img_url: 'master' }}" 
+                                            alt="{{ collection.title | escape }}" 
+                                            class="lazyload"
+                                            width="{{ collection.featured_image.width }}"
+                                            height="{{ collection.featured_image.height }}">
+                                    </a>
+                                {% endif %}
+                                <div class="cls-btn text-center">
+                                    <a href="{{ collection.url }}"
+                                        class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                                        {{ collection.title }}
+                                        <i class="icon icon-arrow-top-left"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
@@ -192,10 +213,6 @@
             "default": "default"
         },
         {
-            "type": "header",
-            "content": "Slider Settings"
-        },
-        {
             "type": "range",
             "id": "speed",
             "min": 100,
@@ -204,112 +221,44 @@
             "unit": "ms",
             "label": "Transition speed",
             "default": 800
-        },
-        {
-            "type": "checkbox",
-            "id": "autoplay",
-            "label": "Enable autoplay",
-            "default": true
-        },
-        {
-            "type": "range",
-            "id": "autoplay_speed",
-            "min": 2000,
-            "max": 9000,
-            "step": 500,
-            "unit": "ms",
-            "label": "Autoplay delay",
-            "default": 5000
-        },
-        {
-            "type": "checkbox",
-            "id": "loop",
-            "label": "Enable loop",
-            "default": true
-        },
-        {
-            "type": "checkbox",
-            "id": "show_arrows",
-            "label": "Show navigation arrows",
-            "default": true
-        },
-        {
-            "type": "checkbox",
-            "id": "show_dots",
-            "label": "Show pagination dots",
-            "default": true
-        },
-        {
-            "type": "header",
-            "content": "Responsive Settings"
-        },
-        {
-            "type": "range",
-            "id": "space_between",
-            "min": 0,
-            "max": 50,
-            "step": 2,
-            "unit": "px",
-            "label": "Space between slides",
-            "default": 12
-        },
-        {
-            "type": "range",
-            "id": "space_between_mobile",
-            "min": 0,
-            "max": 30,
-            "step": 2,
-            "unit": "px",
-            "label": "Space between slides (Mobile)",
-            "default": 6
-        },
-        {
-            "type": "header",
-            "content": "Animation Settings"
-        },
-        {
-            "type": "checkbox",
-            "id": "enable_wow",
-            "label": "Enable fade-in animation",
-            "default": true
-        },
-        {
-            "type": "select",
-            "id": "wow_delay",
-            "label": "Animation delay",
-            "options": [
-                { "value": "0s", "label": "None" },
-                { "value": "0.2s", "label": "Short" },
-                { "value": "0.5s", "label": "Medium" },
-                { "value": "0.8s", "label": "Long" }
-            ],
-            "default": "0.2s"
-        },
-        {
-            "type": "header",
-            "content": "Image Settings"
-        },
-        {
-            "type": "select",
-            "id": "image_ratio",
-            "label": "Image ratio",
-            "options": [
-                { "value": "1:1", "label": "Square (1:1)" },
-                { "value": "4:3", "label": "Standard (4:3)" },
-                { "value": "16:9", "label": "Widescreen (16:9)" }
-            ],
-            "default": "1:1"
-        },
-        {
-            "type": "checkbox",
-            "id": "enable_lazy_loading",
-            "label": "Enable lazy loading",
-            "default": true
         }
     ],
     "blocks": [
         {
-            "type": "@theme"
+            "type": "collection",
+            "name": "Collection",
+            "settings": [
+                {
+                    "type": "collection",
+                    "id": "collection",
+                    "label": "Collection"
+                },
+                {
+                    "type": "text",
+                    "id": "tag",
+                    "label": "Tag Text",
+                    "info": "Optional tag text (e.g., 'Sale 50% OFF')"
+                },
+                {
+                    "type": "text",
+                    "id": "price_new",
+                    "label": "New Price",
+                    "info": "Optional new price (e.g., '$130.00')"
+                },
+                {
+                    "type": "text",
+                    "id": "price_old",
+                    "label": "Old Price",
+                    "info": "Optional old price (e.g., '$150.00')"
+                },
+                {
+                    "type": "text",
+                    "id": "button_text",
+                    "label": "Button Text",
+                    "default": "See Details",
+                    "info": "Text for the call-to-action button"
+                }
+            ]
         }
     ],
     "presets": [
@@ -319,9 +268,24 @@
                 "layout": "default"
             },
             "blocks": [
-                { "type": "collection-card", "settings": { "collection": "" } },
-                { "type": "collection-card", "settings": { "collection": "" } },
-                { "type": "collection-card", "settings": { "collection": "" } }
+                {
+                    "type": "collection",
+                    "settings": {
+                        "collection": ""
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                        "collection": ""
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                        "collection": ""
+                    }
+                }
             ]
         },
         {
@@ -330,9 +294,24 @@
                 "layout": "home-fashion-women"
             },
             "blocks": [
-                { "type": "collection-card", "settings": { "collection": "" } },
-                { "type": "collection-card", "settings": { "collection": "" } },
-                { "type": "collection-card", "settings": { "collection": "" } }
+                {
+                    "type": "collection",
+                    "settings": {
+                        "collection": ""
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                        "collection": ""
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                        "collection": ""
+                    }
+                }
             ]
         },
         {
@@ -341,8 +320,26 @@
                 "layout": "home-phonecase"
             },
             "blocks": [
-                { "type": "collection-card", "settings": { "collection": "", "tag": "Sale 50% OFF", "price_new": "$130.00", "price_old": "$150.00", "button_text": "See Details" } },
-                { "type": "collection-card", "settings": { "collection": "", "tag": "Sale 50% OFF", "price_new": "$100.00", "price_old": "$130.00", "button_text": "See Details" } }
+                {
+                    "type": "collection",
+                    "settings": {
+                        "collection": "",
+                        "tag": "Sale 50% OFF",
+                        "price_new": "$130.00",
+                        "price_old": "$150.00",
+                        "button_text": "See Details"
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                        "collection": "",
+                        "tag": "Sale 50% OFF",
+                        "price_new": "$100.00",
+                        "price_old": "$130.00",
+                        "button_text": "See Details"
+                    }
+                }
             ]
         },
         {
@@ -351,9 +348,24 @@
                 "layout": "fashion-02"
             },
             "blocks": [
-                { "type": "collection-card", "settings": { "collection": "" } },
-                { "type": "collection-card", "settings": { "collection": "" } },
-                { "type": "collection-card", "settings": { "collection": "" } }
+                {
+                    "type": "collection",
+                    "settings": {
+                        "collection": ""
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                        "collection": ""
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                        "collection": ""
+                    }
+                }
             ]
         }
     ]
