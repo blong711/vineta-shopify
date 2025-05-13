@@ -17,14 +17,19 @@
                 <div class="swiper-slide" {{ block.shopify_attributes }}>
                     <div class="slider-wrap bg-type-{{ forloop.index }} {{ slide_class }}" style="{% if forloop.first and section.settings.image_height_mode == 'adapt_first' %}height: auto;{% elsif section.settings.image_height_mode == 'fill' %}height: 100vh;{% elsif section.settings.image_height_mode == 'fixed' %}height: {{ section.settings.fixed_height }}px;{% endif %}">
                         <div class="image">
-                            {% if block.settings.image != blank %}
-                                <img src="{{ block.settings.image | img_url: 'master' }}"
-                                    data-src="{{ block.settings.image | img_url: 'master' }}" 
-                                    alt="{{ block.settings.image.alt | escape }}" 
-                                    class="lazyload"
-                                    width="{{ block.settings.image.width }}"
-                                    height="{{ block.settings.image.height }}"
-                                    style="{% if section.settings.image_height_mode == 'fill' %}height: 100vh; object-fit: cover;{% elsif section.settings.image_height_mode == 'fixed' %}height: {{ section.settings.fixed_height }}px; object-fit: cover;{% endif %} {% if section.settings.mobile_image_height_mode == 'fixed' %}@media (max-width: 767px) { height: {{ section.settings.mobile_fixed_height }}px !important; object-fit: cover; }{% endif %}">
+                            {% if block.settings.image != blank or block.settings.image_mobile != blank %}
+                                <picture>
+                                    {% if block.settings.image_mobile != blank %}
+                                        <source srcset="{{ block.settings.image_mobile | img_url: 'master' }}" media="(max-width: 767px)">
+                                    {% endif %}
+                                    <img src="{{ block.settings.image | img_url: 'master' }}"
+                                        data-src="{{ block.settings.image | img_url: 'master' }}"
+                                        alt="{{ block.settings.image.alt | escape }}"
+                                        class="lazyload"
+                                        width="{{ block.settings.image.width }}"
+                                        height="{{ block.settings.image.height }}"
+                                        style="{% if section.settings.image_height_mode == 'fill' %}height: 100vh; object-fit: cover;{% elsif section.settings.image_height_mode == 'fixed' %}height: {{ section.settings.fixed_height }}px; object-fit: cover;{% endif %} {% if section.settings.mobile_image_height_mode == 'fixed' %}@media (max-width: 767px) { height: {{ section.settings.mobile_fixed_height }}px !important; object-fit: cover; }{% endif %}">
+                                </picture>
                             {% endif %}
                         </div>
                         <div class="box-content">
@@ -223,6 +228,11 @@
                     "type": "image_picker",
                     "id": "image",
                     "label": "Slide image"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "image_mobile",
+                    "label": "Image mobile"
                 },
                 {
                     "type": "select",
