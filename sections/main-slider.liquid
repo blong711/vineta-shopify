@@ -3,7 +3,11 @@
     {% if section.settings.width == 'boxed' %}
         <div class="container">
         {% endif %}
-    <div class="swiper tf-sw-slideshow slider-effect-fade" data-effect="fade" data-preview="1" data-tablet="1"
+    <div class="swiper tf-sw-slideshow slider-effect-{{ section.settings.effect }}"
+        data-effect="{{ section.settings.effect }}"
+        data-direction="{{ section.settings.direction }}"
+        data-simulate-touch="{{ section.settings.draggable }}"
+        data-preview="1" data-tablet="1"
         data-mobile="1" data-centered="false" data-space="0" data-space-mb="0" data-loop="{{ section.settings.loop }}"
         data-auto-play="{{ section.settings.autoplay }}" data-speed="{{ section.settings.speed }}">
         <div class="swiper-wrapper">
