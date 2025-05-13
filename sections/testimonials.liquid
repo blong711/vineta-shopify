@@ -1,373 +1,137 @@
 {% schema %}
-{
-    "name": "Testimonial",
-    "settings": [
-        {
-            "type": "select",
-            "id": "layout",
-            "label": "Section Layout",
-            "options": [
-                { "value": "default", "label": "Default" },
-                { "value": "home-electronic", "label": "Home Electronic" },
-                { "value": "home-fashion-women", "label": "Home Fashion Women" },
-                { "value": "home-fashion-02", "label": "Home Fashion 02" },
-                { "value": "home-phonecase", "label": "Home Phonecase" }
-            ],
-            "default": "default"
-        },
-        {
-            "type": "text",
-            "id": "title",
-            "label": "Section Title",
-            "default": "Happy Customers"
-        },
-        {
-            "type": "text",
-            "id": "subtitle",
-            "label": "Section Subtitle",
-            "default": "Experience with our products"
-        },
-        {
-            "type": "header",
-            "content": "Colors"
-        },
-        {
-            "type": "color",
-            "id": "section_bg_color",
-            "label": "Section background color",
-            "default": "#FFFFFF"
-        },
-        {
-            "type": "color",
-            "id": "title_color",
-            "label": "Title color",
-            "default": "#000000"
-        },
-        {
-            "type": "color",
-            "id": "subtitle_color",
-            "label": "Subtitle color",
-            "default": "#666666"
-        },
-        {
-            "type": "color",
-            "id": "review_text_color",
-            "label": "Review text color",
-            "default": "#666666"
-        },
-        {
-            "type": "color",
-            "id": "author_name_color",
-            "label": "Author name color",
-            "default": "#000000"
-        },
-        {
-            "type": "color",
-            "id": "product_name_color",
-            "label": "Product name color",
-            "default": "#000000"
-        },
-        {
-            "type": "color",
-            "id": "price_color",
-            "label": "Price color",
-            "default": "#000000"
-        },
-        {
-            "type": "header",
-            "content": "Slider Settings"
-        },
-        {
-            "type": "checkbox",
-            "id": "autoplay",
-            "label": "Enable autoplay",
-            "default": true
-        },
-        {
-            "type": "range",
-            "id": "autoplay_speed",
-            "min": 2000,
-            "max": 9000,
-            "step": 500,
-            "unit": "ms",
-            "label": "Autoplay delay",
-            "default": 5000
-        },
-        {
-            "type": "checkbox",
-            "id": "loop",
-            "label": "Enable loop",
-            "default": true
-        },
-        {
-            "type": "range",
-            "id": "speed",
-            "min": 100,
-            "max": 2000,
-            "step": 100,
-            "unit": "ms",
-            "label": "Transition speed",
-            "default": 800
-        },
-        {
-            "type": "checkbox",
-            "id": "show_arrows",
-            "label": "Show navigation arrows",
-            "default": true
-        },
-        {
-            "type": "checkbox",
-            "id": "show_dots",
-            "label": "Show pagination dots",
-            "default": true
-        },
-        {
-            "type": "range",
-            "id": "space_between",
-            "min": 0,
-            "max": 100,
-            "step": 4,
-            "unit": "px",
-            "label": "Space between items",
-            "default": 24
-        },
-        {
-            "type": "header",
-            "content": "Spacing"
-        },
-        {
-            "type": "range",
-            "id": "padding_top",
-            "min": 0,
-            "max": 200,
-            "step": 4,
-            "unit": "px",
-            "label": "Top padding",
-            "default": 0
-        },
-        {
-            "type": "range",
-            "id": "padding_bottom",
-            "min": 0,
-            "max": 200,
-            "step": 4,
-            "unit": "px",
-            "label": "Bottom padding",
-            "default": 0
-        },
-        {
-            "type": "header",
-            "content": "Animation"
-        },
-        {
-            "type": "checkbox",
-            "id": "enable_wow",
-            "label": "Enable fade-in animation",
-            "default": true
-        },
-        {
-            "type": "select",
-            "id": "wow_delay",
-            "label": "Animation delay",
-            "options": [
-                { "value": "0s", "label": "None" },
-                { "value": "0.2s", "label": "Short" },
-                { "value": "0.5s", "label": "Medium" },
-                { "value": "0.8s", "label": "Long" }
-            ],
-            "default": "0.2s"
-        }
-    ],
-    "blocks": [
-        {
-            "type": "@theme"
-        }
-    ],
-    "presets": [
-        {
-            "name": "Testimonial",
-            "category": "Content",
-            "settings": {
-                "title": "Happy Customers",
-                "subtitle": "Experience with our products",
-                "autoplay": true,
-                "show_arrows": true,
-                "show_dots": true
+    {
+        "name": "Testimonial",
+        "settings": [
+            {
+                "type": "select",
+                "id": "layout",
+                "label": "Section Layout",
+                "options": [
+                    { "value": "default", "label": "Default" },
+                    { "value": "home-electronic", "label": "Home Electronic" },
+                    { "value": "home-fashion-women", "label": "Home Fashion Women" },
+                    { "value": "home-fashion-02", "label": "Home Fashion 02" },
+                    { "value": "home-phonecase", "label": "Home Phonecase" }
+                ],
+                "default": "default"
             },
-            "blocks": [
-                {
-                    "type": "testimonial"
-                },
-                {
-                    "type": "testimonial"
-                }
-            ]
-        }
-    ]
-}
-{% endschema %}
-
-<!-- Testimonial Section -->
-<section class="tf-testimonial {% if section.settings.layout == 'home-electronic' %}flat-spacing-2 pb-0{% elsif section.settings.layout == 'home-fashion-women' %}flat-spacing-3{% elsif section.settings.layout == 'home-fashion-02' %}flat-spacing-3{% elsif section.settings.layout == 'home-phonecase' %}bg-white mx_40 radius-16 flat-spacing-2{% endif %}" 
-  style="background-color: {{ section.settings.section_bg_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
-    <div class="{% if section.settings.layout == 'home-phonecase' %}container-5{% else %}container{% endif %}">
-        {% if section.settings.layout != 'home-fashion-women' %}
-            <div class="flat-title {% if section.settings.layout == 'home-electronic' %}text-start{% elsif section.settings.layout == 'home-phonecase' %}gap-10{% endif %} {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
-                {% if section.settings.layout == 'home-phonecase' %}
-                    <p class="desc text-md" style="color: {{ section.settings.subtitle_color }};">
-                        {{ section.settings.subtitle }}
-                    </p>
-                {% endif %}
-                <h4 class="title" style="color: {{ section.settings.title_color }};">
-                    {{ section.settings.title }}
-                </h4>
-            </div>
-        {% endif %}
-
-        {% if section.settings.layout == 'home-phonecase' %}
-            <div dir="ltr" class="swiper tf-swiper" data-swiper='{
-                "slidesPerView": 1,
-                "spaceBetween": {{ section.settings.space_between }},
-                "speed": {{ section.settings.speed }},
-                "observer": true,
-                "observeParents": true,
-                "slidesPerGroup": 1,
-                "autoplay": {% if section.settings.autoplay %}true{% else %}false{% endif %},
-                "autoplayDelay": {{ section.settings.autoplay_speed }},
-                "loop": {% if section.settings.loop %}true{% else %}false{% endif %},
-                "pagination": { "el": ".sw-pagination-tes", "clickable": true },
-                "breakpoints": {
-                    "768": { "slidesPerView": 2, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 2 },
-                    "1200": { "slidesPerView": 3, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 3}
-                }
-            }'>
-                <div class="swiper-wrapper {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
-                    {% for block in section.blocks %}
-                        <div class="swiper-slide" {{ block.shopify_attributes }}>
-                            {% render block, layout: section.settings.layout %}
-                        </div>
-                    {% endfor %}
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Section Title",
+                "default": "Happy Customers"
+            },
+            {
+                "type": "text",
+                "id": "subtitle",
+                "label": "Section Subtitle",
+                "default": "Experience with our products"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "testimonial",
+                "name": "Testimonial",
+                "settings": [
+                    {
+                        "type": "text",
+                        "id": "name",
+                        "label": "Customer Name",
+                        "default": "Emily T."
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "image",
+                        "label": "Customer Image"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "testimonial_image",
+                        "label": "Testimonial Image"
+                    },
+                    {
+                        "type": "text",
+                        "id": "product",
+                        "label": "Product Name",
+                        "default": "Crop T-shirt"
+                    },
+                    {
+                        "type": "url",
+                        "id": "product_url",
+                        "label": "Product URL"
+                    },
+                    {
+                        "type": "text",
+                        "id": "price",
+                        "label": "Product Price",
+                        "default": "$150.00"
+                    },
+                    {
+                        "type": "textarea",
+                        "id": "review",
+                        "label": "Customer Review",
+                        "default": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!"
+                    },
+                    {
+                        "type": "text",
+                        "id": "title",
+                        "label": "Review Title",
+                        "default": "Elegance and Comfort Combined"
+                    }
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Testimonial",
+                "category": "Content",
+                "blocks": [
+                    {
+                        "type": "testimonial"
+                    },
+                    {
+                        "type": "testimonial"
+                    }
+                ]
+            }
+        ]
+    }
+    {% endschema %}
+    
+    <!-- Testimonial Section -->
+    <section class="tf-testimonial {% if section.settings.layout == 'home-electronic' %}flat-spacing-2 pb-0{% elsif section.settings.layout == 'home-fashion-women' %}flat-spacing-3{% elsif section.settings.layout == 'home-fashion-02' %}flat-spacing-3{% elsif section.settings.layout == 'home-phonecase' %}bg-white mx_40 radius-16 flat-spacing-2{% endif %}">
+        <div class="{% if section.settings.layout == 'home-phonecase' %}container-5{% else %}container{% endif %}">
+            {% if section.settings.layout != 'home-fashion-women' %}
+                <div class="flat-title {% if section.settings.layout == 'home-electronic' %}text-start{% elsif section.settings.layout == 'home-phonecase' %}gap-10{% endif %} wow fadeInUp">
+                    {% if section.settings.layout == 'home-phonecase' %}
+                        <p class="desc text-md">{{ section.settings.subtitle }}</p>
+                    {% endif %}
+                    <h4 class="title">{{ section.settings.title }}</h4>
                 </div>
-                {% if section.settings.show_dots %}
-                <div class="sw-dot-default sw-pagination-tes justify-content-center"></div>
-                {% endif %}
-            </div>
-        {% elsif section.settings.layout == 'home-fashion-women' %}
-            <div class="wrapper-thumbs-tes-2 flat-thumbs-tes">
-                <div class="box-left">
-                    <div dir="ltr" class="swiper tf-tes-main" data-swiper='{
-                        "spaceBetween": {{ section.settings.space_between }},
-                        "speed": {{ section.settings.speed }},
-                        "autoplay": {% if section.settings.autoplay %}true{% else %}false{% endif %},
-                        "autoplayDelay": {{ section.settings.autoplay_speed }},
-                        "loop": {% if section.settings.loop %}true{% else %}false{% endif %}
-                    }'>
-                        <div class="swiper-wrapper">
-                            {% for block in section.blocks %}
-                                <div class="swiper-slide" {{ block.shopify_attributes }}>
-                                    <div class="box-testimonial-main {% if section.settings.enable_wow %}wow fadeInLeft{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
-                                        <span class="quote icon-quote2"></span>
-                                        <div class="content">
-                                            <div class="list-star-default">
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                            </div>
-                                            <div class="title-review" style="color: {{ section.settings.title_color }};">{{ block.settings.title }}</div>
-                                            <p class="text-review display-xs" style="color: {{ section.settings.review_text_color }};">{{ block.settings.review }}</p>
-                                            <div class="box-author">
-                                                <div class="img d-md-none">
-                                                    {% if block.settings.image != blank %}
-                                                        <img src="{{ block.settings.image | img_url: '120x120' }}" 
-                                                             alt="{{ block.settings.name }}" 
-                                                             width="60" 
-                                                             height="60">
-                                                    {% else %}
-                                                        <img src="{{ 'author-fs1.jpg' | asset_url }}" 
-                                                             alt="{{ block.settings.name }}" 
-                                                             width="60" 
-                                                             height="60">
-                                                    {% endif %}
-                                                </div>
-                                                <div class="info">
-                                                    <div class="name text-md fw-medium" style="color: {{ section.settings.author_name_color }};">{{ block.settings.name }}</div>
-                                                    <a href="{{ block.settings.product_url }}" class="meta link" style="color: {{ section.settings.product_name_color }};">Purchase item: <span class="fw-medium">{{ block.settings.product }}</span></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        {% if section.settings.show_arrows %}
-                        <div class="box-nav-swiper">
-                            <div class="swiper-button-prev nav-swiper size-30 style-line nav-prev-tes"></div>
-                            <div class="swiper-button-next nav-swiper size-30 style-line nav-next-tes"></div>
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="box-right">
-                    <div dir="ltr" class="swiper tf-thumb-tes" data-swiper='{
-                        "slidesPerView": 1,
-                        "spaceBetween": {{ section.settings.space_between }},
-                        "speed": {{ section.settings.speed }},
-                        "observer": true,
-                        "observeParents": true
-                    }'>
-                        <div class="swiper-wrapper">
-                            {% for block in section.blocks %}
-                                <div class="swiper-slide hover-img">
-                                    <div class="img-sw-thumb img-style">
-                                        {% if block.settings.image != blank %}
-                                            <img class="lazyload" 
-                                                 data-src="{{ block.settings.image | img_url: '400x' }}" 
-                                                 src="{{ block.settings.image | img_url: '400x' }}" 
-                                                 alt="{{ block.settings.name }}"
-                                                 width="400"
-                                                 height="400">
-                                        {% else %}
-                                            <img class="lazyload" 
-                                                 data-src="{{ 'author-fs1.jpg' | asset_url }}" 
-                                                 src="{{ 'author-fs1.jpg' | asset_url }}" 
-                                                 alt="{{ block.settings.name }}"
-                                                 width="400"
-                                                 height="400">
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% elsif section.settings.layout == 'home-fashion-02' %}
-            <div class="slider-layout-right {% if section.settings.enable_wow %}wow fadeInUp{% endif %}" {% if section.settings.enable_wow %}data-wow-delay="{{ section.settings.wow_delay }}"{% endif %}>
-                <div dir="ltr" class="swiper tf-swiper tf-sw-right" data-swiper='{
+            {% endif %}
+    
+            {% if section.settings.layout == 'home-phonecase' %}
+                <div dir="ltr" class="swiper tf-swiper" data-swiper='{
                     "slidesPerView": 1,
-                    "spaceBetween": {{ section.settings.space_between }},
-                    "speed": {{ section.settings.speed }},
+                    "spaceBetween": 12,
+                    "speed": 800,
                     "observer": true,
                     "observeParents": true,
-                    "autoplay": {% if section.settings.autoplay %}true{% else %}false{% endif %},
-                    "autoplayDelay": {{ section.settings.autoplay_speed }},
-                    "loop": {% if section.settings.loop %}true{% else %}false{% endif %},
-                    "pagination": { "el": ".sw-pagination-testimonial", "clickable": true },
+                    "slidesPerGroup": 1,
+                    "pagination": { "el": ".sw-pagination-tes", "clickable": true },
                     "breakpoints": {
-                        "768": { "slidesPerView": 1.5, "spaceBetween": {{ section.settings.space_between }}},
-                        "1200": { "slidesPerView": 2.3, "spaceBetween": {{ section.settings.space_between }}}
+                        "768": { "slidesPerView": 2, "spaceBetween": 24, "slidesPerGroup": 2 },
+                        "1200": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3}
                     }
                 }'>
-                    <div class="swiper-wrapper">
+                    <div class="swiper-wrapper wow fadeInUp">
                         {% for block in section.blocks %}
                             <div class="swiper-slide" {{ block.shopify_attributes }}>
-                                <div class="wg-testimonial style-row hover-img">
+                                <div class="wg-testimonial">
                                     <div class="content">
                                         <div class="content-top">
                                             <div class="box-author">
-                                                <p class="name-author text-sm fw-medium" style="color: {{ section.settings.author_name_color }};">{{ block.settings.name }}</p>
+                                                <p class="name-author text-sm fw-medium">{{ block.settings.name }}</p>
                                                 <div class="box-verified text-main">
                                                     <i class="icon-verifi"></i>
                                                     <p class="text-xs fst-italic">Verified Buyer</p>
@@ -380,7 +144,7 @@
                                                 <i class="icon-star"></i>
                                                 <i class="icon-star"></i>
                                             </div>
-                                            <p class="text-review text-sm" style="color: {{ section.settings.review_text_color }};">{{ block.settings.review }}</p>
+                                            <p class="text-review text-sm text-main">{{ block.settings.review }}</p>
                                         </div>
                                         <span class="br-line d-block"></span>
                                         <div class="box-avt">
@@ -399,67 +163,254 @@
                                             </div>
                                             <div class="box-price">
                                                 <p class="name-item text-xs">
-                                                    Item purchased: <a href="{{ block.settings.product_url }}" class="fw-medium text-sm link" style="color: {{ section.settings.product_name_color }};">{{ block.settings.product }}</a>
+                                                    <a href="{{ block.settings.product_url }}" class="text-line-clamp-2">Item purchased:
+                                                        <span class="fw-medium text-sm link">{{ block.settings.product }}</span>
+                                                    </a>
                                                 </p>
-                                                <p class="price text-md fw-medium" style="color: {{ section.settings.price_color }};">{{ block.settings.price }}</p>
+                                                <p class="price text-md fw-medium">{{ block.settings.price }}</p>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="image img-style">
-                                        {% if block.settings.testimonial_image != blank %}
-                                            <img class="lazyload" 
-                                                 data-src="{{ block.settings.testimonial_image | img_url: '400x' }}" 
-                                                 src="{{ block.settings.testimonial_image | img_url: '400x' }}" 
-                                                 alt="{{ block.settings.name }}"
-                                                 width="400"
-                                                 height="400">
-                                        {% else %}
-                                            <img class="lazyload" 
-                                                 data-src="{{ 'tes-fs1.jpg' | asset_url }}" 
-                                                 src="{{ 'tes-fs1.jpg' | asset_url }}" 
-                                                 alt="{{ block.settings.name }}"
-                                                 width="400"
-                                                 height="400">
-                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
                         {% endfor %}
                     </div>
-                    {% if section.settings.show_dots %}
-                    <div class="d-flex d-xl-none sw-dot-default sw-pagination-testimonial justify-content-center"></div>
-                    {% endif %}
+                    <div class="sw-dot-default sw-pagination-tes justify-content-center"></div>
                 </div>
-            </div>
-        {% else %}
-            <div dir="ltr" class="swiper tf-swiper" data-swiper='{
-                "slidesPerView": 1,
-                "spaceBetween": {{ section.settings.space_between }},
-                "speed": {{ section.settings.speed }},
-                "observer": true,
-                "observeParents": true,
-                "slidesPerGroup": 1,
-                "autoplay": {% if section.settings.autoplay %}true{% else %}false{% endif %},
-                "autoplayDelay": {{ section.settings.autoplay_speed }},
-                "loop": {% if section.settings.loop %}true{% else %}false{% endif %},
-                "pagination": { "el": ".sw-pagination-tes", "clickable": true },
-                "breakpoints": {
-                    "768": { "slidesPerView": 2, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 2 },
-                    "1200": { "slidesPerView": 3, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": 3}
-                }
-            }'>
-                <div class="swiper-wrapper">
-                    {% for block in section.blocks %}
-                        <div class="swiper-slide" {{ block.shopify_attributes }}>
-                            {% render block, layout: section.settings.layout %}
+            {% elsif section.settings.layout == 'home-fashion-women' %}
+                <div class="wrapper-thumbs-tes-2 flat-thumbs-tes">
+                    <div class="box-left">
+                        <div dir="ltr" class="swiper tf-tes-main" data-space-lg="24" data-space="12">
+                            <div class="swiper-wrapper">
+                                {% for block in section.blocks %}
+                                    <div class="swiper-slide" {{ block.shopify_attributes }}>
+                                        <div class="box-testimonial-main wow fadeInLeft">
+                                            <span class="quote icon-quote2"></span>
+                                            <div class="content">
+                                                <div class="list-star-default">
+                                                    <i class="icon-star"></i>
+                                                    <i class="icon-star"></i>
+                                                    <i class="icon-star"></i>
+                                                    <i class="icon-star"></i>
+                                                    <i class="icon-star"></i>
+                                                </div>
+                                                <div class="title-review">{{ block.settings.title }}</div>
+                                                <p class="text-review display-xs">{{ block.settings.review }}</p>
+                                                <div class="box-author">
+                                                    <div class="img d-md-none">
+                                                        {% if block.settings.image != blank %}
+                                                            <img src="{{ block.settings.image | img_url: '120x120' }}" 
+                                                                 alt="{{ block.settings.name }}" 
+                                                                 width="60" 
+                                                                 height="60">
+                                                        {% else %}
+                                                            <img src="{{ 'author-fs1.jpg' | asset_url }}" 
+                                                                 alt="{{ block.settings.name }}" 
+                                                                 width="60" 
+                                                                 height="60">
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="info">
+                                                        <div class="name text-md fw-medium">{{ block.settings.name }}</div>
+                                                        <a href="{{ block.settings.product_url }}" class="meta link">Purchase item: <span class="fw-medium">{{ block.settings.product }}</span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="box-nav-swiper">
+                                <div class="swiper-button-prev nav-swiper size-30 style-line nav-prev-tes"></div>
+                                <div class="swiper-button-next nav-swiper size-30 style-line nav-next-tes"></div>
+                            </div>
                         </div>
-                    {% endfor %}
+                    </div>
+                    <div class="box-right">
+                        <div dir="ltr" class="swiper tf-thumb-tes" data-swiper='{
+                            "slidesPerView": 1,
+                            "spaceBetween": 12,
+                            "speed": 800,
+                            "observer": true,
+                            "observeParents": true
+                        }'>
+                            <div class="swiper-wrapper">
+                                {% for block in section.blocks %}
+                                    <div class="swiper-slide hover-img">
+                                        <div class="img-sw-thumb img-style">
+                                            {% if block.settings.image != blank %}
+                                                <img class="lazyload" 
+                                                     data-src="{{ block.settings.image | img_url: '400x' }}" 
+                                                     src="{{ block.settings.image | img_url: '400x' }}" 
+                                                     alt="{{ block.settings.name }}"
+                                                     width="400"
+                                                     height="400">
+                                            {% else %}
+                                                <img class="lazyload" 
+                                                     data-src="{{ 'author-fs1.jpg' | asset_url }}" 
+                                                     src="{{ 'author-fs1.jpg' | asset_url }}" 
+                                                     alt="{{ block.settings.name }}"
+                                                     width="400"
+                                                     height="400">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                {% if section.settings.show_dots %}
-                <div class="sw-dot-default sw-pagination-tes justify-content-center"></div>
-                {% endif %}
-            </div>
-        {% endif %}
-    </div>
-</section>
-<!-- End Testimonial Section --> 
+            {% elsif section.settings.layout == 'home-fashion-02' %}
+                <div class="slider-layout-right wow fadeInUp">
+                    <div dir="ltr" class="swiper tf-swiper tf-sw-right" data-swiper='{
+                        "slidesPerView": 1,
+                        "spaceBetween": 12,
+                        "speed": 800,
+                        "observer": true,
+                        "observeParents": true,
+                        "pagination": { "el": ".sw-pagination-testimonial", "clickable": true },
+                        "breakpoints": {
+                            "768": { "slidesPerView": 1.5, "spaceBetween": 12},
+                            "1200": { "slidesPerView": 2.3, "spaceBetween": 24}
+                        }
+                    }'>
+                        <div class="swiper-wrapper">
+                            {% for block in section.blocks %}
+                                <div class="swiper-slide" {{ block.shopify_attributes }}>
+                                    <div class="wg-testimonial style-row hover-img">
+                                        <div class="content">
+                                            <div class="content-top">
+                                                <div class="box-author">
+                                                    <p class="name-author text-sm fw-medium">{{ block.settings.name }}</p>
+                                                    <div class="box-verified text-main">
+                                                        <i class="icon-verifi"></i>
+                                                        <p class="text-xs fst-italic">Verified Buyer</p>
+                                                    </div>
+                                                </div>
+                                                <div class="list-star-default">
+                                                    <i class="icon-star"></i>
+                                                    <i class="icon-star"></i>
+                                                    <i class="icon-star"></i>
+                                                    <i class="icon-star"></i>
+                                                    <i class="icon-star"></i>
+                                                </div>
+                                                <p class="text-review text-sm text-main">{{ block.settings.review }}</p>
+                                            </div>
+                                            <span class="br-line d-block"></span>
+                                            <div class="box-avt">
+                                                <div class="avatar">
+                                                    {% if block.settings.image != blank %}
+                                                        <img src="{{ block.settings.image | img_url: '120x120' }}" 
+                                                             alt="{{ block.settings.name }}" 
+                                                             width="60" 
+                                                             height="60">
+                                                    {% else %}
+                                                        <img src="{{ 'author-fs1.jpg' | asset_url }}" 
+                                                             alt="{{ block.settings.name }}" 
+                                                             width="60" 
+                                                             height="60">
+                                                    {% endif %}
+                                                </div>
+                                                <div class="box-price">
+                                                    <p class="name-item text-xs">
+                                                        Item purchased: <a href="{{ block.settings.product_url }}" class="fw-medium text-sm link">{{ block.settings.product }}</a>
+                                                    </p>
+                                                    <p class="price text-md fw-medium">{{ block.settings.price }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="image img-style">
+                                            {% if block.settings.testimonial_image != blank %}
+                                                <img class="lazyload" 
+                                                     data-src="{{ block.settings.testimonial_image | img_url: '400x' }}" 
+                                                     src="{{ block.settings.testimonial_image | img_url: '400x' }}" 
+                                                     alt="{{ block.settings.name }}"
+                                                     width="400"
+                                                     height="400">
+                                            {% else %}
+                                                <img class="lazyload" 
+                                                     data-src="{{ 'tes-fs1.jpg' | asset_url }}" 
+                                                     src="{{ 'tes-fs1.jpg' | asset_url }}" 
+                                                     alt="{{ block.settings.name }}"
+                                                     width="400"
+                                                     height="400">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="d-flex d-xl-none sw-dot-default sw-pagination-testimonial justify-content-center"></div>
+                    </div>
+                </div>
+            {% else %}
+                <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+                    "slidesPerView": 1,
+                    "spaceBetween": 12,
+                    "speed": 800,
+                    "observer": true,
+                    "observeParents": true,
+                    "slidesPerGroup": 1,
+                    "pagination": { "el": ".sw-pagination-tes", "clickable": true },
+                    "breakpoints": {
+                        "768": { "slidesPerView": 2, "spaceBetween": 24, "slidesPerGroup": 2 },
+                        "1200": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3}
+                    }
+                }'>
+                    <div class="swiper-wrapper">
+                        {% for block in section.blocks %}
+                            <div class="swiper-slide" {{ block.shopify_attributes }}>
+                                <div class="wg-testimonial wow fadeInLeft" data-wow-delay="{{ forloop.index | times: 0.1 }}s">
+                                    <div class="content">
+                                        <div class="content-top">
+                                            <div class="box-author">
+                                                <p class="name-author text-sm fw-medium">{{ block.settings.name }}</p>
+                                                <div class="box-verified text-main">
+                                                    <i class="icon-verifi"></i>
+                                                    <p class="text-xs fst-italic">Verified Buyer</p>
+                                                </div>
+                                            </div>
+                                            <div class="list-star-default">
+                                                <i class="icon-star"></i>
+                                                <i class="icon-star"></i>
+                                                <i class="icon-star"></i>
+                                                <i class="icon-star"></i>
+                                                <i class="icon-star"></i>
+                                            </div>
+                                            <p class="text-review text-sm text-main">
+                                                {{ block.settings.review }}
+                                            </p>
+                                        </div>
+                                        <span class="br-line d-block"></span>
+                                        <div class="box-avt">
+                                            <div class="avatar">
+                                                {% if block.settings.image != blank %}
+                                                    <img src="{{ block.settings.image | img_url: '120x120' }}" 
+                                                         alt="{{ block.settings.name }}" 
+                                                         width="60" 
+                                                         height="60">
+                                                {% else %}
+                                                    <img src="{{ 'author-fs1.jpg' | asset_url }}" 
+                                                         alt="{{ block.settings.name }}" 
+                                                         width="60" 
+                                                         height="60">
+                                                {% endif %}
+                                            </div>
+                                            <div class="box-price">
+                                                <p class="name-item text-xs">
+                                                    Item purchased: <a href="{{ block.settings.product_url }}" class="fw-medium text-sm link text-line-clamp-1">{{ block.settings.product }}</a>
+                                                </p>
+                                                <p class="price text-md fw-medium">{{ block.settings.price }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="sw-dot-default sw-pagination-tes justify-content-center"></div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+    <!-- End Testimonial Section --> 
