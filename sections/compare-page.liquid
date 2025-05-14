@@ -20,7 +20,9 @@
                         <img class="lazyload" 
                             data-src="{{ product.featured_image | img_url: '400x' }}"
                             src="{{ product.featured_image | img_url: '400x' }}" 
-                            alt="{{ product.title | escape }}">
+                            alt="{{ product.title | escape }}"
+                            width="400"
+                            height="400">
                     </a>
                     <div class="content">
                         <a class="tf-compare-title link text-md fw-medium" href="{{ product.url }}">{{ product.title }}</a>
@@ -31,17 +33,15 @@
                             {% endif %}
                         </p>
                         <div class="tf-compare-btn">
-                            <button type="button" 
-                                class="tf-btn animate-btn w-100" 
-                                data-add-to-cart 
-                                data-product-id="{{ product.id }}"
-                                {% unless product.available %}disabled{% endunless %}>
-                                {% if product.available %}
-                                    Add to Cart
-                                {% else %}
-                                    Sold Out
-                                {% endif %}
-                            </button>
+                            <a href="javascript:void(0);"
+                               class="box-icon hover-tooltip tooltip-left add-to-cart"
+                               data-variant-id="{{ product.variants[0].id }}"
+                               data-quantity="1"
+                               aria-label="Add to cart"
+                               {% unless product.variants[0].available %}style="pointer-events:none;opacity:0.5;"{% endunless %}>
+                                <i class="icon icon-cart"></i>
+                                <span class="tooltip">{% if product.variants[0].available %}Add to Cart{% else %}Sold Out{% endif %}</span>
+                            </a>
                         </div>
                     </div>
                     <div class="tf-compare-remove">
@@ -61,9 +61,9 @@
             <p class="text-md fw-medium">Availability</p>
         </div>
         {% for product in collections.all.products %}
-            <div class="tf-compare-col tf-compare-field tf-compare-stock {% unless product.available %}text-red{% endunless %}" data-product-id="{{ product.id }}">
+            <div class="tf-compare-col tf-compare-field tf-compare-stock {% unless product.variants[0].available %}text-red{% endunless %}" data-product-id="{{ product.id }}">
                 <div class="icon">
-                    {% if product.available %}
+                    {% if product.variants[0].available %}
                         <i class="icon-fill-check-circle"></i>
                     {% else %}
                         <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -80,7 +80,7 @@
                         </svg>
                     {% endif %}
                 </div>
-                <span>{% if product.available %}In Stock{% else %}Out of Stock{% endif %}</span>
+                <span>{% if product.variants[0].available %}In Stock{% else %}Out of Stock{% endif %}</span>
             </div>
         {% endfor %}
     </div>
@@ -103,21 +103,16 @@
         {% for product in collections.all.products %}
             <div class="tf-compare-col tf-compare-value text-center" data-product-id="{{ product.id }}">
                 <p class="text-sm">
-                    {%- assign color_option_index = nil -%}
-                    {%- for option in product.options_with_values -%}
-                        {%- if option.name == 'Color' or option.name == 'Colour' -%}
-                            {%- assign color_option_index = forloop.index0 -%}
-                        {%- endif -%}
-                    {%- endfor -%}
                     {%- assign color_values = '' -%}
-                    {%- if color_option_index != nil -%}
-                        {%- for variant in product.variants -%}
-                            {%- assign color = variant.options[color_option_index] -%}
-                            {%- unless color_values contains color -%}
-                                {%- assign color_values = color_values | append: color | append: ', ' -%}
-                            {%- endunless -%}
+                    {%- if product.options != blank -%}
+                        {%- for option in product.options -%}
+                            {%- if option.name contains 'color' or option.name contains 'colour' -%}
+                                {%- assign color_values = option.values | join: ', ' -%}
+                            {%- endif -%}
                         {%- endfor -%}
-                        {{ color_values | remove_last: ', ' | default: 'N/A' }}
+                    {%- endif -%}
+                    {%- if color_values != blank -%}
+                        {{ color_values }}
                     {%- else -%}
                         N/A
                     {%- endif -%}
@@ -127,62 +122,184 @@
     </div>
 </template>
 
+<template id="compareProductColTemplate">
+  <div class="tf-compare-col" data-product-id="">
+    <div class="tf-compare-item">
+      <a class="tf-compare-image" href="">
+        <img class="lazyload" data-src="" src="" alt="" width="200" height="200">
+      </a>
+      <div class="content">
+        <a class="tf-compare-title link text-md fw-medium" href=""></a>
+        <p class="price-wrap fw-medium text-md">
+          <span class="price-new text-primary"></span>
+          <span class="price-old text-dark" style="display:none"></span>
+        </p>
+        <div class="tf-compare-btn">
+          <button type="button" class="tf-btn animate-btn w-100" data-add-to-cart data-product-id="">
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      <div class="tf-compare-remove">
+        <span class="tf-btn-icon line d-inline-flex" data-compare data-id="" data-action="remove">
+          <i class="icon-close"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const compareIds = localStorage.getItem('theme4:compare:id') ? localStorage.getItem('theme4:compare:id').split(',') : [];
-        console.log('Compare IDs from localStorage:', compareIds);
-        const compareContent = document.getElementById('compareContent');
-        const compareTemplate = document.getElementById('compareTemplate');
-        
-        if (compareIds.length === 0) {
-            compareContent.innerHTML = '<div class="text-center"><p>No products to compare</p></div>';
-            return;
-        }
+async function fetchAllProducts() {
+  let allProducts = [];
+  let page = 1;
+  let hasMore = true;
+  while (hasMore) {
+    const response = await fetch(`/products.json?limit=250&page=${page}`);
+    const data = await response.json();
+    allProducts = allProducts.concat(data.products);
+    if (data.products.length < 250) {
+      hasMore = false;
+    } else {
+      page++;
+    }
+  }
+  return allProducts;
+}
 
-        // Clone the template content
-        const content = compareTemplate.content.cloneNode(true);
+function createRow(label, values, rowClass = '') {
+  const row = document.createElement('div');
+  row.className = `tf-compare-row ${rowClass}`;
+  // Label column
+  const labelCol = document.createElement('div');
+  labelCol.className = 'tf-compare-col tf-compare-field d-md-block d-none';
+  labelCol.innerHTML = `<p class="text-md fw-medium">${label}</p>`;
+  row.appendChild(labelCol);
+  // Product columns
+  values.forEach(html => {
+    const col = document.createElement('div');
+    col.className = 'tf-compare-col tf-compare-value text-center';
+    col.innerHTML = html;
+    row.appendChild(col);
+  });
+  return row;
+}
 
-        // Find all rows in the template
-        const rows = content.querySelectorAll('.tf-compare-row');
-        if (rows.length === 0) {
-            compareContent.appendChild(content);
-            return;
-        }
+function createSimpleRow(label, values) {
+  const row = document.createElement('div');
+  row.className = 'tf-compare-row';
+  const labelCol = document.createElement('div');
+  labelCol.className = 'tf-compare-col tf-compare-field d-md-block d-none';
+  labelCol.innerHTML = `<p class="text-md fw-medium">${label}</p>`;
+  row.appendChild(labelCol);
+  values.forEach(html => {
+    row.insertAdjacentHTML('beforeend', html);
+  });
+  return row;
+}
 
-        // For each row, remove columns whose product ID is not in compareIds
-        rows.forEach((row, rowIdx) => {
-            const productCols = Array.from(row.querySelectorAll('[data-product-id]'));
-            productCols.forEach(col => {
-                const productId = String(col.dataset.productId);
-                if (!compareIds.includes(productId)) {
-                    col.parentNode.removeChild(col);
-                }
-            });
-        });
+document.addEventListener('DOMContentLoaded', async function() {
+  const compareContent = document.getElementById('compareContent');
 
-        // Add the content to the page
-        compareContent.appendChild(content);
+  async function renderCompareTable() {
+    const compareIds = localStorage.getItem('theme4:compare:id') ? localStorage.getItem('theme4:compare:id').split(',') : [];
+    if (compareIds.length === 0) {
+      compareContent.innerHTML = '<div class="text-center"><p>No products to compare</p></div>';
+      return;
+    }
+    const allProducts = await fetchAllProducts();
+    const compareProducts = allProducts.filter(p => compareIds.includes(p.id.toString()));
+    if (compareProducts.length === 0) {
+      compareContent.innerHTML = '<div class="text-center"><p>No products to compare</p></div>';
+      return;
+    }
+    compareContent.innerHTML = '';
 
-        // Listen for compare:updated event
-        document.addEventListener('compare:updated', function(event) {
-            const updatedCompareIds = localStorage.getItem('theme4:compare:id') ? localStorage.getItem('theme4:compare:id').split(',') : [];
-            console.log('Updated compare IDs:', updatedCompareIds);
-            const rows = document.querySelectorAll('#compareContent .tf-compare-row');
-            if (rows.length === 0) return;
-            rows.forEach((row, rowIdx) => {
-                const productCols = Array.from(row.querySelectorAll('[data-product-id]'));
-                productCols.forEach(col => {
-                    const productId = String(col.dataset.productId);
-                    if (!updatedCompareIds.includes(productId)) {
-                        col.parentNode.removeChild(col);
-                    }
-                });
-            });
-            if (updatedCompareIds.length === 0) {
-                compareContent.innerHTML = '<div class="text-center"><p>No products to compare</p></div>';
+    // 1. Image/Title/Price row
+    const imageRowValues = compareProducts.map(product => `
+      <div class="tf-compare-item">
+        <a class="tf-compare-image" href="/products/${product.handle}">
+          <img class="lazyload" src="${product.images[0] ? product.images[0].src : ''}" alt="${product.title}" width="200" height="200">
+        </a>
+        <div class="content">
+          <a class="tf-compare-title link text-md fw-medium" href="/products/${product.handle}">${product.title}</a>
+          <p class="price-wrap fw-medium text-md">
+            <span class="price-new text-primary">${(window.Shopify && Shopify.formatMoney) ? Shopify.formatMoney(product.variants[0].price, "{{ shop.money_format }}") : product.variants[0].price}</span>
+            ${product.variants[0].compare_at_price && product.variants[0].compare_at_price > product.variants[0].price
+              ? `<span class="price-old text-dark">${(window.Shopify && Shopify.formatMoney) ? Shopify.formatMoney(product.variants[0].compare_at_price, "{{ shop.money_format }}") : product.variants[0].compare_at_price}</span>`
+              : ''}
+          </p>
+          <div class="tf-compare-btn">
+            <a href="#shoppingCart" data-bs-toggle="offcanvas"
+               class="tf-btn animate-btn w-100"
+               ${!product.variants[0].available ? 'style="pointer-events:none;opacity:0.5;" tabindex="-1" aria-disabled="true"' : ''}>
+              ${product.variants[0].available ? 'Add to Cart' : 'Sold Out'}
+            </a>
+          </div>
+        </div>
+        <div class="tf-compare-remove">
+          <span class="tf-btn-icon line d-inline-flex" data-compare data-id="${product.id}" data-action="remove">
+            <i class="icon-close"></i>
+          </span>
+        </div>
+      </div>
+    `);
+    compareContent.appendChild(createRow('', imageRowValues));
+
+    // 2. Availability row
+    const availabilityRowValues = compareProducts.map(product => {
+      const available = product.variants[0].available;
+      const colClass = `tf-compare-col tf-compare-field tf-compare-stock${!available ? ' text-red' : ''}`;
+      return `
+        <div class="${colClass}">
+          <div class="icon">
+            ${available
+              ? '<i class="icon-fill-check-circle"></i>'
+              : `<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="7" fill="#E21B1B"/><path d="M5 5l5 5M10 5l-5 5" stroke="#fff" stroke-width="2"/></svg>`
             }
-        });
+          </div>
+          <span>${available ? 'In Stock' : 'Out of Stock'}</span>
+        </div>
+      `;
     });
+    compareContent.appendChild(createSimpleRow('Availability', availabilityRowValues));
+
+    // 3. Vendor row
+    const vendorRowValues = compareProducts.map(product =>
+      `<p class="text-sm">${product.vendor || ''}</p>`
+    );
+    compareContent.appendChild(createRow('Vendor', vendorRowValues));
+
+    // 4. Color row
+    const colorRowValues = compareProducts.map(product => {
+      let colorOption = '';
+      if (product.options && product.options.length) {
+        const colorIdx = product.options.findIndex(opt => /colou?r/i.test(opt.name));
+        if (colorIdx !== -1) {
+          const colors = product.options[colorIdx].values;
+          colorOption = colors.join(', ');
+        }
+      }
+      return `<p class="text-sm">${colorOption || 'N/A'}</p>`;
+    });
+    compareContent.appendChild(createRow('Color', colorRowValues));
+  }
+
+  // Initial render
+  renderCompareTable();
+
+  // Remove product on click without reload
+  compareContent.addEventListener('click', function(e) {
+    const removeBtn = e.target.closest('[data-compare][data-action="remove"]');
+    if (removeBtn) {
+      const productId = removeBtn.getAttribute('data-id');
+      let compareIds = localStorage.getItem('theme4:compare:id') ? localStorage.getItem('theme4:compare:id').split(',') : [];
+      compareIds = compareIds.filter(id => id !== productId);
+      localStorage.setItem('theme4:compare:id', compareIds.join(','));
+      renderCompareTable();
+    }
+  });
+});
 </script>
 
 {% schema %}    
