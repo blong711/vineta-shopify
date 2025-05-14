@@ -680,6 +680,22 @@ function updateImage(img, url) {
   img.classList.remove('lazyload');
 }
 
+// Add CSS for countdown hover behavior
+const style = document.createElement('style');
+style.textContent = `
+  .card-product:hover .countdown-box {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .countdown-box {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+`;
+document.head.appendChild(style);
+
 function initializeVariantImageSwitching() {
   document.querySelectorAll('.card-product').forEach(card => {
     const mainImage = card.querySelector('.img-product');

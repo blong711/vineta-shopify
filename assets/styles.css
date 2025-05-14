@@ -7317,7 +7317,8 @@ button.animate-btn::after,
 }
 .modal-compare .tf-compare-inner {
   overflow-x: auto;
-  margin-bottom: 42px;
+  margin-bottom: 22px;
+  padding-bottom: 20px;
 }
 .modal-compare .tf-compare-inner::-webkit-scrollbar {
   height: 8px;
@@ -7376,6 +7377,7 @@ button.animate-btn::after,
 }
 .modal-compare .tf-compare-item .content .price-wrap {
   font-weight: 500;
+  font-size: 16px;
 }
 .modal-compare .tf-compare-buttons {
   display: flex;
@@ -15311,7 +15313,8 @@ button.animate-btn::after,
 }
 .modal-compare .tf-compare-inner {
   overflow-x: auto;
-  margin-bottom: 42px;
+  margin-bottom: 22px;
+  padding-bottom: 20px;
 }
 .modal-compare .tf-compare-inner::-webkit-scrollbar {
   height: 8px;
@@ -15370,6 +15373,7 @@ button.animate-btn::after,
 }
 .modal-compare .tf-compare-item .content .price-wrap {
   font-weight: 500;
+  font-size: 16px;
 }
 .modal-compare .tf-compare-buttons {
   display: flex;
@@ -27195,4 +27199,16 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   .footer-default .footer-info .item:not(:last-child) .box-icon {
       margin-top: -3px;
   }
+}
+@media (min-width: 992px) {
+  .modal-compare .tf-compare-buttons .tf-btn {
+      padding: 11px 24px;
+  }
+}
+
+.modal-compare .tf-compare-buttons .tf-btn {
+  font-family: "DM Sans", sans-serif;
+  max-width: 190px;
+  width: 100%;
+  font-weight: 600;
 }
