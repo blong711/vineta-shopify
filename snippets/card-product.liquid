@@ -100,16 +100,14 @@
       <p class="type text-xs text-dark fw-medium">{{ vendor }}</p>
     {%- endif -%}
     <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
-    {%- if product.available -%}
-      <p class="price-wrap fw-medium">
-        {%- if product.compare_at_price > product.price -%}
-          <span class="price-new text-primary">{{ product.price | money }}</span>
-          <span class="price-old text-dark">{{ product.compare_at_price | money }}</span>
-        {%- else -%}
-          <span class="price-new">{{ product.price | money }}</span>
-        {%- endif -%}
-      </p>
-    {%- endif -%}
+    <p class="price-wrap fw-medium">
+      {%- if product.compare_at_price > product.price -%}
+        <span class="price-new text-primary">{{ product.price | money }}</span>
+        <span class="price-old text-dark">{{ product.compare_at_price | money }}</span>
+      {%- else -%}
+        <span class="price-new">{{ product.price | money }}</span>
+      {%- endif -%}
+    </p>
 
     {%- if show_color_swatches and product.variants.size > 1 and product.options contains 'Color' -%}
       <ul class="list-color-product {{ text_alignment | default: 'text-left' | replace: 'text-', 'justify-content-' }}">
@@ -227,16 +225,14 @@
 
   <div class="card-product-info text-center">
     <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
-    {%- if product.available -%}
-      <p class="price-wrap fw-medium">
-        {%- if product.compare_at_price > product.price -%}
-          <span class="price-new text-primary">{{ product.price | money }}</span>
-          <span class="price-old old-line">{{ product.compare_at_price | money }}</span>
-        {%- else -%}
-          <span class="price-new">{{ product.price | money }}</span>
-        {%- endif -%}
-      </p>
-    {%- endif -%}
+    <p class="price-wrap fw-medium">
+      {%- if product.compare_at_price > product.price -%}
+        <span class="price-new text-primary">{{ product.price | money }}</span>
+        <span class="price-old old-line">{{ product.compare_at_price | money }}</span>
+      {%- else -%}
+        <span class="price-new">{{ product.price | money }}</span>
+      {%- endif -%}
+    </p>
 
     {%- if product.variants.size > 1 and product.options contains 'Color' -%}
       <ul class="list-color-product justify-content-center">
@@ -630,16 +626,14 @@
     {%- if vendor != blank -%}
       <div class="vendor text-sm text-muted">{{ vendor }}</div>
     {%- endif -%}
-    {%- if product.available -%}
-      <p class="price-wrap fw-medium">
-        {%- if product.compare_at_price > product.price -%}
-          <span class="price-new text-primary">{{ product.price | money }}</span>
-          <span class="price-old">{{ product.compare_at_price | money }}</span>
-        {%- else -%}
-          <span class="price-new">{{ product.price | money }}</span>
-        {%- endif -%}
-      </p>
-    {%- endif -%}
+    <p class="price-wrap fw-medium">
+      {%- if product.compare_at_price > product.price -%}
+        <span class="price-new text-primary">{{ product.price | money }}</span>
+        <span class="price-old">{{ product.compare_at_price | money }}</span>
+      {%- else -%}
+        <span class="price-new">{{ product.price | money }}</span>
+      {%- endif -%}
+    </p>
 
     {%- if show_color_swatches and product.variants.size > 1 and product.options contains 'Color' -%}
       <ul class="list-color-product {{ text_alignment | default: 'text-left' | replace: 'text-', 'justify-content-' }}">
