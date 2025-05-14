@@ -130,6 +130,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const compareIds = localStorage.getItem('theme4:compare:id') ? localStorage.getItem('theme4:compare:id').split(',') : [];
+        console.log('Compare IDs from localStorage:', compareIds);
         const compareContent = document.getElementById('compareContent');
         const compareTemplate = document.getElementById('compareTemplate');
         
@@ -141,11 +142,22 @@
         // Clone the template content
         const content = compareTemplate.content.cloneNode(true);
 
-        // Hide all product columns that are not in the compare list
-        content.querySelectorAll('[data-product-id]').forEach(el => {
-            if (!compareIds.includes(el.dataset.productId)) {
-                el.style.display = 'none';
-            }
+        // Find all rows in the template
+        const rows = content.querySelectorAll('.tf-compare-row');
+        if (rows.length === 0) {
+            compareContent.appendChild(content);
+            return;
+        }
+
+        // For each row, remove columns whose product ID is not in compareIds
+        rows.forEach((row, rowIdx) => {
+            const productCols = Array.from(row.querySelectorAll('[data-product-id]'));
+            productCols.forEach(col => {
+                const productId = String(col.dataset.productId);
+                if (!compareIds.includes(productId)) {
+                    col.parentNode.removeChild(col);
+                }
+            });
         });
 
         // Add the content to the page
@@ -154,15 +166,18 @@
         // Listen for compare:updated event
         document.addEventListener('compare:updated', function(event) {
             const updatedCompareIds = localStorage.getItem('theme4:compare:id') ? localStorage.getItem('theme4:compare:id').split(',') : [];
-            
-            // Hide removed products
-            document.querySelectorAll('[data-product-id]').forEach(el => {
-                if (!updatedCompareIds.includes(el.dataset.productId)) {
-                    el.style.display = 'none';
-                }
+            console.log('Updated compare IDs:', updatedCompareIds);
+            const rows = document.querySelectorAll('#compareContent .tf-compare-row');
+            if (rows.length === 0) return;
+            rows.forEach((row, rowIdx) => {
+                const productCols = Array.from(row.querySelectorAll('[data-product-id]'));
+                productCols.forEach(col => {
+                    const productId = String(col.dataset.productId);
+                    if (!updatedCompareIds.includes(productId)) {
+                        col.parentNode.removeChild(col);
+                    }
+                });
             });
-
-            // Show "No products" message if compare list is empty
             if (updatedCompareIds.length === 0) {
                 compareContent.innerHTML = '<div class="text-center"><p>No products to compare</p></div>';
             }
