@@ -69,7 +69,7 @@
                 }
               }'>
                 <div class="swiper-wrapper">
-                  {%- for product in collections.all.products limit: settings.search_suggestions_limit -%}
+                  {%- for product in section.settings.suggested_products limit: 4 -%}
                     <div class="swiper-slide">
                       {% render 'card-product', product: product, style: 'style-3' %}
                     </div>
@@ -94,6 +94,12 @@
       "id": "title",
       "label": "Title",
       "default": "What are you looking for?"
+    },
+    {
+      "type": "product_list",
+      "id": "suggested_products",
+      "label": "Products suggest",
+      "limit": 4
     }
   ]
 }
