@@ -55,19 +55,13 @@
                         }
                       }'>
                       <div class="swiper-wrapper">
-                        {% for collection_handle in block.settings.collections %}
-                          {% assign collection = collections[collection_handle] %}
+                        {% for collection in block.settings.collections %}
                           {% if collection != blank %}
                             <div class="swiper-slide">
                               <div class="wg-cls style-circle hover-img">
                                 <a href="{{ collection.url }}" class="image img-style d-block">
                                   {% if collection.featured_image != blank %}
-                                    {{ collection.featured_image | image_url: width: 300 | image_tag:
-                                      loading: 'lazy',
-                                      width: 300,
-                                      height: 300,
-                                      class: 'lazyload'
-                                    }}
+                                    {{ collection.featured_image | image_url: width: 300 | image_tag: loading: 'lazy', width: 300, height: 300, class: 'lazyload', alt: collection.title }}
                                   {% else %}
                                     {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
                                   {% endif %}
