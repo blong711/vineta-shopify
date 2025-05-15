@@ -39,42 +39,46 @@
               </button>
             </form>
             <div class="popular-searches justify-content-md-center">
-              <div class="text fw-medium">Popular searches:</div>
-              <ul>
-                <li><a class="link" href="{{ routes.collections_url }}?sort_by=best-selling">Featured</a></li>
-                <li><a class="link" href="{{ routes.collections_url }}?sort_by=created-descending">Trendy</a></li>
-                <li><a class="link" href="{{ routes.collections_url }}?sort_by=created-descending">New</a></li>
-                <li><a class="link" href="{{ routes.collections_url }}?sort_by=price-descending&filter.v.option.price=on_sale">Sale</a></li>
-              </ul>
+              {% if settings.show_popular_searches %}
+                <div class="text fw-medium">Popular searches:</div>
+                <ul>
+                  <li><a class="link" href="{{ routes.collections_url }}?sort_by=best-selling">Featured</a></li>
+                  <li><a class="link" href="{{ routes.collections_url }}?sort_by=created-descending">Trendy</a></li>
+                  <li><a class="link" href="{{ routes.collections_url }}?sort_by=created-descending">New</a></li>
+                  <li><a class="link" href="{{ routes.collections_url }}?sort_by=price-descending&filter.v.option.price=on_sale">Sale</a></li>
+                </ul>
+              {% endif %}
             </div>
           </div>
         </div>
         <div class="col-lg-10">
-          <div class="featured-product">
-            <div class="text-xl-2 fw-medium featured-product-heading">Featured product</div>
-            <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
-              "slidesPerView": 2,
-              "spaceBetween": 12,
-              "speed": 1000,
-              "observer": true,
-              "observeParents": true,
-              "slidesPerGroup": 2,
-              "pagination": { "el": ".sw-pagination-search", "clickable": true },
-              "breakpoints": {
-                "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
-                "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4}
-              }
-            }'>
-              <div class="swiper-wrapper">
-                {%- for product in collections.all.products limit: 4 -%}
-                  <div class="swiper-slide">
-                    {% render 'card-product', product: product, style: 'style-3' %}
-                  </div>
-                {%- endfor -%}
+          {% if settings.show_search_suggestions %}
+            <div class="featured-product">
+              <div class="text-xl-2 fw-medium featured-product-heading">Featured product</div>
+              <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
+                "slidesPerView": 2,
+                "spaceBetween": 12,
+                "speed": 1000,
+                "observer": true,
+                "observeParents": true,
+                "slidesPerGroup": 2,
+                "pagination": { "el": ".sw-pagination-search", "clickable": true },
+                "breakpoints": {
+                  "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
+                  "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4}
+                }
+              }'>
+                <div class="swiper-wrapper">
+                  {%- for product in collections.all.products limit: settings.search_suggestions_limit -%}
+                    <div class="swiper-slide">
+                      {% render 'card-product', product: product, style: 'style-3' %}
+                    </div>
+                  {%- endfor -%}
+                </div>
+                <div class="d-flex d-xl-none sw-dot-default sw-pagination-search justify-content-center"></div>
               </div>
-              <div class="d-flex d-xl-none sw-dot-default sw-pagination-search justify-content-center"></div>
             </div>
-          </div>
+          {% endif %}
         </div>
       </div>
     </div>
