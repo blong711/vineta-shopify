@@ -6313,6 +6313,7 @@ button.animate-btn::after,
   padding: 10px;
   border: none;
   z-index: 10;
+  color: var(--dark);
 }
 .modal .icon-close:hover,
 .modal .icon-close-popup:hover {
@@ -14309,6 +14310,7 @@ button.animate-btn::after,
   padding: 10px;
   border: none;
   z-index: 10;
+  color: var(--dark);
 }
 .modal .icon-close:hover,
 .modal .icon-close-popup:hover {
@@ -27232,4 +27234,91 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 }
 .bg-navy {
   background: #001f3f; /* or your preferred navy color */
+}
+.popup-search .heading {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 38.4px;
+  margin-bottom: 42px;
+}
+.popup-search .looking-for-wrap {
+  text-align: center;
+  margin-bottom: 50px;
+}
+.popup-search .modal-content {
+  overflow-y: auto;
+  padding: 68px 0;
+  height: 100%;
+  border-radius: 0;
+}
+@media (min-width: 768px) {
+  .popup-search .header {
+      padding: 15px 30px;
+  }
+}
+.popup-search .header {
+  position: fixed;
+  padding: 8px 15px;
+  display: flex
+;
+  justify-content: flex-end;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--white);
+}
+.popup-search .form-search {
+  margin-bottom: 32px;
+}
+.form-search {
+  position: relative;
+}
+.popup-search .popular-searches {
+  display: flex
+;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 16px;
+  line-height: 120%;
+}
+@media (min-width: 768px) {
+  .justify-content-md-center {
+      justify-content: center !important;
+  }
+}
+@media (min-width: 1200px) {
+  .popup-search .featured-product {
+      padding: 0px 90px;
+  }
+}
+.popup-search .popular-searches ul {
+  display: flex
+;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+@media (min-width: 768px) {
+  .popup-search .form-search input {
+      height: 60px;
+  }
+}
+.popup-search .form-search input {
+  border-radius: 99px;
+  font-size: 16px;
+  line-height: 120%;
+}
+.popup-search .form-search button {
+  right: 20px;
+}
+.popup-search .popular-searches ul a {
+  padding: 9px 19px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid rgba(161, 161, 161, 0.2);
+}
+.popup-search .featured-product .featured-product-heading {
+  margin-bottom: 30px;
 }
