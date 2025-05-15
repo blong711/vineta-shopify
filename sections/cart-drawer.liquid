@@ -19,16 +19,15 @@
         <div class="tf-mini-cart-wrap">
           <div class="tf-mini-cart-main">
             <div class="tf-mini-cart-sroll">
-            <div class="tf-mini-cart-items" style="overflow-y: auto; max-height: calc(100vh - 300px);">
-              <div id="cart-items-placeholder">
-                <div class="empty-cart">
-                  <p>Your cart is currently empty.</p>
-                  <a href="/collections/all" class="tf-btn animate-btn d-inline-flex bg-dark-2">Continue shopping</a>
-                      </div>
-                      </div>
-                    </div>
+              <div class="tf-mini-cart-items" style="overflow-y: auto; max-height: calc(100vh - 300px);">
+                <div id="cart-items-placeholder">
+                  <div class="empty-cart">
+                    <p>Your cart is currently empty.</p>
+                    <a href="/collections/all" class="tf-btn animate-btn d-inline-flex bg-dark-2">Continue shopping</a>
                   </div>
+                </div>
               </div>
+            </div>
           </div>
           <div class="tf-mini-cart-bottom">
             <div class="tf-mini-cart-tool">
@@ -173,42 +172,57 @@
   margin-bottom: 20px;
 }
 
-.cart-drawer-container {
+.offcanvas {
   position: fixed;
   top: 0;
   right: 0;
   width: 400px;
   height: 100vh;
-  z-index: 1050 !important;
-  pointer-events: none;
-}
-
-.cart-drawer-backdrop {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-  pointer-events: auto;
-  z-index: 1065 !important;
-}
-
-.cart-drawer {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
   background: var(--white);
   transform: translateX(100%);
   transition: transform 0.3s ease-in-out;
+  z-index: 1060 !important;
+  visibility: hidden;
+}
+
+.offcanvas.show {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.offcanvas-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1055 !important;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  visibility: hidden;
+  pointer-events: none;
+  inset: 0; /* covers the entire viewport */
+}
+
+.offcanvas-backdrop.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.canvas-wrapper {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  pointer-events: auto;
-  z-index: 1070 !important;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
 }
 
 .checkout-btn {
@@ -234,6 +248,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const cartDrawer = document.getElementById('shoppingCart');
   if (!cartDrawer) return;
   
+  // Create backdrop element if it doesn't exist
+  let backdrop = document.querySelector('.offcanvas-backdrop');
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.className = 'offcanvas-backdrop';
+    document.body.appendChild(backdrop);
+  }
+  
   // Remove any existing event listeners by cloning elements
   const closeBtn = cartDrawer.querySelector('.icon-close-popup');
   if (closeBtn) {
@@ -243,18 +265,54 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listener to the new button
     newCloseBtn.addEventListener('click', function(e) {
       e.stopPropagation();
-      cartDrawer.classList.remove('show');
+      closeCartDrawer();
     });
   }
   
   // Custom open/close functions for cart drawer
   window.openCartDrawer = function() {
+    // Close all other offcanvas elements first
+    document.querySelectorAll('.offcanvas.show').forEach(offcanvas => {
+      if (offcanvas.id !== 'shoppingCart') {
+        offcanvas.classList.remove('show');
+        document.querySelector('.offcanvas-backdrop').classList.remove('show');
+      }
+    });
+
+    // Close all modal elements
+    document.querySelectorAll('.modal.show').forEach(modal => {
+      modal.classList.remove('show');
+      // Also remove the modal backdrop if it exists
+      const modalBackdrop = document.querySelector('.modal-backdrop');
+      if (modalBackdrop) {
+        modalBackdrop.remove();
+      }
+    });
+
     cartDrawer.classList.add('show');
+    backdrop.classList.add('show');
+    document.body.style.overflow = 'hidden';
   };
   
   window.closeCartDrawer = function() {
     cartDrawer.classList.remove('show');
+    backdrop.classList.remove('show');
+    document.body.style.overflow = '';
   };
+
+  // Close drawer when clicking backdrop
+  backdrop.addEventListener('click', function(e) {
+    if (e.target === backdrop) {
+      closeCartDrawer();
+    }
+  });
+
+  // Close drawer when pressing escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && cartDrawer.classList.contains('show')) {
+      closeCartDrawer();
+    }
+  });
   
   // Tool button toggle - use event delegation instead of multiple listeners
   document.addEventListener('click', function(e) {

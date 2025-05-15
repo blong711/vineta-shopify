@@ -1,17 +1,61 @@
 <!DOCTYPE html>
-<html class="no-js" lang="{{ request.locale.iso_code }}">
+<html lang="{{ request.locale.iso_code }}" dir="{{ settings.text_direction }}">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="{{ page_description | escape }}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.primary_button }}">
+    <link rel="canonical" href="{{ canonical_url }}">
 
-    <title>{{ page_title | escape }}{% if page_title contains shop.name == false %} - {{ shop.name }}{% endif %}</title>
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | img_url: '32x32' }}">
+    {%- endif -%}
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}">
-    <link rel="apple-touch-icon-precomposed" href="{{ 'favicon.png' | asset_url }}">
+    {%- if settings.apple_touch_icon != blank -%}
+      <link rel="apple-touch-icon" href="{{ settings.apple_touch_icon | img_url: '180x180' }}">
+    {%- endif -%}
 
-    {% render 'currency-selector' %}
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {% render 'meta-tags' %}
+
+    <!-- SEO Meta Tags -->
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="{{ shop.name }}">
+    <meta name="keywords" content="{{ shop.name }}, {{ page_title | escape }}{% if current_tags %}, {{ current_tags | join: ', ' }}{% endif %}">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:site_name" content="{{ shop.name }}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:title" content="{{ page_title | escape }}">
+    <meta property="og:type" content="{% if template contains 'product' %}product{% else %}website{% endif %}">
+    {% if page_description %}
+      <meta property="og:description" content="{{ page_description | escape }}">
+    {% endif %}
+    {% if template contains 'product' and product.featured_media %}
+      <meta property="og:image" content="{{ product.featured_media | img_url: '1200x1200' }}">
+      <meta property="og:image:secure_url" content="{{ product.featured_media | img_url: '1200x1200' }}">
+    {% endif %}
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ page_title | escape }}">
+    {% if page_description %}
+      <meta name="twitter:description" content="{{ page_description | escape }}">
+    {% endif %}
+    {% if template contains 'product' and product.featured_media %}
+      <meta name="twitter:image" content="{{ product.featured_media | img_url: '1200x1200' }}">
+    {% endif %}
+
     {{ content_for_header }}
 
     <!-- Core CSS -->
@@ -84,6 +128,109 @@
   
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css">
   <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
+  <style>
+    :root {
+      --color-background: {{ settings.color_schemes.background }};
+      --color-text: {{ settings.color_schemes.text }};
+      --color-primary-button: {{ settings.color_schemes.primary_button }};
+      --color-primary-button-text: {{ settings.color_schemes.primary_button_text }};
+      --color-primary-button-border: {{ settings.color_schemes.primary_button_border }};
+      --color-secondary-button: {{ settings.color_schemes.secondary_button }};
+      --color-secondary-button-text: {{ settings.color_schemes.secondary_button_text }};
+      --color-secondary-button-border: {{ settings.color_schemes.secondary_button_border }};
+      --color-links: {{ settings.color_schemes.links }};
+      --color-icons: {{ settings.color_schemes.icons }};
+    }
+
+    body {
+      background: var(--color-background);
+      color: var(--color-text);
+      font-family: 
+        {% if settings.font_library == 'google' and settings.body_font_family != blank %}
+          {{ settings.body_font_family }}
+        {% else %}
+          {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }}
+        {% endif %} !important;
+      font-weight: {{ settings.body_font_weight | default: settings.body_font.weight }} !important;
+      line-height: {{ settings.body_line_height }} !important;
+      letter-spacing: {{ settings.body_letter_spacing | divided_by: 100.0 }}em !important;
+      font-size: {{ settings.body_font_size_mobile }}px !important;
+    }
+    @media (min-width: 768px) {
+      body {
+        font-size: {{ settings.body_font_size_desktop }}px !important;
+      }
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 
+        {% if settings.font_library == 'google' and settings.heading_font_family != blank %}
+          {{ settings.heading_font_family }}
+        {% else %}
+          {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }}
+        {% endif %} !important;
+      font-weight: {{ settings.heading_font_weight | default: settings.heading_font.weight }} !important;
+      line-height: {{ settings.heading_line_height }} !important;
+      letter-spacing: {{ settings.heading_letter_spacing | divided_by: 100.0 }}em !important;
+    }
+    .text-sm {
+      font-size: {{ settings.body_font_size_mobile | minus: 2 }}px !important;
+    }
+    @media (min-width: 768px) {
+      .text-sm {
+        font-size: {{ settings.body_font_size_desktop | minus: 2 }}px !important;
+      }
+    }
+    .text-md {
+      font-size: {{ settings.body_font_size_desktop }}px !important;
+    }
+    .container {
+      max-width: {{ settings.container_width }};
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+      padding-left: {{ settings.container_padding }};
+      padding-right: {{ settings.container_padding }};
+    }
+    .grid, .grid-cols {
+      grid-gap: {{ settings.grid_gap }}px;
+      gap: {{ settings.grid_gap }}px;
+    }
+    .section {
+      margin-bottom: {{ settings.section_spacing }}px;
+    }
+    .element, .element-spacing {
+      margin-bottom: {{ settings.element_spacing }}px;
+    }
+    {% if settings.enable_animations %}
+      /* Animations enabled: use section styles as defined in each section */
+    {% else %}
+      .section, [data-section-animate], .slider-effect-fade, .fadeInUp, .wow, .fadeInLeft, .fade-item, .fade-item-1, .fade-item-2, .fade-item-3, .animated {
+        animation: none !important;
+        transition: none !important;
+        opacity: 1 !important;
+      }
+    {% endif %}
+
+    a, .link {
+      color: var(--color-links);
+    }
+
+    .icon {
+      color: var(--color-icons);
+    }
+
+    .button, .btn, .primary-btn {
+      background: var(--color-primary-button);
+      color: var(--color-primary-button-text);
+      border-color: var(--color-primary-button-border);
+    }
+
+    .button.secondary, .btn-secondary, .secondary-btn {
+      background: var(--color-secondary-button);
+      color: var(--color-secondary-button-text);
+      border-color: var(--color-secondary-button-border);
+    }
+  </style>
 </head>
 
   <body>
