@@ -27322,3 +27322,42 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 .popup-search .featured-product .featured-product-heading {
   margin-bottom: 30px;
 }
+@media (min-width: 1600px) {
+  .fl-control-sw2 .swiper-button-next {
+      right: -54px;
+  }
+}
+@media (min-width: 1200px) {
+  .fl-control-sw2 .swiper-button-next, .fl-control-sw .swiper-button-next {
+      right: -22px;
+  }
+}
+.fl-control-sw2 .nav-swiper {
+  margin-top: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+@media (min-width: 1600px) {
+  .fl-control-sw2 .swiper-button-prev {
+      left: -54px;
+  }
+}
+@media (min-width: 1200px) {
+  .fl-control-sw2 .swiper-button-prev, .fl-control-sw .swiper-button-prev {
+      left: -22px;
+  }
+}
+.nav-swiper.swiper-button-disabled {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-color: transparent;
+  cursor: text;
+}
+prev.swiper-button-disabled {
+  opacity: .35;
+  cursor: auto;
+  pointer-events: none;
+}
+.swiper-button-prev, .swiper-rtl .swiper-button-next {
+  left: var(--swiper-navigation-sides-offset, 10px);
+  right: auto;
+}

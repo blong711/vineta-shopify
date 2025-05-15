@@ -186,7 +186,8 @@
 {% else %}
     <div class="pt-24">
         <div class="container">
-            <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp" data-swiper='{
+            <div class="fl-control-sw2">
+                <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp" data-swiper='{
                     "slidesPerView": {{ section.settings.slides_per_view_mobile }},
                     "spaceBetween": {{ section.settings.space_between }},
                     "speed": {{ section.settings.speed }},
@@ -214,33 +215,34 @@
                         "1200": { "slidesPerView": {{ section.settings.slides_per_view }}, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": {{ section.settings.slides_per_view }} }
                     }
                 }'>
-                <div class="swiper-wrapper">
-                    {% for block in section.blocks %}
-                        {% assign collection = collections[block.settings.collection] %}
-                        <div class="swiper-slide" {{ block.shopify_attributes }}>
-                            <div class="wg-cls style-abs asp-1 hover-img">
-                                {% if collection.featured_image != blank %}
-                                    <a href="{{ collection.url }}" class="image img-style d-block">
-                                        <img src="{{ collection.featured_image | img_url: 'master' }}"
-                                            data-src="{{ collection.featured_image | img_url: 'master' }}" 
-                                            alt="{{ collection.title | escape }}" 
-                                            class="lazyload"
-                                            width="{{ collection.featured_image.width }}"
-                                            height="{{ collection.featured_image.height }}">
-                                    </a>
-                                {% endif %}
-                                <div class="cls-btn text-center">
-                                    <a href="{{ collection.url }}"
-                                        class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                        {{ collection.title }}
-                                        <i class="icon icon-arrow-top-left"></i>
-                                    </a>
+                    <div class="swiper-wrapper">
+                        {% for block in section.blocks %}
+                            {% assign collection = collections[block.settings.collection] %}
+                            <div class="swiper-slide" {{ block.shopify_attributes }}>
+                                <div class="wg-cls style-abs asp-1 hover-img">
+                                    {% if collection.featured_image != blank %}
+                                        <a href="{{ collection.url }}" class="image img-style d-block">
+                                            <img src="{{ collection.featured_image | img_url: 'master' }}"
+                                                data-src="{{ collection.featured_image | img_url: 'master' }}" 
+                                                alt="{{ collection.title | escape }}" 
+                                                class="lazyload"
+                                                width="{{ collection.featured_image.width }}"
+                                                height="{{ collection.featured_image.height }}">
+                                        </a>
+                                    {% endif %}
+                                    <div class="cls-btn text-center">
+                                        <a href="{{ collection.url }}"
+                                            class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
+                                            {{ collection.title }}
+                                            <i class="icon icon-arrow-top-left"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
+                    <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls justify-content-center"></div>
                 </div>
-                <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls justify-content-center"></div>
                 <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls"></div>
                 <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls"></div>
             </div>
