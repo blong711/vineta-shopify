@@ -9,74 +9,81 @@
               {% if section.blocks.size > 0 %}
                 <ul class="menu-tab-line justify-content-center" role="tablist">
                   {% for block in section.blocks %}
-                    <li class="nav-tab-item" role="presentation" {{ block.shopify_attributes }}>
-                      <a href="#collection-{{ block.id }}" class="tab-link {% if forloop.first %}active{% endif %}" data-bs-toggle="tab">
-                        {{ collections[block.settings.collection].title }}
-                      </a>
-                    </li>
+                    {% if block.type == 'men_tab' or block.type == 'women_tab' %}
+                      <li class="nav-tab-item" role="presentation" {{ block.shopify_attributes }}>
+                        <a href="#tab-{{ block.id }}" class="tab-link {% if forloop.first %}active{% endif %}" data-bs-toggle="tab">
+                          {{ block.settings.tab_title }}
+                        </a>
+                      </li>
+                    {% endif %}
                   {% endfor %}
                 </ul>
               {% endif %}
             </div>
             <div class="tab-content">
               {% for block in section.blocks %}
-                <div class="tab-pane {% if forloop.first %}active show{% endif %}" id="collection-{{ block.id }}" role="tabpanel">
-                  <div dir="ltr" class="swiper tf-swiper" 
-                    data-swiper='{
-                      "slidesPerView": 2,
-                      "spaceBetween": 12,
-                      "speed": 800,
-                      "observer": true,
-                      "observeParents": true,
-                      "slidesPerGroup": 2,
-                      "pagination": { 
-                        "el": ".sw-pagination-{{ block.id }}", 
-                        "clickable": true 
-                      },
-                      "breakpoints": {
-                        "575": { 
-                          "slidesPerView": 3, 
-                          "spaceBetween": 12,
-                          "slidesPerGroup": 2 
-                        },    
-                        "768": { 
-                          "slidesPerView": 4, 
-                          "spaceBetween": 24, 
-                          "slidesPerGroup": 3 
+                {% if block.type == 'men_tab' or block.type == 'women_tab' %}
+                  <div class="tab-pane {% if forloop.first %}active show{% endif %}" id="tab-{{ block.id }}" role="tabpanel">
+                    <div dir="ltr" class="swiper tf-swiper" 
+                      data-swiper='{
+                        "slidesPerView": 2,
+                        "spaceBetween": 12,
+                        "speed": 800,
+                        "observer": true,
+                        "observeParents": true,
+                        "slidesPerGroup": 2,
+                        "pagination": { 
+                          "el": ".sw-pagination-{{ block.id }}", 
+                          "clickable": true 
                         },
-                        "1200": { 
-                          "slidesPerView": {{ section.settings.products_to_show }}, 
-                          "spaceBetween": 64, 
-                          "slidesPerGroup": {{ section.settings.products_to_show }}
+                        "breakpoints": {
+                          "575": { 
+                            "slidesPerView": 3, 
+                            "spaceBetween": 12,
+                            "slidesPerGroup": 2 
+                          },    
+                          "768": { 
+                            "slidesPerView": 4, 
+                            "spaceBetween": 24, 
+                            "slidesPerGroup": 3 
+                          },
+                          "1200": { 
+                            "slidesPerView": {{ section.settings.products_to_show }}, 
+                            "spaceBetween": 64, 
+                            "slidesPerGroup": {{ section.settings.products_to_show }}
+                          }
                         }
-                      }
-                    }'>
-                    <div class="swiper-wrapper">
-                      {% for product in collections[block.settings.collection].products limit: section.settings.products_per_collection %}
-                        <div class="swiper-slide">
-                          <div class="wg-cls style-circle hover-img">
-                            <a href="{{ product.url }}" class="image img-style d-block">
-                              {% if product.featured_image != blank %}
-                                {{ product.featured_image | image_url: width: 300 | image_tag:
-                                  loading: 'lazy',
-                                  width: 300,
-                                  height: 300,
-                                  class: 'lazyload'
-                                }}
-                              {% else %}
-                                {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                              {% endif %}
-                            </a>
-                            <div class="cls-content text-center">
-                              <a href="{{ product.url }}" class="link text-md fw-medium">{{ product.title }}</a>
+                      }'>
+                      <div class="swiper-wrapper">
+                        {% for collection_handle in block.settings.collections %}
+                          {% assign collection = collections[collection_handle] %}
+                          {% if collection != blank %}
+                            <div class="swiper-slide">
+                              <div class="wg-cls style-circle hover-img">
+                                <a href="{{ collection.url }}" class="image img-style d-block">
+                                  {% if collection.featured_image != blank %}
+                                    {{ collection.featured_image | image_url: width: 300 | image_tag:
+                                      loading: 'lazy',
+                                      width: 300,
+                                      height: 300,
+                                      class: 'lazyload'
+                                    }}
+                                  {% else %}
+                                    {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                                  {% endif %}
+                                </a>
+                                <div class="cls-content text-center">
+                                  <a href="{{ collection.url }}" class="link text-md fw-medium">{{ collection.title }}</a>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      {% endfor %}
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                      <span class="d-flex d-xl-none sw-dot-default sw-pagination-{{ block.id }} justify-content-center"></span>
                     </div>
-                    <span class="d-flex d-xl-none sw-dot-default sw-pagination-{{ block.id }} justify-content-center"></span>
                   </div>
-                </div>
+                {% endif %}
               {% endfor %}
             </div>
           </div>
@@ -281,7 +288,7 @@
       "type": "text",
       "id": "title",
       "label": "Title",
-      "default": "Explore a variety of high-performance bikes\nbuilt for speed, durability, and adventure."
+      "default": "Shop by Category"
     },
     {
       "type": "text",
@@ -313,13 +320,40 @@
   "max_blocks": 12,
   "blocks": [
     {
-      "type": "category",
-      "name": "Category",
+      "type": "men_tab",
+      "name": "Men's Tab",
+      "limit": 1,
       "settings": [
         {
-          "type": "collection",
-          "id": "collection",
-          "label": "Collection"
+          "type": "text",
+          "id": "tab_title",
+          "label": "Tab Title",
+          "default": "Men"
+        },
+        {
+          "type": "collection_list",
+          "id": "collections",
+          "label": "Collections",
+          "limit": 6
+        }
+      ]
+    },
+    {
+      "type": "women_tab",
+      "name": "Women's Tab",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_title",
+          "label": "Tab Title",
+          "default": "Women"
+        },
+        {
+          "type": "collection_list",
+          "id": "collections",
+          "label": "Collections",
+          "limit": 6
         }
       ]
     }
@@ -328,16 +362,16 @@
     {
       "name": "Categories",
       "settings": {
-        "title": "Categories",
+        "title": "Shop by Category",
         "products_to_show": 6,
         "products_per_collection": 6
       },
       "blocks": [
         {
-          "type": "category"
+          "type": "men_tab"
         },
         {
-          "type": "category"
+          "type": "women_tab"
         }
       ]
     }
