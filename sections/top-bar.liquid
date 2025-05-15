@@ -108,21 +108,8 @@
                   <div class="tf-currencies">
                     <select class="image-select center style-default type-currencies" name="currency">
                       {% for currency in shop.enabled_currencies %}
-                        {% assign country_name = "" %}
-                        {% assign thumbnail_path = "" %}
-                        {% case currency.iso_code %}
-                          {% when 'USD' %}
-                            {% assign country_name = "United States" %}
-                            {% assign thumbnail_path = "us.png" | asset_url %}
-                          {% when 'EUR' %}
-                            {% assign country_name = "France" %}
-                          {% when 'VND' %}
-                            {% assign country_name = "Vietnam" %}
-                          {% else %}
-                            {% assign country_name = currency.name %}
-                        {% endcase %}
-                        <option value="{{ currency.iso_code }}" {% if currency == cart.currency %}selected{% endif %} {% if thumbnail_path != blank %}data-thumbnail="{{ thumbnail_path }}"{% endif %}>
-                          {{ country_name }} ({{ currency.iso_code }} {{ currency.symbol }})
+                        <option value="{{ currency.iso_code }}" {% if currency == cart.currency %}selected{% endif %}>
+                          {{ currency.name }} ({{ currency.iso_code }} {{ currency.symbol }})
                         </option>
                       {% endfor %}
                     </select>
