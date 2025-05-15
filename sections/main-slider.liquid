@@ -134,6 +134,63 @@
 </section>
 <!-- /Slider -->
 
+<script>
+  class MainSlider {
+    constructor() {
+      this.init();
+      this.bindEvents();
+    }
+
+    init() {
+      // Destroy existing instance if it exists
+      if (this.swiper) {
+        this.swiper.destroy(true, true);
+      }
+
+      // Initialize new Swiper instance
+      this.swiper = new Swiper('.tf-sw-slideshow', {
+        effect: document.querySelector('.tf-sw-slideshow').dataset.effect || 'slide',
+        direction: document.querySelector('.tf-sw-slideshow').dataset.direction || 'horizontal',
+        simulateTouch: document.querySelector('.tf-sw-slideshow').dataset.simulateTouch === 'true',
+        slidesPerView: 1,
+        spaceBetween: 0,
+        loop: document.querySelector('.tf-sw-slideshow').dataset.loop === 'true',
+        autoplay: document.querySelector('.tf-sw-slideshow').dataset.autoPlay === 'true' ? {
+          delay: 5000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: document.querySelector('.tf-sw-slideshow').dataset.pauseOnHover === 'true'
+        } : false,
+        speed: parseInt(document.querySelector('.tf-sw-slideshow').dataset.speed) || 800,
+        pagination: {
+          el: '.sw-pagination-slider',
+          clickable: true
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        }
+      });
+    }
+
+    bindEvents() {
+      // Reinitialize on theme editor changes
+      document.addEventListener('shopify:section:load', () => {
+        this.init();
+      });
+
+      // Cleanup on section unload
+      document.addEventListener('shopify:section:unload', () => {
+        if (this.swiper) {
+          this.swiper.destroy(true, true);
+        }
+      });
+    }
+  }
+
+  // Initialize the slider
+  new MainSlider();
+</script>
+
 {% schema %}
 {
     "name": "Hero Slider",
