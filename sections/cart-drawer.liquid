@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Handle quantity buttons and remove
-    if (e.target.classList.contains('plus-btn')) {
+    if (e.target.classList.contains('btn-increase')) {
       const input = e.target.previousElementSibling;
       if (!input) return;
       
@@ -352,10 +352,27 @@ document.addEventListener('DOMContentLoaded', function() {
       let quantity = parseInt(input.value) + 1;
       input.value = quantity;
       
-      if (window.cart && !window.cart.processingRequests) {
-        window.cart.updateQuantity(variantId, quantity, 'update');
+      if (window.cart) {
+        window.cart.updateQuantity(variantId, quantity, 'update').then(async () => {
+          const response = await fetch('/cart.js');
+          const cartData = await response.json();
+          
+          // Update total price
+          const totalPriceElement = document.querySelector('.cart-total-price');
+          if (totalPriceElement) {
+            totalPriceElement.textContent = new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: window.Shopify.currency.active
+            }).format(cartData.total_price / 100);
+          }
+          
+          // Update cart drawer
+          if (window.ProductCard) {
+            window.ProductCard.updateCartDrawer(cartData);
+          }
+        });
       }
-    } else if (e.target.classList.contains('minus-btn')) {
+    } else if (e.target.classList.contains('btn-decrease')) {
       const input = e.target.nextElementSibling;
       if (!input) return;
       
@@ -364,16 +381,50 @@ document.addEventListener('DOMContentLoaded', function() {
       if (quantity < 1) quantity = 1;
       input.value = quantity;
       
-      if (window.cart && !window.cart.processingRequests) {
-        window.cart.updateQuantity(variantId, quantity, 'update');
+      if (window.cart) {
+        window.cart.updateQuantity(variantId, quantity, 'update').then(async () => {
+          const response = await fetch('/cart.js');
+          const cartData = await response.json();
+          
+          // Update total price
+          const totalPriceElement = document.querySelector('.cart-total-price');
+          if (totalPriceElement) {
+            totalPriceElement.textContent = new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: window.Shopify.currency.active
+            }).format(cartData.total_price / 100);
+          }
+          
+          // Update cart drawer
+          if (window.ProductCard) {
+            window.ProductCard.updateCartDrawer(cartData);
+          }
+        });
       }
     } else if (e.target.classList.contains('remove')) {
       const item = e.target.closest('.tf-mini-cart-item');
       if (!item) return;
       
       const variantId = item.dataset.variantId;
-      if (window.cart && !window.cart.processingRequests) {
-        window.cart.removeItem(variantId);
+      if (window.cart) {
+        window.cart.removeItem(variantId).then(async () => {
+          const response = await fetch('/cart.js');
+          const cartData = await response.json();
+          
+          // Update total price
+          const totalPriceElement = document.querySelector('.cart-total-price');
+          if (totalPriceElement) {
+            totalPriceElement.textContent = new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: window.Shopify.currency.active
+            }).format(cartData.total_price / 100);
+          }
+          
+          // Update cart drawer
+          if (window.ProductCard) {
+            window.ProductCard.updateCartDrawer(cartData);
+          }
+        });
       }
     }
   });
