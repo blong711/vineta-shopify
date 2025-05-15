@@ -275,22 +275,30 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.offcanvas.show').forEach(offcanvas => {
       if (offcanvas.id !== 'shoppingCart') {
         offcanvas.classList.remove('show');
-        document.querySelector('.offcanvas-backdrop').classList.remove('show');
+        const offcanvasBackdrop = document.querySelector('.offcanvas-backdrop');
+        if (offcanvasBackdrop) {
+          offcanvasBackdrop.classList.remove('show');
+        }
       }
     });
 
-    // Close all modal elements
+    // Close all modal elements and their backdrops
     document.querySelectorAll('.modal.show').forEach(modal => {
-      modal.classList.remove('show');
-      // Also remove the modal backdrop if it exists
+      modal.classList.remove('show', 'modal');
+      // Remove the modal backdrop if it exists
       const modalBackdrop = document.querySelector('.modal-backdrop');
       if (modalBackdrop) {
         modalBackdrop.remove();
       }
     });
 
+    // Ensure cart drawer backdrop is enabled
+    const cartBackdrop = document.querySelector('.offcanvas-backdrop');
+    if (cartBackdrop) {
+      cartBackdrop.classList.add('show');
+    }
+
     cartDrawer.classList.add('show');
-    backdrop.classList.add('show');
     document.body.style.overflow = 'hidden';
   };
   
