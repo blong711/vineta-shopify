@@ -266,4 +266,108 @@ const ProductCard = {
 };
 
 // Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => ProductCard.init()); 
+document.addEventListener('DOMContentLoaded', () => ProductCard.init());
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Handle add to cart buttons
+  const addToCartButtons = document.querySelectorAll('.add-to-cart');
+  
+  addToCartButtons.forEach(button => {
+    button.addEventListener('click', async function(e) {
+      e.preventDefault();
+      
+      const variantId = this.dataset.variantId;
+      const quantity = this.dataset.quantity || 1;
+      
+      try {
+        // Add item to cart
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            items: [{
+              id: variantId,
+              quantity: parseInt(quantity)
+            }]
+          })
+        });
+
+        if (!response.ok) throw new Error('Network response was not ok');
+        
+        // Fetch the updated cart to get the correct item count
+        const cartRes = await fetch('/cart.js');
+        const cartData = await cartRes.json();
+        const cartCountElements = document.querySelectorAll('.nav-cart .count-box');
+        cartCountElements.forEach(element => {
+          element.textContent = cartData.item_count;
+        });
+
+        // Optional: Show success message
+        // You can add your own success notification here
+        
+      } catch (error) {
+        console.error('Error adding item to cart:', error);
+        // Optional: Show error message
+        // You can add your own error notification here
+      }
+    });
+  });
+
+  // Handle wishlist buttons
+  const wishlistButtons = document.querySelectorAll('[data-wishlist]');
+  wishlistButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      // Add your wishlist functionality here
+    });
+  });
+
+  // Handle compare buttons
+  const compareButtons = document.querySelectorAll('[data-compare]');
+  compareButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      // Add your compare functionality here
+    });
+  });
+
+  // Handle quickview buttons
+  const quickviewButtons = document.querySelectorAll('.quickview');
+  quickviewButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      // Add your quickview functionality here
+    });
+  });
+
+  // Handle color swatches
+  const colorSwatches = document.querySelectorAll('.color-swatch');
+  colorSwatches.forEach(swatch => {
+    swatch.addEventListener('click', function() {
+      const variantId = this.dataset.variantId;
+      const variantImage = this.dataset.variantImage;
+      
+      // Update active state
+      this.closest('.list-color-product').querySelectorAll('.color-swatch').forEach(s => {
+        s.classList.remove('active');
+      });
+      this.classList.add('active');
+      
+      // Update variant ID on add to cart buttons
+      const addToCartButtons = this.closest('.card-product').querySelectorAll('.add-to-cart');
+      addToCartButtons.forEach(button => {
+        button.dataset.variantId = variantId;
+      });
+      
+      // Update product image if variant image exists
+      if (variantImage) {
+        const productImg = this.closest('.card-product').querySelector('.img-product');
+        if (productImg) {
+          productImg.src = variantImage;
+        }
+      }
+    });
+  });
+}); 
