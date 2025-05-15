@@ -9,7 +9,7 @@
               {% if section.blocks.size > 0 %}
                 <ul class="menu-tab-line justify-content-center" role="tablist">
                   {% for block in section.blocks %}
-                    {% if block.type == 'men_tab' or block.type == 'women_tab' %}
+                    {% if block.type == 'tab' %}
                       <li class="nav-tab-item" role="presentation" {{ block.shopify_attributes }}>
                         <a href="#tab-{{ block.id }}" class="tab-link {% if forloop.first %}active{% endif %}" data-bs-toggle="tab">
                           {{ block.settings.tab_title }}
@@ -22,7 +22,7 @@
             </div>
             <div class="tab-content">
               {% for block in section.blocks %}
-                {% if block.type == 'men_tab' or block.type == 'women_tab' %}
+                {% if block.type == 'tab' %}
                   <div class="tab-pane {% if forloop.first %}active show{% endif %}" id="tab-{{ block.id }}" role="tabpanel">
                     <div dir="ltr" class="swiper tf-swiper" 
                       data-swiper='{
@@ -317,37 +317,16 @@
       "info": "Number of products to show from each collection"
     }
   ],
-  "max_blocks": 12,
   "blocks": [
     {
-      "type": "men_tab",
-      "name": "Men's Tab",
-      "limit": 1,
+      "type": "tab",
+      "name": "Category Tab",
       "settings": [
         {
           "type": "text",
           "id": "tab_title",
           "label": "Tab Title",
-          "default": "Men"
-        },
-        {
-          "type": "collection_list",
-          "id": "collections",
-          "label": "Collections",
-          "limit": 6
-        }
-      ]
-    },
-    {
-      "type": "women_tab",
-      "name": "Women's Tab",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "tab_title",
-          "label": "Tab Title",
-          "default": "Women"
+          "default": "Category"
         },
         {
           "type": "collection_list",
@@ -368,10 +347,16 @@
       },
       "blocks": [
         {
-          "type": "men_tab"
+          "type": "tab",
+          "settings": {
+            "tab_title": "Men"
+          }
         },
         {
-          "type": "women_tab"
+          "type": "tab",
+          "settings": {
+            "tab_title": "Women"
+          }
         }
       ]
     }
