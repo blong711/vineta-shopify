@@ -184,8 +184,8 @@
                   {%- if block.settings.link != blank -%}
                     <a href="{{ block.settings.link }}" target="_blank" rel="noopener">
                   {%- endif -%}
-                    <img src="{{ block.settings.icon | img_url: 'master' }}" 
-                         alt="{{ block.settings.alt_text | default: 'Payment method' }}"
+                    <img src="{{ block.settings.payment_type | payment_type_img_url }}" 
+                         alt="{{ block.settings.payment_type | capitalize }}"
                          width="{{ section.settings.payment_icons_size }}"
                          height="{{ section.settings.payment_icons_size }}"
                          class="icon">
@@ -383,20 +383,45 @@
       "name": "Payment Icon",
       "settings": [
         {
-          "type": "image_picker",
-          "id": "icon",
-          "label": "Payment Icon Image"
+          "type": "select",
+          "id": "payment_type",
+          "label": "Payment Type",
+          "options": [
+            {
+              "value": "visa",
+              "label": "Visa"
+            },
+            {
+              "value": "master",
+              "label": "Mastercard"
+            },
+            {
+              "value": "american_express",
+              "label": "American Express"
+            },
+            {
+              "value": "paypal",
+              "label": "PayPal"
+            },
+            {
+              "value": "apple_pay",
+              "label": "Apple Pay"
+            },
+            {
+              "value": "google_pay",
+              "label": "Google Pay"
+            },
+            {
+              "value": "shopify_pay",
+              "label": "Shopify Pay"
+            }
+          ],
+          "default": "visa"
         },
         {
           "type": "url",
           "id": "link",
           "label": "Link (optional)"
-        },
-        {
-          "type": "text",
-          "id": "alt_text",
-          "label": "Alt Text",
-          "info": "For accessibility"
         }
       ]
     }
