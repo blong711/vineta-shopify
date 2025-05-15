@@ -249,50 +249,6 @@
 {% endif %}
 <!-- /Collection -->
 
-<script>
-  class CollectionSlider {
-    constructor() {
-      this.initSliders();
-      this.bindEvents();
-    }
-
-    initSliders() {
-      const swipers = document.querySelectorAll('.tf-swiper, .tf-sw-slideshow');
-      swipers.forEach(swiperEl => {
-        if (swiperEl.swiper) {
-          swiperEl.swiper.destroy(true, true);
-        }
-        const swiperConfig = JSON.parse(swiperEl.getAttribute('data-swiper'));
-        swiperEl.swiper = new Swiper(swiperEl, swiperConfig);
-      });
-    }
-
-    bindEvents() {
-      document.addEventListener('shopify:section:load', (event) => {
-        this.initSliders();
-      });
-
-      document.addEventListener('shopify:section:unload', (event) => {
-        const swipers = event.target.querySelectorAll('.tf-swiper, .tf-sw-slideshow');
-        swipers.forEach(swiperEl => {
-          if (swiperEl.swiper) {
-            swiperEl.swiper.destroy(true, true);
-          }
-        });
-      });
-    }
-  }
-
-  // Initialize on page load
-  document.addEventListener('DOMContentLoaded', () => {
-    new CollectionSlider();
-  });
-
-  // Initialize on section updates
-  document.addEventListener('shopify:section:load', () => {
-    new CollectionSlider();
-  });
-</script>
 
 {% schema %}
 {

@@ -124,7 +124,7 @@
         </div>
         {% endif %}
         {% if section.settings.show_navigation %}
-        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-prev"></div>-
         <div class="swiper-button-next"></div>
         {% endif %}
     </div>
@@ -134,83 +134,6 @@
 </section>
 <!-- /Slider -->
 
-<script>
-  class MainSlider {
-    constructor() {
-      this.initSlider();
-      this.bindEvents();
-    }
-
-    initSlider() {
-      const sliderEl = document.querySelector('.tf-sw-slideshow');
-      if (!sliderEl) return;
-
-      if (sliderEl.swiper) {
-        sliderEl.swiper.destroy(true, true);
-      }
-
-      const config = {
-        effect: sliderEl.getAttribute('data-effect') || 'slide',
-        direction: sliderEl.getAttribute('data-direction') || 'horizontal',
-        simulateTouch: sliderEl.getAttribute('data-simulate-touch') === 'true',
-        slidesPerView: parseInt(sliderEl.getAttribute('data-preview')) || 1,
-        spaceBetween: parseInt(sliderEl.getAttribute('data-space')) || 0,
-        loop: sliderEl.getAttribute('data-loop') === 'true',
-        autoplay: sliderEl.getAttribute('data-auto-play') === 'true' ? {
-          delay: 5000,
-          disableOnInteraction: false,
-          pauseOnMouseEnter: {{ section.settings.pause_on_hover | json }}
-        } : false,
-        speed: parseInt(sliderEl.getAttribute('data-speed')) || 800,
-        pagination: {
-          el: '.sw-pagination-slider',
-          clickable: true
-        },
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev'
-        },
-        breakpoints: {
-          576: {
-            slidesPerView: parseInt(sliderEl.getAttribute('data-tablet')) || 1,
-            spaceBetween: parseInt(sliderEl.getAttribute('data-space-mb')) || 0
-          },
-          768: {
-            slidesPerView: parseInt(sliderEl.getAttribute('data-preview')) || 1,
-            spaceBetween: parseInt(sliderEl.getAttribute('data-space')) || 0
-          }
-        }
-      };
-
-      sliderEl.swiper = new Swiper(sliderEl, config);
-    }
-
-    bindEvents() {
-      document.addEventListener('shopify:section:load', (event) => {
-        if (event.target.querySelector('.tf-sw-slideshow')) {
-          this.initSlider();
-        }
-      });
-
-      document.addEventListener('shopify:section:unload', (event) => {
-        const sliderEl = event.target.querySelector('.tf-sw-slideshow');
-        if (sliderEl && sliderEl.swiper) {
-          sliderEl.swiper.destroy(true, true);
-        }
-      });
-    }
-  }
-
-  // Initialize on page load
-  document.addEventListener('DOMContentLoaded', () => {
-    new MainSlider();
-  });
-
-  // Initialize on section updates
-  document.addEventListener('shopify:section:load', () => {
-    new MainSlider();
-  });
-</script>
 
 {% schema %}
 {
@@ -374,7 +297,7 @@
                     "label": "Image mobile"
                 },
                 {
-                "type": "select",
+                "type": "radio",
                 "id": "content_alignment",
                 "label": "Content alignment",
                 "default": "left",
