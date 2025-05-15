@@ -13,15 +13,55 @@
           </a>
         </div>
         <ul class="tf-social-icon style-large">
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'social' -%}
-              <li {{ block.shopify_attributes }}>
-                <a href="{{ block.settings.url }}" class="social-item social-{{ block.settings.platform }}" target="_blank" rel="noopener">
-                  <i class="icon icon-{{ block.settings.platform }}"></i>
-                </a>
-              </li>
-            {%- endif -%}
-          {%- endfor -%}
+          {%- if settings.social_facebook_link != blank -%}
+            <li>
+              <a href="{{ settings.social_facebook_link }}" class="social-item social-facebook" target="_blank" rel="noopener">
+                <i class="icon icon-facebook"></i>
+              </a>
+            </li>
+          {%- endif -%}
+          {%- if settings.social_twitter_link != blank -%}
+            <li>
+              <a href="{{ settings.social_twitter_link }}" class="social-item social-twitter" target="_blank" rel="noopener">
+                <i class="icon icon-twitter"></i>
+              </a>
+            </li>
+          {%- endif -%}
+          {%- if settings.social_instagram_link != blank -%}
+            <li>
+              <a href="{{ settings.social_instagram_link }}" class="social-item social-instagram" target="_blank" rel="noopener">
+                <i class="icon icon-instagram"></i>
+              </a>
+            </li>
+          {%- endif -%}
+          {%- if settings.social_pinterest_link != blank -%}
+            <li>
+              <a href="{{ settings.social_pinterest_link }}" class="social-item social-pinterest" target="_blank" rel="noopener">
+                <i class="icon icon-pinterest"></i>
+              </a>
+            </li>
+          {%- endif -%}
+          {%- if settings.social_youtube_link != blank -%}
+            <li>
+              <a href="{{ settings.social_youtube_link }}" class="social-item social-youtube" target="_blank" rel="noopener">
+                <i class="icon icon-youtube"></i>
+              </a>
+            </li>
+          {%- endif -%}
+          {%- if settings.social_tiktok_link != blank -%}
+            <li>
+              <a href="{{ settings.social_tiktok_link }}" class="social-item social-tiktok" target="_blank" rel="noopener">
+                <i class="icon icon-tiktok"></i>
+              </a>
+            </li>
+          {%- endif -%}
+          {%- if settings.social_linkedin_link != blank -%}
+            <li>
+              <a href="{{ settings.social_linkedin_link }}" class="social-item social-linkedin" target="_blank" rel="noopener">
+                <i class="icon icon-linkedin"></i>
+              </a>
+            </li>
+          {%- endif -%}
         </ul>
       </div>
     </div>
