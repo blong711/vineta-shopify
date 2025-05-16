@@ -1123,6 +1123,13 @@ class Cart {
         const formattedPrice = this.formatMoney(item.final_price || item.price);
         const formattedOriginalPrice = item.original_price !== item.final_price ? 
           this.formatMoney(item.original_price) : '';
+
+        // Create variant options from the item's properties
+        const variantOptions = [{
+          id: item.variant_id,
+          title: item.variant_title || 'Default',
+          selected: true
+        }];
         
         itemElement.innerHTML = `
           <div class="tf-mini-cart-image">
@@ -1136,8 +1143,14 @@ class Cart {
               <i class="icon icon-close remove fs-12" data-variant-id="${item.variant_id}"></i>
             </div>
             <div class="d-flex gap-10">
-              <div class="text-xs">${item.variant_title || ''}</div>
-              <a href="#" class="link edit"><i class="icon-pen"></i></a>
+              <div class="info-variant">
+                <select class="text-xs" data-variant-id="${item.variant_id}">
+                  ${variantOptions.map(option => 
+                    `<option value="${option.id}" ${option.selected ? 'selected' : ''}>${option.title}</option>`
+                  ).join('')}
+                </select>
+                <i class="icon-pen edit"></i>
+              </div>
             </div>
             <p class="price-wrap text-sm fw-medium">
               <span class="new-price text-primary">${formattedPrice}</span>

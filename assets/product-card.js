@@ -69,11 +69,26 @@ const ProductCard = {
     itemsContainer.innerHTML = '';
     
     // Add all items from cart
-    cartData.items.forEach(item => {
+    for (const item of cartData.items) {
+      // Fetch product data to get all variants
+      const productResponse = await fetch(`/products/${item.handle}.js`);
+      const productData = await productResponse.json();
+      
       const itemElement = document.createElement('div');
       itemElement.className = 'tf-mini-cart-item';
       itemElement.style.border = 'none';
       itemElement.style.borderBottom = 'none';
+      
+      // Get all variants for this product
+      const variantOptions = productData.variants.map(variant => {
+        const options = variant.options.join(' / ');
+        return {
+          id: variant.id,
+          title: options,
+          selected: variant.id === item.variant_id
+        };
+      });
+
       itemElement.innerHTML = `
         <div class="tf-mini-cart-image">
           <a href="${item.url}">
@@ -85,9 +100,13 @@ const ProductCard = {
             <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
             <i class="icon icon-close remove fs-12" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
           </div>
-          <div class="d-flex gap-10">
-            <div class="text-xs">${item.variant_title || ''}</div>
-            <a href="#" class="link edit"><i class="icon-pen"></i></a>
+          <div class="info-variant">
+            <select class="text-xs" data-variant-id="${item.variant_id}">
+              ${variantOptions.map(option => 
+                `<option value="${option.id}" ${option.selected ? 'selected' : ''}>${option.title}</option>`
+              ).join('')}
+            </select>
+            <i class="icon-pen edit"></i>
           </div>
           <div class="tf-mini-cart-item_price">
             <p class="price-wrap text-sm fw-medium">
@@ -104,7 +123,7 @@ const ProductCard = {
         </div>
       `;
       itemsContainer.appendChild(itemElement);
-    });
+    }
 
     // Update cart total
     const totalElement = cartDrawer.querySelector('.cart-total-price');
@@ -365,6 +384,39 @@ const ProductCard = {
         opacity: 1;
         visibility: visible;
         transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+      .tf-mini-cart-item .tf-mini-cart-info .info-variant select {
+        appearance: none !important;
+        background: transparent !important;
+        border: 0 !important;
+        padding-left: 5px !important;
+        margin-left: -5px !important;
+        padding-right: 20px !important;
+        cursor: pointer !important;
+        z-index: 1 !important;
+      }
+      .tf-mini-cart-item .tf-mini-cart-info .info-variant {
+        display: flex
+        ;
+        gap: 10px;
+        position: relative;
+        width: max-content;
+      }
+      .tf-mini-cart-item .tf-mini-cart-info .info-variant select option {
+        padding: 5px;
+      }
+      .tf-mini-cart-item .tf-mini-cart-info .info-variant .edit {
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: flex;
+        font-size: 10px;
+        line-height: 10px;
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        -ms-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
       }
     `;
     document.head.appendChild(style);
