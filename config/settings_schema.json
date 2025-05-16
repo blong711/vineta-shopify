@@ -25,39 +25,6 @@
     ]
   },
   {
-    "name": "Colors",
-    "settings": [
-      {
-        "type": "header",
-        "content": "Color Settings"
-      },
-      {
-        "type": "color",
-        "id": "background",
-        "label": "Background",
-        "default": "#FFFFFF"
-      },
-      {
-        "type": "color",
-        "id": "text",
-        "label": "Text",
-        "default": "#121212"
-      },
-      {
-        "type": "color",
-        "id": "accent",
-        "label": "Accent",
-        "default": "#121212"
-      },
-      {
-        "type": "color",
-        "id": "button",
-        "label": "Button",
-        "default": "#121212"
-      }
-    ]
-  },
-  {
     "name": "Typography",
     "settings": [
       {
@@ -207,6 +174,256 @@
         "step": 1,
         "unit": "%",
         "default": 0
+      }
+    ]
+  },
+  {
+    "name": "Color Schemes",
+    "settings": [
+      {
+        "type": "color_scheme_group",
+        "id": "color_schemes",
+        "definition": [
+          {
+            "type": "header",
+            "content": "Typography"
+          },
+          {
+            "type": "color",
+            "id": "text",
+            "label": "Text",
+            "default": "#222"
+          },
+          {
+            "type": "color",
+            "id": "text2",
+            "label": "Secondary text",
+            "info": "Choose a color close to the primary text.",
+            "default": "#686868"
+          },
+          {
+            "type": "header",
+            "content": "Background"
+          },
+          {
+            "type": "color",
+            "id": "background",
+            "label": "Background",
+            "default": "#fff"
+          },
+          {
+            "type": "color_background",
+            "id": "background_gradient",
+            "label": "Gradient",
+            "info": "Background gradient replaces background where possible."
+          },
+          {
+            "type": "color",
+            "id": "background2",
+            "label": "Secondary background",
+            "info": "Choose a color close to the primary background.",
+            "default": "#fff"
+          },
+          {
+            "type": "header",
+            "content": "Additional"
+          },
+          {
+            "type": "color",
+            "id": "button",
+            "label": "Solid button background"
+          },
+          {
+            "type": "color",
+            "id": "button_label",
+            "label": "Solid button label"
+          },
+          {
+            "type": "color",
+            "id": "button_border",
+            "label": "Solid button border"
+          },
+          {
+            "type": "color",
+            "id": "secondary_button_label",
+            "label": "Outline button"
+          },
+          {
+            "type": "color",
+            "id": "line_border",
+            "label": "Lines and borders",
+            "default": "#eee"
+          },
+          {
+            "type": "color",
+            "id": "overlay",
+            "label": "Overlay",
+            "default": "#000"
+          },
+          {
+            "type": "header",
+            "content": "Product"
+          },
+          {
+            "type": "color",
+            "id": "pr_text",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "price",
+            "label": "Price",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "sale_price",
+            "label": "Sale price",
+            "default": "#DB1215"
+          },
+          {
+            "type": "header",
+            "content": "Input"
+          },
+          {
+            "type": "color",
+            "id": "input_primary",
+            "label": "Primary",
+            "default": "#fff"
+          },
+          {
+            "type": "color",
+            "id": "input_secondary",
+            "label": "Secondary",
+            "default": "#686868"
+          }
+        ],
+        "role": {
+          "background": {
+            "solid": "background",
+            "gradient": "background_gradient"
+          },
+          "text": "text",
+          "primary_button": "button",
+          "on_primary_button": "button_label",
+          "primary_button_border": "button_border",
+          "secondary_button": "background",
+          "on_secondary_button": "secondary_button_label",
+          "secondary_button_border": "secondary_button_label",
+          "icons": "text",
+          "links": "secondary_button_label"
+        }
+      },
+      {
+        "type": "header",
+        "content": "Modal\/drawer\/popover"
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_scheme_dialog",
+        "label": "t:sections.all.colors.label",
+        "default": "scheme-1"
+      },
+      {
+        "type": "header",
+        "content": "t:settings_schema.colors.settings.header__1.content"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "default": "#FFFFFF",
+        "label": "t:settings_schema.colors.settings.color_background.label"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "default": "#868686",
+        "label": "t:settings_schema.colors.settings.color_text.label"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "default": "#876a49",
+        "label": "t:settings_schema.colors.settings.color_accent.label"
+      },
+      {
+        "type": "color",
+        "id": "color_focus",
+        "default": "#87adf5",
+        "label": "t:settings_schema.colors.settings.color_focus.label"
+      },
+      {
+        "type": "header",
+        "content": "Product"
+      },
+      {
+        "type": "color",
+        "id": "badge_sale",
+        "default": "#FC5732",
+        "label": "On sale badge"
+      },
+      {
+        "type": "color",
+        "id": "badge_new",
+        "default": "#438E44",
+        "label": "New badge"
+      },
+      {
+        "type": "color",
+        "id": "badge_soldout",
+        "default": "#fff",
+        "label": "Sold out badge"
+      },
+      {
+        "type": "color",
+        "id": "badge_preorder",
+        "default": "#E0B252",
+        "label": "Pre order badge"
+      },
+      {
+        "type": "color",
+        "id": "badge_custom",
+        "default": "#83b735",
+        "label": "Custom badge"
+      },
+      {
+        "type": "header",
+        "content": "t:settings_schema.colors.settings.header__6.content"
+      },
+      {
+        "type": "color",
+        "id": "color_success",
+        "default": "#428445",
+        "label": "t:settings_schema.colors.settings.color_success.label"
+      },
+      {
+        "type": "color",
+        "id": "color_warning",
+        "default": "#e0b252",
+        "label": "t:settings_schema.colors.settings.color_warning.label"
+      },
+      {
+        "type": "color",
+        "id": "color_error",
+        "default": "#EB001B",
+        "label": "t:settings_schema.colors.settings.color_error.label"
+      },
+      {
+        "type": "header",
+        "content": "Tooltip"
+      },
+      {
+        "type": "color",
+        "id": "tooltip_bg",
+        "label": "Background",
+        "default": "#383838"
+      },
+      {
+        "type": "color",
+        "id": "tooltip_text",
+        "label": "Text",
+        "default": "#ffffff"
       }
     ]
   },
