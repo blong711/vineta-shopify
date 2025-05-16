@@ -88,9 +88,9 @@
                     <div class="tf-product-total-quantity">
                         <div class="group-btn">
                             <div class="wg-quantity">
-                                <button class="btn-quantity minus-btn">-</button>
-                                <input class="quantity-product font-4" type="text" name="quantity" value="1" min="1">
-                                <button class="btn-quantity plus-btn">+</button>
+                                <button class="btn-quantity btn-decrease" data-variant-id="{{ product.selected_or_first_available_variant.id }}">-</button>
+                                <input class="quantity-product font-4" type="text" name="quantity" value="1" min="1" data-variant-id="{{ product.selected_or_first_available_variant.id }}">
+                                <button class="btn-quantity btn-increase" data-variant-id="{{ product.selected_or_first_available_variant.id }}">+</button>
                             </div>
                             <button type="button" class="tf-btn hover-primary add-to-cart" data-product-id="{{ product.id }}" data-variant-id="{{ product.variants.first.id }}">
                                 Add to cart
@@ -693,25 +693,89 @@ document.addEventListener('DOMContentLoaded', function() {
   initQuickview();
 
   // Add quantity button handlers
-  document.addEventListener('click', function(e) {
+  document.addEventListener('click', async function(e) {
     const modal = document.getElementById('quickView');
     if (!modal) return;
 
-    if (e.target.classList.contains('plus-btn')) {
+    if (e.target.classList.contains('btn-increase')) {
       e.preventDefault();
       e.stopPropagation();
+      const variantId = e.target.dataset.variantId;
       const input = e.target.previousElementSibling;
       const currentValue = parseInt(input.value) || 1;
-      input.value = currentValue + 1;
-      input.dispatchEvent(new Event('change'));
-    } else if (e.target.classList.contains('minus-btn')) {
+      
+      try {
+        const response = await fetch('/cart/change.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: variantId,
+            quantity: currentValue + 1
+          })
+        });
+        if (!response.ok) throw new Error('Failed to update quantity');
+
+        // Fetch updated cart data and update UI
+        const cartResponse = await fetch('/cart.js');
+        if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+        const cartData = await cartResponse.json();
+        
+        // Update cart display
+        if (window.cart) {
+          window.cart.updateCartDisplay(cartData);
+          window.cart.updateHeaderCartCount(cartData.item_count);
+        }
+      } catch (error) {
+        console.error('Error updating cart:', error);
+      }
+    } else if (e.target.classList.contains('btn-decrease')) {
       e.preventDefault();
       e.stopPropagation();
+      const variantId = e.target.dataset.variantId;
       const input = e.target.nextElementSibling;
       const currentValue = parseInt(input.value) || 1;
-      if (currentValue > 1) {
-        input.value = currentValue - 1;
-        input.dispatchEvent(new Event('change'));
+      
+      try {
+        if (currentValue > 1) {
+          const response = await fetch('/cart/change.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: variantId,
+              quantity: currentValue - 1
+            })
+          });
+          if (!response.ok) throw new Error('Failed to update quantity');
+        } else {
+          const response = await fetch('/cart/change.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: variantId,
+              quantity: 0
+            })
+          });
+          if (!response.ok) throw new Error('Failed to remove item');
+        }
+
+        // Fetch updated cart data and update UI
+        const cartResponse = await fetch('/cart.js');
+        if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+        const cartData = await cartResponse.json();
+        
+        // Update cart display
+        if (window.cart) {
+          window.cart.updateCartDisplay(cartData);
+          window.cart.updateHeaderCartCount(cartData.item_count);
+        }
+      } catch (error) {
+        console.error('Error updating cart:', error);
       }
     }
   }, true);

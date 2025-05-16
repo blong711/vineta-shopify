@@ -82,7 +82,7 @@
 
               {%- if section.settings.show_cart -%}
                 <li class="nav-cart">
-                  <a href="#shoppingCart" data-bs-toggle="offcanvas" class="nav-icon-item">
+                  <a href="#" class="nav-icon-item" onclick="event.preventDefault(); window.openCartDrawer();">
                     <i class="icon icon-cart"></i>
                     <span class="count-box">{{ cart.item_count }}</span>
                   </a>
@@ -359,7 +359,7 @@
 
             {%- if section.settings.show_cart -%}
               <li class="nav-cart">
-                <a href="#shoppingCart" data-bs-toggle="offcanvas" class="nav-icon-item">
+                <a href="#" class="nav-icon-item" onclick="event.preventDefault(); window.openCartDrawer();">
                   <i class="icon icon-cart"></i>
                   <span class="count-box">{{ cart.item_count }}</span>
                 </a>
@@ -437,9 +437,9 @@
 
             {%- if section.settings.show_cart -%}
               <li class="nav-cart">
-                <a href="#shoppingCart" data-bs-toggle="offcanvas" class="nav-icon-item">
+                <a href="#" class="nav-icon-item">
                   <i class="icon icon-cart"></i>
-                  <span class="count-box">{{ cart.item_count }}</span>
+                  <span class="count-box cart-count">{{ cart.item_count }}</span>
                 </a>
               </li>
             {%- endif -%}

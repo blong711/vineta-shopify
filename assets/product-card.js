@@ -113,13 +113,15 @@ const ProductCard = {
     }
     
     // Update header cart count
-    const headerCount = document.querySelector('.count-box');
-    if (headerCount) {
-      headerCount.textContent = cartData.item_count;
-    }
+    document.querySelectorAll('.cart-count').forEach(element => {
+      element.textContent = cartData.item_count;
+    });
 
     // Update shipping threshold
     this.updateShippingThreshold(cartDrawer, cartData.total_price);
+
+    // Re-initialize quantity controls after DOM update
+    this.initializeQuantityControls();
   },
 
   // Update shipping threshold UI
@@ -186,13 +188,44 @@ const ProductCard = {
       // Decrease button
       container.querySelectorAll('.btn-decrease').forEach(button => {
         button.addEventListener('click', async () => {
-          const variantId = button.dataset.variantId;
-          const input = button.nextElementSibling;
-          const currentValue = parseInt(input.value);
-          if (currentValue > 1) {
-            await window.cart.updateQuantity(variantId, currentValue - 1, 'update');
-          } else {
-            await window.cart.removeItem(variantId);
+          try {
+            const variantId = button.dataset.variantId;
+            const input = button.nextElementSibling;
+            const currentValue = parseInt(input.value);
+            
+            if (currentValue > 1) {
+              const response = await fetch('/cart/change.js', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  id: variantId,
+                  quantity: currentValue - 1
+                })
+              });
+              if (!response.ok) throw new Error('Failed to update quantity');
+            } else {
+              const response = await fetch('/cart/change.js', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  id: variantId,
+                  quantity: 0
+                })
+              });
+              if (!response.ok) throw new Error('Failed to remove item');
+            }
+
+            // Fetch updated cart data and update UI
+            const cartResponse = await fetch('/cart.js');
+            if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+            const cartData = await cartResponse.json();
+            await this.updateCartDrawer(cartData);
+          } catch (error) {
+            console.error('Error updating cart:', error);
           }
         });
       });
@@ -200,27 +233,89 @@ const ProductCard = {
       // Increase button
       container.querySelectorAll('.btn-increase').forEach(button => {
         button.addEventListener('click', async () => {
-          const variantId = button.dataset.variantId;
-          const input = button.previousElementSibling;
-          const currentValue = parseInt(input.value);
-          await window.cart.updateQuantity(variantId, currentValue + 1, 'update');
+          try {
+            const variantId = button.dataset.variantId;
+            const input = button.previousElementSibling;
+            const currentValue = parseInt(input.value);
+            
+            const response = await fetch('/cart/change.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                id: variantId,
+                quantity: currentValue + 1
+              })
+            });
+            if (!response.ok) throw new Error('Failed to update quantity');
+
+            // Fetch updated cart data and update UI
+            const cartResponse = await fetch('/cart.js');
+            if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+            const cartData = await cartResponse.json();
+            await this.updateCartDrawer(cartData);
+          } catch (error) {
+            console.error('Error updating cart:', error);
+          }
         });
       });
 
       // Quantity input
       container.querySelectorAll('.quantity-product').forEach(input => {
         input.addEventListener('change', async () => {
-          const variantId = input.dataset.variantId;
-          const newValue = parseInt(input.value);
-          if (isNaN(newValue) || newValue < 1) {
-            if (newValue <= 0) {
-              await window.cart.removeItem(variantId);
+          try {
+            const variantId = input.dataset.variantId;
+            const newValue = parseInt(input.value);
+            
+            if (isNaN(newValue) || newValue < 1) {
+              if (newValue <= 0) {
+                const response = await fetch('/cart/change.js', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    id: variantId,
+                    quantity: 0
+                  })
+                });
+                if (!response.ok) throw new Error('Failed to remove item');
+              } else {
+                input.value = 1;
+                const response = await fetch('/cart/change.js', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    id: variantId,
+                    quantity: 1
+                  })
+                });
+                if (!response.ok) throw new Error('Failed to update quantity');
+              }
             } else {
-              input.value = 1;
-              await window.cart.updateQuantity(variantId, 1, 'update');
+              const response = await fetch('/cart/change.js', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  id: variantId,
+                  quantity: newValue
+                })
+              });
+              if (!response.ok) throw new Error('Failed to update quantity');
             }
-          } else {
-            await window.cart.updateQuantity(variantId, newValue, 'update');
+
+            // Fetch updated cart data and update UI
+            const cartResponse = await fetch('/cart.js');
+            if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+            const cartData = await cartResponse.json();
+            await this.updateCartDrawer(cartData);
+          } catch (error) {
+            console.error('Error updating cart:', error);
           }
         });
       });
@@ -228,8 +323,29 @@ const ProductCard = {
       // Remove button
       container.querySelectorAll('.remove').forEach(button => {
         button.addEventListener('click', async () => {
-          const variantId = button.dataset.variantId;
-          await window.cart.removeItem(variantId);
+          try {
+            const variantId = button.dataset.variantId;
+            
+            const response = await fetch('/cart/change.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                id: variantId,
+                quantity: 0
+              })
+            });
+            if (!response.ok) throw new Error('Failed to remove item');
+
+            // Fetch updated cart data and update UI
+            const cartResponse = await fetch('/cart.js');
+            if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+            const cartData = await cartResponse.json();
+            await this.updateCartDrawer(cartData);
+          } catch (error) {
+            console.error('Error updating cart:', error);
+          }
         });
       });
     });
@@ -299,7 +415,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Fetch the updated cart to get the correct item count
         const cartRes = await fetch('/cart.js');
         const cartData = await cartRes.json();
-        const cartCountElements = document.querySelectorAll('.nav-cart .count-box');
+        const cartCountElements = document.querySelectorAll('.cart-count');
         cartCountElements.forEach(element => {
           element.textContent = cartData.item_count;
         });
@@ -370,4 +486,128 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
-}); 
+
+  document.querySelectorAll('.nav-cart .nav-icon-item').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (typeof window.openCartDrawer === 'function') {
+        window.openCartDrawer();
+      }
+    });
+  });
+});
+
+// --- Cart Drawer Open/Close Logic ---
+(function() {
+  function getCartDrawer() {
+    return document.getElementById('shoppingCart');
+  }
+
+  // Create backdrop if it doesn't exist
+  function ensureBackdrop() {
+    let backdrop = document.querySelector('.offcanvas-backdrop');
+    if (!backdrop) {
+      backdrop = document.createElement('div');
+      backdrop.className = 'offcanvas-backdrop';
+      document.body.appendChild(backdrop);
+    }
+    return backdrop;
+  }
+
+  window.openCartDrawer = function() {
+    const cartDrawer = getCartDrawer();
+    if (!cartDrawer) return;
+    // Close other offcanvas
+    document.querySelectorAll('.offcanvas.show').forEach(offcanvas => {
+      if (offcanvas.id !== 'shoppingCart') {
+        offcanvas.classList.remove('show');
+        const offcanvasBackdrop = document.querySelector('.offcanvas-backdrop');
+        if (offcanvasBackdrop) offcanvasBackdrop.classList.remove('show');
+      }
+    });
+    // Close modals
+    document.querySelectorAll('.modal.show').forEach(modal => {
+      modal.classList.remove('show', 'modal');
+      const modalBackdrop = document.querySelector('.modal-backdrop');
+      if (modalBackdrop) modalBackdrop.remove();
+    });
+    // Show backdrop
+    const cartBackdrop = ensureBackdrop();
+    if (cartBackdrop) cartBackdrop.classList.add('show');
+    cartDrawer.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeCartDrawer = function() {
+    const cartDrawer = getCartDrawer();
+    const backdrop = document.querySelector('.offcanvas-backdrop');
+    if (cartDrawer) cartDrawer.classList.remove('show');
+    if (backdrop) backdrop.classList.remove('show');
+    document.body.style.overflow = '';
+  };
+
+  // Set up event listeners after DOM is ready
+  document.addEventListener('DOMContentLoaded', function() {
+    const cartDrawer = getCartDrawer();
+    const backdrop = ensureBackdrop();
+    if (!cartDrawer) return;
+
+    // Close on backdrop click
+    backdrop.addEventListener('click', function(e) {
+      if (e.target === backdrop) window.closeCartDrawer();
+    });
+
+    // Close on ESC key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && cartDrawer.classList.contains('show')) {
+        window.closeCartDrawer();
+      }
+    });
+
+    // Cart drawer close button
+    const closeBtn = cartDrawer.querySelector('.icon-close-popup');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        window.closeCartDrawer();
+      });
+    }
+
+    // --- Tool Panel Toggle ---
+    document.addEventListener('click', function(e) {
+      // Open tool panel
+      if (e.target.closest('.tf-mini-cart-tool-btn')) {
+        const btn = e.target.closest('.tf-mini-cart-tool-btn');
+        const target = btn.classList[1].replace('btn-', '');
+        document.querySelectorAll('.tf-mini-cart-tool-openable').forEach(panel => {
+          if (panel.classList.contains(target)) panel.classList.add('active');
+        });
+      }
+      // Close tool panel
+      if (e.target.closest('.tf-mini-cart-tool-close')) {
+        document.querySelectorAll('.tf-mini-cart-tool-openable').forEach(panel => {
+          panel.classList.remove('active');
+        });
+      }
+    });
+
+    // --- Terms Checkbox & Checkout Button ---
+    const termsCheckbox = document.getElementById('CartDrawer-Form_agree');
+    const checkoutButton = document.getElementById('checkout-button');
+    if (termsCheckbox && checkoutButton) {
+      termsCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+          checkoutButton.disabled = false;
+          checkoutButton.classList.remove('disabled');
+          checkoutButton.onclick = function() {
+            window.location.href = '/checkout';
+          };
+        } else {
+          checkoutButton.disabled = true;
+          checkoutButton.classList.add('disabled');
+          checkoutButton.onclick = null;
+        }
+      });
+    }
+  });
+})(); 

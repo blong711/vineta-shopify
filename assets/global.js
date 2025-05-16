@@ -745,48 +745,163 @@ class Cart {
     }
     
     // Add event delegation for cart item interactions
-    cartItemsContainer.addEventListener('click', (event) => {
+    cartItemsContainer.addEventListener('click', async (event) => {
       // Handle quantity buttons
-      if (event.target.classList.contains('minus-btn')) {
+      if (event.target.classList.contains('btn-decrease')) {
         const variantId = event.target.dataset.variantId;
         const input = event.target.nextElementSibling;
         const currentValue = parseInt(input.value);
-        if (currentValue > 1) {
-          this.updateQuantity(variantId, currentValue - 1, this.actions.update);
-        } else {
-          // If quantity would be less than 1, remove the item
-          this.removeItem(variantId);
+        
+        try {
+          if (currentValue > 1) {
+            const response = await fetch('/cart/change.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                id: variantId,
+                quantity: currentValue - 1
+              })
+            });
+            if (!response.ok) throw new Error('Failed to update quantity');
+          } else {
+            const response = await fetch('/cart/change.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                id: variantId,
+                quantity: 0
+              })
+            });
+            if (!response.ok) throw new Error('Failed to remove item');
+          }
+
+          // Fetch updated cart data and update UI
+          const cartResponse = await fetch('/cart.js');
+          if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+          const cartData = await cartResponse.json();
+          this.updateCartDisplay(cartData);
+          this.updateHeaderCartCount(cartData.item_count);
+        } catch (error) {
+          console.error('Error updating cart:', error);
         }
-      } else if (event.target.classList.contains('plus-btn')) {
+      } else if (event.target.classList.contains('btn-increase')) {
         const variantId = event.target.dataset.variantId;
         const input = event.target.previousElementSibling;
         const currentValue = parseInt(input.value);
-        this.updateQuantity(variantId, currentValue + 1, this.actions.update);
+        
+        try {
+          const response = await fetch('/cart/change.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: variantId,
+              quantity: currentValue + 1
+            })
+          });
+          if (!response.ok) throw new Error('Failed to update quantity');
+
+          // Fetch updated cart data and update UI
+          const cartResponse = await fetch('/cart.js');
+          if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+          const cartData = await cartResponse.json();
+          this.updateCartDisplay(cartData);
+          this.updateHeaderCartCount(cartData.item_count);
+        } catch (error) {
+          console.error('Error updating cart:', error);
+        }
       } 
       // Handle remove button
       else if (event.target.classList.contains('remove')) {
         const variantId = event.target.dataset.variantId;
         if (variantId) {
-          this.removeItem(variantId);
+          try {
+            const response = await fetch('/cart/change.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                id: variantId,
+                quantity: 0
+              })
+            });
+            if (!response.ok) throw new Error('Failed to remove item');
+
+            // Fetch updated cart data and update UI
+            const cartResponse = await fetch('/cart.js');
+            if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+            const cartData = await cartResponse.json();
+            this.updateCartDisplay(cartData);
+            this.updateHeaderCartCount(cartData.item_count);
+          } catch (error) {
+            console.error('Error updating cart:', error);
+          }
         }
       }
     });
     
     // Add event listener for direct input changes
-    cartItemsContainer.addEventListener('change', (event) => {
+    cartItemsContainer.addEventListener('change', async (event) => {
       if (event.target.classList.contains('quantity-product')) {
         const variantId = event.target.dataset.variantId;
         const newValue = parseInt(event.target.value);
-        if (isNaN(newValue) || newValue < 1) {
-          // Reset to 1 or remove
-          if (newValue <= 0) {
-            this.removeItem(variantId);
+        
+        try {
+          if (isNaN(newValue) || newValue < 1) {
+            if (newValue <= 0) {
+              const response = await fetch('/cart/change.js', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  id: variantId,
+                  quantity: 0
+                })
+              });
+              if (!response.ok) throw new Error('Failed to remove item');
+            } else {
+              event.target.value = 1;
+              const response = await fetch('/cart/change.js', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  id: variantId,
+                  quantity: 1
+                })
+              });
+              if (!response.ok) throw new Error('Failed to update quantity');
+            }
           } else {
-            event.target.value = 1;
-            this.updateQuantity(variantId, 1, this.actions.update);
+            const response = await fetch('/cart/change.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                id: variantId,
+                quantity: newValue
+              })
+            });
+            if (!response.ok) throw new Error('Failed to update quantity');
           }
-        } else {
-          this.updateQuantity(variantId, newValue, this.actions.update);
+
+          // Fetch updated cart data and update UI
+          const cartResponse = await fetch('/cart.js');
+          if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+          const cartData = await cartResponse.json();
+          this.updateCartDisplay(cartData);
+          this.updateHeaderCartCount(cartData.item_count);
+        } catch (error) {
+          console.error('Error updating cart:', error);
         }
       }
     });
@@ -1022,6 +1137,7 @@ class Cart {
             </div>
             <div class="d-flex gap-10">
               <div class="text-xs">${item.variant_title || ''}</div>
+              <a href="#" class="link edit"><i class="icon-pen"></i></a>
             </div>
             <p class="price-wrap text-sm fw-medium">
               <span class="new-price text-primary">${formattedPrice}</span>
@@ -1030,9 +1146,9 @@ class Cart {
                 ''}
             </p>
             <div class="wg-quantity small">
-              <button class="btn-quantity minus-btn" data-variant-id="${item.variant_id}">-</button>
+              <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
               <input class="quantity-product font-4" type="text" name="updates[]" value="${item.quantity}" data-variant-id="${item.variant_id}">
-              <button class="btn-quantity plus-btn" data-variant-id="${item.variant_id}">+</button>
+              <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
             </div>
           </div>
         `;
@@ -1234,7 +1350,7 @@ class Cart {
    */
   updateHeaderCartCount(count) {
     // Update all cart count elements in the header
-    const cartCountElements = document.querySelectorAll('.cart-count');
+    const cartCountElements = document.querySelectorAll('.cart-count, .cart-count-bubble, .cart-count-number');
     cartCountElements.forEach(element => {
       element.textContent = count || 0;
       
@@ -1243,7 +1359,25 @@ class Cart {
       if (cartLink) {
         cartLink.setAttribute('aria-label', `Cart (${count || 0} items)`);
       }
+
+      // Show/hide the count element based on count
+      if (count > 0) {
+        element.style.display = '';
+      } else {
+        element.style.display = 'none';
+      }
     });
+
+    // Also update any elements with data-cart-count attribute
+    document.querySelectorAll('[data-cart-count]').forEach(element => {
+      element.textContent = count || 0;
+      element.setAttribute('data-cart-count', count || 0);
+    });
+
+    // Dispatch a custom event for other components that might need to know about cart count changes
+    document.dispatchEvent(new CustomEvent('cart:countUpdated', {
+      detail: { count: count || 0 }
+    }));
   }
 }
 
