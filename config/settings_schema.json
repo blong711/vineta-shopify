@@ -25,55 +25,134 @@
     ]
   },
   {
-    "name": "Colors",
+    "name": "Color Schemes",
     "settings": [
       {
+        "type": "header",
+        "content": "Color Scheme Settings"
+      },
+      {
+        "type": "select",
+        "id": "color_scheme",
+        "label": "Color Scheme",
+        "options": [
+          {
+            "value": "light",
+            "label": "Light"
+          },
+          {
+            "value": "dark",
+            "label": "Dark"
+          },
+          {
+            "value": "custom",
+            "label": "Custom"
+          }
+        ],
+        "default": "light"
+      },
+      {
+        "type": "header",
+        "content": "Light Scheme Colors",
+        "visible_if": "{{ settings.color_scheme == 'light' }}"
+      },
+      {
         "type": "color",
-        "id": "background_color",
+        "id": "light_background",
         "label": "Background color",
         "default": "#ffffff"
       },
       {
         "type": "color",
-        "id": "text_color",
+        "id": "light_text",
         "label": "Text color",
         "default": "#222222"
       },
       {
         "type": "color",
-        "id": "primary_button_color",
-        "label": "Primary button color",
+        "id": "light_primary",
+        "label": "Primary color",
         "default": "#007bff"
       },
       {
         "type": "color",
-        "id": "primary_button_text_color",
-        "label": "Primary button text color",
+        "id": "light_secondary",
+        "label": "Secondary color",
+        "default": "#f8f9fa"
+      },
+      {
+        "type": "header",
+        "content": "Dark Scheme Colors",
+        "visible_if": "{{ settings.color_scheme == 'dark' }}"
+      },
+      {
+        "type": "color",
+        "id": "dark_background",
+        "label": "Background color",
+        "default": "#121212"
+      },
+      {
+        "type": "color",
+        "id": "dark_text",
+        "label": "Text color",
         "default": "#ffffff"
       },
       {
         "type": "color",
-        "id": "primary_button_border_color",
-        "label": "Primary button border color",
-        "default": "#007bff"
+        "id": "dark_primary",
+        "label": "Primary color",
+        "default": "#0d6efd"
       },
       {
         "type": "color",
-        "id": "secondary_button_color",
-        "label": "Secondary button color",
-        "default": "#f8f9fa"
+        "id": "dark_secondary",
+        "label": "Secondary color",
+        "default": "#2d2d2d"
+      },
+      {
+        "type": "header",
+        "content": "Custom Scheme Colors",
+        "visible_if": "{{ settings.color_scheme == 'custom' }}"
       },
       {
         "type": "color",
-        "id": "secondary_button_text_color",
-        "label": "Secondary button text color",
+        "id": "custom_background",
+        "label": "Background color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "custom_text",
+        "label": "Text color",
         "default": "#222222"
       },
       {
         "type": "color",
-        "id": "secondary_button_border_color",
-        "label": "Secondary button border color",
-        "default": "#ced4da"
+        "id": "custom_primary",
+        "label": "Primary color",
+        "default": "#007bff"
+      },
+      {
+        "type": "color",
+        "id": "custom_secondary",
+        "label": "Secondary color",
+        "default": "#f8f9fa"
+      },
+      {
+        "type": "header",
+        "content": "Common Elements"
+      },
+      {
+        "type": "color",
+        "id": "button_text_color",
+        "label": "Button text color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "button_border_color",
+        "label": "Button border color",
+        "default": "#007bff"
       },
       {
         "type": "color",
@@ -83,15 +162,15 @@
       },
       {
         "type": "color",
-        "id": "icons_color",
-        "label": "Icons color",
-        "default": "#222222"
-      },
-      {
-        "type": "color",
         "id": "links_hover_color",
         "label": "Links hover color",
         "default": "#0056b3"
+      },
+      {
+        "type": "color",
+        "id": "icons_color",
+        "label": "Icons color",
+        "default": "#222222"
       }
     ]
   },
