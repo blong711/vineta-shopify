@@ -114,7 +114,8 @@
       },
       {
         "type": "header",
-        "content": "Shopify Font library"
+        "content": "Shopify Font library",
+        "visible_if": "{{ settings.font_library == 'shopify' }}"
       },
       {
         "type": "font_picker",
@@ -127,17 +128,20 @@
         "type": "font_picker",
         "id": "body_font",
         "label": "Body font",
-        "default": "helvetica_n4"
+        "default": "helvetica_n4",
+        "visible_if": "{{ settings.font_library == 'shopify' }}"
       },
       {
         "type": "header",
-        "content": "Google Font library"
+        "content": "Google Font library",
+        "visible_if": "{{ settings.font_library == 'google' }}"
       },
       {
         "type": "text",
         "id": "heading_font_family",
         "label": "Heading font family",
-        "default": "'Helvetica Neue', Helvetica, Arial, sans-serif"
+        "default": "'Helvetica Neue', Helvetica, Arial, sans-serif",
+        "visible_if": "{{ settings.font_library == 'google' }}"
       },
       {
         "type": "range",
@@ -146,13 +150,15 @@
         "min": 100,
         "max": 900,
         "step": 100,
-        "default": 400
+        "default": 400,
+        "visible_if": "{{ settings.font_library == 'google' }}"
       },
       {
         "type": "text",
         "id": "body_font_family",
         "label": "Body font family",
-        "default": "'Helvetica Neue', Helvetica, Arial, sans-serif"
+        "default": "'Helvetica Neue', Helvetica, Arial, sans-serif",
+        "visible_if": "{{ settings.font_library == 'google' }}"
       },
       {
         "type": "range",
@@ -161,7 +167,8 @@
         "min": 100,
         "max": 900,
         "step": 100,
-        "default": 400
+        "default": 400,
+        "visible_if": "{{ settings.font_library == 'google' }}"
       },
       {
         "type": "header",
