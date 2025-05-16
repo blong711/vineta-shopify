@@ -32,13 +32,13 @@
 
     {%- if show_sale_badge and product.compare_at_price > product.price -%}
       <div class="on-sale-wrap">
-        <span class="on-sale-item">{{ sale_badge_text | default: 'Sale' }}</span>
+        <span class="on-sale-item">{{ 'products.card.sale' | t }}</span>
       </div>
     {%- endif -%}
 
     {%- if product.tags contains 'trending' -%}
       <div class="on-sale-wrap">
-        <span class="on-sale-item trending">Trending</span>
+        <span class="on-sale-item trending">{{ 'products.card.trending' | t }}</span>
       </div>
     {%- endif -%}
 
@@ -54,9 +54,9 @@
            class="box-icon hover-tooltip add-to-cart" 
            data-variant-id="{{ product.variants.first.id }}"
            data-quantity="1"
-           aria-label="Add to cart">
+           aria-label="{{ 'products.card.add_to_cart' | t }}">
           <i class="icon icon-cart"></i>
-          <span class="tooltip">Add to Cart</span>
+          <span class="tooltip">{{ 'products.card.add_to_cart' | t }}</span>
         </a>
       </li>
       <li class="wishlist">
@@ -65,9 +65,9 @@
            data-wishlist 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="Add to wishlist">
+           aria-label="{{ 'products.card.add_to_wishlist' | t }}">
           <span class="icon icon-heart2"></span>
-          <span class="tooltip">Add to Wishlist</span>
+          <span class="tooltip">{{ 'products.card.add_to_wishlist' | t }}</span>
         </a>
       </li>
       <li>
@@ -78,7 +78,7 @@
            data-bs-toggle="modal" 
            data-bs-target="#quickView">
           <span class="icon icon-view"></span>
-          <span class="tooltip">Quick View</span>
+          <span class="tooltip">{{ 'products.card.quick_view' | t }}</span>
         </a>
       </li>
       <li class="compare">
@@ -87,9 +87,9 @@
            data-compare 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="Add to compare">
+           aria-label="{{ 'products.card.add_to_compare' | t }}">
           <span class="icon icon-compare"></span>
-          <span class="tooltip">Add to Compare</span>
+          <span class="tooltip">{{ 'products.card.add_to_compare' | t }}</span>
         </a>
       </li>
     </ul>
@@ -168,7 +168,7 @@
 
     {%- if product.compare_at_price > product.price -%}
       <div class="on-sale-wrap">
-        <span class="on-sale-item">{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}% Off</span>
+        <span class="on-sale-item">{{ 'products.card.sale_percentage' | t: percentage: product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}</span>
       </div>
     {%- endif -%}
 
@@ -178,9 +178,9 @@
            class="bg-surface hover-tooltip tooltip-left box-icon add-to-cart" 
            data-variant-id="{{ product.variants.first.id }}"
            data-quantity="1"
-           aria-label="Add to cart">
+           aria-label="{{ 'products.card.add_to_cart' | t }}">
           <span class="icon icon-cart2"></span>
-          <span class="tooltip">Add to Cart</span>
+          <span class="tooltip">{{ 'products.card.add_to_cart' | t }}</span>
         </a>
       </li>
       <li class="wishlist">
@@ -189,9 +189,9 @@
            data-wishlist 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="Add to wishlist">
+           aria-label="{{ 'products.card.add_to_wishlist' | t }}">
           <span class="icon icon-heart2"></span>
-          <span class="tooltip">Add to Wishlist</span>
+          <span class="tooltip">{{ 'products.card.add_to_wishlist' | t }}</span>
         </a>
       </li>
       <li>
@@ -202,7 +202,7 @@
            data-bs-toggle="modal" 
            data-bs-target="#quickView">
           <span class="icon icon-view"></span>
-          <span class="tooltip">Quick View</span>
+          <span class="tooltip">{{ 'products.card.quick_view' | t }}</span>
         </a>
       </li>
       <li class="compare">
@@ -211,9 +211,9 @@
            data-compare 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="Add to compare">
+           aria-label="{{ 'products.card.add_to_compare' | t }}">
           <span class="icon icon-compare"></span>
-          <span class="tooltip">Add to Compare</span>
+          <span class="tooltip">{{ 'products.card.add_to_compare' | t }}</span>
         </a>
       </li>
     </ul>
@@ -270,7 +270,7 @@
         <div class="progress-bar {% if available_quantity < 10 %}bg-red-3{% elsif available_quantity < 30 %}bg-orange-3{% else %}bg-green-2{% endif %}" 
           style="width: {{ sold_percentage | default: 50 }}%"></div>
       </div>
-      <p class="text-avaiable text-sm">Available: <span class="fw-medium {% if available_quantity < 10 %}text-red-2{% elsif available_quantity < 30 %}text-orange-3{% else %}text-success-5{% endif %}">{{ available_quantity | default: 50 }}</span></p>
+      <p class="text-avaiable text-sm">{{ 'products.card.available' | t }}: <span class="fw-medium {% if available_quantity < 10 %}text-red-2{% elsif available_quantity < 30 %}text-orange-3{% else %}text-success-5{% endif %}">{{ available_quantity | default: 50 }}</span></p>
     </div>
   </div>
 </div>
@@ -304,7 +304,7 @@
     </a>
     {%- if show_sale_badge and product.compare_at_price > product.price -%}
       <div class="on-sale-wrap">
-        <span class="on-sale-item">{{ sale_badge_text }}</span>
+        <span class="on-sale-item">{{ 'products.card.sale' | t }}</span>
       </div>
     {%- endif -%}
     <ul class="list-product-btn">
@@ -313,9 +313,9 @@
            class="bg-surface hover-tooltip tooltip-left box-icon add-to-cart" 
            data-variant-id="{{ product.variants.first.id }}"
            data-quantity="1"
-           aria-label="Add to cart">
+           aria-label="{{ 'products.card.add_to_cart' | t }}">
           <span class="icon icon-cart2"></span>
-          <span class="tooltip">Add to Cart</span>
+          <span class="tooltip">{{ 'products.card.add_to_cart' | t }}</span>
         </a>
       </li>
       <li class="wishlist">
@@ -324,9 +324,9 @@
            data-wishlist 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="Add to wishlist">
+           aria-label="{{ 'products.card.add_to_wishlist' | t }}">
           <span class="icon icon-heart2"></span>
-          <span class="tooltip">Add to Wishlist</span>
+          <span class="tooltip">{{ 'products.card.add_to_wishlist' | t }}</span>
         </a>
       </li>
       <li>
@@ -337,7 +337,7 @@
            data-bs-toggle="modal" 
            data-bs-target="#quickView">
           <span class="icon icon-view"></span>
-          <span class="tooltip">Quick View</span>
+          <span class="tooltip">{{ 'products.card.quick_view' | t }}</span>
         </a>
       </li>
       <li class="compare">
@@ -346,9 +346,9 @@
            data-compare 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="Add to compare">
+           aria-label="{{ 'products.card.add_to_compare' | t }}">
           <span class="icon icon-compare"></span>
-          <span class="tooltip">Add to Compare</span>
+          <span class="tooltip">{{ 'products.card.add_to_compare' | t }}</span>
         </a>
       </li>
     </ul>
@@ -436,9 +436,9 @@
            class="box-icon hover-tooltip add-to-cart" 
            data-variant-id="{{ product.variants.first.id }}"
            data-quantity="1"
-           aria-label="Add to cart">
+           aria-label="{{ 'products.card.add_to_cart' | t }}">
           <i class="icon icon-cart"></i>
-          <span class="tooltip">Add to Cart</span>
+          <span class="tooltip">{{ 'products.card.add_to_cart' | t }}</span>
         </a>
       </li>
       <li class="wishlist">
@@ -447,9 +447,9 @@
            data-wishlist 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="Add to wishlist">
+           aria-label="{{ 'products.card.add_to_wishlist' | t }}">
           <span class="icon icon-heart2"></span>
-          <span class="tooltip">Add to Wishlist</span>
+          <span class="tooltip">{{ 'products.card.add_to_wishlist' | t }}</span>
         </a>
       </li>
       <li>
@@ -460,7 +460,7 @@
            data-bs-toggle="modal" 
            data-bs-target="#quickView">
           <span class="icon icon-view"></span>
-          <span class="tooltip">Quick View</span>
+          <span class="tooltip">{{ 'products.card.quick_view' | t }}</span>
         </a>
       </li>
       <li class="compare">
@@ -469,9 +469,9 @@
            data-compare 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="Add to compare">
+           aria-label="{{ 'products.card.add_to_compare' | t }}">
           <span class="icon icon-compare"></span>
-          <span class="tooltip">Add to Compare</span>
+          <span class="tooltip">{{ 'products.card.add_to_compare' | t }}</span>
         </a>
       </li>
     </ul>
@@ -479,9 +479,9 @@
       <a class="btn-main-product add-to-cart" 
               data-variant-id="{{ product.variants.first.id }}"
               data-quantity="1"
-              aria-label="Add to cart">
+              aria-label="{{ 'products.card.add_to_cart' | t }}">
         <span class="icon icon-cart2"></span>
-        <span class="text-md fw-medium">Add to Cart</span>
+        <span class="text-md fw-medium">{{ 'products.card.add_to_cart' | t }}</span>
       </a>
     </div>
     {%- if product.variants.size > 1 -%}
@@ -546,13 +546,13 @@
 
     {%- if show_sale_badge and product.compare_at_price > product.price -%}
       <div class="on-sale-wrap">
-        <span class="on-sale-item">{{ sale_badge_text | default: 'Sale' }}</span>
+        <span class="on-sale-item">{{ 'products.card.sale' | t }}</span>
       </div>
     {%- endif -%}
 
     {%- if product.tags contains 'trending' -%}
       <div class="on-sale-wrap">
-        <span class="on-sale-item trending">Trending</span>
+        <span class="on-sale-item trending">{{ 'products.card.trending' | t }}</span>
       </div>
     {%- endif -%}
 
@@ -568,9 +568,9 @@
            class="box-icon hover-tooltip tooltip-left add-to-cart" 
            data-variant-id="{{ product.variants.first.id }}"
            data-quantity="1"
-           aria-label="Add to cart">
+           aria-label="{{ 'products.card.add_to_cart' | t }}">
           <i class="icon icon-cart"></i>
-          <span class="tooltip">Add to Cart</span>
+          <span class="tooltip">{{ 'products.card.add_to_cart' | t }}</span>
         </a>
       </li>
       <li class="wishlist">
@@ -579,9 +579,9 @@
            data-wishlist 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="Add to wishlist">
+           aria-label="{{ 'products.card.add_to_wishlist' | t }}">
           <span class="icon icon-heart2"></span>
-          <span class="tooltip">Add to Wishlist</span>
+          <span class="tooltip">{{ 'products.card.add_to_wishlist' | t }}</span>
         </a>
       </li>
       <li>
@@ -592,7 +592,7 @@
            data-bs-toggle="modal" 
            data-bs-target="#quickView">
           <span class="icon icon-view"></span>
-          <span class="tooltip">Quick View</span>
+          <span class="tooltip">{{ 'products.card.quick_view' | t }}</span>
         </a>
       </li>
       <li class="compare">
@@ -601,9 +601,9 @@
            data-compare 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="Add to compare">
+           aria-label="{{ 'products.card.add_to_compare' | t }}">
           <span class="icon icon-compare"></span>
-          <span class="tooltip">Add to Compare</span>
+          <span class="tooltip">{{ 'products.card.add_to_compare' | t }}</span>
         </a>
       </li>
     </ul>
