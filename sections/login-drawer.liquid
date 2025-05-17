@@ -6,7 +6,7 @@
       <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="canvas-body popup-inner">
-      {% form 'customer_login', class: 'form-login' %}
+      {% form 'customer_login', class: 'form-login', return_to: '/account' %}
         <div>
           <fieldset class="email mb_12">
             <input type="email" name="customer[email]" class="" placeholder="Email*" required>

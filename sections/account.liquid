@@ -1,0 +1,190 @@
+{% schema %}
+{
+  "name": "Account Page",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Account Banner Image"
+    },
+    {
+      "type": "text",
+      "id": "free_shipping_threshold",
+      "label": "Free Shipping Threshold",
+      "default": "300.00"
+    },
+    {
+      "type": "text",
+      "id": "promo_code",
+      "label": "Promo Code",
+      "default": "12D34E"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Account Page",
+      "category": "Account"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="main-content-account">
+    <!-- Breadcrumb -->
+    <div class="tf-breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb-list">
+                <li class="item-breadcrumb">
+                    <a href="{{ routes.root_url }}" class="text">Home</a>
+                </li>
+                <li class="item-breadcrumb dot">
+                    <span></span>
+                </li>
+                <li class="item-breadcrumb">
+                    <span class="text">Account</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /Breadcrumb -->
+
+    <!-- Title Page -->
+    <section class="s-title-page">
+        <div class="container">
+            <h4 class="s-title letter-0 text-center">
+                My Account
+            </h4>
+        </div>
+    </section>
+    <!-- /Title Page -->
+
+    <!-- sidebar-account -->
+    <div class="btn-sidebar-mb d-lg-none">
+        <button data-bs-toggle="offcanvas" data-bs-target="#mbAccount">
+            <i class="icon icon-sidebar"></i>
+        </button>
+    </div>
+    <!-- /sidebar-account -->
+
+    <!-- Section-acount -->
+    <section class="flat-spacing-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="my-account-container">
+                        <div class="sidebar-account-wrap sidebar-content-wrap sticky-top d-lg-block d-none">
+                            <ul class="my-account-nav">
+                                <li>
+                                    <a href="{{ routes.account_url }}" class="text-sm link fw-medium my-account-nav-item active">Dashboard</a>
+                                </li>
+                                <li>
+                                    <a href="{{ routes.account_url }}/orders" class="text-sm link fw-medium my-account-nav-item">My Orders</a>
+                                </li>
+                                <li>
+                                    <a href="{{ routes.account_url }}/wishlist" class="text-sm link fw-medium my-account-nav-item">My Wishlist</a>
+                                </li>
+                                <li>
+                                    <a href="{{ routes.account_addresses_url }}" class="text-sm link fw-medium my-account-nav-item">Addresses</a>
+                                </li>
+                                <li>
+                                    <a href="{{ routes.account_logout_url }}" class="text-sm link fw-medium my-account-nav-item">Log Out</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="my-acount-content account-dashboard">
+                            <div class="box-account-title">
+                                <p class="hello-name display-sm fw-medium">
+                                    Hello {{ customer.name }}!
+                                    <span>(not <span class="name">{{ customer.name }}</span>?</span>
+                                    <a href="{{ routes.account_logout_url }}" class="text-decoration-underline link">Log Out</a>
+                                    <span>)</span>
+                                </p>
+                                <p class="notice text-sm">
+                                    Today is a great day to check your account page. You can check <a href="{{ routes.account_url }}/orders" class="text-primary text-decoration-underline">your last orders</a> or
+                                    have a look to <a href="{{ routes.account_url }}/wishlist" class="text-primary text-decoration-underline">your wishlist</a>. Or maybe you can start to shop
+                                    <a href="{{ routes.all_products_collection_url }}" class="text-primary text-decoration-underline">our latest offers</a>?
+                                </p>
+                            </div>
+                            <div class="content-account">
+                                <ul class="box-check-list flex-sm-nowrap">
+                                    <li>
+                                        <a href="{{ routes.account_url }}/orders" class="box-check text-center">
+                                            <div class="icon">
+                                                <i class="icon-order"></i>
+                                                <span class="count-number text-sm text-white fw-medium">{{ customer.orders_count }}</span>
+                                            </div>
+                                            <div class="text">
+                                                <div class="link name-type text-xl fw-medium">Orders</div>
+                                                <p class="sub-type text-sm">Check the history of all your orders</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ routes.account_url }}/wishlist" class="box-check text-center">
+                                            <div class="icon">
+                                                <i class="icon-heart"></i>
+                                                <span class="count-number text-sm text-white fw-medium">{{ customer.wishlist_count }}</span>
+                                            </div>
+                                            <div class="text">
+                                                <div class="link name-type text-xl fw-medium">Wishlist</div>
+                                                <p class="sub-type text-sm">Check your wishlist</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="banner-account">
+                                    <div class="image">
+                                        {% if section.settings.banner_image %}
+                                            {{ section.settings.banner_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'lazyload' }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="banner-content-right">
+                                        <div class="banner-title">
+                                            <p class="display-md fw-medium">
+                                                Free Shipping
+                                            </p>
+                                            <p class="text-md">
+                                                for all orders over ${{ section.settings.free_shipping_threshold }}
+                                            </p>
+                                        </div>
+                                        <div class="banner-btn">
+                                            <a href="{{ routes.all_products_collection_url }}" class="tf-btn animate-btn">
+                                                Shop Now
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="banner-account banner-acc-countdown bg-linear d-flex align-items-center">
+                                    <div class="banner-content-left">
+                                        <div class="banner-title">
+                                            <p class="sub text-md fw-medium">
+                                                SUMMER SALE
+                                            </p>
+                                            <p class="display-xl fw-medium">
+                                                50% OFF
+                                            </p>
+                                            <p class="sub text-md fw-medium">
+                                                WITH PROMOTE CODE: {{ section.settings.promo_code }}
+                                            </p>
+                                        </div>
+                                        <div class="banner-btn">
+                                            <a href="{{ routes.all_products_collection_url }}" class="tf-btn btn-white animate-btn animate-dark">
+                                                Shop Now
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="banner-countdown">
+                                        <div class="wg-countdown-2">
+                                            <span class="js-countdown" data-timer="46556" data-labels="Days,Hours,Mins,Secs"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /Account -->
+</div> 

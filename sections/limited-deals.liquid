@@ -37,17 +37,11 @@
             <div class="swiper-slide" {{ block.shopify_attributes }}>
               {% render 'card-product',
                 product: block.settings.product,
-                hover_image: block.settings.hover_image,
                 show_sale_badge: block.settings.show_sale_badge,
                 sale_badge_text: block.settings.sale_badge_text,
-                show_trending_badge: block.settings.show_trending_badge,
-                show_sizes: block.settings.show_sizes,
-                sizes: block.settings.sizes,
-                show_countdown: block.settings.show_countdown,
-                countdown_timer: block.settings.countdown_timer,
                 show_color_swatches: block.settings.show_color_swatches,
-                color_option: block.settings.color_option,
-                style: 'style-2'
+                show_size_swatches: block.settings.show_size_swatches,
+                size_swatches: block.settings.size_swatches
               %}
             </div>
           {%- endfor -%}
