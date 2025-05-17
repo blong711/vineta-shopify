@@ -11,15 +11,18 @@
             <p class="sub text-md">{{ section.settings.subheading }}</p>
           {%- endif -%}
         </div>
-        {%- if section.settings.show_countdown and section.settings.end_date != blank -%}
-          {%- assign end_date = section.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
-          <div class="box-countdown">
-            <div class="wg-countdown">
-              <div class="js-countdown d-flex justify-content-center" 
-                   data-countdown="{{ end_date }}"
-                   data-labels="Days,Hours,Mins,Secs"></div>
+        {%- if section.settings.show_countdown and section.settings.product != blank -%}
+          {%- assign product = all_products[section.settings.product] -%}
+          {%- if product.metafields.countdown.end_date != blank -%}
+            {%- assign end_date = product.metafields.countdown.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
+            <div class="box-countdown">
+              <div class="wg-countdown">
+                <div class="js-countdown d-flex justify-content-center" 
+                     data-countdown="{{ end_date }}"
+                     data-labels="Days,Hours,Mins,Secs"></div>
+              </div>
             </div>
-          </div>
+          {%- endif -%}
         {%- endif -%}
         {%- if section.settings.button_label != blank -%}
           <div class="box-btn">
@@ -77,15 +80,18 @@
               </p>
             {%- endif -%}
           </div>
-          {%- if section.settings.show_countdown and section.settings.end_date != blank -%}
-            {%- assign end_date = section.settings.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
-            <div class="box-countdown d-flex justify-content-center wow fadeInUp">
-              <div class="wg-countdown-2">
-                <div class="js-countdown" 
-                     data-countdown="{{ end_date }}"
-                     data-labels="Days,Hours,Mins,Secs"></div>
+          {%- if section.settings.show_countdown and section.settings.product != blank -%}
+            {%- assign product = all_products[section.settings.product] -%}
+            {%- if product.metafields.countdown.end_date != blank -%}
+              {%- assign end_date = product.metafields.countdown.end_date | date: '%Y-%m-%d %H:%M:%S' -%}
+              <div class="box-countdown d-flex justify-content-center wow fadeInUp">
+                <div class="wg-countdown-2">
+                  <div class="js-countdown" 
+                       data-countdown="{{ end_date }}"
+                       data-labels="Days,Hours,Mins,Secs"></div>
+                </div>
               </div>
-            </div>
+            {%- endif -%}
           {%- endif -%}
           
           {%- if section.settings.button_label != blank -%}
@@ -131,6 +137,12 @@
     "content": "Content Settings"
   },
   {
+    "type": "product",
+    "id": "product",
+    "label": "Product with countdown",
+    "info": "Select a product that has countdown metafields set up"
+  },
+  {
     "type": "image_picker",
     "id": "banner_image",
     "label": "Banner image"
@@ -167,12 +179,6 @@
   },
   {
     "type": "text",
-    "id": "end_date",
-    "label": "End date (YYYY-MM-DD HH:MM:SS)",
-    "default": "2024-12-31 23:59:59"
-  },
-  {
-    "type": "text",
     "id": "button_label",
     "label": "Button Label",
     "default": "Shop Now"
@@ -193,7 +199,6 @@
       "heading": "50% OFF",
       "promo_code": "12D34E",
       "show_countdown": true,
-      "end_date": "2024-12-31 23:59:59",
       "button_label": "Shop Now"
     }
   },
@@ -205,7 +210,6 @@
       "heading": "Limited-Time Sale",
       "subheading": "Get your favorite cases at a discount",
       "show_countdown": true,
-      "end_date": "2025-12-31 23:59:59",
       "button_label": "Shop Now"
     }
   }
