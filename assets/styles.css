@@ -27460,3 +27460,38 @@ prev.swiper-button-disabled {
   border-radius: 50%;
   background-color: var(--text);
 }
+@media (min-width: 768px) {
+  .blog-item-v2 .entry-tag {
+      left: 14px;
+      bottom: 14px;
+  }
+}
+.blog-item-v2 .entry-tag {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  display: flex
+;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.entry-tag {
+  display: flex
+;
+  align-items: center;
+  gap: 15px;
+}
+.blog-item-v2 .tag {
+  font-size: 14px;
+  line-height: 20px;
+  padding: 6px 10px;
+  background-color: var(--white);
+  border-radius: 4px;
+  color: var(--dark);
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
