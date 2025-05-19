@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "page-title": {
@@ -12,15 +21,32 @@
     },
     "account": {
       "type": "account",
-      "settings": {
-        "banner_image": "",
-        "free_shipping_threshold": "300.00",
-        "promo_code": "12D34E"
-      }
+      "blocks": {
+        "free_shipping_x7dNx8": {
+          "type": "free_shipping",
+          "settings": {
+            "free_shipping_threshold": "300.00"
+          }
+        },
+        "promo_banner_wkPXNa": {
+          "type": "promo_banner",
+          "settings": {
+            "product": "crop-t-shirt",
+            "promo_title": "SUMMER SALE",
+            "promo_discount": "50% OFF",
+            "promo_code": "12D34E"
+          }
+        }
+      },
+      "block_order": [
+        "free_shipping_x7dNx8",
+        "promo_banner_wkPXNa"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "page-title",
     "account"
   ]
-} 
+}
