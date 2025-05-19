@@ -70,19 +70,21 @@
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           {% endif %}
         {% endif %}
-        <div class="box-content {% if section.settings.layout == 'fashion-02' %}wow fadeInUp{% endif %}">
-          <div class="box-title-banner">
+        <div class="box-content">
+          <div class="box-title-banner {% if section.settings.layout == 'fashion-02' %}wow fadeInUp{% endif %}">
             <p class="title display-md fw-medium {% if section.settings.layout == 'bicycle' %}text-white{% endif %}">
               {{ section.settings.title }}
             </p>
-            <p class="sub {% if section.settings.layout == 'fashion-02' %}text-lg{% else %}text-md{% endif %} {% if section.settings.layout == 'bicycle' %}text-white{% else %}text-main{% endif %}">
+            <p class="sub {% if section.settings.layout == 'fashion-02' %}text-lg{% else %}text-md{% endif %} {% if section.settings.layout == 'bicycle' %}text-white{% elsif section.settings.layout != 'fashion-02' %}text-main{% endif %}">
               {{ section.settings.subtitle }}
             </p>
           </div>
           <div class="box-btn-banner {% if section.settings.layout == 'fashion-02' %}wow fadeInUp{% endif %}">
             <a href="{{ section.settings.button_link }}" class="tf-btn {% if section.settings.layout == 'bicycle' %}btn-green-2{% else %}btn-dark2{% endif %} animate-btn">
               {{ section.settings.button_text }}
+              {% if section.settings.layout != 'fashion-02' %}
               <i class="icon {% if section.settings.layout == 'bicycle' %}icon-arr-right3{% else %}icon-arr-right{% endif %}"></i>
+              {% endif %}
             </a>
           </div>
         </div>
