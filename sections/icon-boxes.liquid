@@ -171,7 +171,7 @@
   
   <div class="{% if section.settings.layout == 'home-electronic' or section.settings.layout == 'home-fashion-02' %}line-top flat-spacing-7{% elsif section.settings.layout == 'bicycle' %}flat-spacing-2{% elsif section.settings.layout == 'phonecase' %}bg-white mx_40 my_20 radius-16 flat-iconbox line-2{% else %}line-top flat-spacing-5{% endif %}">
       <div class="{% if section.settings.layout == 'phonecase' %}container-5{% else %}container{% endif %}">
-          {% if section.settings.layout == 'default' %}
+          {% if section.settings.layout == 'default' or section.settings.layout == 'home-fashion-02' %}
               <div class="mw-1 m-auto">
           {% endif %}
           <div dir="ltr" class="swiper tf-swiper {% if section.settings.layout == 'home-electronic' or section.settings.layout == 'home-fashion-02' %}tf-sw-iconbox-row{% endif %}" data-swiper='{% if section.settings.layout == "phonecase" %}{
@@ -258,7 +258,7 @@
                   <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
               {% endif %}
           </div>
-          {% if section.settings.layout == 'default' %}
+          {% if section.settings.layout == 'default' or section.settings.layout == 'home-fashion-02' %}
               </div>
           {% endif %}
       </div>
