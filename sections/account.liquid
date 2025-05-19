@@ -3,9 +3,62 @@
   "name": "Account Page",
   "settings": [
     {
-      "type": "image_picker",
-      "id": "banner_image",
-      "label": "Account Banner Image"
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container Width",
+      "options": [
+        {
+          "value": "container",
+          "label": "Default"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Full Width"
+        }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "header",
+      "content": "Account Navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_orders",
+      "label": "Show Orders Link",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "label": "Show Wishlist Link",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_addresses",
+      "label": "Show Addresses Link",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Dashboard Content"
+    },
+    {
+      "type": "text",
+      "id": "welcome_message",
+      "label": "Welcome Message",
+      "default": "Hello {{ customer.name }}!"
+    },
+    {
+      "type": "text",
+      "id": "dashboard_notice",
+      "label": "Dashboard Notice",
+      "default": "Today is a great day to check your account page. You can check your last orders or have a look to your wishlist. Or maybe you can start to shop our latest offers?"
     }
   ],
   "blocks": [
@@ -76,7 +129,7 @@
 <div class="main-content-account">
     <!-- Breadcrumb -->
     <div class="tf-breadcrumb">
-        <div class="container">
+        <div class="{{ section.settings.container_width }}">
             <ul class="breadcrumb-list">
                 <li class="item-breadcrumb">
                     <a href="{{ routes.root_url }}" class="text">Home</a>
@@ -94,7 +147,7 @@
 
     <!-- Title Page -->
     <section class="s-title-page">
-        <div class="container">
+        <div class="{{ section.settings.container_width }}">
             <h4 class="s-title letter-0 text-center">
                 My Account
             </h4>
@@ -112,7 +165,7 @@
 
     <!-- Section-acount -->
     <section class="flat-spacing-2">
-        <div class="container">
+        <div class="{{ section.settings.container_width }}">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="my-account-container">
@@ -121,15 +174,21 @@
                                 <li>
                                     <a href="{{ routes.account_url }}" class="text-sm link fw-medium my-account-nav-item active">Dashboard</a>
                                 </li>
+                                {% if section.settings.show_orders %}
                                 <li>
                                     <a href="{{ routes.account_url }}/orders" class="text-sm link fw-medium my-account-nav-item">My Orders</a>
                                 </li>
+                                {% endif %}
+                                {% if section.settings.show_wishlist %}
                                 <li>
                                     <a href="{{ routes.account_url }}/wishlist" class="text-sm link fw-medium my-account-nav-item">My Wishlist</a>
                                 </li>
+                                {% endif %}
+                                {% if section.settings.show_addresses %}
                                 <li>
                                     <a href="{{ routes.account_addresses_url }}" class="text-sm link fw-medium my-account-nav-item">Addresses</a>
                                 </li>
+                                {% endif %}
                                 <li>
                                     <a href="{{ routes.account_logout_url }}" class="text-sm link fw-medium my-account-nav-item">Log Out</a>
                                 </li>
@@ -138,15 +197,13 @@
                         <div class="my-acount-content account-dashboard">
                             <div class="box-account-title">
                                 <p class="hello-name display-sm fw-medium">
-                                    Hello {{ customer.name }}!
+                                    {{ section.settings.welcome_message | replace: '{{ customer.name }}', customer.name }}
                                     <span>(not <span class="name">{{ customer.name }}</span>?</span>
                                     <a href="{{ routes.account_logout_url }}" class="text-decoration-underline link">Log Out</a>
                                     <span>)</span>
                                 </p>
                                 <p class="notice text-sm">
-                                    Today is a great day to check your account page. You can check <a href="{{ routes.account_url }}/orders" class="text-primary text-decoration-underline">your last orders</a> or
-                                    have a look to <a href="{{ routes.account_url }}/wishlist" class="text-primary text-decoration-underline">your wishlist</a>. Or maybe you can start to shop
-                                    <a href="{{ routes.all_products_collection_url }}" class="text-primary text-decoration-underline">our latest offers</a>?
+                                    {{ section.settings.dashboard_notice }}
                                 </p>
                             </div>
                             <div class="content-account">
