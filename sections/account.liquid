@@ -63,6 +63,44 @@
   ],
   "blocks": [
     {
+      "type": "orders_box",
+      "name": "Orders Box",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Orders"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Check the history of all your orders"
+        }
+      ]
+    },
+    {
+      "type": "wishlist_box",
+      "name": "Wishlist Box",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Wishlist"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Check your wishlist"
+        }
+      ]
+    },
+    {
       "type": "free_shipping",
       "name": "Free Shipping Banner",
       "settings": [
@@ -114,6 +152,12 @@
       "name": "Account Page",
       "category": "Account",
       "blocks": [
+        {
+          "type": "orders_box"
+        },
+        {
+          "type": "wishlist_box"
+        },
         {
           "type": "free_shipping"
         },
@@ -210,30 +254,36 @@
                             </div>
                             <div class="content-account">
                                 <ul class="box-check-list flex-sm-nowrap">
-                                    <li>
-                                        <a href="{{ routes.account_url }}/orders" class="box-check text-center">
-                                            <div class="icon">
-                                                <i class="icon-order"></i>
-                                                <span class="count-number text-sm text-white fw-medium">{{ customer.orders_count }}</span>
-                                            </div>
-                                            <div class="text">
-                                                <div class="link name-type text-xl fw-medium">Orders</div>
-                                                <p class="sub-type text-sm">Check the history of all your orders</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ routes.account_url }}/wishlist" class="box-check text-center">
-                                            <div class="icon">
-                                                <i class="icon-heart"></i>
-                                                <span class="count-number text-sm text-white fw-medium">{{ customer.wishlist_count }}</span>
-                                            </div>
-                                            <div class="text">
-                                                <div class="link name-type text-xl fw-medium">Wishlist</div>
-                                                <p class="sub-type text-sm">Check your wishlist</p>
-                                            </div>
-                                        </a>
-                                    </li>
+                                    {% for block in section.blocks %}
+                                        {% case block.type %}
+                                            {% when 'orders_box' %}
+                                                <li {{ block.shopify_attributes }}>
+                                                    <a href="{{ routes.account_url }}/orders" class="box-check text-center">
+                                                        <div class="icon">
+                                                            <i class="icon-order"></i>
+                                                            <span class="count-number text-sm text-white fw-medium">{{ customer.orders_count }}</span>
+                                                        </div>
+                                                        <div class="text">
+                                                            <div class="link name-type text-xl fw-medium">{{ block.settings.title }}</div>
+                                                            <p class="sub-type text-sm">{{ block.settings.description }}</p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            {% when 'wishlist_box' %}
+                                                <li {{ block.shopify_attributes }}>
+                                                    <a href="{{ routes.account_url }}/wishlist" class="box-check text-center">
+                                                        <div class="icon">
+                                                            <i class="icon-heart"></i>
+                                                            <span class="count-number text-sm text-white fw-medium">{{ customer.wishlist_count }}</span>
+                                                        </div>
+                                                        <div class="text">
+                                                            <div class="link name-type text-xl fw-medium">{{ block.settings.title }}</div>
+                                                            <p class="sub-type text-sm">{{ block.settings.description }}</p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                        {% endcase %}
+                                    {% endfor %}
                                 </ul>
                                 <div class="banner-account">
                                     <div class="image">
