@@ -261,6 +261,7 @@
                     </div>
                 </div>
             {% elsif section.settings.layout == 'home-fashion-02' %}
+                </div>
                 <div class="slider-layout-right wow fadeInUp">
                     <div dir="ltr" class="swiper tf-swiper tf-sw-right" data-swiper='{
                         "slidesPerView": 1,
@@ -325,15 +326,15 @@
                                                      data-src="{{ block.settings.testimonial_image | img_url: '400x' }}" 
                                                      src="{{ block.settings.testimonial_image | img_url: '400x' }}" 
                                                      alt="{{ block.settings.name }}"
-                                                     width="400"
-                                                     height="400">
+                                                     width="244"
+                                                     height="310">
                                             {% else %}
                                                 <img class="lazyload" 
                                                      data-src="{{ 'tes-fs1.jpg' | asset_url }}" 
                                                      src="{{ 'tes-fs1.jpg' | asset_url }}" 
                                                      alt="{{ block.settings.name }}"
-                                                     width="400"
-                                                     height="400">
+                                                     width="244"
+                                                     height="310">
                                             {% endif %}
                                         </div>
                                     </div>
