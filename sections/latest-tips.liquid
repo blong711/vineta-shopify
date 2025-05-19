@@ -199,9 +199,10 @@
                     {%- endif -%}
                   </a>
                   {% if block.settings.tags != blank %}
+                    {% assign tags = block.settings.tags | split: ',' %}
                     <div class="entry-tag">
-                      {% for tag in block.settings.tags %}
-                        <span class="tag">{{ tag }}</span>
+                      {% for tag in tags %}
+                        <span class="tag">{{ tag | strip }}</span>
                       {% endfor %}
                     </div>
                   {% endif %}
