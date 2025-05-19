@@ -6,24 +6,63 @@
       "type": "image_picker",
       "id": "banner_image",
       "label": "Account Banner Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "free_shipping",
+      "name": "Free Shipping Banner",
+      "settings": [
+        {
+          "type": "text",
+          "id": "free_shipping_threshold",
+          "label": "Free Shipping Threshold",
+          "default": "300.00"
+        }
+      ]
     },
     {
-      "type": "text",
-      "id": "free_shipping_threshold",
-      "label": "Free Shipping Threshold",
-      "default": "300.00"
-    },
-    {
-      "type": "text",
-      "id": "promo_code",
-      "label": "Promo Code",
-      "default": "12D34E"
+      "type": "promo_banner",
+      "name": "Promo Banner",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "promo_title",
+          "label": "Promo Title",
+          "default": "SUMMER SALE"
+        },
+        {
+          "type": "text",
+          "id": "promo_discount",
+          "label": "Promo Discount",
+          "default": "50% OFF"
+        },
+        {
+          "type": "text",
+          "id": "promo_code",
+          "label": "Promo Code",
+          "default": "12D34E"
+        }
+      ]
     }
   ],
   "presets": [
     {
       "name": "Account Page",
-      "category": "Account"
+      "category": "Account",
+      "blocks": [
+        {
+          "type": "free_shipping"
+        },
+        {
+          "type": "promo_banner"
+        }
+      ]
     }
   ]
 }
@@ -138,47 +177,55 @@
                                             {{ section.settings.banner_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'lazyload' }}
                                         {% endif %}
                                     </div>
-                                    <div class="banner-content-right">
-                                        <div class="banner-title">
-                                            <p class="display-md fw-medium">
-                                                Free Shipping
-                                            </p>
-                                            <p class="text-md">
-                                                for all orders over ${{ section.settings.free_shipping_threshold }}
-                                            </p>
-                                        </div>
-                                        <div class="banner-btn">
-                                            <a href="{{ routes.all_products_collection_url }}" class="tf-btn animate-btn">
-                                                Shop Now
-                                            </a>
-                                        </div>
-                                    </div>
                                 </div>
-                                <div class="banner-account banner-acc-countdown bg-linear d-flex align-items-center">
-                                    <div class="banner-content-left">
-                                        <div class="banner-title">
-                                            <p class="sub text-md fw-medium">
-                                                SUMMER SALE
-                                            </p>
-                                            <p class="display-xl fw-medium">
-                                                50% OFF
-                                            </p>
-                                            <p class="sub text-md fw-medium">
-                                                WITH PROMOTE CODE: {{ section.settings.promo_code }}
-                                            </p>
-                                        </div>
-                                        <div class="banner-btn">
-                                            <a href="{{ routes.all_products_collection_url }}" class="tf-btn btn-white animate-btn animate-dark">
-                                                Shop Now
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="banner-countdown">
-                                        <div class="wg-countdown-2">
-                                            <span class="js-countdown" data-timer="46556" data-labels="Days,Hours,Mins,Secs"></span>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% for block in section.blocks %}
+                                    {% case block.type %}
+                                        {% when 'free_shipping' %}
+                                            <div class="banner-account" {{ block.shopify_attributes }}>
+                                                <div class="banner-content-right">
+                                                    <div class="banner-title">
+                                                        <p class="display-md fw-medium">
+                                                            Free Shipping
+                                                        </p>
+                                                        <p class="text-md">
+                                                            for all orders over ${{ block.settings.free_shipping_threshold }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="banner-btn">
+                                                        <a href="{{ routes.all_products_collection_url }}" class="tf-btn animate-btn">
+                                                            Shop Now
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% when 'promo_banner' %}
+                                            <div class="banner-account banner-acc-countdown bg-linear d-flex align-items-center" {{ block.shopify_attributes }}>
+                                                <div class="banner-content-left">
+                                                    <div class="banner-title">
+                                                        <p class="sub text-md fw-medium">
+                                                            {{ block.settings.promo_title }}
+                                                        </p>
+                                                        <p class="display-xl fw-medium">
+                                                            {{ block.settings.promo_discount }}
+                                                        </p>
+                                                        <p class="sub text-md fw-medium">
+                                                            WITH PROMOTE CODE: {{ block.settings.promo_code }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="banner-btn">
+                                                        <a href="{{ routes.all_products_collection_url }}" class="tf-btn btn-white animate-btn animate-dark">
+                                                            Shop Now
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="banner-countdown">
+                                                    <div class="wg-countdown-2">
+                                                        <span class="js-countdown" data-timer="{{ block.settings.product.metafields.countdown.end_date | date: '%s' | minus: 'now' | date: '%s' }}" data-labels="Days,Hours,Mins,Secs"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    {% endcase %}
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
