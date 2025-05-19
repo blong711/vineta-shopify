@@ -197,7 +197,9 @@
                         <div class="my-acount-content account-dashboard">
                             <div class="box-account-title">
                                 <p class="hello-name display-sm fw-medium">
-                                    {{ section.settings.welcome_message | replace: '{{ customer.name }}', customer.name }}
+                                    {% assign welcome_message = section.settings.welcome_message %}
+                                    {% assign welcome_message = welcome_message | replace: "{{ customer.name }}", customer.name %}
+                                    {{ welcome_message }}
                                     <span>(not <span class="name">{{ customer.name }}</span>?</span>
                                     <a href="{{ routes.account_logout_url }}" class="text-decoration-underline link">Log Out</a>
                                     <span>)</span>
