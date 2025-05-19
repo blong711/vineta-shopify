@@ -175,7 +175,7 @@
   <div class="footer-bottom">
     <div class="container">
       <div class="footer-bottom-wrap">
-        <p>Copyright © {{ 'now' | date: "%Y" }} by <span class="fw-medium">{{ shop.name }}</span>. All Rights Reserved.</p>
+        <p class="text-dark">Copyright © {{ 'now' | date: "%Y" }} by <span class="fw-medium">{{ shop.name }}</span>. All Rights Reserved.</p>
         {%- if section.settings.show_payment_icons -%}
           <ul class="tf-payment" style="--payment-icon-size: {{ section.settings.payment_icons_size }}px">
             {%- for block in section.blocks -%}
