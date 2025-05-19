@@ -176,7 +176,12 @@
                 {% endif %}
                   {% if block.settings.brand_image != blank %}
                     <img 
-                      src="{{ block.settings.brand_image | img_url }}"
+                      src="{{ block.settings.brand_image | img_url: 'master' }}"
+                      srcset="
+                        {{ block.settings.brand_image | img_url: '180x' }} 180w,
+                        {{ block.settings.brand_image | img_url: '360x' }} 360w
+                      "
+                      sizes="(max-width: 768px) 180px, 360px"
                       alt="{{ block.settings.brand_image.alt | escape | default: 'Brand logo' }}"
                       width="{{ block.settings.brand_image.width | default: 240 }}"
                       height="{{ block.settings.brand_image.height | default: 114 }}"
