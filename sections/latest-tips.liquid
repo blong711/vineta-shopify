@@ -1,16 +1,10 @@
+{% if section.settings.layout == 'layout1' %}
 <section class="flat-spacing-3 {% if section.settings.layout == 'home-bicycle' %}pb-0{% else %} pt-0{% endif %} section-{{ section.id }}-padding">
   <div class="container">
-    {% if section.settings.layout == 'home-bicycle' %}
-      <div class="flat-title-v2 text-center justify-items-center wow fadeInUp">
-        <a href="{{ section.settings.blog_link }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.blog_button_text }}</a>
-        <h4 class="text-capitalize">{{ section.settings.title }}</h4>
-      </div>
-    {% else %}
-      <div class="flat-title wow fadeInUp">
-        <h4 class="title">{{ section.settings.title }}</h4>
-        <p class="desc text-main text-md">{{ section.settings.description }}</p>
-      </div>
-    {% endif %}
+    <div class="flat-title wow fadeInUp">
+      <h4 class="title">{{ section.settings.title }}</h4>
+      <p class="desc text-main text-md">{{ section.settings.description }}</p>
+    </div>
     <div class="fl-control-sw wow fadeInUp">
       <div dir="ltr" class="swiper tf-swiper" data-swiper='{
         "slidesPerView": {{ section.settings.slides_per_view_mobile }},
@@ -78,6 +72,178 @@
     </div>
   </div>
 </section>
+{% elsif section.settings.layout == 'layout2' %}
+<section class="flat-spacing-3 {% if section.settings.layout == 'home-bicycle' %}pb-0{% else %} pt-0{% endif %} section-{{ section.id }}-padding">
+  <div class="container">
+    <div class="flat-title-v2 text-center justify-items-center wow fadeInUp">
+      <a href="{{ section.settings.blog_link }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.blog_button_text }}</a>
+      <h4 class="text-capitalize">{{ section.settings.title }}</h4>
+    </div>
+    <div class="fl-control-sw wow fadeInUp">
+      <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+        "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+        "spaceBetween": {{ section.settings.space_between_mobile }},
+        "speed": 800,
+        "observer": true,
+        "observeParents": true,
+        "slidesPerGroup": {{ section.settings.slides_per_view_mobile }},
+        "navigation": {
+          "clickable": true,
+          "nextEl": ".nav-next-new",
+          "prevEl": ".nav-prev-new"
+        },
+        "pagination": { "el": ".sw-pagination-new", "clickable": true },
+        "autoplay": {
+          "delay": {{ section.settings.autoplay_speed }},
+          "disableOnInteraction": false
+        },
+        "breakpoints": {
+          "577": { 
+            "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
+            "spaceBetween": {{ section.settings.space_between_tablet }}, 
+            "slidesPerGroup": {{ section.settings.slides_per_view_tablet }}
+          },
+          "1200": { 
+            "slidesPerView": {{ section.settings.slides_per_view_desktop }}, 
+            "spaceBetween": {{ section.settings.space_between_desktop }}, 
+            "slidesPerGroup": {{ section.settings.slides_per_view_desktop }}
+          }
+        }
+      }'>
+        <div class="swiper-wrapper">
+          {%- for block in section.blocks -%}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <div class="news-item hover-img">
+                <a href="{{ block.settings.link }}" class="image-box img-style">
+                  {%- if block.settings.image != blank -%}
+                    {{ block.settings.image | image_url: width: 600 | image_tag:
+                      loading: 'lazy',
+                      width: 600,
+                      height: 400,
+                      class: 'lazyload',
+                      alt: block.settings.title
+                    }}
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </a>
+                <div class="content">
+                  <a href="{{ block.settings.link }}" class="title fw-medium link text-xl text-line-clamp-2">
+                    {{ block.settings.title }}
+                  </a>
+                  <a href="{{ block.settings.link }}" class="btn-readmore link">
+                    {{ block.settings.read_more_text }} <i class="icon icon-arr-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-new justify-content-center"></div>
+      </div>
+      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-new"></div>
+      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-new"></div>
+    </div>
+  </div>
+</section>
+{% else %}
+<section class="flat-spacing-29 pt-0">
+  <div class="container">
+    <div class="flat-title wow fadeInUp">
+      <h4 class="title">{{ section.settings.title }}</h4>
+      <p class="desc text-main text-md">{{ section.settings.description }}</p>
+    </div>
+    <div class="hover-sw-nav wrap-pos-nav">
+      <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+        "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+        "spaceBetween": {{ section.settings.space_between_mobile }},
+        "speed": 800,
+        "observer": true,
+        "observeParents": true,
+        "slidesPerGroup": {{ section.settings.slides_per_view_mobile }},
+        "navigation": {
+          "clickable": true,
+          "nextEl": ".nav-next-new",
+          "prevEl": ".nav-prev-new"
+        },
+        "pagination": { "el": ".sw-pagination-new", "clickable": true },
+        "breakpoints": {
+          "577": { 
+            "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
+            "spaceBetween": {{ section.settings.space_between_tablet }}, 
+            "slidesPerGroup": {{ section.settings.slides_per_view_tablet }}
+          },
+          "1200": { 
+            "slidesPerView": {{ section.settings.slides_per_view_desktop }}, 
+            "spaceBetween": {{ section.settings.space_between_desktop }}, 
+            "slidesPerGroup": {{ section.settings.slides_per_view_desktop }}
+          }
+        }
+      }'>
+        <div class="swiper-wrapper">
+          {%- for block in section.blocks -%}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <div class="blog-item-v2">
+                <div class="entry-image hover-img">
+                  <a href="{{ block.settings.link }}" class="image-box img-style">
+                    {%- if block.settings.image != blank -%}
+                      {{ block.settings.image | image_url: width: 600 | image_tag:
+                        loading: 'lazy',
+                        width: 600,
+                        height: 400,
+                        class: 'lazyload',
+                        alt: block.settings.title
+                      }}
+                    {%- else -%}
+                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </a>
+                  {% if block.settings.tags != blank %}
+                    <div class="entry-tag">
+                      {% for tag in block.settings.tags %}
+                        <span class="tag">{{ tag }}</span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="entry-content">
+                  <div class="info-box">
+                    <ul class="meta-list">
+                      {% if block.settings.author != blank %}
+                        <li class="item">by {{ block.settings.author }}</li>
+                      {% endif %}
+                      {% if block.settings.date != blank %}
+                        <li class="item">{{ block.settings.date }}</li>
+                      {% endif %}
+                      {% if block.settings.comments != blank %}
+                        <li class="item">{{ block.settings.comments }}</li>
+                      {% endif %}
+                    </ul>
+                    <a href="{{ block.settings.link }}" class="title fw-medium link text-xl text-line-clamp-2">
+                      {{ block.settings.title }}
+                    </a>
+                    {% if block.settings.description != blank %}
+                      <p class="desc text-main text-sm text-line-clamp-2">
+                        {{ block.settings.description }}
+                      </p>
+                    {% endif %}
+                  </div>
+                  <a href="{{ block.settings.link }}" class="btn-readmore link">
+                    {{ block.settings.read_more_text }} <i class="icon icon-arr-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-new justify-content-center"></div>
+      </div>
+      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-new"></div>
+      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-new"></div>
+    </div>
+  </div>
+</section>
+{% endif %}
 
 {% schema %}
 {
@@ -90,10 +256,11 @@
       "id": "layout",
       "label": "Section Layout",
       "options": [
-        { "value": "default", "label": "Default" },
-        { "value": "home-bicycle", "label": "Home Bicycle (Latest tip)" }
+        { "value": "layout1", "label": "Layout 1 (Default)" },
+        { "value": "layout2", "label": "Layout 2 (Home Bicycle)" },
+        { "value": "layout3", "label": "Layout 3 (Blog Style)" }
       ],
-      "default": "default"
+      "default": "layout1"
     },
     {
       "type": "text",
@@ -105,21 +272,20 @@
       "type": "text",
       "id": "description",
       "label": "Description",
-      "default": "Discover expert advice, style inspiration, and product updates on our blog.",
-      "info": "Only used in default layout"
+      "default": "Discover expert advice, style inspiration, and product updates on our blog."
     },
     {
       "type": "text",
       "id": "blog_button_text",
       "label": "Blog Button Text",
       "default": "OUR BLOG",
-      "info": "Only used in home-bicycle layout"
+      "info": "Only used in Layout 2"
     },
     {
       "type": "url",
       "id": "blog_link",
       "label": "Blog Link",
-      "info": "Only used in home-bicycle layout"
+      "info": "Only used in Layout 2"
     },
     {
       "type": "checkbox",
@@ -248,15 +414,45 @@
           "default": "Tech Trends 2025: Must-Have Gadgets & Innovations"
         },
         {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Collaboration is at the heart of what we do. From understanding your goals to delivering tailored solutions..."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author",
+          "default": "Admin"
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date",
+          "default": "Jan 21, 2025"
+        },
+        {
+          "type": "text",
+          "id": "comments",
+          "label": "Comments",
+          "default": "03 Comments"
         },
         {
           "type": "text",
           "id": "read_more_text",
           "label": "Read more text",
           "default": "Read more"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "tags",
+          "label": "Tags",
+          "info": "Comma-separated list of tags"
         }
       ]
     }
