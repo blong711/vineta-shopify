@@ -14,6 +14,11 @@
       "name": "Free Shipping Banner",
       "settings": [
         {
+          "type": "image_picker",
+          "id": "banner_image",
+          "label": "Banner Image"
+        },
+        {
           "type": "text",
           "id": "free_shipping_threshold",
           "label": "Free Shipping Threshold",
@@ -182,6 +187,11 @@
                                     {% case block.type %}
                                         {% when 'free_shipping' %}
                                             <div class="banner-account" {{ block.shopify_attributes }}>
+                                                {% if block.settings.banner_image %}
+                                                    <div class="image">
+                                                        {{ block.settings.banner_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'lazyload' }}
+                                                    </div>
+                                                {% endif %}
                                                 <div class="banner-content-right">
                                                     <div class="banner-title">
                                                         <p class="display-md fw-medium">
