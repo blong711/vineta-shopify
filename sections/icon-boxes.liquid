@@ -222,7 +222,7 @@
                                   <div class="title">{{ block.settings.title }}</div>
                               </div>
                           {% else %}
-                              <div class="tf-icon-box {% if section.settings.layout == 'home-electronic' %}style-3 wow fadeInLeft{% elsif section.settings.layout == 'bicycle' %}style-lg wow fadeInLeft{% else %}style-2{% endif %}" {% if section.settings.layout != 'default' and forloop.index > 1 %}data-wow-delay="{{ forloop.index | minus: 1 | times: 0.1 }}s"{% endif %}>
+                              <div class="tf-icon-box {% if section.settings.layout == 'home-electronic' or section.settings.layout == 'home-fashion-02' %}style-3 wow fadeInLeft{% elsif section.settings.layout == 'bicycle' %}style-lg wow fadeInLeft{% else %}style-2{% endif %}" {% if section.settings.layout != 'default' and forloop.index > 1 %}data-wow-delay="{{ forloop.index | minus: 1 | times: 0.1 }}s"{% endif %}>
                                   {% if section.settings.layout == 'bicycle' %}
                                       {% case block.settings.icon %}
                                           {% when 'icon-shipping' %}
@@ -244,8 +244,8 @@
                                       </div>
                                   {% endif %}
                                   <div class="content">
-                                      <div class="title {% if section.settings.layout == 'home-electronic' %}text-uppercase{% endif %}">{{ block.settings.title }}</div>
-                                      {% unless section.settings.layout == 'home-electronic' %}
+                                      <div class="title {% if section.settings.layout == 'home-electronic' or section.settings.layout == 'home-fashion-02' %}text-uppercase{% endif %}">{{ block.settings.title }}</div>
+                                      {% unless section.settings.layout == 'home-electronic' or section.settings.layout == 'home-fashion-02' %}
                                           <p class="desc">{{ block.settings.description }}</p>
                                       {% endunless %}
                                   </div>
