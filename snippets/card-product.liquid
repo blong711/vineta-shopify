@@ -273,13 +273,15 @@
       </ul>
     {%- endif -%}
 
-    <div class="product-progress-sale">
-      <div class="progress-sold progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-        <div class="progress-bar {% if available_quantity < 10 %}bg-red-3{% elsif available_quantity < 30 %}bg-orange-3{% else %}bg-green-2{% endif %}" 
-          style="width: {{ sold_percentage | default: 50 }}%"></div>
+    {%- if show_progress_bar -%}
+      <div class="product-progress-sale">
+        <div class="progress-sold progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-bar {% if available_quantity < 10 %}bg-red-3{% elsif available_quantity < 30 %}bg-orange-3{% else %}bg-green-2{% endif %}" 
+            style="width: {{ sold_percentage | default: 50 }}%"></div>
+        </div>
+        <p class="text-avaiable text-sm">{{ 'products.card.available' | t }}: <span class="fw-medium {% if available_quantity < 10 %}text-red-2{% elsif available_quantity < 30 %}text-orange-3{% else %}text-success-5{% endif %}">{{ available_quantity | default: 50 }}</span></p>
       </div>
-      <p class="text-avaiable text-sm">{{ 'products.card.available' | t }}: <span class="fw-medium {% if available_quantity < 10 %}text-red-2{% elsif available_quantity < 30 %}text-orange-3{% else %}text-success-5{% endif %}">{{ available_quantity | default: 50 }}</span></p>
-    </div>
+    {%- endif -%}
   </div>
 </div>
 {%- elsif style == 'style-phonecase' -%}

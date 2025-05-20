@@ -37,7 +37,8 @@
                   style: 'style-hot-deals',
                   countdown_timer: block.settings.countdown_timer,
                   available_quantity: block.settings.available_quantity,
-                  sold_percentage: block.settings.sold_percentage
+                  sold_percentage: block.settings.sold_percentage,
+                  show_progress_bar: block.settings.show_progress_bar
                 %}
               </div>
             {%- endfor -%}
@@ -111,6 +112,12 @@
           "unit": "%",
           "label": "Sold percentage",
           "default": 50
+        },
+        {
+          "type": "checkbox",
+          "id": "show_progress_bar",
+          "label": "Show progress bar",
+          "default": true
         }
       ]
     }
