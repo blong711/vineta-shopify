@@ -27508,3 +27508,13 @@ prev.swiper-button-disabled {
       display: block !important;
   }
 }
+@media (min-width: 1200px) {
+  .fl-control-sw .swiper-button-next {
+      right: -22px;
+  }
+}
+@media (min-width: 1200px) {
+  .fl-control-sw .swiper-button-prev {
+      left: -22px;
+  }
+}
