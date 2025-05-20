@@ -1,5 +1,12 @@
 {%- comment -%}Footer Section{%- endcomment -%}
-<footer id="footer" class="footer-default xl-pb-70" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+<footer
+  id="footer"
+  class="footer-default xl-pb-70
+    {% if section.settings.text_size == 'small' %} text-sm{% elsif section.settings.text_size == 'large' %} text-lg{% else %} text-md{% endif %}
+    {% if section.settings.border == 'top' %} footer-border-top{% elsif section.settings.border == 'bottom' %} footer-border-bottom{% endif %}
+    {% if section.settings.border_main_position == 'full_width' %} footer-border-full{% else %} footer-border-container{% endif %}"
+  style="padding-top: {{ section.settings.padding_top_main }}px; padding-bottom: {{ section.settings.padding_bottom_main }}px;"
+>
   <div class="footer-top">
     <div class="container">
       <div class="footer-top-wrap">
@@ -52,7 +59,11 @@
           {%- case block.type -%}
             {%- when 'contact' -%}
               <div class="footer-col-block s1" {{ block.shopify_attributes }}>
-                <div class="footer-heading footer-heading-mobile text-xl fw-medium">
+                <div class="footer-heading footer-heading-mobile"
+                  style="
+                    font-size: {% case section.settings.heading_size %}{% when 'small' %}16px{% when 'medium' %}20px{% when 'large' %}26px{% endcase %};
+                    font-weight: {% case section.settings.heading_font_weight %}{% when 'normal' %}400{% when 'medium' %}500{% when 'bold' %}700{% endcase %};
+                    margin-bottom: {{ section.settings.heading_margin_bottom }}px;">
                   {{ block.settings.title }}
                 </div>
                 <div class="tf-collapse-content">
@@ -103,7 +114,11 @@
               </div>
             {%- when 'newsletter' -%}
               <div class="footer-inner-wrap footer-col-block s2" {{ block.shopify_attributes }}>
-                <div class="footer-heading footer-heading-mobile text-xl fw-medium">
+                <div class="footer-heading footer-heading-mobile"
+                  style="
+                    font-size: {% case section.settings.heading_size %}{% when 'small' %}16px{% when 'medium' %}20px{% when 'large' %}26px{% endcase %};
+                    font-weight: {% case section.settings.heading_font_weight %}{% when 'normal' %}400{% when 'medium' %}500{% when 'bold' %}700{% endcase %};
+                    margin-bottom: {{ section.settings.heading_margin_bottom }}px;">
                   {{ block.settings.title }}
                 </div>
                 <div class="tf-collapse-content">
@@ -131,7 +146,13 @@
                 <div class="footer-inner-wrap s3">
               {%- endif -%}
                   <div class="footer-col-block inner-col" {{ block.shopify_attributes }}>
-                    <div class="footer-heading footer-heading-mobile text-xl fw-medium">{{ block.settings.title }}</div>
+                    <div class="footer-heading footer-heading-mobile"
+                      style="
+                        font-size: {% case section.settings.heading_size %}{% when 'small' %}16px{% when 'medium' %}20px{% when 'large' %}26px{% endcase %};
+                        font-weight: {% case section.settings.heading_font_weight %}{% when 'normal' %}400{% when 'medium' %}500{% when 'bold' %}700{% endcase %};
+                        margin-bottom: {{ section.settings.heading_margin_bottom }}px;">
+                      {{ block.settings.title }}
+                    </div>
                     <div class="tf-collapse-content">
                       <ul class="footer-menu-list">
                         {%- for link in linklists[block.settings.menu].links -%}
@@ -184,6 +205,26 @@
       "label": "Logo"
     },
     {
+      "type": "text",
+      "id": "social_facebook_link",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "text",
+      "id": "social_instagram_link",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "text",
+      "id": "social_linkedin_link",
+      "label": "LinkedIn URL"
+    },
+    {
+      "type": "text",
+      "id": "social_x_link",
+      "label": "X (Twitter) URL"
+    },
+    {
       "type": "header",
       "content": "Spacing"
     },
@@ -219,7 +260,7 @@
     },
     {
       "type": "header",
-      "content": "Payment Icons"
+      "content": "Bottom bar"
     },
     {
       "type": "checkbox",
@@ -244,30 +285,98 @@
       "default": "visa,paypal,master,american_express,diners_club"
     },
     {
-      "type": "text",
-      "id": "social_facebook_link",
-      "label": "Facebook URL"
-    },
-    {
-      "type": "text",
-      "id": "social_instagram_link",
-      "label": "Instagram URL"
-    },
-    {
-      "type": "text",
-      "id": "social_linkedin_link",
-      "label": "LinkedIn URL"
-    },
-    {
-      "type": "text",
-      "id": "social_x_link",
-      "label": "X (Twitter) URL"
-    },
-    {
       "type": "textarea",
       "id": "copyrights",
       "label": "Copyrights",
       "default": "© [year] <span class=\"\">Ecomus</span>. All rights reserved."
+    },
+    {
+      "type": "header",
+      "content": "Main"
+    },
+    {
+      "type": "select",
+      "id": "border",
+      "label": "Border",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "select",
+      "id": "border_main_position",
+      "label": "Border main position",
+      "options": [
+        { "value": "full_width", "label": "Full width" },
+        { "value": "in_container", "label": "In container" }
+      ],
+      "default": "in_container"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading font weight",
+      "options": [
+        { "value": "normal", "label": "Normal" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "bold", "label": "Bold" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "range",
+      "id": "heading_margin_bottom",
+      "label": "Heading margin bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_main",
+      "label": "Padding top main",
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px",
+      "default": 82
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_main",
+      "label": "Padding bottom main",
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px",
+      "default": 60
     }
   ],
   "blocks": [
