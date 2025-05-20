@@ -16,10 +16,7 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/slider-electronic-1.webp",
-            "image_position": "left",
-            "content_position": "left",
-            "text_color": "dark-3",
-            "button_color": "dark2",
+            "content_alignment": "left",
             "subtitle": "APPLE WATCHES COLLECTION",
             "heading": "Sale up to  15% Off",
             "subheading": "Discover the latest trends in fashion that speak your style.",
@@ -31,10 +28,7 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/slider-electronic-2.webp",
-            "image_position": "left",
-            "content_position": "left",
-            "text_color": "dark-3",
-            "button_color": "dark2",
+            "content_alignment": "left",
             "subtitle": "APPLE MAGSAFE CHARGER",
             "heading": "Next-Level Tech",
             "subheading": "Discover the latest trends in fashion that speak your style.",
@@ -46,10 +40,7 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/slider-electronic-3.webp",
-            "image_position": "left",
-            "content_position": "left",
-            "text_color": "dark-3",
-            "button_color": "dark2",
+            "content_alignment": "left",
             "subtitle": "ON-EAR HEADPHONES",
             "heading": "Power Up Your Life",
             "subheading": "Discover the latest trends in fashion that speak your style.",
@@ -65,9 +56,21 @@
       ],
       "settings": {
         "layout": "home-electronic",
+        "width": "full",
+        "image_height_mode": "adapt",
+        "fixed_height": 600,
+        "mobile_image_height_mode": "fixed",
+        "mobile_fixed_height": 400,
         "autoplay": true,
         "loop": true,
-        "speed": 800
+        "speed": 800,
+        "show_navigation": false,
+        "show_dots": true,
+        "padding": 0,
+        "pause_on_hover": true,
+        "effect": "slide",
+        "direction": "horizontal",
+        "draggable": true
       }
     },
     "marquee_sale_rdpiJj": {
@@ -207,7 +210,9 @@
             "show_size_swatches": false,
             "size_swatches": "S,M,L,XL",
             "show_countdown": false,
-            "countdown_timer": "2024/12/31 23:59:59"
+            "countdown_timer": "2024/12/31 23:59:59",
+            "available_quantity": 50,
+            "sold_percentage": 50
           }
         },
         "product_9KKzHi": {
@@ -222,7 +227,9 @@
             "show_size_swatches": false,
             "size_swatches": "S,M,L,XL",
             "show_countdown": false,
-            "countdown_timer": "2024/12/31 23:59:59"
+            "countdown_timer": "2024/12/31 23:59:59",
+            "available_quantity": 50,
+            "sold_percentage": 50
           }
         },
         "product_6ijazg": {
@@ -237,7 +244,9 @@
             "show_size_swatches": false,
             "size_swatches": "S,M,L,XL",
             "show_countdown": false,
-            "countdown_timer": "2024/12/31 23:59:59"
+            "countdown_timer": "2024/12/31 23:59:59",
+            "available_quantity": 50,
+            "sold_percentage": 50
           }
         },
         "product_9cyqnD": {
@@ -252,7 +261,9 @@
             "show_size_swatches": false,
             "size_swatches": "S,M,L,XL",
             "show_countdown": false,
-            "countdown_timer": "2024/12/31 23:59:59"
+            "countdown_timer": "2024/12/31 23:59:59",
+            "available_quantity": 50,
+            "sold_percentage": 50
           }
         }
       },
@@ -292,25 +303,37 @@
         "product_G6gq8i": {
           "type": "product",
           "settings": {
-            "product": "apple-airpods-pro-2-wireless-earbuds"
+            "product": "apple-airpods-pro-2-wireless-earbuds",
+            "countdown_timer": "",
+            "available_quantity": 50,
+            "sold_percentage": 50
           }
         },
         "product_7fCMGq": {
           "type": "product",
           "settings": {
-            "product": "samsung-galaxy-5-lte-smart-watch"
+            "product": "samsung-galaxy-5-lte-smart-watch",
+            "countdown_timer": "",
+            "available_quantity": 50,
+            "sold_percentage": 50
           }
         },
         "product_gHBUKh": {
           "type": "product",
           "settings": {
-            "product": "fit-pro-true-wireless-bluetooth-earbuds"
+            "product": "fit-pro-true-wireless-bluetooth-earbuds",
+            "countdown_timer": "",
+            "available_quantity": 50,
+            "sold_percentage": 50
           }
         },
         "product_my7cKK": {
           "type": "product",
           "settings": {
-            "product": "fujifilm-instax-mini-12-camera-blossom"
+            "product": "fujifilm-instax-mini-12-camera-blossom",
+            "countdown_timer": "",
+            "available_quantity": 50,
+            "sold_percentage": 50
           }
         }
       },
@@ -447,6 +470,7 @@
         "brand_UDptPG"
       ],
       "settings": {
+        "layout": "layout1",
         "speed": 80,
         "style": "left",
         "clone": 2
@@ -460,8 +484,13 @@
           "settings": {
             "image": "shopify://shop_images/blog06-928x928.webp",
             "title": "A complete guide to electronic product photography",
+            "description": "Collaboration is at the heart of what we do. From understanding your goals to delivering tailored solutions...",
+            "author": "Admin",
+            "date": "Jan 21, 2025",
+            "comments": "03 Comments",
+            "read_more_text": "Read more",
             "link": "",
-            "read_more_text": "Read more"
+            "tags": ""
           }
         },
         "tip_jbbTpq": {
@@ -469,8 +498,13 @@
           "settings": {
             "image": "shopify://shop_images/blog05-928x928.webp",
             "title": "The Evolution of Apple AirPods: A Full History",
+            "description": "Collaboration is at the heart of what we do. From understanding your goals to delivering tailored solutions...",
+            "author": "Admin",
+            "date": "Jan 21, 2025",
+            "comments": "03 Comments",
+            "read_more_text": "Read more",
             "link": "",
-            "read_more_text": "Read more"
+            "tags": ""
           }
         },
         "tip_XiH8xD": {
@@ -478,8 +512,13 @@
           "settings": {
             "image": "shopify://shop_images/blog04-928x928.webp",
             "title": "Budget Fitness Trackers That Keep You Active for Cheap",
+            "description": "Collaboration is at the heart of what we do. From understanding your goals to delivering tailored solutions...",
+            "author": "Admin",
+            "date": "Jan 21, 2025",
+            "comments": "03 Comments",
+            "read_more_text": "Read more",
             "link": "",
-            "read_more_text": "Read more"
+            "tags": ""
           }
         }
       },
