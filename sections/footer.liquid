@@ -13,52 +13,31 @@
           </a>
         </div>
         <ul class="tf-social-icon style-large">
-          {%- if settings.social_facebook_link != blank -%}
+          {%- if section.settings.social_facebook_link != blank -%}
             <li>
-              <a href="{{ settings.social_facebook_link }}" class="social-item social-facebook" target="_blank" rel="noopener">
+              <a href="{{ section.settings.social_facebook_link }}" class="social-item social-facebook" target="_blank" rel="noopener">
                 <i class="icon icon-fb"></i>
               </a>
             </li>
           {%- endif -%}
-          {%- if settings.social_twitter_link != blank -%}
+          {%- if section.settings.social_instagram_link != blank -%}
             <li>
-              <a href="{{ settings.social_twitter_link }}" class="social-item social-twitter" target="_blank" rel="noopener">
-                <i class="icon icon-twitter"></i>
-              </a>
-            </li>
-          {%- endif -%}
-          {%- if settings.social_instagram_link != blank -%}
-            <li>
-              <a href="{{ settings.social_instagram_link }}" class="social-item social-instagram" target="_blank" rel="noopener">
+              <a href="{{ section.settings.social_instagram_link }}" class="social-item social-instagram" target="_blank" rel="noopener">
                 <i class="icon icon-instagram"></i>
               </a>
             </li>
           {%- endif -%}
-          {%- if settings.social_pinterest_link != blank -%}
+          {%- if section.settings.social_linkedin_link != blank -%}
             <li>
-              <a href="{{ settings.social_pinterest_link }}" class="social-item social-pinterest" target="_blank" rel="noopener">
-                <i class="icon icon-pinterest"></i>
-              </a>
-            </li>
-          {%- endif -%}
-          {%- if settings.social_youtube_link != blank -%}
-            <li>
-              <a href="{{ settings.social_youtube_link }}" class="social-item social-youtube" target="_blank" rel="noopener">
-                <i class="icon icon-youtube"></i>
-              </a>
-            </li>
-          {%- endif -%}
-          {%- if settings.social_tiktok_link != blank -%}
-            <li>
-              <a href="{{ settings.social_tiktok_link }}" class="social-item social-tiktok" target="_blank" rel="noopener">
-                <i class="icon icon-tiktok"></i>
-              </a>
-            </li>
-          {%- endif -%}
-          {%- if settings.social_linkedin_link != blank -%}
-            <li>
-              <a href="{{ settings.social_linkedin_link }}" class="social-item social-linkedin" target="_blank" rel="noopener">
+              <a href="{{ section.settings.social_linkedin_link }}" class="social-item social-linkedin" target="_blank" rel="noopener">
                 <i class="icon icon-linkedin"></i>
+              </a>
+            </li>
+          {%- endif -%}
+          {%- if section.settings.social_x_link != blank -%}
+            <li>
+              <a href="{{ section.settings.social_x_link }}" class="social-item social-x" target="_blank" rel="noopener">
+                <i class="icon icon-x"></i>
               </a>
             </li>
           {%- endif -%}
@@ -175,7 +154,7 @@
   <div class="footer-bottom">
     <div class="container">
       <div class="footer-bottom-wrap">
-        <p class="text-dark">Copyright © {{ 'now' | date: "%Y" }} by <span class="fw-medium">{{ shop.name }}</span>. All Rights Reserved.</p>
+        <p class="text-dark">{{ section.settings.copyrights }}</p>
         {%- if section.settings.show_payment_icons -%}
           {% assign payment_icons = section.settings.payment_icons | split: ',' %}
           <ul class="tf-payment" style="--payment-icon-size: {{ section.settings.payment_icons_size }}px">
@@ -263,44 +242,35 @@
       "id": "payment_icons",
       "label": "SVG list",
       "default": "visa,paypal,master,american_express,diners_club"
+    },
+    {
+      "type": "text",
+      "id": "social_facebook_link",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "text",
+      "id": "social_instagram_link",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "text",
+      "id": "social_linkedin_link",
+      "label": "LinkedIn URL"
+    },
+    {
+      "type": "text",
+      "id": "social_x_link",
+      "label": "X (Twitter) URL"
+    },
+    {
+      "type": "textarea",
+      "id": "copyrights",
+      "label": "Copyrights",
+      "default": "© [year] <span class=\"\">Ecomus</span>. All rights reserved."
     }
   ],
   "blocks": [
-    {
-      "type": "social",
-      "name": "Social Link",
-      "settings": [
-        {
-          "type": "select",
-          "id": "platform",
-          "label": "Social Platform",
-          "options": [
-            {
-              "value": "fb",
-              "label": "Facebook"
-            },
-            {
-              "value": "instagram",
-              "label": "Instagram"
-            },
-            {
-              "value": "linkedin",
-              "label": "LinkedIn"
-            },
-            {
-              "value": "x",
-              "label": "Twitter"
-            }
-          ],
-          "default": "fb"
-        },
-        {
-          "type": "url",
-          "id": "url",
-          "label": "Profile URL"
-        }
-      ]
-    },
     {
       "type": "contact",
       "name": "Contact Info",
@@ -382,34 +352,6 @@
     {
       "name": "Footer",
       "blocks": [
-        {
-          "type": "social",
-          "settings": {
-            "platform": "fb",
-            "url": "https://www.facebook.com/"
-          }
-        },
-        {
-          "type": "social",
-          "settings": {
-            "platform": "instagram",
-            "url": "https://www.instagram.com/"
-          }
-        },
-        {
-          "type": "social",
-          "settings": {
-            "platform": "linkedin",
-            "url": "https://www.linkedin.com/"
-          }
-        },
-        {
-          "type": "social",
-          "settings": {
-            "platform": "x",
-            "url": "https://x.com/"
-          }
-        },
         {
           "type": "contact",
           "settings": {
