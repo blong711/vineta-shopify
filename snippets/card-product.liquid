@@ -43,9 +43,9 @@
       </div>
     {%- endif -%}
 
-    {%- if show_countdown_timer and product.metafields.countdown.end_date != blank -%}
-      <div class="countdown-box style-2">
-        <div class="js-countdown" data-timer="{{ product.metafields.countdown.end_date | date: '%s' }}" data-labels="D  :,H  :,M  :,S"></div>
+    {%- if product.tags contains 'countdown' -%}
+      <div class="countdown-box">
+        <div class="js-countdown" data-timer="{{ countdown_timer | default: '46556' }}" data-labels="D  :,H  :,M  :,S"></div>
       </div>
     {%- endif -%}
 
@@ -179,12 +179,6 @@
       </div>
     {%- endif -%}
 
-    {%- if show_countdown_timer and product.metafields.countdown.end_date != blank -%}
-      <div class="countdown-box style-2">
-        <div class="js-countdown" data-timer="{{ product.metafields.countdown.end_date | date: '%s' }}" data-labels="D  :,H  :,M  :,S"></div>
-      </div>
-    {%- endif -%}
-
     <ul class="list-product-btn">
       <li>
         <a href="javascript:void(0);" 
@@ -230,6 +224,12 @@
         </a>
       </li>
     </ul>
+
+    {%- if product.tags contains 'countdown' -%}
+      <div class="countdown-box style-2">
+        <div class="js-countdown" data-timer="{{ product.metafields.countdown.end_date | date: '%s' }}" data-labels="D  :,H  :,M  :,S"></div>
+      </div>
+    {%- endif -%}
   </div>
 
   <div class="card-product-info text-center">
@@ -567,9 +567,9 @@
       </div>
     {%- endif -%}
 
-    {%- if show_countdown_timer and product.metafields.countdown.end_date != blank -%}
-      <div class="countdown-box style-2">
-        <div class="js-countdown" data-timer="{{ product.metafields.countdown.end_date | date: '%s' }}" data-labels="D  :,H  :,M  :,S"></div>
+    {%- if product.tags contains 'countdown' -%}
+      <div class="countdown-box">
+        <div class="js-countdown" data-timer="{{ countdown_timer | default: '46556' }}" data-labels="D  :,H  :,M  :,S"></div>
       </div>
     {%- endif -%}
 
