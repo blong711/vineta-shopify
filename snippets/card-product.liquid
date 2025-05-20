@@ -32,7 +32,8 @@
 
     {%- if show_sale_badge and product.compare_at_price > product.price -%}
       <div class="on-sale-wrap">
-        <span class="on-sale-item">{{ 'products.card.sale' | t }}</span>
+        {%- assign discount_percentage = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+        <span class="on-sale-item">{{ discount_percentage }}% Off</span>
       </div>
     {%- endif -%}
 
@@ -168,7 +169,13 @@
 
     {%- if product.compare_at_price > product.price -%}
       <div class="on-sale-wrap">
-        <span class="on-sale-item">{{ 'products.card.sale' | t }}</span>
+        {%- assign discount_percentage = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+        <span class="on-sale-item">{{ discount_percentage }}% Off</span>
+      </div>
+    {%- endif -%}
+    {%- if product.tags contains 'trending' -%}
+      <div class="on-sale-wrap">
+        <span class="on-sale-item trending">{{ 'products.card.trending' | t }}</span>
       </div>
     {%- endif -%}
 
@@ -304,7 +311,8 @@
     </a>
     {%- if show_sale_badge and product.compare_at_price > product.price -%}
       <div class="on-sale-wrap">
-        <span class="on-sale-item">{{ 'products.card.sale' | t }}</span>
+        {%- assign discount_percentage = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+        <span class="on-sale-item">{{ discount_percentage }}% Off</span>
       </div>
     {%- endif -%}
     <ul class="list-product-btn">
@@ -546,7 +554,8 @@
 
     {%- if show_sale_badge and product.compare_at_price > product.price -%}
       <div class="on-sale-wrap">
-        <span class="on-sale-item">{{ 'products.card.sale' | t }}</span>
+        {%- assign discount_percentage = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+        <span class="on-sale-item">{{ discount_percentage }}% Off</span>
       </div>
     {%- endif -%}
 
