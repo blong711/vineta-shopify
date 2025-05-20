@@ -16,6 +16,10 @@
             "label": "Home Electronic"
           },
           {
+            "value": "home-fashion-02",
+            "label": "Home Fashion 02"
+          },
+          {
             "value": "bicycle",
             "label": "Home Bicycle"
           },
@@ -165,12 +169,12 @@
   }
   {% endschema %}
   
-  <div class="{% if section.settings.layout == 'home-electronic' %}line-top flat-spacing-7{% elsif section.settings.layout == 'bicycle' %}flat-spacing-2{% elsif section.settings.layout == 'phonecase' %}bg-white mx_40 my_20 radius-16 flat-iconbox line-2{% else %}line-top flat-spacing-5{% endif %}">
+  <div class="{% if section.settings.layout == 'home-electronic' or section.settings.layout == 'home-fashion-02' %}line-top flat-spacing-7{% elsif section.settings.layout == 'bicycle' %}flat-spacing-2{% elsif section.settings.layout == 'phonecase' %}bg-white mx_40 my_20 radius-16 flat-iconbox line-2{% else %}line-top flat-spacing-5{% endif %}">
       <div class="{% if section.settings.layout == 'phonecase' %}container-5{% else %}container{% endif %}">
-          {% if section.settings.layout == 'default' %}
+          {% if section.settings.layout == 'default' or section.settings.layout == 'home-fashion-02' %}
               <div class="mw-1 m-auto">
           {% endif %}
-          <div dir="ltr" class="swiper tf-swiper {% if section.settings.layout == 'home-electronic' %}tf-sw-iconbox-row{% endif %}" data-swiper='{% if section.settings.layout == "phonecase" %}{
+          <div dir="ltr" class="swiper tf-swiper {% if section.settings.layout == 'home-electronic' or section.settings.layout == 'home-fashion-02' %}tf-sw-iconbox-row{% endif %}" data-swiper='{% if section.settings.layout == "phonecase" %}{
               "slidesPerView": 1,
               "spaceBetween": 12,
               "speed": 800,
@@ -218,7 +222,7 @@
                                   <div class="title">{{ block.settings.title }}</div>
                               </div>
                           {% else %}
-                              <div class="tf-icon-box {% if section.settings.layout == 'home-electronic' %}style-3 wow fadeInLeft{% elsif section.settings.layout == 'bicycle' %}style-lg wow fadeInLeft{% else %}style-2{% endif %}" {% if section.settings.layout != 'default' and forloop.index > 1 %}data-wow-delay="{{ forloop.index | minus: 1 | times: 0.1 }}s"{% endif %}>
+                              <div class="tf-icon-box {% if section.settings.layout == 'home-electronic' or section.settings.layout == 'home-fashion-02' %}style-3 wow fadeInLeft{% elsif section.settings.layout == 'bicycle' %}style-lg wow fadeInLeft{% else %}style-2{% endif %}" {% if section.settings.layout != 'default' and forloop.index > 1 %}data-wow-delay="{{ forloop.index | minus: 1 | times: 0.1 }}s"{% endif %}>
                                   {% if section.settings.layout == 'bicycle' %}
                                       {% case block.settings.icon %}
                                           {% when 'icon-shipping' %}
@@ -240,8 +244,8 @@
                                       </div>
                                   {% endif %}
                                   <div class="content">
-                                      <div class="title {% if section.settings.layout == 'home-electronic' %}text-uppercase{% endif %}">{{ block.settings.title }}</div>
-                                      {% unless section.settings.layout == 'home-electronic' %}
+                                      <div class="title {% if section.settings.layout == 'home-electronic' or section.settings.layout == 'home-fashion-02' %}text-uppercase{% endif %}">{{ block.settings.title }}</div>
+                                      {% unless section.settings.layout == 'home-electronic' or section.settings.layout == 'home-fashion-02' %}
                                           <p class="desc">{{ block.settings.description }}</p>
                                       {% endunless %}
                                   </div>
@@ -254,7 +258,7 @@
                   <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
               {% endif %}
           </div>
-          {% if section.settings.layout == 'default' %}
+          {% if section.settings.layout == 'default' or section.settings.layout == 'home-fashion-02' %}
               </div>
           {% endif %}
       </div>

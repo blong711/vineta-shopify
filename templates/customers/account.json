@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "page-title": {
@@ -12,10 +21,51 @@
     },
     "account": {
       "type": "account",
+      "blocks": {
+        "orders_box_jtBNwQ": {
+          "type": "orders_box",
+          "settings": {
+            "title": "Orders",
+            "description": "Check the history of all your orders"
+          }
+        },
+        "wishlist_box_hCeCeh": {
+          "type": "wishlist_box",
+          "settings": {
+            "title": "Wishlist",
+            "description": "Check your wishlist"
+          }
+        },
+        "free_shipping_x7dNx8": {
+          "type": "free_shipping",
+          "settings": {
+            "banner_image": "shopify://shop_images/account-1.jpg",
+            "free_shipping_threshold": "300.00"
+          }
+        },
+        "promo_banner_wkPXNa": {
+          "type": "promo_banner",
+          "settings": {
+            "product": "crop-t-shirt",
+            "promo_title": "SUMMER SALE",
+            "promo_discount": "50% OFF",
+            "promo_code": "12D34E"
+          }
+        }
+      },
+      "block_order": [
+        "orders_box_jtBNwQ",
+        "wishlist_box_hCeCeh",
+        "free_shipping_x7dNx8",
+        "promo_banner_wkPXNa"
+      ],
       "settings": {
-        "banner_image": "",
-        "free_shipping_threshold": "300.00",
-        "promo_code": "12D34E"
+        "container_width": "container",
+        "show_orders": true,
+        "show_wishlist": true,
+        "show_addresses": true,
+        "welcome_message": "Hello",
+        "dashboard_notice": "Today is a great day to check your account page. You can check your last orders or have a look to your wishlist. Or maybe you can start to shop our latest offers?"
       }
     }
   },
@@ -23,4 +73,4 @@
     "page-title",
     "account"
   ]
-} 
+}

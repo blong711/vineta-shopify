@@ -1,0 +1,184 @@
+{% schema %}
+{
+  "name": "Account Orders",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container Width",
+      "options": [
+        {
+          "value": "container",
+          "label": "Default"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Full Width"
+        }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "header",
+      "content": "Empty State"
+    },
+    {
+      "type": "image_picker",
+      "id": "empty_state_image",
+      "label": "Empty State Image"
+    },
+    {
+      "type": "text",
+      "id": "empty_state_title",
+      "label": "Empty State Title",
+      "default": "You haven't placed any order yet"
+    },
+    {
+      "type": "text",
+      "id": "empty_state_text",
+      "label": "Empty State Text",
+      "default": "It's time to make your first order"
+    },
+    {
+      "type": "text",
+      "id": "shop_now_text",
+      "label": "Shop Now Button Text",
+      "default": "Shop Now"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Account Orders",
+      "category": "Account"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="main-content-account">
+    <!-- Breadcrumb -->
+    <div class="tf-breadcrumb">
+        <div class="{{ section.settings.container_width }}">
+            <ul class="breadcrumb-list">
+                <li class="item-breadcrumb">
+                    <a href="{{ routes.root_url }}" class="text">Home</a>
+                </li>
+                <li class="item-breadcrumb dot">
+                    <span></span>
+                </li>
+                <li class="item-breadcrumb">
+                    <span class="text">Account</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /Breadcrumb -->
+
+    <!-- Title Page -->
+    <section class="s-title-page">
+        <div class="{{ section.settings.container_width }}">
+            <h4 class="s-title letter-0 text-center">
+                My Account
+            </h4>
+        </div>
+    </section>
+    <!-- /Title Page -->
+
+    <!-- sidebar-account -->
+    <div class="btn-sidebar-mb d-lg-none">
+        <button data-bs-toggle="offcanvas" data-bs-target="#mbAccount">
+            <i class="icon icon-sidebar"></i>
+        </button>
+    </div>
+    <!-- /sidebar-account -->
+
+    <!-- Section-acount -->
+    <section class="s-account flat-spacing-17">
+        <div class="{{ section.settings.container_width }}">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="my-account-container">
+                        <div class="sidebar-account-wrap sidebar-content-wrap sticky-top d-lg-block d-none">
+                            <ul class="my-account-nav">
+                                <li>
+                                    <a href="{{ routes.account_url }}" class="text-sm link fw-medium my-account-nav-item">Dashboard</a>
+                                </li>
+                                <li>
+                                    <a href="{{ routes.account_url }}/orders" class="text-sm link fw-medium my-account-nav-item active">My Orders</a>
+                                </li>
+                                <li>
+                                    <a href="{{ routes.account_url }}/wishlist" class="text-sm link fw-medium my-account-nav-item">My Wishlist</a>
+                                </li>
+                                <li>
+                                    <a href="{{ routes.account_addresses_url }}" class="text-sm link fw-medium my-account-nav-item">Addresses</a>
+                                </li>
+                                <li>
+                                    <a href="{{ routes.account_logout_url }}" class="text-sm link fw-medium my-account-nav-item">Log Out</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="my-acount-content account-orders">
+                            {% if customer.orders.size == 0 %}
+                                <div class="account-no-orders-wrap">
+                                    {% if section.settings.empty_state_image %}
+                                        {{ section.settings.empty_state_image | image_url: width: 400 | image_tag: loading: 'lazy', class: 'lazyload' }}
+                                    {% endif %}
+                                    <div class="display-sm fw-medium title">{{ section.settings.empty_state_title }}</div>
+                                    <div class="text text-sm">{{ section.settings.empty_state_text }}</div>
+                                    <a href="{{ routes.all_products_collection_url }}" class="tf-btn animate-btn d-inline-flex bg-dark-2 justify-content-center">
+                                        {{ section.settings.shop_now_text }}
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="account-orders-wrap">
+                                    <h5 class="title">
+                                        Order History
+                                    </h5>
+                                    <div class="wrap-account-order">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-md fw-medium">Order ID</th>
+                                                    <th class="text-md fw-medium">Date</th>
+                                                    <th class="text-md fw-medium">Status</th>
+                                                    <th class="text-md fw-medium">Total</th>
+                                                    <th class="text-md fw-medium">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for order in customer.orders %}
+                                                    <tr class="tf-order-item">
+                                                        <td class="text-md">
+                                                            #{{ order.name | remove: '#' }}
+                                                        </td>
+                                                        <td class="text-md">
+                                                            {{ order.created_at | date: "%d %B %Y" }}
+                                                        </td>
+                                                        <td class="text-md text-{{ order.fulfillment_status | handle }}">
+                                                            {{ order.fulfillment_status | capitalize }}
+                                                        </td>
+                                                        <td class="text-md">
+                                                            {{ order.total_price | money }} / {{ order.line_items.size }} items
+                                                        </td>
+                                                        <td>
+                                                            <a href="{{ order.customer_url }}" class="view-detail">Detail</a>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /Account -->
+</div> 

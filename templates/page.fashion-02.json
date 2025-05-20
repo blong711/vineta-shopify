@@ -131,13 +131,31 @@
             "available_quantity": 50,
             "sold_percentage": 50
           }
+        },
+        "product_LHaPYr": {
+          "type": "product",
+          "settings": {
+            "product": "loose-fit-tee",
+            "show_sale_badge": false,
+            "sale_badge_text": "Sale",
+            "show_trending_badge": false,
+            "trending_badge_text": "Trending",
+            "show_color_swatches": true,
+            "show_size_swatches": false,
+            "size_swatches": "S,M,L,XL",
+            "show_countdown": false,
+            "countdown_timer": "2024/12/31 23:59:59",
+            "available_quantity": 50,
+            "sold_percentage": 50
+          }
         }
       },
       "block_order": [
         "product_EfNYNb",
         "product_MeC9QH",
         "product_NY39pa",
-        "product_kQGHzj"
+        "product_kQGHzj",
+        "product_LHaPYr"
       ],
       "settings": {
         "layout": "home-fashion-02",
@@ -160,7 +178,7 @@
         "title": "Sustainable Fashion",
         "description": "Look good, feel good with eco-friendly and stylish designs.",
         "button_text": "Shop Now",
-        "button_link": "",
+        "button_link": "shopify://collections/accessories",
         "image_1": "shopify://shop_images/fashion02_2.webp",
         "image_2": "shopify://shop_images/fashion02_1.webp"
       }
@@ -179,7 +197,7 @@
             "sizes": "",
             "show_countdown": false,
             "countdown_timer": "1007500",
-            "show_color_swatches": false,
+            "show_color_swatches": true,
             "color_option": ""
           }
         },
@@ -194,7 +212,7 @@
             "sizes": "",
             "show_countdown": false,
             "countdown_timer": "1007500",
-            "show_color_swatches": false,
+            "show_color_swatches": true,
             "color_option": ""
           }
         },
@@ -209,7 +227,7 @@
             "sizes": "",
             "show_countdown": false,
             "countdown_timer": "1007500",
-            "show_color_swatches": false,
+            "show_color_swatches": true,
             "color_option": ""
           }
         },
@@ -217,6 +235,21 @@
           "type": "product",
           "settings": {
             "product": "solid-pure-cotton",
+            "show_sale_badge": false,
+            "sale_badge_text": "20% Off",
+            "show_trending_badge": false,
+            "show_sizes": false,
+            "sizes": "",
+            "show_countdown": false,
+            "countdown_timer": "1007500",
+            "show_color_swatches": true,
+            "color_option": ""
+          }
+        },
+        "product_zxz4rq": {
+          "type": "product",
+          "settings": {
+            "product": "loose-fit-tee",
             "show_sale_badge": false,
             "sale_badge_text": "20% Off",
             "show_trending_badge": false,
@@ -233,7 +266,8 @@
         "product_LQUj8T",
         "product_Xc7rai",
         "product_FtzC8j",
-        "product_3EA8wF"
+        "product_3EA8wF",
+        "product_zxz4rq"
       ],
       "settings": {
         "title": "Limited Time Deals",
@@ -251,9 +285,9 @@
         "layout": "fashion-02",
         "image": "shopify://shop_images/fashion02_3.webp",
         "title": "Effortless Chic",
-        "subtitle": "Archive effortless style with pieces made for every day wear",
+        "subtitle": "Archive effortless style with pieces made for  every day wear",
         "button_text": "Explore Now",
-        "button_link": "",
+        "button_link": "shopify://collections/women",
         "padding_top": 36
       }
     },
@@ -312,6 +346,7 @@
         "brand_gBpEhK"
       ],
       "settings": {
+        "layout": "layout2",
         "speed": 80,
         "style": "left",
         "clone": 2
@@ -327,7 +362,7 @@
             "image": "shopify://shop_images/Turtleneck-T-shirt_1.webp",
             "testimonial_image": "shopify://shop_images/Turtleneck-T-shirt_1.webp",
             "product": "Turtleneck T-shirt",
-            "product_url": "",
+            "product_url": "shopify://products/turtleneck-t-shirt",
             "price": "$80.00",
             "review": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!",
             "title": "Elegance and Comfort Combined"
@@ -340,9 +375,9 @@
             "image": "shopify://shop_images/Loose-Fit-Tee_1.webp",
             "testimonial_image": "shopify://shop_images/Loose-Fit-Tee_1.webp",
             "product": "Loose Fit Tee",
-            "product_url": "",
+            "product_url": "shopify://products/loose-fit-tee",
             "price": "$150.00",
-            "review": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!",
+            "review": "I love the dress I purchased! The fabric is so soft, and the fit is perfect. I’ve gotten so many compliments on it. Will definitely shop here again!",
             "title": "Elegance and Comfort Combined"
           }
         },
@@ -353,8 +388,21 @@
             "image": "shopify://shop_images/Crop-T-shirt_1.webp",
             "testimonial_image": "shopify://shop_images/Crop-T-shirt_1.webp",
             "product": "Crop T-shirt",
-            "product_url": "",
+            "product_url": "shopify://products/crop-t-shirt",
             "price": "$150.00",
+            "review": "I was pleasantly surprised by how fast my order arrived. The customer service team was helpful and responsive. Great shopping experience!",
+            "title": "Elegance and Comfort Combined"
+          }
+        },
+        "testimonial_aAKifU": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Emily T.",
+            "image": "shopify://shop_images/author-fs3.jpg",
+            "testimonial_image": "shopify://shop_images/tes-fs4.jpg",
+            "product": "Crop T-shirt",
+            "product_url": "shopify://products/crop-t-shirt",
+            "price": "$90.00",
             "review": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!",
             "title": "Elegance and Comfort Combined"
           }
@@ -363,7 +411,8 @@
       "block_order": [
         "testimonial_9mp8a3",
         "testimonial_jBmbHB",
-        "testimonial_MUCjAq"
+        "testimonial_MUCjAq",
+        "testimonial_aAKifU"
       ],
       "settings": {
         "layout": "home-fashion-02",
@@ -379,8 +428,13 @@
           "settings": {
             "image": "shopify://shop_images/blog03-1024x853.webp",
             "title": "Seasonal Style Guide: Trends to Watch for This Year",
-            "link": "",
-            "read_more_text": "Read more"
+            "description": "Collaboration is at the heart of what we do. From understanding your goals to delivering tailored solutions...",
+            "author": "Admin",
+            "date": "Jan 21, 2025",
+            "comments": "03 Comments",
+            "read_more_text": "Read more",
+            "link": "shopify://blogs/news",
+            "tags": "Fashion, Lifestyle"
           }
         },
         "tip_bYGaHA": {
@@ -388,27 +442,52 @@
           "settings": {
             "image": "shopify://shop_images/blog02-1024x853.webp",
             "title": "Upcoming Style Trends: What to Wear This Season",
+            "description": "Style begins with listening. We work closely with you to design looks                                                that express who you truly are.",
+            "author": "Vineta",
+            "date": "Mar 10, 2025",
+            "comments": "02 Comments",
+            "read_more_text": "Read more",
             "link": "",
-            "read_more_text": "Read more"
+            "tags": "Trends"
           }
         },
         "tip_gK7Bab": {
           "type": "tip",
           "settings": {
-            "image": "shopify://shop_images/blog01_b1a13086-2b15-468d-995e-bfb277fe9fda.jpg",
+            "image": "shopify://shop_images/blog-9-cropped_38a5695b-4514-4f0f-bdde-8cb4386bc0c0.jpg",
             "title": "Fashion Trends of the Year: Styles You Can’t Miss",
+            "description": "Fashion is more than trends. It's about curating pieces that reflect your personality and lifestyle.",
+            "author": "Jack",
+            "date": "Jan 15, 2025",
+            "comments": "04 Comments",
+            "read_more_text": "Read more",
             "link": "",
-            "read_more_text": "Read more"
+            "tags": "Fashion, Streetwear"
+          }
+        },
+        "tip_gMLGPn": {
+          "type": "tip",
+          "settings": {
+            "image": "shopify://shop_images/blog03-1024x853.webp",
+            "title": "Seasonal Style Guide: Trends to Watch for This Year",
+            "description": "Collaboration is at the heart of what we do. From understanding your goals to delivering tailored solutions...",
+            "author": "Admin",
+            "date": "Jan 21, 2025",
+            "comments": "03 Comments",
+            "read_more_text": "Read more",
+            "link": "",
+            "tags": "Fashion, Streetwear"
           }
         }
       },
       "block_order": [
         "tip_7XP4L8",
         "tip_bYGaHA",
-        "tip_gK7Bab"
+        "tip_gK7Bab",
+        "tip_gMLGPn"
       ],
       "settings": {
-        "layout": "default",
+        "layout": "layout3",
         "title": "Latest Tips & Trends",
         "description": "Discover expert advice, style inspiration, and product updates on our blog.",
         "blog_button_text": "OUR BLOG",
@@ -456,7 +535,7 @@
           "type": "icon_box",
           "settings": {
             "icon": "icon-support",
-            "title": "Support Online",
+            "title": "ONE YEAR WARRANTY",
             "description": "We support customers 24/7"
           }
         }
@@ -468,8 +547,8 @@
         "icon_box_kQLq9T"
       ],
       "settings": {
-        "layout": "home-electronic",
-        "slides_per_view_mobile": 2,
+        "layout": "home-fashion-02",
+        "slides_per_view_mobile": 1,
         "slides_per_view_tablet": 3,
         "slides_per_view_desktop": 4,
         "space_between": 10,
