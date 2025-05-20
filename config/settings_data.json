@@ -66,11 +66,27 @@
               "text": "We invite you to register to read the latest news, offers and events about our company. We promise not spam your inbox.",
               "placeholder": "Email address"
             }
+          },
+          "menu_jVF76q": {
+            "type": "menu",
+            "settings": {
+              "title": "About Us",
+              "menu": "about-us"
+            }
+          },
+          "menu_rhMiew": {
+            "type": "menu",
+            "settings": {
+              "title": "Resource",
+              "menu": "resource"
+            }
           }
         },
         "block_order": [
           "contact_qhXzV6",
-          "newsletter_9gJ8Y6"
+          "newsletter_9gJ8Y6",
+          "menu_jVF76q",
+          "menu_rhMiew"
         ],
         "settings": {
           "logo": "shopify://shop_images/logo.svg",
@@ -79,7 +95,12 @@
           "column_gap": 24,
           "show_payment_icons": true,
           "payment_icons_size": 30,
-          "payment_icons": "visa,paypal,master,american_express,diners_club"
+          "payment_icons": "visa,paypal,master,american_express,diners_club",
+          "social_facebook_link": "https://www.facebook.com/",
+          "social_instagram_link": "https://www.instagram.com/",
+          "social_linkedin_link": "https://www.linkedin.com/",
+          "social_x_link": "https://x.com/?lang=vi",
+          "copyrights": "Copyright © 2025 by <span class=\"fw-medium\">Vineta</span>. All rights reserved."
         }
       },
       "cart-drawer": {
