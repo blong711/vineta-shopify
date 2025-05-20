@@ -9,153 +9,21 @@
  */
 {
   "current": {
-    "favicon": "shopify://shop_images/favicon.png",
-    "font_library": "google",
-    "heading_font": "sans-serif",
-    "body_font": "sans-serif",
-    "heading_font_family": "'Poppins', sans-serif",
-    "body_font_family": "'Poppins', sans-serif",
-    "body_font_size_mobile": 16,
-    "body_font_size_desktop": 16,
-    "color_background": "#EB001B",
-    "container_padding": "24px",
-    "enable_animations": true,
-    "social_facebook_link": "https://www.facebook.com/",
-    "social_twitter_link": "https://x.com/",
-    "social_instagram_link": "https://www.instagram.com/",
-    "social_pinterest_link": "",
-    "social_youtube_link": "",
-    "social_tiktok_link": "",
-    "social_linkedin_link": "https://www.linkedin.com/",
-    "background_color": "#313130",
-    "icons_color": "#ffffff",
-    "links_hover_color": "#ff6f61",
     "sections": {
       "top-bar": {
         "type": "top-bar",
-        "blocks": {
-          "social_media_HUq9ah": {
-            "type": "social_media",
-            "settings": {
-              "facebook_url": "https://www.facebook.com/",
-              "instagram_url": "https://www.instagram.com/",
-              "twitter_url": "https://x.com/",
-              "snapchat_url": "https://www.snapchat.com/"
-            }
-          },
-          "announcement_cU4bA4": {
-            "type": "announcement",
-            "settings": {
-              "announcements": "Return extended to 60 days\nLife-time Guarantees\nLimited-Time Offer"
-            }
-          },
-          "language_currency_AWmzDb": {
-            "type": "language_currency",
-            "settings": {
-              "show_language": true,
-              "show_currency": true
-            }
-          }
-        },
-        "block_order": [
-          "social_media_HUq9ah",
-          "announcement_cU4bA4",
-          "language_currency_AWmzDb"
-        ],
         "settings": {
-          "padding_top": 0,
-          "padding_bottom": 0,
+          "padding_top": 10,
+          "padding_bottom": 10,
           "announcement_speed": "normal"
         }
       },
       "header": {
         "type": "header",
-        "blocks": {
-          "mega_menu_html_LJ8FpY": {
-            "type": "mega_menu_html",
-            "settings": {
-              "title": "Home",
-              "html_content": "",
-              "content_page": "",
-              "home_image_home-default": "shopify://shop_images/fashion-1_1ce33a36-c0d0-4950-a268-fcf33c47079a.jpg",
-              "home_image_home-electronic": "shopify://shop_images/electronic.jpg",
-              "home_image_home-fashion-women": "shopify://shop_images/women-fashion.jpg",
-              "home_image_home-fashion-02": "shopify://shop_images/fashion-2_45939f6a-815e-4e36-b603-cdd3a3467df0.jpg",
-              "home_image_home-bicycle": "shopify://shop_images/bicycle.jpg",
-              "home_image_home-phonecase": "shopify://shop_images/phonecase_866317bc-c6ab-4af9-8f9a-5f470e12ea5a.jpg",
-              "color_scheme": "scheme-1",
-              "submenu_position": "center",
-              "mega_menu_width": "fullwidth",
-              "mega_menu_custom_width": 1200
-            }
-          },
-          "mega_menu_shop_hHyEJb": {
-            "type": "mega_menu_shop",
-            "settings": {
-              "title": "Shop",
-              "collections": [
-                "men",
-                "women",
-                "accessories",
-                "sportwear"
-              ],
-              "image_ratio": "asos",
-              "full_image": false,
-              "items_per_row": "default",
-              "enable_carousel": false,
-              "use_prev_next": false,
-              "color_scheme": "scheme-1",
-              "submenu_position": "default",
-              "mega_menu_width": "fullwidth",
-              "mega_menu_custom_width": 1200
-            }
-          },
-          "mega_menu_product_pmHmWP": {
-            "type": "mega_menu_product",
-            "settings": {
-              "title": "Products",
-              "products_list_title": "BEST SELLER",
-              "products": [
-                "turtleneck-t-shirt",
-                "crop-t-shirt",
-                "short-sleeve-sweat",
-                "polo-neck-t-shirt"
-              ],
-              "text_alignment": "text-center",
-              "image_ratio": "asos",
-              "full_image": false,
-              "use_prev_next": false,
-              "color_scheme": "scheme-1",
-              "submenu_position": "default",
-              "mega_menu_width": "fullwidth",
-              "mega_menu_custom_width": 1200
-            }
-          },
-          "mega_menu_pages_XAFBYb": {
-            "type": "mega_menu_pages",
-            "settings": {
-              "title": "Pages",
-              "menu": "",
-              "banner_image": "shopify://shop_images/banner-header.jpg",
-              "banner_link": "shopify://blogs/news",
-              "banner_title": "Unveiling the latest gear",
-              "color_scheme": "scheme-1",
-              "submenu_position": "default",
-              "mega_menu_width": "fullwidth",
-              "mega_menu_custom_width": 1200
-            }
-          }
-        },
-        "block_order": [
-          "mega_menu_html_LJ8FpY",
-          "mega_menu_shop_hHyEJb",
-          "mega_menu_product_pmHmWP",
-          "mega_menu_pages_XAFBYb"
-        ],
         "settings": {
           "layout": "layout-1",
           "header_height": 87,
-          "sticky_header_height": 87,
+          "sticky_header_height": 70,
           "background_color": "#ffffff",
           "text_color": "#333333",
           "link_color": "#333333",
@@ -164,9 +32,8 @@
           "icon_hover_color": "#666666",
           "dropdown_background": "#ffffff",
           "dropdown_text_color": "#333333",
-          "menu_item_spacing": 10,
+          "menu_item_spacing": 0,
           "dropdown_padding": 20,
-          "logo": "shopify://shop_images/logo.svg",
           "logo_width": 100,
           "menu": "main-menu",
           "show_search": true,
@@ -182,124 +49,37 @@
       "footer": {
         "type": "footer",
         "blocks": {
-          "contact_DihDbc": {
+          "contact_qhXzV6": {
             "type": "contact",
             "settings": {
               "title": "Business Contact",
               "address": "123 Yarran st, Punchbowl, NSW 2196, Australia",
               "phone": "(64) 8342 1245",
               "email": "support@example.com",
-              "map_link": "https://www.google.com/maps?q=15Yarranst,Punchbowl,NSW,Australia"
+              "map_link": ""
             }
           },
-          "newsletter_YWi8Tk": {
+          "newsletter_9gJ8Y6": {
             "type": "newsletter",
             "settings": {
               "title": "Subscribe Newsletter",
               "text": "We invite you to register to read the latest news, offers and events about our company. We promise not spam your inbox.",
               "placeholder": "Email address"
             }
-          },
-          "menu_QxqneH": {
-            "type": "menu",
-            "settings": {
-              "title": "About Us",
-              "menu": "about-us"
-            }
-          },
-          "menu_LhBktx": {
-            "type": "menu",
-            "settings": {
-              "title": "Resource",
-              "menu": "resource"
-            }
-          },
-          "payment_icon_DQURkA": {
-            "type": "payment_icon",
-            "settings": {
-              "payment_type": "american_express",
-              "link": ""
-            }
-          },
-          "payment_icon_cRkrjr": {
-            "type": "payment_icon",
-            "settings": {
-              "payment_type": "apple_pay",
-              "link": ""
-            }
-          },
-          "payment_icon_bFa7UF": {
-            "type": "payment_icon",
-            "settings": {
-              "payment_type": "diners_club",
-              "link": ""
-            }
-          },
-          "payment_icon_F6pQGC": {
-            "type": "payment_icon",
-            "settings": {
-              "payment_type": "discover",
-              "link": ""
-            }
-          },
-          "payment_icon_gCRmTw": {
-            "type": "payment_icon",
-            "settings": {
-              "payment_type": "google_pay",
-              "link": ""
-            }
-          },
-          "payment_icon_LBc7MP": {
-            "type": "payment_icon",
-            "settings": {
-              "payment_type": "maestro",
-              "link": ""
-            }
-          },
-          "payment_icon_H4p648": {
-            "type": "payment_icon",
-            "settings": {
-              "payment_type": "master",
-              "link": ""
-            }
-          },
-          "payment_icon_DjRrTE": {
-            "type": "payment_icon",
-            "settings": {
-              "payment_type": "unionpay",
-              "link": ""
-            }
-          },
-          "payment_icon_BAnEVt": {
-            "type": "payment_icon",
-            "settings": {
-              "payment_type": "visa",
-              "link": ""
-            }
           }
         },
         "block_order": [
-          "contact_DihDbc",
-          "newsletter_YWi8Tk",
-          "menu_QxqneH",
-          "menu_LhBktx",
-          "payment_icon_DQURkA",
-          "payment_icon_cRkrjr",
-          "payment_icon_bFa7UF",
-          "payment_icon_F6pQGC",
-          "payment_icon_gCRmTw",
-          "payment_icon_LBc7MP",
-          "payment_icon_H4p648",
-          "payment_icon_DjRrTE",
-          "payment_icon_BAnEVt"
+          "contact_qhXzV6",
+          "newsletter_9gJ8Y6"
         ],
         "settings": {
           "logo": "shopify://shop_images/logo.svg",
           "padding_top": 0,
           "padding_bottom": 0,
-          "column_gap": 0,
+          "column_gap": 24,
           "show_payment_icons": true,
-          "payment_icons_size": 40
+          "payment_icons_size": 30,
+          "payment_icons": "visa,paypal,master,american_express,diners_club"
         }
       },
       "cart-drawer": {
@@ -312,12 +92,7 @@
         "type": "search-drawer",
         "settings": {
           "title": "What are you looking for?",
-          "suggested_products": [
-            "apple-ipad-pro-11-inch-wi-fi-2022-4th-generation",
-            "apple-iphone-14-silicone-case",
-            "apple-iphone-14-silicone-case-3",
-            "armani-exchange-armani-exchange-watch-ax2707"
-          ]
+          "suggested_products": []
         }
       },
       "login-drawer": {
@@ -380,229 +155,8 @@
           "show_shop": true,
           "show_home": true
         }
-      },
-      "breadcrumb": {
-        "type": "breadcrumb",
-        "settings": {
-          "show_breadcrumb": true
-        }
-      },
-      "product": {
-        "type": "product",
-        "blocks": {
-          "rating_L4eUpj": {
-            "type": "rating",
-            "settings": {
-              "no_reviews_text": "No reviews yet"
-            }
-          },
-          "extra_links_wcpDD6": {
-            "type": "extra_links",
-            "settings": {
-              "show_wishlist": true,
-              "show_compare": true,
-              "show_ask_question": true,
-              "show_share": true
-            }
-          },
-          "sold_count_xcMKx9": {
-            "type": "sold_count",
-            "settings": {
-              "sold_count_text": "30 sold in last 24 hours"
-            }
-          },
-          "stock_count_QfGLr9": {
-            "type": "stock_count",
-            "settings": {
-              "stock_count_text": "Only {count} items left!"
-            }
-          },
-          "trust_and_payment_9UeyGn": {
-            "type": "trust_and_payment",
-            "settings": {
-              "trust_seal_text": "Guarantee Safe Checkout:"
-            }
-          },
-          "size_guide_bYNUMh": {
-            "type": "size_guide",
-            "settings": {
-              "size_guide_text": "Size Guide"
-            }
-          },
-          "delivery_info_TM9Rmx": {
-            "type": "delivery_info",
-            "settings": {
-              "delivery_time": "3-5 days international",
-              "free_shipping_text": "all orders over $150"
-            }
-          },
-          "payment_icon_yrjxdR": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/payment10.png"
-            }
-          },
-          "payment_icon_LHc6fx": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/payment3.png"
-            }
-          },
-          "payment_icon_MFtpmG": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/payment7.png"
-            }
-          },
-          "payment_icon_p7NRGA": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/Stripe_1.png"
-            }
-          },
-          "payment_icon_Xjr76M": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/PayPal.png"
-            }
-          },
-          "payment_icon_BC3HHQ": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/payment5.png"
-            }
-          },
-          "payment_icon_QQDwtP": {
-            "type": "payment_icon",
-            "settings": {
-              "icon": "shopify://shop_images/payment2.png"
-            }
-          }
-        },
-        "block_order": [
-          "rating_L4eUpj",
-          "extra_links_wcpDD6",
-          "sold_count_xcMKx9",
-          "stock_count_QfGLr9",
-          "trust_and_payment_9UeyGn",
-          "size_guide_bYNUMh",
-          "delivery_info_TM9Rmx",
-          "payment_icon_yrjxdR",
-          "payment_icon_LHc6fx",
-          "payment_icon_MFtpmG",
-          "payment_icon_p7NRGA",
-          "payment_icon_Xjr76M",
-          "payment_icon_BC3HHQ",
-          "payment_icon_QQDwtP"
-        ],
-        "settings": {
-          "layout": "default",
-          "show_sticky_cart": true
-        }
-      },
-      "product-details": {
-        "type": "product-details",
-        "settings": {
-          "show_description": true,
-          "show_materials": true,
-          "show_return_policies": true
-        }
-      },
-      "people-also-bought": {
-        "type": "people-also-bought",
-        "settings": {
-          "title": "People Also Bought"
-        }
-      },
-      "recently-viewed": {
-        "type": "recently-viewed",
-        "settings": {
-          "title": "Recently Viewed"
-        }
       }
     },
-    "content_for_index": [],
-    "color_schemes": {
-      "scheme-1": {
-        "settings": {
-          "text": "#222222",
-          "text2": "#686868",
-          "background": "#222222",
-          "background_gradient": "",
-          "background2": "#ffffff",
-          "button": "",
-          "button_label": "",
-          "button_border": "",
-          "secondary_button_label": "",
-          "line_border": "#eeeeee",
-          "overlay": "#000000",
-          "pr_text": "#000000",
-          "price": "#000000",
-          "sale_price": "#db1215",
-          "input_primary": "#ffffff",
-          "input_secondary": "#686868"
-        }
-      },
-      "scheme-2": {
-        "settings": {
-          "text": "#222222",
-          "text2": "#686868",
-          "background": "#ffffff",
-          "background_gradient": "",
-          "background2": "#ffffff",
-          "button": "",
-          "button_label": "",
-          "button_border": "",
-          "secondary_button_label": "",
-          "line_border": "#eeeeee",
-          "overlay": "#000000",
-          "pr_text": "#000000",
-          "price": "#000000",
-          "sale_price": "#db1215",
-          "input_primary": "#ffffff",
-          "input_secondary": "#686868"
-        }
-      },
-      "scheme-3": {
-        "settings": {
-          "text": "#222222",
-          "text2": "#686868",
-          "background": "#ffffff",
-          "background_gradient": "",
-          "background2": "#ffffff",
-          "button": "",
-          "button_label": "",
-          "button_border": "",
-          "secondary_button_label": "",
-          "line_border": "#eeeeee",
-          "overlay": "#000000",
-          "pr_text": "#000000",
-          "price": "#000000",
-          "sale_price": "#db1215",
-          "input_primary": "#ffffff",
-          "input_secondary": "#686868"
-        }
-      },
-      "scheme-4": {
-        "settings": {
-          "text": "#222222",
-          "text2": "#686868",
-          "background": "#ffffff",
-          "background_gradient": "",
-          "background2": "#ffffff",
-          "button": "",
-          "button_label": "",
-          "button_border": "",
-          "secondary_button_label": "",
-          "line_border": "#eeeeee",
-          "overlay": "#000000",
-          "pr_text": "#000000",
-          "price": "#000000",
-          "sale_price": "#db1215",
-          "input_primary": "#ffffff",
-          "input_secondary": "#686868"
-        }
-      }
-    }
+    "content_for_index": []
   }
 }
