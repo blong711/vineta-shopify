@@ -1,42 +1,5 @@
 {%- comment -%}Top Bar Section{%- endcomment -%}
-<style>
-  .tf-topbar {
-    --color-background: {{ settings.background_color }};
-    --color-text: {{ settings.text_color }};
-    --color-primary-button: {{ settings.primary_button_color }};
-    --color-primary-button-text: {{ settings.primary_button_text_color }};
-    --color-primary-button-border: {{ settings.primary_button_border_color }};
-    --color-secondary-button: {{ settings.secondary_button_color }};
-    --color-secondary-button-text: {{ settings.secondary_button_text_color }};
-    --color-secondary-button-border: {{ settings.secondary_button_border_color }};
-    --color-links: {{ settings.links_color }};
-    --color-links-hover: {{ settings.links_hover_color }};
-    --color-icons: {{ settings.icons_color }};
-  }
-  .tf-topbar {
-    background: var(--color-background);
-    color: var(--color-text);
-  }
-  .tf-topbar a {
-    color: var(--color-text);
-  }
-  .tf-topbar a:hover {
-    color: var(--color-links-hover);
-  }
-  .tf-topbar a:hover .icon {
-  color: var(--color-links-hover);
-  border-color: var(--color-links-hover);
-  }
-  .tf-topbar .icon {
-    color: var(--color-icons);
-  }
-  .tf-topbar.topbar-bg .tf-social-icon .social-item:hover {
-    background-color: transparent;
-    border-color: var(--color-links-hover);
-    color: var(--color-icons);
-}
-</style>
-<div class="tf-topbar topbar-bg" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+<div class="tf-topbar bg-dark-5 topbar-bg" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   <div class="container">
     <div class="topbar-wraper">
       {%- for block in section.blocks -%}
