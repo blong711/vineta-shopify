@@ -177,24 +177,17 @@
       <div class="footer-bottom-wrap">
         <p class="text-dark">Copyright © {{ 'now' | date: "%Y" }} by <span class="fw-medium">{{ shop.name }}</span>. All Rights Reserved.</p>
         {%- if section.settings.show_payment_icons -%}
+          {% assign payment_icons = section.settings.payment_icons | split: ',' %}
           <ul class="tf-payment" style="--payment-icon-size: {{ section.settings.payment_icons_size }}px">
-            {%- for block in section.blocks -%}
-              {%- if block.type == 'payment_icon' -%}
-                <li class="item" {{ block.shopify_attributes }}>
-                  {%- if block.settings.link != blank -%}
-                    <a href="{{ block.settings.link }}" target="_blank" rel="noopener">
-                  {%- endif -%}
-                    <img src="{{ block.settings.payment_type | payment_type_img_url }}" 
-                         alt="{{ block.settings.payment_type | capitalize }}"
-                         width="{{ section.settings.payment_icons_size }}"
-                         height="{{ section.settings.payment_icons_size }}"
-                         class="icon">
-                  {%- if block.settings.link != blank -%}
-                    </a>
-                  {%- endif -%}
-                </li>
-              {%- endif -%}
-            {%- endfor -%}
+            {% for icon in payment_icons %}
+              <li class="item">
+                <img src="{{ icon | payment_type_img_url }}"
+                     alt="{{ icon | capitalize }}"
+                     width="{{ section.settings.payment_icons_size }}"
+                     height="{{ section.settings.payment_icons_size }}"
+                     class="icon">
+              </li>
+            {% endfor %}
           </ul>
         {%- endif -%}
       </div>
@@ -264,6 +257,12 @@
       "unit": "px",
       "label": "Payment icons size",
       "default": 30
+    },
+    {
+      "type": "text",
+      "id": "payment_icons",
+      "label": "SVG list",
+      "default": "visa,paypal,master,american_express,diners_club"
     }
   ],
   "blocks": [
@@ -375,65 +374,6 @@
           "type": "link_list",
           "id": "menu",
           "label": "Menu"
-        }
-      ]
-    },
-    {
-      "type": "payment_icon",
-      "name": "Payment Icon",
-      "settings": [
-        {
-          "type": "select",
-          "id": "payment_type",
-          "label": "Payment Type",
-          "options": [
-            {
-              "value": "visa",
-              "label": "Visa"
-            },
-            {
-              "value": "master",
-              "label": "Mastercard"
-            },
-            {
-              "value": "maestro",
-              "label": "Maestro"
-            },
-            {
-              "value": "american_express",
-              "label": "American Express"
-            },
-            {
-              "value": "paypal",
-              "label": "PayPal"
-            },
-            {
-              "value": "apple_pay",
-              "label": "Apple Pay"
-            },
-            {
-              "value": "google_pay",
-              "label": "Google Pay"
-            },
-            {
-              "value": "diners_club",
-              "label": "Diners Club"
-            },
-            {
-              "value": "discover",
-              "label": "Discover"
-            },
-            {
-              "value": "unionpay",
-              "label": "UnionPay"
-            }
-          ],
-          "default": "visa"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link (optional)"
         }
       ]
     }
