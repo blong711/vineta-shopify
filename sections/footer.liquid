@@ -179,15 +179,27 @@
         {%- if section.settings.show_payment_icons -%}
           {% assign payment_icons = section.settings.payment_icons | split: ',' %}
           <ul class="tf-payment" style="--payment-icon-size: {{ section.settings.payment_icons_size }}px">
-            {% for icon in payment_icons %}
-              <li class="item">
-                <img src="{{ icon | payment_type_img_url }}"
-                     alt="{{ icon | capitalize }}"
-                     width="{{ section.settings.payment_icons_size }}"
-                     height="{{ section.settings.payment_icons_size }}"
-                     class="icon">
-              </li>
-            {% endfor %}
+            {% if section.settings.payment_icons == blank %}
+              {% for icon in shop.enabled_payment_types %}
+                <li class="item">
+                  <img src="{{ icon | payment_type_img_url }}"
+                       alt="{{ icon | capitalize }}"
+                       width="{{ section.settings.payment_icons_size }}"
+                       height="{{ section.settings.payment_icons_size }}"
+                       class="icon">
+                </li>
+              {% endfor %}
+            {% else %}
+              {% for icon in payment_icons %}
+                <li class="item">
+                  <img src="{{ icon | payment_type_img_url }}"
+                       alt="{{ icon | capitalize }}"
+                       width="{{ section.settings.payment_icons_size }}"
+                       height="{{ section.settings.payment_icons_size }}"
+                       class="icon">
+                </li>
+              {% endfor %}
+            {% endif %}
           </ul>
         {%- endif -%}
       </div>
