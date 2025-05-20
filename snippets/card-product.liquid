@@ -273,7 +273,7 @@
       </ul>
     {%- endif -%}
 
-    {%- if show_progress_bar -%}
+    {%- if show_progress_bar and product.available -%}
       <div class="product-progress-sale">
         <div class="progress-sold progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
           <div class="progress-bar {% if available_quantity < 10 %}bg-red-3{% elsif available_quantity < 30 %}bg-orange-3{% else %}bg-green-2{% endif %}" 
