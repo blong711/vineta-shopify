@@ -568,9 +568,33 @@
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
-.color-size-small .check-color { width: 20px; height: 20px; }
-.color-size-medium .check-color { width: 32px; height: 32px; }
-.color-size-large .check-color { width: 44px; height: 44px; }
+.tf-product-info-wrap .variant-color .color-btn:not(.select-item) {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    display: flex
+;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid transparent;
+    cursor: pointer;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    border-radius: 50%;
+}
+/* For the button */
+.color-btn.color-size-small { width: 26px !important; height: 26px !important; }
+.color-btn.color-size-medium { width: 38px !important; height: 38px !important; }
+.color-btn.color-size-large { width: 50px !important; height: 50px !important; }
+
+/* For the swatch circle inside */
+.color-btn.color-size-small .check-color { width: 20px !important; height: 20px !important; }
+.color-btn.color-size-medium .check-color { width: 32px !important; height: 32px !important; }
+.color-btn.color-size-large .check-color { width: 44px !important; height: 44px !important; }
 </style>
 
 <script>
