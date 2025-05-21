@@ -322,7 +322,7 @@
                       <ul class="list-card">
                         {% for svg in svg_list %}
                           <li class="card-item">
-                            <img src="{{ 'icon-' | append: svg | append: '.svg' | asset_url }}" alt="{{ svg | capitalize }}" width="60" height="40">
+                            <img src="{{ svg | payment_type_img_url}}" alt="{{ svg | capitalize }}" width="60" height="40">
                           </li>
                         {% endfor %}
                       </ul>
