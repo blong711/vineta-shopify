@@ -53,47 +53,10 @@
             <span>{{ section.settings.submit_label | default: 'Send Message' }}</span>
           </button>
         </div>
-        <div class="form-success-message" style="display: none;">
-          <div class="alert alert-success text-center">
-            {{ section.settings.success_message | default: 'Thank you for your question. We will get back to you soon!' }}
-          </div>
-        </div>
       {%- endform -%}
     </div>
   </div>
 </div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('AskQuestionForm');
-    const successMessage = form.querySelector('.form-success-message');
-    
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      fetch('/contact#AskQuestionForm', {
-        method: 'POST',
-        body: new FormData(form)
-      })
-      .then(response => {
-        if (response.ok) {
-          form.reset();
-          successMessage.style.display = 'block';
-          setTimeout(() => {
-            successMessage.style.display = 'none';
-            const modal = bootstrap.Modal.getInstance(document.getElementById('askQuestion'));
-            if (modal) {
-              modal.hide();
-            }
-          }, 3000);
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-    });
-  });
-</script>
 
 {% schema %}
 {
@@ -134,12 +97,6 @@
       "id": "submit_label",
       "label": "Submit Button Label",
       "default": "Send Message"
-    },
-    {
-      "type": "text",
-      "id": "success_message",
-      "label": "Success Message",
-      "default": "Thank you for your question. We will get back to you soon!"
     }
   ]
 }
