@@ -318,13 +318,12 @@
                   {% when 'trust_and_payment' %}
                     <div class="tf-product-info-trust-seal text-center" {{ block.shopify_attributes }}>
                       <p class="text-md text-dark-2 text-seal fw-medium">{{ block.settings.trust_seal_text }}</p>
+                      {% assign svg_list = block.settings.svg_list | split: ',' %}
                       <ul class="list-card">
-                        {% for icon_block in section.blocks %}
-                          {% if icon_block.type == 'payment_icon' and icon_block.settings.icon != blank %}
-                            <li class="card-item">
-                              <img class="lazyload" data-src="{{ icon_block.settings.icon | image_url: width: 60 }}" src="{{ icon_block.settings.icon | image_url: width: 10 }}" alt="Payment Method" width="60" height="40">
-                            </li>
-                          {% endif %}
+                        {% for svg in svg_list %}
+                          <li class="card-item">
+                            <img src="{{ 'icon-' | append: svg | append: '.svg' | asset_url }}" alt="{{ svg | capitalize }}" width="60" height="40">
+                          </li>
                         {% endfor %}
                       </ul>
                     </div>
@@ -1279,18 +1278,12 @@ function updateMainAddToCartButton(variant) {
           "id": "trust_seal_text",
           "label": "Trust Seal Text",
           "default": "Guarantee Safe Checkout:"
-        }
-      ]
-    },
-    {
-      "type": "payment_icon",
-      "name": "Payment Icon",
-      "settings": [
+        },
         {
-          "type": "image_picker",
-          "id": "icon",
-          "label": "Payment Icon",
-          "info": "Recommended size: 60x40px"
+          "type": "text",
+          "id": "svg_list",
+          "label": "SVG list",
+          "default": "visa,paypal,master,american_express,diners"
         }
       ]
     },
