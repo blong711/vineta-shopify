@@ -228,7 +228,10 @@
                     {% for option in product.options_with_values %}
                       <div class="variant-picker-item variant-{{ option.name | handle }}">
                         <div class="variant-picker-label">
-                          <div>{{ option.name }}:<span class="variant-picker-label-value value-current{{ option.name }}">{{ option.selected_value }}</span></div>
+                          <div>
+                            {{ option.name }}:
+                            <span class="variant-picker-label-value value-current{{ option.name }}">{{ option.selected_value }}</span>
+                          </div>
                           {% if option.name == 'Size' %}
                             {% for block2 in section.blocks %}
                               {% if block2.type == 'size_guide' %}
@@ -238,8 +241,14 @@
                           {% endif %}
                         </div>
                         <div class="variant-picker-values">
-                          {% for value in option.values %}
-                            {% if option.name == 'Color' %}
+                          {% if block.settings.selector_type == 'dropdown' %}
+                            <select class="option-dropdown option-size-{{ block.settings.color_selector_size }}" data-option-name="{{ option.name }}">
+                              {% for value in option.values %}
+                                <option value="{{ value | handle }}" {% if value == option.selected_value %}selected{% endif %}>{{ value }}</option>
+                              {% endfor %}
+                            </select>
+                          {% elsif option.name == 'Color' %}
+                            {% for value in option.values %}
                               <div class="hover-tooltip tooltip-bot color-btn btn-scroll-target{% if value == option.selected_value %} active{% endif %} color-type-{{ block.settings.color_selector_type }} color-size-{{ block.settings.color_selector_size }}"
                                    data-scroll="{{ value | handle }}"
                                    data-option="{{ option.name | handle }}"
@@ -247,13 +256,15 @@
                                 <span class="check-color bg-{{ value | handle }}"></span>
                                 <span class="tooltip">{{ value }}</span>
                               </div>
-                            {% else %}
+                            {% endfor %}
+                          {% else %}
+                            {% for value in option.values %}
                               <span class="size-btn{% if value == option.selected_value %} active{% endif %}"
                                     data-size="{{ value | handle }}"
                                     data-option="{{ option.name | handle }}"
                                     data-value="{{ value | handle }}">{{ value }}</span>
-                            {% endif %}
-                          {% endfor %}
+                            {% endfor %}
+                          {% endif %}
                         </div>
                       </div>
                     {% endfor %}
