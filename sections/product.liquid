@@ -249,7 +249,7 @@
                             </select>
                           {% elsif option.name == 'Color' %}
                             {% for value in option.values %}
-                              <div class="hover-tooltip tooltip-bot color-btn btn-scroll-target{% if value == option.selected_value %} active{% endif %} color-type-{{ block.settings.color_selector_type }} color-size-{{ block.settings.color_selector_size }}"
+                              <div class="hover-tooltip tooltip-bot color-btn btn-scroll-target{% if value == option.selected_value %} active{% endif %}"
                                    data-scroll="{{ value | handle }}"
                                    data-option="{{ option.name | handle }}"
                                    data-value="{{ value | handle }}">
@@ -560,6 +560,22 @@
 .option-size-small, .color-size-small { font-size: 0.9em; padding: 0.3em 2em 0.3em 0.8em; }
 .option-size-medium, .color-size-medium { font-size: 1em; padding: 0.5em 2.5em 0.5em 1em; }
 .option-size-large, .color-size-large { font-size: 1.15em; padding: 0.7em 3em 0.7em 1.2em; }
+
+.tf-product-info-wrap .variant-color .color-btn:not(.select-item) .check-color {
+    width: 32px;
+    height: 32px;
+    display: block;
+    border-radius: 50%;
+    border: 1px solid #dcdcdc;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+.color-size-small .check-color { width: 20px; height: 20px; }
+.color-size-medium .check-color { width: 32px; height: 32px; }
+.color-size-large .check-color { width: 44px; height: 44px; }
 </style>
 
 <script>
