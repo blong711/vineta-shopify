@@ -204,11 +204,14 @@
                         <div class="title-hurry-up">
                           <span class="text-primary fw-medium">HURRY UP!</span> 
                           {% assign stock_text = block.settings.stock_count_text %}
-                          {% assign stock_text = stock_text | replace: '{count}', product.variants.first.inventory_quantity %}
+                          {% assign inventory_quantity = product.variants.first.inventory_quantity %}
+                          {% assign inventory_policy = product.variants.first.inventory_policy %}
+                          {% assign stock_text = stock_text | replace: '{count}', inventory_quantity %}
                           {{ stock_text }}
                         </div>
                         <div class="progress-sold">
-                          <div class="value" style="width: {{ product.variants.first.inventory_quantity | times: 100 | divided_by: product.variants.first.inventory_policy | round }}%;" data-progress="70"></div>
+                          {% assign progress_percentage = inventory_quantity | times: 100 | divided_by: inventory_policy %}
+                          <div class="value" style="width: {{ progress_percentage }}%;" data-progress="{{ progress_percentage }}"></div>
                         </div>
                       </div>
                   {% endcase %}
@@ -422,10 +425,10 @@
                   </div>
                 </div>
                 <a href="javascript:void(0);" 
-                class="tf-btn hover-primary add-to-cart" 
-                data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-                data-quantity="1"
-                aria-label="Add to cart">Add to cart</a>
+                   class="tf-btn hover-primary add-to-cart" 
+                   data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                   data-quantity="1"
+                   aria-label="Add to cart">Add to cart</a>
               </div>
             </form>
           </div>
