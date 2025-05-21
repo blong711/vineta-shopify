@@ -273,7 +273,8 @@
           "trust_and_payment_7qHUPc": {
             "type": "trust_and_payment",
             "settings": {
-              "trust_seal_text": "Guarantee Safe Checkout:"
+              "trust_seal_text": "Guarantee Safe Checkout:",
+              "svg_list": "visa,paypal,master,american_express,diners"
             }
           },
           "fbt_A7iXhR": {
@@ -322,12 +323,43 @@
       },
       "people-also-bought": {
         "type": "people-also-bought",
+        "blocks": {
+          "featured_collection_VTqzDr": {
+            "type": "featured_collection",
+            "settings": {
+              "collection": "",
+              "products_to_show": 8,
+              "slides_per_view_mobile": 2,
+              "slides_per_view_tablet": 3,
+              "slides_per_view_desktop": 4,
+              "space_between": 12
+            }
+          }
+        },
+        "block_order": [
+          "featured_collection_VTqzDr"
+        ],
         "settings": {
           "title": "People Also Bought"
         }
       },
       "recently-viewed": {
         "type": "recently-viewed",
+        "blocks": {
+          "recently_viewed_F3yxcp": {
+            "type": "recently_viewed",
+            "settings": {
+              "products_to_show": 8,
+              "slides_per_view_mobile": 2,
+              "slides_per_view_tablet": 3,
+              "slides_per_view_desktop": 4,
+              "space_between": 12
+            }
+          }
+        },
+        "block_order": [
+          "recently_viewed_F3yxcp"
+        ],
         "settings": {
           "title": "Recently Viewed"
         }
