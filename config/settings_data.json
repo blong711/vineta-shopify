@@ -315,11 +315,34 @@
       },
       "product-details": {
         "type": "product-details",
-        "settings": {
-          "show_description": true,
-          "show_materials": true,
-          "show_return_policies": true
-        }
+        "blocks": {
+          "description_9MaGfz": {
+            "type": "description",
+            "settings": {
+              "title": "Descriptions",
+              "default_content": ""
+            }
+          },
+          "materials_hd9tQU": {
+            "type": "materials",
+            "settings": {
+              "title": "Materials",
+              "subtitle": "Materials Care"
+            }
+          },
+          "return_policies_B6tbX6": {
+            "type": "return_policies",
+            "settings": {
+              "title": "Return Policies"
+            }
+          }
+        },
+        "block_order": [
+          "description_9MaGfz",
+          "materials_hd9tQU",
+          "return_policies_B6tbX6"
+        ],
+        "settings": {}
       },
       "people-also-bought": {
         "type": "people-also-bought",
