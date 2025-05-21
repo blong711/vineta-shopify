@@ -16974,6 +16974,8 @@ button.animate-btn::after,
   border-bottom: 1px solid var(--line);
   padding-bottom: 24px;
   margin-bottom: 24px;
+  display: grid;
+  gap: 12px;
 }
 .tf-product-info-wrap .tf-product-info-heading .product-info-name {
   margin-bottom: 12px;
@@ -27516,5 +27518,36 @@ prev.swiper-button-disabled {
 @media (min-width: 1200px) {
   .fl-control-sw .swiper-button-prev {
       left: -22px;
+  }
+}
+@media (min-width: 1200px) {
+  .tf-product-info-wrap .product-stock .stock {
+      margin-right: 14px;
+  }
+}
+.tf-product-info-wrap .product-stock .in-stock {
+  background-color: rgba(44, 163, 21, 0.1);
+  color: #1d770b;
+}
+.tf-product-info-wrap .product-stock .stock {
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-right: 8px;
+  font-weight: 500;
+}
+.tf-product-info-wrap .product-stock {
+  display: flex
+;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.tf-product-info-wrap .product-stock .icon {
+  animation: tf-ani-flash 2s infinite;
+}
+@media (min-width: 1200px) {
+  .tf-product-info-list .product-info-progress-sale {
+      margin-top: 12px;
   }
 }
