@@ -468,24 +468,29 @@
       </div>
       <div class="tf-rte">
         <div class="tf-table-res-df">
-          <div class="title">{{ size_guide_block.settings.size_guide_text }}</div>
+          <div class="title">{{ size_guide_block.settings.size_chart_title }}</div>
           <table class="tf-sizeguide-table">
             <thead>
               <tr>
-                <th>Size</th>
-                <th>US</th>
-                <th>Chest</th>
-                <th>Waist</th>
-                <th>Hip</th>
+                <th>{{ size_guide_block.settings.column_1 }}</th>
+                <th>{{ size_guide_block.settings.column_2 }}</th>
+                <th>{{ size_guide_block.settings.column_3 }}</th>
+                <th>{{ size_guide_block.settings.column_4 }}</th>
+                <th>{{ size_guide_block.settings.column_5 }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>XS</td><td>2</td><td>32</td><td>24 - 25</td><td>33 - 34</td></tr>
-              <tr><td>S</td><td>4</td><td>34 - 35</td><td>26 - 27</td><td>35 - 26</td></tr>
-              <tr><td>M</td><td>6</td><td>36 - 37</td><td>28 - 29</td><td>38 - 40</td></tr>
-              <tr><td>L</td><td>8</td><td>38 - 29</td><td>30 - 31</td><td>42 - 44</td></tr>
-              <tr><td>XL</td><td>10</td><td>40 - 41</td><td>32 - 33</td><td>45 - 47</td></tr>
-              <tr><td>XXL</td><td>12</td><td>42 - 43</td><td>34 - 35</td><td>48 - 50</td></tr>
+              {% assign size_rows = size_guide_block.settings.size_data | split: '\n' %}
+              {% for row in size_rows %}
+                {% assign cells = row | split: ',' %}
+                <tr>
+                  <td>{{ cells[0] | strip }}</td>
+                  <td>{{ cells[1] | strip }}</td>
+                  <td>{{ cells[2] | strip }}</td>
+                  <td>{{ cells[3] | strip }}</td>
+                  <td>{{ cells[4] | strip }}</td>
+                </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -493,12 +498,12 @@
           <div>
             <div class="title">{{ size_guide_block.settings.size_guide_text }}</div>
             <ul>
-              <li class="text">1. Chest</li>
-              <li class="text-main">Measure at the fullest part of your chest, keeping the tape parallel to the floor.</li>
-              <li class="text">2. Waist</li>
-              <li class="text-main">Measure at the smallest part of your waist. This is usually below the rib cage and above the hip bone.</li>
-              <li class="text">3. Hip</li>
-              <li class="text-main">Measure at the fullest part of your seat, keeping the tape parallel to the floor.</li>
+              <li class="text">{{ size_guide_block.settings.chest_title }}</li>
+              <li class="text-main">{{ size_guide_block.settings.chest_instruction }}</li>
+              <li class="text">{{ size_guide_block.settings.waist_title }}</li>
+              <li class="text-main">{{ size_guide_block.settings.waist_instruction }}</li>
+              <li class="text">{{ size_guide_block.settings.hip_title }}</li>
+              <li class="text-main">{{ size_guide_block.settings.hip_instruction }}</li>
             </ul>
           </div>
           <div class="text-md-end text-center">
@@ -1522,6 +1527,89 @@ function updateMainAddToCartButton(variant) {
           "type": "image_picker",
           "id": "size_guide_image",
           "label": "Size Guide Image"
+        },
+        {
+          "type": "text",
+          "id": "size_chart_title",
+          "label": "Size Chart Title",
+          "default": "Size Chart"
+        },
+        {
+          "type": "text",
+          "id": "column_1",
+          "label": "Column 1 Header",
+          "default": "Size"
+        },
+        {
+          "type": "text",
+          "id": "column_2",
+          "label": "Column 2 Header",
+          "default": "US"
+        },
+        {
+          "type": "text",
+          "id": "column_3",
+          "label": "Column 3 Header",
+          "default": "Chest"
+        },
+        {
+          "type": "text",
+          "id": "column_4",
+          "label": "Column 4 Header",
+          "default": "Waist"
+        },
+        {
+          "type": "text",
+          "id": "column_5",
+          "label": "Column 5 Header",
+          "default": "Hip"
+        },
+        {
+          "type": "textarea",
+          "id": "size_data",
+          "label": "Size Data",
+          "info": "Enter size data in CSV format. Each line represents a row. Values should be separated by commas.",
+          "default": "XS,2,32,24 - 25,33 - 34\nS,4,34 - 35,26 - 27,35 - 26\nM,6,36 - 37,28 - 29,38 - 40\nL,8,38 - 29,30 - 31,42 - 44\nXL,10,40 - 41,32 - 33,45 - 47\nXXL,12,42 - 43,34 - 35,48 - 50"
+        },
+        {
+          "type": "header",
+          "content": "Measurement Instructions"
+        },
+        {
+          "type": "text",
+          "id": "chest_title",
+          "label": "Chest Title",
+          "default": "1. Chest"
+        },
+        {
+          "type": "textarea",
+          "id": "chest_instruction",
+          "label": "Chest Measurement Instruction",
+          "default": "Measure at the fullest part of your chest, keeping the tape parallel to the floor."
+        },
+        {
+          "type": "text",
+          "id": "waist_title",
+          "label": "Waist Title",
+          "default": "2. Waist"
+        },
+        {
+          "type": "textarea",
+          "id": "waist_instruction",
+          "label": "Waist Measurement Instruction",
+          "default": "Measure at the smallest part of your waist. This is usually below the rib cage and above the hip bone."
+        },
+        {
+          "type": "text",
+          "id": "hip_title",
+          "label": "Hip Title",
+          "default": "3. Hip"
+        },
+        {
+          "type": "textarea",
+          "id": "hip_instruction",
+          "label": "Hip Measurement Instruction",
+          "default": "Measure at the fullest part of your seat, keeping the tape parallel to the floor."
         }
       ]
     },
