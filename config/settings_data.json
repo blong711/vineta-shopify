@@ -221,6 +221,107 @@
           "show_shop": true,
           "show_home": true
         }
+      },
+      "breadcrumb": {
+        "type": "breadcrumb",
+        "settings": {
+          "show_breadcrumb": true
+        }
+      },
+      "page-title": {
+        "type": "page-title",
+        "settings": {
+          "custom_title": "",
+          "contact_title": "",
+          "about_title": "",
+          "wishlist_title": "",
+          "compare_title": ""
+        }
+      },
+      "product": {
+        "type": "product",
+        "blocks": {
+          "rating_7HW3Kz": {
+            "type": "rating",
+            "settings": {
+              "no_reviews_text": "No reviews yet"
+            }
+          },
+          "stock_count_nJjRAG": {
+            "type": "stock_count",
+            "settings": {
+              "stock_count_text": "Only {count} items left!"
+            }
+          },
+          "sold_count_DN37bV": {
+            "type": "sold_count",
+            "settings": {
+              "sold_count_text": "30 sold in last 24 hours"
+            }
+          },
+          "fbt_A7iXhR": {
+            "type": "fbt",
+            "settings": {
+              "fbt_title": "Frequently Bought Together",
+              "max_products": 3
+            }
+          },
+          "extra_links_8PRCfd": {
+            "type": "extra_links",
+            "settings": {
+              "show_wishlist": true,
+              "show_compare": true,
+              "show_ask_question": true,
+              "show_share": true
+            }
+          },
+          "size_guide_KwpfNe": {
+            "type": "size_guide",
+            "settings": {
+              "size_guide_text": "Size Guide"
+            }
+          },
+          "delivery_info_PTyKe9": {
+            "type": "delivery_info",
+            "settings": {
+              "delivery_time": "3-5 days international",
+              "free_shipping_text": "all orders over $150"
+            }
+          }
+        },
+        "block_order": [
+          "rating_7HW3Kz",
+          "stock_count_nJjRAG",
+          "sold_count_DN37bV",
+          "fbt_A7iXhR",
+          "extra_links_8PRCfd",
+          "size_guide_KwpfNe",
+          "delivery_info_PTyKe9"
+        ],
+        "settings": {
+          "layout": "default",
+          "show_sticky_cart": true
+        }
+      },
+      "product-details": {
+        "type": "product-details",
+        "settings": {
+          "show_description": true,
+          "show_materials": true,
+          "show_return_policies": true
+        }
+      },
+      "people-also-bought": {
+        "type": "people-also-bought",
+        "settings": {
+          "title": "People Also Bought"
+        }
+      },
+      "recently-viewed": {
+        "type": "recently-viewed",
+        "settings": {
+          "title": "Recently Viewed"
+        }
       }
     },
     "content_for_index": []
