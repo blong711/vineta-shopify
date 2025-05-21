@@ -480,7 +480,8 @@
               </tr>
             </thead>
             <tbody>
-              {% assign size_rows = size_guide_block.settings.size_data | split: '\n' %}
+              {% assign size_data_clean = size_guide_block.settings.size_data | replace: '\r\n', '\n' | replace: '\r', '\n' %}
+              {% assign size_rows = size_data_clean | split: '\n' %}
               {% for row in size_rows %}
                 {% assign cells = row | split: ',' %}
                 <tr>
