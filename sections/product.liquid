@@ -223,37 +223,41 @@
               </div>
 
               <div class="tf-product-info-variant">
-                {% for option in product.options_with_values %}
-                  <div class="variant-picker-item variant-{{ option.name | handle }}">
-                    <div class="variant-picker-label">
-                      <div>{{ option.name }}:<span class="variant-picker-label-value value-current{{ option.name }}">{{ option.selected_value }}</span></div>
-                      {% if option.name == 'Size' %}
-                        {% for block in section.blocks %}
-                          {% if block.type == 'size_guide' %}
-                            <a href="#sizeGuide" data-bs-toggle="modal" class="size-guide link" {{ block.shopify_attributes }}>{{ block.settings.size_guide_text }}</a>
+                {% for block in section.blocks %}
+                  {% if block.type == 'variant_picker' %}
+                    {% for option in product.options_with_values %}
+                      <div class="variant-picker-item variant-{{ option.name | handle }}">
+                        <div class="variant-picker-label">
+                          <div>{{ option.name }}:<span class="variant-picker-label-value value-current{{ option.name }}">{{ option.selected_value }}</span></div>
+                          {% if option.name == 'Size' %}
+                            {% for block2 in section.blocks %}
+                              {% if block2.type == 'size_guide' %}
+                                <a href="#sizeGuide" data-bs-toggle="modal" class="size-guide link" {{ block2.shopify_attributes }}>{{ block2.settings.size_guide_text }}</a>
+                              {% endif %}
+                            {% endfor %}
                           {% endif %}
-                        {% endfor %}
-                      {% endif %}
-                    </div>
-                    <div class="variant-picker-values">
-                      {% for value in option.values %}
-                        {% if option.name == 'Color' %}
-                          <div class="hover-tooltip tooltip-bot color-btn btn-scroll-target{% if value == option.selected_value %} active{% endif %}" 
-                               data-scroll="{{ value | handle }}" 
-                               data-option="{{ option.name | handle }}"
-                               data-value="{{ value | handle }}">
-                            <span class="check-color bg-{{ value | handle }}"></span>
-                            <span class="tooltip">{{ value }}</span>
-                          </div>
-                        {% else %}
-                          <span class="size-btn{% if value == option.selected_value %} active{% endif %}" 
-                                data-size="{{ value | handle }}"
-                                data-option="{{ option.name | handle }}"
-                                data-value="{{ value | handle }}">{{ value }}</span>
-                        {% endif %}
-                      {% endfor %}
-                    </div>
-                  </div>
+                        </div>
+                        <div class="variant-picker-values">
+                          {% for value in option.values %}
+                            {% if option.name == 'Color' %}
+                              <div class="hover-tooltip tooltip-bot color-btn btn-scroll-target{% if value == option.selected_value %} active{% endif %} color-type-{{ block.settings.color_selector_type }} color-size-{{ block.settings.color_selector_size }}"
+                                   data-scroll="{{ value | handle }}"
+                                   data-option="{{ option.name | handle }}"
+                                   data-value="{{ value | handle }}">
+                                <span class="check-color bg-{{ value | handle }}"></span>
+                                <span class="tooltip">{{ value }}</span>
+                              </div>
+                            {% else %}
+                              <span class="size-btn{% if value == option.selected_value %} active{% endif %}"
+                                    data-size="{{ value | handle }}"
+                                    data-option="{{ option.name | handle }}"
+                                    data-value="{{ value | handle }}">{{ value }}</span>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                      </div>
+                    {% endfor %}
+                  {% endif %}
                 {% endfor %}
               </div>
 
@@ -1420,6 +1424,67 @@ function updateMainAddToCartButton(variant) {
           "default": true
         }
       ]
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant picker",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "pick_mode",
+          "label": "Pick mode",
+          "options": [
+            { "value": "first_available", "label": "Pick first available variant" },
+            { "value": "user_select", "label": "Let user select" }
+          ],
+          "default": "first_available"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_history_state",
+          "label": "Enable historyState",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_sold_out",
+          "label": "Hide sold out variants",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "color_selector_type",
+          "label": "Color selector type",
+          "options": [
+            { "value": "swatch_rounded", "label": "Color swatch rounded" },
+            { "value": "swatch_square", "label": "Color swatch square" },
+            { "value": "dropdown", "label": "Dropdown" }
+          ],
+          "default": "swatch_rounded"
+        },
+        {
+          "type": "select",
+          "id": "color_selector_size",
+          "label": "Color selector size",
+          "options": [
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" }
+          ],
+          "default": "medium"
+        },
+        {
+          "type": "select",
+          "id": "selector_type",
+          "label": "Selector type",
+          "options": [
+            { "value": "block", "label": "Block" },
+            { "value": "dropdown", "label": "Dropdown" }
+          ],
+          "default": "block"
+        }
+      ]
     }
   ],
   "presets": [
@@ -1449,6 +1514,9 @@ function updateMainAddToCartButton(variant) {
         },
         {
           "type": "extra_links"
+        },
+        {
+          "type": "variant_picker"
         }
       ]
     }
