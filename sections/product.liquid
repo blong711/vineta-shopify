@@ -362,13 +362,14 @@
                   {% when 'fbt' %}
                     {% assign collection = product.collections.first %}
                     {% if collection %}
-                      {% assign related_products = collection.products | where: "available", true | reject: "id", product.id | first: block.settings.max_products %}
+                      {% assign related_products = collection.products | where: "available", true  %}
                       {% if related_products.size > 0 %}
                         <div class="tf-product-fbt" {{ block.shopify_attributes }}>
                           <div class="title text-xl fw-medium">{{ block.settings.fbt_title }}</div>
                           <form class="tf-product-form-bundle">
                             <div class="tf-bundle-products">
-                              {% for related_product in related_products %}
+                              {% assign max_products = block.settings.max_products | default: 3 %}
+                              {% for related_product in related_products limit: max_products %}
                                 <div class="tf-bundle-product-item item-has-checkbox{% if forloop.first %} check{% endif %}">
                                   <div class="bundle-check">
                                     <input type="checkbox"{% if forloop.first %} checked="checked"{% endif %} class="tf-check" data-product-id="{{ related_product.id }}">
