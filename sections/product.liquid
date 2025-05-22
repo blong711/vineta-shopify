@@ -389,7 +389,8 @@
                                       <div class="bundle-variant tf-select">
                                         <select data-product-id="{{ related_product.id }}">
                                           {% for variant in related_product.variants %}
-                                            <option value="{{ variant.id }}"{% if variant == related_product.selected_or_first_available_variant %} selected="selected"{% endif %}>
+                                            <option value="{{ variant.id }}"{% if variant == related_product.selected_or_first_available_variant %} selected="selected"{% endif %}
+                                              data-compare-price="{{ variant.compare_at_price | money }}">
                                               {{ variant.title }} - {{ variant.price | money }}
                                             </option>
                                           {% endfor %}
@@ -1288,10 +1289,7 @@ document.addEventListener('DOMContentLoaded', function() {
               }
               
               // Update header cart count
-              const headerCount = document.querySelector('.count-box');
-              if (headerCount) {
-                headerCount.textContent = cartData.item_count;
-              }
+              updateHeaderCartCount(cartData.item_count);
             }
           }
         }
@@ -1413,12 +1411,28 @@ document.addEventListener('DOMContentLoaded', function() {
           if (variantSelect) {
             const selectedOption = variantSelect.options[variantSelect.selectedIndex];
             const priceText = selectedOption.textContent.split(' - ')[1];
-            totalPrice += parseFloat(priceText.replace(/[^0-9.-]+/g, ''));
+            const price = parseFloat(priceText.replace(/[^0-9.-]+/g, ''));
+            totalPrice += price;
+            
+            // Check if there's a compare at price
+            const comparePriceText = selectedOption.getAttribute('data-compare-price');
+            if (comparePriceText) {
+              const comparePrice = parseFloat(comparePriceText.replace(/[^0-9.-]+/g, ''));
+              if (comparePrice > price) {
+                totalComparePrice += comparePrice;
+                hasComparePrice = true;
+              }
+            }
           } else if (priceElement) {
-            totalPrice += parseFloat(priceElement.textContent.replace(/[^0-9.-]+/g, ''));
+            const price = parseFloat(priceElement.textContent.replace(/[^0-9.-]+/g, ''));
+            totalPrice += price;
+            
             if (oldPriceElement) {
-              totalComparePrice += parseFloat(oldPriceElement.textContent.replace(/[^0-9.-]+/g, ''));
-              hasComparePrice = true;
+              const comparePrice = parseFloat(oldPriceElement.textContent.replace(/[^0-9.-]+/g, ''));
+              if (comparePrice > price) {
+                totalComparePrice += comparePrice;
+                hasComparePrice = true;
+              }
             }
           }
         }
@@ -1432,6 +1446,9 @@ document.addEventListener('DOMContentLoaded', function() {
         totalPriceOldElement.style.display = 'none';
       }
     }
+
+    // Initialize total price on page load
+    updateTotalPrice();
 
     // Handle checkbox changes
     bundleCheckboxes.forEach(checkbox => {
@@ -1541,10 +1558,7 @@ document.addEventListener('DOMContentLoaded', function() {
               }
 
               // Update header cart count
-              const headerCount = document.querySelector('.count-box');
-              if (headerCount) {
-                headerCount.textContent = cartData.item_count;
-              }
+              updateHeaderCartCount(cartData.item_count);
             }
           }
         }
@@ -1558,6 +1572,28 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+// Function to update header cart count
+function updateHeaderCartCount(count) {
+  // Update all cart count elements in the header
+  const cartCountElements = document.querySelectorAll('.cart-count, .cart-count-bubble, .cart-count-number');
+  cartCountElements.forEach(element => {
+    element.textContent = count || 0;
+    
+    // If the element has a parent with cart-link class, update aria-label too
+    const cartLink = element.closest('.cart-link');
+    if (cartLink) {
+      cartLink.setAttribute('aria-label', `Cart (${count || 0} items)`);
+    }
+
+    // Show/hide the count element based on count
+    if (count > 0) {
+      element.style.display = '';
+    } else {
+      element.style.display = 'none';
+    }
+  });
+}
 
 // Helper function to format money
 function formatMoney(cents) {
