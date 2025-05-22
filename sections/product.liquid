@@ -67,10 +67,11 @@
                               </a>
                             {% when 'video' %}
                               <div class="item position-relative">
-                                <video controls muted
+                                <video controls muted loop
                                   width="400"
                                   height="600"
-                                  poster="{{ media.preview_image | image_url: width: 800 }}">
+                                  poster="{{ media.preview_image | image_url: width: 800 }}"
+                                  {% if section.settings.enable_video_loop %}loop{% endif %}>
                                   {% for source in media.sources %}
                                     <source src="{{ source.url }}" type="{{ source.mime_type }}">
                                   {% endfor %}
@@ -121,10 +122,11 @@
                     </a>
                   {% when 'video' %}
                     <div class="item position-relative">
-                      <video controls muted
+                      <video controls muted loop
                         width="400"
                         height="600"
-                        poster="{{ media.preview_image | image_url: width: 800 }}">
+                        poster="{{ media.preview_image | image_url: width: 800 }}"
+                        {% if section.settings.enable_video_loop %}loop{% endif %}>
                         {% for source in media.sources %}
                           <source src="{{ source.url }}" type="{{ source.mime_type }}">
                         {% endfor %}
@@ -783,6 +785,11 @@ document.addEventListener('DOMContentLoaded', function() {
             matchedVariant = variants.find(v => v.featured_image && v.featured_image.src === media.src);
           }
 
+          // Update variant selection if a matching variant was found
+          if (matchedVariant) {
+            updateVariantSelection(matchedVariant);
+          }
+
           // Update color swatch active state
           if (matchedVariant && matchedVariant.option1) {
             const color = matchedVariant.option1.toLowerCase();
@@ -812,6 +819,34 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         }
       }
+    });
+
+    // Add click handler for images to select variants
+    document.querySelectorAll('.tf-product-media-main .swiper-slide').forEach(slide => {
+      slide.addEventListener('click', function() {
+        const mediaId = parseInt(this.getAttribute('data-media-id'));
+        const productMedia = {{ product.media | json }};
+        const media = productMedia.find(m => m.id === mediaId);
+
+        if (media) {
+          const variants = {{ product.variants | json }};
+          let matchedVariant = null;
+
+          // Try to find variant by variant_ids
+          if (media.variant_ids && media.variant_ids.length > 0) {
+            matchedVariant = variants.find(v => media.variant_ids.includes(v.id));
+          }
+
+          // If no match found, try to match by src
+          if (!matchedVariant && media.src) {
+            matchedVariant = variants.find(v => v.featured_image && v.featured_image.src === media.src);
+          }
+
+          if (matchedVariant) {
+            updateVariantSelection(matchedVariant);
+          }
+        }
+      });
     });
 
     // Disable navigation buttons when at start/end
@@ -1733,6 +1768,12 @@ function updateMainAddToCartButton(variant) {
       "type": "checkbox",
       "id": "show_sticky_cart",
       "label": "Show Sticky Add to Cart",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_video_loop",
+      "label": "Enable Video Looping",
       "default": true
     }
   ],
