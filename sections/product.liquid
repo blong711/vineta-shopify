@@ -360,53 +360,55 @@
                     </div>
 
                   {% when 'fbt' %}
-                    <div class="tf-product-fbt" {{ block.shopify_attributes }}>
-                      <div class="title text-xl fw-medium">{{ block.settings.fbt_title }}</div>
-                      <form class="tf-product-form-bundle">
-                        <div class="tf-bundle-products">
-                          {% assign collection = product.collections.first %}
-                          {% if collection %}
-                            {% assign related_products = collection.products | where: "available", true | where_not: "id", product.id | limit: block.settings.max_products %}
-                            {% for related_product in related_products %}
-                              <div class="tf-bundle-product-item item-has-checkbox{% if forloop.first %} check{% endif %}">
-                                <div class="bundle-check">
-                                  <input type="checkbox"{% if forloop.first %} checked="checked"{% endif %} class="tf-check" data-product-id="{{ related_product.id }}">
-                                </div>
-                                <a href="{{ related_product.url }}" class="bundle-image">
-                                  <img src="{{ related_product.featured_image | image_url: width: 200 }}" alt="{{ related_product.title }}" width="200" height="200">
-                                </a>
-                                <div class="bundle-info">
-                                  <div class="bundle-title text-sm fw-medium">{{ related_product.title }}</div>
-                                  <div class="bundle-price text-md fw-medium">
-                                    <span class="new-price">{{ related_product.price | money }}</span>
-                                    {% if related_product.compare_at_price > related_product.price %}
-                                      <span class="old-price">{{ related_product.compare_at_price | money }}</span>
+                    {% assign collection = product.collections.first %}
+                    {% if collection %}
+                      {% assign related_products = collection.products | where: "available", true | where_not: "id", product.id | limit: block.settings.max_products %}
+                      {% if related_products.size > 0 %}
+                        <div class="tf-product-fbt" {{ block.shopify_attributes }}>
+                          <div class="title text-xl fw-medium">{{ block.settings.fbt_title }}</div>
+                          <form class="tf-product-form-bundle">
+                            <div class="tf-bundle-products">
+                              {% for related_product in related_products %}
+                                <div class="tf-bundle-product-item item-has-checkbox{% if forloop.first %} check{% endif %}">
+                                  <div class="bundle-check">
+                                    <input type="checkbox"{% if forloop.first %} checked="checked"{% endif %} class="tf-check" data-product-id="{{ related_product.id }}">
+                                  </div>
+                                  <a href="{{ related_product.url }}" class="bundle-image">
+                                    <img src="{{ related_product.featured_image | image_url: width: 200 }}" alt="{{ related_product.title }}" width="200" height="200">
+                                  </a>
+                                  <div class="bundle-info">
+                                    <div class="bundle-title text-sm fw-medium">{{ related_product.title }}</div>
+                                    <div class="bundle-price text-md fw-medium">
+                                      <span class="new-price">{{ related_product.price | money }}</span>
+                                      {% if related_product.compare_at_price > related_product.price %}
+                                        <span class="old-price">{{ related_product.compare_at_price | money }}</span>
+                                      {% endif %}
+                                    </div>
+                                    {% if related_product.has_only_default_variant == false %}
+                                      <div class="bundle-variant tf-select">
+                                        <select data-product-id="{{ related_product.id }}">
+                                          {% for variant in related_product.variants %}
+                                            <option value="{{ variant.id }}"{% if variant == related_product.selected_or_first_available_variant %} selected="selected"{% endif %}>
+                                              {{ variant.title }} - {{ variant.price | money }}
+                                            </option>
+                                          {% endfor %}
+                                        </select>
+                                      </div>
                                     {% endif %}
                                   </div>
-                                  {% if related_product.has_only_default_variant == false %}
-                                    <div class="bundle-variant tf-select">
-                                      <select data-product-id="{{ related_product.id }}">
-                                        {% for variant in related_product.variants %}
-                                          <option value="{{ variant.id }}"{% if variant == related_product.selected_or_first_available_variant %} selected="selected"{% endif %}>
-                                            {{ variant.title }} - {{ variant.price | money }}
-                                          </option>
-                                        {% endfor %}
-                                      </select>
-                                    </div>
-                                  {% endif %}
                                 </div>
-                              </div>
-                            {% endfor %}
-                          {% endif %}
+                              {% endfor %}
+                            </div>
+                            <div class="bundle-total-submit">
+                              <div class="text">Total price:</div>
+                              <span class="total-price">{{ product.price | money }}</span>
+                              <span class="total-price-old" style="display: none;"></span>
+                            </div>
+                            <button type="button" class="btn-submit-total tf-btn btn-out-line-primary">Add selected to cart</button>
+                          </form>
                         </div>
-                        <div class="bundle-total-submit">
-                          <div class="text">Total price:</div>
-                          <span class="total-price">{{ product.price | money }}</span>
-                          <span class="total-price-old" style="display: none;"></span>
-                        </div>
-                        <button type="button" class="btn-submit-total tf-btn btn-out-line-primary">Add selected to cart</button>
-                      </form>
-                    </div>
+                      {% endif %}
+                    {% endif %}
                 {% endcase %}
               {% endfor %}
             </div>
@@ -1384,6 +1386,176 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+  // FBT Bundle Selection and Cart Addition
+  const fbtForm = document.querySelector('.tf-product-form-bundle');
+  if (fbtForm) {
+    const bundleCheckboxes = fbtForm.querySelectorAll('.tf-check');
+    const totalPriceElement = fbtForm.querySelector('.total-price');
+    const totalPriceOldElement = fbtForm.querySelector('.total-price-old');
+    const submitButton = fbtForm.querySelector('.btn-submit-total');
+    const variantSelects = fbtForm.querySelectorAll('.bundle-variant select');
+
+    // Function to update total price
+    function updateTotalPrice() {
+      let totalPrice = 0;
+      let totalComparePrice = 0;
+      let hasComparePrice = false;
+
+      bundleCheckboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+          const productItem = checkbox.closest('.tf-bundle-product-item');
+          const variantSelect = productItem.querySelector('select');
+          const priceElement = productItem.querySelector('.new-price');
+          const oldPriceElement = productItem.querySelector('.old-price');
+
+          if (variantSelect) {
+            const selectedOption = variantSelect.options[variantSelect.selectedIndex];
+            const priceText = selectedOption.textContent.split(' - ')[1];
+            totalPrice += parseFloat(priceText.replace(/[^0-9.-]+/g, ''));
+          } else if (priceElement) {
+            totalPrice += parseFloat(priceElement.textContent.replace(/[^0-9.-]+/g, ''));
+            if (oldPriceElement) {
+              totalComparePrice += parseFloat(oldPriceElement.textContent.replace(/[^0-9.-]+/g, ''));
+              hasComparePrice = true;
+            }
+          }
+        }
+      });
+
+      totalPriceElement.textContent = formatMoney(totalPrice * 100);
+      if (hasComparePrice) {
+        totalPriceOldElement.textContent = formatMoney(totalComparePrice * 100);
+        totalPriceOldElement.style.display = 'inline';
+      } else {
+        totalPriceOldElement.style.display = 'none';
+      }
+    }
+
+    // Handle checkbox changes
+    bundleCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', updateTotalPrice);
+    });
+
+    // Handle variant selection changes
+    variantSelects.forEach(select => {
+      select.addEventListener('change', updateTotalPrice);
+    });
+
+    // Handle bundle submission
+    submitButton.addEventListener('click', async function(e) {
+      e.preventDefault();
+      if (this.classList.contains('loading')) return;
+
+      const items = [];
+      bundleCheckboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+          const productItem = checkbox.closest('.tf-bundle-product-item');
+          const variantSelect = productItem.querySelector('select');
+          const productId = checkbox.dataset.productId;
+          
+          if (variantSelect) {
+            items.push({
+              id: variantSelect.value,
+              quantity: 1
+            });
+          } else {
+            items.push({
+              id: productId,
+              quantity: 1
+            });
+          }
+        }
+      });
+
+      if (items.length === 0) {
+        alert('Please select at least one product');
+        return;
+      }
+
+      try {
+        this.classList.add('loading');
+        this.textContent = 'Adding to cart...';
+
+        // Add items to cart
+        if (window.cart) {
+          for (const item of items) {
+            await window.cart.updateQuantity(item.id, item.quantity, 'add');
+          }
+
+          // Fetch updated cart data
+          const response = await fetch('/cart.js');
+          const cartData = await response.json();
+
+          // Update cart drawer
+          const cartDrawer = document.getElementById('shoppingCart');
+          if (cartDrawer) {
+            const itemsContainer = cartDrawer.querySelector('.tf-mini-cart-items');
+            if (itemsContainer) {
+              // Clear existing items
+              itemsContainer.innerHTML = '';
+
+              // Add all items from cart
+              cartData.items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'tf-mini-cart-item';
+                itemElement.style.border = 'none';
+                itemElement.style.borderBottom = 'none';
+                itemElement.innerHTML = `
+                  <div class="tf-mini-cart-image">
+                    <a href="${item.url}">
+                      <img class="lazyload" data-src="${item.image}" src="${item.image}" alt="${item.title}" loading="lazy">
+                    </a>
+                  </div>
+                  <div class="tf-mini-cart-info">
+                    <div class="d-flex justify-content-between">
+                      <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
+                      <i class="icon icon-close remove" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
+                    </div>
+                    <div class="d-flex gap-10">
+                      <div class="text-xs">${item.variant_title || ''}</div>
+                      <a href="#" class="link edit"><i class="icon-pen"></i></a>
+                    </div>
+                    <div class="tf-mini-cart-item_price">
+                      <p class="price-wrap text-sm fw-medium">
+                        <span class="new-price text-primary">${formatMoney(item.final_price)}</span>
+                      </p>
+                    </div>
+                    <div class="tf-mini-cart-item_quantity">
+                      <div class="wg-quantity small">
+                        <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
+                        <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
+                        <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
+                      </div>
+                    </div>
+                  </div>
+                `;
+                itemsContainer.appendChild(itemElement);
+              });
+
+              // Update cart total
+              const totalElement = cartDrawer.querySelector('.cart-total-price');
+              if (totalElement) {
+                totalElement.textContent = formatMoney(cartData.total_price);
+              }
+
+              // Update header cart count
+              const headerCount = document.querySelector('.count-box');
+              if (headerCount) {
+                headerCount.textContent = cartData.item_count;
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error adding bundle to cart:', error);
+        alert('Failed to add items to cart. Please try again.');
+      } finally {
+        this.classList.remove('loading');
+        this.textContent = 'Add selected to cart';
+      }
+    });
+  }
 });
 
 // Helper function to format money
