@@ -67,11 +67,12 @@
                               </a>
                             {% when 'video' %}
                               <div class="item position-relative">
-                                <video controls muted loop
+                                <video controls muted
                                   width="400"
                                   height="600"
                                   poster="{{ media.preview_image | image_url: width: 800 }}"
-                                  {% if section.settings.enable_video_loop %}loop{% endif %}>
+                                  {% if section.settings.enable_video_loop %}loop{% endif %}
+                                  {% if section.settings.enable_video_autoplay %}autoplay{% endif %}>
                                   {% for source in media.sources %}
                                     <source src="{{ source.url }}" type="{{ source.mime_type }}">
                                   {% endfor %}
@@ -1774,6 +1775,20 @@ function updateMainAddToCartButton(variant) {
       "type": "checkbox",
       "id": "enable_video_loop",
       "label": "Enable Video Looping",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_variant_by_image",
+      "label": "Enable Variant Selection by Image",
+      "info": "Allow customers to select variants by clicking on product images",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_video_autoplay",
+      "label": "Enable Video Autoplay",
+      "info": "Automatically play videos when they become visible (muted)",
       "default": true
     }
   ],
