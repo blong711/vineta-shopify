@@ -362,7 +362,7 @@
                   {% when 'fbt' %}
                     {% assign collection = product.collections.first %}
                     {% if collection %}
-                      {% assign related_products = collection.products | where: "available", true | where_not: "id", product.id | limit: block.settings.max_products %}
+                      {% assign related_products = collection.products | where: "available", true | reject: "id", product.id | first: block.settings.max_products %}
                       {% if related_products.size > 0 %}
                         <div class="tf-product-fbt" {{ block.shopify_attributes }}>
                           <div class="title text-xl fw-medium">{{ block.settings.fbt_title }}</div>
