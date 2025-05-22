@@ -246,11 +246,19 @@
                         </div>
                         <div class="variant-picker-values">
                           {% if block.settings.color_selector_type == 'dropdown' %}
-                            <select class="option-dropdown option-size-{{ block.settings.color_selector_size }}" data-option-name="{{ option.name }}">
-                              {% for value in option.values %}
-                                <option value="{{ value | handle }}" {% if value == option.selected_value %}selected{% endif %}>{{ value }}</option>
-                              {% endfor %}
-                            </select>
+                            <div class="tf-variant-dropdown full" data-bs-toggle="dropdown">
+                              <div class="btn-select">
+                                <span class="text-sort-value value-current{{ option.name }}">{{ option.selected_value }}</span>
+                                <span class="icon icon-arrow-down"></span>
+                              </div>
+                              <div class="dropdown-menu">
+                                {% for value in option.values %}
+                                  <div class="select-item color-btn{% if value == option.selected_value %} active{% endif %}" data-color="{{ value | handle }}" data-value="{{ value | handle }}">
+                                    <span class="text-value-item">{{ value }}</span>
+                                  </div>
+                                {% endfor %}
+                              </div>
+                            </div>
                           {% elsif option.name == 'Color' %}
                             {% for value in option.values %}
                               <div class="hover-tooltip tooltip-bot color-btn btn-scroll-target color-size-{{ block.settings.color_selector_size }}{% if value == option.selected_value %} active{% endif %}"
