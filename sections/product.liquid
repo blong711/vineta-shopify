@@ -112,8 +112,10 @@
                       {% endfor %}
                     </div>
                   </div>
-                  <div class="swiper-button-next nav-swiper thumbs-next"></div>
-                  <div class="swiper-button-prev nav-swiper thumbs-prev"></div>
+                  {% if section.settings.show_slider_nav %}
+                    <div class="swiper-button-next nav-swiper thumbs-next"></div>
+                    <div class="swiper-button-prev nav-swiper thumbs-prev"></div>
+                  {% endif %}
                 </div>
               </div>
             </div>
