@@ -1,115 +1,226 @@
 {%- comment -%}Product Details Section{%- endcomment -%}
 <section class="flat-spacing pt-0">
   <div class="container">
-    {%- for block in section.blocks -%}
-      {%- case block.type -%}
-        {%- when 'description' -%}
-          <div class="widget-accordion wd-product-descriptions" {{ block.shopify_attributes }}>
-            <div class="accordion-title collapsed" data-bs-target="#description-{{ block.id }}" data-bs-toggle="collapse" aria-expanded="true" aria-controls="description-{{ block.id }}" role="button">
-              <span>{{ block.settings.title }}</span>
-              <span class="icon icon-arrow-down"></span>
-            </div>
-            <div id="description-{{ block.id }}" class="collapse">
-              <div class="accordion-body widget-desc">
-                {%- if product.description != blank -%}
-                  {{ product.description }}
-                {%- else -%}
-                  {{ block.settings.default_content }}
-                {%- endif -%}
+    {%- if section.settings.layout == 'accordion' -%}
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'description' -%}
+            <div class="widget-accordion wd-product-descriptions" {{ block.shopify_attributes }}>
+              <div class="accordion-title collapsed" data-bs-target="#description-{{ block.id }}" data-bs-toggle="collapse" aria-expanded="true" aria-controls="description-{{ block.id }}" role="button">
+                <span>{{ block.settings.title }}</span>
+                <span class="icon icon-arrow-down"></span>
               </div>
-            </div>
-          </div>
-
-        {%- when 'materials' -%}
-          <div class="widget-accordion wd-product-descriptions" {{ block.shopify_attributes }}>
-            <div class="accordion-title collapsed" data-bs-target="#material-{{ block.id }}" data-bs-toggle="collapse" aria-expanded="true" aria-controls="material-{{ block.id }}" role="button">
-              <span>{{ block.settings.title }}</span>
-              <span class="icon icon-arrow-down"></span>
-            </div>
-            <div id="material-{{ block.id }}" class="collapse">
-              <div class="accordion-body widget-material">
-                <div class="item">
-                  <p class="fw-medium title">{{ block.settings.subtitle }}</p>
-                  <ul>
-                    {%- if product.metafields.material.content -%}
-                      <li>Content: {{ product.metafields.material.content }}</li>
-                    {%- endif -%}
-                    {%- if product.metafields.material.care -%}
-                      <li>Care: {{ product.metafields.material.care }}</li>
-                    {%- endif -%}
-                    {%- if product.metafields.material.imported -%}
-                      <li>Imported</li>
-                    {%- endif -%}
-                    {%- if product.metafields.material.wash -%}
-                      <li>{{ product.metafields.material.wash }}</li>
-                    {%- endif -%}
-                    {%- if product.metafields.material.iron -%}
-                      <li>{{ product.metafields.material.iron }}</li>
-                    {%- endif -%}
-                    {%- if product.metafields.material.bleach -%}
-                      <li>{{ product.metafields.material.bleach }}</li>
-                    {%- endif -%}
-                    {%- if product.metafields.material.dry_clean -%}
-                      <li>{{ product.metafields.material.dry_clean }}</li>
-                    {%- endif -%}
-                    {%- if product.metafields.material.tumble_dry -%}
-                      <li>{{ product.metafields.material.tumble_dry }}</li>
-                    {%- endif -%}
-                  </ul>
+              <div id="description-{{ block.id }}" class="collapse">
+                <div class="accordion-body widget-desc">
+                  {%- if product.description != blank -%}
+                    {{ product.description }}
+                  {%- else -%}
+                    {{ block.settings.default_content }}
+                  {%- endif -%}
                 </div>
               </div>
             </div>
-          </div>
 
-        {%- when 'return_policies' -%}
-          <div class="widget-accordion wd-product-descriptions" {{ block.shopify_attributes }}>
-            <div class="accordion-title collapsed" data-bs-target="#returnPolicies-{{ block.id }}" data-bs-toggle="collapse" aria-expanded="true" aria-controls="returnPolicies-{{ block.id }}" role="button">
-              <span>{{ block.settings.title }}</span>
-              <span class="icon icon-arrow-down"></span>
-            </div>
-            <div id="returnPolicies-{{ block.id }}" class="collapse">
-              <div class="accordion-body">
-                <ul class="list-policies">
-                  {%- if block.settings.icon_1 != blank -%}
-                    <li>{{ block.settings.icon_1 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
-                  {%- endif -%}
-                  {%- if block.settings.icon_2 != blank -%}
-                    <li>{{ block.settings.icon_2 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
-                  {%- endif -%}
-                  {%- if block.settings.icon_3 != blank -%}
-                    <li>{{ block.settings.icon_3 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
-                  {%- endif -%}
-                  {%- if block.settings.icon_4 != blank -%}
-                    <li>{{ block.settings.icon_4 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
-                  {%- endif -%}
-                  {%- if block.settings.icon_5 != blank -%}
-                    <li>{{ block.settings.icon_5 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
-                  {%- endif -%}
-                  {%- if block.settings.icon_6 != blank -%}
-                    <li>{{ block.settings.icon_6 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
-                  {%- endif -%}
-                  {%- if block.settings.icon_7 != blank -%}
-                    <li>{{ block.settings.icon_7 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
-                  {%- endif -%}
-                  {%- if block.settings.icon_8 != blank -%}
-                    <li>{{ block.settings.icon_8 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
-                  {%- endif -%}
-                </ul>
-                {%- if product.metafields.material.composition -%}
-                  <p class="text-center text-paragraph">{{ product.metafields.material.composition }}</p>
-                {%- endif -%}
+          {%- when 'materials' -%}
+            <div class="widget-accordion wd-product-descriptions" {{ block.shopify_attributes }}>
+              <div class="accordion-title collapsed" data-bs-target="#material-{{ block.id }}" data-bs-toggle="collapse" aria-expanded="true" aria-controls="material-{{ block.id }}" role="button">
+                <span>{{ block.settings.title }}</span>
+                <span class="icon icon-arrow-down"></span>
+              </div>
+              <div id="material-{{ block.id }}" class="collapse">
+                <div class="accordion-body widget-material">
+                  <div class="item">
+                    <p class="fw-medium title">{{ block.settings.subtitle }}</p>
+                    <ul>
+                      {%- if product.metafields.material.content -%}
+                        <li>Content: {{ product.metafields.material.content }}</li>
+                      {%- endif -%}
+                      {%- if product.metafields.material.care -%}
+                        <li>Care: {{ product.metafields.material.care }}</li>
+                      {%- endif -%}
+                      {%- if product.metafields.material.imported -%}
+                        <li>Imported</li>
+                      {%- endif -%}
+                      {%- if product.metafields.material.wash -%}
+                        <li>{{ product.metafields.material.wash }}</li>
+                      {%- endif -%}
+                      {%- if product.metafields.material.iron -%}
+                        <li>{{ product.metafields.material.iron }}</li>
+                      {%- endif -%}
+                      {%- if product.metafields.material.bleach -%}
+                        <li>{{ product.metafields.material.bleach }}</li>
+                      {%- endif -%}
+                      {%- if product.metafields.material.dry_clean -%}
+                        <li>{{ product.metafields.material.dry_clean }}</li>
+                      {%- endif -%}
+                      {%- if product.metafields.material.tumble_dry -%}
+                        <li>{{ product.metafields.material.tumble_dry }}</li>
+                      {%- endif -%}
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-      {%- endcase -%}
-    {%- endfor -%}
+
+          {%- when 'return_policies' -%}
+            <div class="widget-accordion wd-product-descriptions" {{ block.shopify_attributes }}>
+              <div class="accordion-title collapsed" data-bs-target="#returnPolicies-{{ block.id }}" data-bs-toggle="collapse" aria-expanded="true" aria-controls="returnPolicies-{{ block.id }}" role="button">
+                <span>{{ block.settings.title }}</span>
+                <span class="icon icon-arrow-down"></span>
+              </div>
+              <div id="returnPolicies-{{ block.id }}" class="collapse">
+                <div class="accordion-body">
+                  <ul class="list-policies">
+                    {%- if block.settings.icon_1 != blank -%}
+                      <li>{{ block.settings.icon_1 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
+                    {%- endif -%}
+                    {%- if block.settings.icon_2 != blank -%}
+                      <li>{{ block.settings.icon_2 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
+                    {%- endif -%}
+                    {%- if block.settings.icon_3 != blank -%}
+                      <li>{{ block.settings.icon_3 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
+                    {%- endif -%}
+                    {%- if block.settings.icon_4 != blank -%}
+                      <li>{{ block.settings.icon_4 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
+                    {%- endif -%}
+                    {%- if block.settings.icon_5 != blank -%}
+                      <li>{{ block.settings.icon_5 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
+                    {%- endif -%}
+                    {%- if block.settings.icon_6 != blank -%}
+                      <li>{{ block.settings.icon_6 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
+                    {%- endif -%}
+                    {%- if block.settings.icon_7 != blank -%}
+                      <li>{{ block.settings.icon_7 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
+                    {%- endif -%}
+                    {%- if block.settings.icon_8 != blank -%}
+                      <li>{{ block.settings.icon_8 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
+                    {%- endif -%}
+                  </ul>
+                  {%- if product.metafields.material.composition -%}
+                    <p class="text-center text-paragraph">{{ product.metafields.material.composition }}</p>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    {%- else -%}
+      <div class="flat-animate-tab tab-vertical-product-desc">
+        <ul class="menu-tab" role="tablist">
+          {%- for block in section.blocks -%}
+            <li class="nav-tab-item" role="presentation">
+              <a href="#{{ block.type }}-{{ block.id }}" class="tab-link{% if forloop.first %} active{% endif %}" data-bs-toggle="tab">{{ block.settings.title }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <div class="tab-content">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'description' -%}
+                <div class="tab-pane{% if forloop.first %} active show{% endif %} wd-product-descriptions" id="description-{{ block.id }}" role="tabpanel">
+                  <div class="item">
+                    {%- if product.description != blank -%}
+                      {{ product.description }}
+                    {%- else -%}
+                      {{ block.settings.default_content }}
+                    {%- endif -%}
+                  </div>
+                </div>
+
+              {%- when 'materials' -%}
+                <div class="tab-pane{% if forloop.first %} active show{% endif %} wd-product-descriptions" id="materials-{{ block.id }}" role="tabpanel">
+                  <div class="item">
+                    <p class="fw-medium title">{{ block.settings.subtitle }}</p>
+                    <ul>
+                      {%- if product.metafields.material.content -%}
+                        <li>Content: {{ product.metafields.material.content }}</li>
+                      {%- endif -%}
+                      {%- if product.metafields.material.care -%}
+                        <li>Care: {{ product.metafields.material.care }}</li>
+                      {%- endif -%}
+                      {%- if product.metafields.material.imported -%}
+                        <li>Imported</li>
+                      {%- endif -%}
+                      {%- if product.metafields.material.wash -%}
+                        <li>{{ product.metafields.material.wash }}</li>
+                      {%- endif -%}
+                      {%- if product.metafields.material.iron -%}
+                        <li>{{ product.metafields.material.iron }}</li>
+                      {%- endif -%}
+                      {%- if product.metafields.material.bleach -%}
+                        <li>{{ product.metafields.material.bleach }}</li>
+                      {%- endif -%}
+                      {%- if product.metafields.material.dry_clean -%}
+                        <li>{{ product.metafields.material.dry_clean }}</li>
+                      {%- endif -%}
+                      {%- if product.metafields.material.tumble_dry -%}
+                        <li>{{ product.metafields.material.tumble_dry }}</li>
+                      {%- endif -%}
+                    </ul>
+                  </div>
+                </div>
+
+              {%- when 'return_policies' -%}
+                <div class="tab-pane{% if forloop.first %} active show{% endif %} wd-product-descriptions" id="returnPolicies-{{ block.id }}" role="tabpanel">
+                  <ul class="list-policies">
+                    {%- if block.settings.icon_1 != blank -%}
+                      <li>{{ block.settings.icon_1 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
+                    {%- endif -%}
+                    {%- if block.settings.icon_2 != blank -%}
+                      <li>{{ block.settings.icon_2 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
+                    {%- endif -%}
+                    {%- if block.settings.icon_3 != blank -%}
+                      <li>{{ block.settings.icon_3 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
+                    {%- endif -%}
+                    {%- if block.settings.icon_4 != blank -%}
+                      <li>{{ block.settings.icon_4 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
+                    {%- endif -%}
+                    {%- if block.settings.icon_5 != blank -%}
+                      <li>{{ block.settings.icon_5 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
+                    {%- endif -%}
+                    {%- if block.settings.icon_6 != blank -%}
+                      <li>{{ block.settings.icon_6 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
+                    {%- endif -%}
+                    {%- if block.settings.icon_7 != blank -%}
+                      <li>{{ block.settings.icon_7 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
+                    {%- endif -%}
+                    {%- if block.settings.icon_8 != blank -%}
+                      <li>{{ block.settings.icon_8 | image_url: width: 35 | image_tag: width: 35, height: 35, loading: 'lazy' }}</li>
+                    {%- endif -%}
+                  </ul>
+                  {%- if product.metafields.material.composition -%}
+                    <p class="text-center text-paragraph">{{ product.metafields.material.composition }}</p>
+                  {%- endif -%}
+                </div>
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
   </div>
 </section>
 
 {% schema %}
 {
   "name": "Product Details",
-  "settings": [],
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "accordion",
+          "label": "Accordion"
+        },
+        {
+          "value": "vertical",
+          "label": "Vertical Tabs"
+        }
+      ],
+      "default": "accordion"
+    }
+  ],
   "blocks": [
     {
       "type": "description",
