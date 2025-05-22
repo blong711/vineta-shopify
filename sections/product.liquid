@@ -223,9 +223,7 @@
                       </div>
                   {% endcase %}
                 {% endfor %}
-              </div>
-
-              <!-- Countdown Timer Block -->
+                              <!-- Countdown Timer Block -->
               {% for block in section.blocks %}
                 {% case block.type %}
                   {% when 'countdown_timer' %}
@@ -233,7 +231,7 @@
                     {% assign metafield_parts = metafield_key | split: '.' %}
                     {% assign metafield_namespace = metafield_parts[0] %}
                     {% assign metafield_key_only = metafield_parts[1] %}
-                    {% assign end_date = product.metafields[metafield_namespace][metafield_key_only] %}
+                    {%- assign end_date = product.metafields[metafield_namespace][metafield_key_only] | date: '%Y-%m-%d %H:%M:%S' -%}
                     {% if end_date != blank %}
                       <div class="product-info-countdown" {{ block.shopify_attributes }}>
                         <div class="countdown-title">
@@ -267,7 +265,7 @@
                 {% endcase %}
               {% endfor %}
               <!-- End Countdown Timer Block -->
-
+              </div>
               <div class="tf-product-info-variant">
                 {% for block in section.blocks %}
                   {% if block.type == 'variant_picker' %}
