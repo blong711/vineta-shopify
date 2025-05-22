@@ -6,7 +6,15 @@
   - Add to cart functionality
 {% endcomment %}
 
-<section class="flat-single-product">
+<section class="flat-single-product" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <style>
+    @media (max-width: 767px) {
+      .flat-single-product {
+        padding-top: calc({{ section.settings.padding_top }}px * {{ section.settings.padding_mobile_rate }} / 100);
+        padding-bottom: calc({{ section.settings.padding_bottom }}px * {{ section.settings.padding_mobile_rate }} / 100);
+      }
+    }
+  </style>
   <div class="tf-main-product section-image-zoom">
     <div class="container">
       <div class="row">
@@ -874,6 +882,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     galleryMain.on('slideChange', updateNavigationButtons);
     updateNavigationButtons();
+
+    // Show/hide navigation buttons based on setting
+    {% if section.settings.show_slider_nav %}
+      document.querySelectorAll('.thumbs-next, .thumbs-prev').forEach(btn => btn.style.display = '');
+    {% else %}
+      document.querySelectorAll('.thumbs-next, .thumbs-prev').forEach(btn => btn.style.display = 'none');
+    {% endif %}
   {% else %}
     // Grid and Stacked layout functionality
     const galleryItems = document.querySelectorAll('.item-scroll-target');
@@ -1790,6 +1805,50 @@ function updateMainAddToCartButton(variant) {
       "label": "Enable Video Autoplay",
       "info": "Automatically play videos when they become visible (muted)",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Slider settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_slider_nav",
+      "label": "Use prev/next button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile_rate",
+      "label": "Rate padding (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 50
     }
   ],
   "blocks": [
