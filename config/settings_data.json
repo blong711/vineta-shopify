@@ -250,6 +250,8 @@
           "sold_count_DN37bV": {
             "type": "sold_count",
             "settings": {
+              "in_stock_text": "In Stock",
+              "out_of_stock_text": "Out of Stock",
               "sold_count_text": "30 sold in last 24 hours",
               "min_sold_count": 20,
               "max_sold_count": 100
@@ -288,7 +290,20 @@
             "type": "size_guide",
             "settings": {
               "size_guide_text": "Size Guide",
-              "size_guide_image": "shopify://shop_images/size-guide.png"
+              "size_guide_image": "shopify://shop_images/size-guide.png",
+              "size_chart_title": "Size Chart",
+              "column_1": "Size",
+              "column_2": "US",
+              "column_3": "Chest",
+              "column_4": "Waist",
+              "column_5": "Hip",
+              "size_data": "XS,2,32,24 - 25,33 - 34\nS,4,34 - 35,26 - 27,35 - 26\nM,6,36 - 37,28 - 29,38 - 40\nL,8,38 - 29,30 - 31,42 - 44\nXL,10,40 - 41,32 - 33,45 - 47\nXXL,12,42 - 43,34 - 35,48 - 50",
+              "chest_title": "1. Chest",
+              "chest_instruction": "Measure at the fullest part of your chest, keeping the tape parallel to the floor.",
+              "waist_title": "2. Waist",
+              "waist_instruction": "Measure at the smallest part of your waist. This is usually below the rib cage and above the hip bone.",
+              "hip_title": "3. Hip",
+              "hip_instruction": "Measure at the fullest part of your seat, keeping the tape parallel to the floor."
             }
           },
           "delivery_info_PTyKe9": {
@@ -304,7 +319,7 @@
               "pick_mode": "first_available",
               "enable_history_state": false,
               "hide_sold_out": false,
-              "color_selector_type": "swatch_rounded",
+              "color_selector_type": "dropdown",
               "color_selector_size": "medium"
             }
           }
