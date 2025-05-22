@@ -340,9 +340,9 @@
               <div class="tf-product-total-quantity">
                 <div class="group-btn">
                   <div class="wg-quantity">
-                    <button class="btn-quantity btn-decrease">-</button>
-                    <input class="quantity-product" type="text" name="number" value="1">
-                    <button class="btn-quantity btn-increase">+</button>
+                    <button class="btn-quantity btn-decrease" data-variant-id="{{ product.selected_or_first_available_variant.id }}">-</button>
+                    <input class="quantity-product" type="text" name="number" value="1" data-variant-id="{{ product.selected_or_first_available_variant.id }}">
+                    <button class="btn-quantity btn-increase" data-variant-id="{{ product.selected_or_first_available_variant.id }}">+</button>
                   </div>
                   <a href="javascript:void(0);" 
                      class="tf-btn hover-primary add-to-cart" 
@@ -1176,45 +1176,40 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Handle quantity changes
-  document.querySelectorAll('.quantity-product').forEach(input => {
-    input.addEventListener('change', function() {
-      const quantity = parseInt(this.value) || 1;
-      const mainAddToCartBtn = document.querySelector('.tf-product-info-list .add-to-cart');
-      if (mainAddToCartBtn) {
-        mainAddToCartBtn.dataset.quantity = quantity;
-      }
-    });
-  });
-
-  // Handle quantity buttons
-  document.querySelectorAll('.tf-product-info-list .btn-increase').forEach(button => {
-    button.addEventListener('click', function(e) {
-      e.preventDefault();
-      const input = this.previousElementSibling;
-      const currentValue = parseInt(input.value) || 1;
-      input.value = currentValue;
-      const mainAddToCartBtn = document.querySelector('.tf-product-info-list .add-to-cart');
-      if (mainAddToCartBtn) {
-        mainAddToCartBtn.dataset.quantity = currentValue + 1;
-      }
-    });
-  });
-
+  // --- Quantity Controls (Cleaned Up) ---
   document.querySelectorAll('.tf-product-info-list .btn-decrease').forEach(button => {
     button.addEventListener('click', function(e) {
       e.preventDefault();
       const input = this.nextElementSibling;
-      const currentValue = parseInt(input.value) || 1;
-      if (currentValue > 1) {
-        input.value = currentValue;
-        const mainAddToCartBtn = document.querySelector('.tf-product-info-list .add-to-cart');
-        if (mainAddToCartBtn) {
-          mainAddToCartBtn.dataset.quantity = currentValue - 1;
-        }
+      let value = parseInt(input.value) || 1;
+      if (value > 1) value--;
+      input.value = value;
+      input.dispatchEvent(new Event('change'));
+    });
+  });
+  document.querySelectorAll('.tf-product-info-list .btn-increase').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const input = this.previousElementSibling;
+      let value = parseInt(input.value) || 1;
+      value++;
+      input.value = value;
+      input.dispatchEvent(new Event('change'));
+    });
+  });
+  document.querySelectorAll('.tf-product-info-list .quantity-product').forEach(input => {
+    input.addEventListener('change', function() {
+      let value = parseInt(this.value) || 1;
+      this.value = Math.max(1, value);
+      // Update add-to-cart button's data-quantity
+      const mainAddToCartBtn = document.querySelector('.tf-product-info-list .add-to-cart');
+      if (mainAddToCartBtn) {
+        mainAddToCartBtn.dataset.quantity = this.value;
       }
     });
   });
+  // ... existing code ...
+  // Remove any other direct or delegated event listeners for quantity controls that call window.cart.updateQuantity except in the Add to Cart click handler.
 
   // Only set the active class for initial page load
   const initialVariant = {{ product.selected_or_first_available_variant | json }};
@@ -1711,6 +1706,56 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+  // --- Quantity Controls (Quickview Modal Style) ---
+  document.querySelectorAll('.tf-product-info-list .btn-decrease').forEach(button => {
+    button.addEventListener('click', async function() {
+      const input = this.nextElementSibling;
+      const variantId = input.dataset.variantId;
+      const currentValue = parseInt(input.value);
+      if (!variantId || !window.cart) return;
+      if (currentValue > 1) {
+        input.value = currentValue - 1;
+        await window.cart.updateQuantity(variantId, currentValue - 1, 'update');
+      } else {
+        input.value = 1;
+        await window.cart.removeItem(variantId);
+      }
+    });
+  });
+  document.querySelectorAll('.tf-product-info-list .btn-increase').forEach(button => {
+    button.addEventListener('click', async function() {
+      const input = this.previousElementSibling;
+      const variantId = input.dataset.variantId;
+      const currentValue = parseInt(input.value);
+      if (!variantId || !window.cart) return;
+      input.value = currentValue + 1;
+      await window.cart.updateQuantity(variantId, currentValue + 1, 'update');
+    });
+  });
+  document.querySelectorAll('.tf-product-info-list .quantity-product').forEach(input => {
+    input.addEventListener('change', async function() {
+      const variantId = this.dataset.variantId;
+      const newValue = parseInt(this.value);
+      if (!variantId || !window.cart) return;
+      if (isNaN(newValue) || newValue < 1) {
+        this.value = 1;
+        await window.cart.updateQuantity(variantId, 1, 'update');
+      } else {
+        await window.cart.updateQuantity(variantId, newValue, 'update');
+      }
+    });
+  });
+
+  // When variant changes, update data-variant-id on quantity controls
+  function updateQuantityVariantId(variantId) {
+    document.querySelectorAll('.tf-product-info-list .btn-decrease, .tf-product-info-list .btn-increase, .tf-product-info-list .quantity-product').forEach(el => {
+      el.dataset.variantId = variantId;
+    });
+  }
+  // Call updateQuantityVariantId in your updateVariantSelection function after variant changes
+  // Example:
+  // updateQuantityVariantId(variant.id);
 });
 
 // Function to update header cart count
