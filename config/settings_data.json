@@ -9,6 +9,7 @@
  */
 {
   "current": {
+    "favicon": "shopify://shop_images/favicon.png",
     "font_library": "google",
     "heading_font_family": "'Poppins', sans-serif",
     "heading_font_weight": 500,
@@ -59,6 +60,78 @@
       },
       "header": {
         "type": "header",
+        "blocks": {
+          "mega_menu_html_ch6BMV": {
+            "type": "mega_menu_html",
+            "settings": {
+              "title": "Home",
+              "html_content": "",
+              "content_page": "",
+              "home_image_home-default": "shopify://shop_images/fashion-1_1ce33a36-c0d0-4950-a268-fcf33c47079a.jpg",
+              "home_image_home-electronic": "shopify://shop_images/electronic.jpg",
+              "home_image_home-fashion-women": "shopify://shop_images/women-fashion.jpg",
+              "home_image_home-fashion-02": "shopify://shop_images/fashion-2_45939f6a-815e-4e36-b603-cdd3a3467df0.jpg",
+              "home_image_home-bicycle": "shopify://shop_images/bicycle.jpg",
+              "home_image_home-phonecase": "shopify://shop_images/phonecase_866317bc-c6ab-4af9-8f9a-5f470e12ea5a.jpg",
+              "color_scheme": "scheme-1",
+              "submenu_position": "center",
+              "mega_menu_width": "fullwidth",
+              "mega_menu_custom_width": 1200
+            }
+          },
+          "mega_menu_shop_Rixg8D": {
+            "type": "mega_menu_shop",
+            "settings": {
+              "title": "Shop",
+              "collections": [],
+              "image_ratio": "asos",
+              "full_image": false,
+              "items_per_row": "default",
+              "enable_carousel": false,
+              "use_prev_next": false,
+              "color_scheme": "scheme-1",
+              "submenu_position": "default",
+              "mega_menu_width": "fullwidth",
+              "mega_menu_custom_width": 1200
+            }
+          },
+          "mega_menu_product_hVt3fJ": {
+            "type": "mega_menu_product",
+            "settings": {
+              "title": "Products",
+              "products_list_title": "BEST SELLER",
+              "products": [],
+              "text_alignment": "text-left",
+              "image_ratio": "asos",
+              "full_image": false,
+              "use_prev_next": false,
+              "color_scheme": "scheme-1",
+              "submenu_position": "default",
+              "mega_menu_width": "fullwidth",
+              "mega_menu_custom_width": 1200
+            }
+          },
+          "mega_menu_pages_q9MrXW": {
+            "type": "mega_menu_pages",
+            "settings": {
+              "title": "Pages",
+              "menu": "",
+              "banner_image": "shopify://shop_images/banner-header.jpg",
+              "banner_link": "",
+              "banner_title": "Unveiling the latest gear",
+              "color_scheme": "scheme-1",
+              "submenu_position": "default",
+              "mega_menu_width": "fullwidth",
+              "mega_menu_custom_width": 1200
+            }
+          }
+        },
+        "block_order": [
+          "mega_menu_html_ch6BMV",
+          "mega_menu_shop_Rixg8D",
+          "mega_menu_product_hVt3fJ",
+          "mega_menu_pages_q9MrXW"
+        ],
         "settings": {
           "layout": "layout-1",
           "header_height": 87,
