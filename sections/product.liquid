@@ -1579,6 +1579,45 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
+
+  // Handle custom swatch dropdown for color selection
+  document.querySelectorAll('.tf-variant-dropdown .select-item.color-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      const value = btn.getAttribute('data-value');
+      const label = btn.querySelector('.text-value-item').textContent;
+      // Update dropdown label
+      const dropdown = btn.closest('.tf-variant-dropdown');
+      if (dropdown) {
+        const labelSpan = dropdown.querySelector('.text-sort-value');
+        if (labelSpan) labelSpan.textContent = label;
+      }
+      // Set active class
+      btn.parentElement.querySelectorAll('.select-item.color-btn').forEach(function(el) {
+        el.classList.remove('active');
+      });
+      btn.classList.add('active');
+      // Update the label value for the option
+      const pickerItem = btn.closest('.variant-picker-item');
+      if (pickerItem) {
+        const labelValue = pickerItem.querySelector('.variant-picker-label-value');
+        if (labelValue) labelValue.textContent = label;
+      }
+      // Update selectedOptions
+      if (pickerItem) {
+        const optionName = pickerItem.className.match(/variant-([\w-]+)/);
+        if (optionName && optionName[1]) {
+          selectedOptions[optionName[1]] = value;
+        }
+      }
+      // Trigger variant selection logic
+      if (typeof findVariantByColor === 'function') {
+        const variant = findVariantByColor(value);
+        if (variant) {
+          updateVariantSelection(variant);
+        }
+      }
+    });
+  });
 });
 
 // Function to update header cart count
