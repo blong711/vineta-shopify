@@ -495,7 +495,7 @@
           <div class="tf-sticky-atc-infos">
             <form class="">
               <div class="tf-sticky-atc-variant-price text-center tf-select">
-                <select>
+                <select class="sticky-variant-select">
                   {% for variant in product.variants %}
                     <option value="{{ variant.id }}"{% if variant == product.selected_or_first_available_variant %} selected="selected"{% endif %}>
                       {{ variant.title }} - {{ variant.price | money }}
@@ -512,7 +512,7 @@
                   </div>
                 </div>
                 <a href="javascript:void(0);" 
-                   class="tf-btn hover-primary add-to-cart" 
+                   class="tf-btn hover-primary add-to-cart sticky-add-to-cart" 
                    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
                    data-quantity="1"
                    aria-label="Add to cart">Add to cart</a>
@@ -1798,6 +1798,150 @@ document.addEventListener('DOMContentLoaded', function() {
       updateAddToCartQuantity(value);
     });
   });
+
+  // Handle sticky cart variant selection
+  const stickyVariantSelect = document.querySelector('.sticky-variant-select');
+  if (stickyVariantSelect) {
+    stickyVariantSelect.addEventListener('change', function() {
+      const variantId = this.value;
+      const stickyAddToCartBtn = document.querySelector('.sticky-add-to-cart');
+      if (stickyAddToCartBtn) {
+        stickyAddToCartBtn.dataset.variantId = variantId;
+      }
+    });
+  }
+
+  // Handle sticky cart quantity changes
+  const stickyQuantityInput = document.querySelector('.tf-sticky-atc-btns .quantity-product');
+  if (stickyQuantityInput) {
+    stickyQuantityInput.addEventListener('change', function() {
+      let value = parseInt(this.value) || 1;
+      value = Math.max(1, value);
+      this.value = value;
+      const stickyAddToCartBtn = document.querySelector('.sticky-add-to-cart');
+      if (stickyAddToCartBtn) {
+        stickyAddToCartBtn.dataset.quantity = value;
+      }
+    });
+  }
+
+  // Handle sticky cart minus button
+  const stickyMinusBtn = document.querySelector('.tf-sticky-atc-btns .minus-btn');
+  if (stickyMinusBtn) {
+    stickyMinusBtn.addEventListener('click', function() {
+      const input = this.nextElementSibling;
+      let value = parseInt(input.value) || 1;
+      if (value > 1) {
+        value--;
+        input.value = value + 1;
+        const stickyAddToCartBtn = document.querySelector('.sticky-add-to-cart');
+        if (stickyAddToCartBtn) {
+          stickyAddToCartBtn.dataset.quantity = value;
+        }
+      }
+    });
+  }
+
+  // Handle sticky cart plus button
+  const stickyPlusBtn = document.querySelector('.tf-sticky-atc-btns .plus-btn');
+  if (stickyPlusBtn) {
+    stickyPlusBtn.addEventListener('click', function() {
+      const input = this.previousElementSibling;
+      let value = parseInt(input.value) || 1;
+      value++;
+      input.value = value - 1;
+      const stickyAddToCartBtn = document.querySelector('.sticky-add-to-cart');
+      if (stickyAddToCartBtn) {
+        stickyAddToCartBtn.dataset.quantity = value;
+      }
+    });
+  }
+
+  // Handle sticky cart add to cart button
+  const stickyAddToCartBtn = document.querySelector('.sticky-add-to-cart');
+  if (stickyAddToCartBtn) {
+    stickyAddToCartBtn.addEventListener('click', async function(e) {
+      e.preventDefault();
+      if (this.classList.contains('loading')) return;
+
+      const variantId = this.dataset.variantId;
+      const quantity = parseInt(this.dataset.quantity) || 1;
+
+      try {
+        this.classList.add('loading');
+        
+        if (window.cart) {
+          await window.cart.updateQuantity(variantId, quantity, 'add');
+          
+          // Fetch updated cart data
+          const response = await fetch('/cart.js');
+          const cartData = await response.json();
+          
+          // Update cart drawer
+          const cartDrawer = document.getElementById('shoppingCart');
+          if (cartDrawer) {
+            const itemsContainer = cartDrawer.querySelector('.tf-mini-cart-items');
+            if (itemsContainer) {
+              // Clear existing items
+              itemsContainer.innerHTML = '';
+              
+              // Add all items from cart
+              cartData.items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'tf-mini-cart-item';
+                itemElement.style.border = 'none';
+                itemElement.style.borderBottom = 'none';
+                itemElement.innerHTML = `
+                  <div class="tf-mini-cart-image">
+                    <a href="${item.url}">
+                      <img class="lazyload" data-src="${item.image}" src="${item.image}" alt="${item.title}" loading="lazy">
+                    </a>
+                  </div>
+                  <div class="tf-mini-cart-info">
+                    <div class="d-flex justify-content-between">
+                      <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
+                      <i class="icon icon-close remove" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
+                    </div>
+                    <div class="d-flex gap-10">
+                      <div class="text-xs">${item.variant_title || ''}</div>
+                      <a href="#" class="link edit"><i class="icon-pen"></i></a>
+                    </div>
+                    <div class="tf-mini-cart-item_price">
+                      <p class="price-wrap text-sm fw-medium">
+                        <span class="new-price text-primary">${formatMoney(item.final_price)}</span>
+                      </p>
+                    </div>
+                    <div class="tf-mini-cart-item_quantity">
+                      <div class="wg-quantity small">
+                        <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
+                        <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
+                        <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
+                      </div>
+                    </div>
+                  </div>
+                `;
+                itemsContainer.appendChild(itemElement);
+              });
+              
+              // Update cart total
+              const totalElement = cartDrawer.querySelector('.cart-total-price');
+              if (totalElement) {
+                totalElement.textContent = formatMoney(cartData.total_price);
+              }
+              
+              // Update header cart count
+              updateHeaderCartCount(cartData.item_count);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error adding item to cart:', error);
+        alert('Failed to add item to cart. Please try again.');
+      } finally {
+        this.classList.remove('loading');
+      }
+    });
+  }
 });
 
 // Function to update header cart count
