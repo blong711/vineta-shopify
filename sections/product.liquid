@@ -178,19 +178,6 @@
             <div class="tf-product-info-list other-image-zoom">
               <div class="tf-product-info-heading">
                 <h5 class="product-info-name fw-medium">{{ product.title }}</h5>
-                {% for block in section.blocks %}
-                  {% case block.type %}
-                    {% when 'rating' %}
-                      <div class="product-info-rate" {{ block.shopify_attributes }}>
-                        <div class="list-star">
-                          {% for i in (1..5) %}
-                            <i class="icon icon-star"></i>
-                          {% endfor %}
-                        </div>
-                        <span class="count-review">({{ product.metafields.reviews.rating_count | default: block.settings.no_reviews_text }})</span>
-                      </div>
-                  {% endcase %}
-                {% endfor %}
                 <div class="product-info-price">
                   <div class="display-sm price-new price-on-sale">{{ product.price | money }}</div>
                   {% if product.compare_at_price > product.price %}
@@ -2086,19 +2073,6 @@ function updateMainAddToCartButton(variant) {
   ],
   "blocks": [
     {
-      "type": "rating",
-      "name": "Product Rating",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "no_reviews_text",
-          "label": "No Reviews Text",
-          "default": "No reviews yet"
-        }
-      ]
-    },
-    {
       "type": "trust_and_payment",
       "name": "Trust & Payment",
       "limit": 1,
@@ -2427,9 +2401,6 @@ function updateMainAddToCartButton(variant) {
     {
       "name": "Product",
       "blocks": [
-        {
-          "type": "rating"
-        },
         {
           "type": "trust_and_payment"
         },
