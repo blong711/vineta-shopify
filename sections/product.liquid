@@ -227,11 +227,7 @@
               {% for block in section.blocks %}
                 {% case block.type %}
                   {% when 'countdown_timer' %}
-                    {% assign metafield_key = block.settings.metafield_key | default: 'countdown.end_date' %}
-                    {% assign metafield_parts = metafield_key | split: '.' %}
-                    {% assign metafield_namespace = metafield_parts[0] %}
-                    {% assign metafield_key_only = metafield_parts[1] %}
-                    {%- assign end_date = product.metafields[metafield_namespace][metafield_key_only] | date: '%Y-%m-%d %H:%M:%S' -%}
+                    {%- assign end_date = block.settings.countdown_metafield.value | default: block.settings.fallback_end_date | date: '%Y-%m-%d %H:%M:%S' -%}
                     {% if end_date != blank %}
                       <div class="product-info-countdown" {{ block.shopify_attributes }}>
                         <div class="countdown-title">
