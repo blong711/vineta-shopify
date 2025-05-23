@@ -12,6 +12,35 @@
     "sections": {
       "top-bar": {
         "type": "top-bar",
+        "blocks": {
+          "social_media_FXMXhM": {
+            "type": "social_media",
+            "settings": {
+              "facebook_url": "https://www.facebook.com/",
+              "instagram_url": "https://www.instagram.com/",
+              "twitter_url": "https://x.com/",
+              "snapchat_url": "https://www.snapchat.com/"
+            }
+          },
+          "announcement_iztcwH": {
+            "type": "announcement",
+            "settings": {
+              "announcements": "Return extended to 60 days\nLife-time Guarantees\nLimited-Time Offer"
+            }
+          },
+          "language_currency_Jn6jf6": {
+            "type": "language_currency",
+            "settings": {
+              "show_language": true,
+              "show_currency": true
+            }
+          }
+        },
+        "block_order": [
+          "social_media_FXMXhM",
+          "announcement_iztcwH",
+          "language_currency_Jn6jf6"
+        ],
         "settings": {
           "padding_top": 10,
           "padding_bottom": 10,
@@ -20,6 +49,85 @@
       },
       "header": {
         "type": "header",
+        "blocks": {
+          "mega_menu_html_Cr3rLA": {
+            "type": "mega_menu_html",
+            "settings": {
+              "title": "Home",
+              "html_content": "",
+              "content_page": "",
+              "home_image_home-default": "shopify://shop_images/fashion-1_1ce33a36-c0d0-4950-a268-fcf33c47079a.jpg",
+              "home_image_home-electronic": "shopify://shop_images/electronic.jpg",
+              "home_image_home-fashion-women": "shopify://shop_images/women-fashion.jpg",
+              "home_image_home-fashion-02": "shopify://shop_images/fashion-2_45939f6a-815e-4e36-b603-cdd3a3467df0.jpg",
+              "home_image_home-bicycle": "shopify://shop_images/bicycle.jpg",
+              "home_image_home-phonecase": "shopify://shop_images/phonecase_866317bc-c6ab-4af9-8f9a-5f470e12ea5a.jpg",
+              "color_scheme": "scheme-1",
+              "submenu_position": "center",
+              "mega_menu_width": "fullwidth",
+              "mega_menu_custom_width": 1200
+            }
+          },
+          "mega_menu_shop_9xXyG7": {
+            "type": "mega_menu_shop",
+            "settings": {
+              "title": "Shop",
+              "collections": [
+                "men",
+                "women"
+              ],
+              "image_ratio": "asos",
+              "full_image": false,
+              "items_per_row": "default",
+              "enable_carousel": false,
+              "use_prev_next": false,
+              "color_scheme": "scheme-1",
+              "submenu_position": "default",
+              "mega_menu_width": "fullwidth",
+              "mega_menu_custom_width": 1200
+            }
+          },
+          "mega_menu_product_NcRgpq": {
+            "type": "mega_menu_product",
+            "settings": {
+              "title": "Products",
+              "products_list_title": "BEST SELLER",
+              "products": [
+                "crop-t-shirt",
+                "loose-fit-tee",
+                "polo-neck-t-shirt"
+              ],
+              "text_alignment": "text-left",
+              "image_ratio": "asos",
+              "full_image": false,
+              "use_prev_next": false,
+              "color_scheme": "scheme-1",
+              "submenu_position": "default",
+              "mega_menu_width": "fullwidth",
+              "mega_menu_custom_width": 1200
+            }
+          },
+          "mega_menu_pages_GHHVpa": {
+            "type": "mega_menu_pages",
+            "settings": {
+              "title": "Pages",
+              "menu": "",
+              "banner_image": "shopify://shop_images/banner-header.jpg",
+              "banner_link": "",
+              "banner_title": "Unveiling the latest gear",
+              "color_scheme": "scheme-1",
+              "submenu_position": "default",
+              "mega_menu_width": "fullwidth",
+              "mega_menu_custom_width": 1200
+            }
+          }
+        },
+        "block_order": [
+          "mega_menu_html_Cr3rLA",
+          "mega_menu_shop_9xXyG7",
+          "mega_menu_product_NcRgpq",
+          "mega_menu_pages_GHHVpa"
+        ],
         "settings": {
           "layout": "layout-1",
           "header_height": 87,
