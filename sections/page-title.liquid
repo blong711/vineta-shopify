@@ -19,16 +19,16 @@
       </h4>
       <div class="breadcrumb-list">
         <a class="breadcrumb-item" href="/">Home</a>
-        <div class="breadcrumb-item dot">
-          <span></span>
-        </div>
-        <span class="breadcrumb-item current">
-          {% if template == 'list-collections' %}
-            Collections
-          {% else %}
-            {{ page_title | default: settings.title }}
-          {% endif %}
-        </span>
+        <div class="breadcrumb-item dot"><span></span></div>
+        {% if template contains 'collection' %}
+          <a class="breadcrumb-item" href="/collections">Collections</a>
+          <div class="breadcrumb-item dot"><span></span></div>
+          <span class="breadcrumb-item current">{{ collection.title }}</span>
+        {% elsif template == 'list-collections' %}
+          <span class="breadcrumb-item current">Collections</span>
+        {% else %}
+          <span class="breadcrumb-item current">{{ page_title | default: settings.title }}</span>
+        {% endif %}
       </div>
       {% if template contains 'collection' and collection.description != blank %}
         <p class="desc text-md text-main">{{ collection.description }}</p>
