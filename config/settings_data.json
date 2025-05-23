@@ -268,6 +268,46 @@
       },
       "footer": {
         "type": "footer",
+        "blocks": {
+          "contact_pbUwFh": {
+            "type": "contact",
+            "settings": {
+              "title": "Business Contact",
+              "address": "123 Yarran st, Punchbowl, NSW 2196, Australia",
+              "phone": "(64) 8342 1245",
+              "email": "support@example.com",
+              "map_link": ""
+            }
+          },
+          "newsletter_M6KUWA": {
+            "type": "newsletter",
+            "settings": {
+              "title": "Subscribe Newsletter",
+              "text": "We invite you to register to read the latest news, offers and events about our company. We promise not spam your inbox.",
+              "placeholder": "Email address"
+            }
+          },
+          "menu_BX6t8e": {
+            "type": "menu",
+            "settings": {
+              "title": "About Us",
+              "menu": "about-us"
+            }
+          },
+          "menu_cNpzTk": {
+            "type": "menu",
+            "settings": {
+              "title": "Resource",
+              "menu": "resource"
+            }
+          }
+        },
+        "block_order": [
+          "contact_pbUwFh",
+          "newsletter_M6KUWA",
+          "menu_BX6t8e",
+          "menu_cNpzTk"
+        ],
         "settings": {
           "social_facebook_link": "",
           "social_instagram_link": "",
