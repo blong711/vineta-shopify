@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "breadcrumb": {
@@ -9,13 +18,6 @@
     "product": {
       "type": "product",
       "blocks": {
-        "trust_and_payment": {
-          "type": "trust_and_payment",
-          "settings": {
-            "trust_seal_text": "Guarantee Safe Checkout:",
-            "svg_list": "visa,paypal,master,american_express,diners"
-          }
-        },
         "sold_count": {
           "type": "sold_count",
           "settings": {
@@ -35,25 +37,76 @@
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
+            "pick_mode": "first_available",
+            "enable_history_state": false,
+            "hide_sold_out": false,
+            "color_selector_type": "swatch_rounded",
             "color_selector_size": "medium"
           }
         },
-        "countdown_timer": {
-          "type": "countdown_timer",
+        "size_guide_wQx3n6": {
+          "type": "size_guide",
           "settings": {
-            "label": "Sale ends in:",
-            "metafield_key": "countdown.end_date",
-            "fallback_end_date": "2025-12-31 23:59:59"
+            "size_guide_text": "Size Guide",
+            "size_chart_title": "Size Chart",
+            "column_1": "Size",
+            "column_2": "US",
+            "column_3": "Chest",
+            "column_4": "Waist",
+            "column_5": "Hip",
+            "size_data": "XS,2,32,24 - 25,33 - 34\nS,4,34 - 35,26 - 27,35 - 26\nM,6,36 - 37,28 - 29,38 - 40\nL,8,38 - 29,30 - 31,42 - 44\nXL,10,40 - 41,32 - 33,45 - 47\nXXL,12,42 - 43,34 - 35,48 - 50",
+            "chest_title": "1. Chest",
+            "chest_instruction": "Measure at the fullest part of your chest, keeping the tape parallel to the floor.",
+            "waist_title": "2. Waist",
+            "waist_instruction": "Measure at the smallest part of your waist. This is usually below the rib cage and above the hip bone.",
+            "hip_title": "3. Hip",
+            "hip_instruction": "Measure at the fullest part of your seat, keeping the tape parallel to the floor."
+          }
+        },
+        "extra_links_QjbTXb": {
+          "type": "extra_links",
+          "settings": {
+            "show_wishlist": true,
+            "show_compare": true,
+            "show_ask_question": true,
+            "show_share": true
+          }
+        },
+        "trust_and_payment": {
+          "type": "trust_and_payment",
+          "settings": {
+            "trust_seal_text": "Guarantee Safe Checkout:",
+            "svg_list": "visa,paypal,master,american_express,diners"
+          }
+        },
+        "delivery_info_HGiyGU": {
+          "type": "delivery_info",
+          "settings": {
+            "delivery_time": "3-5 days international",
+            "free_shipping_text": "all orders over $150"
           }
         }
       },
       "block_order": [
-        "trust_and_payment",
         "sold_count",
         "stock_count",
         "variant_picker",
-        "countdown_timer"
-      ]
+        "size_guide_wQx3n6",
+        "extra_links_QjbTXb",
+        "trust_and_payment",
+        "delivery_info_HGiyGU"
+      ],
+      "settings": {
+        "layout": "default",
+        "show_sticky_cart": true,
+        "enable_video_loop": true,
+        "enable_variant_by_image": true,
+        "enable_video_autoplay": true,
+        "show_slider_nav": true,
+        "padding_top": 0,
+        "padding_bottom": 100,
+        "padding_mobile_rate": 50
+      }
     },
     "product-details": {
       "type": "product-details",
@@ -64,17 +117,32 @@
             "title": "Description",
             "default_content": "<p>No description available</p>"
           }
+        },
+        "materials_QxmpJW": {
+          "type": "materials",
+          "settings": {
+            "title": "Materials",
+            "subtitle": "Materials Care"
+          }
+        },
+        "return_policies_bWH7Qn": {
+          "type": "return_policies",
+          "settings": {
+            "title": "Return Policies"
+          }
         }
       },
       "block_order": [
-        "description"
-      ]
+        "description",
+        "materials_QxmpJW",
+        "return_policies_bWH7Qn"
+      ],
+      "settings": {
+        "layout": "accordion"
+      }
     },
     "people-also-bought": {
       "type": "people-also-bought",
-      "settings": {
-        "title": "People Also Bought"
-      },
       "blocks": {
         "related_products": {
           "type": "related_products",
@@ -89,13 +157,13 @@
       },
       "block_order": [
         "related_products"
-      ]
+      ],
+      "settings": {
+        "title": "People Also Bought"
+      }
     },
     "recently-viewed": {
       "type": "recently-viewed",
-      "settings": {
-        "title": "Recently Viewed"
-      },
       "blocks": {
         "recently_viewed": {
           "type": "recently_viewed",
@@ -110,7 +178,10 @@
       },
       "block_order": [
         "recently_viewed"
-      ]
+      ],
+      "settings": {
+        "title": "Recently Viewed"
+      }
     }
   },
   "order": [
@@ -120,4 +191,4 @@
     "people-also-bought",
     "recently-viewed"
   ]
-} 
+}
