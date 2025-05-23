@@ -9,49 +9,9 @@
  */
 {
   "current": {
-    "favicon": "shopify://shop_images/favicon.png",
-    "font_library": "google",
-    "heading_font_family": "'Poppins', sans-serif",
-    "heading_font_weight": 500,
-    "body_font_weight": 400,
-    "body_font_size_mobile": 16,
-    "body_font_size_desktop": 16,
-    "social_facebook_link": "https://www.facebook.com/",
-    "social_twitter_link": "http://x.com/?lang=vi",
-    "social_instagram_link": "https://www.instagram.com/",
-    "social_linkedin_link": "https://www.linkedin.com/",
     "sections": {
       "top-bar": {
         "type": "top-bar",
-        "blocks": {
-          "social_media_EhET3e": {
-            "type": "social_media",
-            "settings": {
-              "facebook_url": "https://www.facebook.com/",
-              "instagram_url": "https://www.instagram.com/",
-              "twitter_url": "https://x.com/",
-              "snapchat_url": "https://www.snapchat.com/"
-            }
-          },
-          "announcement_nYqit4": {
-            "type": "announcement",
-            "settings": {
-              "announcements": "Return extended to 60 days\nLife-time Guarantees\nLimited-Time Offer"
-            }
-          },
-          "language_currency_aMkHiF": {
-            "type": "language_currency",
-            "settings": {
-              "show_language": true,
-              "show_currency": true
-            }
-          }
-        },
-        "block_order": [
-          "social_media_EhET3e",
-          "announcement_nYqit4",
-          "language_currency_aMkHiF"
-        ],
         "settings": {
           "padding_top": 10,
           "padding_bottom": 10,
@@ -60,78 +20,6 @@
       },
       "header": {
         "type": "header",
-        "blocks": {
-          "mega_menu_html_ch6BMV": {
-            "type": "mega_menu_html",
-            "settings": {
-              "title": "Home",
-              "html_content": "",
-              "content_page": "",
-              "home_image_home-default": "shopify://shop_images/fashion-1_1ce33a36-c0d0-4950-a268-fcf33c47079a.jpg",
-              "home_image_home-electronic": "shopify://shop_images/electronic.jpg",
-              "home_image_home-fashion-women": "shopify://shop_images/women-fashion.jpg",
-              "home_image_home-fashion-02": "shopify://shop_images/fashion-2_45939f6a-815e-4e36-b603-cdd3a3467df0.jpg",
-              "home_image_home-bicycle": "shopify://shop_images/bicycle.jpg",
-              "home_image_home-phonecase": "shopify://shop_images/phonecase_866317bc-c6ab-4af9-8f9a-5f470e12ea5a.jpg",
-              "color_scheme": "scheme-1",
-              "submenu_position": "center",
-              "mega_menu_width": "fullwidth",
-              "mega_menu_custom_width": 1200
-            }
-          },
-          "mega_menu_shop_Rixg8D": {
-            "type": "mega_menu_shop",
-            "settings": {
-              "title": "Shop",
-              "collections": [],
-              "image_ratio": "asos",
-              "full_image": false,
-              "items_per_row": "default",
-              "enable_carousel": false,
-              "use_prev_next": false,
-              "color_scheme": "scheme-1",
-              "submenu_position": "default",
-              "mega_menu_width": "fullwidth",
-              "mega_menu_custom_width": 1200
-            }
-          },
-          "mega_menu_product_hVt3fJ": {
-            "type": "mega_menu_product",
-            "settings": {
-              "title": "Products",
-              "products_list_title": "BEST SELLER",
-              "products": [],
-              "text_alignment": "text-left",
-              "image_ratio": "asos",
-              "full_image": false,
-              "use_prev_next": false,
-              "color_scheme": "scheme-1",
-              "submenu_position": "default",
-              "mega_menu_width": "fullwidth",
-              "mega_menu_custom_width": 1200
-            }
-          },
-          "mega_menu_pages_q9MrXW": {
-            "type": "mega_menu_pages",
-            "settings": {
-              "title": "Pages",
-              "menu": "",
-              "banner_image": "shopify://shop_images/banner-header.jpg",
-              "banner_link": "",
-              "banner_title": "Unveiling the latest gear",
-              "color_scheme": "scheme-1",
-              "submenu_position": "default",
-              "mega_menu_width": "fullwidth",
-              "mega_menu_custom_width": 1200
-            }
-          }
-        },
-        "block_order": [
-          "mega_menu_html_ch6BMV",
-          "mega_menu_shop_Rixg8D",
-          "mega_menu_product_hVt3fJ",
-          "mega_menu_pages_q9MrXW"
-        ],
         "settings": {
           "layout": "layout-1",
           "header_height": 87,
@@ -158,67 +46,151 @@
           "animation_duration": 200
         }
       },
-      "footer": {
-        "type": "footer",
+      "breadcrumb": {
+        "type": "breadcrumb",
+        "settings": {
+          "show_breadcrumb": true
+        }
+      },
+      "product": {
+        "type": "product",
         "blocks": {
-          "contact_qhXzV6": {
-            "type": "contact",
+          "sold_count_yQJxXg": {
+            "type": "sold_count",
             "settings": {
-              "title": "Business Contact",
-              "address": "123 Yarran st, Punchbowl, NSW 2196, Australia",
-              "phone": "(64) 8342 1245",
-              "email": "support@example.com",
-              "map_link": ""
+              "in_stock_text": "In Stock",
+              "out_of_stock_text": "Out of Stock",
+              "sold_count_text": "{count} sold in last 24 hours",
+              "min_sold_count": 20,
+              "max_sold_count": 50
             }
           },
-          "newsletter_9gJ8Y6": {
-            "type": "newsletter",
+          "stock_count_zqgxhB": {
+            "type": "stock_count",
             "settings": {
-              "title": "Subscribe Newsletter",
-              "text": "We invite you to register to read the latest news, offers and events about our company. We promise not spam your inbox.",
-              "placeholder": "Email address"
+              "stock_count_text": "Only {count} items left!"
             }
           },
-          "menu_jVF76q": {
-            "type": "menu",
+          "variant_picker_dNLy6j": {
+            "type": "variant_picker",
             "settings": {
-              "title": "About Us",
-              "menu": "about-us"
+              "pick_mode": "first_available",
+              "enable_history_state": false,
+              "hide_sold_out": false,
+              "color_selector_type": "swatch_rounded",
+              "color_selector_size": "medium"
             }
           },
-          "menu_rhMiew": {
-            "type": "menu",
+          "extra_links_rDfE38": {
+            "type": "extra_links",
             "settings": {
-              "title": "Resource",
-              "menu": "resource"
+              "show_wishlist": true,
+              "show_compare": true,
+              "show_ask_question": true,
+              "show_share": true
+            }
+          },
+          "trust_and_payment_frmJ3B": {
+            "type": "trust_and_payment",
+            "settings": {
+              "trust_seal_text": "Guarantee Safe Checkout:",
+              "svg_list": "visa,paypal,master,american_express,diners"
+            }
+          },
+          "delivery_info_DyE7GH": {
+            "type": "delivery_info",
+            "settings": {
+              "delivery_time": "3-5 days international",
+              "free_shipping_text": "all orders over $150"
+            }
+          },
+          "size_guide_PPGMWd": {
+            "type": "size_guide",
+            "settings": {
+              "size_guide_text": "Size Guide",
+              "size_chart_title": "Size Chart",
+              "column_1": "Size",
+              "column_2": "US",
+              "column_3": "Chest",
+              "column_4": "Waist",
+              "column_5": "Hip",
+              "size_data": "XS,2,32,24 - 25,33 - 34\nS,4,34 - 35,26 - 27,35 - 26\nM,6,36 - 37,28 - 29,38 - 40\nL,8,38 - 29,30 - 31,42 - 44\nXL,10,40 - 41,32 - 33,45 - 47\nXXL,12,42 - 43,34 - 35,48 - 50",
+              "chest_title": "1. Chest",
+              "chest_instruction": "Measure at the fullest part of your chest, keeping the tape parallel to the floor.",
+              "waist_title": "2. Waist",
+              "waist_instruction": "Measure at the smallest part of your waist. This is usually below the rib cage and above the hip bone.",
+              "hip_title": "3. Hip",
+              "hip_instruction": "Measure at the fullest part of your seat, keeping the tape parallel to the floor."
+            }
+          },
+          "fbt_Rd9fp3": {
+            "type": "fbt",
+            "settings": {
+              "fbt_title": "Frequently Bought Together",
+              "max_products": 3
             }
           }
         },
         "block_order": [
-          "contact_qhXzV6",
-          "newsletter_9gJ8Y6",
-          "menu_jVF76q",
-          "menu_rhMiew"
+          "sold_count_yQJxXg",
+          "stock_count_zqgxhB",
+          "variant_picker_dNLy6j",
+          "extra_links_rDfE38",
+          "trust_and_payment_frmJ3B",
+          "delivery_info_DyE7GH",
+          "size_guide_PPGMWd",
+          "fbt_Rd9fp3"
         ],
         "settings": {
-          "logo": "shopify://shop_images/logo.svg",
-          "social_facebook_link": "https://www.facebook.com/",
-          "social_instagram_link": "https://www.instagram.com/",
-          "social_linkedin_link": "https://www.linkedin.com/",
-          "social_x_link": "https://x.com/?lang=vi",
+          "layout": "default",
+          "show_sticky_cart": true,
+          "enable_video_loop": true,
+          "enable_variant_by_image": true,
+          "enable_video_autoplay": true,
+          "show_slider_nav": true,
+          "padding_top": 0,
+          "padding_bottom": 100,
+          "padding_mobile_rate": 50
+        }
+      },
+      "product-details": {
+        "type": "product-details",
+        "settings": {
+          "layout": "accordion"
+        }
+      },
+      "people-also-bought": {
+        "type": "people-also-bought",
+        "settings": {
+          "title": "People Also Bought"
+        }
+      },
+      "recently-viewed": {
+        "type": "recently-viewed",
+        "settings": {
+          "title": "Recently Viewed"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "social_facebook_link": "",
+          "social_instagram_link": "",
+          "social_linkedin_link": "",
+          "social_x_link": "",
           "heading_size": "medium",
           "heading_font_weight": "medium",
           "heading_margin_bottom": 30,
           "text_size": "medium",
-          "padding_top_main": 0,
-          "padding_bottom_main": 0,
+          "padding_top_main": 82,
+          "padding_bottom_main": 60,
           "padding_top": 0,
           "padding_bottom": 0,
           "column_gap": 24,
           "show_payment_icons": true,
-          "payment_icons_size": 40,
+          "payment_icons_size": 30,
           "payment_icons": "visa,paypal,master,american_express,diners_club",
-          "copyrights": "Copyright © 2025 by <span class=\"fw-medium\">Vineta</span>. All rights reserved."
+          "copyrights": "© [year] <span class=\"\">Ecomus</span>. All rights reserved."
         }
       },
       "cart-drawer": {
@@ -293,216 +265,6 @@
           "show_account": true,
           "show_shop": true,
           "show_home": true
-        }
-      },
-      "breadcrumb": {
-        "type": "breadcrumb",
-        "settings": {
-          "show_breadcrumb": true
-        }
-      },
-      "page-title": {
-        "type": "page-title",
-        "settings": {
-          "custom_title": "",
-          "contact_title": "",
-          "about_title": "",
-          "wishlist_title": "",
-          "compare_title": ""
-        }
-      },
-      "product": {
-        "type": "product",
-        "blocks": {
-          "rating_7HW3Kz": {
-            "type": "rating",
-            "settings": {
-              "no_reviews_text": "No reviews yet"
-            }
-          },
-          "sold_count_DN37bV": {
-            "type": "sold_count",
-            "settings": {
-              "in_stock_text": "In Stock",
-              "out_of_stock_text": "Out of Stock",
-              "sold_count_text": "30 sold in last 24 hours",
-              "min_sold_count": 20,
-              "max_sold_count": 100
-            }
-          },
-          "extra_links_8PRCfd": {
-            "type": "extra_links",
-            "settings": {
-              "show_wishlist": true,
-              "show_compare": true,
-              "show_ask_question": true,
-              "show_share": true
-            }
-          },
-          "stock_count_nJjRAG": {
-            "type": "stock_count",
-            "settings": {
-              "stock_count_text": "Only {count} items left!"
-            }
-          },
-          "trust_and_payment_7qHUPc": {
-            "type": "trust_and_payment",
-            "settings": {
-              "trust_seal_text": "Guarantee Safe Checkout:",
-              "svg_list": "visa,paypal,master,american_express,diners"
-            }
-          },
-          "fbt_A7iXhR": {
-            "type": "fbt",
-            "settings": {
-              "fbt_title": "Frequently Bought Together",
-              "max_products": 3
-            }
-          },
-          "countdown_timer_BX8Qkj": {
-            "type": "countdown_timer",
-            "settings": {
-              "label": "Sale ends in:",
-              "metafield_key": "countdown.end_date",
-              "fallback_end_date": "2025-12-31 23:59:59"
-            }
-          },
-          "size_guide_KwpfNe": {
-            "type": "size_guide",
-            "settings": {
-              "size_guide_text": "Size Guide",
-              "size_guide_image": "shopify://shop_images/size-guide.png",
-              "size_chart_title": "Size Chart",
-              "column_1": "Size",
-              "column_2": "US",
-              "column_3": "Chest",
-              "column_4": "Waist",
-              "column_5": "Hip",
-              "size_data": "XS,2,32,24 - 25,33 - 34\nS,4,34 - 35,26 - 27,35 - 26\nM,6,36 - 37,28 - 29,38 - 40\nL,8,38 - 29,30 - 31,42 - 44\nXL,10,40 - 41,32 - 33,45 - 47\nXXL,12,42 - 43,34 - 35,48 - 50",
-              "chest_title": "1. Chest",
-              "chest_instruction": "Measure at the fullest part of your chest, keeping the tape parallel to the floor.",
-              "waist_title": "2. Waist",
-              "waist_instruction": "Measure at the smallest part of your waist. This is usually below the rib cage and above the hip bone.",
-              "hip_title": "3. Hip",
-              "hip_instruction": "Measure at the fullest part of your seat, keeping the tape parallel to the floor."
-            }
-          },
-          "delivery_info_PTyKe9": {
-            "type": "delivery_info",
-            "settings": {
-              "delivery_time": "3-5 days international",
-              "free_shipping_text": "all orders over $150"
-            }
-          },
-          "variant_picker_Y8fdqg": {
-            "type": "variant_picker",
-            "settings": {
-              "pick_mode": "first_available",
-              "enable_history_state": false,
-              "hide_sold_out": false,
-              "color_selector_type": "swatch_rounded",
-              "color_selector_size": "medium"
-            }
-          }
-        },
-        "block_order": [
-          "rating_7HW3Kz",
-          "sold_count_DN37bV",
-          "extra_links_8PRCfd",
-          "stock_count_nJjRAG",
-          "trust_and_payment_7qHUPc",
-          "fbt_A7iXhR",
-          "countdown_timer_BX8Qkj",
-          "size_guide_KwpfNe",
-          "delivery_info_PTyKe9",
-          "variant_picker_Y8fdqg"
-        ],
-        "settings": {
-          "layout": "default",
-          "show_sticky_cart": true,
-          "enable_video_loop": true,
-          "enable_variant_by_image": true,
-          "enable_video_autoplay": true,
-          "show_slider_nav": true,
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_mobile_rate": 50
-        }
-      },
-      "product-details": {
-        "type": "product-details",
-        "blocks": {
-          "description_9MaGfz": {
-            "type": "description",
-            "settings": {
-              "title": "Descriptions",
-              "default_content": ""
-            }
-          },
-          "materials_hd9tQU": {
-            "type": "materials",
-            "settings": {
-              "title": "Materials",
-              "subtitle": "Materials Care"
-            }
-          },
-          "return_policies_B6tbX6": {
-            "type": "return_policies",
-            "settings": {
-              "title": "Return Policies"
-            }
-          }
-        },
-        "block_order": [
-          "description_9MaGfz",
-          "materials_hd9tQU",
-          "return_policies_B6tbX6"
-        ],
-        "settings": {
-          "layout": "accordion"
-        }
-      },
-      "people-also-bought": {
-        "type": "people-also-bought",
-        "blocks": {
-          "featured_collection_VTqzDr": {
-            "type": "featured_collection",
-            "settings": {
-              "collection": "",
-              "products_to_show": 8,
-              "slides_per_view_mobile": 2,
-              "slides_per_view_tablet": 3,
-              "slides_per_view_desktop": 4,
-              "space_between": 12
-            }
-          }
-        },
-        "block_order": [
-          "featured_collection_VTqzDr"
-        ],
-        "settings": {
-          "title": "People Also Bought"
-        }
-      },
-      "recently-viewed": {
-        "type": "recently-viewed",
-        "blocks": {
-          "recently_viewed_F3yxcp": {
-            "type": "recently_viewed",
-            "settings": {
-              "products_to_show": 8,
-              "slides_per_view_mobile": 2,
-              "slides_per_view_tablet": 3,
-              "slides_per_view_desktop": 4,
-              "space_between": 12
-            }
-          }
-        },
-        "block_order": [
-          "recently_viewed_F3yxcp"
-        ],
-        "settings": {
-          "title": "Recently Viewed"
         }
       }
     },
