@@ -18,6 +18,14 @@
     "product": {
       "type": "product",
       "blocks": {
+        "countdown_timer_V6yRcr": {
+          "type": "countdown_timer",
+          "settings": {
+            "label": "Sale ends in:",
+            "metafield_key": "countdown.end_date",
+            "fallback_end_date": "2025-12-31 23:59:59"
+          }
+        },
         "sold_count": {
           "type": "sold_count",
           "settings": {
@@ -88,6 +96,7 @@
         }
       },
       "block_order": [
+        "countdown_timer_V6yRcr",
         "sold_count",
         "stock_count",
         "variant_picker",
