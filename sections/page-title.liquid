@@ -2,6 +2,11 @@
 <section class="tf-page-title">
   <div class="container">
     <div class="box-title text-center">
+      {% if section.settings.title_image != blank %}
+        <div class="title-image">
+          {{ section.settings.title_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'img-fluid' }}
+        </div>
+      {% endif %}
       <h4 class="title">
         {% if template == 'list-collections' %}
           Collections
@@ -30,6 +35,9 @@
           {% endif %}
         </span>
       </div>
+      {% if section.settings.description != blank %}
+        <p class="desc text-md text-main">{{ section.settings.description }}</p>
+      {% endif %}
     </div>
   </div>
 </section>
@@ -38,6 +46,12 @@
 {
   "name": "Page Title",
   "settings": [
+    {
+      "type": "image_picker",
+      "id": "title_image",
+      "label": "Title Image",
+      "info": "Optional image to display above the title"
+    },
     {
       "type": "text",
       "id": "custom_title",
@@ -67,6 +81,12 @@
       "id": "compare_title",
       "label": "Compare Page Title",
       "info": "Title for compare page"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Page Description",
+      "info": "Add a description below the title"
     }
   ]
 }
