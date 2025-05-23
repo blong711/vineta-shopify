@@ -11,11 +11,20 @@
   "sections": {
     "page_title": {
       "type": "page-title",
-      "settings": {}
+      "settings": {
+        "background_image": "shopify://shop_images/page-title_1.jpg",
+        "custom_title": "",
+        "contact_title": "",
+        "about_title": "",
+        "wishlist_title": "",
+        "compare_title": ""
+      }
     },
     "main": {
       "type": "collection-list",
-      "settings": {}
+      "settings": {
+        "collections_per_page": 6
+      }
     }
   },
   "order": [
