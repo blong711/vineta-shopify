@@ -1,12 +1,7 @@
 {%- comment -%}Page Title Section{%- endcomment -%}
-<section class="tf-page-title">
+<section class="tf-page-title" {% if section.settings.background_image != blank %}style="background-image: url('{{ section.settings.background_image | image_url }}');"{% endif %}>
   <div class="container">
     <div class="box-title text-center">
-      {% if section.settings.title_image != blank %}
-        <div class="title-image">
-          {{ section.settings.title_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'img-fluid' }}
-        </div>
-      {% endif %}
       <h4 class="title">
         {% if template == 'list-collections' %}
           Collections
@@ -35,8 +30,8 @@
           {% endif %}
         </span>
       </div>
-      {% if section.settings.description != blank %}
-        <p class="desc text-md text-main">{{ section.settings.description }}</p>
+      {% if template contains 'collection' and collection.description != blank %}
+        <p class="desc text-md text-main">{{ collection.description }}</p>
       {% endif %}
     </div>
   </div>
@@ -48,9 +43,9 @@
   "settings": [
     {
       "type": "image_picker",
-      "id": "title_image",
-      "label": "Title Image",
-      "info": "Optional image to display above the title"
+      "id": "background_image",
+      "label": "Background Image",
+      "info": "Background image for the page title section"
     },
     {
       "type": "text",
@@ -81,12 +76,6 @@
       "id": "compare_title",
       "label": "Compare Page Title",
       "info": "Title for compare page"
-    },
-    {
-      "type": "textarea",
-      "id": "description",
-      "label": "Page Description",
-      "info": "Add a description below the title"
     }
   ]
 }
