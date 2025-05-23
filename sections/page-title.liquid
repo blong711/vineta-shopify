@@ -22,8 +22,10 @@
         <div class="breadcrumb-item dot"><span></span></div>
         {% if template contains 'collection' %}
           <a class="breadcrumb-item" href="/collections">Collections</a>
-          <div class="breadcrumb-item dot"><span></span></div>
-          <span class="breadcrumb-item current">{{ collection.title }}</span>
+          {% if collection.title != blank %}
+            <div class="breadcrumb-item dot"><span></span></div>
+            <span class="breadcrumb-item current">{{ collection.title }}</span>
+          {% endif %}
         {% elsif template == 'list-collections' %}
           <span class="breadcrumb-item current">Collections</span>
         {% else %}
