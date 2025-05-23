@@ -1,0 +1,123 @@
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+        "show_breadcrumb": true
+      }
+    },
+    "product": {
+      "type": "product",
+      "blocks": {
+        "trust_and_payment": {
+          "type": "trust_and_payment",
+          "settings": {
+            "trust_seal_text": "Guarantee Safe Checkout:",
+            "svg_list": "visa,paypal,master,american_express,diners"
+          }
+        },
+        "sold_count": {
+          "type": "sold_count",
+          "settings": {
+            "in_stock_text": "In Stock",
+            "out_of_stock_text": "Out of Stock",
+            "sold_count_text": "{count} sold in last 24 hours",
+            "min_sold_count": 20,
+            "max_sold_count": 50
+          }
+        },
+        "stock_count": {
+          "type": "stock_count",
+          "settings": {
+            "stock_count_text": "Only {count} items left!"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "color_selector_size": "medium"
+          }
+        },
+        "countdown_timer": {
+          "type": "countdown_timer",
+          "settings": {
+            "label": "Sale ends in:",
+            "metafield_key": "countdown.end_date",
+            "fallback_end_date": "2025-12-31 23:59:59"
+          }
+        }
+      },
+      "block_order": [
+        "trust_and_payment",
+        "sold_count",
+        "stock_count",
+        "variant_picker",
+        "countdown_timer"
+      ]
+    },
+    "product-details": {
+      "type": "product-details",
+      "blocks": {
+        "description": {
+          "type": "description",
+          "settings": {
+            "title": "Description",
+            "default_content": "<p>No description available</p>"
+          }
+        }
+      },
+      "block_order": [
+        "description"
+      ]
+    },
+    "people-also-bought": {
+      "type": "people-also-bought",
+      "settings": {
+        "title": "People Also Bought"
+      },
+      "blocks": {
+        "related_products": {
+          "type": "related_products",
+          "settings": {
+            "products_to_show": 8,
+            "slides_per_view_mobile": 2,
+            "slides_per_view_tablet": 3,
+            "slides_per_view_desktop": 4,
+            "space_between": 12
+          }
+        }
+      },
+      "block_order": [
+        "related_products"
+      ]
+    },
+    "recently-viewed": {
+      "type": "recently-viewed",
+      "settings": {
+        "title": "Recently Viewed"
+      },
+      "blocks": {
+        "recently_viewed": {
+          "type": "recently_viewed",
+          "settings": {
+            "products_to_show": 8,
+            "slides_per_view_mobile": 2,
+            "slides_per_view_tablet": 3,
+            "slides_per_view_desktop": 4,
+            "space_between": 12
+          }
+        }
+      },
+      "block_order": [
+        "recently_viewed"
+      ]
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "product",
+    "product-details",
+    "people-also-bought",
+    "recently-viewed"
+  ]
+} 
