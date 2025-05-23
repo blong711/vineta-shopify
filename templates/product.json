@@ -55,19 +55,9 @@
           "type": "size_guide",
           "settings": {
             "size_guide_text": "Size Guide",
-            "size_chart_title": "Size Chart",
-            "column_1": "Size",
-            "column_2": "US",
-            "column_3": "Chest",
-            "column_4": "Waist",
-            "column_5": "Hip",
-            "size_data": "XS,2,32,24 - 25,33 - 34\nS,4,34 - 35,26 - 27,35 - 26\nM,6,36 - 37,28 - 29,38 - 40\nL,8,38 - 29,30 - 31,42 - 44\nXL,10,40 - 41,32 - 33,45 - 47\nXXL,12,42 - 43,34 - 35,48 - 50",
-            "chest_title": "1. Chest",
-            "chest_instruction": "Measure at the fullest part of your chest, keeping the tape parallel to the floor.",
-            "waist_title": "2. Waist",
-            "waist_instruction": "Measure at the smallest part of your waist. This is usually below the rib cage and above the hip bone.",
-            "hip_title": "3. Hip",
-            "hip_instruction": "Measure at the fullest part of your seat, keeping the tape parallel to the floor."
+            "size_guide_source": "page",
+            "size_guide_page": "",
+            "size_guide_metafield": "size_guide.content"
           }
         },
         "extra_links_QjbTXb": {
@@ -92,6 +82,13 @@
             "delivery_time": "3-5 days international",
             "free_shipping_text": "all orders over $150"
           }
+        },
+        "fbt_4G7Epn": {
+          "type": "fbt",
+          "settings": {
+            "fbt_title": "Frequently Bought Together",
+            "max_products": 3
+          }
         }
       },
       "block_order": [
@@ -102,7 +99,8 @@
         "size_guide_wQx3n6",
         "extra_links_QjbTXb",
         "trust_and_payment",
-        "delivery_info_HGiyGU"
+        "delivery_info_HGiyGU",
+        "fbt_4G7Epn"
       ],
       "settings": {
         "layout": "default",
