@@ -198,10 +198,10 @@
                             <path d="M4.12025 4.85809C4.01204 4.72502 3.88239 4.60855 3.73448 4.51577C3.70506 4.49735 3.66772 4.49735 3.6383 4.51577C2.64745 5.13712 2.64446 6.58633 3.6383 7.20955C3.66723 7.22769 3.70471 7.22825 3.73448 7.20955C3.88242 7.11677 4.01208 7.00026 4.12029 6.8672C3.64157 6.28237 3.64072 5.44386 4.12025 4.85809Z" fill="#EA5513"/>
                             <path d="M10.8011 0.0119845C10.6829 0.0387033 7.88676 0.701328 6.39096 3.62798C4.90723 6.53083 6.48163 8.24741 6.63386 9.34639L6.63403 9.34629C6.69 9.74974 6.54569 10.0588 6.01356 10.4272C5.69392 10.6486 5.40494 10.6816 5.10034 10.5723V10.5727C5.10034 10.5727 6.17507 11.6058 7.26087 10.8972C8.33686 10.1951 8.02601 9.11809 7.85986 8.63131L7.86025 8.63103C7.46365 7.57951 7.11673 6.19027 8.09319 4.27988C8.67292 3.14557 9.44797 2.35153 10.1868 1.80263C10.426 1.38835 10.7395 1.0331 11.1223 0.795758C11.5326 0.541367 11.2701 -0.0948905 10.8011 0.0119845Z" fill="#EA5513"/>
                           </svg>
-                          {% assign random_number = block.settings.min_sold_count | plus: block.settings.max_sold_count | divided_by: 2 | round %}
-                          {% assign text = block.settings.sold_count_text %}
-                          {% assign text = text | replace: '{count}', random_number %}
-                          <span class="text-dark">{{ text }}</span>
+                          {% assign sold_count_text = block.settings.sold_count_text | replace: '{count}', block.settings.min_sold_count %}
+                          <span class="text-dark sold-count-js" data-min="{{ block.settings.min_sold_count }}" data-max="{{ block.settings.max_sold_count }}">
+                            {{ sold_count_text }}
+                          </span>
                         {% else %}
                           <span class="stock out-of-stock">{{ block.settings.out_of_stock_text }}</span>
                         {% endif %}
@@ -1974,6 +1974,15 @@ function updateMainAddToCartButton(variant) {
     }
   }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.sold-count-js').forEach(function(el) {
+    var min = parseInt(el.getAttribute('data-min'), 10);
+    var max = parseInt(el.getAttribute('data-max'), 10);
+    var random = Math.floor(Math.random() * (max - min + 1)) + min;
+    el.textContent = el.textContent.replace(/\d+/, random);
+  });
+});
 </script>
 
 {% schema %}
