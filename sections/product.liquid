@@ -209,12 +209,10 @@
                     {% when 'stock_count' %}
                       <div class="product-info-progress-sale" {{ block.shopify_attributes }}>
                         <div class="title-hurry-up">
-                          <span class="text-primary fw-medium">HURRY UP!</span> 
-                          {% assign stock_text = block.settings.stock_count_text %}
                           {% assign inventory_quantity = product.variants.first.inventory_quantity %}
                           {% assign inventory_policy = product.variants.first.inventory_policy %}
-                          {% assign stock_text = stock_text | replace: '{count}', inventory_quantity %}
-                          {{ stock_text }}
+                          <span class="text-primary fw-medium">{{ block.settings.stock_count_text }}</span>
+                          Only <span class="count">{{ inventory_quantity }}</span> items left!
                         </div>
                         <div class="progress-sold">
                           {% assign progress_percentage = inventory_quantity | times: 100 | divided_by: inventory_policy %}
@@ -2114,7 +2112,7 @@ document.addEventListener('DOMContentLoaded', function() {
           "type": "text",
           "id": "stock_count_text",
           "label": "Stock Count Text",
-          "default": "Only {count} items left!"
+          "default": "HURRY UP!"
         }
       ]
     },
