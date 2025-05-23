@@ -410,7 +410,7 @@
                     {% if collection %}
                       {% assign related_products = collection.products | where: "available", true  %}
                       {% if related_products.size > 0 %}
-                        <div class="tf-product-fbt" {{ block.shopify_attributes }}>
+                        <div class="tf-product-fbt" {{ block.shopify_attributes }} style="margin-top: {{ block.settings.fbt_margin_top }}px; margin-bottom: {{ block.settings.fbt_margin_bottom }}px;">
                           <div class="title text-xl fw-medium">{{ block.settings.fbt_title }}</div>
                           <form class="tf-product-form-bundle">
                             <div class="tf-bundle-products">
@@ -2189,6 +2189,26 @@ document.addEventListener('DOMContentLoaded', function() {
           "step": 1,
           "label": "Maximum Products",
           "default": 3
+        },
+        {
+          "type": "range",
+          "id": "fbt_margin_top",
+          "label": "FBT Margin Top",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "default": 42
+        },
+        {
+          "type": "range",
+          "id": "fbt_margin_bottom",
+          "label": "FBT Margin Bottom",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "default": 0
         }
       ]
     },
