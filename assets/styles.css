@@ -6289,6 +6289,7 @@ button.animate-btn::after,
 
 .modal-backdrop {
   background-color: var(--backdrop);
+  transition: opacity .15s linear;
 }
 .modal-backdrop.show {
   opacity: 1;
@@ -6299,6 +6300,7 @@ button.animate-btn::after,
 
 .modal {
   cursor: url(/assets/cursor-close.svg), auto;
+  transition: opacity .15s linear;
 }
 .modal .icon-close,
 .modal .icon-close-popup {
@@ -6407,6 +6409,9 @@ button.animate-btn::after,
 }
 .modal.fade:not(.show) {
   opacity: 0;
+}
+.modal.show {
+  opacity: 1;
 }
 .modal .modal-content {
   cursor: default !important;
