@@ -16,10 +16,7 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/Women_fashion_v1.webp",
-            "image_position": "left",
-            "content_position": "left",
-            "text_color": "dark-3",
-            "button_color": "dark2",
+            "content_alignment": "left",
             "subtitle": "SUMMER COLLECTION",
             "heading": "Everyday Essentials",
             "subheading": "Versatile pieces for all-day style",
@@ -31,14 +28,11 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/Women_fashion_v2.webp",
-            "image_position": "left",
-            "content_position": "left",
-            "text_color": "dark-3",
-            "button_color": "dark2",
+            "content_alignment": "left",
             "subtitle": "SUMMER COLLECTION",
             "heading": "Bold and Beautiful",
             "subheading": "Stand out with chic, trend-setting women’s fashion.",
-            "button_text": "Shop Now",
+            "button_text": "Shop Collection",
             "button_link": ""
           }
         },
@@ -46,14 +40,11 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/Women_fashion_v3.webp",
-            "image_position": "left",
-            "content_position": "left",
-            "text_color": "dark-3",
-            "button_color": "dark2",
+            "content_alignment": "left",
             "subtitle": "SUMMER COLLECTION",
             "heading": "Feminine Elegance",
             "subheading": "Find the perfect outfit for any occasion.",
-            "button_text": "Shop Now",
+            "button_text": "Shop Collection",
             "button_link": ""
           }
         }
@@ -64,10 +55,22 @@
         "slide_yWQ7aN"
       ],
       "settings": {
-        "layout": "fashion-women",
+        "layout": "layout2",
+        "width": "full",
+        "image_height_mode": "adapt",
+        "fixed_height": 600,
+        "mobile_image_height_mode": "fixed",
+        "mobile_fixed_height": 400,
         "autoplay": true,
         "loop": true,
-        "speed": 800
+        "speed": 800,
+        "show_navigation": false,
+        "show_dots": true,
+        "padding": 0,
+        "pause_on_hover": true,
+        "effect": "slide",
+        "direction": "horizontal",
+        "draggable": true
       }
     },
     "featured_collection_KC9ne3": {
@@ -110,8 +113,16 @@
         "collection_tTJMpq"
       ],
       "settings": {
-        "layout": "home-fashion-women",
-        "speed": 800
+        "layout": "layout2",
+        "speed": 800,
+        "slides_per_view": 3,
+        "slides_per_view_tablet": 2,
+        "slides_per_view_mobile": 1,
+        "space_between": 0,
+        "enable_navigation": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 5000,
+        "enable_loop": true
       }
     },
     "top_sellers_VRntpt": {
@@ -273,6 +284,9 @@
         "brand_YxchfL"
       ],
       "settings": {
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "layout": "layout1",
         "speed": 80,
         "style": "left",
         "clone": 2
