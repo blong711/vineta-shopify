@@ -20,6 +20,56 @@
         "compare_title": ""
       }
     },
+    "sub_collection_P3mtpz": {
+      "type": "sub-collection",
+      "blocks": {
+        "collection_bHKNPr": {
+          "type": "collection",
+          "settings": {
+            "collection": "men"
+          }
+        },
+        "collection_GPTgwh": {
+          "type": "collection",
+          "settings": {
+            "collection": "women"
+          }
+        },
+        "collection_PnmHHN": {
+          "type": "collection",
+          "settings": {
+            "collection": "top"
+          }
+        },
+        "collection_chr6fA": {
+          "type": "collection",
+          "settings": {
+            "collection": "bottoms"
+          }
+        },
+        "collection_XnAymD": {
+          "type": "collection",
+          "settings": {
+            "collection": "dress"
+          }
+        }
+      },
+      "block_order": [
+        "collection_bHKNPr",
+        "collection_GPTgwh",
+        "collection_PnmHHN",
+        "collection_chr6fA",
+        "collection_XnAymD"
+      ],
+      "name": "Sub Collection",
+      "settings": {
+        "layout": "grid",
+        "container_width": "normal",
+        "spacing": "4",
+        "items_per_row": "4",
+        "button_text": "View all"
+      }
+    },
     "main": {
       "type": "collection",
       "settings": {
@@ -33,6 +83,7 @@
   },
   "order": [
     "page-title",
+    "sub_collection_P3mtpz",
     "main"
   ]
 }
