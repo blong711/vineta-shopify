@@ -22,7 +22,7 @@
           "type": "countdown_timer",
           "settings": {
             "label": "Sale ends in:",
-            "metafield_key": "{{ product.metafields.countdown.end_date | metafield_text }}"
+            "metafield_key": "countdown.end_date"
           }
         },
         "sold_count": {
