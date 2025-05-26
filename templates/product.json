@@ -22,7 +22,7 @@
           "type": "countdown_timer",
           "settings": {
             "label": "Sale ends in:",
-            "metafield_key": "countdown.end_date"
+            "metafield_key": "{{ product.metafields.countdown.end_date | metafield_text }}"
           }
         },
         "sold_count": {
@@ -87,7 +87,9 @@
           "type": "fbt",
           "settings": {
             "fbt_title": "Frequently Bought Together",
-            "max_products": 3
+            "max_products": 3,
+            "fbt_margin_top": 42,
+            "fbt_margin_bottom": 0
           }
         }
       },
