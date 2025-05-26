@@ -137,8 +137,10 @@
                 </div>
                 <div class="d-flex d-xl-none sw-dot-default sw-pagination-categories justify-content-center"></div>
               </div>
-              <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-categories"></div>
-              <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-categories"></div>
+              {% if section.settings.show_navigation %}
+                <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-categories"></div>
+                <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-categories"></div>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -248,8 +250,10 @@
               {%- endfor -%}
             </div>
             <span class="d-flex d-xl-none sw-dot-default sw-pagination-cate justify-content-center"></span>
-            <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-cate"></div>
-            <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-cate"></div>
+            {% if section.settings.show_navigation %}
+              <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-cate"></div>
+              <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-cate"></div>
+            {% endif %}
           </div>
         </div>
       </section>
@@ -295,6 +299,13 @@
       "id": "button_text",
       "label": "Button Text",
       "default": "Categories"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation buttons",
+      "default": true,
+      "info": "Enable or disable navigation arrows"
     },
     {
       "type": "range",
