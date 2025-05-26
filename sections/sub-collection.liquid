@@ -33,7 +33,7 @@
               {% if section.settings.layout == 'grid' %}
                 <div class="wg-cls style-abs2 hover-img">
                   <a href="{{ collection.url }}" class="image-wrap relative">
-                    <div class="image img-style">
+                    <div class="image img-style sub-collection-img-style">
                       {% if collection.featured_image != blank %}
                         {{ collection.featured_image | image_url: width: 400 | image_tag:
                           loading: 'lazy',
@@ -194,3 +194,20 @@
   ]
 }
 {% endschema %} 
+<style>
+/* Ensure all collection images in grid layout have the same height and aspect ratio */
+.wg-cls.style-abs2 .image.sub-collection-img-style {
+  width: 100%;
+  aspect-ratio: 1/1; /* Adjust as needed for your design */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wg-cls.style-abs2 .image.sub-collection-img-style img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+</style>

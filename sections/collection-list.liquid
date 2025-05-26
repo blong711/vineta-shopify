@@ -6,7 +6,7 @@
         {%- for collection in collections -%}
           <div class="wg-cls style-abs2 style-lg hover-img">
             <a href="{{ collection.url }}" class="image-wrap relative">
-              <div class="image img-style">
+              <div class="image img-style collection-list-img-style">
                 {%- if collection.image -%}
                   <img src="{{ collection.image | img_url: '400x400', crop: 'center' }}"
                   data-src="{{ collection.image | img_url: '400x400', crop: 'center' }}"
@@ -119,6 +119,23 @@
     </div>
   </div>
 </div>
+
+<style>
+.collection-list-img-style {
+  width: 100%;
+  aspect-ratio: 1/1; /* Adjust as needed for your design */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.collection-list-img-style img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+</style>
 
 {% schema %}
 {
