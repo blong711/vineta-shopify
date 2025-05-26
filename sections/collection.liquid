@@ -257,7 +257,7 @@
           <div class="card-product grid style-1{% if product.options contains 'Size' %} card-product-size{% endif %}" 
                data-availability="{{ product.available | default: 'In stock' }}" 
                data-brand="{{ product.vendor }}">
-            {% render 'card-product', product: product %}
+            {% render 'card-product', product: product, style: section.settings.card_style %}
           </div>
         {% endfor %}
 
@@ -429,6 +429,34 @@
         }
       ],
       "default": "drawer"
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Product Card Style",
+      "options": [
+        {
+          "value": "1",
+          "label": "Default"
+        },
+        {
+          "value": "2",
+          "label": "Feature Section"
+        },
+        {
+          "value": "3",
+          "label": "Search Drawer"
+        },
+        {
+          "value": "4",
+          "label": "Phone Case"
+        },
+        {
+          "value": "hot-deals",
+          "label": "Hot Deals"
+        }
+      ],
+      "default": "1"
     },
     {
       "type": "select",
