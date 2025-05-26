@@ -16,10 +16,7 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/phonecase-slide01.webp",
-            "image_position": "left",
-            "content_position": "left",
-            "text_color": "dark-3",
-            "button_color": "dark2",
+            "content_alignment": "left",
             "subtitle": "",
             "heading": "Protect in Style",
             "subheading": "Find the perfect case for your phone",
@@ -31,10 +28,7 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/phonecase-slide02.webp",
-            "image_position": "left",
-            "content_position": "left",
-            "text_color": "white",
-            "button_color": "white",
+            "content_alignment": "left",
             "subtitle": "",
             "heading": "Express Your Style",
             "subheading": "Personalized cases designed to match your unique personality.",
@@ -46,10 +40,7 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/phonecase-slide03.webp",
-            "image_position": "left",
-            "content_position": "left",
-            "text_color": "dark-3",
-            "button_color": "dark2",
+            "content_alignment": "left",
             "subtitle": "",
             "heading": "Ultimate Protection, Sleek Design",
             "subheading": "Durable phone cases that blend protection with elegance.",
@@ -65,9 +56,21 @@
       ],
       "settings": {
         "layout": "phonecase",
+        "width": "full",
+        "image_height_mode": "adapt",
+        "fixed_height": 600,
+        "mobile_image_height_mode": "fixed",
+        "mobile_fixed_height": 400,
         "autoplay": true,
         "loop": true,
-        "speed": 800
+        "speed": 800,
+        "show_navigation": false,
+        "show_dots": true,
+        "padding": 0,
+        "pause_on_hover": true,
+        "effect": "slide",
+        "direction": "horizontal",
+        "draggable": true
       }
     },
     "categories": {
@@ -264,7 +267,15 @@
       ],
       "settings": {
         "layout": "home-phonecase",
-        "speed": 800
+        "speed": 800,
+        "slides_per_view": 3,
+        "slides_per_view_tablet": 2,
+        "slides_per_view_mobile": 1,
+        "space_between": 24,
+        "enable_navigation": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 5000,
+        "enable_loop": true
       }
     },
     "banner-countdown": {
@@ -272,13 +283,13 @@
       "settings": {
         "layout": "home-phonecase",
         "show_section": true,
+        "product": "",
         "banner_image": "shopify://shop_images/phonecase_03.webp",
         "heading": "50% OFF",
         "subheading": "Get your favorite cases at a discount",
         "season_text": "SUMMER SALE",
         "promo_code": "12D34E",
         "show_countdown": true,
-        "end_date": "2025-12-31",
         "button_label": "Shop Now",
         "button_link": "/collections/all"
       }
