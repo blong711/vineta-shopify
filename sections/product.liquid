@@ -422,12 +422,12 @@
                   {% when 'delivery_info' %}
                     <div class="tf-product-info-delivery-return" {{ block.shopify_attributes }}>
                       <div class="product-delivery">
-                        <div class="icon icon-car2"></div>
-                        <p class="text-md">Estimated delivery time: <span class="fw-medium">{{ block.settings.delivery_time }}</span></p>
+                        <div class="icon {{ block.settings.delivery_icon }}"></div>
+                        <p class="text-md">{{ block.settings.delivery_label }} <span class="fw-medium">{{ block.settings.delivery_time }}</span></p>
                       </div>
                       <div class="product-delivery">
-                        <div class="icon icon-shipping3"></div>
-                        <p class="text-md">Free shipping on <span class="fw-medium">{{ block.settings.free_shipping_text }}</span></p>
+                        <div class="icon {{ block.settings.shipping_icon }}"></div>
+                        <p class="text-md">{{ block.settings.shipping_label }} <span class="fw-medium">{{ block.settings.free_shipping_text }}</span></p>
                       </div>
                     </div>
 
@@ -2183,10 +2183,56 @@ document.addEventListener('DOMContentLoaded', function() {
       "limit": 1,
       "settings": [
         {
+          "type": "header",
+          "content": "Delivery Time"
+        },
+        {
+          "type": "select",
+          "id": "delivery_icon",
+          "label": "Delivery Icon",
+          "options": [
+            { "value": "icon-car2", "label": "Car" },
+            { "value": "icon-shipping3", "label": "Shipping" },
+            { "value": "icon-truck", "label": "Truck" },
+            { "value": "icon-delivery", "label": "Delivery" },
+            { "value": "icon-clock", "label": "Clock" }
+          ],
+          "default": "icon-car2"
+        },
+        {
+          "type": "text",
+          "id": "delivery_label",
+          "label": "Delivery Label",
+          "default": "Estimated delivery time:"
+        },
+        {
           "type": "text",
           "id": "delivery_time",
           "label": "Delivery Time",
           "default": "3-5 days international"
+        },
+        {
+          "type": "header",
+          "content": "Free Shipping"
+        },
+        {
+          "type": "select",
+          "id": "shipping_icon",
+          "label": "Shipping Icon",
+          "options": [
+            { "value": "icon-shipping3", "label": "Shipping" },
+            { "value": "icon-car2", "label": "Car" },
+            { "value": "icon-truck", "label": "Truck" },
+            { "value": "icon-delivery", "label": "Delivery" },
+            { "value": "icon-gift", "label": "Gift" }
+          ],
+          "default": "icon-shipping3"
+        },
+        {
+          "type": "text",
+          "id": "shipping_label",
+          "label": "Shipping Label",
+          "default": "Free shipping on"
         },
         {
           "type": "text",
