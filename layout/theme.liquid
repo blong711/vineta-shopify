@@ -210,7 +210,7 @@
         {% else %}
           {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }}
         {% endif %} !important;
-      font-weight: {{ settings.body_font_weight | default: settings.body_font.weight }} !important;
+      /* font-weight: {{ settings.body_font_weight | default: settings.body_font.weight }} !important; */
       line-height: {{ settings.body_line_height }} !important;
       letter-spacing: {{ settings.body_letter_spacing | divided_by: 100.0 }}em !important;
       font-size: {{ settings.body_font_size_mobile }}px !important;
@@ -227,7 +227,7 @@
         {% else %}
           {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }}
         {% endif %} !important;
-      font-weight: {{ settings.heading_font_weight | default: settings.heading_font.weight }} !important;
+      /* font-weight: {{ settings.heading_font_weight | default: settings.heading_font.weight }} !important; */
       line-height: {{ settings.heading_line_height }} !important;
       letter-spacing: {{ settings.heading_letter_spacing | divided_by: 100.0 }}em !important;
     }

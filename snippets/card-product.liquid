@@ -5,7 +5,7 @@
 
 {%- if style == 'style-2' -%}
 {%- comment -%}Feature Section Layout{%- endcomment -%}
-<div class="card-product {{ class }} style-border style-2 {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
+<div class="card-product {{ class }} style-2 {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
   <div class="card-product-wrapper">
     <a href="{{ product.url }}" class="product-img">
       {%- if product.featured_image != blank -%}
@@ -95,7 +95,7 @@
     </ul>
   </div>
 
-  <div class="card-product-info text-center">
+  <div class="card-product-info">
     {%- if vendor != blank -%}
       <p class="type text-xs text-dark fw-medium">{{ vendor }}</p>
     {%- endif -%}
@@ -181,7 +181,7 @@
     <ul class="list-product-btn">
       <li>
         <a href="javascript:void(0);" 
-           class="bg-surface hover-tooltip tooltip-left box-icon add-to-cart" 
+           class="bg-surface hover-tooltip box-icon add-to-cart" 
            data-variant-id="{{ product.variants.first.id }}"
            data-quantity="1"
            aria-label="{{ 'products.card.add_to_cart' | t }}">
@@ -191,7 +191,7 @@
       </li>
       <li class="wishlist">
         <a href="javascript:void(0);" 
-           class="bg-surface hover-tooltip tooltip-left box-icon" 
+           class="bg-surface hover-tooltip box-icon" 
            data-wishlist 
            data-id="{{ product.id }}" 
            data-action="add"
@@ -202,7 +202,7 @@
       </li>
       <li>
         <a href="javascript:void(0);" 
-           class="bg-surface hover-tooltip tooltip-left box-icon quickview" 
+           class="bg-surface hover-tooltip box-icon quickview" 
            data-product-handle="{{ product.handle }}"
            data-product-id="{{ product.id }}"
            data-bs-toggle="modal" 
@@ -213,7 +213,7 @@
       </li>
       <li class="compare">
         <a href="javascript:void(0);" 
-           class="bg-surface hover-tooltip tooltip-left box-icon" 
+           class="bg-surface hover-tooltip box-icon" 
            data-compare 
            data-id="{{ product.id }}" 
            data-action="add"
@@ -326,7 +326,7 @@
     <ul class="list-product-btn">
       <li>
         <a href="javascript:void(0);" 
-           class="bg-surface hover-tooltip tooltip-left box-icon add-to-cart" 
+           class="bg-surface hover-tooltip box-icon add-to-cart" 
            data-variant-id="{{ product.variants.first.id }}"
            data-quantity="1"
            aria-label="{{ 'products.card.add_to_cart' | t }}">
@@ -336,7 +336,7 @@
       </li>
       <li class="wishlist">
         <a href="javascript:void(0);" 
-           class="bg-surface hover-tooltip tooltip-left box-icon" 
+           class="bg-surface hover-tooltip box-icon" 
            data-wishlist 
            data-id="{{ product.id }}" 
            data-action="add"
@@ -347,7 +347,7 @@
       </li>
       <li>
         <a href="javascript:void(0);" 
-           class="bg-surface hover-tooltip tooltip-left box-icon quickview" 
+           class="bg-surface hover-tooltip box-icon quickview" 
            data-product-handle="{{ product.handle }}"
            data-product-id="{{ product.id }}"
            data-bs-toggle="modal" 
@@ -358,7 +358,7 @@
       </li>
       <li class="compare">
         <a href="javascript:void(0);" 
-           class="bg-surface hover-tooltip tooltip-left box-icon" 
+           class="bg-surface hover-tooltip box-icon" 
            data-compare 
            data-id="{{ product.id }}" 
            data-action="add"
