@@ -326,7 +326,7 @@
     <ul class="list-product-btn">
       <li>
         <a href="javascript:void(0);" 
-           class="bg-surface hover-tooltip box-icon add-to-cart" 
+           class="bg-surface hover-tooltip tooltip-left box-icon add-to-cart" 
            data-variant-id="{{ product.variants.first.id }}"
            data-quantity="1"
            aria-label="{{ 'products.card.add_to_cart' | t }}">
@@ -336,7 +336,7 @@
       </li>
       <li class="wishlist">
         <a href="javascript:void(0);" 
-           class="bg-surface hover-tooltip box-icon" 
+           class="bg-surface hover-tooltip tooltip-left box-icon" 
            data-wishlist 
            data-id="{{ product.id }}" 
            data-action="add"
@@ -347,7 +347,7 @@
       </li>
       <li>
         <a href="javascript:void(0);" 
-           class="bg-surface hover-tooltip box-icon quickview" 
+           class="bg-surface hover-tooltip tooltip-left box-icon quickview" 
            data-product-handle="{{ product.handle }}"
            data-product-id="{{ product.id }}"
            data-bs-toggle="modal" 
@@ -358,7 +358,7 @@
       </li>
       <li class="compare">
         <a href="javascript:void(0);" 
-           class="bg-surface hover-tooltip box-icon" 
+           class="bg-surface hover-tooltip tooltip-left box-icon" 
            data-compare 
            data-id="{{ product.id }}" 
            data-action="add"
