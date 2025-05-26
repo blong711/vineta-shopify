@@ -261,89 +261,91 @@
               <!-- End Countdown Timer Block -->
               </div>
               <div class="tf-product-info-variant">
-                {% for block in section.blocks %}
-                  {% if block.type == 'variant_picker' %}
-                    {% for option in product.options_with_values %}
-                      <div class="variant-picker-item variant-{{ option.name | handle }}">
-                        <div class="variant-picker-label">
-                          <div>
-                            {{ option.name }}:
-                            <span class="variant-picker-label-value value-current{{ option.name }}">{{ option.selected_value }}</span>
+                {% unless product.has_only_default_variant %}
+                  {% for block in section.blocks %}
+                    {% if block.type == 'variant_picker' %}
+                      {% for option in product.options_with_values %}
+                        <div class="variant-picker-item variant-{{ option.name | handle }}">
+                          <div class="variant-picker-label">
+                            <div>
+                              {{ option.name }}:
+                              <span class="variant-picker-label-value value-current{{ option.name }}">{{ option.selected_value }}</span>
+                            </div>
+                            {% if option.name == 'Size' %}
+                              {% for block2 in section.blocks %}
+                                {% if block2.type == 'size_guide' %}
+                                  <a href="#sizeGuide" data-bs-toggle="modal" class="size-guide link" {{ block2.shopify_attributes }}>{{ block2.settings.size_guide_text }}</a>
+                                {% endif %}
+                              {% endfor %}
+                            {% endif %}
                           </div>
-                          {% if option.name == 'Size' %}
-                            {% for block2 in section.blocks %}
-                              {% if block2.type == 'size_guide' %}
-                                <a href="#sizeGuide" data-bs-toggle="modal" class="size-guide link" {{ block2.shopify_attributes }}>{{ block2.settings.size_guide_text }}</a>
-                              {% endif %}
-                            {% endfor %}
-                          {% endif %}
+                          <div class="variant-picker-values">
+                            {% if block.settings.color_selector_type == 'dropdown' and option.name == 'Color' %}
+                              <div class="tf-variant-dropdown full" data-bs-toggle="dropdown">
+                                <div class="btn-select">
+                                  <span class="text-sort-value value-current{{ option.name }}">{{ option.selected_value }}</span>
+                                  <span class="icon icon-arrow-down"></span>
+                                </div>
+                                <div class="dropdown-menu">
+                                  {% for value in option.values %}
+                                    <div class="select-item color-btn{% if value == option.selected_value %} active{% endif %}" data-color="{{ value | handle }}" data-value="{{ value | handle }}">
+                                      <span class="text-value-item">{{ value }}</span>
+                                    </div>
+                                  {% endfor %}
+                                </div>
+                              </div>
+                            {% elsif block.settings.color_selector_type == 'dropdown' and option.name == 'Size' %}
+                              <div class="tf-variant-dropdown full" data-bs-toggle="dropdown">
+                                <div class="btn-select">
+                                  <span class="text-sort-value value-current{{ option.name }}">{{ option.selected_value }}</span>
+                                  <span class="icon icon-arrow-down"></span>
+                                </div>
+                                <div class="dropdown-menu">
+                                  {% for value in option.values %}
+                                    <div class="select-item{% if value == option.selected_value %} active{% endif %}" data-value="{{ value | handle }}">
+                                      <span class="text-value-item">{{ value }}</span>
+                                    </div>
+                                  {% endfor %}
+                                </div>
+                              </div>
+                            {% elsif option.name == 'Color' %}
+                              {% for value in option.values %}
+                                <div class="hover-tooltip tooltip-bot color-btn btn-scroll-target color-size-{{ block.settings.color_selector_size }}{% if value == option.selected_value %} active{% endif %}"
+                                     data-scroll="{{ value | handle }}"
+                                     data-option="{{ option.name | handle }}"
+                                     data-value="{{ value | handle }}">
+                                  <span class="check-color bg-{{ value | handle }}"></span>
+                                  <span class="tooltip">{{ value }}</span>
+                                </div>
+                              {% endfor %}
+                            {% elsif option.name == 'Size' %}
+                              {% for value in option.values %}
+                                <span class="size-btn{% if value == option.selected_value %} active{% endif %}"
+                                      data-size="{{ value | handle }}"
+                                      data-option="{{ option.name | handle }}"
+                                      data-value="{{ value | handle }}">{{ value }}</span>
+                              {% endfor %}
+                            {% else %}
+                              <div class="tf-variant-dropdown full" data-bs-toggle="dropdown">
+                                <div class="btn-select">
+                                  <span class="text-sort-value value-current{{ option.name }}">{{ option.selected_value }}</span>
+                                  <span class="icon icon-arrow-down"></span>
+                                </div>
+                                <div class="dropdown-menu">
+                                  {% for value in option.values %}
+                                    <div class="select-item{% if value == option.selected_value %} active{% endif %}" data-value="{{ value | handle }}">
+                                      <span class="text-value-item">{{ value }}</span>
+                                    </div>
+                                  {% endfor %}
+                                </div>
+                              </div>
+                            {% endif %}
+                          </div>
                         </div>
-                        <div class="variant-picker-values">
-                          {% if block.settings.color_selector_type == 'dropdown' and option.name == 'Color' %}
-                            <div class="tf-variant-dropdown full" data-bs-toggle="dropdown">
-                              <div class="btn-select">
-                                <span class="text-sort-value value-current{{ option.name }}">{{ option.selected_value }}</span>
-                                <span class="icon icon-arrow-down"></span>
-                              </div>
-                              <div class="dropdown-menu">
-                                {% for value in option.values %}
-                                  <div class="select-item color-btn{% if value == option.selected_value %} active{% endif %}" data-color="{{ value | handle }}" data-value="{{ value | handle }}">
-                                    <span class="text-value-item">{{ value }}</span>
-                                  </div>
-                                {% endfor %}
-                              </div>
-                            </div>
-                          {% elsif block.settings.color_selector_type == 'dropdown' and option.name == 'Size' %}
-                            <div class="tf-variant-dropdown full" data-bs-toggle="dropdown">
-                              <div class="btn-select">
-                                <span class="text-sort-value value-current{{ option.name }}">{{ option.selected_value }}</span>
-                                <span class="icon icon-arrow-down"></span>
-                              </div>
-                              <div class="dropdown-menu">
-                                {% for value in option.values %}
-                                  <div class="select-item{% if value == option.selected_value %} active{% endif %}" data-value="{{ value | handle }}">
-                                    <span class="text-value-item">{{ value }}</span>
-                                  </div>
-                                {% endfor %}
-                              </div>
-                            </div>
-                          {% elsif option.name == 'Color' %}
-                            {% for value in option.values %}
-                              <div class="hover-tooltip tooltip-bot color-btn btn-scroll-target color-size-{{ block.settings.color_selector_size }}{% if value == option.selected_value %} active{% endif %}"
-                                   data-scroll="{{ value | handle }}"
-                                   data-option="{{ option.name | handle }}"
-                                   data-value="{{ value | handle }}">
-                                <span class="check-color bg-{{ value | handle }}"></span>
-                                <span class="tooltip">{{ value }}</span>
-                              </div>
-                            {% endfor %}
-                          {% elsif option.name == 'Size' %}
-                            {% for value in option.values %}
-                              <span class="size-btn{% if value == option.selected_value %} active{% endif %}"
-                                    data-size="{{ value | handle }}"
-                                    data-option="{{ option.name | handle }}"
-                                    data-value="{{ value | handle }}">{{ value }}</span>
-                            {% endfor %}
-                          {% else %}
-                            <div class="tf-variant-dropdown full" data-bs-toggle="dropdown">
-                              <div class="btn-select">
-                                <span class="text-sort-value value-current{{ option.name }}">{{ option.selected_value }}</span>
-                                <span class="icon icon-arrow-down"></span>
-                              </div>
-                              <div class="dropdown-menu">
-                                {% for value in option.values %}
-                                  <div class="select-item{% if value == option.selected_value %} active{% endif %}" data-value="{{ value | handle }}">
-                                    <span class="text-value-item">{{ value }}</span>
-                                  </div>
-                                {% endfor %}
-                              </div>
-                            </div>
-                          {% endif %}
-                        </div>
-                      </div>
-                    {% endfor %}
-                  {% endif %}
-                {% endfor %}
+                      {% endfor %}
+                    {% endif %}
+                  {% endfor %}
+                {% endunless %}
               </div>
 
               <div class="tf-product-total-quantity">
