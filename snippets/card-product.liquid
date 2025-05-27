@@ -95,7 +95,7 @@
     </ul>
   </div>
 
-  <div class="card-product-info">
+  <div class="card-product-info {{ product-info }}">
     {%- if vendor != blank -%}
       <p class="type text-xs text-dark fw-medium">{{ vendor }}</p>
     {%- endif -%}
@@ -110,7 +110,7 @@
     </p>
 
     {%- if show_color_swatches and product.variants.size > 1 and product.options contains 'Color' -%}
-      <ul class="list-color-product {{ text_alignment | default: 'text-left' | replace: 'text-', 'justify-content-' }}">
+      <ul class="list-color-product {% if product-info == 'text-center' %}justify-content-center{% else %}{{ text_alignment | default: 'text-left' | replace: 'text-', 'justify-content-' }}{% endif %}">
         {%- for option in product.options_with_values -%}
           {%- if option.name == 'Color' -%}
             {%- for value in option.values -%}
@@ -508,7 +508,7 @@
       </ul>
     {%- endif -%}
   </div>
-  <div class="card-product-info">
+  <div class="card-product-info {{ product-info }}">
     <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
     <p class="price-wrap fw-medium">
       <span class="price-new text-primary">{{ product.price | money }}</span>
@@ -517,7 +517,7 @@
       {%- endif -%}
     </p>
     {%- if product.variants.size > 1 -%}
-      <ul class="list-color-product">
+      <ul class="list-color-product {% if product-info == 'text-center' %}justify-content-center{% else %}{{ text_alignment | default: 'text-left' | replace: 'text-', 'justify-content-' }}{% endif %}">
         {%- for variant in product.variants -%}
           {%- if variant.option2 != blank -%}
             <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if variant.option2 == 'White' %}line{% endif %} {% if forloop.first %}active{% endif %}">
@@ -635,7 +635,7 @@
     {%- endif -%}
   </div>
 
-  <div class="card-product-info {{ text_alignment | default: 'text-left' }}">
+  <div class="card-product-info {{ product-info }}">
     <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
     {%- if vendor != blank -%}
       <div class="vendor text-sm text-muted">{{ vendor }}</div>
@@ -650,7 +650,7 @@
     </p>
 
     {%- if show_color_swatches and product.variants.size > 1 and product.options contains 'Color' -%}
-      <ul class="list-color-product {{ text_alignment | default: 'text-left' | replace: 'text-', 'justify-content-' }}">
+      <ul class="list-color-product {% if product-info == 'text-center' %}justify-content-center{% else %}{{ text_alignment | default: 'text-left' | replace: 'text-', 'justify-content-' }}{% endif %}">
         {%- for option in product.options_with_values -%}
           {%- if option.name == 'Color' -%}
             {%- for value in option.values -%}
