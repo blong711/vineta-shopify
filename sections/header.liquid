@@ -1,5 +1,5 @@
 {%- comment -%}Header Section{%- endcomment -%}
-<header id="header" class="header-default{% if section.settings.layout == 'layout-2' %} header-2{% endif %}{% if section.settings.layout == 'layout-3' %} header-3{% endif %}" style="background-color: {{ section.settings.background_color }};">
+<header id="header" class="header-default{% if section.settings.layout == 'layout-2' %} header-2{% endif %}{% if section.settings.layout == 'layout-3' %} header-3{% endif %}{% if section.settings.enable_transparent %} header-absolute{% endif %}" style="background-color: {{ section.settings.background_color }};">
   {%- if section.settings.layout == 'layout-2' -%}
     <div class="header-top">
       <div class="container">
@@ -680,6 +680,13 @@
       "unit": "ms",
       "label": "Animation duration",
       "default": 200
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_transparent",
+      "label": "Enable transparent header",
+      "default": false,
+      "info": "Make header transparent and absolute positioned"
     }
   ],
   "blocks": [
