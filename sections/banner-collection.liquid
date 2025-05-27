@@ -50,11 +50,7 @@
         {% elsif section.settings.layout == 'bicycle' %}
           {% if section.settings.video != blank %}
             <video autoplay loop muted playsinline preload="auto">
-              {% if section.settings.video contains 'cdn.shopify.com' %}
-                <source src="{{ section.settings.video }}" type="video/mp4">
-              {% else %}
-                <source src="{{ section.settings.video | file_url }}" type="video/mp4">
-              {% endif %}
+              <source src="{{ section.settings.video }}" type="video/mp4">
             </video>
           {% elsif section.settings.image != blank %}
             <img 
@@ -115,10 +111,10 @@
       "default": "electric"
     },
     {
-      "type": "video",
+      "type": "text",
       "id": "video",
-      "label": "Video",
-      "info": "Only used for Bicycle layout"
+      "label": "Video URL",
+      "info": "Enter the complete video URL (Only used for Bicycle layout)"
     },
     {
       "type": "image_picker",
