@@ -3,7 +3,7 @@
   Contains the common filter elements used by all filter layouts
 {%- endcomment -%}
 
-<form id="collection-filters-form" method="GET" action="{{ collection.url }}">
+<form id="collection-filters-form" method="GET" action="{{ collection.url }}" class="filter-form">
   <!-- Categories -->
   <div class="widget-facet">
     <ul class="list-categories current-scrollbar">
@@ -32,7 +32,7 @@
             value="1"
             id="Filter-availability-1"
             {% if current_tags contains 'filter.v.availability:1' %}checked{% endif %}
-            class="tf-check">
+            class="filter-checkbox tf-check">
           <label for="Filter-availability-1" class="label">
             <span>In stock</span>
             <span class="count">({{ collection.products | where: "available", true | size }})</span>
@@ -44,7 +44,7 @@
             value="0"
             id="Filter-availability-2"
             {% if current_tags contains 'filter.v.availability:0' %}checked{% endif %}
-            class="tf-check">
+            class="filter-checkbox tf-check">
           <label for="Filter-availability-2" class="label">
             <span>Out of stock</span>
             <span class="count">({{ collection.products | where: "available", false | size }})</span>
@@ -74,7 +74,7 @@
                       id="Filter-{{ filter.label | escape }}-{{ forloop.index }}"
                       {% if filter_value.active -%}checked{%- endif %}
                       {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
-                      class="tf-check">
+                      class="filter-checkbox tf-check">
                     <label for="Filter-{{ filter.label | escape }}-{{ forloop.index }}" class="label">
                       <span>{{ filter_value.label }}</span>
                       <span class="count">({{ filter_value.count }})</span>
@@ -102,6 +102,8 @@
                     </div>
                   </div>
                 </div>
+                <input type="hidden" name="filter.v.price.gte" id="price-min-input" value="{{ filter.min_value.value | default: 0 | money_without_currency | round }}">
+                <input type="hidden" name="filter.v.price.lte" id="price-max-input" value="{{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}">
               </div>
           {%- endcase -%}
         </div>
@@ -149,4 +151,155 @@
       </div>
     </div>
   </div>
-</form> 
+</form>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const filterForm = document.getElementById('collection-filters-form');
+    const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+    const priceRange = document.getElementById('price-value-range');
+    const priceMinInput = document.getElementById('price-min-input');
+    const priceMaxInput = document.getElementById('price-max-input');
+    const resetPriceBtn = document.querySelector('.reset-price');
+    const productGrid = document.querySelector('.tf-grid-layout');
+    const productList = document.querySelector('.tf-list-layout');
+    const appliedFilters = document.getElementById('applied-filters');
+    const removeAllBtn = document.getElementById('remove-all');
+
+    // Function to update URL without reload
+    function updateURL(params) {
+      const url = new URL(window.location.href);
+      for (const [key, value] of Object.entries(params)) {
+        if (value) {
+          url.searchParams.set(key, value);
+        } else {
+          url.searchParams.delete(key);
+        }
+      }
+      window.history.pushState({}, '', url.toString());
+    }
+
+    // Function to update product grid
+    async function updateProducts() {
+      const formData = new FormData(filterForm);
+      const params = new URLSearchParams(formData);
+      const url = `${filterForm.action}?${params.toString()}`;
+
+      try {
+        const response = await fetch(url);
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Update product grids
+        const newGrid = doc.querySelector('.tf-grid-layout');
+        const newList = doc.querySelector('.tf-list-layout');
+        if (newGrid && productGrid) productGrid.innerHTML = newGrid.innerHTML;
+        if (newList && productList) productList.innerHTML = newList.innerHTML;
+
+        // Update applied filters
+        const newAppliedFilters = doc.getElementById('applied-filters');
+        if (newAppliedFilters && appliedFilters) {
+          appliedFilters.innerHTML = newAppliedFilters.innerHTML;
+        }
+
+        // Update remove all button
+        const newRemoveAll = doc.getElementById('remove-all');
+        if (newRemoveAll && removeAllBtn) {
+          removeAllBtn.style.display = newRemoveAll ? 'block' : 'none';
+        }
+
+        // Update URL
+        updateURL(Object.fromEntries(params));
+
+        // Reinitialize any necessary event listeners
+        initializeProductEvents();
+      } catch (error) {
+        console.error('Error updating products:', error);
+      }
+    }
+
+    // Function to initialize product-specific event listeners
+    function initializeProductEvents() {
+      // Add any product-specific event listeners here
+      // For example, quick view, add to cart, etc.
+    }
+
+    // Handle checkbox changes
+    filterCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        updateProducts();
+      });
+    });
+
+    // Handle price range changes
+    if (priceRange && priceMinInput && priceMaxInput) {
+      const minPrice = parseInt(priceRange.dataset.min);
+      const maxPrice = parseInt(priceRange.dataset.max);
+      const rangeMin = parseInt(priceRange.dataset.rangeMin);
+      const rangeMax = parseInt(priceRange.dataset.rangeMax);
+      
+      noUiSlider.create(priceRange, {
+        start: [minPrice, maxPrice],
+        connect: true,
+        range: {
+          'min': rangeMin,
+          'max': rangeMax
+        }
+      });
+
+      priceRange.noUiSlider.on('update', function(values) {
+        priceMinInput.value = Math.round(values[0]);
+        priceMaxInput.value = Math.round(values[1]);
+      });
+
+      priceRange.noUiSlider.on('change', function() {
+        updateProducts();
+      });
+
+      // Handle price reset
+      if (resetPriceBtn) {
+        resetPriceBtn.addEventListener('click', function() {
+          priceRange.noUiSlider.reset();
+          updateProducts();
+        });
+      }
+    }
+
+    // Handle filter tag removal
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('.filter-tag')) {
+        const tag = e.target.closest('.filter-tag');
+        const tagText = tag.textContent.trim();
+        const url = new URL(window.location.href);
+        const tags = url.searchParams.get('filter.v.tag')?.split(',') || [];
+        const newTags = tags.filter(t => t !== tagText);
+        
+        if (newTags.length > 0) {
+          url.searchParams.set('filter.v.tag', newTags.join(','));
+        } else {
+          url.searchParams.delete('filter.v.tag');
+        }
+        
+        updateProducts();
+      }
+    });
+
+    // Handle clear all filters
+    if (removeAllBtn) {
+      removeAllBtn.addEventListener('click', function() {
+        const url = new URL(window.location.href);
+        // Remove all filter parameters
+        for (const param of url.searchParams.keys()) {
+          if (param.startsWith('filter.v.')) {
+            url.searchParams.delete(param);
+          }
+        }
+        updateProducts();
+      });
+    }
+
+    // Initialize product events
+    initializeProductEvents();
+  });
+</script> 

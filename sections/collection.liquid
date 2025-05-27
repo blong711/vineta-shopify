@@ -336,11 +336,11 @@
 
         // Show/hide layouts
         if (layout === 'list') {
-          listLayout.classList.remove('hidden');
-          gridLayout.classList.add('hidden');
+          listLayout.style.display = 'block';
+          gridLayout.style.display = 'none';
         } else {
-          listLayout.classList.add('hidden');
-          gridLayout.classList.remove('hidden');
+          listLayout.style.display = 'none';
+          gridLayout.style.display = 'block';
           gridLayout.className = `wrapper-shop tf-grid-layout ${layout}`;
         }
       });
@@ -370,7 +370,12 @@
     if (clearAllBtn) {
       clearAllBtn.addEventListener('click', function() {
         const url = new URL(window.location.href);
-        url.searchParams.delete('filter.v.tag');
+        // Remove all filter parameters
+        for (const param of url.searchParams.keys()) {
+          if (param.startsWith('filter.v.')) {
+            url.searchParams.delete(param);
+          }
+        }
         window.location.href = url.toString();
       });
     }
@@ -380,13 +385,15 @@
     if (priceRange) {
       const minPrice = parseInt(priceRange.dataset.min);
       const maxPrice = parseInt(priceRange.dataset.max);
+      const rangeMin = parseInt(priceRange.dataset.rangeMin);
+      const rangeMax = parseInt(priceRange.dataset.rangeMax);
       
       noUiSlider.create(priceRange, {
         start: [minPrice, maxPrice],
         connect: true,
         range: {
-          'min': minPrice,
-          'max': maxPrice
+          'min': rangeMin,
+          'max': rangeMax
         }
       });
 
@@ -395,8 +402,8 @@
       const currency = minValue.dataset.currency;
 
       priceRange.noUiSlider.on('update', function(values) {
-        minValue.textContent = currency + values[0];
-        maxValue.textContent = currency + values[1];
+        minValue.textContent = currency + Math.round(values[0]);
+        maxValue.textContent = currency + Math.round(values[1]);
       });
     }
   });
