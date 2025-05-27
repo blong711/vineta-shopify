@@ -96,8 +96,8 @@
   </div>
 
   <div class="card-product-info {{ product-info }}">
-    {%- if vendor != blank -%}
-      <p class="type text-xs text-dark fw-medium">{{ vendor }}</p>
+    {%- if product.vendor != blank -%}
+      <p class="type text-xs text-dark fw-medium">{{ product.vendor }}</p>
     {%- endif -%}
     <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
     <p class="price-wrap fw-medium">
@@ -637,9 +637,6 @@
 
   <div class="card-product-info {{ product-info }}">
     <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
-    {%- if vendor != blank -%}
-      <div class="vendor text-sm text-muted">{{ vendor }}</div>
-    {%- endif -%}
     <p class="price-wrap fw-medium">
       {%- if product.compare_at_price > product.price -%}
         <span class="price-new text-primary">{{ product.price | money }}</span>
