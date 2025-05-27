@@ -225,22 +225,24 @@
         {% endfor %}
 
         {% if section.settings.pagination_type == 'load_more' %}
-          <div class="wd-load">
-            <button id="loadMoreListBtn" class="tf-btn btn-out-line-dark2 tf-loading loadmore">
-              <span class="text">Load more</span>
-              <div class="spinner-circle">
-                <span class="spinner-circle1 spinner-child"></span>
-                <span class="spinner-circle2 spinner-child"></span>
-                <span class="spinner-circle3 spinner-child"></span>
-                <span class="spinner-circle4 spinner-child"></span>
-                <span class="spinner-circle5 spinner-child"></span>
-                <span class="spinner-circle6 spinner-child"></span>
-                <span class="spinner-circle7 spinner-child"></span>
-                <span class="spinner-circle8 spinner-child"></span>
-                <span class="spinner-circle9 spinner-child"></span>
-              </div>
-            </button>
-          </div>
+          {% if paginate.next %}
+            <div class="wd-load">
+              <button id="loadMoreListBtn" class="tf-btn btn-out-line-dark2 tf-loading loadmore">
+                <span class="text">Load more</span>
+                <div class="spinner-circle">
+                  <span class="spinner-circle1 spinner-child"></span>
+                  <span class="spinner-circle2 spinner-child"></span>
+                  <span class="spinner-circle3 spinner-child"></span>
+                  <span class="spinner-circle4 spinner-child"></span>
+                  <span class="spinner-circle5 spinner-child"></span>
+                  <span class="spinner-circle6 spinner-child"></span>
+                  <span class="spinner-circle7 spinner-child"></span>
+                  <span class="spinner-circle8 spinner-child"></span>
+                  <span class="spinner-circle9 spinner-child"></span>
+                </div>
+              </button>
+            </div>
+          {% endif %}
         {% else %}
           {% if paginate.pages > 1 %}
             <ul class="wg-pagination">
@@ -283,22 +285,24 @@
         {% endfor %}
 
         {% if section.settings.pagination_type == 'load_more' %}
-          <div class="wd-load d-flex justify-content-center">
-            <button id="loadMoreGridBtn" class="tf-btn btn-out-line-dark2 tf-loading loadmore">
-              <span class="text">Load more</span>
-              <div class="spinner-circle">
-                <span class="spinner-circle1 spinner-child"></span>
-                <span class="spinner-circle2 spinner-child"></span>
-                <span class="spinner-circle3 spinner-child"></span>
-                <span class="spinner-circle4 spinner-child"></span>
-                <span class="spinner-circle5 spinner-child"></span>
-                <span class="spinner-circle6 spinner-child"></span>
-                <span class="spinner-circle7 spinner-child"></span>
-                <span class="spinner-circle8 spinner-child"></span>
-                <span class="spinner-circle9 spinner-child"></span>
-              </div>
-            </button>
-          </div>
+          {% if paginate.next %}
+            <div class="wd-load d-flex justify-content-center">
+              <button id="loadMoreGridBtn" class="tf-btn btn-out-line-dark2 tf-loading loadmore">
+                <span class="text">Load more</span>
+                <div class="spinner-circle">
+                  <span class="spinner-circle1 spinner-child"></span>
+                  <span class="spinner-circle2 spinner-child"></span>
+                  <span class="spinner-circle3 spinner-child"></span>
+                  <span class="spinner-circle4 spinner-child"></span>
+                  <span class="spinner-circle5 spinner-child"></span>
+                  <span class="spinner-circle6 spinner-child"></span>
+                  <span class="spinner-circle7 spinner-child"></span>
+                  <span class="spinner-circle8 spinner-child"></span>
+                  <span class="spinner-circle9 spinner-child"></span>
+                </div>
+              </button>
+            </div>
+          {% endif %}
         {% else %}
           {% if paginate.pages > 1 %}
             <ul class="wg-pagination">
@@ -500,6 +504,16 @@
         newProducts.forEach(product => {
           targetContainer.insertBefore(product, targetContainer.querySelector('.wd-load'));
         });
+
+        // Check if there are more products to load
+        const hasNextPage = doc.querySelector('.tf-list-layout .wd-load, .tf-grid-layout .wd-load');
+        if (!hasNextPage) {
+          // Remove load more button if no more products
+          const loadMoreBtn = layout === 'list' ? loadMoreListBtn : loadMoreGridBtn;
+          if (loadMoreBtn) {
+            loadMoreBtn.closest('.wd-load').remove();
+          }
+        }
 
         // Update URL without reload
         window.history.pushState({}, '', url.toString());
