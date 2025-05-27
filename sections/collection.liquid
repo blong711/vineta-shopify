@@ -312,12 +312,67 @@
   document.addEventListener('DOMContentLoaded', function() {
     // Handle sort selection
     const sortItems = document.querySelectorAll('.select-item');
+    const sortDropdown = document.querySelector('.tf-dropdown-sort');
+    const sortValueDisplay = document.querySelector('.text-sort-value');
+    const productGrid = document.querySelector('.tf-grid-layout');
+    const productList = document.querySelector('.tf-list-layout');
+
+    // Function to update products with new sort
+    async function updateProductsWithSort(sortValue) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('sort_by', sortValue);
+      
+      try {
+        const response = await fetch(url);
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Update product grids
+        const newGrid = doc.querySelector('.tf-grid-layout');
+        const newList = doc.querySelector('.tf-list-layout');
+        if (newGrid && productGrid) productGrid.innerHTML = newGrid.innerHTML;
+        if (newList && productList) productList.innerHTML = newList.innerHTML;
+
+        // Update sort value display
+        if (sortValueDisplay) {
+          sortValueDisplay.textContent = sortValue.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+
+        // Update active state
+        sortItems.forEach(item => {
+          item.classList.toggle('active', item.dataset.sortValue === sortValue);
+        });
+
+        // Update URL without reload
+        window.history.pushState({}, '', url.toString());
+
+        // Reinitialize any necessary event listeners
+        initializeProductEvents();
+      } catch (error) {
+        console.error('Error updating products:', error);
+      }
+    }
+
+    // Function to initialize product-specific event listeners
+    function initializeProductEvents() {
+      // Add any product-specific event listeners here
+      // For example, quick view, add to cart, etc.
+    }
+
+    // Handle sort selection
     sortItems.forEach(item => {
       item.addEventListener('click', function() {
         const sortValue = this.dataset.sortValue;
-        const url = new URL(window.location.href);
-        url.searchParams.set('sort_by', sortValue);
-        window.location.href = url.toString();
+        updateProductsWithSort(sortValue);
+        
+        // Close dropdown after selection
+        if (sortDropdown) {
+          const dropdown = bootstrap.Dropdown.getInstance(sortDropdown);
+          if (dropdown) {
+            dropdown.hide();
+          }
+        }
       });
     });
 
@@ -361,7 +416,7 @@
           url.searchParams.delete('filter.v.tag');
         }
         
-        window.location.href = url.toString();
+        updateProductsWithSort(url.searchParams.get('sort_by') || 'best-selling');
       });
     });
 
@@ -376,9 +431,12 @@
             url.searchParams.delete(param);
           }
         }
-        window.location.href = url.toString();
+        updateProductsWithSort(url.searchParams.get('sort_by') || 'best-selling');
       });
     }
+
+    // Initialize product events
+    initializeProductEvents();
 
     // Initialize price range slider
     const priceRange = document.getElementById('price-value-range');
