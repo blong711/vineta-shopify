@@ -16,10 +16,7 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/bicycle_slide_01.webp",
-            "image_position": "left",
-            "content_position": "left",
-            "text_color": "dark-3",
-            "button_color": "dark2",
+            "content_alignment": "left",
             "subtitle": "SUMMER COLLECTION",
             "heading": "Ride into Adventure",
             "subheading": "Find your perfect bike today",
@@ -31,10 +28,7 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/bicycle_slide_02.webp",
-            "image_position": "left",
-            "content_position": "left",
-            "text_color": "dark-3",
-            "button_color": "dark2",
+            "content_alignment": "left",
             "subtitle": "SUMMER COLLECTION",
             "heading": "Adventure Awaits",
             "subheading": "Find the perfect bike for your outdoor journeys.",
@@ -46,10 +40,7 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/bicycle_slide_03.webp",
-            "image_position": "left",
-            "content_position": "left",
-            "text_color": "dark-3",
-            "button_color": "dark2",
+            "content_alignment": "left",
             "subtitle": "SUMMER COLLECTION",
             "heading": "Ride the future",
             "subheading": "Explore the newest e-bikes designed for ultimate performance.",
@@ -64,10 +55,22 @@
         "slide_3mFBNN"
       ],
       "settings": {
-        "layout": "bicycle",
+        "layout": "layout3",
+        "width": "full",
+        "image_height_mode": "adapt",
+        "fixed_height": 600,
+        "mobile_image_height_mode": "fixed",
+        "mobile_fixed_height": 400,
         "autoplay": true,
         "loop": true,
-        "speed": 800
+        "speed": 800,
+        "show_navigation": false,
+        "show_dots": true,
+        "padding": 0,
+        "pause_on_hover": true,
+        "effect": "slide",
+        "direction": "horizontal",
+        "draggable": true
       }
     },
     "brands_y8bF68": {
@@ -125,6 +128,9 @@
         "brand_MwGWcC"
       ],
       "settings": {
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "layout": "layout1",
         "speed": 80,
         "style": "left",
         "clone": 2
@@ -175,6 +181,7 @@
         "layout": "bicycle",
         "title": "Explore a variety of high-performance bikes, built for speed, durability, and adventure.",
         "button_text": "Categories",
+        "show_navigation": true,
         "products_to_show": 6,
         "products_per_collection": 6
       }
@@ -333,8 +340,13 @@
           "settings": {
             "image": "shopify://shop_images/blog06-928x928.webp",
             "title": "Bike Trends: Must-Have Cycling Gear This Year",
+            "description": "Collaboration is at the heart of what we do. From understanding your goals to delivering tailored solutions...",
+            "author": "Admin",
+            "date": "Jan 21, 2025",
+            "comments": "03 Comments",
+            "read_more_text": "Read more",
             "link": "",
-            "read_more_text": "Read more"
+            "tags": ""
           }
         },
         "tip_mCKMga": {
@@ -342,8 +354,13 @@
           "settings": {
             "image": "shopify://shop_images/blog05-928x928.webp",
             "title": "Cycling Trends: Top Bikes and Gear This Year",
+            "description": "Collaboration is at the heart of what we do. From understanding your goals to delivering tailored solutions...",
+            "author": "Admin",
+            "date": "Jan 21, 2025",
+            "comments": "03 Comments",
+            "read_more_text": "Read more",
             "link": "",
-            "read_more_text": "Read more"
+            "tags": ""
           }
         },
         "tip_YUkYDK": {
@@ -351,8 +368,13 @@
           "settings": {
             "image": "shopify://shop_images/blog04-928x928.webp",
             "title": "Ride in Style: Top Bicycle Trends This Year",
+            "description": "Collaboration is at the heart of what we do. From understanding your goals to delivering tailored solutions...",
+            "author": "Admin",
+            "date": "Jan 21, 2025",
+            "comments": "03 Comments",
+            "read_more_text": "Read more",
             "link": "",
-            "read_more_text": "Read more"
+            "tags": ""
           }
         }
       },
