@@ -170,12 +170,12 @@
         </div>
       {%- endif -%}
       <ul class="tf-control-layout">
-        {% comment %} <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
+        <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
           <div class="item icon-list">
             <span></span>
             <span></span>
-          </div> {% endcomment %}
-        {% comment %} </li> {% endcomment %}
+          </div>
+        </li>
         <li class="tf-view-layout-switch sw-layout-2" data-value-layout="tf-col-2">
           <div class="item icon-grid-2">
             <span></span>
@@ -202,6 +202,8 @@
 
     <div class="wrapper-control-shop">
       <div class="meta-filter-shop">
+        <div id="product-count-grid" class="count-text"></div>
+        <div id="product-count-list" class="count-text"></div>
         <div id="applied-filters">
           {% if current_tags.size > 0 %}
             {% for tag in current_tags %}
@@ -217,76 +219,114 @@
       <!-- List View Layout -->
       <div class="tf-list-layout wrapper-shop" id="listLayout" style="display: none;">
         {% for product in collection.products %}
-          <div class="card-product style-list" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
+          <div class="loadItem card-product style-list" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
             {% render 'card-product', product: product, style: section.settings.card_style %}
           </div>
         {% endfor %}
 
-        {% if paginate.pages > 1 %}
-          <ul class="wg-pagination">
-            {% if paginate.previous %}
-              <li>
-                <a href="{{ paginate.previous.url }}" class="pagination-item"><i class="icon-arr-left2"></i></a>
-              </li>
-            {% endif %}
-            
-            {% for part in paginate.parts %}
-              {% if part.is_link %}
+        {% if section.settings.pagination_type == 'load_more' %}
+          <div class="wd-load">
+            <button id="loadMoreListBtn" class="tf-btn btn-out-line-dark2 tf-loading loadmore">
+              <span class="text">Load more</span>
+              <div class="spinner-circle">
+                <span class="spinner-circle1 spinner-child"></span>
+                <span class="spinner-circle2 spinner-child"></span>
+                <span class="spinner-circle3 spinner-child"></span>
+                <span class="spinner-circle4 spinner-child"></span>
+                <span class="spinner-circle5 spinner-child"></span>
+                <span class="spinner-circle6 spinner-child"></span>
+                <span class="spinner-circle7 spinner-child"></span>
+                <span class="spinner-circle8 spinner-child"></span>
+                <span class="spinner-circle9 spinner-child"></span>
+              </div>
+            </button>
+          </div>
+        {% else %}
+          {% if paginate.pages > 1 %}
+            <ul class="wg-pagination">
+              {% if paginate.previous %}
                 <li>
-                  <a href="{{ part.url }}" class="pagination-item">{{ part.title }}</a>
-                </li>
-              {% else %}
-                <li class="{% if part.title == paginate.current_page %}active{% endif %}">
-                  <div class="pagination-item">{{ part.title }}</div>
+                  <a href="{{ paginate.previous.url }}" class="pagination-item"><i class="icon-arr-left2"></i></a>
                 </li>
               {% endif %}
-            {% endfor %}
+              
+              {% for part in paginate.parts %}
+                {% if part.is_link %}
+                  <li>
+                    <a href="{{ part.url }}" class="pagination-item">{{ part.title }}</a>
+                  </li>
+                {% else %}
+                  <li class="{% if part.title == paginate.current_page %}active{% endif %}">
+                    <div class="pagination-item">{{ part.title }}</div>
+                  </li>
+                {% endif %}
+              {% endfor %}
 
-            {% if paginate.next %}
-              <li>
-                <a href="{{ paginate.next.url }}" class="pagination-item"><i class="icon-arr-right2"></i></a>
-              </li>
-            {% endif %}
-          </ul>
+              {% if paginate.next %}
+                <li>
+                  <a href="{{ paginate.next.url }}" class="pagination-item"><i class="icon-arr-right2"></i></a>
+                </li>
+              {% endif %}
+            </ul>
+          {% endif %}
         {% endif %}
       </div>
 
       <!-- Grid View Layout -->
       <div class="wrapper-shop tf-grid-layout tf-col-{{ section.settings.default_grid_columns }}" id="gridLayout">
         {% for product in collection.products %}
-          <div class="card-product grid style-1{% if product.options contains 'Size' %} card-product-size{% endif %}" 
+          <div class="loadItem card-product grid style-1{% if product.options contains 'Size' %} card-product-size{% endif %}" 
                data-availability="{{ product.available | default: 'In stock' }}" 
                data-brand="{{ product.vendor }}">
             {% render 'card-product', product: product, style: section.settings.card_style %}
           </div>
         {% endfor %}
 
-        {% if paginate.pages > 1 %}
-          <ul class="wg-pagination">
-            {% if paginate.previous %}
-              <li>
-                <a href="{{ paginate.previous.url }}" class="pagination-item"><i class="icon-arr-left2"></i></a>
-              </li>
-            {% endif %}
-            
-            {% for part in paginate.parts %}
-              {% if part.is_link %}
+        {% if section.settings.pagination_type == 'load_more' %}
+          <div class="wd-load d-flex justify-content-center">
+            <button id="loadMoreGridBtn" class="tf-btn btn-out-line-dark2 tf-loading loadmore">
+              <span class="text">Load more</span>
+              <div class="spinner-circle">
+                <span class="spinner-circle1 spinner-child"></span>
+                <span class="spinner-circle2 spinner-child"></span>
+                <span class="spinner-circle3 spinner-child"></span>
+                <span class="spinner-circle4 spinner-child"></span>
+                <span class="spinner-circle5 spinner-child"></span>
+                <span class="spinner-circle6 spinner-child"></span>
+                <span class="spinner-circle7 spinner-child"></span>
+                <span class="spinner-circle8 spinner-child"></span>
+                <span class="spinner-circle9 spinner-child"></span>
+              </div>
+            </button>
+          </div>
+        {% else %}
+          {% if paginate.pages > 1 %}
+            <ul class="wg-pagination">
+              {% if paginate.previous %}
                 <li>
-                  <a href="{{ part.url }}" class="pagination-item">{{ part.title }}</a>
-                </li>
-              {% else %}
-                <li class="{% if part.title == paginate.current_page %}active{% endif %}">
-                  <div class="pagination-item">{{ part.title }}</div>
+                  <a href="{{ paginate.previous.url }}" class="pagination-item"><i class="icon-arr-left2"></i></a>
                 </li>
               {% endif %}
-            {% endfor %}
+              
+              {% for part in paginate.parts %}
+                {% if part.is_link %}
+                  <li>
+                    <a href="{{ part.url }}" class="pagination-item">{{ part.title }}</a>
+                  </li>
+                {% else %}
+                  <li class="{% if part.title == paginate.current_page %}active{% endif %}">
+                    <div class="pagination-item">{{ part.title }}</div>
+                  </li>
+                {% endif %}
+              {% endfor %}
 
-            {% if paginate.next %}
-              <li>
-                <a href="{{ paginate.next.url }}" class="pagination-item"><i class="icon-arr-right2"></i></a>
-              </li>
-            {% endif %}
-          </ul>
+              {% if paginate.next %}
+                <li>
+                  <a href="{{ paginate.next.url }}" class="pagination-item"><i class="icon-arr-right2"></i></a>
+                </li>
+              {% endif %}
+            </ul>
+          {% endif %}
         {% endif %}
       </div>
     </div>
@@ -433,6 +473,50 @@
         }
         updateProductsWithSort(url.searchParams.get('sort_by') || 'best-selling');
       });
+    }
+
+    // Handle load more functionality
+    const loadMoreListBtn = document.getElementById('loadMoreListBtn');
+    const loadMoreGridBtn = document.getElementById('loadMoreGridBtn');
+    let currentPage = 1;
+
+    async function loadMoreProducts(layout) {
+      const url = new URL(window.location.href);
+      currentPage++;
+      url.searchParams.set('page', currentPage);
+
+      try {
+        const response = await fetch(url);
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        const newProducts = layout === 'list' 
+          ? doc.querySelectorAll('.tf-list-layout .loadItem')
+          : doc.querySelectorAll('.tf-grid-layout .loadItem');
+
+        const targetContainer = layout === 'list' ? listLayout : gridLayout;
+        
+        newProducts.forEach(product => {
+          targetContainer.insertBefore(product, targetContainer.querySelector('.wd-load'));
+        });
+
+        // Update URL without reload
+        window.history.pushState({}, '', url.toString());
+
+        // Reinitialize any necessary event listeners
+        initializeProductEvents();
+      } catch (error) {
+        console.error('Error loading more products:', error);
+      }
+    }
+
+    if (loadMoreListBtn) {
+      loadMoreListBtn.addEventListener('click', () => loadMoreProducts('list'));
+    }
+
+    if (loadMoreGridBtn) {
+      loadMoreGridBtn.addEventListener('click', () => loadMoreProducts('grid'));
     }
 
     // Initialize product events
@@ -583,6 +667,22 @@
         }
       ],
       "default": "best-selling"
+    },
+    {
+      "type": "select",
+      "id": "pagination_type",
+      "label": "Pagination Type",
+      "options": [
+        {
+          "value": "pagination",
+          "label": "Pagination"
+        },
+        {
+          "value": "load_more",
+          "label": "Load More"
+        }
+      ],
+      "default": "pagination"
     },
     {
       "type": "image_picker",
