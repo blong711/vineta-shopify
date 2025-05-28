@@ -253,26 +253,15 @@
                 <div class="cart-imgtrust" {{ block.shopify_attributes }}>
                   <p class="text-center text-sm text-dark-1">{{ block.settings.title }}</p>
                   <div class="cart-list-social">
-                    {% if block.settings.payment1_image %}
-                      <div class="payment-card">
-                        <img src="{{ block.settings.payment1_image | img_url: '40x25' }}" alt="{{ block.settings.payment1_name }}" width="40" height="25">
-                      </div>
-                    {% endif %}
-                    {% if block.settings.payment2_image %}
-                      <div class="payment-card">
-                        <img src="{{ block.settings.payment2_image | img_url: '40x25' }}" alt="{{ block.settings.payment2_name }}" width="40" height="25">
-                      </div>
-                    {% endif %}
-                    {% if block.settings.payment3_image %}
-                      <div class="payment-card">
-                        <img src="{{ block.settings.payment3_image | img_url: '40x25' }}" alt="{{ block.settings.payment3_name }}" width="40" height="25">
-                      </div>
-                    {% endif %}
-                    {% if block.settings.payment4_image %}
-                      <div class="payment-card">
-                        <img src="{{ block.settings.payment4_image | img_url: '40x25' }}" alt="{{ block.settings.payment4_name }}" width="40" height="25">
-                      </div>
-                    {% endif %}
+                    {% assign payment_icons = block.settings.payment_type_img_url | split: ',' %}
+                    {% for icon in payment_icons %}
+                      {% assign icon_name = icon | strip %}
+                      {% if icon_name != blank %}
+                        <div class="payment-card">
+                          <img src="{{ icon_name | asset_url }}" alt="{{ icon_name | split: '.' | first | capitalize }}" width="40" height="25">
+                        </div>
+                      {% endif %}
+                    {% endfor %}
                   </div>
                 </div>
               {% endif %}
@@ -697,64 +686,11 @@
           "default": "We accept"
         },
         {
-          "type": "header",
-          "content": "Payment Method 1"
-        },
-        {
-          "type": "text",
-          "id": "payment1_name",
-          "label": "Name",
-          "default": "Visa"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment1_image",
-          "label": "Image"
-        },
-        {
-          "type": "header",
-          "content": "Payment Method 2"
-        },
-        {
-          "type": "text",
-          "id": "payment2_name",
-          "label": "Name",
-          "default": "Diners Club"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment2_image",
-          "label": "Image"
-        },
-        {
-          "type": "header",
-          "content": "Payment Method 3"
-        },
-        {
-          "type": "text",
-          "id": "payment3_name",
-          "label": "Name",
-          "default": "Mastercard"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment3_image",
-          "label": "Image"
-        },
-        {
-          "type": "header",
-          "content": "Payment Method 4"
-        },
-        {
-          "type": "text",
-          "id": "payment4_name",
-          "label": "Name",
-          "default": "Stripe"
-        },
-        {
-          "type": "image_picker",
-          "id": "payment4_image",
-          "label": "Image"
+          "type": "textarea",
+          "id": "payment_type_img_url",
+          "label": "Payment Method Icons",
+          "info": "Enter payment method icons separated by commas (e.g., visa.png, mastercard.png, paypal.png)",
+          "default": "visa.png, mastercard.png, paypal.png, stripe.png"
         }
       ]
     },
