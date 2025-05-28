@@ -214,13 +214,13 @@
                         <div class="product-info-progress-sale" {{ block.shopify_attributes }}>
                           <div class="title-hurry-up">
                             <span class="text-primary fw-medium">{{ block.settings.stock_count_text }}</span>
-                            <span class="count">{{ inventory_percentage }}%</span> of stock remaining!
+                            {{ block.settings.stock_prefix }} <span class="count">{{ inventory_quantity }}</span> {{ block.settings.stock_suffix }}
                           </div>
                           <div class="progress-sold">
                             <div class="value" style="width: {{ inventory_percentage }}%;" data-progress="{{ inventory_percentage }}"></div>
                           </div>
                         </div>
-                      {% endif %}
+                      {% endif %}          
                   {% endcase %}
                 {% endfor %}
                               <!-- Countdown Timer Block -->
@@ -2141,6 +2141,18 @@ document.addEventListener('DOMContentLoaded', function() {
           "id": "stock_count_text",
           "label": "Stock Count Text",
           "default": "HURRY UP!"
+        },
+        {
+          "type": "text",
+          "id": "stock_prefix",
+          "label": "Text before count",
+          "default": "Only"
+        },
+        {
+          "type": "text",
+          "id": "stock_suffix",
+          "label": "Text after count",
+          "default": "items left!"
         },
         {
           "type": "range",
