@@ -39,6 +39,8 @@
           "type": "stock_count",
           "settings": {
             "stock_count_text": "HURRY UP!",
+            "stock_prefix": "Only",
+            "stock_suffix": "items left!",
             "stock_threshold": 50
           }
         },
@@ -92,6 +94,13 @@
           "type": "fbt",
           "settings": {
             "fbt_title": "Frequently Bought Together",
+            "fbt_source": "manual",
+            "fbt_products": [
+              "polo-neck-t-shirt",
+              "round-neck-boxy-t-shirt",
+              "round-neck-cotton-t-shirt"
+            ],
+            "fbt_metafield": "fbt.products",
             "max_products": 3,
             "fbt_margin_top": 42,
             "fbt_margin_bottom": 0
