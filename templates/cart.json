@@ -12,49 +12,130 @@
     "page-title": {
       "type": "page-title",
       "settings": {
-        "custom_title": ""
+        "custom_title": "",
+        "contact_title": "",
+        "about_title": "",
+        "wishlist_title": "",
+        "compare_title": ""
       }
     },
     "cart": {
       "type": "cart",
       "blocks": {
+        "payment_methods_rBY8PD": {
+          "type": "payment_methods",
+          "settings": {
+            "title": "We accept"
+          }
+        },
+        "checkout_3YYy4A": {
+          "type": "checkout",
+          "settings": {
+            "total_label": "Total",
+            "tax_message": "Taxes and shipping calculated at checkout",
+            "terms_text": "I agree with terms and conditions",
+            "terms_url": "/pages/terms-and-conditions",
+            "checkout_button_text": "Checkout"
+          }
+        },
+        "shipping_estimates_rwj7qh": {
+          "type": "shipping_estimates",
+          "settings": {
+            "title": "Shipping estimates",
+            "country_label": "Country",
+            "country_placeholder": "United State",
+            "state_label": "State/Province",
+            "state_placeholder": "State/Province",
+            "zipcode_label": "Zipcode",
+            "zipcode_placeholder": "41000",
+            "button_text": "Estimate"
+          }
+        },
+        "empty_cart_i4CWpc": {
+          "type": "empty_cart",
+          "settings": {
+            "empty_cart_message": "Your cart is currently empty.",
+            "continue_shopping_text": "Continue shopping",
+            "continue_shopping_url": "shopify://collections/all"
+          }
+        },
+        "features_GRdzha": {
+          "type": "features",
+          "settings": {
+            "feature1_icon": "icon-shipping",
+            "feature1_title": "Free Shipping",
+            "feature2_icon": "icon-gift",
+            "feature2_title": "Gift Package",
+            "feature3_icon": "icon-return",
+            "feature3_title": "Ease Returns",
+            "feature4_icon": "icon-support",
+            "feature4_title": "ONE YEAR WARRANTY"
+          }
+        },
+        "cart_note_8yHVp9": {
+          "type": "cart_note",
+          "settings": {
+            "label_text": "Special instructions for seller"
+          }
+        },
+        "discount_code_kLajNz": {
+          "type": "discount_code",
+          "settings": {
+            "placeholder_text": "Discount code",
+            "button_text": "Apply"
+          }
+        },
+        "gift_wrap_jVEEHk": {
+          "type": "gift_wrap",
+          "settings": {
+            "gift_wrap_text": "Add gift wrap. Only [price]. (You can choose or not)",
+            "gift_wrap_price": 1000
+          }
+        },
+        "cart_items_M4byaW": {
+          "type": "cart_items",
+          "settings": {
+            "product_column_title": "Product",
+            "price_column_title": "Price",
+            "quantity_column_title": "Quantity",
+            "total_column_title": "Total",
+            "remove_text": "Remove"
+          }
+        },
+        "shipping_progress_gDbiQH": {
+          "type": "shipping_progress",
+          "settings": {
+            "progress_message": "Spend [amount] more to get Free Shipping",
+            "free_shipping_message": "Congratulations! You've unlocked Free Shipping",
+            "free_shipping_threshold": 10000
+          }
+        },
         "testimonial_LB6mVf": {
           "type": "testimonial",
           "settings": {
-            "review": "Stylish, comfortable, and perfect for any occasion! My new favorite fashion destination.",
-            "author_image": "shopify://shop_images/avt-1.png",
-            "author_name": "Vincent P."
-          }
-        },
-        "testimonial_NYw3WT": {
-          "type": "testimonial",
-          "settings": {
-            "review": "\"Trendy, versatile, and fits perfectly! My go-to place for stylish outfits.\"",
-            "author_image": "shopify://shop_images/blog-author-3.jpg",
-            "author_name": "Themesflat"
-          }
-        },
-        "testimonial_CLQD8X": {
-          "type": "testimonial",
-          "settings": {
-            "review": "\"Chic, affordable, and always on point! I’m obsessed with their collections!\"",
-            "author_image": "shopify://shop_images/blog-author-2.jpg",
-            "author_name": "Henry P."
+            "testimonial1_review": "<p>Stylish, comfortable, and perfect for any occasion! My new favorite fashion destination.</p>",
+            "testimonial1_author_name": "Customer Name",
+            "testimonial2_review": "",
+            "testimonial2_author_name": "",
+            "testimonial3_review": "",
+            "testimonial3_author_name": ""
           }
         }
       },
       "block_order": [
-        "testimonial_LB6mVf",
-        "testimonial_NYw3WT",
-        "testimonial_CLQD8X"
+        "payment_methods_rBY8PD",
+        "checkout_3YYy4A",
+        "shipping_estimates_rwj7qh",
+        "empty_cart_i4CWpc",
+        "features_GRdzha",
+        "cart_note_8yHVp9",
+        "discount_code_kLajNz",
+        "gift_wrap_jVEEHk",
+        "cart_items_M4byaW",
+        "shipping_progress_gDbiQH",
+        "testimonial_LB6mVf"
       ],
-      "settings": {
-        "show_vendor": false,
-        "show_quantity_selector": true,
-        "show_cart_note": true,
-        "show_cart_buttons": true,
-        "show_continue_shopping": true
-      }
+      "settings": {}
     },
     "related-products": {
       "type": "related-products",
