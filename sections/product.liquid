@@ -2176,12 +2176,14 @@ document.addEventListener('DOMContentLoaded', function() {
           "type": "text",
           "id": "size_guide_text",
           "label": "Size Guide Title",
-          "default": "Size Guide"
+          "default": "Size Guide",
+          "info": "This text appears on the size guide link next to the size selector"
         },
         {
           "type": "select",
           "id": "size_guide_source",
           "label": "Size Guide Source",
+          "info": "Choose where to get the size guide content from",
           "options": [
             { "value": "page", "label": "Shopify Page" },
             { "value": "metafield", "label": "Product Metafield" }
@@ -2191,14 +2193,15 @@ document.addEventListener('DOMContentLoaded', function() {
         {
           "type": "page",
           "id": "size_guide_page",
-          "label": "Size Guide Page"
+          "label": "Size Guide Page",
+          "info": "Select a Shopify page containing your size guide content. This is used when 'Shopify Page' is selected as the source."
         },
         {
           "type": "text",
           "id": "size_guide_metafield",
           "label": "Size Guide Metafield (namespace.key)",
           "default": "size_guide.content",
-          "info": "Format: namespace.key (e.g. size_guide.content)"
+          "info": "Enter the metafield reference in format: namespace.key (e.g. size_guide.content). This is used when 'Product Metafield' is selected as the source. The metafield should be added to your products."
         }
       ]
     },
