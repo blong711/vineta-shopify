@@ -94,7 +94,8 @@
                 {% if block.type == 'gift_wrap' %}
                   <div class="check-gift" {{ block.shopify_attributes }}>
                     <input type="checkbox" class="tf-check" id="checkGift">
-                    <label for="checkGift" class="label text-dark-4">{{ block.settings.gift_wrap_text | replace: '[price]', block.settings.gift_wrap_price | money }}</label>
+                    {% assign gift_price = block.settings.gift_wrap_price | divided_by: 100.0 | money %}
+                    <label for="checkGift" class="label text-dark-4">{{ block.settings.gift_wrap_text | replace: '[price]', gift_price }}</label>
                   </div>
                 {% endif %}
               {% endfor %}
