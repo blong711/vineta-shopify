@@ -253,15 +253,31 @@
                 <div class="cart-imgtrust" {{ block.shopify_attributes }}>
                   <p class="text-center text-sm text-dark-1">{{ block.settings.title }}</p>
                   <div class="cart-list-social">
-                    {% assign payment_icons = block.settings.payment_type_img_url | split: ',' %}
-                    {% for icon in payment_icons %}
-                      {% assign icon_name = icon | strip %}
-                      {% if icon_name != blank %}
+                    {% assign payment_icons = block.settings.payment_icons | split: ',' %}
+                    {% if block.settings.payment_icons == blank %}
+                      {% for icon in shop.enabled_payment_types %}
                         <div class="payment-card">
-                          <img src="{{ icon_name | asset_url }}" alt="{{ icon_name | split: '.' | first | capitalize }}" width="40" height="25">
+                          <img src="{{ icon | payment_type_img_url }}"
+                               alt="{{ icon | capitalize }}"
+                               width="{{ block.settings.payment_icons_size }}"
+                               height="{{ block.settings.payment_icons_size }}"
+                               class="icon">
                         </div>
-                      {% endif %}
-                    {% endfor %}
+                      {% endfor %}
+                    {% else %}
+                      {% for icon in payment_icons %}
+                        {% assign icon_name = icon | strip %}
+                        {% if icon_name != blank %}
+                          <div class="payment-card">
+                            <img src="{{ icon_name | payment_type_img_url }}"
+                                 alt="{{ icon_name | capitalize }}"
+                                 width="{{ block.settings.payment_icons_size }}"
+                                 height="{{ block.settings.payment_icons_size }}"
+                                 class="icon">
+                          </div>
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
                   </div>
                 </div>
               {% endif %}
@@ -686,11 +702,21 @@
           "default": "We accept"
         },
         {
-          "type": "textarea",
-          "id": "payment_type_img_url",
-          "label": "Payment Method Icons",
-          "info": "Enter payment method icons separated by commas (e.g., visa.png, mastercard.png, paypal.png)",
-          "default": "visa.png, mastercard.png, paypal.png, stripe.png"
+          "type": "text",
+          "id": "payment_icons",
+          "label": "Payment Icons",
+          "info": "Enter payment types separated by commas (e.g., visa, mastercard, paypal)",
+          "default": "visa, mastercard, paypal, stripe"
+        },
+        {
+          "type": "range",
+          "id": "payment_icons_size",
+          "min": 20,
+          "max": 50,
+          "step": 2,
+          "unit": "px",
+          "label": "Payment Icons Size",
+          "default": 40
         }
       ]
     },
