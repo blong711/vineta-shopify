@@ -51,7 +51,7 @@
                   <div class="swiper-wrapper">
                     {%- for product in section.settings.suggested_products limit: 4 -%}
                       <div class="swiper-slide">
-                        {% render 'card-product', product: product, style: 'style-3' %}
+                        {% render 'card-product', product: product %}
                       </div>
                     {%- endfor -%}
                   </div>

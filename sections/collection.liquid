@@ -220,7 +220,7 @@
       <div class="tf-list-layout wrapper-shop" id="listLayout" style="display: none;">
         {% for product in collection.products %}
           <div class="loadItem card-product style-list" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
-            {% render 'card-product', product: product, style: section.settings.card_style %}
+            {% render 'card-product', product: product %}
           </div>
         {% endfor %}
 
@@ -280,7 +280,7 @@
           <div class="loadItem card-product grid style-1{% if product.options contains 'Size' %} card-product-size{% endif %}" 
                data-availability="{{ product.available | default: 'In stock' }}" 
                data-brand="{{ product.vendor }}">
-            {% render 'card-product', product: product, style: section.settings.card_style %}
+            {% render 'card-product', product: product %}
           </div>
         {% endfor %}
 

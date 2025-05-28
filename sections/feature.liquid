@@ -16,12 +16,11 @@
                         <div class="swiper-slide" {{ block.shopify_attributes }}>
                             {% render 'card-product',
                                 product: block.settings.product,
-                                style: 'style-2',
                                 show_sale_badge: true,
                                 sale_badge_text: block.settings.sale_badge,
                                 show_color_swatches: true,
                                 vendor: block.settings.brand,
-                                class: 'style-border style-2',
+                                class: 'style-border',
                                 product-info: 'text-center'
                             %}
                         </div>
