@@ -39,7 +39,15 @@
                     <tr class="tf-cart-item file-delete" data-item-id="{{ item.key }}" data-variant-id="{{ item.variant.id }}">
                       <td class="tf-cart-item_product">
                         <a href="{{ item.url }}" class="img-box">
-                          <img src="{{ item.image | img_url: '150x' }}" alt="{{ item.title | escape }}" loading="lazy" width="150" height="150">
+                          <img src="{{ item.image | img_url: '150x' }}" 
+                               srcset="{{ item.image | img_url: '100x' }} 100w,
+                                       {{ item.image | img_url: '150x' }} 150w,
+                                       {{ item.image | img_url: '200x' }} 200w"
+                               sizes="(max-width: 768px) 100px, 150px"
+                               alt="{{ item.title | escape }}" 
+                               loading="lazy" 
+                               width="150" 
+                               height="150">
                         </a>
                         <div class="cart-info">
                           <a href="{{ item.url }}" class="name text-md link fw-medium">{{ item.product.title }}</a>
