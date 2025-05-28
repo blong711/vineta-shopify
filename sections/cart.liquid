@@ -1211,12 +1211,31 @@ document.addEventListener('DOMContentLoaded', function() {
   const checkoutForm = document.getElementById('checkout-form');
   
   if (termsCheckbox && checkoutButton && checkoutForm) {
+    // Function to update checkout button state
+    function updateCheckoutButtonState() {
+      // Get cart item count
+      const cartItems = document.querySelectorAll('.tf-cart-item');
+      const hasItems = cartItems.length > 0;
+      
+      // Update button state based on terms agreement and cart items
+      checkoutButton.disabled = !termsCheckbox.checked || !hasItems;
+      
+      // Update button text based on state
+      if (!hasItems) {
+        checkoutButton.textContent = 'Your cart is empty';
+      } else if (!termsCheckbox.checked) {
+        checkoutButton.textContent = 'Please agree to terms';
+      } else {
+        checkoutButton.textContent = 'Checkout';
+      }
+    }
+    
     // Initial state
-    checkoutButton.disabled = true;
+    updateCheckoutButtonState();
     
     // Handle checkbox change
     termsCheckbox.addEventListener('change', function() {
-      checkoutButton.disabled = !this.checked;
+      updateCheckoutButtonState();
     });
     
     // Handle form submission
@@ -1224,7 +1243,26 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!termsCheckbox.checked) {
         e.preventDefault();
         alert('Please agree to the terms and conditions before proceeding to checkout.');
+        return;
       }
+      
+      // Check if cart has items
+      const cartItems = document.querySelectorAll('.tf-cart-item');
+      if (cartItems.length === 0) {
+        e.preventDefault();
+        alert('Your cart is empty. Please add items before proceeding to checkout.');
+        return;
+      }
+    });
+    
+    // Update button state when cart changes
+    document.addEventListener('cart:change', function() {
+      updateCheckoutButtonState();
+    });
+    
+    // Update button state when items are removed
+    document.addEventListener('item:removed', function() {
+      updateCheckoutButtonState();
     });
   }
 
@@ -1381,9 +1419,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         const data = await response.json();
-        if (data.token) {
+        
+        // Check if the discount was applied successfully
+        if (data.discount_applications && data.discount_applications.length > 0) {
           alert('Discount code applied successfully!');
-          window.location.reload();
+          // Update the cart total display
+          const cartTotal = document.querySelector('.total');
+          if (cartTotal) {
+            if (window.Shopify && Shopify.formatMoney) {
+              cartTotal.textContent = Shopify.formatMoney(data.total_price, window.theme && window.theme.moneyFormat ? window.theme.moneyFormat : "${{amount}}");
+            } else {
+              cartTotal.textContent = (data.total_price / 100).toLocaleString(undefined, { style: 'currency', currency: 'USD' });
+            }
+          }
+          // Update shipping progress if it exists
+          updateShippingProgress();
         } else {
           alert('Invalid discount code');
         }
@@ -1397,21 +1447,68 @@ document.addEventListener('DOMContentLoaded', function() {
   // Handle cart note
   const cartNote = document.getElementById('note');
   if (cartNote) {
-    cartNote.addEventListener('change', async function() {
-      try {
-        await fetch('/cart/update.js', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            note: this.value
-          })
-        });
-      } catch (error) {
-        console.error('Error updating cart note:', error);
-        alert('Failed to update cart note. Please try again.');
+    let noteTimeout;
+    
+    cartNote.addEventListener('input', async function() {
+      // Clear any existing timeout
+      if (noteTimeout) {
+        clearTimeout(noteTimeout);
       }
+      
+      // Show saving indicator
+      const savingIndicator = document.createElement('span');
+      savingIndicator.className = 'saving-indicator';
+      savingIndicator.textContent = 'Saving...';
+      savingIndicator.style.marginLeft = '10px';
+      savingIndicator.style.fontSize = '0.9em';
+      savingIndicator.style.color = '#666';
+      
+      // Remove any existing indicator
+      const existingIndicator = cartNote.parentElement.querySelector('.saving-indicator');
+      if (existingIndicator) {
+        existingIndicator.remove();
+      }
+      
+      cartNote.parentElement.appendChild(savingIndicator);
+      
+      // Set a timeout to save the note after 1 second of no typing
+      noteTimeout = setTimeout(async () => {
+        try {
+          const response = await fetch('/cart/update.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              note: this.value
+            })
+          });
+          
+          const data = await response.json();
+          
+          if (data.note === this.value) {
+            // Update the indicator to show success
+            savingIndicator.textContent = 'Saved!';
+            savingIndicator.style.color = '#28a745';
+            
+            // Remove the indicator after 2 seconds
+            setTimeout(() => {
+              savingIndicator.remove();
+            }, 2000);
+          } else {
+            throw new Error('Note not updated correctly');
+          }
+        } catch (error) {
+          console.error('Error updating cart note:', error);
+          savingIndicator.textContent = 'Failed to save';
+          savingIndicator.style.color = '#dc3545';
+          
+          // Remove the indicator after 2 seconds
+          setTimeout(() => {
+            savingIndicator.remove();
+          }, 2000);
+        }
+      }, 1000);
     });
   }
 });
