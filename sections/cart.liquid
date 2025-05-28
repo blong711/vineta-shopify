@@ -212,22 +212,29 @@
         <div class="tf-page-cart-sidebar">
           {% for block in section.blocks %}
             {% if block.type == 'shipping_estimates' %}
-              <form class="cart-box shipping-cart-box" {{ block.shopify_attributes }}>
+              <div class="cart-box shipping-cart-box" {{ block.shopify_attributes }}>
                 <div class="text-lg title fw-medium">{{ block.settings.title }}</div>
-            <fieldset class="field">
+                <fieldset class="field">
                   <label for="country" class="text-sm">{{ block.settings.country_label }}</label>
                   <input type="text" id="country" placeholder="{{ block.settings.country_placeholder }}">
-            </fieldset>
-            <fieldset class="field">
+                </fieldset>
+                <fieldset class="field">
                   <label for="state" class="text-sm">{{ block.settings.state_label }}</label>
                   <input type="text" id="state" placeholder="{{ block.settings.state_placeholder }}">
-            </fieldset>
-            <fieldset class="field">
+                </fieldset>
+                <fieldset class="field">
                   <label for="code" class="text-sm">{{ block.settings.zipcode_label }}</label>
                   <input type="text" id="code" placeholder="{{ block.settings.zipcode_placeholder }}">
-            </fieldset>
+                </fieldset>
                 <button type="button" class="tf-btn btn-dark2 animate-btn w-100">{{ block.settings.button_text }}</button>
-          </form>
+                
+                <!-- Add shipping rates display container -->
+                <div class="shipping-rates-container" style="display: none; margin-top: 20px;">
+                  <div class="shipping-rates-header text-md fw-medium">Available Shipping Rates</div>
+                  <div class="shipping-rates-list"></div>
+                  <div class="shipping-rates-error text-sm text-danger" style="display: none;"></div>
+                </div>
+              </div>
             {% endif %}
           {% endfor %}
 
@@ -1269,17 +1276,37 @@ document.addEventListener('DOMContentLoaded', function() {
   // Handle shipping estimates
   const shippingForm = document.querySelector('.shipping-cart-box');
   const estimateButton = shippingForm?.querySelector('button[type="button"]');
+  const shippingRatesContainer = shippingForm?.querySelector('.shipping-rates-container');
+  const shippingRatesList = shippingForm?.querySelector('.shipping-rates-list');
+  const shippingRatesError = shippingForm?.querySelector('.shipping-rates-error');
   
+  // Store the original button text
+  const originalButtonText = estimateButton ? estimateButton.textContent : 'Estimate';
+
   if (estimateButton) {
     estimateButton.addEventListener('click', async function() {
       const country = document.getElementById('country').value;
       const state = document.getElementById('state').value;
       const zipcode = document.getElementById('code').value;
       
+      // Reset previous results
+      shippingRatesList.innerHTML = '';
+      shippingRatesError.style.display = 'none';
+      shippingRatesContainer.style.display = 'none';
+      
+      // Validate inputs
       if (!country || !state || !zipcode) {
-        alert('Please fill in all shipping fields');
+        shippingRatesError.textContent = 'Please fill in all shipping fields';
+        shippingRatesError.style.display = 'block';
+        shippingRatesContainer.style.display = 'block';
         return;
       }
+
+      // Show loading state
+      estimateButton.disabled = true;
+      estimateButton.innerHTML = '<span class="loading-spinner"></span> Calculating...';
+      shippingRatesContainer.style.display = 'block';
+      shippingRatesList.innerHTML = '<div class="text-center">Calculating shipping rates...</div>';
 
       try {
         const response = await fetch('/cart/shipping_rates.json', {
@@ -1297,21 +1324,71 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         const data = await response.json();
+        
         if (data.shipping_rates && data.shipping_rates.length > 0) {
-          // Display shipping rates
-          const shippingRates = data.shipping_rates.map(rate => 
-            `${rate.name}: ${rate.price}`
-          ).join('\n');
-          alert('Available shipping rates:\n' + shippingRates);
+          // Display shipping rates in a user-friendly format
+          shippingRatesList.innerHTML = data.shipping_rates.map(rate => `
+            <div class="shipping-rate-item" style="padding: 10px; border-bottom: 1px solid #eee;">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="shipping-rate-name text-md">${rate.name}</div>
+                <div class="shipping-rate-price text-md fw-medium">
+                  ${window.Shopify && Shopify.formatMoney ? 
+                    Shopify.formatMoney(rate.price, window.theme && window.theme.moneyFormat ? window.theme.moneyFormat : "${{amount}}") : 
+                    (rate.price / 100).toLocaleString(undefined, { style: 'currency', currency: 'USD' })}
+                </div>
+              </div>
+              ${rate.delivery_time ? `<div class="shipping-rate-delivery text-sm text-dark-4">Estimated delivery: ${rate.delivery_time}</div>` : ''}
+            </div>
+          `).join('');
         } else {
-          alert('No shipping rates available for this location');
+          shippingRatesList.innerHTML = '<div class="text-center text-dark-4">No shipping rates available for this location</div>';
         }
       } catch (error) {
         console.error('Error fetching shipping rates:', error);
-        alert('Failed to calculate shipping rates. Please try again.');
+        shippingRatesError.textContent = 'Failed to calculate shipping rates. Please try again.';
+        shippingRatesError.style.display = 'block';
+      } finally {
+        // Restore the original button text
+        estimateButton.disabled = false;
+        estimateButton.textContent = originalButtonText;
       }
     });
   }
+
+  // Add some CSS for the loading spinner
+  const style = document.createElement('style');
+  style.textContent = `
+    .loading-spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+      margin-right: 8px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .shipping-rate-item:last-child {
+      border-bottom: none;
+    }
+    
+    .shipping-rates-container {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 15px;
+    }
+    
+    .shipping-rates-header {
+      margin-bottom: 15px;
+      color: #333;
+    }
+  `;
+  document.head.appendChild(style);
 
   // Handle gift wrap
   const giftWrapCheckbox = document.getElementById('checkGift');
