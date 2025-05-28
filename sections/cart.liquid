@@ -219,49 +219,50 @@
             </div>
           </form>
 
-          <div class="cart-box testimonial-cart-box">
-            <div dir="ltr" class="swiper tf-swiper" data-swiper='{
-              "slidesPerView": 1,
-              "spaceBetween": 12,
-              "speed": 800,
-              "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
-              "navigation": {
-                "clickable": true,
-                "nextEl": ".nav-next-tes",
-                "prevEl": ".nav-prev-tes"
-              }
-            }'>
-              <div class="swiper-wrapper">
-                {% for block in section.blocks %}
-                  {% if block.type == 'testimonial' %}
-                    <div class="swiper-slide">
-                      <div class="box-testimonial-main">
-                        <span class="quote icon-quote5"></span>
-                        <div class="content">
-                          <div class="list-star-default">
-                            {% for i in (1..5) %}
-                              <i class="icon-star"></i>
-                            {% endfor %}
-                          </div>
-                          <p class="text-review text-md text-main">{{ block.settings.review }}</p>
-                          <div class="box-author">
-                            <div class="img">
-                              <img src="{{ block.settings.author_image | img_url: '100x' }}" alt="{{ block.settings.author_name }}" width="{{ block.settings.author_image.width }}" height="{{ block.settings.author_image.height }}">
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'testimonial' %}
+                <div class="cart-box testimonial-cart-box" {{ block.shopify_attributes }}>
+                  <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+                    "slidesPerView": 1,
+                    "spaceBetween": 12,
+                    "speed": 800,
+                    "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+                    "navigation": {
+                      "clickable": true,
+                      "nextEl": ".nav-next-tes",
+                      "prevEl": ".nav-prev-tes"
+                    }
+                  }'>
+                    <div class="swiper-wrapper">
+                      <div class="swiper-slide">
+                        <div class="box-testimonial-main">
+                          <span class="quote icon-quote5"></span>
+                          <div class="content">
+                            <div class="list-star-default">
+                              {% for i in (1..5) %}
+                                <i class="icon-star"></i>
+                              {% endfor %}
                             </div>
-                            <span class="name text-sm fw-medium">{{ block.settings.author_name }}</span>
+                            <p class="text-review text-md text-main">{{ block.settings.review }}</p>
+                            <div class="box-author">
+                              <div class="img">
+                                <img src="{{ block.settings.author_image | img_url: '100x' }}" alt="{{ block.settings.author_name }}" width="{{ block.settings.author_image.width }}" height="{{ block.settings.author_image.height }}">
+                              </div>
+                              <span class="name text-sm fw-medium">{{ block.settings.author_name }}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  {% endif %}
-                {% endfor %}
-              </div>
-              <div class="box-nav-swiper">
-                <div class="swiper-button-prev nav-swiper nav-prev-tes"></div>
-                <div class="swiper-button-next nav-swiper nav-next-tes"></div>
-              </div>
-            </div>
-          </div>
+                    <div class="box-nav-swiper">
+                      <div class="swiper-button-prev nav-swiper nav-prev-tes"></div>
+                      <div class="swiper-button-next nav-swiper nav-next-tes"></div>
+                    </div>
+                  </div>
+                </div>
+            {% endcase %}
+          {% endfor %}
         </div>
       </div>
     </div>
@@ -309,6 +310,7 @@
     {
       "type": "testimonial",
       "name": "Testimonial",
+      "limit": 1,
       "settings": [
         {
           "type": "text",
@@ -326,6 +328,16 @@
           "id": "author_name",
           "label": "Author name",
           "default": "Customer Name"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cart",
+      "blocks": [
+        {
+          "type": "testimonial"
         }
       ]
     }
