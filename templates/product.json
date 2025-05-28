@@ -21,6 +21,7 @@
         "countdown_timer_V6yRcr": {
           "type": "countdown_timer",
           "settings": {
+            "hurry_text": "HURRY UP!",
             "label": "Sale ends in:"
           }
         },
@@ -37,7 +38,8 @@
         "stock_count": {
           "type": "stock_count",
           "settings": {
-            "stock_count_text": "HURRY UP!"
+            "stock_count_text": "HURRY UP!",
+            "stock_threshold": 100
           }
         },
         "variant_picker": {
