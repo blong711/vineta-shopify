@@ -251,7 +251,7 @@
                               </clipPath>
                             </defs>
                           </svg>
-                          <p class="text-xs fw-medium"><span class="text-primary fw-normal">HURRY UP!</span> {{ block.settings.label }}</p>
+                          <p class="text-xs fw-medium"><span class="text-primary fw-normal">{{ block.settings.hurry_text }}</span> {{ block.settings.label }}</p>
                         </div>
                         <div class="js-countdown countdown-box" data-countdown="{{ end_date }}" data-labels="D,H,M,S"></div>
                       </div>
@@ -2372,9 +2372,35 @@ document.addEventListener('DOMContentLoaded', function() {
       "settings": [
         {
           "type": "text",
+          "id": "hurry_text",
+          "label": "Hurry Up Text",
+          "default": "HURRY UP!"
+        },
+        {
+          "type": "text",
           "id": "label",
           "label": "Countdown Label",
           "default": "Sale ends in:"
+        },
+        {
+          "type": "paragraph",
+          "content": "To set up the countdown timer, you need to add a metafield to your product with the following details:"
+        },
+        {
+          "type": "paragraph",
+          "content": "Namespace: countdown"
+        },
+        {
+          "type": "paragraph",
+          "content": "Key: end_date"
+        },
+        {
+          "type": "paragraph",
+          "content": "Type: Date and time"
+        },
+        {
+          "type": "paragraph",
+          "content": "Format: YYYY-MM-DD HH:MM:SS (e.g. 2024-12-31 23:59:59)"
         }
       ]
     }
