@@ -31,7 +31,6 @@
                 {% for product in collection.products limit: product_limit %}
                   {% render 'card-product',
                     product: product,
-                    style: 'style-2',
                     class: 'card-product-size',
                     show_sale_badge: true,
                     sale_badge_text: product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round | append: '% Off',

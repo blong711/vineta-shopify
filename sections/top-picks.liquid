@@ -52,7 +52,6 @@
                                 {% if layout == 'default' %}
                                     {% render 'card-product',
                                         product: product,
-                                        style: 'style-hot-deals',
                                         countdown_timer: block.settings.countdown_timer,
                                         available_quantity: block.settings.available_quantity,
                                         sold_percentage: block.settings.sold_percentage
@@ -60,7 +59,6 @@
                                 {% elsif layout == 'home-phonecase' %}
                                     {% render 'card-product',
                                         product: product,
-                                        style: 'style-phonecase',
                                         show_sale_badge: block.settings.show_sale_badge,
                                         sale_badge_text: block.settings.sale_badge_text,
                                         show_color_swatches: block.settings.show_color_swatches,
@@ -71,7 +69,6 @@
                                 {% else %}
                                     {% render 'card-product',
                                         product: product,
-                                        style: layout,
                                         show_sale_badge: block.settings.show_sale_badge,
                                         sale_badge_text: block.settings.sale_badge_text,
                                         show_color_swatches: block.settings.show_color_swatches,
