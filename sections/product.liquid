@@ -451,7 +451,12 @@
                           <div class="tf-bundle-products">
                             {% assign max_products = block.settings.max_products | default: 3 %}
                             {% for fbt_product in fbt_products limit: max_products %}
-                              {% assign related_product = all_products[fbt_product] %}
+                              {% assign related_product = fbt_product %}
+                              {% if fbt_product.handle %}
+                                {% assign related_product = fbt_product %}
+                              {% else %}
+                                {% assign related_product = all_products[fbt_product] %}
+                              {% endif %}
                               {% if related_product.available %}
                                 <div class="tf-bundle-product-item item-has-checkbox{% if forloop.first %} check{% endif %}">
                                   <div class="bundle-check">
