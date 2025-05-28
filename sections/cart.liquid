@@ -3,16 +3,24 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-xl-4 col-sm-8">
-        <div class="tf-cart-head text-center">
-          <p class="text-xl-3 title text-dark-4">Spend <span class="fw-medium">$100</span> more to get
-            <span class="fw-medium">Free Shipping</span>
-          </p>
-          <div class="progress-sold tf-progress-ship">
-            <div class="value" style="width: 0%;" data-progress="0">
-              <i class="icon icon-car"></i>
+        {% for block in section.blocks %}
+          {% if block.type == 'shipping_progress' %}
+            <div class="tf-cart-head text-center" {{ block.shopify_attributes }}>
+              <p class="text-xl-3 title text-dark-4">
+                {% if cart.total_price >= block.settings.free_shipping_threshold %}
+                  {{ block.settings.free_shipping_message }}
+                {% else %}
+                  {{ block.settings.progress_message | replace: '[amount]', block.settings.free_shipping_threshold | minus: cart.total_price | money }}
+                {% endif %}
+              </p>
+              <div class="progress-sold tf-progress-ship">
+                <div class="value" style="width: {{ cart.total_price | times: 100.0 | divided_by: block.settings.free_shipping_threshold | at_most: 100 }}%;" data-progress="{{ cart.total_price | times: 100.0 | divided_by: block.settings.free_shipping_threshold | at_most: 100 }}">
+                  <i class="icon icon-car"></i>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          {% endif %}
+        {% endfor %}
       </div>
     </div>
   </div>
@@ -25,242 +33,345 @@
         <div class="tf-page-cart-main">
           {% if cart.item_count > 0 %}
             <form action="/cart" method="post" id="cart-form" class="form-cart">
-              <table class="table-page-cart">
-                <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for item in cart.items %}
-                    <tr class="tf-cart-item file-delete" data-item-id="{{ item.key }}" data-variant-id="{{ item.variant.id }}">
-                      <td class="tf-cart-item_product">
-                        <a href="{{ item.url }}" class="img-box">
-                          <img src="{{ item.image | img_url: '150x' }}" 
-                               srcset="{{ item.image | img_url: '100x' }} 100w,
-                                       {{ item.image | img_url: '150x' }} 150w,
-                                       {{ item.image | img_url: '200x' }} 200w"
-                               sizes="(max-width: 768px) 100px, 150px"
-                               alt="{{ item.title | escape }}" 
-                               loading="lazy" 
-                               width="150" 
-                               height="150">
-                        </a>
-                        <div class="cart-info">
-                          <a href="{{ item.url }}" class="name text-md link fw-medium">{{ item.product.title }}</a>
-                          {% if item.product.has_only_default_variant == false %}
-                            <div class="variants">{{ item.variant.title }}</div>
-                          {% endif %}
-                          <span class="remove-cart link remove" data-item-id="{{ item.key }}" data-variant-id="{{ item.variant.id }}">Remove</span>
-                        </div>
-                      </td>
-                      <td class="tf-cart-item_price text-center" data-cart-title="Price">
-                        <span class="cart-price price-on-sale text-md fw-medium">{{ item.final_price | money }}</span>
-                        {% if item.original_price != item.final_price %}
-                          <span class="compare-price">{{ item.original_price | money }}</span>
-                        {% endif %}
-                      </td>
-                      <td class="tf-cart-item_quantity" data-cart-title="Quantity">
-                        <div class="wg-quantity">
-                          <span class="btn-quantity btn-decrease">-</span>
-                          <input class="quantity-product" type="text" name="updates[]" value="{{ item.quantity }}" min="0">
-                          <span class="btn-quantity btn-increase">+</span>
-                        </div>
-                      </td>
-                      <td class="tf-cart-item_total text-center" data-cart-title="Total">
-                        <div class="cart-total total-price text-md fw-medium">{{ item.final_line_price | money }}</div>
-                      </td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+              {% for block in section.blocks %}
+                {% if block.type == 'cart_items' %}
+                  <table class="table-page-cart" {{ block.shopify_attributes }}>
+                    <thead>
+                      <tr>
+                        <th>{{ block.settings.product_column_title }}</th>
+                        <th>{{ block.settings.price_column_title }}</th>
+                        <th>{{ block.settings.quantity_column_title }}</th>
+                        <th>{{ block.settings.total_column_title }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for item in cart.items %}
+                        <tr class="tf-cart-item file-delete" data-item-id="{{ item.key }}" data-variant-id="{{ item.variant.id }}">
+                          <td class="tf-cart-item_product">
+                            <a href="{{ item.url }}" class="img-box">
+                              <img src="{{ item.image | img_url: '150x' }}" 
+                                   srcset="{{ item.image | img_url: '100x' }} 100w,
+                                           {{ item.image | img_url: '150x' }} 150w,
+                                           {{ item.image | img_url: '200x' }} 200w"
+                                   sizes="(max-width: 768px) 100px, 150px"
+                                   alt="{{ item.title | escape }}" 
+                                   loading="lazy" 
+                                   width="150" 
+                                   height="150">
+                            </a>
+                            <div class="cart-info">
+                              <a href="{{ item.url }}" class="name text-md link fw-medium">{{ item.product.title }}</a>
+                              {% if item.product.has_only_default_variant == false %}
+                                <div class="variants">{{ item.variant.title }}</div>
+                              {% endif %}
+                              <span class="remove-cart link remove" data-item-id="{{ item.key }}" data-variant-id="{{ item.variant.id }}">{{ block.settings.remove_text }}</span>
+                            </div>
+                          </td>
+                          <td class="tf-cart-item_price text-center" data-cart-title="{{ block.settings.price_column_title }}">
+                            <span class="cart-price price-on-sale text-md fw-medium">{{ item.final_price | money }}</span>
+                            {% if item.original_price != item.final_price %}
+                              <span class="compare-price">{{ item.original_price | money }}</span>
+                            {% endif %}
+                          </td>
+                          <td class="tf-cart-item_quantity" data-cart-title="{{ block.settings.quantity_column_title }}">
+                            <div class="wg-quantity">
+                              <span class="btn-quantity btn-decrease">-</span>
+                              <input class="quantity-product" type="text" name="updates[]" value="{{ item.quantity }}" min="0">
+                              <span class="btn-quantity btn-increase">+</span>
+                            </div>
+                          </td>
+                          <td class="tf-cart-item_total text-center" data-cart-title="{{ block.settings.total_column_title }}">
+                            <div class="cart-total total-price text-md fw-medium">{{ item.final_line_price | money }}</div>
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                {% endif %}
+              {% endfor %}
 
-              <div class="check-gift">
-                <input type="checkbox" class="tf-check" id="checkGift">
-                <label for="checkGift" class="label text-dark-4">Add gift wrap. Only <span class="fw-medium">$10.00.</span> (You can choose or not)</label>
-              </div>
+              {% for block in section.blocks %}
+                {% if block.type == 'gift_wrap' %}
+                  <div class="check-gift" {{ block.shopify_attributes }}>
+                    <input type="checkbox" class="tf-check" id="checkGift">
+                    <label for="checkGift" class="label text-dark-4">{{ block.settings.gift_wrap_text | replace: '[price]', block.settings.gift_wrap_price | money }}</label>
+                  </div>
+                {% endif %}
+              {% endfor %}
 
-              <div class="box-ip-discount">
-                <input type="text" placeholder="Discount code" name="discount_code">
-                <button type="button" class="tf-btn radius-6 btn-out-line-dark-2">Apply</button>
-              </div>
+              {% for block in section.blocks %}
+                {% if block.type == 'discount_code' %}
+                  <div class="box-ip-discount" {{ block.shopify_attributes }}>
+                    <input type="text" placeholder="{{ block.settings.placeholder_text }}" name="discount_code">
+                    <button type="button" class="tf-btn radius-6 btn-out-line-dark-2">{{ block.settings.button_text }}</button>
+                  </div>
+                {% endif %}
+              {% endfor %}
 
-              <div class="cart-note">
-                <label for="note" class="text-md fw-medium">Special instructions for seller</label>
-                <textarea id="note" name="note">{{ cart.note }}</textarea>
-              </div>
+              {% for block in section.blocks %}
+                {% if block.type == 'cart_note' %}
+                  <div class="cart-note" {{ block.shopify_attributes }}>
+                    <label for="note" class="text-md fw-medium">{{ block.settings.label_text }}</label>
+                    <textarea id="note" name="note">{{ cart.note }}</textarea>
+                  </div>
+                {% endif %}
+              {% endfor %}
             </form>
 
-            <div class="fl-iconbox wow fadeInUp">
-              <div dir="ltr" class="swiper tf-swiper sw-auto" data-swiper='{
-                "slidesPerView": 1,
-                "spaceBetween": 12,
-                "speed": 800,
-                "observer": true,
-                "observeParents": true,
-                "slidesPerGroup": 1,
-                "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
-                "breakpoints": {
-                  "575": { "slidesPerView": 2, "spaceBetween": 12, "slidesPerGroup": 2},
-                  "768": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3},
-                  "1200": { "slidesPerView": "auto", "spaceBetween": 24}
-                }
-              }'>
-                <div class="swiper-wrapper">
-                  <div class="swiper-slide">
-                    <div class="tf-icon-box justify-content-center justify-content-sm-start style-3">
-                      <div class="box-icon">
-                        <i class="icon icon-shipping"></i>
-                      </div>
-                      <div class="content">
-                        <div class="title text-uppercase">Free Shipping</div>
-                      </div>
+            {% for block in section.blocks %}
+              {% if block.type == 'features' %}
+                <div class="fl-iconbox wow fadeInUp" {{ block.shopify_attributes }}>
+                  <div dir="ltr" class="swiper tf-swiper sw-auto" data-swiper='{
+                    "slidesPerView": 1,
+                    "spaceBetween": 12,
+                    "speed": 800,
+                    "observer": true,
+                    "observeParents": true,
+                    "slidesPerGroup": 1,
+                    "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+                    "breakpoints": {
+                      "575": { "slidesPerView": 2, "spaceBetween": 12, "slidesPerGroup": 2},
+                      "768": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3},
+                      "1200": { "slidesPerView": "auto", "spaceBetween": 24}
+                    }
+                  }'>
+                    <div class="swiper-wrapper">
+                      {% if block.settings.feature1_title != blank %}
+                        <div class="swiper-slide">
+                          <div class="tf-icon-box justify-content-center justify-content-sm-start style-3">
+                            <div class="box-icon">
+                              <i class="icon {{ block.settings.feature1_icon }}"></i>
+                            </div>
+                            <div class="content">
+                              <div class="title text-uppercase">{{ block.settings.feature1_title }}</div>
+                            </div>
+                          </div>
+                        </div>
+                      {% endif %}
+                      {% if block.settings.feature2_title != blank %}
+                        <div class="swiper-slide">
+                          <div class="tf-icon-box justify-content-center justify-content-sm-start style-3">
+                            <div class="box-icon">
+                              <i class="icon {{ block.settings.feature2_icon }}"></i>
+                            </div>
+                            <div class="content">
+                              <div class="title text-uppercase">{{ block.settings.feature2_title }}</div>
+                            </div>
+                          </div>
+                        </div>
+                      {% endif %}
+                      {% if block.settings.feature3_title != blank %}
+                        <div class="swiper-slide">
+                          <div class="tf-icon-box justify-content-center justify-content-sm-start style-3">
+                            <div class="box-icon">
+                              <i class="icon {{ block.settings.feature3_icon }}"></i>
+                            </div>
+                            <div class="content">
+                              <div class="title text-uppercase">{{ block.settings.feature3_title }}</div>
+                            </div>
+                          </div>
+                        </div>
+                      {% endif %}
+                      {% if block.settings.feature4_title != blank %}
+                        <div class="swiper-slide">
+                          <div class="tf-icon-box justify-content-center justify-content-sm-start style-3">
+                            <div class="box-icon">
+                              <i class="icon {{ block.settings.feature4_icon }}"></i>
+                            </div>
+                            <div class="content">
+                              <div class="title text-uppercase">{{ block.settings.feature4_title }}</div>
+                            </div>
+                          </div>
+                        </div>
+                      {% endif %}
                     </div>
                   </div>
-                  <div class="swiper-slide">
-                    <div class="tf-icon-box justify-content-center justify-content-sm-start style-3">
-                      <div class="box-icon">
-                        <i class="icon icon-gift"></i>
-                      </div>
-                      <div class="content">
-                        <div class="title text-uppercase">Gift Package</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="swiper-slide">
-                    <div class="tf-icon-box justify-content-center justify-content-sm-start style-3">
-                      <div class="box-icon">
-                        <i class="icon icon-return"></i>
-                      </div>
-                      <div class="content">
-                        <div class="title text-uppercase">Ease Returns</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="swiper-slide">
-                    <div class="tf-icon-box justify-content-center justify-content-sm-start style-3">
-                      <div class="box-icon">
-                        <i class="icon icon-support"></i>
-                      </div>
-                      <div class="content">
-                        <div class="title text-uppercase text-nowrap">ONE YEAR WARRANTY</div>
-                      </div>
-                    </div>
-                  </div>
+                  <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
                 </div>
-              </div>
-              <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
-            </div>
+              {% endif %}
+            {% endfor %}
           {% else %}
-            <div class="empty-cart text-center">
-              <p class="text-lg">Your cart is currently empty.</p>
-              <a href="/collections/all" class="tf-btn btn-dark2 animate-btn">Continue shopping</a>
-            </div>
+            {% for block in section.blocks %}
+              {% if block.type == 'empty_cart' %}
+                <div class="empty-cart text-center" {{ block.shopify_attributes }}>
+                  <p class="text-lg">{{ block.settings.empty_cart_message }}</p>
+                  <a href="{{ block.settings.continue_shopping_url }}" class="tf-btn btn-dark2 animate-btn">{{ block.settings.continue_shopping_text }}</a>
+                </div>
+              {% endif %}
+            {% endfor %}
           {% endif %}
         </div>
       </div>
 
       <div class="col-xl-4">
         <div class="tf-page-cart-sidebar">
-          <form class="cart-box shipping-cart-box">
-            <div class="text-lg title fw-medium">Shipping estimates</div>
-            <fieldset class="field">
-              <label for="country" class="text-sm">Country</label>
-              <input type="text" id="country" placeholder="United State">
-            </fieldset>
-            <fieldset class="field">
-              <label for="state" class="text-sm">State/Province</label>
-              <input type="text" id="state" placeholder="State/Province">
-            </fieldset>
-            <fieldset class="field">
-              <label for="code" class="text-sm">Zipcode</label>
-              <input type="text" id="code" placeholder="41000">
-            </fieldset>
-            <button type="button" class="tf-btn btn-dark2 animate-btn w-100">Estimate</button>
-          </form>
+          {% for block in section.blocks %}
+            {% if block.type == 'shipping_estimates' %}
+              <form class="cart-box shipping-cart-box" {{ block.shopify_attributes }}>
+                <div class="text-lg title fw-medium">{{ block.settings.title }}</div>
+                <fieldset class="field">
+                  <label for="country" class="text-sm">{{ block.settings.country_label }}</label>
+                  <input type="text" id="country" placeholder="{{ block.settings.country_placeholder }}">
+                </fieldset>
+                <fieldset class="field">
+                  <label for="state" class="text-sm">{{ block.settings.state_label }}</label>
+                  <input type="text" id="state" placeholder="{{ block.settings.state_placeholder }}">
+                </fieldset>
+                <fieldset class="field">
+                  <label for="code" class="text-sm">{{ block.settings.zipcode_label }}</label>
+                  <input type="text" id="code" placeholder="{{ block.settings.zipcode_placeholder }}">
+                </fieldset>
+                <button type="button" class="tf-btn btn-dark2 animate-btn w-100">{{ block.settings.button_text }}</button>
+              </form>
+            {% endif %}
+          {% endfor %}
 
           <form action="/checkout" method="post" class="cart-box checkout-cart-box" id="checkout-form">
-            <div class="cart-head">
-              <div class="total-discount text-xl fw-medium">
-                <span>Total:</span>
-                <span class="total">{{ cart.total_price | money }}</span>
-              </div>
-              <p class="text-sm text-dark-4">Taxes and shipping calculated at checkout</p>
-            </div>
+            {% for block in section.blocks %}
+              {% if block.type == 'checkout' %}
+                <div class="cart-head" {{ block.shopify_attributes }}>
+                  <div class="total-discount text-xl fw-medium">
+                    <span>{{ block.settings.total_label }}:</span>
+                    <span class="total">{{ cart.total_price | money }}</span>
+                  </div>
+                  <p class="text-sm text-dark-4">{{ block.settings.tax_message }}</p>
+                </div>
 
-            <div class="check-agree">
-              <input type="checkbox" class="tf-check" id="check-agree" required>
-              <label for="check-agree" class="label text-dark-4">I agree with <a href="/pages/terms-and-conditions" class="text-dark-4 fw-medium text-underline link">terms and conditions</a></label>
-            </div>
+                <div class="check-agree">
+                  <input type="checkbox" class="tf-check" id="check-agree" required>
+                  <label for="check-agree" class="label text-dark-4">{{ block.settings.terms_text | replace: '[terms_url]', block.settings.terms_url }}</label>
+                </div>
 
-            <div class="checkout-btn">
-              <button type="submit" class="tf-btn btn-dark2 animate-btn w-100" id="checkout-button" disabled>Checkout</button>
-            </div>
+                <div class="checkout-btn">
+                  <button type="submit" class="tf-btn btn-dark2 animate-btn w-100" id="checkout-button" disabled>{{ block.settings.checkout_button_text }}</button>
+                </div>
+              {% endif %}
+            {% endfor %}
 
-            <div class="cart-imgtrust">
-              <p class="text-center text-sm text-dark-1">We accept</p>
-              <div class="cart-list-social">
-                {% for block in section.blocks %}
-                  {% if block.type == 'payment_method' %}
-                    <div class="payment-card" {{ block.shopify_attributes }}>
-                      <img src="{{ block.settings.payment_image | img_url: '40x25' }}" 
-                           alt="{{ block.settings.payment_name }}" 
-                           width="40" 
-                           height="25"
-                           loading="lazy">
-                    </div>
-                  {% endif %}
-                {% endfor %}
-              </div>
-            </div>
+            {% for block in section.blocks %}
+              {% if block.type == 'payment_methods' %}
+                <div class="cart-imgtrust" {{ block.shopify_attributes }}>
+                  <p class="text-center text-sm text-dark-1">{{ block.settings.title }}</p>
+                  <div class="cart-list-social">
+                    {% if block.settings.payment1_image %}
+                      <div class="payment-card">
+                        <img src="{{ block.settings.payment1_image | img_url: '40x25' }}" alt="{{ block.settings.payment1_name }}" width="40" height="25">
+                      </div>
+                    {% endif %}
+                    {% if block.settings.payment2_image %}
+                      <div class="payment-card">
+                        <img src="{{ block.settings.payment2_image | img_url: '40x25' }}" alt="{{ block.settings.payment2_name }}" width="40" height="25">
+                      </div>
+                    {% endif %}
+                    {% if block.settings.payment3_image %}
+                      <div class="payment-card">
+                        <img src="{{ block.settings.payment3_image | img_url: '40x25' }}" alt="{{ block.settings.payment3_name }}" width="40" height="25">
+                      </div>
+                    {% endif %}
+                    {% if block.settings.payment4_image %}
+                      <div class="payment-card">
+                        <img src="{{ block.settings.payment4_image | img_url: '40x25' }}" alt="{{ block.settings.payment4_name }}" width="40" height="25">
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
           </form>
 
-          <div class="cart-box testimonial-cart-box">
-            <div dir="ltr" class="swiper tf-swiper" data-swiper='{
-              "slidesPerView": 1,
-              "spaceBetween": 12,
-              "speed": 800,
-              "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
-              "navigation": {
-                "clickable": true,
-                "nextEl": ".nav-next-tes",
-                "prevEl": ".nav-prev-tes"
-              }
-            }'>
-              <div class="swiper-wrapper">
-                {% for block in section.blocks %}
-                  {% if block.type == 'testimonial' %}
-                    <div class="swiper-slide">
-                      <div class="box-testimonial-main">
-                        <span class="quote icon-quote5"></span>
-                        <div class="content">
-                          <div class="list-star-default">
-                            {% for i in (1..5) %}
-                              <i class="icon-star"></i>
-                            {% endfor %}
-                          </div>
-                          <p class="text-review text-md text-main">{{ block.settings.review }}</p>
-                          <div class="box-author">
-                            <div class="img">
-                              <img src="{{ block.settings.author_image | img_url: '100x' }}" alt="{{ block.settings.author_name }}" width="{{ block.settings.author_image.width }}" height="{{ block.settings.author_image.height }}">
+          {% for block in section.blocks %}
+            {% if block.type == 'testimonial' %}
+              <div class="cart-box testimonial-cart-box" {{ block.shopify_attributes }}>
+                <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+                  "slidesPerView": 1,
+                  "spaceBetween": 12,
+                  "speed": 800,
+                  "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+                  "navigation": {
+                    "clickable": true,
+                    "nextEl": ".nav-next-tes",
+                    "prevEl": ".nav-prev-tes"
+                  }
+                }'>
+                  <div class="swiper-wrapper">
+                    {% if block.settings.testimonial1_review != blank %}
+                      <div class="swiper-slide">
+                        <div class="box-testimonial-main">
+                          <span class="quote icon-quote5"></span>
+                          <div class="content">
+                            <div class="list-star-default">
+                              {% for i in (1..5) %}
+                                <i class="icon-star"></i>
+                              {% endfor %}
                             </div>
-                            <span class="name text-sm fw-medium">{{ block.settings.author_name }}</span>
+                            <div class="text-review text-md text-main">{{ block.settings.testimonial1_review }}</div>
+                            <div class="box-author">
+                              {% if block.settings.testimonial1_author_image %}
+                                <div class="img">
+                                  <img src="{{ block.settings.testimonial1_author_image | img_url: '100x' }}" alt="{{ block.settings.testimonial1_author_name }}" width="100" height="100">
+                                </div>
+                              {% endif %}
+                              <span class="name text-sm fw-medium">{{ block.settings.testimonial1_author_name }}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  {% endif %}
-                {% endfor %}
+                    {% endif %}
+                    {% if block.settings.testimonial2_review != blank %}
+                      <div class="swiper-slide">
+                        <div class="box-testimonial-main">
+                          <span class="quote icon-quote5"></span>
+                          <div class="content">
+                            <div class="list-star-default">
+                              {% for i in (1..5) %}
+                                <i class="icon-star"></i>
+                              {% endfor %}
+                            </div>
+                            <div class="text-review text-md text-main">{{ block.settings.testimonial2_review }}</div>
+                            <div class="box-author">
+                              {% if block.settings.testimonial2_author_image %}
+                                <div class="img">
+                                  <img src="{{ block.settings.testimonial2_author_image | img_url: '100x' }}" alt="{{ block.settings.testimonial2_author_name }}" width="100" height="100">
+                                </div>
+                              {% endif %}
+                              <span class="name text-sm fw-medium">{{ block.settings.testimonial2_author_name }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+                    {% if block.settings.testimonial3_review != blank %}
+                      <div class="swiper-slide">
+                        <div class="box-testimonial-main">
+                          <span class="quote icon-quote5"></span>
+                          <div class="content">
+                            <div class="list-star-default">
+                              {% for i in (1..5) %}
+                                <i class="icon-star"></i>
+                              {% endfor %}
+                            </div>
+                            <div class="text-review text-md text-main">{{ block.settings.testimonial3_review }}</div>
+                            <div class="box-author">
+                              {% if block.settings.testimonial3_author_image %}
+                                <div class="img">
+                                  <img src="{{ block.settings.testimonial3_author_image | img_url: '100x' }}" alt="{{ block.settings.testimonial3_author_name }}" width="100" height="100">
+                                </div>
+                              {% endif %}
+                              <span class="name text-sm fw-medium">{{ block.settings.testimonial3_author_name }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="box-nav-swiper">
+                    <div class="swiper-button-prev nav-swiper nav-prev-tes"></div>
+                    <div class="swiper-button-next nav-swiper nav-next-tes"></div>
+                  </div>
+                </div>
               </div>
-              <div class="box-nav-swiper">
-                <div class="swiper-button-prev nav-swiper nav-prev-tes"></div>
-                <div class="swiper-button-next nav-swiper nav-next-tes"></div>
-              </div>
-            </div>
-          </div>
+            {% endif %}
+          {% endfor %}
         </div>
       </div>
     </div>
@@ -272,110 +383,444 @@
   "name": "Cart",
   "tag": "section",
   "class": "cart-section",
-  "settings": [
-    {
-      "type": "checkbox",
-      "id": "show_vendor",
-      "label": "Show product vendor",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "show_quantity_selector",
-      "label": "Show quantity selector",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_cart_note",
-      "label": "Show cart note",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_cart_buttons",
-      "label": "Show cart buttons",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_continue_shopping",
-      "label": "Show continue shopping",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "shipping_threshold",
-      "label": "Free shipping threshold",
-      "default": "100"
-    },
-    {
-      "type": "text",
-      "id": "gift_wrap_price",
-      "label": "Gift wrap price",
-      "default": "10.00"
-    }
-  ],
   "blocks": [
     {
-      "type": "payment_method",
-      "name": "Payment Method",
+      "type": "shipping_progress",
+      "name": "Shipping Progress",
+      "limit": 1,
       "settings": [
         {
-          "type": "image_picker",
-          "id": "payment_image",
-          "label": "Payment Method Image"
+          "type": "text",
+          "id": "progress_message",
+          "label": "Progress Message",
+          "default": "Spend [amount] more to get Free Shipping"
         },
         {
           "type": "text",
-          "id": "payment_name",
-          "label": "Payment Method Name",
-          "default": "Payment Method"
+          "id": "free_shipping_message",
+          "label": "Free Shipping Message",
+          "default": "Congratulations! You've unlocked Free Shipping"
+        },
+        {
+          "type": "number",
+          "id": "free_shipping_threshold",
+          "label": "Free Shipping Threshold",
+          "default": 10000
+        }
+      ]
+    },
+    {
+      "type": "cart_items",
+      "name": "Cart Items",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "product_column_title",
+          "label": "Product Column Title",
+          "default": "Product"
+        },
+        {
+          "type": "text",
+          "id": "price_column_title",
+          "label": "Price Column Title",
+          "default": "Price"
+        },
+        {
+          "type": "text",
+          "id": "quantity_column_title",
+          "label": "Quantity Column Title",
+          "default": "Quantity"
+        },
+        {
+          "type": "text",
+          "id": "total_column_title",
+          "label": "Total Column Title",
+          "default": "Total"
+        },
+        {
+          "type": "text",
+          "id": "remove_text",
+          "label": "Remove Text",
+          "default": "Remove"
+        }
+      ]
+    },
+    {
+      "type": "gift_wrap",
+      "name": "Gift Wrap",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "gift_wrap_text",
+          "label": "Gift Wrap Text",
+          "default": "Add gift wrap. Only [price]. (You can choose or not)"
+        },
+        {
+          "type": "number",
+          "id": "gift_wrap_price",
+          "label": "Gift Wrap Price",
+          "default": 1000
+        }
+      ]
+    },
+    {
+      "type": "discount_code",
+      "name": "Discount Code",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "placeholder_text",
+          "label": "Placeholder Text",
+          "default": "Discount code"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Apply"
+        }
+      ]
+    },
+    {
+      "type": "cart_note",
+      "name": "Cart Note",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label_text",
+          "label": "Label Text",
+          "default": "Special instructions for seller"
+        }
+      ]
+    },
+    {
+      "type": "features",
+      "name": "Features",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Feature 1"
+        },
+        {
+          "type": "text",
+          "id": "feature1_icon",
+          "label": "Icon Class",
+          "default": "icon-shipping"
+        },
+        {
+          "type": "text",
+          "id": "feature1_title",
+          "label": "Title",
+          "default": "Free Shipping"
+        },
+        {
+          "type": "header",
+          "content": "Feature 2"
+        },
+        {
+          "type": "text",
+          "id": "feature2_icon",
+          "label": "Icon Class",
+          "default": "icon-gift"
+        },
+        {
+          "type": "text",
+          "id": "feature2_title",
+          "label": "Title",
+          "default": "Gift Package"
+        },
+        {
+          "type": "header",
+          "content": "Feature 3"
+        },
+        {
+          "type": "text",
+          "id": "feature3_icon",
+          "label": "Icon Class",
+          "default": "icon-return"
+        },
+        {
+          "type": "text",
+          "id": "feature3_title",
+          "label": "Title",
+          "default": "Ease Returns"
+        },
+        {
+          "type": "header",
+          "content": "Feature 4"
+        },
+        {
+          "type": "text",
+          "id": "feature4_icon",
+          "label": "Icon Class",
+          "default": "icon-support"
+        },
+        {
+          "type": "text",
+          "id": "feature4_title",
+          "label": "Title",
+          "default": "ONE YEAR WARRANTY"
+        }
+      ]
+    },
+    {
+      "type": "empty_cart",
+      "name": "Empty Cart",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "empty_cart_message",
+          "label": "Empty Cart Message",
+          "default": "Your cart is currently empty."
+        },
+        {
+          "type": "text",
+          "id": "continue_shopping_text",
+          "label": "Continue Shopping Text",
+          "default": "Continue shopping"
+        },
+        {
+          "type": "url",
+          "id": "continue_shopping_url",
+          "label": "Continue Shopping URL",
+          "default": "/collections/all"
+        }
+      ]
+    },
+    {
+      "type": "shipping_estimates",
+      "name": "Shipping Estimates",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Shipping estimates"
+        },
+        {
+          "type": "text",
+          "id": "country_label",
+          "label": "Country Label",
+          "default": "Country"
+        },
+        {
+          "type": "text",
+          "id": "country_placeholder",
+          "label": "Country Placeholder",
+          "default": "United State"
+        },
+        {
+          "type": "text",
+          "id": "state_label",
+          "label": "State Label",
+          "default": "State/Province"
+        },
+        {
+          "type": "text",
+          "id": "state_placeholder",
+          "label": "State Placeholder",
+          "default": "State/Province"
+        },
+        {
+          "type": "text",
+          "id": "zipcode_label",
+          "label": "Zipcode Label",
+          "default": "Zipcode"
+        },
+        {
+          "type": "text",
+          "id": "zipcode_placeholder",
+          "label": "Zipcode Placeholder",
+          "default": "41000"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Estimate"
+        }
+      ]
+    },
+    {
+      "type": "checkout",
+      "name": "Checkout",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "total_label",
+          "label": "Total Label",
+          "default": "Total"
+        },
+        {
+          "type": "text",
+          "id": "tax_message",
+          "label": "Tax Message",
+          "default": "Taxes and shipping calculated at checkout"
+        },
+        {
+          "type": "text",
+          "id": "terms_text",
+          "label": "Terms Text",
+          "default": "I agree with terms and conditions"
+        },
+        {
+          "type": "text",
+          "id": "terms_url",
+          "label": "Terms URL",
+          "default": "/pages/terms-and-conditions"
+        },
+        {
+          "type": "text",
+          "id": "checkout_button_text",
+          "label": "Checkout Button Text",
+          "default": "Checkout"
+        }
+      ]
+    },
+    {
+      "type": "payment_methods",
+      "name": "Payment Methods",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "We accept"
+        },
+        {
+          "type": "header",
+          "content": "Payment Method 1"
+        },
+        {
+          "type": "text",
+          "id": "payment1_name",
+          "label": "Name",
+          "default": "Visa"
+        },
+        {
+          "type": "image_picker",
+          "id": "payment1_image",
+          "label": "Image"
+        },
+        {
+          "type": "header",
+          "content": "Payment Method 2"
+        },
+        {
+          "type": "text",
+          "id": "payment2_name",
+          "label": "Name",
+          "default": "Diners Club"
+        },
+        {
+          "type": "image_picker",
+          "id": "payment2_image",
+          "label": "Image"
+        },
+        {
+          "type": "header",
+          "content": "Payment Method 3"
+        },
+        {
+          "type": "text",
+          "id": "payment3_name",
+          "label": "Name",
+          "default": "Mastercard"
+        },
+        {
+          "type": "image_picker",
+          "id": "payment3_image",
+          "label": "Image"
+        },
+        {
+          "type": "header",
+          "content": "Payment Method 4"
+        },
+        {
+          "type": "text",
+          "id": "payment4_name",
+          "label": "Name",
+          "default": "Stripe"
+        },
+        {
+          "type": "image_picker",
+          "id": "payment4_image",
+          "label": "Image"
         }
       ]
     },
     {
       "type": "testimonial",
       "name": "Testimonial",
+      "limit": 1,
       "settings": [
         {
+          "type": "header",
+          "content": "Testimonial 1"
+        },
+        {
+          "type": "richtext",
+          "id": "testimonial1_review",
+          "label": "Review",
+          "default": "<p>Stylish, comfortable, and perfect for any occasion! My new favorite fashion destination.</p>"
+        },
+        {
           "type": "text",
-          "id": "review",
-          "label": "Review text",
-          "default": "Stylish, comfortable, and perfect for any occasion! My new favorite fashion destination."
+          "id": "testimonial1_author_name",
+          "label": "Author Name",
+          "default": "Customer Name"
         },
         {
           "type": "image_picker",
-          "id": "author_image",
-          "label": "Author image"
+          "id": "testimonial1_author_image",
+          "label": "Author Image"
+        },
+        {
+          "type": "header",
+          "content": "Testimonial 2"
+        },
+        {
+          "type": "richtext",
+          "id": "testimonial2_review",
+          "label": "Review"
         },
         {
           "type": "text",
-          "id": "author_name",
-          "label": "Author name",
-          "default": "Customer Name"
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Cart",
-      "blocks": [
-        {
-          "type": "payment_method"
+          "id": "testimonial2_author_name",
+          "label": "Author Name"
         },
         {
-          "type": "payment_method"
+          "type": "image_picker",
+          "id": "testimonial2_author_image",
+          "label": "Author Image"
         },
         {
-          "type": "payment_method"
+          "type": "header",
+          "content": "Testimonial 3"
         },
         {
-          "type": "payment_method"
+          "type": "richtext",
+          "id": "testimonial3_review",
+          "label": "Review"
         },
         {
-          "type": "testimonial"
+          "type": "text",
+          "id": "testimonial3_author_name",
+          "label": "Author Name"
+        },
+        {
+          "type": "image_picker",
+          "id": "testimonial3_author_image",
+          "label": "Author Image"
         }
       ]
     }
@@ -386,9 +831,10 @@
 {% javascript %}
 document.addEventListener('DOMContentLoaded', function() {
   // Function to update shipping progress
+  // Function to update shipping threshold progress
   function updateShippingProgress() {
     const cartTotal = parseFloat(document.querySelector('.total').textContent.replace(/[^0-9.-]+/g, ''));
-    const threshold = {{ section.settings.shipping_threshold | default: 100 }};
+    const threshold = 100; // $100 threshold
     const progress = Math.min(100, (cartTotal / threshold) * 100);
     const progressBar = document.querySelector('.tf-progress-ship .value');
     const progressText = document.querySelector('.tf-cart-head .title');
@@ -753,7 +1199,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Handle gift wrap
   const giftWrapCheckbox = document.getElementById('checkGift');
-  const GIFT_WRAP_PRICE = {{ section.settings.gift_wrap_price | default: 10.00 }};
+  const GIFT_WRAP_PRICE = 10.00;
   const GIFT_WRAP_TITLE = 'Gift Wrap';
   
   if (giftWrapCheckbox) {
