@@ -207,18 +207,20 @@
                         {% endif %}
                       </div>
                     {% when 'stock_count' %}
-                      <div class="product-info-progress-sale" {{ block.shopify_attributes }}>
-                        <div class="title-hurry-up">
-                          {% assign inventory_quantity = product.variants.first.inventory_quantity %}
-                          {% assign inventory_policy = product.variants.first.inventory_policy %}
-                          <span class="text-primary fw-medium">{{ block.settings.stock_count_text }}</span>
-                          Only <span class="count">{{ inventory_quantity }}</span> items left!
+                      {% assign inventory_quantity = product.variants.first.inventory_quantity %}
+                      {% assign inventory_policy = product.variants.first.inventory_policy %}
+                      {% assign inventory_percentage = inventory_quantity | times: 100 | divided_by: inventory_policy %}
+                      {% if inventory_percentage < block.settings.stock_threshold %}
+                        <div class="product-info-progress-sale" {{ block.shopify_attributes }}>
+                          <div class="title-hurry-up">
+                            <span class="text-primary fw-medium">{{ block.settings.stock_count_text }}</span>
+                            <span class="count">{{ inventory_percentage }}%</span> of stock remaining!
+                          </div>
+                          <div class="progress-sold">
+                            <div class="value" style="width: {{ inventory_percentage }}%;" data-progress="{{ inventory_percentage }}"></div>
+                          </div>
                         </div>
-                        <div class="progress-sold">
-                          {% assign progress_percentage = inventory_quantity | times: 100 | divided_by: inventory_policy %}
-                          <div class="value" style="width: {{ progress_percentage }}%;" data-progress="{{ progress_percentage }}"></div>
-                        </div>
-                      </div>
+                      {% endif %}
                   {% endcase %}
                 {% endfor %}
                               <!-- Countdown Timer Block -->
@@ -2139,6 +2141,17 @@ document.addEventListener('DOMContentLoaded', function() {
           "id": "stock_count_text",
           "label": "Stock Count Text",
           "default": "HURRY UP!"
+        },
+        {
+          "type": "range",
+          "id": "stock_threshold",
+          "min": 10,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Show when stock is below",
+          "default": 50,
+          "info": "The stock count will only show when inventory is below this percentage"
         }
       ]
     },
