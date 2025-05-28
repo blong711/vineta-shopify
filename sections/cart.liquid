@@ -512,9 +512,51 @@
           "content": "Feature 1"
         },
         {
-          "type": "text",
+          "type": "select",
           "id": "feature1_icon",
-          "label": "Icon Class",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "icon-shipping",
+              "label": "Shipping"
+            },
+            {
+              "value": "icon-gift",
+              "label": "Gift"
+            },
+            {
+              "value": "icon-return",
+              "label": "Return"
+            },
+            {
+              "value": "icon-support",
+              "label": "Support"
+            },
+            {
+              "value": "icon-shield",
+              "label": "Shield"
+            },
+            {
+              "value": "icon-truck",
+              "label": "Truck"
+            },
+            {
+              "value": "icon-box",
+              "label": "Box"
+            },
+            {
+              "value": "icon-check",
+              "label": "Check"
+            },
+            {
+              "value": "icon-star",
+              "label": "Star"
+            },
+            {
+              "value": "icon-heart",
+              "label": "Heart"
+            }
+          ],
           "default": "icon-shipping"
         },
         {
@@ -528,9 +570,51 @@
           "content": "Feature 2"
         },
         {
-          "type": "text",
+          "type": "select",
           "id": "feature2_icon",
-          "label": "Icon Class",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "icon-shipping",
+              "label": "Shipping"
+            },
+            {
+              "value": "icon-gift",
+              "label": "Gift"
+            },
+            {
+              "value": "icon-return",
+              "label": "Return"
+            },
+            {
+              "value": "icon-support",
+              "label": "Support"
+            },
+            {
+              "value": "icon-shield",
+              "label": "Shield"
+            },
+            {
+              "value": "icon-truck",
+              "label": "Truck"
+            },
+            {
+              "value": "icon-box",
+              "label": "Box"
+            },
+            {
+              "value": "icon-check",
+              "label": "Check"
+            },
+            {
+              "value": "icon-star",
+              "label": "Star"
+            },
+            {
+              "value": "icon-heart",
+              "label": "Heart"
+            }
+          ],
           "default": "icon-gift"
         },
         {
@@ -544,9 +628,51 @@
           "content": "Feature 3"
         },
         {
-          "type": "text",
+          "type": "select",
           "id": "feature3_icon",
-          "label": "Icon Class",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "icon-shipping",
+              "label": "Shipping"
+            },
+            {
+              "value": "icon-gift",
+              "label": "Gift"
+            },
+            {
+              "value": "icon-return",
+              "label": "Return"
+            },
+            {
+              "value": "icon-support",
+              "label": "Support"
+            },
+            {
+              "value": "icon-shield",
+              "label": "Shield"
+            },
+            {
+              "value": "icon-truck",
+              "label": "Truck"
+            },
+            {
+              "value": "icon-box",
+              "label": "Box"
+            },
+            {
+              "value": "icon-check",
+              "label": "Check"
+            },
+            {
+              "value": "icon-star",
+              "label": "Star"
+            },
+            {
+              "value": "icon-heart",
+              "label": "Heart"
+            }
+          ],
           "default": "icon-return"
         },
         {
@@ -560,9 +686,51 @@
           "content": "Feature 4"
         },
         {
-          "type": "text",
+          "type": "select",
           "id": "feature4_icon",
-          "label": "Icon Class",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "icon-shipping",
+              "label": "Shipping"
+            },
+            {
+              "value": "icon-gift",
+              "label": "Gift"
+            },
+            {
+              "value": "icon-return",
+              "label": "Return"
+            },
+            {
+              "value": "icon-support",
+              "label": "Support"
+            },
+            {
+              "value": "icon-shield",
+              "label": "Shield"
+            },
+            {
+              "value": "icon-truck",
+              "label": "Truck"
+            },
+            {
+              "value": "icon-box",
+              "label": "Box"
+            },
+            {
+              "value": "icon-check",
+              "label": "Check"
+            },
+            {
+              "value": "icon-star",
+              "label": "Star"
+            },
+            {
+              "value": "icon-heart",
+              "label": "Heart"
+            }
+          ],
           "default": "icon-support"
         },
         {
@@ -998,75 +1166,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const itemPrice = parseFloat(itemRow.querySelector('.cart-price').textContent.replace(/[^0-9.-]+/g, ''));
             const currentTotal = parseFloat(cartTotal.textContent.replace(/[^0-9.-]+/g, ''));
             if (newQuantity === 0) {
-              cartTotal.textContent = `$${(currentTotal - itemPrice).toFixed(2)}`;
-            } else {
-              cartTotal.textContent = `$${(currentTotal + itemPrice).toFixed(2)}`;
-            }
-          }
-        }
-
-        // If no items left, show empty cart message
-        const tbody = document.querySelector('.table-page-cart tbody');
-        if (tbody && tbody.children.length === 0) {
-          const emptyCart = document.querySelector('.empty-cart');
-          if (emptyCart) {
-            emptyCart.style.display = 'block';
-          }
-        }
-      } catch (error) {
-        console.error('Error updating quantity:', error);
-        alert('Failed to update quantity. Please try again.');
-      }
-    });
-  });
-
-  // Handle direct quantity input changes
-  document.querySelectorAll('.quantity-product').forEach(input => {
-    input.addEventListener('change', async function() {
-      const variantId = this.dataset.variantId;
-      const itemId = this.closest('.tf-cart-item').dataset.itemId;
-      const newValue = parseInt(this.value);
-      
-      if (!variantId || !itemId || !window.cart) return;
-
-      try {
-        if (isNaN(newValue) || newValue < 1) {
-          if (newValue <= 0) {
-            // Remove item
-            await window.cart.removeItem(variantId);
-            // Remove the item row from the table
-            const itemRow = this.closest('.tf-cart-item');
-            if (itemRow) {
-              itemRow.remove();
-            }
-          } else {
-            // Reset to 1
-            this.value = 1;
-            await window.cart.updateQuantity(variantId, 1, window.cart.actions.update);
-          }
-        } else {
-          // Update quantity
-          await window.cart.updateQuantity(variantId, newValue, window.cart.actions.update);
-        }
-
-        // Update cart count
-        const cartCount = document.querySelector('.cart-count');
-        if (cartCount) {
-          const currentCount = parseInt(cartCount.textContent);
-          cartCount.textContent = newValue <= 0 ? currentCount - 1 : currentCount;
-        }
-
-        // Update header cart count
-        updateHeaderCartCount();
-
-        // Update cart total
-        const cartTotal = document.querySelector('.total');
-        if (cartTotal) {
-          const itemRow = this.closest('.tf-cart-item');
-          if (itemRow) {
-            const itemPrice = parseFloat(itemRow.querySelector('.cart-price').textContent.replace(/[^0-9.-]+/g, ''));
-            const currentTotal = parseFloat(cartTotal.textContent.replace(/[^0-9.-]+/g, ''));
-            if (newValue <= 0) {
               cartTotal.textContent = `$${(currentTotal - itemPrice).toFixed(2)}`;
             } else {
               cartTotal.textContent = `$${(currentTotal + itemPrice).toFixed(2)}`;
