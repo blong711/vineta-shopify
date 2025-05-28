@@ -600,6 +600,35 @@
         "content": "Feature Toggles"
       },
       {
+        "type": "select",
+        "id": "card_product_style",
+        "label": "Card Product Style",
+        "options": [
+          {
+            "value": "style-1",
+            "label": "Style 1 (Default)"
+          },
+          {
+            "value": "style-2",
+            "label": "Style 2 (Feature Section)"
+          },
+          {
+            "value": "style-3",
+            "label": "Style 3 (Search Drawer)"
+          },
+          {
+            "value": "style-4",
+            "label": "Style 4 (Phone Case)"
+          },
+          {
+            "value": "style-hot-deals",
+            "label": "Hot Deals Style"
+          }
+        ],
+        "default": "style-1",
+        "info": "Choose the style for all product cards across your theme"
+      },
+      {
         "type": "checkbox",
         "id": "enable_quickview",
         "label": "Enable Quick View",

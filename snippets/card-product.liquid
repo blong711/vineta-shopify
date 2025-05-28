@@ -3,6 +3,9 @@
   Usage: {% render 'card-product', product: product, style: 'style-center' %}
 {%- endcomment -%}
 
+{%- assign global_style = settings.card_product_style -%}
+{%- assign style = style | default: global_style -%}
+
 {%- if style == 'style-2' -%}
 {%- comment -%}Feature Section Layout{%- endcomment -%}
 <div class="card-product {{ class }} style-2 {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
