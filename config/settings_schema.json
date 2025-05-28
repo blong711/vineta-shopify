@@ -600,35 +600,6 @@
         "content": "Feature Toggles"
       },
       {
-        "type": "select",
-        "id": "card_product_style",
-        "label": "Card Product Style",
-        "options": [
-          {
-            "value": "style-1",
-            "label": "Style 1 (Default)"
-          },
-          {
-            "value": "style-2",
-            "label": "Style 2 (Feature Section)"
-          },
-          {
-            "value": "style-3",
-            "label": "Style 3 (Search Drawer)"
-          },
-          {
-            "value": "style-4",
-            "label": "Style 4 (Phone Case)"
-          },
-          {
-            "value": "style-hot-deals",
-            "label": "Hot Deals Style"
-          }
-        ],
-        "default": "style-1",
-        "info": "Choose the style for all product cards across your theme"
-      },
-      {
         "type": "checkbox",
         "id": "enable_quickview",
         "label": "Enable Quick View",
@@ -657,6 +628,40 @@
         "id": "enable_parallax",
         "label": "Enable Parallax Effects",
         "default": true
+      }
+    ]
+  },
+  {
+    "name": "Card Product",
+    "settings": [
+      {
+        "type": "select",
+        "id": "card_product_style",
+        "label": "Card Product Style",
+        "options": [
+          {
+            "value": "style-1",
+            "label": "Style 1"
+          },
+          {
+            "value": "style-2",
+            "label": "Style 2"
+          },
+          {
+            "value": "style-3",
+            "label": "Style 3"
+          },
+          {
+            "value": "style-4",
+            "label": "Style 4"
+          },
+          {
+            "value": "style-hot-deals",
+            "label": "Style 5"
+          }
+        ],
+        "default": "style-1",
+        "info": "Choose the style for all product cards across your theme"
       }
     ]
   },
