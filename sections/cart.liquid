@@ -93,11 +93,11 @@
               {% for block in section.blocks %}
                 {% if block.type == 'gift_wrap' %}
                   <div class="check-gift" {{ block.shopify_attributes }}>
-                    {% assign gift_wrap_variant_id = block.settings.gift_wrap_variant_id %}
-                    {% unless gift_wrap_variant_id %}
-                      {% assign gift_wrap_variant_id = all_products[block.settings.gift_wrap_product].variants.first.id %}
-                    {% endunless %}
-                    <input type="checkbox" class="tf-check" id="checkGift" data-variant-id="{{ gift_wrap_variant_id }}">
+                    <!-- gift_wrap_product: {{ block.settings.gift_wrap_product }} -->
+                    <!-- all_products: {{ all_products[block.settings.gift_wrap_product] | json }} -->
+                     <!-- all_products: {{ all_products[block.settings.gift_wrap_product].variants[0].id }} -->
+                    <input type="checkbox" class="tf-check" id="checkGift"
+                      data-variant-id="{% if block.settings.gift_wrap_variant_id != blank %}{{ block.settings.gift_wrap_variant_id }}{% elsif all_products[block.settings.gift_wrap_product] and all_products[block.settings.gift_wrap_product].variants.size > 0 %}{{ all_products[block.settings.gift_wrap_product].variants[0].id }}{% endif %}">
                     {% assign gift_price = block.settings.gift_wrap_price | money %}
                     <label for="checkGift" class="label text-dark-4">{{ block.settings.gift_wrap_text | replace: '[price]', gift_price }}</label>
                   </div>
@@ -1309,7 +1309,19 @@ document.addEventListener('DOMContentLoaded', function() {
             });
           }
         }
-        window.location.reload();
+        // Fetch updated cart and update DOM
+        const updatedCart = await fetch('/cart.js').then(res => res.json());
+        // Update cart total
+        const cartTotal = document.querySelector('.total');
+        if (cartTotal) {
+          if (window.Shopify && Shopify.formatMoney) {
+            cartTotal.textContent = Shopify.formatMoney(updatedCart.total_price, window.theme && window.theme.moneyFormat ? window.theme.moneyFormat : "${{amount}}" );
+          } else {
+            cartTotal.textContent = (updatedCart.total_price / 100).toLocaleString(undefined, { style: 'currency', currency: 'USD' });
+          }
+        }
+        // Optionally, update cart items table or reload cart section here for a full dynamic update
+        // For now, you may want to reload the page fragment or show a message
       } catch (error) {
         alert('Failed to update gift wrap. Please try again.');
       }
