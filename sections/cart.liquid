@@ -1320,8 +1320,36 @@ document.addEventListener('DOMContentLoaded', function() {
             cartTotal.textContent = (updatedCart.total_price / 100).toLocaleString(undefined, { style: 'currency', currency: 'USD' });
           }
         }
-        // Optionally, update cart items table or reload cart section here for a full dynamic update
-        // For now, you may want to reload the page fragment or show a message
+        // Update cart items table
+        const cartTableBody = document.querySelector('.table-page-cart tbody');
+        if (cartTableBody) {
+          cartTableBody.innerHTML = '';
+          updatedCart.items.forEach(item => {
+            cartTableBody.innerHTML += `
+              <tr class="tf-cart-item" data-item-id="${item.key}" data-variant-id="${item.variant_id}">
+                <td class="tf-cart-item_product">
+                  <a href="${item.url}" class="img-box">
+                    <img src="${item.image}" alt="${item.title}" width="150" height="150">
+                  </a>
+                  <div class="cart-info">
+                    <a href="${item.url}" class="name text-md link fw-medium">${item.product_title}</a>
+                    <span class="remove-cart link remove" data-item-id="${item.key}" data-variant-id="${item.variant_id}">Remove</span>
+                  </div>
+                </td>
+                <td class="tf-cart-item_price text-center"><span class="cart-price price-on-sale text-md fw-medium">${window.Shopify && Shopify.formatMoney ? Shopify.formatMoney(item.final_price, window.theme && window.theme.moneyFormat ? window.theme.moneyFormat : "${{amount}}") : (item.final_price / 100).toLocaleString(undefined, { style: 'currency', currency: 'USD' })}</span></td>
+                <td class="tf-cart-item_quantity">
+                  <div class="wg-quantity">
+                    <span class="btn-quantity btn-decrease">-</span>
+                    <input class="quantity-product" type="text" name="updates[]" value="${item.quantity}" min="0">
+                    <span class="btn-quantity btn-increase">+</span>
+                  </div>
+                </td>
+                <td class="tf-cart-item_total text-center"><div class="cart-total total-price text-md fw-medium">${window.Shopify && Shopify.formatMoney ? Shopify.formatMoney(item.final_line_price, window.theme && window.theme.moneyFormat ? window.theme.moneyFormat : "${{amount}}") : (item.final_line_price / 100).toLocaleString(undefined, { style: 'currency', currency: 'USD' })}</div></td>
+              </tr>
+            `;
+          });
+        }
+        // Optionally, re-bind event listeners for remove/quantity buttons here
       } catch (error) {
         alert('Failed to update gift wrap. Please try again.');
       }
