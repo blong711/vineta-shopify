@@ -75,9 +75,9 @@
                       </td>
                           <td class="tf-cart-item_quantity" data-cart-title="{{ block.settings.quantity_column_title }}">
                         <div class="wg-quantity">
-                          <span class="btn-quantity btn-decrease">-</span>
-                          <input class="quantity-product" type="text" name="updates[]" value="{{ item.quantity }}" min="0">
-                          <span class="btn-quantity btn-increase">+</span>
+                          <button type="button" class="btn-quantity btn-minus" data-variant-id="{{ item.variant.id }}" data-item-id="{{ item.key }}">-</button>
+                          <input class="quantity-product" type="text" name="updates[]" value="{{ item.quantity }}" min="0" data-variant-id="{{ item.variant.id }}" data-item-id="{{ item.key }}">
+                          <button type="button" class="btn-quantity btn-plus" data-variant-id="{{ item.variant.id }}" data-item-id="{{ item.key }}">+</button>
                         </div>
                       </td>
                           <td class="tf-cart-item_total text-center" data-cart-title="{{ block.settings.total_column_title }}">
@@ -1136,65 +1136,81 @@ document.addEventListener('DOMContentLoaded', function() {
   // Handle quantity buttons in cart
   document.querySelectorAll('.btn-quantity').forEach(button => {
     button.addEventListener('click', async function() {
+      const variantId = this.dataset.variantId;
       const input = this.parentElement.querySelector('.quantity-product');
-      const variantId = input.dataset.variantId;
-      const itemId = this.closest('.tf-cart-item').dataset.itemId;
       const currentValue = parseInt(input.value);
       
-      if (!variantId || !itemId || !window.cart) return;
+      if (!variantId) return;
 
       try {
         let newQuantity;
-        if (this.classList.contains('btn-decrease')) {
+        if (this.classList.contains('btn-minus')) {
           newQuantity = currentValue > 1 ? currentValue - 1 : 0;
-        } else if (this.classList.contains('btn-increase')) {
+        } else if (this.classList.contains('btn-plus')) {
           newQuantity = currentValue + 1;
         }
 
-        // Update UI through Cart class
+        // Update input value immediately
+        input.value = newQuantity;
+
+        // Update cart via API
+        const response = await fetch('/cart/change.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: variantId,
+            quantity: newQuantity
+          })
+        });
+
+        if (!response.ok) {
+          // Revert input value if API call fails
+          input.value = currentValue;
+          throw new Error('Failed to update quantity');
+        }
+
+        // Fetch updated cart data
+        const cartResponse = await fetch('/cart.js');
+        if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+        const cartData = await cartResponse.json();
+
+        // Update UI
         if (newQuantity === 0) {
-          await window.cart.removeItem(variantId);
           // Remove the item row from the table
           const itemRow = this.closest('.tf-cart-item');
           if (itemRow) {
             itemRow.remove();
           }
         } else {
-          await window.cart.updateQuantity(variantId, newQuantity, window.cart.actions.update);
           // Update the item total
           const itemRow = this.closest('.tf-cart-item');
           if (itemRow) {
             const itemPrice = parseFloat(itemRow.querySelector('.cart-price').textContent.replace(/[^0-9.-]+/g, ''));
             const itemTotal = itemRow.querySelector('.cart-total');
             if (itemTotal) {
-              itemTotal.textContent = `$${(itemPrice * newQuantity).toFixed(2)}`;
+              itemTotal.textContent = formatMoney(itemPrice * newQuantity * 100);
             }
           }
+        }
+
+        // Update cart total
+        const cartTotal = document.querySelector('.total');
+        if (cartTotal) {
+          cartTotal.textContent = formatMoney(cartData.total_price);
         }
 
         // Update cart count
         const cartCount = document.querySelector('.cart-count');
         if (cartCount) {
-          const currentCount = parseInt(cartCount.textContent);
-          cartCount.textContent = newQuantity === 0 ? currentCount - 1 : currentCount;
+          cartCount.textContent = cartData.item_count;
         }
 
         // Update header cart count
-        updateHeaderCartCount();
-
-        // Update cart total
-        const cartTotal = document.querySelector('.total');
-        if (cartTotal) {
-          const itemRow = this.closest('.tf-cart-item');
-          if (itemRow) {
-            const itemPrice = parseFloat(itemRow.querySelector('.cart-price').textContent.replace(/[^0-9.-]+/g, ''));
-            const currentTotal = parseFloat(cartTotal.textContent.replace(/[^0-9.-]+/g, ''));
-            if (newQuantity === 0) {
-              cartTotal.textContent = `$${(currentTotal - itemPrice).toFixed(2)}`;
-            } else {
-              cartTotal.textContent = `$${(currentTotal + itemPrice).toFixed(2)}`;
-            }
-          }
+        const headerCount = document.querySelector('.count-box');
+        if (headerCount) {
+          headerCount.textContent = cartData.item_count;
         }
 
         // If no items left, show empty cart message
@@ -1205,6 +1221,9 @@ document.addEventListener('DOMContentLoaded', function() {
             emptyCart.style.display = 'block';
           }
         }
+
+        // Update shipping progress
+        updateShippingProgress();
       } catch (error) {
         console.error('Error updating quantity:', error);
         alert('Failed to update quantity. Please try again.');
@@ -1454,9 +1473,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td class="tf-cart-item_price text-center"><span class="cart-price price-on-sale text-md fw-medium">${window.Shopify && Shopify.formatMoney ? Shopify.formatMoney(item.final_price, window.theme && window.theme.moneyFormat ? window.theme.moneyFormat : "${{amount}}") : (item.final_price / 100).toLocaleString(undefined, { style: 'currency', currency: 'USD' })}</span></td>
                 <td class="tf-cart-item_quantity">
                   <div class="wg-quantity">
-                    <span class="btn-quantity btn-decrease">-</span>
-                    <input class="quantity-product" type="text" name="updates[]" value="${item.quantity}" min="0">
-                    <span class="btn-quantity btn-increase">+</span>
+                    <button type="button" class="btn-quantity btn-minus" data-variant-id="${item.variant_id}" data-item-id="${item.key}">-</button>
+                    <input class="quantity-product" type="text" name="updates[]" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}" data-item-id="${item.key}">
+                    <button type="button" class="btn-quantity btn-plus" data-variant-id="${item.variant_id}" data-item-id="${item.key}">+</button>
                   </div>
                 </td>
                 <td class="tf-cart-item_total text-center"><div class="cart-total total-price text-md fw-medium">${window.Shopify && Shopify.formatMoney ? Shopify.formatMoney(item.final_line_price, window.theme && window.theme.moneyFormat ? window.theme.moneyFormat : "${{amount}}") : (item.final_line_price / 100).toLocaleString(undefined, { style: 'currency', currency: 'USD' })}</div></td>
@@ -1587,6 +1606,118 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }, 1000);
     });
+  }
+
+  // Handle direct quantity input changes
+  document.querySelectorAll('.quantity-product').forEach(input => {
+    input.addEventListener('change', async function() {
+      const variantId = this.dataset.variantId;
+      const newValue = parseInt(this.value);
+      
+      if (!variantId) return;
+
+      try {
+        if (isNaN(newValue) || newValue < 1) {
+          if (newValue <= 0) {
+            // Remove item from cart
+            const response = await fetch('/cart/change.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                id: variantId,
+                quantity: 0
+              })
+            });
+
+            if (!response.ok) throw new Error('Failed to remove item');
+
+            // Remove the item row from the table
+            const itemRow = this.closest('.tf-cart-item');
+            if (itemRow) {
+              itemRow.remove();
+            }
+          } else {
+            this.value = 1;
+            // Update quantity to 1
+            const response = await fetch('/cart/change.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                id: variantId,
+                quantity: 1
+              })
+            });
+
+            if (!response.ok) throw new Error('Failed to update quantity');
+          }
+        } else {
+          // Update quantity
+          const response = await fetch('/cart/change.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: variantId,
+              quantity: newValue
+            })
+          });
+
+          if (!response.ok) throw new Error('Failed to update quantity');
+        }
+
+        // Fetch updated cart data
+        const cartResponse = await fetch('/cart.js');
+        if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+        const cartData = await cartResponse.json();
+
+        // Update cart total
+        const cartTotal = document.querySelector('.total');
+        if (cartTotal) {
+          cartTotal.textContent = formatMoney(cartData.total_price);
+        }
+
+        // Update cart count
+        const cartCount = document.querySelector('.cart-count');
+        if (cartCount) {
+          cartCount.textContent = cartData.item_count;
+        }
+
+        // Update header cart count
+        const headerCount = document.querySelector('.count-box');
+        if (headerCount) {
+          headerCount.textContent = cartData.item_count;
+        }
+
+        // If no items left, show empty cart message
+        const tbody = document.querySelector('.table-page-cart tbody');
+        if (tbody && tbody.children.length === 0) {
+          const emptyCart = document.querySelector('.empty-cart');
+          if (emptyCart) {
+            emptyCart.style.display = 'block';
+          }
+        }
+
+        // Update shipping progress
+        updateShippingProgress();
+      } catch (error) {
+        console.error('Error updating quantity:', error);
+        alert('Failed to update quantity. Please try again.');
+      }
+    });
+  });
+
+  // Helper function to format money
+  function formatMoney(cents) {
+    if (window.Shopify && Shopify.formatMoney) {
+      return Shopify.formatMoney(cents, window.theme && window.theme.moneyFormat ? window.theme.moneyFormat : "${{amount}}");
+    } else {
+      return (cents / 100).toLocaleString(undefined, { style: 'currency', currency: 'USD' });
+    }
   }
 });
 {% endjavascript %}
