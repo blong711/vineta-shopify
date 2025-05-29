@@ -1,4 +1,4 @@
-<section class="s-contact flat-spacing-25">
+<section class="s-contact flat-spacing-13">
   <div class="container">
     <div class="row">
       {% for block in section.blocks %}
@@ -103,7 +103,7 @@
                   {{ block.settings.form_subtitle }}
                 </p>
                 <div class="form-contact-wrap">
-                  {% form 'contact' %}
+                  {% form 'contact', class: 'form-default' %}
                     <div class="wrap">
                       <div class="cols">
                         <fieldset>
@@ -113,6 +113,7 @@
                             name="contact[name]"
                             id="ContactFormName"
                             value="{{ form.name }}"
+                            class="radius-8"
                             required
                           >
                         </fieldset>
@@ -123,6 +124,7 @@
                             name="contact[email]"
                             id="ContactFormEmail"
                             value="{{ form.email }}"
+                            class="radius-8"
                             required
                           >
                         </fieldset>
@@ -133,6 +135,7 @@
                           <textarea
                             name="contact[body]"
                             id="ContactFormMessage"
+                            class="radius-8"
                             required
                           >{{ form.body }}</textarea>
                         </fieldset>
