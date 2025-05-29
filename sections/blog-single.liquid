@@ -7,18 +7,6 @@
       "content": "Blog Post Settings"
     },
     {
-      "type": "text",
-      "id": "blog_title",
-      "label": "Blog Title",
-      "default": "5 Timeless Wardrobe Essentials Every Woman Should Own"
-    },
-    {
-      "type": "text",
-      "id": "blog_category",
-      "label": "Blog Category",
-      "default": "Lifestyle"
-    },
-    {
       "type": "image_picker",
       "id": "author_image",
       "label": "Author Image"
@@ -28,38 +16,6 @@
       "id": "author_name",
       "label": "Author Name",
       "default": "Vincent"
-    },
-    {
-      "type": "text",
-      "id": "publish_date",
-      "label": "Publish Date",
-      "default": "Sep 19 2024"
-    },
-    {
-      "type": "image_picker",
-      "id": "featured_image",
-      "label": "Featured Image"
-    },
-    {
-      "type": "richtext",
-      "id": "blog_content",
-      "label": "Blog Content"
-    },
-    {
-      "type": "image_picker",
-      "id": "gallery_image_1",
-      "label": "Gallery Image 1"
-    },
-    {
-      "type": "image_picker",
-      "id": "gallery_image_2",
-      "label": "Gallery Image 2"
-    },
-    {
-      "type": "text",
-      "id": "tags",
-      "label": "Tags (comma separated)",
-      "default": "Lifestyle, Fashion"
     }
   ],
   "presets": [
@@ -78,13 +34,13 @@
         <ul class="style-list">
           <li>
             <a href="#" class="type-life">
-              {{ section.settings.blog_category }}
+              {{ article.tags.first }}
             </a>
           </li>
         </ul>
       </div>
       <p class="entry_title display-sm fw-medium">
-        {{ section.settings.blog_title }}
+        {{ article.title }}
       </p>
       <ul class="entry-meta">
         <li class="entry_author">
@@ -100,7 +56,7 @@
         <li class="br-line"></li>
         <li class="entry_date">
           <p class="text-md">
-            {{ section.settings.publish_date }}
+            {{ article.published_at | date: "%b %d %Y" }}
           </p>
         </li>
         <li class="br-line"></li>
@@ -112,35 +68,21 @@
       </ul>
     </div>
     <div class="content">
-      {% if section.settings.featured_image %}
+      {% if article.image %}
         <div class="entry_image">
-          {{ section.settings.featured_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'lazyload' }}
+          {{ article.image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'lazyload' }}
         </div>
       {% endif %}
       
-      {{ section.settings.blog_content }}
-
-      <div class="group-image">
-        {% if section.settings.gallery_image_1 %}
-          <div class="entry_image">
-            {{ section.settings.gallery_image_1 | image_url: width: 600 | image_tag: loading: 'lazy', class: 'lazyload' }}
-          </div>
-        {% endif %}
-        {% if section.settings.gallery_image_2 %}
-          <div class="entry_image">
-            {{ section.settings.gallery_image_2 | image_url: width: 600 | image_tag: loading: 'lazy', class: 'lazyload' }}
-          </div>
-        {% endif %}
-      </div>
+      {{ article.content }}
 
       <div class="bot">
         <div class="entry-tag">
           <p>Tag:</p>
           <ul class="style-list">
-            {% assign tags = section.settings.tags | split: ',' %}
-            {% for tag in tags %}
+            {% for tag in article.tags %}
               <li>
-                <a href="#">{{ tag | strip }}</a>
+                <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
               </li>
             {% endfor %}
           </ul>
@@ -163,7 +105,7 @@
                 <i class="icon icon-x"></i>
               </a>
             </li>
-            <li>
+            <li></li>
               <a href="https://www.snapchat.com/" class="social-item social-snapchat">
                 <i class="icon icon-snapchat"></i>
               </a>
