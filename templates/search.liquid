@@ -1,0 +1,17 @@
+{% comment %} Search Results Page {% endcomment %}
+<div class="container my-5">
+  <h1 class="mb-4">Search results for "{{ search.terms }}"</h1>
+  {% if search.results_count > 0 %}
+    <div class="wrapper-shop tf-grid-layout tf-col-4">
+      {% for item in search.results %}
+        {% if item.object_type == 'product' %}
+          <div class="loadItem card-product grid style-1{% if item.options contains 'Size' %} card-product-size{% endif %}">
+            {% render 'card-product', product: item %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No results found for "{{ search.terms }}".</p>
+  {% endif %}
+</div> 
