@@ -13,7 +13,9 @@
             </p>
           </div>
           <div class="box-text">
-            {{ block.settings.text }}
+            <p class="text-md">
+              {{ block.settings.text | replace: 'Vineta', '<span class="fw-medium">Vineta</span>' }}
+            </p>
           </div>
         </div>
         <div class="image radius-16 overflow-hidden">
@@ -183,7 +185,7 @@
           "type": "richtext",
           "id": "text",
           "label": "Text",
-          "default": "<p>At <span class=\"fw-medium\">Vineta</span>, we bring you thoughtfully curated collections that blend contemporary designs with timeless elegance. With over 15 years of experience, we cater to fashion enthusiasts who appreciate quality, style, and versatility.</p>"
+          "default": "<p>At Vineta, we bring you thoughtfully curated collections that blend contemporary designs with timeless elegance. With over 15 years of experience, we cater to fashion enthusiasts who appreciate quality, style, and versatility.</p>"
         },
         {
           "type": "image_picker",
@@ -320,7 +322,7 @@
           "settings": {
             "title": "Welcome to Vineta",
             "subtitle": "The Ultimate Fashion Destination",
-            "text": "<p>At <span class=\"fw-medium\">Vineta</span>, we bring you thoughtfully curated collections that blend contemporary designs with timeless elegance. With over 15 years of experience, we cater to fashion enthusiasts who appreciate quality, style, and versatility.</p>"
+            "text": "<p>At Vineta, we bring you thoughtfully curated collections that blend contemporary designs with timeless elegance. With over 15 years of experience, we cater to fashion enthusiasts who appreciate quality, style, and versatility.</p>"
           }
         },
         {
