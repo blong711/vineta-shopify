@@ -1,149 +1,115 @@
 <!-- Welcome Section -->
-<section class="flat-spacing-3 pb-0">
-  <div class="container">
-    <div class="flat-title-2 d-xl-flex justify-content-xl-between">
-      <div class="box-title">
-        <p class="display-lg-2 fw-medium">
-          {{ section.settings.welcome_title }}
-        </p>
-        <p class="text-xl">
-          {{ section.settings.welcome_subtitle }}
-        </p>
+{% for block in section.blocks %}
+  {% if block.type == 'welcome_section' %}
+    <section class="flat-spacing-3 pb-0" {{ block.shopify_attributes }}>
+      <div class="container">
+        <div class="flat-title-2 d-xl-flex justify-content-xl-between">
+          <div class="box-title">
+            <p class="display-lg-2 fw-medium">
+              {{ block.settings.title }}
+            </p>
+            <p class="text-xl">
+              {{ block.settings.subtitle }}
+            </p>
+          </div>
+          <div class="box-text">
+            <p class="text-md">
+              {{ block.settings.text }}
+            </p>
+          </div>
+        </div>
+        <div class="image radius-16 overflow-hidden">
+          <img src="{{ block.settings.image | img_url: 'master' }}" 
+               data-src="{{ block.settings.image | img_url: 'master' }}" 
+               alt="{{ block.settings.image.alt | escape }}" 
+               class="lazyload" width="600" height="400">
+        </div>
       </div>
-      <div class="box-text">
-        <p class="text-md">
-          {{ section.settings.welcome_text }}
-        </p>
-      </div>
-    </div>
-    <div class="image radius-16 overflow-hidden">
-      <img src="{{ section.settings.welcome_image | img_url: 'master' }}" 
-           data-src="{{ section.settings.welcome_image | img_url: 'master' }}" 
-           alt="{{ section.settings.welcome_image.alt | escape }}" 
-           class="lazyload" width="600" height="400">
-    </div>
-  </div>
-</section>
+    </section>
+  {% endif %}
+{% endfor %}
 
 <!-- Why Choose Section -->
-<section class="flat-spacing-3">
-  <div class="container">
-    <div class="flat-title-2 text-center">
-      <p class="display-md-2 fw-medium">
-        {{ section.settings.why_choose_title }}
-      </p>
-      <p class="text-md text-main">
-        {{ section.settings.why_choose_text }}
-      </p>
-    </div>
-    <div class="row">
-      <div class="col-xl-7 col-md-6">
-        <ul class="list-esd d-md-flex flex-md-column justify-content-md-center h-100">
-          {% for block in section.blocks %}
-            {% if block.type == 'feature' %}
-              <li class="item">
-                <h6>
-                  {{ block.settings.title }}
-                </h6>
-                <p class="text-md">
-                  {{ block.settings.text }}
-                </p>
-              </li>
-            {% endif %}
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="col-xl-5 col-md-6">
-        <div class="image radius-16 overflow-hidden w-100 h-100">
-          <img src="{{ section.settings.why_choose_image | img_url: 'master' }}" 
-               data-src="{{ section.settings.why_choose_image | img_url: 'master' }}" 
-               alt="{{ section.settings.why_choose_image.alt | escape }}" 
-               class="lazyload w-100 h-100 object-fit-cover" width="600" height="400">
+{% for block in section.blocks %}
+  {% if block.type == 'why_choose_section' %}
+    <section class="flat-spacing-3" {{ block.shopify_attributes }}>
+      <div class="container">
+        <div class="flat-title-2 text-center">
+          <p class="display-md-2 fw-medium">
+            {{ block.settings.title }}
+          </p>
+          <p class="text-md text-main">
+            {{ block.settings.text }}
+          </p>
+        </div>
+        <div class="row">
+          <div class="col-xl-7 col-md-6">
+            <div class="image radius-16 overflow-hidden w-100 h-100">
+              <img src="{{ block.settings.image | img_url: 'master' }}" 
+                   data-src="{{ block.settings.image | img_url: 'master' }}" 
+                   alt="{{ block.settings.image.alt | escape }}" 
+                   class="lazyload w-100 h-100 object-fit-cover" width="600" height="400">
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
+  {% endif %}
+{% endfor %}
 
 <!-- Style Curated Section -->
-<section class="flat-spacing-3 pt-0">
-  <div class="container">
-    <div class="flat-title-2 d-xl-flex justify-content-xl-between">
-      <div class="box-title">
-        <p class="display-md-2 fw-medium">
-          {{ section.settings.style_title }}
-        </p>
-        <p class="text-xl">
-          {{ section.settings.style_subtitle }}
-        </p>
+{% for block in section.blocks %}
+  {% if block.type == 'style_section' %}
+    <section class="flat-spacing-3 pt-0" {{ block.shopify_attributes }}>
+      <div class="container">
+        <div class="flat-title-2 d-xl-flex justify-content-xl-between">
+          <div class="box-title">
+            <p class="display-md-2 fw-medium">
+              {{ block.settings.title }}
+            </p>
+            <p class="text-xl">
+              {{ block.settings.subtitle }}
+            </p>
+          </div>
+          <div class="box-text">
+            <p class="text-md">
+              {{ block.settings.text }}
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="box-text">
-        <p class="text-md">
-          {{ section.settings.style_text }}
-        </p>
-      </div>
-    </div>
-    <div dir="ltr" class="swiper tf-swiper" data-swiper='{
-      "slidesPerView": 1,
-      "spaceBetween": 12,
-      "speed": 800,
-      "observer": true,
-      "observeParents": true,
-      "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
-      "breakpoints": {
-        "575": { "slidesPerView":2, "spaceBetween": 12}, 
-        "992": { "slidesPerView": 3, "spaceBetween": 24}
-      }
-    }'>
-      <div class="swiper-wrapper">
-        {% for block in section.blocks %}
-          {% if block.type == 'style_box' %}
-            <div class="swiper-slide">
-              <div class="tf-icon-box style-border">
-                <div class="box-icon">
-                  <i class="icon {{ block.settings.icon }}"></i>
-                </div>
-                <div class="content">
-                  <h6 class="">{{ block.settings.title }}</h6>
-                  <p class="text-sm text-line-clamp-4">
-                    {{ block.settings.text }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          {% endif %}
-        {% endfor %}
-      </div>
-      <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center">
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
+  {% endif %}
+{% endfor %}
 
 <!-- Testimonial Section -->
-<section class="flat-spacing-15 pt-0">
-  <div class="container">
-    <div class="box-testimonial-quote text-center">
-      <div class="list-star-default justify-content-center">
-        {% for i in (1..5) %}
-          <i class="icon-star text-green"></i>
-        {% endfor %}
-      </div>
-      <p class="text-xl-2 lh-xl-32">
-        {{ section.settings.testimonial_text }}
-      </p>
-      <div class="box-author">
-        <div class="avt">
-          <img src="{{ section.settings.testimonial_author_image | img_url: 'master' }}" 
-               alt="{{ section.settings.testimonial_author_name | escape }}" width="100" height="100">
+{% for block in section.blocks %}
+  {% if block.type == 'testimonial_section' %}
+    <section class="flat-spacing-15 pt-0" {{ block.shopify_attributes }}>
+      <div class="container">
+        <div class="box-testimonial-quote text-center">
+          <div class="list-star-default justify-content-center">
+            {% for i in (1..5) %}
+              <i class="icon-star text-green"></i>
+            {% endfor %}
+          </div>
+          <p class="text-xl-2 lh-xl-32">
+            {{ block.settings.text }}
+          </p>
+          <div class="box-author">
+            <div class="avt">
+              <img src="{{ block.settings.author_image | img_url: 'master' }}" 
+                   alt="{{ block.settings.author_name | escape }}" width="100" height="100">
+            </div>
+            <p class="text-md lh-xl-26 fw-medium">
+              {{ block.settings.author_name }}
+            </p>
+          </div>
         </div>
-        <p class="text-md lh-xl-26 fw-medium">
-          {{ section.settings.testimonial_author_name }}
-        </p>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
+  {% endif %}
+{% endfor %}
 
 {% schema %}
 {
@@ -227,46 +193,105 @@
   ],
   "blocks": [
     {
-      "type": "feature",
-      "name": "Feature",
-      "limit": 3,
+      "type": "welcome_section",
+      "name": "Welcome Section",
+      "limit": 1,
       "settings": [
         {
           "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "Feature Title"
+          "default": "Welcome to Vineta"
         },
         {
-          "type": "richtext",
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "The Ultimate Fashion Destination"
+        },
+        {
+          "type": "text",
           "id": "text",
           "label": "Text",
-          "default": "<p>Feature description goes here.</p>"
+          "default": "At Vineta, we bring you thoughtfully curated collections that blend contemporary designs with timeless elegance."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
         }
       ]
     },
     {
-      "type": "style_box",
-      "name": "Style Box",
-      "limit": 3,
+      "type": "why_choose_section",
+      "name": "Why Choose Section",
+      "limit": 1,
       "settings": [
-        {
-          "type": "text",
-          "id": "icon",
-          "label": "Icon Class",
-          "default": "icon-precision"
-        },
         {
           "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "Style Box Title"
+          "default": "Why Choose Vineta"
         },
         {
           "type": "richtext",
           "id": "text",
           "label": "Text",
-          "default": "<p>Style box description goes here.</p>"
+          "default": "<p>Our products are crafted with innovation and an eye for the latest trends.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    },
+    {
+      "type": "style_section",
+      "name": "Style Section",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Style Curated Just for You"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Style Curated Just for You"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Our skilled stylists have thoughtfully assembled seasonal outfits.</p>"
+        }
+      ]
+    },
+    {
+      "type": "testimonial_section",
+      "name": "Testimonial Section",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Testimonial Text",
+          "default": "\"I've ordered from many places, but I have to say, this shop offers the best shipping experience ever.\""
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "Vincent P"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author Image"
         }
       ]
     }
@@ -277,48 +302,33 @@
       "category": "About Us",
       "blocks": [
         {
-          "type": "feature",
+          "type": "welcome_section",
           "settings": {
-            "title": "Ethics & Responsibility",
-            "text": "<p>At Vineta, we are dedicated to upholding the highest ethical standards in production. We ensure mindful manufacturing through regular audits, training, and a strong focus on responsible sourcing.</p>"
+            "title": "Welcome to Vineta",
+            "subtitle": "The Ultimate Fashion Destination",
+            "text": "At Vineta, we bring you thoughtfully curated collections that blend contemporary designs with timeless elegance."
           }
         },
         {
-          "type": "feature",
+          "type": "why_choose_section",
           "settings": {
-            "title": "Style Meets Durability",
-            "text": "<p>From classic tailoring to casual staples, our Vineta collections embrace the latest trends while prioritizing comfort and long-lasting quality.</p>"
+            "title": "Why Choose Vineta",
+            "text": "<p>Our products are crafted with innovation and an eye for the latest trends.</p>"
           }
         },
         {
-          "type": "feature",
+          "type": "style_section",
           "settings": {
-            "title": "Express Yourself",
-            "text": "<p>Our designs are crafted with the latest fashion trends in mind, offering flexibility for individual expression, especially for the modern, style-conscious youth.</p>"
+            "title": "Style Curated Just for You",
+            "subtitle": "Style Curated Just for You",
+            "text": "<p>Our skilled stylists have thoughtfully assembled seasonal outfits.</p>"
           }
         },
         {
-          "type": "style_box",
+          "type": "testimonial_section",
           "settings": {
-            "icon": "icon-precision",
-            "title": "Precision in Every Stitch",
-            "text": "<p>At Vineta, we use only premium materials, ensuring our collections offer superior comfort and lasting durability. Every piece is crafted with care and attention to detail.</p>"
-          }
-        },
-        {
-          "type": "style_box",
-          "settings": {
-            "icon": "icon-elegance",
-            "title": "Effortless Elegance",
-            "text": "<p>Our designs embrace simplicity at its finest. Vineta's understated yet refined style captures the essence of modern fashion, making a statement.</p>"
-          }
-        },
-        {
-          "type": "style_box",
-          "settings": {
-            "icon": "icon-fashion-body",
-            "title": "Fashion for Every Body",
-            "text": "<p>We celebrate individuality with a diverse range of sizes, offering clothing that fits and flatters every body type. At Vineta, fashion is for everyone.</p>"
+            "text": "\"I've ordered from many places, but I have to say, this shop offers the best shipping experience ever.\"",
+            "author_name": "Vincent P"
           }
         }
       ]
