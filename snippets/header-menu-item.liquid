@@ -206,7 +206,8 @@
       {% when 'blog' %}
         {% assign block = section.blocks | where: "type", "mega_menu_blog" | first %}
         <div class="sub-menu sub-menu-style-3">
-          <ul class="menu-list">
+          <ul class="menu-list mt-0">
+            <div class="menu-heading">{{ block.settings.title }}</div>
             {% for child in link.links %}
               <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
             {% endfor %}
@@ -214,7 +215,6 @@
           {% if block %}
             <div class="wrapper-sub-blog">
               {% if block.settings.blog_categories != blank %}
-                <div class="menu-heading">{{ block.settings.title }}</div>
                 <ul class="menu-list">
                   {% for category in linklists[block.settings.blog_categories].links %}
                     <li>
@@ -229,10 +229,12 @@
                   {% for post in blogs[block.settings.blog].articles limit: block.settings.posts_limit %}
                     <li class="item">
                       <a href="{{ post.url }}" class="img-box">
-                        <img src="{{ post.image | img_url: '80x80', crop: 'center' }}" 
+                        <img data-src="{{ post.image | img_url: '80x80', crop: 'center' }}" 
+                             src="{{ 'placeholder.png' | asset_url }}"
                              alt="{{ post.title }}" 
                              width="80" 
                              height="80"
+                             class="lazyload"
                              loading="lazy">
                       </a>
                       <div class="content">
