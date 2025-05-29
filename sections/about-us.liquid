@@ -13,9 +13,7 @@
             </p>
           </div>
           <div class="box-text">
-            <p class="text-md">
-              {{ block.settings.text }}
-            </p>
+            {{ block.settings.text }}
           </div>
         </div>
         <div class="image radius-16 overflow-hidden">
@@ -44,6 +42,22 @@
         </div>
         <div class="row">
           <div class="col-xl-7 col-md-6">
+            <ul class="list-esd d-md-flex flex-md-column justify-content-md-center h-100">
+              {% for block in section.blocks %}
+                {% if block.type == 'feature_item' %}
+                  <li class="item" {{ block.shopify_attributes }}>
+                    <h6>
+                      {{ block.settings.title }}
+                    </h6>
+                    <p class="text-md">
+                      {{ block.settings.text }}
+                    </p>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="col-xl-5 col-md-6">
             <div class="image radius-16 overflow-hidden w-100 h-100">
               <img src="{{ block.settings.image | img_url: 'master' }}" 
                    data-src="{{ block.settings.image | img_url: 'master' }}" 
@@ -72,9 +86,41 @@
             </p>
           </div>
           <div class="box-text">
-            <p class="text-md">
-              {{ block.settings.text }}
-            </p>
+            {{ block.settings.text }}
+          </div>
+        </div>
+        <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+          "slidesPerView": 1,
+          "spaceBetween": 12,
+          "speed": 800,
+          "observer": true,
+          "observeParents": true,
+          "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+          "breakpoints": {
+            "575": { "slidesPerView":2, "spaceBetween": 12}, 
+            "992": { "slidesPerView": 3, "spaceBetween": 24}
+          }
+        }'>
+          <div class="swiper-wrapper">
+            {% for block in section.blocks %}
+              {% if block.type == 'style_box' %}
+                <div class="swiper-slide" {{ block.shopify_attributes }}>
+                  <div class="tf-icon-box style-border">
+                    <div class="box-icon">
+                      <i class="icon {{ block.settings.icon }}"></i>
+                    </div>
+                    <div class="content">
+                      <h6 class="">{{ block.settings.title }}</h6>
+                      <p class="text-sm text-line-clamp-4">
+                        {{ block.settings.text }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center">
           </div>
         </div>
       </div>
@@ -114,83 +160,7 @@
 {% schema %}
 {
   "name": "About Us",
-  "settings": [
-    {
-      "type": "text",
-      "id": "welcome_title",
-      "label": "Welcome Title",
-      "default": "Welcome to Vineta"
-    },
-    {
-      "type": "text",
-      "id": "welcome_subtitle",
-      "label": "Welcome Subtitle",
-      "default": "The Ultimate Fashion Destination"
-    },
-    {
-      "type": "text",
-      "id": "welcome_text",
-      "label": "Welcome Text",
-      "default": "At Vineta, we bring you thoughtfully curated collections that blend contemporary designs with timeless elegance. With over 15 years of experience, we cater to fashion enthusiasts who appreciate quality, style, and versatility."
-    },
-    {
-      "type": "image_picker",
-      "id": "welcome_image",
-      "label": "Welcome Image"
-    },
-    {
-      "type": "text",
-      "id": "why_choose_title",
-      "label": "Why Choose Title",
-      "default": "Why Choose Vineta"
-    },
-    {
-      "type": "richtext",
-      "id": "why_choose_text",
-      "label": "Why Choose Text",
-      "default": "<p>Our products are crafted with innovation and an eye for the latest trends. We push the boundaries of traditional fashion, delivering bold, fresh designs that inspire confidence and individuality.</p>"
-    },
-    {
-      "type": "image_picker",
-      "id": "why_choose_image",
-      "label": "Why Choose Image"
-    },
-    {
-      "type": "text",
-      "id": "style_title",
-      "label": "Style Title",
-      "default": "Style Curated Just for You"
-    },
-    {
-      "type": "text",
-      "id": "style_subtitle",
-      "label": "Style Subtitle",
-      "default": "Style Curated Just for You"
-    },
-    {
-      "type": "richtext",
-      "id": "style_text",
-      "label": "Style Text",
-      "default": "<p>Our skilled stylists have thoughtfully assembled seasonal outfits that are both trendy and timeless. With a variety of looks, they're here to inspire your next fashion-forward ensemble.</p>"
-    },
-    {
-      "type": "text",
-      "id": "testimonial_text",
-      "label": "Testimonial Text",
-      "default": "\"I've ordered from many places, but I have to say, this shop offers the best shipping experience ever. Thank you so much for the outstanding service!\""
-    },
-    {
-      "type": "text",
-      "id": "testimonial_author_name",
-      "label": "Testimonial Author Name",
-      "default": "Vincent P"
-    },
-    {
-      "type": "image_picker",
-      "id": "testimonial_author_image",
-      "label": "Testimonial Author Image"
-    }
-  ],
+  "settings": [],
   "blocks": [
     {
       "type": "welcome_section",
@@ -210,10 +180,10 @@
           "default": "The Ultimate Fashion Destination"
         },
         {
-          "type": "text",
+          "type": "richtext",
           "id": "text",
           "label": "Text",
-          "default": "At Vineta, we bring you thoughtfully curated collections that blend contemporary designs with timeless elegance."
+          "default": "<p>At <span class=\"fw-medium\">Vineta</span>, we bring you thoughtfully curated collections that blend contemporary designs with timeless elegance. With over 15 years of experience, we cater to fashion enthusiasts who appreciate quality, style, and versatility.</p>"
         },
         {
           "type": "image_picker",
@@ -237,12 +207,31 @@
           "type": "richtext",
           "id": "text",
           "label": "Text",
-          "default": "<p>Our products are crafted with innovation and an eye for the latest trends.</p>"
+          "default": "<p>Our products are crafted with innovation and an eye for the latest trends. We push the boundaries of traditional fashion, delivering bold, fresh designs that inspire confidence and individuality.</p>"
         },
         {
           "type": "image_picker",
           "id": "image",
           "label": "Image"
+        }
+      ]
+    },
+    {
+      "type": "feature_item",
+      "name": "Feature Item",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Feature Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Feature description goes here.</p>"
         }
       ]
     },
@@ -267,7 +256,32 @@
           "type": "richtext",
           "id": "text",
           "label": "Text",
-          "default": "<p>Our skilled stylists have thoughtfully assembled seasonal outfits.</p>"
+          "default": "<p>Our skilled stylists have thoughtfully assembled seasonal outfits that are both trendy and timeless. With a variety of looks, they're here to inspire your next fashion-forward ensemble.</p>"
+        }
+      ]
+    },
+    {
+      "type": "style_box",
+      "name": "Style Box",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon Class",
+          "default": "icon-precision"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Style Box Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Style box description goes here.</p>"
         }
       ]
     },
@@ -280,7 +294,7 @@
           "type": "text",
           "id": "text",
           "label": "Testimonial Text",
-          "default": "\"I've ordered from many places, but I have to say, this shop offers the best shipping experience ever.\""
+          "default": "\"I've ordered from many places, but I have to say, this shop offers the best shipping experience ever. Thank you so much for the outstanding service!\""
         },
         {
           "type": "text",
@@ -306,14 +320,35 @@
           "settings": {
             "title": "Welcome to Vineta",
             "subtitle": "The Ultimate Fashion Destination",
-            "text": "At Vineta, we bring you thoughtfully curated collections that blend contemporary designs with timeless elegance."
+            "text": "<p>At <span class=\"fw-medium\">Vineta</span>, we bring you thoughtfully curated collections that blend contemporary designs with timeless elegance. With over 15 years of experience, we cater to fashion enthusiasts who appreciate quality, style, and versatility.</p>"
           }
         },
         {
           "type": "why_choose_section",
           "settings": {
             "title": "Why Choose Vineta",
-            "text": "<p>Our products are crafted with innovation and an eye for the latest trends.</p>"
+            "text": "<p>Our products are crafted with innovation and an eye for the latest trends. We push the boundaries of traditional fashion, delivering bold, fresh designs that inspire confidence and individuality.</p>"
+          }
+        },
+        {
+          "type": "feature_item",
+          "settings": {
+            "title": "Ethics & Responsibility",
+            "text": "<p>At Vineta, we are dedicated to upholding the highest ethical standards in production. We ensure mindful manufacturing through regular audits, training, and a strong focus on responsible sourcing.</p>"
+          }
+        },
+        {
+          "type": "feature_item",
+          "settings": {
+            "title": "Style Meets Durability",
+            "text": "<p>From classic tailoring to casual staples, our Vineta collections embrace the latest trends while prioritizing comfort and long-lasting quality.</p>"
+          }
+        },
+        {
+          "type": "feature_item",
+          "settings": {
+            "title": "Express Yourself",
+            "text": "<p>Our designs are crafted with the latest fashion trends in mind, offering flexibility for individual expression, especially for the modern, style-conscious youth.</p>"
           }
         },
         {
@@ -321,13 +356,37 @@
           "settings": {
             "title": "Style Curated Just for You",
             "subtitle": "Style Curated Just for You",
-            "text": "<p>Our skilled stylists have thoughtfully assembled seasonal outfits.</p>"
+            "text": "<p>Our skilled stylists have thoughtfully assembled seasonal outfits that are both trendy and timeless. With a variety of looks, they're here to inspire your next fashion-forward ensemble.</p>"
+          }
+        },
+        {
+          "type": "style_box",
+          "settings": {
+            "icon": "icon-precision",
+            "title": "Precision in Every Stitch",
+            "text": "<p>At Vineta, we use only premium materials, ensuring our collections offer superior comfort and lasting durability. Every piece is crafted with care and attention to detail.</p>"
+          }
+        },
+        {
+          "type": "style_box",
+          "settings": {
+            "icon": "icon-elegance",
+            "title": "Effortless Elegance",
+            "text": "<p>Our designs embrace simplicity at its finest. Vineta's understated yet refined style captures the essence of modern fashion, making a statement.</p>"
+          }
+        },
+        {
+          "type": "style_box",
+          "settings": {
+            "icon": "icon-fashion-body",
+            "title": "Fashion for Every Body",
+            "text": "<p>We celebrate individuality with a diverse range of sizes, offering clothing that fits and flatters every body type. At Vineta, fashion is for everyone.</p>"
           }
         },
         {
           "type": "testimonial_section",
           "settings": {
-            "text": "\"I've ordered from many places, but I have to say, this shop offers the best shipping experience ever.\"",
+            "text": "\"I've ordered from many places, but I have to say, this shop offers the best shipping experience ever. Thank you so much for the outstanding service!\"",
             "author_name": "Vincent P"
           }
         }
