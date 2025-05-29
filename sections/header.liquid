@@ -190,6 +190,38 @@
                                 </div>
                               {%- endif -%}
                             </div>
+                          {%- when 'mega_menu_blog' -%}
+                            <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                              <div class="menu-heading">{{ block.settings.title }}</div>
+                              <div class="mega-menu-blog">
+                                {%- if block.settings.blog_categories != blank -%}
+                                  <div class="menu-heading">{{ block.settings.title }}</div>
+                                  <ul class="menu-list">
+                                    {%- for category in linklists[block.settings.blog_categories].links -%}
+                                      <li>
+                                        <a href="{{ category.url }}" class="menu-link-text link">
+                                          {{ category.title }}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                                {%- if block.settings.recent_posts_title != blank -%}
+                                  <div class="menu-heading">{{ block.settings.recent_posts_title }}</div>
+                                  <div class="mega-menu-posts">
+                                    {%- for post in blogs[block.settings.blog].articles limit: block.settings.posts_limit -%}
+                                      <div class="mega-menu-post">
+                                        <a href="{{ post.url }}">
+                                          <img src="{{ post.image | img_url: 'medium' }}" alt="{{ post.title }}" class="lazyload">
+                                          <h4>{{ post.title }}</h4>
+                                          <p class="date">{{ post.published_at | date: '%B %d, %Y' }}</p>
+                                        </a>
+                                      </div>
+                                    {%- endfor -%}
+                                  </div>
+                                {%- endif -%}
+                              </div>
+                            </div>
                         {%- endcase -%}
                       {%- endif -%}
                       <div class="mega-menu-item">
@@ -287,6 +319,38 @@
                                     {%- endfor -%}
                                   </ul>
                                 {%- endif -%}
+                              </div>
+                            {%- when 'mega_menu_blog' -%}
+                              <div class="mega-menu-item" {{ block.shopify_attributes }}>
+                                <div class="menu-heading">{{ block.settings.title }}</div>
+                                <div class="mega-menu-blog">
+                                  {%- if block.settings.blog_categories != blank -%}
+                                    <div class="menu-heading">{{ block.settings.title }}</div>
+                                    <ul class="menu-list">
+                                      {%- for category in linklists[block.settings.blog_categories].links -%}
+                                        <li>
+                                          <a href="{{ category.url }}" class="menu-link-text link">
+                                            {{ category.title }}
+                                          </a>
+                                        </li>
+                                      {%- endfor -%}
+                                    </ul>
+                                  {%- endif -%}
+                                  {%- if block.settings.recent_posts_title != blank -%}
+                                    <div class="menu-heading">{{ block.settings.recent_posts_title }}</div>
+                                    <div class="mega-menu-posts">
+                                      {%- for post in blogs[block.settings.blog].articles limit: block.settings.posts_limit -%}
+                                        <div class="mega-menu-post">
+                                          <a href="{{ post.url }}">
+                                            <img src="{{ post.image | img_url: 'medium' }}" alt="{{ post.title }}" class="lazyload">
+                                            <h4>{{ post.title }}</h4>
+                                            <p class="date">{{ post.published_at | date: '%B %d, %Y' }}</p>
+                                          </a>
+                                        </div>
+                                      {%- endfor -%}
+                                    </div>
+                                  {%- endif -%}
+                                </div>
                               </div>
                           {%- endcase -%}
                         {%- endif -%}
@@ -1084,6 +1148,107 @@
           "unit": "px"
         }
       ]
+    },
+    {
+      "type": "mega_menu_blog",
+      "name": "Mega Menu Blog",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Menu item title",
+          "default": "Blog",
+          "info": "Add title to connect menu item"
+        },
+        {
+          "type": "header",
+          "content": "Blog Categories"
+        },
+        {
+          "type": "link_list",
+          "id": "blog_categories",
+          "label": "Blog Categories Menu",
+          "info": "Select menu to display blog categories"
+        },
+        {
+          "type": "header",
+          "content": "Recent Posts"
+        },
+        {
+          "type": "text",
+          "id": "recent_posts_title",
+          "label": "Recent Posts Title",
+          "default": "Recent Posts"
+        },
+        {
+          "type": "blog",
+          "id": "blog",
+          "label": "Blog"
+        },
+        {
+          "type": "range",
+          "id": "posts_limit",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Number of posts to show",
+          "default": 3
+        },
+        {
+          "type": "select",
+          "id": "image_ratio",
+          "label": "Image ratio",
+          "options": [
+            { "value": "square", "label": "Square" },
+            { "value": "portrait", "label": "Portrait" },
+            { "value": "landscape", "label": "Landscape" }
+          ],
+          "default": "square"
+        },
+        {
+          "type": "select",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "options": [
+            { "value": "scheme-1", "label": "Scheme 1" },
+            { "value": "scheme-2", "label": "Scheme 2" },
+            { "value": "scheme-3", "label": "Scheme 3" }
+          ],
+          "default": "scheme-1"
+        },
+        {
+          "type": "select",
+          "id": "submenu_position",
+          "label": "Submenu position",
+          "options": [
+            { "value": "default", "label": "Default" },
+            { "value": "center", "label": "Center on the screen" },
+            { "value": "left", "label": "Left" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "default"
+        },
+        {
+          "type": "radio",
+          "id": "mega_menu_width",
+          "label": "Mega menu width",
+          "options": [
+            { "value": "fullwidth", "label": "Fullwidth" },
+            { "value": "custom", "label": "Custom width" }
+          ],
+          "default": "fullwidth"
+        },
+        {
+          "type": "range",
+          "id": "mega_menu_custom_width",
+          "label": "Mega menu custom width",
+          "min": 800,
+          "max": 1800,
+          "step": 10,
+          "default": 1200,
+          "unit": "px"
+        }
+      ]
     }
   ],
   "presets": [
@@ -1101,6 +1266,9 @@
         },
         {
           "type": "mega_menu_pages"
+        },
+        {
+          "type": "mega_menu_blog"
         }
       ],
       "settings": {
