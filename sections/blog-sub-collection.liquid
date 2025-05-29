@@ -1,0 +1,151 @@
+{% schema %}
+{
+  "name": "Blog Sub Collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Blog Categories"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "category_image",
+          "label": "Category Image"
+        },
+        {
+          "type": "text",
+          "id": "category_title",
+          "label": "Category Title",
+          "default": "Category"
+        },
+        {
+          "type": "text",
+          "id": "post_count",
+          "label": "Post Count",
+          "default": "10 posts"
+        },
+        {
+          "type": "url",
+          "id": "category_link",
+          "label": "Category Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog Sub Collection",
+      "blocks": [
+        {
+          "type": "category"
+        },
+        {
+          "type": "category"
+        },
+        {
+          "type": "category"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<!-- Sub Collection -->
+<div class="blog-sub-collection">
+  <div class="container">
+    <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp" data-swiper='{
+      "slidesPerView": 2,
+      "spaceBetween": 12,
+      "speed": 800,
+      "observer": true,
+      "observeParents": true,
+      "slidesPerGroup": 2,
+      "navigation": {
+        "clickable": true,
+        "nextEl": ".nav-next-cls",
+        "prevEl": ".nav-prev-cls"
+      },
+      "pagination": { "el": ".sw-pagination-cls", "clickable": true },
+      "breakpoints": {
+        "768": { "slidesPerView": 3, "spaceBetween": 20, "slidesPerGroup": 3 },
+        "1200": { "slidesPerView": 5, "spaceBetween": 20, "slidesPerGroup": 3}
+      }
+    }'>
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          {% if block.type == 'category' %}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <div class="wg-cls style-abs2 hover-img">
+                <a href="{{ block.settings.category_link }}" class="image-wrap relative">
+                  <div class="image img-style">
+                    {% if block.settings.category_image %}
+                      {{ block.settings.category_image | image_url: width: 400 | image_tag: 
+                        loading: 'lazy',
+                        class: 'lazyload',
+                        alt: block.settings.category_title
+                      }}
+                    {% endif %}
+                  </div>
+                  <div class="cls-btn text-center">
+                    <button class="tf-btn btn-white hover-dark">View all</button>
+                  </div>
+                  <span class="tf-overlay"></span>
+                </a>
+                <div class="cls-content text-center">
+                  <a href="{{ block.settings.category_link }}" class="text-type text-xl-2 fw-medium link">
+                    {{ block.settings.category_title }}
+                  </a>
+                  <span class="count-item body-text-2 text-main">{{ block.settings.post_count }}</span>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="d-flex d-xl-none sw-dot-default sw-pagination-category justify-content-center"></div>
+    </div>
+  </div>
+</div>
+<!-- /Sub Collection -->
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  const swiper = new Swiper('.blog-sub-collection .tf-swiper', {
+    slidesPerView: 2,
+    spaceBetween: 12,
+    speed: 800,
+    observer: true,
+    observeParents: true,
+    slidesPerGroup: 2,
+    navigation: {
+      clickable: true,
+      nextEl: '.nav-next-cls',
+      prevEl: '.nav-prev-cls'
+    },
+    pagination: {
+      el: '.sw-pagination-cls',
+      clickable: true
+    },
+    breakpoints: {
+      768: {
+        slidesPerView: 3,
+        spaceBetween: 20,
+        slidesPerGroup: 3
+      },
+      1200: {
+        slidesPerView: 5,
+        spaceBetween: 20,
+        slidesPerGroup: 3
+      }
+    }
+  });
+});
+{% endjavascript %} 

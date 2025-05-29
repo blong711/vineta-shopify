@@ -1,0 +1,255 @@
+{% schema %}
+{
+  "name": "Blog List",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "posts_per_page",
+      "min": 3,
+      "max": 12,
+      "step": 3,
+      "label": "Posts per page",
+      "default": 6
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sidebar",
+      "label": "Show Sidebar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_recent_posts",
+      "label": "Show Recent Posts",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show Tags",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "sidebar_banner",
+      "label": "Sidebar Banner Image"
+    },
+    {
+      "type": "text",
+      "id": "banner_title",
+      "label": "Banner Title",
+      "default": "Elevate Your Style"
+    },
+    {
+      "type": "url",
+      "id": "banner_link",
+      "label": "Banner Link"
+    },
+    {
+      "type": "text",
+      "id": "banner_button_text",
+      "label": "Banner Button Text",
+      "default": "Shop Now"
+    }
+  ]
+}
+{% endschema %}
+
+<!-- sidebar-account -->
+<div class="btn-sidebar-mb d-lg-none right">
+  <button data-bs-toggle="offcanvas" data-bs-target="#mbAccount">
+    <i class="icon icon-sidebar"></i>
+  </button>
+</div>
+<!-- /sidebar-account -->
+
+<!-- Section blog -->
+<section class="s-blog-list-v1 sec-blog space-blog">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="s-content">
+          {% paginate blog.articles by section.settings.posts_per_page %}
+            {% for article in blog.articles %}
+              <div class="blog-post-item hover-img">
+                <div class="entry_image">
+                  <a href="{{ article.url }}" class="img-style">
+                    {% if article.image %}
+                      {{ article.image | image_url: width: 800 | image_tag: 
+                        loading: 'lazy',
+                        class: 'lazyload',
+                        alt: article.title
+                      }}
+                    {% endif %}
+                  </a>
+                </div>
+                <div class="blog-content">
+                  <div class="entry-tag">
+                    <ul class="style-list">
+                      {% for tag in article.tags %}
+                        <li>
+                          <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="type-{{ tag | handle }}">
+                            {{ tag }}
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  <a href="{{ article.url }}" class="entry_title d-block text-xl fw-medium link">
+                    {{ article.title }}
+                  </a>
+                  <p class="entry_sub text-md text-main">
+                    {{ article.excerpt_or_content | strip_html | truncatewords: 30 }}
+                  </p>
+                  <ul class="entry-meta">
+                    <li class="entry_author">
+                      <div class="avatar">
+                        {% if article.author.image %}
+                          {{ article.author.image | image_url: width: 50 | image_tag: 
+                            loading: 'lazy',
+                            class: 'lazyload',
+                            alt: article.author.name
+                          }}
+                        {% endif %}
+                      </div>
+                      <p class="entry_name">
+                        Post by <span class="fw-medium">{{ article.author.name }}</span>
+                      </p>
+                    </li>
+                    <li class="br-line"></li>
+                    <li class="entry_date">
+                      <p class="text-md">
+                        {{ article.published_at | date: "%b %d %Y" }}
+                      </p>
+                    </li>
+                    <li class="br-line"></li>
+                    <li class="entry_comment">
+                      <p class="text-md">
+                        {{ article.comments_count }} comments
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            {% endfor %}
+
+            {% if paginate.pages > 1 %}
+              <ul class="wg-pagination">
+                {% if paginate.previous %}
+                  <li>
+                    <a href="{{ paginate.previous.url }}" class="pagination-item">
+                      <i class="icon-arr-left2"></i>
+                    </a>
+                  </li>
+                {% endif %}
+
+                {% for part in paginate.parts %}
+                  {% if part.is_link %}
+                    <li>
+                      <a href="{{ part.url }}" class="pagination-item">{{ part.title }}</a>
+                    </li>
+                  {% else %}
+                    <li class="{% if part.title == paginate.current_page %}active{% endif %}">
+                      <div class="pagination-item">{{ part.title }}</div>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+
+                {% if paginate.next %}
+                  <li>
+                    <a href="{{ paginate.next.url }}" class="pagination-item">
+                      <i class="icon-arr-right2"></i>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            {% endif %}
+          {% endpaginate %}
+        </div>
+      </div>
+
+      {% if section.settings.show_sidebar %}
+        <div class="col-lg-4">
+          <div class="sidebar-blog d-lg-grid d-none sidebar-content-wrap">
+            {% if section.settings.show_recent_posts %}
+              <div class="sb-item">
+                <p class="sb-title text-xl fw-medium">Recent Posts</p>
+                <div class="sb-content">
+                  <ul class="recent-blog-list">
+                    {% for article in blog.articles limit: 3 %}
+                      <li class="hover-img">
+                        <div class="image">
+                          <a href="{{ article.url }}" class="img-style d-block">
+                            {% if article.image %}
+                              {{ article.image | image_url: width: 100 | image_tag: 
+                                loading: 'lazy',
+                                class: 'lazyload',
+                                alt: article.title
+                              }}
+                            {% endif %}
+                          </a>
+                        </div>
+                        <div class="post-content">
+                          <a href="{{ article.url }}" class="link text-md fw-medium">{{ article.title }}</a>
+                          <p class="entry_date">
+                            {{ article.published_at | date: "%b %d %Y" }}
+                          </p>
+                        </div>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            {% endif %}
+
+            {% if section.settings.show_tags %}
+              <div class="sb-item">
+                <p class="sb-title text-xl fw-medium">Tags</p>
+                <div class="sb-content entry-tag">
+                  <ul class="tag-blog-list style-list">
+                    {% for tag in blog.all_tags %}
+                      <li>
+                        <a href="{{ blog.url }}/tagged/{{ tag | handle }}">
+                          {{ tag }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            {% endif %}
+
+            {% if section.settings.sidebar_banner %}
+              <div class="sb-item">
+                <div class="sb-banner hover-img">
+                  <div class="image img-style">
+                    {{ section.settings.sidebar_banner | image_url: width: 400 | image_tag: 
+                      loading: 'lazy',
+                      class: 'lazyload',
+                      alt: section.settings.banner_title
+                    }}
+                  </div>
+                  <div class="banner-content">
+                    <p class="title">
+                      {{ section.settings.banner_title | newline_to_br }}
+                    </p>
+                    <a href="{{ section.settings.banner_link }}" class="tf-btn btn-white hover-primary">
+                      {{ section.settings.banner_button_text }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+<!-- /Section blog --> 
