@@ -9,6 +9,13 @@
  */
 {
   "sections": {
+    "page_title": {
+      "type": "page-title",
+      "settings": {
+        "title": "Store Locations",
+        "subtitle": "Find our stores near you"
+      }
+    },
     "store_location": {
       "type": "store-location",
       "settings": {
@@ -67,6 +74,7 @@
     }
   },
   "order": [
+    "page_title",
     "store_location"
   ]
 } 
