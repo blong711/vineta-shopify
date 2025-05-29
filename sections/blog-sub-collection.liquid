@@ -15,6 +15,11 @@
       "name": "Category",
       "settings": [
         {
+          "type": "blog",
+          "id": "blog",
+          "label": "Select Blog"
+        },
+        {
           "type": "image_picker",
           "id": "category_image",
           "label": "Category Image"
@@ -23,18 +28,13 @@
           "type": "text",
           "id": "category_title",
           "label": "Category Title",
-          "default": "Category"
+          "info": "Will be automatically populated with blog title if left empty"
         },
         {
           "type": "text",
           "id": "post_count",
           "label": "Post Count",
-          "default": "10 posts"
-        },
-        {
-          "type": "url",
-          "id": "category_link",
-          "label": "Category Link"
+          "info": "Will be automatically populated with actual post count if left empty"
         }
       ]
     }
@@ -82,15 +82,16 @@
       <div class="swiper-wrapper">
         {% for block in section.blocks %}
           {% if block.type == 'category' %}
+            {% assign blog = block.settings.blog %}
             <div class="swiper-slide" {{ block.shopify_attributes }}>
               <div class="wg-cls style-abs2 hover-img">
-                <a href="{{ block.settings.category_link }}" class="image-wrap relative">
+                <a href="{{ blog.url }}" class="image-wrap relative">
                   <div class="image img-style">
                     {% if block.settings.category_image %}
                       {{ block.settings.category_image | image_url: width: 400 | image_tag: 
                         loading: 'lazy',
                         class: 'lazyload',
-                        alt: block.settings.category_title
+                        alt: block.settings.category_title | default: blog.title
                       }}
                     {% endif %}
                   </div>
@@ -100,10 +101,12 @@
                   <span class="tf-overlay"></span>
                 </a>
                 <div class="cls-content text-center">
-                  <a href="{{ block.settings.category_link }}" class="text-type text-xl-2 fw-medium link">
-                    {{ block.settings.category_title }}
+                  <a href="{{ blog.url }}" class="text-type text-xl-2 fw-medium link">
+                    {{ block.settings.category_title | default: blog.title }}
                   </a>
-                  <span class="count-item body-text-2 text-main">{{ block.settings.post_count }}</span>
+                  <span class="count-item body-text-2 text-main">
+                    {{ block.settings.post_count | default: blog.articles_count | append: ' posts' }}
+                  </span>
                 </div>
               </div>
             </div>
