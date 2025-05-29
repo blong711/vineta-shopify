@@ -13,18 +13,10 @@
       "default": "Latest Tips & Trends"
     },
     {
-      "type": "blog",
-      "id": "blog",
-      "label": "Blog"
-    },
-    {
-      "type": "range",
-      "id": "posts_to_show",
-      "min": 3,
-      "max": 12,
-      "step": 1,
-      "default": 4,
-      "label": "Number of posts to show"
+      "type": "article_list",
+      "id": "articles",
+      "label": "Select Articles",
+      "limit": 12
     },
     {
       "type": "header",
@@ -99,8 +91,7 @@
       }
     }'>
       <div class="swiper-wrapper">
-        {%- assign blog = blogs[section.settings.blog] -%}
-        {%- for article in blog.articles limit: section.settings.posts_to_show -%}
+        {%- for article in section.settings.articles -%}
           <div class="swiper-slide">
             <div class="blog-post-item hover-img">
               <div class="entry_image">
