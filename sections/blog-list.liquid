@@ -9,6 +9,22 @@
       "default": "Blog"
     },
     {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "list",
+          "label": "List"
+        },
+        {
+          "value": "grid",
+          "label": "Grid"
+        }
+      ],
+      "default": "list"
+    },
+    {
       "type": "range",
       "id": "posts_per_page",
       "min": 3,
@@ -74,7 +90,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8">
-        <div class="s-content">
+        <div class="s-content {% if section.settings.layout == 'grid' %}s-blog-list-grid grid-2{% endif %}">
           {% paginate blog.articles by section.settings.posts_per_page %}
             {% for article in blog.articles %}
               <div class="blog-post-item hover-img">
