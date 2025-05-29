@@ -204,44 +204,47 @@
           </div>
         </div>
       {% when 'blog' %}
+        {% assign block = section.blocks | where: "type", "mega_menu_blog" | first %}
         <div class="sub-menu sub-menu-style-3">
           <ul class="menu-list">
             {% for child in link.links %}
               <li><a href="{{ child.url }}" class="menu-link-text link">{{ child.title }}</a></li>
             {% endfor %}
           </ul>
-          <div class="wrapper-sub-blog">
-            <div class="menu-heading">Recent Posts</div>
-            <ul class="list-recent-blog">
-              <li class="item">
-                <a href="#" class="img-box">
-                  <img src="https://via.placeholder.com/80x80" alt="img-recent-blog" width="80" height="80">
-                </a>
-                <div class="content">
-                  <a href="#" class="fw-medium text-sm link title">Sample Blog Post 1</a>
-                  <span class="text-xxs text-grey date-post">Sep 19 2024</span>
-                </div>
-              </li>
-              <li class="item">
-                <a href="#" class="img-box">
-                  <img src="https://via.placeholder.com/80x80" alt="img-recent-blog" width="80" height="80">
-                </a>
-                <div class="content">
-                  <a href="#" class="fw-medium text-sm link title">Sample Blog Post 2</a>
-                  <span class="text-xxs text-grey date-post">Sep 19 2024</span>
-                </div>
-              </li>
-              <li class="item">
-                <a href="#" class="img-box">
-                  <img src="https://via.placeholder.com/80x80" alt="img-recent-blog" width="80" height="80">
-                </a>
-                <div class="content">
-                  <a href="#" class="fw-medium text-sm link title">Sample Blog Post 3</a>
-                  <span class="text-xxs text-grey date-post">Sep 19 2024</span>
-                </div>
-              </li>
-            </ul>
-          </div>
+          {% if block %}
+            <div class="wrapper-sub-blog">
+              {% if block.settings.blog_categories != blank %}
+                <div class="menu-heading">{{ block.settings.title }}</div>
+                <ul class="menu-list">
+                  {% for category in linklists[block.settings.blog_categories].links %}
+                    <li>
+                      <a href="{{ category.url }}" class="menu-link-text link">{{ category.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              {% if block.settings.recent_posts_title != blank and block.settings.blog != blank %}
+                <div class="menu-heading">{{ block.settings.recent_posts_title }}</div>
+                <ul class="list-recent-blog">
+                  {% for post in blogs[block.settings.blog].articles limit: block.settings.posts_limit %}
+                    <li class="item">
+                      <a href="{{ post.url }}" class="img-box">
+                        <img src="{{ post.image | img_url: '80x80', crop: 'center' }}" 
+                             alt="{{ post.title }}" 
+                             width="80" 
+                             height="80"
+                             loading="lazy">
+                      </a>
+                      <div class="content">
+                        <a href="{{ post.url }}" class="fw-medium text-sm link title">{{ post.title }}</a>
+                        <span class="text-xxs text-grey date-post">{{ post.published_at | date: '%b %d %Y' }}</span>
+                      </div>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          {% endif %}
         </div>
       {% else %}
         <div class="sub-menu">
