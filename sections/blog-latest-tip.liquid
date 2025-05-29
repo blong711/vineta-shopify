@@ -1,0 +1,173 @@
+{% schema %}
+{
+  "name": "Latest Tips & Trends",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Latest Tips & Trends"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "posts_to_show",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Number of posts to show"
+    },
+    {
+      "type": "header",
+      "content": "Slider Settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 2,
+      "step": 1,
+      "default": 1,
+      "label": "Slides per view (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2,
+      "label": "Slides per view (Tablet)"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Slides per view (Desktop)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Latest Tips & Trends",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="flat-spacing-25">
+  <div class="container">
+    <div class="flat-title mb_2 wow fadeInUp">
+      <h4 class="title">{{ section.settings.title }}</h4>
+    </div>
+    <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+      "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+      "spaceBetween": 12,
+      "speed": 800,
+      "observer": true,
+      "observeParents": true,
+      "slidesPerGroup": 1,
+      "navigation": {
+        "clickable": true,
+        "nextEl": ".nav-next-new",
+        "prevEl": ".nav-prev-new"
+      },
+      "pagination": { "el": ".sw-pagination-new", "clickable": true },
+      "breakpoints": {
+        "577": { 
+          "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
+          "spaceBetween": 12, 
+          "slidesPerGroup": 2 
+        },
+        "1200": { 
+          "slidesPerView": {{ section.settings.slides_per_view_desktop }}, 
+          "spaceBetween": 24, 
+          "slidesPerGroup": 4
+        }
+      }
+    }'>
+      <div class="swiper-wrapper">
+        {%- assign blog = blogs[section.settings.blog] -%}
+        {%- for article in blog.articles limit: section.settings.posts_to_show -%}
+          <div class="swiper-slide">
+            <div class="blog-post-item hover-img">
+              <div class="entry_image">
+                <a href="{{ article.url }}" class="img-style">
+                  {%- if article.image -%}
+                    {{ article.image | image_url: width: 600 | image_tag: loading: 'lazy', class: 'lazyload' }}
+                  {%- endif -%}
+                </a>
+              </div>
+              <div class="blog-content">
+                <div class="entry-tag">
+                  <ul class="style-list">
+                    {%- for tag in article.tags limit: 1 -%}
+                      <li>
+                        <a class="type-{{ tag | handleize }}">
+                          {{ tag }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+                <a href="{{ article.url }}" class="entry_title d-block text-xl fw-medium link">
+                  {{ article.title }}
+                </a>
+                <p class="entry_sub text-md text-main">
+                  {{ article.excerpt_or_content | strip_html | truncatewords: 20 }}
+                </p>
+                <ul class="entry-meta">
+                  <li class="entry_author">
+                    <div class="avatar">
+                      {%- if article.author.image -%}
+                        {{ article.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
+                      {%- endif -%}
+                    </div>
+                    <p class="entry_name">
+                      Post by <span class="fw-medium">{{ article.author }}</span>
+                    </p>
+                  </li>
+                  <li class="br-line"></li>
+                  <li class="entry_date">
+                    <p class="text-md">
+                      {{ article.published_at | date: '%b %d %Y' }}
+                    </p>
+                  </li>
+                  <li class="br-line"></li>
+                  <li class="entry_comment">
+                    <p class="text-md">
+                      {{ article.comments_count }} comments
+                    </p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="d-flex d-xl-none sw-dot-default sw-pagination-new justify-content-center"></div>
+    </div>
+  </div>
+</section>
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', function() {
+    const swiperElement = document.querySelector('.tf-swiper');
+    if (swiperElement) {
+      const swiperConfig = JSON.parse(swiperElement.getAttribute('data-swiper'));
+      new Swiper(swiperElement, swiperConfig);
+    }
+  });
+{% endjavascript %} 
