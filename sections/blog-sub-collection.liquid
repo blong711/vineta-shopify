@@ -7,6 +7,70 @@
       "id": "title",
       "label": "Section Title",
       "default": "Blog Categories"
+    },
+    {
+      "type": "header",
+      "content": "Slider Settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Slides per view (Desktop)",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Slides per view (Tablet)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 2,
+      "step": 1,
+      "label": "Slides per view (Mobile)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "slides_per_group",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Slides per group",
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 0
     }
   ],
   "blocks": [
@@ -59,15 +123,15 @@
 {% endschema %}
 
 <!-- Sub Collection -->
-<div class="blog-sub-collection">
+<div class="flat-spacing-24 pb-0" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   <div class="container">
     <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp" data-swiper='{
-      "slidesPerView": 2,
+      "slidesPerView": {{ section.settings.slides_per_view_mobile }},
       "spaceBetween": 12,
       "speed": 800,
       "observer": true,
       "observeParents": true,
-      "slidesPerGroup": 2,
+      "slidesPerGroup": 1,
       "navigation": {
         "clickable": true,
         "nextEl": ".nav-next-cls",
@@ -75,8 +139,16 @@
       },
       "pagination": { "el": ".sw-pagination-cls", "clickable": true },
       "breakpoints": {
-        "768": { "slidesPerView": 3, "spaceBetween": 20, "slidesPerGroup": 3 },
-        "1200": { "slidesPerView": 5, "spaceBetween": 20, "slidesPerGroup": 3}
+        "768": { 
+          "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
+          "spaceBetween": 20, 
+          "slidesPerGroup": {{ section.settings.slides_per_group }}
+        },
+        "1200": { 
+          "slidesPerView": {{ section.settings.slides_per_view_desktop }}, 
+          "spaceBetween": 20, 
+          "slidesPerGroup": {{ section.settings.slides_per_group }}
+        }
       }
     }'>
       <div class="swiper-wrapper">
@@ -144,9 +216,9 @@ document.addEventListener('DOMContentLoaded', function() {
         slidesPerGroup: 3
       },
       1200: {
-        slidesPerView: 5,
+        slidesPerView: {{ section.settings.slides_per_view_desktop }},
         spaceBetween: 20,
-        slidesPerGroup: 3
+        slidesPerGroup: {{ section.settings.slides_per_group }}
       }
     }
   });
