@@ -13,10 +13,24 @@
       "default": "Latest Tips & Trends"
     },
     {
-      "type": "article_list",
-      "id": "articles",
-      "label": "Select Articles",
-      "limit": 12
+      "type": "article",
+      "id": "article_1",
+      "label": "Article 1"
+    },
+    {
+      "type": "article",
+      "id": "article_2",
+      "label": "Article 2"
+    },
+    {
+      "type": "article",
+      "id": "article_3",
+      "label": "Article 3"
+    },
+    {
+      "type": "article",
+      "id": "article_4",
+      "label": "Article 4"
     },
     {
       "type": "header",
@@ -91,61 +105,64 @@
       }
     }'>
       <div class="swiper-wrapper">
-        {%- for article in section.settings.articles -%}
-          <div class="swiper-slide">
-            <div class="blog-post-item hover-img">
-              <div class="entry_image">
-                <a href="{{ article.url }}" class="img-style">
-                  {%- if article.image -%}
-                    {{ article.image | image_url: width: 600 | image_tag: loading: 'lazy', class: 'lazyload' }}
-                  {%- endif -%}
-                </a>
-              </div>
-              <div class="blog-content">
-                <div class="entry-tag">
-                  <ul class="style-list">
-                    {%- for tag in article.tags limit: 1 -%}
-                      <li>
-                        <a class="type-{{ tag | handleize }}">
-                          {{ tag }}
-                        </a>
-                      </li>
-                    {%- endfor -%}
+        {%- assign articles = section.settings.article_1 | concat: section.settings.article_2 | concat: section.settings.article_3 | concat: section.settings.article_4 -%}
+        {%- for article in articles -%}
+          {%- if article != blank -%}
+            <div class="swiper-slide">
+              <div class="blog-post-item hover-img">
+                <div class="entry_image">
+                  <a href="{{ article.url }}" class="img-style">
+                    {%- if article.image -%}
+                      {{ article.image | image_url: width: 600 | image_tag: loading: 'lazy', class: 'lazyload' }}
+                    {%- endif -%}
+                  </a>
+                </div>
+                <div class="blog-content">
+                  <div class="entry-tag">
+                    <ul class="style-list">
+                      {%- for tag in article.tags limit: 1 -%}
+                        <li>
+                          <a class="type-{{ tag | handleize }}">
+                            {{ tag }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                  <a href="{{ article.url }}" class="entry_title d-block text-xl fw-medium link">
+                    {{ article.title }}
+                  </a>
+                  <p class="entry_sub text-md text-main">
+                    {{ article.excerpt_or_content | strip_html | truncatewords: 20 }}
+                  </p>
+                  <ul class="entry-meta">
+                    <li class="entry_author">
+                      <div class="avatar">
+                        {%- if article.author.image -%}
+                          {{ article.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
+                        {%- endif -%}
+                      </div>
+                      <p class="entry_name">
+                        Post by <span class="fw-medium">{{ article.author }}</span>
+                      </p>
+                    </li>
+                    <li class="br-line"></li>
+                    <li class="entry_date">
+                      <p class="text-md">
+                        {{ article.published_at | date: '%b %d %Y' }}
+                      </p>
+                    </li>
+                    <li class="br-line"></li>
+                    <li class="entry_comment">
+                      <p class="text-md">
+                        {{ article.comments_count }} comments
+                      </p>
+                    </li>
                   </ul>
                 </div>
-                <a href="{{ article.url }}" class="entry_title d-block text-xl fw-medium link">
-                  {{ article.title }}
-                </a>
-                <p class="entry_sub text-md text-main">
-                  {{ article.excerpt_or_content | strip_html | truncatewords: 20 }}
-                </p>
-                <ul class="entry-meta">
-                  <li class="entry_author">
-                    <div class="avatar">
-                      {%- if article.author.image -%}
-                        {{ article.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
-                      {%- endif -%}
-                    </div>
-                    <p class="entry_name">
-                      Post by <span class="fw-medium">{{ article.author }}</span>
-                    </p>
-                  </li>
-                  <li class="br-line"></li>
-                  <li class="entry_date">
-                    <p class="text-md">
-                      {{ article.published_at | date: '%b %d %Y' }}
-                    </p>
-                  </li>
-                  <li class="br-line"></li>
-                  <li class="entry_comment">
-                    <p class="text-md">
-                      {{ article.comments_count }} comments
-                    </p>
-                  </li>
-                </ul>
               </div>
             </div>
-          </div>
+          {%- endif -%}
         {%- endfor -%}
       </div>
       <div class="d-flex d-xl-none sw-dot-default sw-pagination-new justify-content-center"></div>
