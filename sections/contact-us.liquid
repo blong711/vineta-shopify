@@ -61,30 +61,30 @@
                   </li>
                 </ul>
                 <ul class="tf-social-icon style-large">
-                  {% if block.settings.facebook_url != blank %}
+                  {% if settings.facebook_url != blank %}
                     <li>
-                      <a href="{{ block.settings.facebook_url }}" class="social-item social-facebook">
+                      <a href="{{ settings.facebook_url }}" class="social-item social-facebook">
                         <i class="icon icon-fb"></i>
                       </a>
                     </li>
                   {% endif %}
-                  {% if block.settings.instagram_url != blank %}
+                  {% if settings.instagram_url != blank %}
                     <li>
-                      <a href="{{ block.settings.instagram_url }}" class="social-item social-instagram">
+                      <a href="{{ settings.instagram_url }}" class="social-item social-instagram">
                         <i class="icon icon-instagram"></i>
                       </a>
                     </li>
                   {% endif %}
-                  {% if block.settings.twitter_url != blank %}
+                  {% if settings.twitter_url != blank %}
                     <li>
-                      <a href="{{ block.settings.twitter_url }}" class="social-item social-x">
+                      <a href="{{ settings.twitter_url }}" class="social-item social-x">
                         <i class="icon icon-x"></i>
                       </a>
                     </li>
                   {% endif %}
-                  {% if block.settings.snapchat_url != blank %}
+                  {% if settings.snapchat_url != blank %}
                     <li>
-                      <a href="{{ block.settings.snapchat_url }}" class="social-item social-snapchat">
+                      <a href="{{ settings.snapchat_url }}" class="social-item social-snapchat">
                         <i class="icon icon-snapchat"></i>
                       </a>
                     </li>
@@ -216,26 +216,6 @@
           "id": "hours",
           "label": "Business Hours",
           "default": "8am - 7pm, Mon - Sat"
-        },
-        {
-          "type": "url",
-          "id": "facebook_url",
-          "label": "Facebook URL"
-        },
-        {
-          "type": "url",
-          "id": "instagram_url",
-          "label": "Instagram URL"
-        },
-        {
-          "type": "url",
-          "id": "twitter_url",
-          "label": "Twitter URL"
-        },
-        {
-          "type": "url",
-          "id": "snapchat_url",
-          "label": "Snapchat URL"
         }
       ]
     },
