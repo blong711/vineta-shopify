@@ -52,12 +52,6 @@
       </ul>
     </div>
     <div class="content">
-      {% if article.image %}
-        <div class="entry_image">
-          {{ article.image | image_url: width: 1800 | image_tag: loading: 'lazy', class: 'lazyload' }}
-        </div>
-      {% endif %}
-      
       {{ article.content }}
 
       <div class="bot">
