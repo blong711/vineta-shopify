@@ -1,23 +1,7 @@
 {% schema %}
 {
   "name": "Blog Single",
-  "settings": [
-    {
-      "type": "header",
-      "content": "Blog Post Settings"
-    },
-    {
-      "type": "image_picker",
-      "id": "author_image",
-      "label": "Author Image"
-    },
-    {
-      "type": "text",
-      "id": "author_name",
-      "label": "Author Name",
-      "default": "Vincent"
-    }
-  ],
+  "settings": [],
   "presets": [
     {
       "name": "Blog Single",
@@ -43,14 +27,14 @@
         {{ article.title }}
       </p>
       <ul class="entry-meta">
-        <li class="entry_author">
+        <li class="entry_author"></li>
           <div class="avatar">
-            {% if section.settings.author_image %}
-              {{ section.settings.author_image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
+            {% if article.author.image %}
+              {{ article.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
             {% endif %}
           </div>
           <p class="entry_name">
-            Post by <span class="fw-medium">{{ section.settings.author_name }}</span>
+            Post by <span class="fw-medium">{{ article.author }}</span>
           </p>
         </li>
         <li class="br-line"></li>
@@ -70,7 +54,7 @@
     <div class="content">
       {% if article.image %}
         <div class="entry_image">
-          {{ article.image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'lazyload' }}
+          {{ article.image | image_url: width: 1800 | image_tag: loading: 'lazy', class: 'lazyload' }}
         </div>
       {% endif %}
       
@@ -82,7 +66,7 @@
           <ul class="style-list">
             {% for tag in article.tags %}
               <li>
-                <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+                <a style="font-size: 14px;" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
               </li>
             {% endfor %}
           </ul>
@@ -105,7 +89,7 @@
                 <i class="icon icon-x"></i>
               </a>
             </li>
-            <li></li>
+            <li>
               <a href="https://www.snapchat.com/" class="social-item social-snapchat">
                 <i class="icon icon-snapchat"></i>
               </a>
@@ -142,7 +126,7 @@
 
     <div class="leave-comment-wrap">
       <p class="title">Leave a comment</p>
-      {% form 'new_comment', article %}
+      {% form 'new_comment', article, class: 'form-default' %}
         <div class="wrap">
           <div class="cols">
             <fieldset>
@@ -160,7 +144,7 @@
               <textarea id="CommentBody" name="comment[body]" required></textarea>
             </fieldset>
           </div>
-          <p class="notice">Please note, your email won't be published.</p>
+          <p style="font-size: 14px;" class="notice">Please note, your email won't be published.</p>
           <div class="button-submit">
             <button class="tf-btn text-sm animate-btn" type="submit">Post comment</button>
           </div>
