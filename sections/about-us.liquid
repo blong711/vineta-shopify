@@ -14,15 +14,15 @@
           </div>
           <div class="box-text">
             <p class="text-md">
-              {{ block.settings.text | replace: 'Vineta', '<span class="fw-medium">Vineta</span>' }}
+              {{ block.settings.text | replace: 'Vineta', '<span class="fw-medium">Vineta</span>' | remove: '<p>' | remove: '</p>' }}
             </p>
           </div>
         </div>
-        <div class="image radius-16 overflow-hidden">
+        <div class="image radius-16 overflow-hidden banner-about">
           <img src="{{ block.settings.image | img_url: 'master' }}" 
                data-src="{{ block.settings.image | img_url: 'master' }}" 
                alt="{{ block.settings.image.alt | escape }}" 
-               class="lazyload" width="600" height="400">
+               class="w-100 h-100 object-fit-cover ls-is-cached lazyloaded" width="600" height="400">
         </div>
       </div>
     </section>
@@ -39,7 +39,7 @@
             {{ block.settings.title }}
           </p>
           <p class="text-md text-main">
-            {{ block.settings.text }}
+            {{ block.settings.text | remove: '<p>' | remove: '</p>' }}
           </p>
         </div>
         <div class="row">
@@ -268,9 +268,23 @@
       "limit": 3,
       "settings": [
         {
-          "type": "text",
+          "type": "select",
           "id": "icon",
-          "label": "Icon Class",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "icon-precision",
+              "label": "Precision"
+            },
+            {
+              "value": "icon-elegance",
+              "label": "Elegance"
+            },
+            {
+              "value": "icon-fashion-body",
+              "label": "Fashion Body"
+            }
+          ],
           "default": "icon-precision"
         },
         {
