@@ -1,0 +1,42 @@
+{
+  "sections": {
+    "page_title": {
+      "type": "page-title",
+      "settings": {
+        "background_image": "shopify://shop_images/page-title_1.jpg"
+      }
+    },
+    "blog_sub_collection": {
+      "type": "blog-sub-collection",
+      "settings": {
+        "title": "Blog Categories",
+        "slides_per_view_desktop": 5,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_mobile": 2,
+        "slides_per_group": 3,
+        "padding_top": 64,
+        "padding_bottom": 0
+      }
+    },
+    "blog_list": {
+      "type": "blog-list",
+      "settings": {
+        "title": "Blog",
+        "layout": "list",
+        "posts_per_page": 6,
+        "show_sidebar": true,
+        "show_recent_posts": true,
+        "show_tags": true,
+        "sidebar_banner": "shopify://shop_images/sb-banner.jpg",
+        "banner_title": "Elevate Your Style",
+        "banner_link": "shopify://collections",
+        "banner_button_text": "Shop Now"
+      }
+    }
+  },
+  "order": [
+    "page_title",
+    "blog_sub_collection",
+    "blog_list"
+  ]
+} 
