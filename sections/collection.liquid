@@ -170,12 +170,12 @@
         </div>
       {%- endif -%}
       <ul class="tf-control-layout">
-        <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
+        {% comment %} <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
           <div class="item icon-list">
             <span></span>
             <span></span>
           </div>
-        </li>
+        </li> {% endcomment %}
         <li class="tf-view-layout-switch sw-layout-2" data-value-layout="tf-col-2">
           <div class="item icon-grid-2">
             <span></span>
@@ -434,12 +434,9 @@
         this.classList.add('active');
 
         // Show/hide layouts
-        if (layout === 'list') {
-          listLayout.style.display = 'block';
-          gridLayout.style.display = 'none';
-        } else {
-          listLayout.style.display = 'none';
-          gridLayout.style.display = 'block';
+        listLayout.style.display = layout === 'list' ? 'block' : 'none';
+        gridLayout.style.display = layout === 'list' ? 'none' : 'block';
+        if (layout !== 'list') {
           gridLayout.className = `wrapper-shop tf-grid-layout ${layout}`;
         }
       });
