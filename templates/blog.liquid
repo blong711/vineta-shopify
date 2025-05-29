@@ -1,24 +1,2 @@
-{% layout 'theme' %}
-
-<div class="blog-page">
-  {% section 'blog-single' %}
-  {% section 'blog-latest-tip' %}
-</div>
-
-{% schema %}
-{
-  "name": "Blog Page",
-  "settings": [
-    {
-      "type": "header",
-      "content": "Blog Page Settings"
-    },
-    {
-      "type": "text",
-      "id": "page_title",
-      "label": "Page Title",
-      "default": "Blog"
-    }
-  ]
-}
-{% endschema %} 
+{% section 'blog-single' %}
+{% section 'blog-latest-tip' %}
