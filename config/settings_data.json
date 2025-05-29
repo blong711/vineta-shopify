@@ -124,13 +124,29 @@
               "mega_menu_width": "fullwidth",
               "mega_menu_custom_width": 1200
             }
+          },
+          "mega_menu_blog_cGEaBE": {
+            "type": "mega_menu_blog",
+            "settings": {
+              "title": "Blog",
+              "blog_categories": "",
+              "recent_posts_title": "Recent Posts",
+              "blog": "lifestyle",
+              "posts_limit": 3,
+              "image_ratio": "square",
+              "color_scheme": "scheme-1",
+              "submenu_position": "default",
+              "mega_menu_width": "fullwidth",
+              "mega_menu_custom_width": 1200
+            }
           }
         },
         "block_order": [
           "mega_menu_html_Cr3rLA",
           "mega_menu_shop_9xXyG7",
           "mega_menu_product_NcRgpq",
-          "mega_menu_pages_GHHVpa"
+          "mega_menu_pages_GHHVpa",
+          "mega_menu_blog_cGEaBE"
         ],
         "settings": {
           "layout": "layout-1",
@@ -512,7 +528,15 @@
       },
       "blog-single": {
         "type": "blog-single",
-        "settings": {}
+        "settings": {
+          "show_tags": true,
+          "show_author": true,
+          "show_date": true,
+          "show_comments": true,
+          "show_social_sharing": true,
+          "show_related_posts": true,
+          "show_comment_form": true
+        }
       },
       "blog-latest-tip": {
         "type": "blog-latest-tip",
@@ -522,6 +546,10 @@
           "article_2": "",
           "article_3": "",
           "article_4": "",
+          "show_tags": true,
+          "show_author": true,
+          "show_date": true,
+          "show_comments": true,
           "slides_per_view_mobile": 1,
           "slides_per_view_tablet": 2,
           "slides_per_view_desktop": 3
