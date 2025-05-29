@@ -34,6 +34,34 @@
     },
     {
       "type": "header",
+      "content": "Display Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show Tags",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show Author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show Date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_comments",
+      "label": "Show Comments",
+      "default": true
+    },
+    {
+      "type": "header",
       "content": "Slider Settings"
     },
     {
@@ -116,17 +144,19 @@
                 </a>
               </div>
               <div class="blog-content">
-                <div class="entry-tag">
-                  <ul class="style-list">
-                    {%- for tag in section.settings.article_1.tags -%}
-                      <li>
-                        <a class="type-{{ tag | handleize }}">
-                          {{ tag }}
-                        </a>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                </div>
+                {%- if section.settings.show_tags -%}
+                  <div class="entry-tag">
+                    <ul class="style-list">
+                      {%- for tag in section.settings.article_1.tags -%}
+                        <li>
+                          <a class="type-{{ tag | handleize }}">
+                            {{ tag }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                {%- endif -%}
                 <a href="{{ section.settings.article_1.url }}" class="entry_title d-block text-xl fw-medium link">
                   {{ section.settings.article_1.title }}
                 </a>
@@ -134,28 +164,34 @@
                   {{ section.settings.article_1.excerpt_or_content | strip_html | truncatewords: 20 }}
                 </p>
                 <ul class="entry-meta">
-                  <li class="entry_author">
-                    <div class="avatar">
-                      {%- if section.settings.article_1.author.image -%}
-                        {{ section.settings.article_1.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
-                      {%- endif -%}
-                    </div>
-                    <p class="entry_name">
-                      Post by <span class="fw-medium">{{ section.settings.article_1.author }}</span>
-                    </p>
-                  </li>
-                  <li class="br-line"></li>
-                  <li class="entry_date">
-                    <p class="text-md">
-                      {{ section.settings.article_1.published_at | date: '%b %d %Y' }}
-                    </p>
-                  </li>
-                  <li class="br-line"></li>
-                  <li class="entry_comment">
-                    <p class="text-md">
-                      {{ section.settings.article_1.comments_count }} comments
-                    </p>
-                  </li>
+                  {%- if section.settings.show_author -%}
+                    <li class="entry_author">
+                      <div class="avatar">
+                        {%- if section.settings.article_1.author.image -%}
+                          {{ section.settings.article_1.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
+                        {%- endif -%}
+                      </div>
+                      <p class="entry_name">
+                        Post by <span class="fw-medium">{{ section.settings.article_1.author | truncate: 12 }}</span>
+                      </p>
+                    </li>
+                    <li class="br-line"></li>
+                  {%- endif -%}
+                  {%- if section.settings.show_date -%}
+                    <li class="entry_date">
+                      <p class="text-md">
+                        {{ section.settings.article_1.published_at | date: '%b %d %Y' }}
+                      </p>
+                    </li>
+                    <li class="br-line"></li>
+                  {%- endif -%}
+                  {%- if section.settings.show_comments -%}
+                    <li class="entry_comment">
+                      <p class="text-md">
+                        {{ section.settings.article_1.comments_count }} comments
+                      </p>
+                    </li>
+                  {%- endif -%}
                 </ul>
               </div>
             </div>
@@ -173,17 +209,19 @@
                 </a>
               </div>
               <div class="blog-content">
-                <div class="entry-tag">
-                  <ul class="style-list">
-                    {%- for tag in section.settings.article_2.tags -%}
-                      <li>
-                        <a class="type-{{ tag | handleize }}">
-                          {{ tag }}
-                        </a>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                </div>
+                {%- if section.settings.show_tags -%}
+                  <div class="entry-tag">
+                    <ul class="style-list">
+                      {%- for tag in section.settings.article_2.tags -%}
+                        <li>
+                          <a class="type-{{ tag | handleize }}">
+                            {{ tag }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                {%- endif -%}
                 <a href="{{ section.settings.article_2.url }}" class="entry_title d-block text-xl fw-medium link">
                   {{ section.settings.article_2.title }}
                 </a>
@@ -191,28 +229,34 @@
                   {{ section.settings.article_2.excerpt_or_content | strip_html | truncatewords: 20 }}
                 </p>
                 <ul class="entry-meta">
-                  <li class="entry_author">
-                    <div class="avatar">
-                      {%- if section.settings.article_2.author.image -%}
-                        {{ section.settings.article_2.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
-                      {%- endif -%}
-                    </div>
-                    <p class="entry_name">
-                      Post by <span class="fw-medium">{{ section.settings.article_2.author }}</span>
-                    </p>
-                  </li>
-                  <li class="br-line"></li>
-                  <li class="entry_date">
-                    <p class="text-md">
-                      {{ section.settings.article_2.published_at | date: '%b %d %Y' }}
-                    </p>
-                  </li>
-                  <li class="br-line"></li>
-                  <li class="entry_comment">
-                    <p class="text-md">
-                      {{ section.settings.article_2.comments_count }} comments
-                    </p>
-                  </li>
+                  {%- if section.settings.show_author -%}
+                    <li class="entry_author">
+                      <div class="avatar">
+                        {%- if section.settings.article_2.author.image -%}
+                          {{ section.settings.article_2.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
+                        {%- endif -%}
+                      </div>
+                      <p class="entry_name">
+                        Post by <span class="fw-medium">{{ section.settings.article_2.author | truncate: 12 }}</span>
+                      </p>
+                    </li>
+                    <li class="br-line"></li>
+                  {%- endif -%}
+                  {%- if section.settings.show_date -%}
+                    <li class="entry_date">
+                      <p class="text-md">
+                        {{ section.settings.article_2.published_at | date: '%b %d %Y' }}
+                      </p>
+                    </li>
+                    <li class="br-line"></li>
+                  {%- endif -%}
+                  {%- if section.settings.show_comments -%}
+                    <li class="entry_comment">
+                      <p class="text-md">
+                        {{ section.settings.article_2.comments_count }} comments
+                      </p>
+                    </li>
+                  {%- endif -%}
                 </ul>
               </div>
             </div>
@@ -230,17 +274,19 @@
                 </a>
               </div>
               <div class="blog-content">
-                <div class="entry-tag">
-                  <ul class="style-list">
-                    {%- for tag in section.settings.article_3.tags -%}
-                      <li>
-                        <a class="type-{{ tag | handleize }}">
-                          {{ tag }}
-                        </a>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                </div>
+                {%- if section.settings.show_tags -%}
+                  <div class="entry-tag">
+                    <ul class="style-list">
+                      {%- for tag in section.settings.article_3.tags -%}
+                        <li>
+                          <a class="type-{{ tag | handleize }}">
+                            {{ tag }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                {%- endif -%}
                 <a href="{{ section.settings.article_3.url }}" class="entry_title d-block text-xl fw-medium link">
                   {{ section.settings.article_3.title }}
                 </a>
@@ -248,28 +294,34 @@
                   {{ section.settings.article_3.excerpt_or_content | strip_html | truncatewords: 20 }}
                 </p>
                 <ul class="entry-meta">
-                  <li class="entry_author">
-                    <div class="avatar">
-                      {%- if section.settings.article_3.author.image -%}
-                        {{ section.settings.article_3.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
-                      {%- endif -%}
-                    </div>
-                    <p class="entry_name">
-                      Post by <span class="fw-medium">{{ section.settings.article_3.author }}</span>
-                    </p>
-                  </li>
-                  <li class="br-line"></li>
-                  <li class="entry_date">
-                    <p class="text-md">
-                      {{ section.settings.article_3.published_at | date: '%b %d %Y' }}
-                    </p>
-                  </li>
-                  <li class="br-line"></li>
-                  <li class="entry_comment">
-                    <p class="text-md">
-                      {{ section.settings.article_3.comments_count }} comments
-                    </p>
-                  </li>
+                  {%- if section.settings.show_author -%}
+                    <li class="entry_author">
+                      <div class="avatar">
+                        {%- if section.settings.article_3.author.image -%}
+                          {{ section.settings.article_3.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
+                        {%- endif -%}
+                      </div>
+                      <p class="entry_name">
+                        Post by <span class="fw-medium">{{ section.settings.article_3.author | truncate: 12 }}</span>
+                      </p>
+                    </li>
+                    <li class="br-line"></li>
+                  {%- endif -%}
+                  {%- if section.settings.show_date -%}
+                    <li class="entry_date">
+                      <p class="text-md">
+                        {{ section.settings.article_3.published_at | date: '%b %d %Y' }}
+                      </p>
+                    </li>
+                    <li class="br-line"></li>
+                  {%- endif -%}
+                  {%- if section.settings.show_comments -%}
+                    <li class="entry_comment">
+                      <p class="text-md">
+                        {{ section.settings.article_3.comments_count }} comments
+                      </p>
+                    </li>
+                  {%- endif -%}
                 </ul>
               </div>
             </div>
@@ -287,17 +339,19 @@
                 </a>
               </div>
               <div class="blog-content">
-                <div class="entry-tag">
-                  <ul class="style-list">
-                    {%- for tag in section.settings.article_4.tags -%}
-                      <li>
-                        <a class="type-{{ tag | handleize }}">
-                          {{ tag }}
-                        </a>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                </div>
+                {%- if section.settings.show_tags -%}
+                  <div class="entry-tag">
+                    <ul class="style-list">
+                      {%- for tag in section.settings.article_4.tags -%}
+                        <li>
+                          <a class="type-{{ tag | handleize }}">
+                            {{ tag }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                {%- endif -%}
                 <a href="{{ section.settings.article_4.url }}" class="entry_title d-block text-xl fw-medium link">
                   {{ section.settings.article_4.title }}
                 </a>
@@ -305,28 +359,34 @@
                   {{ section.settings.article_4.excerpt_or_content | strip_html | truncatewords: 20 }}
                 </p>
                 <ul class="entry-meta">
-                  <li class="entry_author">
-                    <div class="avatar">
-                      {%- if section.settings.article_4.author.image -%}
-                        {{ section.settings.article_4.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
-                      {%- endif -%}
-                    </div>
-                    <p class="entry_name">
-                      Post by <span class="fw-medium">{{ section.settings.article_4.author }}</span>
-                    </p>
-                  </li>
-                  <li class="br-line"></li>
-                  <li class="entry_date">
-                    <p class="text-md">
-                      {{ section.settings.article_4.published_at | date: '%b %d %Y' }}
-                    </p>
-                  </li>
-                  <li class="br-line"></li>
-                  <li class="entry_comment">
-                    <p class="text-md">
-                      {{ section.settings.article_4.comments_count }} comments
-                    </p>
-                  </li>
+                  {%- if section.settings.show_author -%}
+                    <li class="entry_author">
+                      <div class="avatar">
+                        {%- if section.settings.article_4.author.image -%}
+                          {{ section.settings.article_4.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
+                        {%- endif -%}
+                      </div>
+                      <p class="entry_name">
+                        Post by <span class="fw-medium">{{ section.settings.article_4.author | truncate: 12 }}</span>
+                      </p>
+                    </li>
+                    <li class="br-line"></li>
+                  {%- endif -%}
+                  {%- if section.settings.show_date -%}
+                    <li class="entry_date">
+                      <p class="text-md">
+                        {{ section.settings.article_4.published_at | date: '%b %d %Y' }}
+                      </p>
+                    </li>
+                    <li class="br-line"></li>
+                  {%- endif -%}
+                  {%- if section.settings.show_comments -%}
+                    <li class="entry_comment">
+                      <p class="text-md">
+                        {{ section.settings.article_4.comments_count }} comments
+                      </p>
+                    </li>
+                  {%- endif -%}
                 </ul>
               </div>
             </div>

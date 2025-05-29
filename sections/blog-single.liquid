@@ -1,7 +1,54 @@
 {% schema %}
 {
   "name": "Blog Single",
-  "settings": [],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Display Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show Tags",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show Author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show Date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_comments",
+      "label": "Show Comments",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_sharing",
+      "label": "Show Social Sharing",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_related_posts",
+      "label": "Show Related Posts",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_comment_form",
+      "label": "Show Comment Form",
+      "default": true
+    }
+  ],
   "presets": [
     {
       "name": "Blog Single",
@@ -14,136 +61,152 @@
 <section class="s-blog-single line-bottom-container">
   <div class="container">
     <div class="heading blog-post-item">
-      <div class="entry-tag">
-        <ul class="style-list">
-          <li>
-            <a href="#" class="type-life">
-              {{ article.tags.first }}
-            </a>
-          </li>
-        </ul>
-      </div>
+      {%- if section.settings.show_tags -%}
+        <div class="entry-tag">
+          <ul class="style-list">
+            <li>
+              <a href="#" class="type-life">
+                {{ article.tags.first }}
+              </a>
+            </li>
+          </ul>
+        </div>
+      {%- endif -%}
       <p class="entry_title display-sm fw-medium">
         {{ article.title }}
       </p>
       <ul class="entry-meta">
-        <li class="entry_author"></li>
-          <div class="avatar">
-            {% if article.author.image %}
-              {{ article.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
-            {% endif %}
-          </div>
-          <p class="entry_name">
-            Post by <span class="fw-medium">{{ article.author }}</span>
-          </p>
-        </li>
-        <li class="br-line"></li>
-        <li class="entry_date">
-          <p class="text-md">
-            {{ article.published_at | date: "%b %d %Y" }}
-          </p>
-        </li>
-        <li class="br-line"></li>
-        <li class="entry_comment">
-          <p class="text-md">
-            {{ article.comments_count }} comments
-          </p>
-        </li>
+        {%- if section.settings.show_author -%}
+          <li class="entry_author">
+            <div class="avatar">
+              {% if article.author.image %}
+                {{ article.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
+              {% endif %}
+            </div>
+            <p class="entry_name">
+              Post by <span class="fw-medium">{{ article.author }}</span>
+            </p>
+          </li>
+          <li class="br-line"></li>
+        {%- endif -%}
+        {%- if section.settings.show_date -%}
+          <li class="entry_date">
+            <p class="text-md">
+              {{ article.published_at | date: "%b %d %Y" }}
+            </p>
+          </li>
+          <li class="br-line"></li>
+        {%- endif -%}
+        {%- if section.settings.show_comments -%}
+          <li class="entry_comment">
+            <p class="text-md">
+              {{ article.comments_count }} comments
+            </p>
+          </li>
+        {%- endif -%}
       </ul>
     </div>
     <div class="content">
       {{ article.content }}
 
       <div class="bot">
-        <div class="entry-tag">
-          <p>Tag:</p>
-          <ul class="style-list">
-            {% for tag in article.tags %}
+        {%- if section.settings.show_tags -%}
+          <div class="entry-tag">
+            <p>Tag:</p>
+            <ul class="style-list">
+              {% for tag in article.tags %}
+                <li>
+                  <a style="font-size: 14px;" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {%- endif -%}
+        {%- if section.settings.show_social_sharing -%}
+          <div class="entry-social">
+            <p>Share:</p>
+            <ul class="tf-social-icon style-large">
               <li>
-                <a style="font-size: 14px;" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url | append: article.url }}" class="social-item social-facebook">
+                  <i class="icon icon-fb"></i>
+                </a>
               </li>
-            {% endfor %}
-          </ul>
-        </div>
-        <div class="entry-social">
-          <p>Share:</p>
-          <ul class="tf-social-icon style-large">
-            <li>
-              <a href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url | append: article.url }}" class="social-item social-facebook">
-                <i class="icon icon-fb"></i>
-              </a>
-            </li>
-            <li>
-              <a href="https://www.instagram.com/" class="social-item social-instagram">
-                <i class="icon icon-instagram"></i>
-              </a>
-            </li>
-            <li>
-              <a href="https://twitter.com/intent/tweet?url={{ shop.url | append: article.url }}&text={{ article.title }}" class="social-item social-x">
-                <i class="icon icon-x"></i>
-              </a>
-            </li>
-            <li>
-              <a href="https://www.snapchat.com/" class="social-item social-snapchat">
-                <i class="icon icon-snapchat"></i>
-              </a>
-            </li>
-          </ul>
-        </div>
+              <li>
+                <a href="https://www.instagram.com/" class="social-item social-instagram">
+                  <i class="icon icon-instagram"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/intent/tweet?url={{ shop.url | append: article.url }}&text={{ article.title }}" class="social-item social-x">
+                  <i class="icon icon-x"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.snapchat.com/" class="social-item social-snapchat">
+                  <i class="icon icon-snapchat"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        {%- endif -%}
       </div>
 
-      <div class="related-post">
-        {% if article.previous %}
-          <a href="{{ article.previous.url }}" class="post prev">
-            <div class="icon">
-              <i class="icon-arr-left"></i>
-            </div>
-            <div class="text-wrap-left">
-              <p>PREVIOUS POST</p>
-              <p class="name-post">{{ article.previous.title }}</p>
-            </div>
-          </a>
-        {% endif %}
-        {% if article.next %}
-          <a href="{{ article.next.url }}" class="post next">
-            <div class="text-wrap-right">
-              <p>NEXT POST</p>
-              <p class="name-post">{{ article.next.title }}</p>
-            </div>
-            <div class="icon">
-              <i class="icon-arr-right2"></i>
-            </div>
-          </a>
-        {% endif %}
-      </div>
+      {%- if section.settings.show_related_posts -%}
+        <div class="related-post">
+          {% if article.previous %}
+            <a href="{{ article.previous.url }}" class="post prev">
+              <div class="icon">
+                <i class="icon-arr-left"></i>
+              </div>
+              <div class="text-wrap-left">
+                <p>PREVIOUS POST</p>
+                <p class="name-post">{{ article.previous.title }}</p>
+              </div>
+            </a>
+          {% endif %}
+          {% if article.next %}
+            <a href="{{ article.next.url }}" class="post next">
+              <div class="text-wrap-right">
+                <p>NEXT POST</p>
+                <p class="name-post">{{ article.next.title }}</p>
+              </div>
+              <div class="icon">
+                <i class="icon-arr-right2"></i>
+              </div>
+            </a>
+          {% endif %}
+        </div>
+      {%- endif -%}
     </div>
 
-    <div class="leave-comment-wrap">
-      <p class="title">Leave a comment</p>
-      {% form 'new_comment', article, class: 'form-default' %}
-        <div class="wrap">
-          <div class="cols">
-            <fieldset>
-              <label for="CommentAuthor">Your name*</label>
-              <input id="CommentAuthor" type="text" name="comment[author]" required>
-            </fieldset>
-            <fieldset>
-              <label for="CommentEmail">Your email*</label>
-              <input id="CommentEmail" type="email" name="comment[email]" required>
-            </fieldset>
+    {%- if section.settings.show_comment_form -%}
+      <div class="leave-comment-wrap">
+        <p class="title">Leave a comment</p>
+        {% form 'new_comment', article, class: 'form-default' %}
+          <div class="wrap">
+            <div class="cols">
+              <fieldset>
+                <label for="CommentAuthor">Your name*</label>
+                <input id="CommentAuthor" type="text" name="comment[author]" required>
+              </fieldset>
+              <fieldset>
+                <label for="CommentEmail">Your email*</label>
+                <input id="CommentEmail" type="email" name="comment[email]" required>
+              </fieldset>
+            </div>
+            <div class="cols">
+              <fieldset class="textarea">
+                <label for="CommentBody">Your comment*</label>
+                <textarea id="CommentBody" name="comment[body]" required></textarea>
+              </fieldset>
+            </div>
+            <p style="font-size: 14px;" class="notice">Please note, your email won't be published.</p>
+            <div class="button-submit">
+              <button class="tf-btn text-sm animate-btn" type="submit">Post comment</button>
+            </div>
           </div>
-          <div class="cols">
-            <fieldset class="textarea">
-              <label for="CommentBody">Your comment*</label>
-              <textarea id="CommentBody" name="comment[body]" required></textarea>
-            </fieldset>
-          </div>
-          <p style="font-size: 14px;" class="notice">Please note, your email won't be published.</p>
-          <div class="button-submit">
-            <button class="tf-btn text-sm animate-btn" type="submit">Post comment</button>
-          </div>
-        </div>
-      {% endform %}
-    </div>
+        {% endform %}
+      </div>
+    {%- endif -%}
   </div>
 </section> 
