@@ -13,9 +13,9 @@
               <div id="description-{{ block.id }}" class="collapse">
                 <div class="accordion-body widget-desc">
                   {%- if product.description != blank -%}
-                    {{ product.description }}
+                    <span style="font-size: 14px">{{ product.description }}</span>
                   {%- else -%}
-                    {{ block.settings.default_content }}
+                    <span style="font-size: 14px">{{ block.settings.default_content }}</span>
                   {%- endif -%}
                 </div>
               </div>
