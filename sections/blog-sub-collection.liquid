@@ -185,7 +185,8 @@
           {% endif %}
         {% endfor %}
       </div>
-      <div class="d-flex d-xl-none sw-dot-default sw-pagination-category justify-content-center"></div>
+      <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls justify-content-center swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal"></div>
+      <div class="swiper-pagination sw-pagination-category"></div>
     </div>
   </div>
 </div>
@@ -206,8 +207,9 @@ document.addEventListener('DOMContentLoaded', function() {
       prevEl: '.nav-prev-cls'
     },
     pagination: {
-      el: '.sw-pagination-cls',
-      clickable: true
+      el: '.swiper-pagination',
+      clickable: true,
+      dynamicBullets: true
     },
     breakpoints: {
       768: {
