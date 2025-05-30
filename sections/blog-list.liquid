@@ -110,7 +110,7 @@
                     <ul class="style-list">
                       {% for tag in article.tags %}
                         <li>
-                          <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="type-{{ tag | handle }}">
+                          <a style="font-size: 14px;" href="{{ blog.url }}/tagged/{{ tag | handle }}" class="type-{{ tag | handle }}">
                             {{ tag }}
                           </a>
                         </li>
@@ -231,7 +231,7 @@
                   <ul class="tag-blog-list style-list">
                     {% for tag in blog.all_tags %}
                       <li>
-                        <a href="{{ blog.url }}/tagged/{{ tag | handle }}">
+                        <a style="font-size: 14px;" href="{{ blog.url }}/tagged/{{ tag | handle }}">
                           {{ tag }}
                         </a>
                       </li>
