@@ -66,6 +66,7 @@
                           {% if item.product.has_only_default_variant == false %}
                             <div class="variants">{{ item.variant.title }}</div>
                           {% endif %}
+                          <div></div>
                               <span class="remove-cart link remove" data-item-id="{{ item.key }}" data-variant-id="{{ item.variant.id }}">{{ block.settings.remove_text }}</span>
                         </div>
                       </td>

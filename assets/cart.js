@@ -397,6 +397,7 @@ document.addEventListener('DOMContentLoaded', function() {
                   </a>
                   <div class="cart-info">
                     <a href="${giftWrapItem.url}" class="name text-md link fw-medium">${giftWrapItem.product_title}</a>
+                    <div></div>
                     <span class="remove-cart link remove" data-item-id="${giftWrapItem.key}" data-variant-id="${giftWrapItem.variant_id}">Remove</span>
                   </div>
                 </td>
