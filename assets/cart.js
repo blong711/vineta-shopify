@@ -1,4 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
+  // Prevent cart drawer from opening on cart page
+  const isCartPage = window.location.pathname === '/cart';
+  if (isCartPage) {
+    // Override the openCartDrawer function
+    window.openCartDrawer = function() {
+      return false;
+    };
+
+    // Remove cart drawer trigger buttons
+    document.querySelectorAll('.nav-cart .nav-icon-item').forEach(trigger => {
+      trigger.onclick = function(e) {
+        e.preventDefault();
+        return false;
+      };
+    });
+
+    // Remove cart drawer element if it exists
+    const cartDrawer = document.querySelector('.cart-drawer, #cart-drawer, [data-cart-drawer]');
+    if (cartDrawer) {
+      cartDrawer.remove();
+    }
+  }
+
   // Function to update shipping progress
   function updateShippingProgress() {
     const cartTotal = parseFloat(document.querySelector('.total').textContent.replace(/[^0-9.-]+/g, ''));
