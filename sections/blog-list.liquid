@@ -130,12 +130,12 @@
                           {{ article.author.image | image_url: width: 50 | image_tag: 
                             loading: 'lazy',
                             class: 'lazyload',
-                            alt: article.author.name
+                            alt: article.author
                           }}
                         {% endif %}
                       </div>
                       <p class="entry_name">
-                        Post by <span class="fw-medium">{{ article.author.name }}</span>
+                        Post by <span class="fw-medium">{{ article.author }}</span>
                       </p>
                     </li>
                     <li class="br-line"></li>
@@ -213,7 +213,7 @@
                         </div>
                         <div class="post-content">
                           <a href="{{ article.url }}" class="link text-md fw-medium">{{ article.title }}</a>
-                          <p class="entry_date">
+                          <p class="entry_date" style="font-size: 14px;">
                             {{ article.published_at | date: "%b %d %Y" }}
                           </p>
                         </div>
