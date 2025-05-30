@@ -22319,7 +22319,10 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
  ------------------------------------------------------------------------------ */
 /*--------- Abstracts variable ---------- */
 .tf-breadcrumb {
-  margin-top: 32px;
+  padding: 32px 0px 27px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .tf-breadcrumb.space-t {
   margin-top: 24px;
@@ -27573,4 +27576,10 @@ prev.swiper-button-disabled {
       line-height: 19px;
       margin-bottom: 10px;
   }
+}
+.tf-product-info-wrap .brand-product {
+  font-weight: 500;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 20px;
 }
