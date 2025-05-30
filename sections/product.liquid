@@ -382,11 +382,11 @@
                              aria-label="Add to wishlist">
                             <span class="wishlist-content add">
                               <i class="icon icon-heart"></i>
-                              <span class="text">Add to wishlist</span>
+                              <span style="font-size: 14px" class="text">Add to wishlist</span>
                             </span>
                             <span class="wishlist-content remove">
                               <i class="icon icon-trash"></i>
-                              <span class="text">Remove from wishlist</span>
+                              <span style="font-size: 14px" class="text">Remove from wishlist</span>
                             </span>
                           </a>
                         {% endif %}
@@ -397,14 +397,20 @@
                              data-id="{{ product.id }}" 
                              data-action="add"
                              aria-label="Add to compare">
-                            <i class="icon icon-compare2"></i>Compare
+                            <i class="icon icon-compare2"></i>                              
+                            <span style="font-size: 14px" class="text">Compare</span>
                           </a>
                         {% endif %}
                         {% if block.settings.show_ask_question %}
-                          <a href="#askQuestion" data-bs-toggle="modal" class="product-extra-icon link"><i class="icon icon-ask"></i>Ask a question</a>
+                          <a href="#askQuestion" data-bs-toggle="modal" class="product-extra-icon link"><i class="icon icon-ask"></i>
+                          <span style="font-size: 14px" class="text">Ask a question</span>
+                          </span>
+                          </a>
                         {% endif %}
                         {% if block.settings.show_share %}
-                          <a href="#shareSocial" data-bs-toggle="modal" class="product-extra-icon link"><i class="icon icon-share"></i>Share</a>
+                          <a href="#shareSocial" data-bs-toggle="modal" class="product-extra-icon link"><i class="icon icon-share"></i>
+                          <span style="font-size: 14px" class="text">Share</span>
+                          </a>
                         {% endif %}
                       </div>
                     {% endif %}
@@ -2514,12 +2520,3 @@ document.addEventListener('DOMContentLoaded', function() {
   ]
 }
 {% endschema %}
-<style>
-.tf-product-info-extra-link,
-.tf-product-info-extra-link * {
-  font-size: 14px !important;
-}
-.stock {
-  font-size: 14px !important;
-}
-</style>
