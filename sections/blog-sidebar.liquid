@@ -1,0 +1,52 @@
+{% schema %}
+{
+  "name": "Blog Sidebar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_recent_posts",
+      "label": "Show Recent Posts",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show Tags",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "sidebar_banner",
+      "label": "Sidebar Banner Image"
+    },
+    {
+      "type": "text",
+      "id": "banner_title",
+      "label": "Banner Title",
+      "default": "Elevate Your Style"
+    },
+    {
+      "type": "url",
+      "id": "banner_link",
+      "label": "Banner Link"
+    },
+    {
+      "type": "text",
+      "id": "banner_button_text",
+      "label": "Banner Button Text",
+      "default": "Shop Now"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="offcanvas offcanvas-end canvas-filter canvas-sidebar canvas-sidebar-account" id="mbAccount" aria-modal="true" role="dialog">
+  <div class="canvas-wrapper">
+    <div class="canvas-header">
+      <span class="title">SIDEBAR</span>
+      <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="canvas-body sidebar-mobile-append sidebar-blog">
+    </div>
+  </div>
+</div> 
