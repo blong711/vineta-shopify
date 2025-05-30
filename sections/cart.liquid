@@ -253,7 +253,8 @@
 
             <div class="check-agree">
               <input type="checkbox" class="tf-check" id="check-agree" required>
-                  <label for="check-agree" class="label text-dark-4">{{ block.settings.terms_text | replace: '[terms_url]', block.settings.terms_url }}</label>
+              <label for="check-agree" class="label text-dark-4">I agree with <a href="{{block.settings.terms_url}}" class="text-dark-4 fw-medium text-underline link">term and
+                conditions</a></label>
             </div>
 
             <div class="checkout-btn">
@@ -863,12 +864,6 @@
           "id": "tax_message",
           "label": "Tax Message",
           "default": "Taxes and shipping calculated at checkout"
-        },
-        {
-          "type": "text",
-          "id": "terms_text",
-          "label": "Terms Text",
-          "default": "I agree with terms and conditions"
         },
         {
           "type": "text",
