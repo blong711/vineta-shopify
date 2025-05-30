@@ -51,8 +51,8 @@
                     <h6>
                       {{ block.settings.title }}
                     </h6>
-                    <p class="text-md">
-                      {{ block.settings.text }}
+                    <p class="text-md text-main">
+                      {{ block.settings.text | remove: '<p>' | remove: '</p>'}}
                     </p>
                   </li>
                 {% endif %}
