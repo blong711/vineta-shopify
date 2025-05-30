@@ -331,7 +331,6 @@
                               {% endif %}
                             </div>
                           {% endif %}
-                          
                         </div>
                       {% endfor %}
                     {% endif %}
@@ -1637,7 +1636,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Handle custom swatch dropdown for color selection
-  document.querySelectorAll('.tf-variant-dropdown .select-item.color-btn').forEach(function(btn) {
+  document.querySelectorAll('.tf-variant-dropdown .select-item').forEach(function(btn) {
     btn.addEventListener('click', function(e) {
       const value = btn.getAttribute('data-value');
       const label = btn.querySelector('.text-value-item').textContent;
@@ -1648,7 +1647,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (labelSpan) labelSpan.textContent = label;
       }
       // Set active class
-      btn.parentElement.querySelectorAll('.select-item.color-btn').forEach(function(el) {
+      btn.parentElement.querySelectorAll('.select-item').forEach(function(el) {
         el.classList.remove('active');
       });
       btn.classList.add('active');
