@@ -41,6 +41,12 @@
     },
     {
       "type": "checkbox",
+      "id": "show_categories",
+      "label": "Show Categories",
+      "default": true
+    },
+    {
+      "type": "checkbox",
       "id": "show_recent_posts",
       "label": "Show Recent Posts",
       "default": true
@@ -193,6 +199,22 @@
       {% if section.settings.show_sidebar %}
         <div class="col-lg-4">
           <div class="sidebar-blog d-lg-grid d-none sidebar-content-wrap">
+            {% if section.settings.show_categories %}
+              <div class="sb-item">
+                <p class="sb-title text-xl fw-medium">Categories</p>
+                <div class="sb-content">
+                  <ul class="category-blog-list">
+                    {% for blog in all_blogs %}
+                      <li>
+                        <a href="{{ blog.url }}" class="text-md link">
+                          {{ blog.title }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            {% endif %}
             {% if section.settings.show_recent_posts %}
               <div class="sb-item">
                 <p class="sb-title text-xl fw-medium">Recent Posts</p>
