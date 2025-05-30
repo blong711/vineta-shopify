@@ -26082,7 +26082,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
     margin-bottom: 24px;
   }
   .s-contact .content-left {
-    margin-bottom: 32px;
+    margin-bottom: 42px;
   }
   .s-blog-single {
     padding-top: 80px;
@@ -27588,4 +27588,9 @@ prev.swiper-button-disabled {
   color: var(--text);
   font-size: 14px;
   line-height: 20px;
+}
+@media (max-width: 767px) {
+  .s-contact .wg-map {
+      margin-bottom: 60px;
+  }
 }

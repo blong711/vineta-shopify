@@ -1,10 +1,8 @@
 <section class="s-contact flat-spacing-13">
-  <div class="container">
-    <div class="row">
+  <div class="container" style="padding-left: 15px; padding-right: 15px;">
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'map' %}
-            <div class="col-lg-12" {{ block.shopify_attributes }}>
               <div class="wg-map">
                 <iframe
                   src="{{ block.settings.map_url }}"
@@ -15,8 +13,7 @@
                   referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
               </div>
-            </div>
-
+        <div class="row">
           {% when 'contact_info' %}
             <div class="col-lg-6" {{ block.shopify_attributes }}>
               <div class="content-left">
