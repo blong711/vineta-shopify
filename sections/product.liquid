@@ -174,7 +174,8 @@
         <!-- Product Info -->
         <div class="col-md-6">
           <div class="tf-product-info-wrap sticky-top position-relative">
-            <div class="tf-zoom-main"></div>
+            <!-- Remove the following line to disable the external zoom box -->
+            <!-- <div class="tf-zoom-main"></div> -->
             <div class="tf-product-info-list other-image-zoom">
               <div class="tf-product-info-heading">
                 <span class="brand-product">{{ product.vendor }}</span>
@@ -612,22 +613,6 @@
 /* Add zoom styles */
 .tf-product-media-wrap {
   position: relative;
-}
-
-.tf-zoom-main {
-  position: absolute;
-  top: 0;
-  left: 100%;
-  width: 100%;
-  height: 100%;
-  background-size: 200%;
-  background-repeat: no-repeat;
-  display: none;
-  z-index: 10;
-  pointer-events: none;
-  margin-left: 20px;
-  border: 1px solid #eee;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .tf-image-zoom,
