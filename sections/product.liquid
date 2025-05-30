@@ -66,13 +66,11 @@
                         <div class="swiper-slide" data-media-type="{{ media.media_type }}" data-media-id="{{ media.id }}">
                           {% case media.media_type %}
                             {% when 'image' %}
-                              <a href="{{ media | image_url: width: 1200 }}" target="_blank" class="item" data-pswp-width="552px" data-pswp-height="827px">
-                                <img class="tf-image-zoom-inner lazyload"
-                                  src="{{ media | image_url: width: 800 }}"
-                                  alt="{{ media.alt | default: product.title }}"
-                                  width="auto"
-                                  height="auto">
-                              </a>
+                              <img class="tf-image-zoom-inner lazyload"
+                                src="{{ media | image_url: width: 800 }}"
+                                alt="{{ media.alt | default: product.title }}"
+                                width="auto"
+                                height="auto">
                             {% when 'video' %}
                               <div class="item position-relative">
                                 <video controls muted
@@ -124,13 +122,11 @@
               {% for media in product.media %}
                 {% case media.media_type %}
                   {% when 'image' %}
-                    <a href="{{ media | image_url: width: 1200 }}" data-scroll="{{ media.alt | default: 'default' }}" target="_blank" class="item item-scroll-target" data-pswp-width="552px" data-pswp-height="827px">
-                      <img class="tf-image-zoom lazyload"
-                        src="{{ media | image_url: width: 800 }}"
-                        alt="{{ media.alt | default: product.title }}"
-                        width="400"
-                        height="600">
-                    </a>
+                    <img class="tf-image-zoom lazyload"
+                      src="{{ media | image_url: width: 800 }}"
+                      alt="{{ media.alt | default: product.title }}"
+                      width="400"
+                      height="600">
                   {% when 'video' %}
                     <div class="item position-relative">
                       <video controls muted loop
@@ -144,26 +140,26 @@
                         Your browser does not support the video tag.
                       </video>
                     </div>
-                    {% when 'model' %}
-                      <div class="item">
-                        <div class="tf-model-viewer">
-                          <model-viewer
-                            src="{{ media.sources[0].url }}"
-                            alt="{{ media.alt | default: product.title }}"
-                            ar
-                            camera-controls
-                            poster="{{ media.preview_image | image_url: width: 800 }}"
-                            class="tf-model-viewer-ui disabled" tabindex="1"
-                            data-js-focus-visible="" ar-status="not-presenting"
-                            >
-                          </model-viewer>
-                        </div>
-                        <div class="tf-model-viewer-ui-button">
-                          <div class="wrap-btn-viewer">
-                              <i class="icon icon-btn3d"></i>
-                          </div>
+                  {% when 'model' %}
+                    <div class="item">
+                      <div class="tf-model-viewer">
+                        <model-viewer
+                          src="{{ media.sources[0].url }}"
+                          alt="{{ media.alt | default: product.title }}"
+                          ar
+                          camera-controls
+                          poster="{{ media.preview_image | image_url: width: 800 }}"
+                          class="tf-model-viewer-ui disabled" tabindex="1"
+                          data-js-focus-visible="" ar-status="not-presenting"
+                          >
+                        </model-viewer>
+                      </div>
+                      <div class="tf-model-viewer-ui-button">
+                        <div class="wrap-btn-viewer">
+                            <i class="icon icon-btn3d"></i>
                         </div>
                       </div>
+                    </div>
                 {% endcase %}
               {% endfor %}
             </div>
