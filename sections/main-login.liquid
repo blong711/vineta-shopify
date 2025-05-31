@@ -1,0 +1,427 @@
+<!-- sections/main-login.liquid -->
+
+<div class="login-section section-spacing" color-scheme="{{ section.settings.color_scheme }}">
+  <div class="login-header">
+    <h1 class="main-login-heading">Log in</h1>
+  </div>
+  <div class="container">
+    <div class="login-grid grid-2-cols">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'form' -%}
+            <div class="login-form">
+              <div id="login-form-block">
+                <h2 class="form-heading">Log in</h2>
+                <div id="login">
+                  {%- form 'customer_login', novalidate: 'novalidate' -%}
+                    {%- if form.errors -%}
+                      <div class="form-message error">
+                        <h2 class="form-message-title">
+                          <span class="sr-only">Error</span>
+                          <svg aria-hidden="true" focusable="false" viewBox="0 0 13 13" class="error-icon">
+                            <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
+                            <circle cx="6.5" cy="6.5" r="5.5" fill="currentColor" stroke="currentColor" stroke-width="0.7"/>
+                            <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
+                            <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7">
+                          </svg>
+                          Error
+                        </h2>
+                        <ul class="error-list">
+                          {%- for field in form.errors -%}
+                            <li>
+                              {%- if field == 'form' -%}
+                                {{ form.errors.messages[field] }}
+                              {%- else -%}
+                                <a href="#{{ field }}">
+                                  {{ form.errors.translated_fields[field] | capitalize }}
+                                  {{ form.errors.messages[field] }}
+                                </a>
+                              {%- endif -%}
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      </div>
+                    {%- endif -%}
+                    <div class="form-field">
+                      <input class="form-input" type="email" name="customer[email]" id="CustomerEmail-{{ section.id }}" autocomplete="email" autocorrect="off" autocapitalize="off" {% if form.errors contains 'form' %} aria-invalid="true" {% endif %} placeholder="Email *">
+                    </div>
+                    <div class="form-field">
+                      <input class="form-input" type="password" value="" name="customer[password]" id="CustomerPassword-{{ section.id }}" autocomplete="current-password" placeholder="Password *">
+                    </div>
+                    <div class="form-field">
+                      <a href="#" class="forgot-link" id="show-reset-form">Forgot your password?</a>
+                    </div>
+                    <div class="form-field">
+                      <button class="btn btn-primary" type="submit">Log in</button>
+                    </div>
+                  {%- endform -%}
+                </div>
+              </div>
+              <div id="reset-form-block" style="display:none;">
+                <h2 class="form-heading">Reset your password</h2>
+                <p class="form-description">We will send you an email to reset your password.</p>
+                {%- form 'recover_customer_password' -%}
+                  <div class="form-field">
+                    <input class="form-input" type="email" name="email" id="RecoverEmail-{{ section.id }}" autocomplete="email" autocorrect="off" autocapitalize="off" placeholder="Email *">
+                  </div>
+                  <div class="form-field">
+                    <a href="#" class="forgot-link" id="back-to-login">Back to login</a>
+                  </div>
+                  <div class="form-field">
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                  </div>
+                {%- endform -%}
+              </div>
+            </div>
+          {%- else -%}
+            <div class="login-content">
+              {%- if block.settings.title != blank -%}<h2 class="form-heading">{{ block.settings.title }}</h2>{%- endif -%} 
+              {%- if block.settings.description != blank -%}<p class="form-description">{{ block.settings.description }}</p>{%- endif -%} 
+              <a href="{{ routes.account_register_url }}" class="register-link">Register <span aria-hidden="true">↗</span></a>
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var showReset = document.getElementById('show-reset-form');
+  var backToLogin = document.getElementById('back-to-login');
+  var loginBlock = document.getElementById('login-form-block');
+  var resetBlock = document.getElementById('reset-form-block');
+  if (showReset && backToLogin && loginBlock && resetBlock) {
+    showReset.addEventListener('click', function(e) {
+      e.preventDefault();
+      loginBlock.style.display = 'none';
+      resetBlock.style.display = 'block';
+    });
+    backToLogin.addEventListener('click', function(e) {
+      e.preventDefault();
+      resetBlock.style.display = 'none';
+      loginBlock.style.display = 'block';
+    });
+  }
+});
+</script>
+
+{%- style -%}
+#shopify-section-{{section.id}} {
+  --section-pt: {{section.settings.padding_top}}px;
+  --section-pb: {{section.settings.padding_bottom}}px;
+  --section-prate: {{section.settings.padding_rate}};
+}
+
+.login-header {
+  text-align: center;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.main-login-heading {
+  font-size: 2.5rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+.login-section {
+  background: var(--gradient-background);
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.login-grid {
+  display: grid;
+  gap: 12rem;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+@media screen and (min-width: 750px) {
+  .grid-2-cols {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.login-form {
+  max-width: 100%;
+}
+
+.form-heading {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  font-weight: 400;
+}
+
+.form-description {
+  margin-bottom: 2rem;
+  color: rgba(var(--color-foreground), 0.75);
+  font-size: 1rem;
+}
+
+.form-field {
+  margin-bottom: 1.5rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #000;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background: #000;
+  color: #fff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background: #222;
+}
+
+.forgot-link {
+  color: #222;
+  text-decoration: underline;
+  font-size: 1rem;
+}
+
+.forgot-link:hover {
+  color: #000;
+}
+
+.form-message {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.form-message.error {
+  background: #ffeaea;
+  color: #d32f2f;
+}
+
+.form-message.success {
+  background: #eaffea;
+  color: #388e3c;
+}
+
+.error-icon,
+.success-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
+}
+
+.error-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+.error-list li {
+  margin-bottom: 0.25rem;
+}
+
+.error-list a {
+  color: #d32f2f;
+  text-decoration: underline;
+}
+
+.login-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-top: 2.5rem;
+}
+
+.register-link {
+    color: #222;
+    text-decoration: underline;
+    font-size: 1rem;
+}
+
+.register-link:hover {
+  color: #222;
+  border-color: #222;
+}
+
+@media screen and (max-width: 749px) {
+  .login-header {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  .container {
+    max-width: 100%;
+  }
+  .login-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .login-content {
+    align-items: center;
+    text-align: center;
+    padding-top: 0;
+  }
+}
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "Login",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 120,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 120,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_rate",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Padding rate",
+      "default": 75
+    }
+  ],
+  "blocks": [
+    {
+      "type": "form",
+      "name": "Form",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "btn_full",
+          "label": "Full width button"
+        },
+        {
+          "type": "select",
+          "id": "btn_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primary"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "outline",
+              "label": "Outline"
+            },
+            {
+              "value": "text",
+              "label": "Text"
+            }
+          ],
+          "default": "primary"
+        }
+      ]
+    },
+    {
+      "type": "infos",
+      "name": "Infos",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "I'm new here"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Sign up for early Sale access plus tailored new arrivals, trends and promotions. To opt out, click unsubscribe in our emails."
+        },
+        {
+          "type": "checkbox",
+          "id": "btn_full",
+          "label": "Full width button"
+        },
+        {
+          "type": "select",
+          "id": "btn_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primary"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "outline",
+              "label": "Outline"
+            },
+            {
+              "value": "text",
+              "label": "Text"
+            }
+          ],
+          "default": "primary"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
