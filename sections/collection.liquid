@@ -6,7 +6,7 @@
 {% endcomment %}
 
 {% paginate collection.products by section.settings.products_per_page %}
-<section class="flat-spacing-24 pt-0">
+<section class="flat-spacing-24">
   <div class="container">
     {%- case section.settings.filter_type -%}
       {%- when 'drawer' -%}
