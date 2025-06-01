@@ -382,8 +382,20 @@
       });
 
       priceRange.noUiSlider.on('update', function(values) {
-        priceMinInput.value = Math.round(values[0]);
-        priceMaxInput.value = Math.round(values[1]);
+        const minValue = Math.round(values[0]);
+        const maxValue = Math.round(values[1]);
+        
+        // Update hidden inputs
+        priceMinInput.value = minValue;
+        priceMaxInput.value = maxValue;
+        
+        // Update displayed values
+        const minDisplay = document.getElementById('price-min-value');
+        const maxDisplay = document.getElementById('price-max-value');
+        const currency = minDisplay.dataset.currency;
+        
+        if (minDisplay) minDisplay.textContent = minValue;
+        if (maxDisplay) maxDisplay.textContent = maxValue;
       });
 
       priceRange.noUiSlider.on('change', function() {
