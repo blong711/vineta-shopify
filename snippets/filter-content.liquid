@@ -121,7 +121,8 @@
                       name="filter.v.option.size"
                       value="{{ size }}"
                       id="Filter-size-{{ size }}"
-                      {% if current_tags contains 'filter.v.option.size:' | append: size %}checked{% endif %}
+                      {% assign size_tag = 'filter.v.option.size:' | append: size %}
+                      {% if current_tags contains size_tag %}checked{% endif %}
                       class="filter-checkbox tf-check">
                     <label for="Filter-size-{{ size }}" class="label">
                       <span class="size">{{ size }}</span>
@@ -139,7 +140,8 @@
                       name="filter.v.option.brand"
                       value="{{ brand }}"
                       id="Filter-brand-{{ brand }}"
-                      {% if current_tags contains 'filter.v.option.brand:' | append: brand %}checked{% endif %}
+                      {% assign brand_tag = 'filter.v.option.brand:' | append: brand %}
+                      {% if current_tags contains brand_tag %}checked{% endif %}
                       class="filter-checkbox tf-check">
                     <label for="Filter-brand-{{ brand }}" class="label">
                       <span>{{ brand }}</span>
@@ -169,7 +171,8 @@
               name="filter.v.option.size"
               value="{{ size }}"
               id="Filter-size-{{ size }}"
-              {% if current_tags contains 'filter.v.option.size:' | append: size %}checked{% endif %}
+              {% assign size_tag = 'filter.v.option.size:' | append: size %}
+              {% if current_tags contains size_tag %}checked{% endif %}
               class="filter-checkbox tf-check">
             <label for="Filter-size-{{ size }}" class="label">
               <span class="size">{{ size }}</span>
@@ -196,7 +199,8 @@
               name="filter.v.option.brand"
               value="{{ brand }}"
               id="Filter-brand-{{ brand }}"
-              {% if current_tags contains 'filter.v.option.brand:' | append: brand %}checked{% endif %}
+              {% assign brand_tag = 'filter.v.option.brand:' | append: brand %}
+              {% if current_tags contains brand_tag %}checked{% endif %}
               class="filter-checkbox tf-check">
             <label for="Filter-brand-{{ brand }}" class="label">
               <span>{{ brand }}</span>
