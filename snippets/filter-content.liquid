@@ -116,6 +116,16 @@
               <div class="collapse-body filter-size-box flat-check-list">
                 {% assign sizes = 'XS,S,M,L,XL' | split: ',' %}
                 {% for size in sizes %}
+                  {% assign size_count = 0 %}
+                  {% for product in collection.products %}
+                    {% for option in product.options_with_values %}
+                      {% if option.name == 'Size' %}
+                        {% if option.values contains size %}
+                          {% assign size_count = size_count | plus: 1 %}
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endfor %}
                   <div class="check-item size-item size-check">
                     <input type="checkbox"
                       name="filter.v.option.size"
@@ -126,7 +136,7 @@
                       class="filter-checkbox tf-check">
                     <label for="Filter-size-{{ size }}" class="label">
                       <span class="size">{{ size }}</span>
-                      <span class="count">({{ collection.products | where: "options_with_values", size | size }})</span>
+                      <span class="count">({{ size_count }})</span>
                     </label>
                   </div>
                 {% endfor %}
@@ -135,6 +145,12 @@
               <div class="collapse-body filter-group-check current-scrollbar">
                 {% assign brands = 'Vineta,Zotac' | split: ',' %}
                 {% for brand in brands %}
+                  {% assign brand_count = 0 %}
+                  {% for product in collection.products %}
+                    {% if product.vendor == brand %}
+                      {% assign brand_count = brand_count | plus: 1 %}
+                    {% endif %}
+                  {% endfor %}
                   <li class="list-item">
                     <input type="checkbox"
                       name="filter.v.option.brand"
@@ -145,7 +161,7 @@
                       class="filter-checkbox tf-check">
                     <label for="Filter-brand-{{ brand }}" class="label">
                       <span>{{ brand }}</span>
-                      <span class="count">({{ collection.products | where: "vendor", brand | size }})</span>
+                      <span class="count">({{ brand_count }})</span>
                     </label>
                   </li>
                 {% endfor %}
@@ -166,6 +182,16 @@
       <div class="collapse-body filter-size-box flat-check-list">
         {% assign sizes = 'XS,S,M,L,XL' | split: ',' %}
         {% for size in sizes %}
+          {% assign size_count = 0 %}
+          {% for product in collection.products %}
+            {% for option in product.options_with_values %}
+              {% if option.name == 'Size' %}
+                {% if option.values contains size %}
+                  {% assign size_count = size_count | plus: 1 %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
           <div class="check-item size-item size-check">
             <input type="checkbox"
               name="filter.v.option.size"
@@ -176,7 +202,7 @@
               class="filter-checkbox tf-check">
             <label for="Filter-size-{{ size }}" class="label">
               <span class="size">{{ size }}</span>
-              <span class="count">({{ collection.products | where: "options_with_values", size | size }})</span>
+              <span class="count">({{ size_count }})</span>
             </label>
           </div>
         {% endfor %}
@@ -194,6 +220,12 @@
       <ul class="collapse-body filter-group-check current-scrollbar">
         {% assign brands = 'Vineta,Zotac' | split: ',' %}
         {% for brand in brands %}
+          {% assign brand_count = 0 %}
+          {% for product in collection.products %}
+            {% if product.vendor == brand %}
+              {% assign brand_count = brand_count | plus: 1 %}
+            {% endif %}
+          {% endfor %}
           <li class="list-item">
             <input type="checkbox"
               name="filter.v.option.brand"
@@ -204,7 +236,7 @@
               class="filter-checkbox tf-check">
             <label for="Filter-brand-{{ brand }}" class="label">
               <span>{{ brand }}</span>
-              <span class="count">({{ collection.products | where: "vendor", brand | size }})</span>
+              <span class="count">({{ brand_count }})</span>
             </label>
           </li>
         {% endfor %}
