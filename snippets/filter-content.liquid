@@ -10,6 +10,7 @@
       <span>Collections</span>
       <span class="icon icon-arrow-up"></span>
   </div>
+  <div id="collections" class="collapse show">
     <ul class="list-categories current-scrollbar">
       {% for collection in collections %}
         <li class="cate-item">
@@ -20,6 +21,8 @@
         </li>
       {% endfor %}
     </ul>
+                    </div>
+
   </div>
 
   <!-- Availability -->
@@ -109,11 +112,101 @@
                 <input type="hidden" name="filter.v.price.gte" id="price-min-input" value="{{ filter.min_value.value | default: 0 | money_without_currency | round }}">
                 <input type="hidden" name="filter.v.price.lte" id="price-max-input" value="{{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}">
               </div>
+            {%- when 'size' -%}
+              <div class="collapse-body filter-size-box flat-check-list">
+                {% assign sizes = 'XS,S,M,L,XL' | split: ',' %}
+                {% for size in sizes %}
+                  <div class="check-item size-item size-check">
+                    <input type="checkbox"
+                      name="filter.v.option.size"
+                      value="{{ size }}"
+                      id="Filter-size-{{ size }}"
+                      {% if current_tags contains 'filter.v.option.size:' | append: size %}checked{% endif %}
+                      class="filter-checkbox tf-check">
+                    <label for="Filter-size-{{ size }}" class="label">
+                      <span class="size">{{ size }}</span>
+                      <span class="count">({{ collection.products | where: "options_with_values", size | size }})</span>
+                    </label>
+                  </div>
+                {% endfor %}
+              </div>
+            {%- when 'brand' -%}
+              <div class="collapse-body filter-group-check current-scrollbar">
+                {% assign brands = 'Vineta,Zotac' | split: ',' %}
+                {% for brand in brands %}
+                  <li class="list-item">
+                    <input type="checkbox"
+                      name="filter.v.option.brand"
+                      value="{{ brand }}"
+                      id="Filter-brand-{{ brand }}"
+                      {% if current_tags contains 'filter.v.option.brand:' | append: brand %}checked{% endif %}
+                      class="filter-checkbox tf-check">
+                    <label for="Filter-brand-{{ brand }}" class="label">
+                      <span>{{ brand }}</span>
+                      <span class="count">({{ collection.products | where: "vendor", brand | size }})</span>
+                    </label>
+                  </li>
+                {% endfor %}
+              </div>
           {%- endcase -%}
         </div>
       </div>
     {%- endif -%}
   {%- endfor -%}
+
+  <!-- Size -->
+  <div class="widget-facet">
+    <div class="facet-title text-xl fw-medium" data-bs-target="#size" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="size">
+      <span>Size</span>
+      <span class="icon icon-arrow-up"></span>
+    </div>
+    <div id="size" class="collapse show">
+      <div class="collapse-body filter-size-box flat-check-list">
+        {% assign sizes = 'XS,S,M,L,XL' | split: ',' %}
+        {% for size in sizes %}
+          <div class="check-item size-item size-check">
+            <input type="checkbox"
+              name="filter.v.option.size"
+              value="{{ size }}"
+              id="Filter-size-{{ size }}"
+              {% if current_tags contains 'filter.v.option.size:' | append: size %}checked{% endif %}
+              class="filter-checkbox tf-check">
+            <label for="Filter-size-{{ size }}" class="label">
+              <span class="size">{{ size }}</span>
+              <span class="count">({{ collection.products | where: "options_with_values", size | size }})</span>
+            </label>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand -->
+  <div class="widget-facet">
+    <div class="facet-title text-xl fw-medium" data-bs-target="#brand" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="brand">
+      <span>Brand</span>
+      <span class="icon icon-arrow-up"></span>
+    </div>
+    <div id="brand" class="collapse show">
+      <ul class="collapse-body filter-group-check current-scrollbar">
+        {% assign brands = 'Vineta,Zotac' | split: ',' %}
+        {% for brand in brands %}
+          <li class="list-item">
+            <input type="checkbox"
+              name="filter.v.option.brand"
+              value="{{ brand }}"
+              id="Filter-brand-{{ brand }}"
+              {% if current_tags contains 'filter.v.option.brand:' | append: brand %}checked{% endif %}
+              class="filter-checkbox tf-check">
+            <label for="Filter-brand-{{ brand }}" class="label">
+              <span>{{ brand }}</span>
+              <span class="count">({{ collection.products | where: "vendor", brand | size }})</span>
+            </label>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
 
   <!-- On Sale -->
   <div class="widget-facet">
