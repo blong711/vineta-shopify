@@ -280,7 +280,7 @@
           <div class="loadItem card-product grid style-1{% if product.options contains 'Size' %} card-product-size{% endif %}" 
                data-availability="{{ product.available | default: 'In stock' }}" 
                data-brand="{{ product.vendor }}">
-            {% render 'card-product', product: product %}
+            {% render 'card-product', product: product, show_color_swatches: true, show_size_swatches: true, show_case_type: true, size_swatches: true %}
           </div>
         {% endfor %}
 
