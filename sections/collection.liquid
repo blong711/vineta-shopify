@@ -37,6 +37,70 @@
         <!-- Right Sidebar -->
         <div class="row">
           <div class="col-lg-9">
+            <div class="tf-shop-control">
+              {%- if section.settings.filter_type == 'drawer' -%}
+                <div class="tf-group-filter">
+                  <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="filterShop" class="tf-btn-filter">
+                    <span class="icon icon-filter"></span>
+                    <span class="text">Filter</span>
+                  </a>
+              {%- endif -%}
+              <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
+                <div class="btn-select">
+                  <span class="text-sort-value">{{ collection.sort_by | default: 'best-selling' | replace: '-', ' ' | capitalize }}</span>
+                  <span class="icon icon-arr-down"></span>
+                </div>
+                <div class="dropdown-menu">
+                  <div class="select-item{% if collection.sort_by == 'best-selling' %} active{% endif %}" data-sort-value="best-selling">
+                    <span class="text-value-item">Best selling</span>
+                  </div>
+                  <div class="select-item{% if collection.sort_by == 'title-ascending' %} active{% endif %}" data-sort-value="title-ascending">
+                    <span class="text-value-item">Alphabetically, A-Z</span>
+                  </div>
+                  <div class="select-item{% if collection.sort_by == 'title-descending' %} active{% endif %}" data-sort-value="title-descending">
+                    <span class="text-value-item">Alphabetically, Z-A</span>
+                  </div>
+                  <div class="select-item{% if collection.sort_by == 'price-ascending' %} active{% endif %}" data-sort-value="price-ascending">
+                    <span class="text-value-item">Price, low to high</span>
+                  </div>
+                  <div class="select-item{% if collection.sort_by == 'price-descending' %} active{% endif %}" data-sort-value="price-descending">
+                    <span class="text-value-item">Price, high to low</span>
+                  </div>
+                </div>
+              </div>
+              {%- if section.settings.filter_type == 'drawer' -%}
+                </div>
+              {%- endif -%}
+              <ul class="tf-control-layout">
+                {% comment %} <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
+                  <div class="item icon-list">
+                    <span></span>
+                    <span></span>
+                  </div>
+                </li> {% endcomment %}
+                <li class="tf-view-layout-switch sw-layout-2" data-value-layout="tf-col-2">
+                  <div class="item icon-grid-2">
+                    <span></span>
+                    <span></span>
+                  </div>
+                </li>
+                <li class="tf-view-layout-switch sw-layout-3" data-value-layout="tf-col-3">
+                  <div class="item icon-grid-3">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </li>
+                <li class="tf-view-layout-switch sw-layout-4{% if section.settings.default_grid_columns == '4' %} active{% endif %}" data-value-layout="tf-col-4">
+                  <div class="item icon-grid-4">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </li>
+              </ul>
+            </div>
       {%- when 'horizontal' -%}
         <!-- Horizontal Filter -->
         <div class="tf-filter-dropdown">
@@ -134,71 +198,6 @@
           </div>
         </div>
     {%- endcase -%}
-
-    <div class="tf-shop-control">
-      {%- if section.settings.filter_type == 'drawer' -%}
-        <div class="tf-group-filter">
-          <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="filterShop" class="tf-btn-filter">
-            <span class="icon icon-filter"></span>
-            <span class="text">Filter</span>
-          </a>
-      {%- endif -%}
-      <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
-        <div class="btn-select">
-          <span class="text-sort-value">{{ collection.sort_by | default: 'best-selling' | replace: '-', ' ' | capitalize }}</span>
-          <span class="icon icon-arr-down"></span>
-        </div>
-        <div class="dropdown-menu">
-          <div class="select-item{% if collection.sort_by == 'best-selling' %} active{% endif %}" data-sort-value="best-selling">
-            <span class="text-value-item">Best selling</span>
-          </div>
-          <div class="select-item{% if collection.sort_by == 'title-ascending' %} active{% endif %}" data-sort-value="title-ascending">
-            <span class="text-value-item">Alphabetically, A-Z</span>
-          </div>
-          <div class="select-item{% if collection.sort_by == 'title-descending' %} active{% endif %}" data-sort-value="title-descending">
-            <span class="text-value-item">Alphabetically, Z-A</span>
-          </div>
-          <div class="select-item{% if collection.sort_by == 'price-ascending' %} active{% endif %}" data-sort-value="price-ascending">
-            <span class="text-value-item">Price, low to high</span>
-          </div>
-          <div class="select-item{% if collection.sort_by == 'price-descending' %} active{% endif %}" data-sort-value="price-descending">
-            <span class="text-value-item">Price, high to low</span>
-          </div>
-        </div>
-      </div>
-      {%- if section.settings.filter_type == 'drawer' -%}
-        </div>
-      {%- endif -%}
-      <ul class="tf-control-layout">
-        {% comment %} <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
-          <div class="item icon-list">
-            <span></span>
-            <span></span>
-          </div>
-        </li> {% endcomment %}
-        <li class="tf-view-layout-switch sw-layout-2" data-value-layout="tf-col-2">
-          <div class="item icon-grid-2">
-            <span></span>
-            <span></span>
-          </div>
-        </li>
-        <li class="tf-view-layout-switch sw-layout-3" data-value-layout="tf-col-3">
-          <div class="item icon-grid-3">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </li>
-        <li class="tf-view-layout-switch sw-layout-4{% if section.settings.default_grid_columns == '4' %} active{% endif %}" data-value-layout="tf-col-4">
-          <div class="item icon-grid-4">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </li>
-      </ul>
-    </div>
 
     <div class="wrapper-control-shop">
       <div class="meta-filter-shop">
