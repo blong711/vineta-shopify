@@ -261,7 +261,7 @@
                   <span class="new-price">{{ product.price | money }}</span>
                   <span class="old-price">{{ product.compare_at_price | money }}</span>
                 </div>
-                <p class="text-sm">{{ product.variants.size }} variant{% if product.variants.size != 1 %}s{% endif %} available</p>
+                {% comment %} <p class="text-sm">{{ product.variants.size }} variant{% if product.variants.size != 1 %}s{% endif %} available</p> {% endcomment %}
               </div>
             </div>
           </li>
