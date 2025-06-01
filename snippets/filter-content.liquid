@@ -6,6 +6,10 @@
 <form id="collection-filters-form" method="GET" action="{{ collection.url }}" class="filter-form">
   <!-- Categories -->
   <div class="widget-facet">
+    <div class="facet-title text-xl fw-medium" data-bs-target="#collections" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="collections">
+      <span>Collections</span>
+      <span class="icon icon-arrow-up"></span>
+  </div>
     <ul class="list-categories current-scrollbar">
       {% for collection in collections %}
         <li class="cate-item">
