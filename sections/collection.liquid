@@ -114,12 +114,18 @@
               <div class="dropdown-menu" aria-labelledby="availability">
                 <ul class="filter-group-check">
                   <li class="list-item">
-                    <input type="radio" name="availability" class="tf-check" id="inStock">
-                    <label for="inStock" class="label"><span>In stock</span>&nbsp;<span class="count">(20)</span></label>
+                    <input type="checkbox" name="filter.v.availability" value="1" id="Filter-availability-1" class="filter-checkbox tf-check">
+                    <label for="Filter-availability-1" class="label">
+                      <span>In stock</span>
+                      <span class="count">({{ collection.products | where: "available", true | size }})</span>
+                    </label>
                   </li>
                   <li class="list-item">
-                    <input type="radio" name="availability" class="tf-check" id="outStock">
-                    <label for="outStock" class="label"><span>Out of stock</span>&nbsp;<span class="count">(3)</span></label>
+                    <input type="checkbox" name="filter.v.availability" value="0" id="Filter-availability-2" class="filter-checkbox tf-check">
+                    <label for="Filter-availability-2" class="label">
+                      <span>Out of stock</span>
+                      <span class="count">({{ collection.products | where: "available", false | size }})</span>
+                    </label>
                   </li>
                 </ul>
               </div>
