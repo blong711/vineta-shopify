@@ -334,6 +334,19 @@
         const newAppliedFilters = doc.getElementById('applied-filters');
         if (newAppliedFilters && appliedFilters) {
           appliedFilters.innerHTML = newAppliedFilters.innerHTML;
+          
+          // Add price filter if it's different from default
+          const minPrice = parseInt(priceMinInput.value);
+          const maxPrice = parseInt(priceMaxInput.value);
+          const defaultMin = parseInt(priceRange.dataset.rangeMin);
+          const defaultMax = parseInt(priceRange.dataset.rangeMax);
+          
+          if (minPrice > defaultMin || maxPrice < defaultMax) {
+            const priceFilter = document.createElement('span');
+            priceFilter.className = 'filter-tag';
+            priceFilter.innerHTML = `Price: ${minPrice} - ${maxPrice} <i class="icon icon-close"></i>`;
+            appliedFilters.appendChild(priceFilter);
+          }
         }
 
         // Update remove all button
