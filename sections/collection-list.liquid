@@ -35,20 +35,22 @@
             {%- if paginate.previous -%}
               <li>
                 <a href="{{ paginate.previous.url }}" class="pagination-item">
-                  <i class="icon-arr-left2"></i>
+                  <i class="icon-arr-left"></i>
                 </a>
               </li>
             {%- endif -%}
 
-            {%- for part in paginate.parts -%}
-              <li {% if part.is_link == false and part.current %}class="active"{% endif %}>
-                {%- if part.is_link -%}
+            {% for part in paginate.parts %}
+              {% if part.is_link %}
+                <li>
                   <a href="{{ part.url }}" class="pagination-item">{{ part.title }}</a>
-                {%- else -%}
+                </li>
+              {% else %}
+                <li class="{% if part.title == paginate.current_page %}active{% endif %}">
                   <div class="pagination-item">{{ part.title }}</div>
-                {%- endif -%}
-              </li>
-            {%- endfor -%}
+                </li>
+              {% endif %}
+            {% endfor %}
 
             {%- if paginate.next -%}
               <li>
