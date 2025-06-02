@@ -555,12 +555,18 @@ document.addEventListener('DOMContentLoaded', function() {
     return document.getElementById('shoppingCart');
   }
 
-  // Create backdrop if it doesn't exist
+  // Create backdrop only when needed
   function ensureBackdrop() {
     let backdrop = document.querySelector('.offcanvas-backdrop');
     if (!backdrop) {
       backdrop = document.createElement('div');
-      backdrop.className = 'offcanvas-backdrop';
+      backdrop.className = 'offcanvas-backdrop fade';
+      // Add click event listener to close drawer when clicking backdrop
+      backdrop.addEventListener('click', function(e) {
+        if (e.target === backdrop) {
+          window.closeCartDrawer();
+        }
+      });
       document.body.appendChild(backdrop);
     }
     return backdrop;
@@ -594,20 +600,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const cartDrawer = getCartDrawer();
     const backdrop = document.querySelector('.offcanvas-backdrop');
     if (cartDrawer) cartDrawer.classList.remove('show');
-    if (backdrop) backdrop.classList.remove('show');
+    if (backdrop) {
+      backdrop.classList.remove('show');
+      // Remove the backdrop element when closing
+      backdrop.remove();
+    }
     document.body.style.overflow = '';
   };
 
   // Set up event listeners after DOM is ready
   document.addEventListener('DOMContentLoaded', function() {
     const cartDrawer = getCartDrawer();
-    const backdrop = ensureBackdrop();
     if (!cartDrawer) return;
-
-    // Close on backdrop click
-    backdrop.addEventListener('click', function(e) {
-      if (e.target === backdrop) window.closeCartDrawer();
-    });
 
     // Close on ESC key
     document.addEventListener('keydown', function(e) {
