@@ -66,66 +66,51 @@
   </div>
 </section>
 
-<div class="flat-spacing-5 line-top flat-wrap-iconbox">
-  <div class="container">
-    <div dir="ltr" class="swiper tf-swiper wow fadeInUp" data-swiper='{
-      "slidesPerView": 1,
-      "spaceBetween": 12,
-      "speed": 800,
-      "observer": true,
-      "observeParents": true,
-      "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
-      "breakpoints": {
-        "575": { "slidesPerView": 2, "spaceBetween": 24}, 
-        "768": { "slidesPerView": 3, "spaceBetween": 24},
-        "1200": { "slidesPerView": 3, "spaceBetween": 100},
-        "1440": { "slidesPerView": 3, "spaceBetween": 205}
-      }
-    }'>
-      <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <div class="tf-icon-box style-2">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M38.9421 14.922L24.328 6.48452C24.2283 6.42685 24.1151 6.39648 23.9999 6.39648C23.8847 6.39648 23.7715 6.42685 23.6717 6.48452L9.05762 14.922C8.95781 14.9795 8.87492 15.0623 8.81731 15.1621C8.75971 15.2618 8.72941 15.375 8.72949 15.4901V32.3651C8.72946 32.4804 8.75977 32.5936 8.81737 32.6934C8.87497 32.7932 8.95783 32.876 9.05762 32.9336L23.6717 41.3711C23.7715 41.4286 23.8847 41.4589 23.9999 41.4589C24.115 41.4589 24.2282 41.4286 24.328 41.3711L38.9421 32.9336C39.0419 32.876 39.1248 32.7932 39.1824 32.6934C39.24 32.5936 39.2703 32.4804 39.2702 32.3651V15.4901C39.2703 15.375 39.24 15.2618 39.1824 15.1621C39.1248 15.0623 39.0419 14.9795 38.9421 14.922ZM23.9999 7.81052L37.3015 15.4901L23.9999 23.1698L10.6982 15.4901L23.9999 7.81052ZM10.042 16.6268L23.3436 24.3064V39.666L10.042 31.9875V16.6268ZM37.9577 31.9875L24.6561 39.666V24.3064L37.9577 16.6268V31.9875Z" fill="#ABABAB"/>
-            </svg>
-            <div class="content">
-              <div class="title">Free Shipping</div>
-              <p class="desc text-grey-2">Enjoy free shipping on all orders over $150</p>
-            </div>
+{%- for block in section.blocks -%}
+  {%- if block.type == 'icon_box' -%}
+    <div class="flat-spacing-5 line-top flat-wrap-iconbox" {{ block.shopify_attributes }}>
+      <div class="container">
+        <div dir="ltr" class="swiper tf-swiper wow fadeInUp" data-swiper='{
+          "slidesPerView": 1,
+          "spaceBetween": 12,
+          "speed": 800,
+          "observer": true,
+          "observeParents": true,
+          "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+          "breakpoints": {
+            "575": { "slidesPerView": 2, "spaceBetween": 24}, 
+            "768": { "slidesPerView": 3, "spaceBetween": 24},
+            "1200": { "slidesPerView": 3, "spaceBetween": 100},
+            "1440": { "slidesPerView": 3, "spaceBetween": 205}
+          }
+        }'>
+          <div class="swiper-wrapper">
+            {%- for i in (1..3) -%}
+              <div class="swiper-slide">
+                <div class="tf-icon-box style-2">
+                  {%- assign icon_key = 'icon_' | append: i -%}
+                  {%- assign title_key = 'title_' | append: i -%}
+                  {%- assign description_key = 'description_' | append: i -%}
+                  {{ block.settings[icon_key] }}
+                  <div class="content">
+                    <div class="title">{{ block.settings[title_key] }}</div>
+                    <p class="desc text-grey-2">{{ block.settings[description_key] }}</p>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
           </div>
-        </div>
-        <div class="swiper-slide">
-          <div class="tf-icon-box style-2">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M24.3943 15.1144C24.3216 15.0724 24.239 15.0503 24.155 15.0503C24.071 15.0503 23.9885 15.0724 23.9158 15.1144L16.6187 19.3274C16.5459 19.3694 16.4855 19.4298 16.4435 19.5025C16.4015 19.5753 16.3794 19.6578 16.3794 19.7418V28.1677C16.3794 28.2517 16.4015 28.3342 16.4435 28.407C16.4855 28.4797 16.5459 28.5401 16.6187 28.5821L23.9158 32.7952C23.9885 32.8372 24.071 32.8593 24.155 32.8593C24.239 32.8593 24.3216 32.8372 24.3943 32.7952L31.6915 28.5821C31.7642 28.5401 31.8246 28.4797 31.8666 28.407C31.9086 28.3342 31.9307 28.2517 31.9307 28.1677V19.7418C31.9307 19.6578 31.9086 19.5753 31.8666 19.5025C31.8246 19.4298 31.7642 19.3694 31.6915 19.3274L24.3943 15.1144ZM24.155 16.0813L30.4951 19.7418L24.155 23.4022L17.815 19.7418L24.155 16.0813ZM17.3365 20.5706L23.6765 24.231V31.5523L17.3365 27.8918V20.5706ZM24.6336 31.5519V24.2306L30.9737 20.5702V27.8915L24.6336 31.5519Z" fill="#ABABAB"/>
-            </svg>
-            <div class="content">
-              <div class="title">Gift Package</div>
-              <p class="desc text-grey-2">Hassle-free returns for a worry-free shopping experience.</p>
-            </div>
-          </div>
-        </div>
-        <div class="swiper-slide">
-          <div class="tf-icon-box style-2">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18.2486 37.718C18.2484 38.0955 18.5544 38.4017 18.932 38.4017C19.0615 38.4018 19.1884 38.365 19.2978 38.2957L29.2659 31.9856H38.0487C39.9538 31.9836 41.4977 30.4398 41.4999 28.5346V13.0492C41.4977 11.1441 39.9538 9.60027 38.0487 9.59814H9.95096C8.04595 9.60034 6.50213 11.1442 6.5 13.0492V28.5345C6.5022 30.4395 8.04595 31.9833 9.95096 31.9855H18.2498L18.2486 37.718ZM9.95096 30.6184C8.80064 30.6171 7.86847 29.6849 7.86719 28.5346V13.0492C7.86854 11.8989 8.80064 10.9667 9.95096 10.9654H38.0487C39.1991 10.9667 40.1313 11.8988 40.1327 13.0492V28.5345C40.1314 29.6848 39.1993 30.617 38.049 30.6183H29.0678C28.9384 30.6183 28.8115 30.6551 28.7021 30.7243L19.6162 36.476L19.6176 31.3021C19.6176 30.9247 19.3115 30.6186 18.934 30.6186L9.95096 30.6184Z" fill="#ABABAB"/>
-            </svg>
-            <div class="content">
-              <div class="title">Free Returns</div>
-              <p class="desc text-grey-2">Shop with confidence, covered by our one-year warranty.</p>
-            </div>
-          </div>
+          <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
         </div>
       </div>
-      <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
     </div>
-  </div>
-</div>
+  {%- endif -%}
+{%- endfor -%}
 
 <style>
 .collection-list-img-style {
   width: 100%;
-  aspect-ratio: 1/1; /* Adjust as needed for your design */
+  aspect-ratio: 1/1;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -153,9 +138,89 @@
       "label": "Collections per page"
     }
   ],
+  "blocks": [
+    {
+      "type": "icon_box",
+      "name": "Icon Box",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Icon Box 1"
+        },
+        {
+          "type": "html",
+          "id": "icon_1",
+          "label": "Icon SVG",
+          "default": "<svg width=\"48\" height=\"48\" viewBox=\"0 0 48 48\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M38.9421 14.922L24.328 6.48452C24.2283 6.42685 24.1151 6.39648 23.9999 6.39648C23.8847 6.39648 23.7715 6.42685 23.6717 6.48452L9.05762 14.922C8.95781 14.9795 8.87492 15.0623 8.81731 15.1621C8.75971 15.2618 8.72941 15.375 8.72949 15.4901V32.3651C8.72946 32.4804 8.75977 32.5936 8.81737 32.6934C8.87497 32.7932 8.95783 32.876 9.05762 32.9336L23.6717 41.3711C23.7715 41.4286 23.8847 41.4589 23.9999 41.4589C24.115 41.4589 24.2282 41.4286 24.328 41.3711L38.9421 32.9336C39.0419 32.876 39.1248 32.7932 39.1824 32.6934C39.24 32.5936 39.2703 32.4804 39.2702 32.3651V15.4901C39.2703 15.375 39.24 15.2618 39.1824 15.1621C39.1248 15.0623 39.0419 14.9795 38.9421 14.922ZM23.9999 7.81052L37.3015 15.4901L23.9999 23.1698L10.6982 15.4901L23.9999 7.81052ZM10.042 16.6268L23.3436 24.3064V39.666L10.042 31.9875V16.6268ZM37.9577 31.9875L24.6561 39.666V24.3064L37.9577 16.6268V31.9875Z\" fill=\"#ABABAB\"/></svg>"
+        },
+        {
+          "type": "text",
+          "id": "title_1",
+          "label": "Title",
+          "default": "Free Shipping"
+        },
+        {
+          "type": "text",
+          "id": "description_1",
+          "label": "Description",
+          "default": "Enjoy free shipping on all orders over $150"
+        },
+        {
+          "type": "header",
+          "content": "Icon Box 2"
+        },
+        {
+          "type": "html",
+          "id": "icon_2",
+          "label": "Icon SVG",
+          "default": "<svg width=\"48\" height=\"48\" viewBox=\"0 0 48 48\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M24.3943 15.1144C24.3216 15.0724 24.239 15.0503 24.155 15.0503C24.071 15.0503 23.9885 15.0724 23.9158 15.1144L16.6187 19.3274C16.5459 19.3694 16.4855 19.4298 16.4435 19.5025C16.4015 19.5753 16.3794 19.6578 16.3794 19.7418V28.1677C16.3794 28.2517 16.4015 28.3342 16.4435 28.407C16.4855 28.4797 16.5459 28.5401 16.6187 28.5821L23.9158 32.7952C23.9885 32.8372 24.071 32.8593 24.155 32.8593C24.239 32.8593 24.3216 32.8372 24.3943 32.7952L31.6915 28.5821C31.7642 28.5401 31.8246 28.4797 31.8666 28.407C31.9086 28.3342 31.9307 28.2517 31.9307 28.1677V19.7418C31.9307 19.6578 31.9086 19.5753 31.8666 19.5025C31.8246 19.4298 31.7642 19.3694 31.6915 19.3274L24.3943 15.1144ZM24.155 16.0813L30.4951 19.7418L24.155 23.4022L17.815 19.7418L24.155 16.0813ZM17.3365 20.5706L23.6765 24.231V31.5523L17.3365 27.8918V20.5706ZM24.6336 31.5519V24.2306L30.9737 20.5702V27.8915L24.6336 31.5519Z\" fill=\"#ABABAB\"/></svg>"
+        },
+        {
+          "type": "text",
+          "id": "title_2",
+          "label": "Title",
+          "default": "Gift Package"
+        },
+        {
+          "type": "text",
+          "id": "description_2",
+          "label": "Description",
+          "default": "Hassle-free returns for a worry-free shopping experience."
+        },
+        {
+          "type": "header",
+          "content": "Icon Box 3"
+        },
+        {
+          "type": "html",
+          "id": "icon_3",
+          "label": "Icon SVG",
+          "default": "<svg width=\"48\" height=\"48\" viewBox=\"0 0 48 48\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M18.2486 37.718C18.2484 38.0955 18.5544 38.4017 18.932 38.4017C19.0615 38.4018 19.1884 38.365 19.2978 38.2957L29.2659 31.9856H38.0487C39.9538 31.9836 41.4977 30.4398 41.4999 28.5346V13.0492C41.4977 11.1441 39.9538 9.60027 38.0487 9.59814H9.95096C8.04595 9.60034 6.50213 11.1442 6.5 13.0492V28.5345C6.5022 30.4395 8.04595 31.9833 9.95096 31.9855H18.2498L18.2486 37.718ZM9.95096 30.6184C8.80064 30.6171 7.86847 29.6849 7.86719 28.5346V13.0492C7.86854 11.8989 8.80064 10.9667 9.95096 10.9654H38.0487C39.1991 10.9667 40.1313 11.8988 40.1327 13.0492V28.5345C40.1314 29.6848 39.1993 30.617 38.049 30.6183H29.0678C28.9384 30.6183 28.8115 30.6551 28.7021 30.7243L19.6162 36.476L19.6176 31.3021C19.6176 30.9247 19.3115 30.6186 18.934 30.6186L9.95096 30.6184Z\" fill=\"#ABABAB\"/></svg>"
+        },
+        {
+          "type": "text",
+          "id": "title_3",
+          "label": "Title",
+          "default": "Free Returns"
+        },
+        {
+          "type": "text",
+          "id": "description_3",
+          "label": "Description",
+          "default": "Shop with confidence, covered by our one-year warranty."
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Collection List"
+      "name": "Collection List",
+      "blocks": [
+        {
+          "type": "icon_box"
+        }
+      ]
     }
   ]
 }
