@@ -436,9 +436,14 @@ class WishlistCompare {
 
     // First try to get data from product section if we're on a product page
     const productSection = document.querySelector('.tf-product-info-wrap');
-    console.log('Product section found:', !!productSection);
-    
+    let currentProductId = null;
     if (productSection) {
+      // Try to get the product ID from a data attribute or hidden input
+      currentProductId = productSection.querySelector('[data-product-id]')?.getAttribute('data-product-id') ||
+                        productSection.querySelector('[data-id]')?.getAttribute('data-id');
+    }
+
+    if (productSection && productId === currentProductId) {
       // Try multiple selectors for product name
       const productName = productSection.querySelector('.product-info-name')?.textContent?.trim() ||
                          productSection.querySelector('.name-product')?.textContent?.trim() ||
