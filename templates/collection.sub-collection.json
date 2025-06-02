@@ -12,12 +12,7 @@
     "page-title": {
       "type": "page-title",
       "settings": {
-        "background_image": "shopify://shop_images/page-title_1.jpg",
-        "custom_title": "",
-        "contact_title": "",
-        "about_title": "",
-        "wishlist_title": "",
-        "compare_title": ""
+        "background_image": "shopify://shop_images/page-title_1.jpg"
       }
     },
     "sub_collection_P3mtpz": {
@@ -73,11 +68,15 @@
     "main": {
       "type": "collection",
       "settings": {
+        "padding_top": 0,
+        "padding_bottom": 80,
         "filter_type": "drawer",
+        "card_style": "style-1",
         "default_grid_columns": "3",
         "products_per_page": 16,
         "default_view": "grid",
-        "default_sort": "best-selling"
+        "default_sort": "best-selling",
+        "pagination_type": "pagination"
       }
     }
   },
