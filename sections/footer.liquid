@@ -54,7 +54,7 @@
   </div>
   <div class="footer-body">
     <div class="container">
-      <div class="row-footer" style="gap: {{ section.settings.column_gap }}px;">
+      <div class="row-footer">
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'contact' -%}
@@ -336,16 +336,6 @@
       "unit": "px",
       "label": "Bottom padding",
       "default": 0
-    },
-    {
-      "type": "range",
-      "id": "column_gap",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Column gap",
-      "default": 24
     },
     {
       "type": "header",
