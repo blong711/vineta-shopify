@@ -56,33 +56,16 @@
                     </div>
                     <div class="tf-product-info-variant">
                         {%- unless product.has_only_default_variant -%}
-                            {%- for option in product.options_with_values -%}
-                                <div class="variant-picker-item variant-{{ option.name | handle }}">
-                                    <div class="variant-picker-label">
-                                        <div>
-                                          {{ option.name }}:<span class="variant-picker-label-value value-current{{ option.name | handle }}">{{ option.selected_value }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="variant-picker-values">
-                                        {%- for value in option.values -%}
-                                            {%- if option.name == 'Color' or option.name == 'Colour' -%}
-                                                <div class="hover-tooltip color-btn{% if value == option.selected_value %} active{% endif %}" 
-                                                     data-option-name="{{ option.name }}"
-                                                     data-option-value="{{ value | escape }}">
-                                                    <span class="check-color bg-{{ value | handle }}"></span>
-                                                    <span class="tooltip">{{ value }}</span>
-                                                </div>
-                                            {%- else -%}
-                                                <span class="size-btn{% if value == option.selected_value %} active{% endif %}" 
-                                                      data-option-name="{{ option.name }}"
-                                                      data-option-value="{{ value | escape }}">
-                                                    {{ value }}
-                                                </span>
-                                            {%- endif -%}
-                                        {%- endfor -%}
-                                    </div>
-                                </div>
-                            {%- endfor -%}
+                            <div class="info-variant">
+                                <select class="text-xs" data-variant-id="{{ product.selected_or_first_available_variant.id }}">
+                                    {%- for variant in product.variants -%}
+                                        <option value="{{ variant.id }}" {% if variant.id == product.selected_or_first_available_variant.id %}selected{% endif %}>
+                                            {{ variant.title }}
+                                        </option>
+                                    {%- endfor -%}
+                                </select>
+                                <i class="icon-pen edit"></i>
+                            </div>
                         {%- endunless -%}
                     </div>
                     <div class="tf-product-total-quantity">
@@ -138,12 +121,15 @@ document.addEventListener('DOMContentLoaded', function() {
   // Preload product data
   async function preloadProductData(productHandle) {
     try {
-      const response = await fetch(`/products/${productHandle}.js`);
-      const productData = await response.json();
-      productCache.set(productHandle, productData);
-      console.log('Preloaded product:', productHandle);
+      const productResponse = await fetch(`/products/${productHandle}.js`);
+      if (productResponse.ok) {
+        const productData = await productResponse.json();
+        // Cache the product data
+        productCache.set(productHandle, productData);
+        console.log('Preloaded product:', productHandle);
+      }
     } catch (error) {
-      console.error('Error preloading product:', error);
+      console.error(`Error fetching product data for ${productHandle}:`, error);
     }
   }
 
@@ -363,6 +349,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const variantId = (selectedVariant && selectedVariant.id) || this.dataset.variantId;
         const quantityInput = modal.querySelector('.quantity-product');
         const quantity = parseInt(quantityInput ? quantityInput.value : 1);
+
         try {
           this.classList.add('loading');
           if (window.cart) {
@@ -393,8 +380,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         <i class="icon icon-close remove fs-12" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
                       </div>
                       <div class="d-flex gap-10">
-                        <div class="text-xs">${item.variant_title || ''}</div>
-                        <a href="#" class="link edit"><i class="icon-pen"></i></a>
+                        <div class="info-variant">
+                          <select class="text-xs" data-variant-id="${item.variant_id}">
+                            ${currentProduct.variants.map(variant => 
+                              `<option value="${variant.id}" ${variant.id === item.variant_id ? 'selected' : ''}>
+                                ${variant.title === 'Default Title' ? 'Default' : variant.title}
+                              </option>`
+                            ).join('')}
+                          </select>
+                          <i class="icon-pen edit"></i>
+                        </div>
                       </div>
                       <div class="tf-mini-cart-item_price">
                         <p class="price-wrap text-sm fw-medium">
@@ -494,7 +489,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } finally {
           this.classList.remove('loading');
         }
-      }, { once: false });
+      });
     }
 
     // Buy Now button logic
@@ -528,7 +523,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } finally {
           this.classList.remove('loading');
         }
-      }, { once: false });
+      });
     }
 
     // More payment options link logic
@@ -540,7 +535,7 @@ document.addEventListener('DOMContentLoaded', function() {
       newMorePaymentBtn.addEventListener('click', function(e) {
         e.preventDefault();
         window.location.href = '/checkout';
-      }, { once: false });
+      });
     }
 
     // Update 'View full details' link to product detail page

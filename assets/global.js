@@ -1130,7 +1130,11 @@ class Cart {
           this.formatMoney(item.original_price) : '';
 
         // Create variant options from the item's properties
-        const variantOptions = [{
+        const variantOptions = item.variants ? item.variants.map(variant => ({
+          id: variant.id,
+          title: variant.title || 'Default',
+          selected: variant.id === item.variant_id
+        })) : [{
           id: item.variant_id,
           title: item.variant_title || 'Default',
           selected: true
@@ -1265,7 +1269,18 @@ class Cart {
       
       // Ensure all items have necessary data for display
       if (cartData.items && cartData.items.length > 0) {
-        cartData.items.forEach(item => {
+        // Fetch additional product data for each item
+        await Promise.all(cartData.items.map(async (item) => {
+          try {
+            const productResponse = await fetch(`/products/${item.handle}.js`);
+            if (productResponse.ok) {
+              const productData = await productResponse.json();
+              // Add variants data to the cart item
+              item.variants = productData.variants;
+            }
+          } catch (error) {
+            console.error(`Error fetching product data for ${item.handle}:`, error);
+          }
           // Make sure images are available
           if (!item.image) {
             item.image = item.featured_image?.url || item.product_featured_image || '/no-image.jpg';
@@ -1274,7 +1289,7 @@ class Cart {
           if (!item.url) {
             item.url = `/products/${item.handle}`;
           }
-        });
+        }));
       }
       
       // Update header cart count immediately when cart data is fetched

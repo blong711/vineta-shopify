@@ -204,6 +204,58 @@ const ProductCard = {
   // Initialize quantity controls
   initializeQuantityControls() {
     document.querySelectorAll('.tf-mini-cart-items').forEach(container => {
+      // Add variant change handler
+      container.querySelectorAll('select[data-variant-id]').forEach(select => {
+        select.addEventListener('change', async (e) => {
+          try {
+            const oldVariantId = select.dataset.variantId;
+            const newVariantId = e.target.value;
+            const input = select.closest('.tf-mini-cart-item').querySelector('.quantity-product');
+            const quantity = parseInt(input.value);
+
+            // Update cart with new variant
+            const response = await fetch('/cart/change.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                id: oldVariantId,
+                quantity: 0
+              })
+            });
+            if (!response.ok) throw new Error('Failed to remove old variant');
+
+            const addResponse = await fetch('/cart/add.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                id: newVariantId,
+                quantity: quantity
+              })
+            });
+            if (!addResponse.ok) throw new Error('Failed to add new variant');
+
+            // Update the data-variant-id attribute
+            select.dataset.variantId = newVariantId;
+            select.closest('.tf-mini-cart-item').querySelectorAll('[data-variant-id]').forEach(el => {
+              el.dataset.variantId = newVariantId;
+            });
+
+            // Fetch updated cart data and update UI
+            const cartResponse = await fetch('/cart.js');
+            if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+            const cartData = await cartResponse.json();
+            await this.updateCartDrawer(cartData);
+          } catch (error) {
+            console.error('Error changing variant:', error);
+            alert('Failed to change variant. Please try again.');
+          }
+        });
+      });
+
       // Decrease button
       container.querySelectorAll('.btn-decrease').forEach(button => {
         button.addEventListener('click', async () => {
