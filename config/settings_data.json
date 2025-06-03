@@ -301,7 +301,7 @@
               "address": "123 Yarran st, Punchbowl, NSW 2196, Australia",
               "phone": "(64) 8342 1245",
               "email": "support@example.com",
-              "map_link": ""
+              "map_link": "https://www.google.com/maps?q=15Yarranst,Punchbowl,NSW,Australia"
             }
           },
           "newsletter_M6KUWA": {
@@ -351,7 +351,7 @@
           "show_payment_icons": true,
           "payment_icons_size": 30,
           "payment_icons": "visa,paypal,master,american_express,diners_club",
-          "copyrights": "© [year] <span class=\"\">Ecomus</span>. All rights reserved."
+          "copyrights": "© 2025 <span class=\"\">Ecomus</span>. All rights reserved."
         }
       },
       "cart-drawer": {
@@ -645,6 +645,16 @@
           "sidebar_banner": "shopify://shop_images/sb-banner.jpg",
           "banner_title": "Elevate Your Style",
           "banner_link": "shopify://collections",
+          "banner_button_text": "Shop Now"
+        }
+      },
+      "blog-sidebar": {
+        "type": "blog-sidebar",
+        "settings": {
+          "show_recent_posts": true,
+          "show_tags": true,
+          "banner_title": "Elevate Your Style",
+          "banner_link": "",
           "banner_button_text": "Shop Now"
         }
       }
