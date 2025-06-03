@@ -1,5 +1,5 @@
 {% if section.settings.layout == 'layout1' %}
-<section class="flat-spacing-3 {% if section.settings.layout == 'home-bicycle' %}pb-0{% else %} pt-0{% endif %} section-{{ section.id }}-padding">
+<section class="flat-spacing-3 {% if section.settings.layout == 'home-bicycle' %}pb-0{% else %} pt-0{% endif %} section-{{ section.id }}-padding" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   <div class="container">
     <div class="flat-title wow fadeInUp">
       <h4 class="title">{{ section.settings.title }}</h4>
@@ -73,7 +73,7 @@
   </div>
 </section>
 {% elsif section.settings.layout == 'layout2' %}
-<section class="flat-spacing-3 {% if section.settings.layout == 'layout2' %}pb-0{% else %} pt-0{% endif %} section-{{ section.id }}-padding">
+<section class="flat-spacing-3 {% if section.settings.layout == 'layout2' %}pb-0{% else %} pt-0{% endif %} section-{{ section.id }}-padding" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   <div class="container">
     <div class="flat-title-v2 text-center justify-items-center wow fadeInUp">
       <a href="{{ section.settings.blog_link }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.blog_button_text }}</a>
@@ -147,7 +147,7 @@
   </div>
 </section>
 {% else %}
-<section class="flat-spacing-29 pt-0">
+<section class="flat-spacing-29 pt-0" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   <div class="container">
     <div class="flat-title wow fadeInUp">
       <h4 class="title">{{ section.settings.title }}</h4>
@@ -381,20 +381,20 @@
       "id": "padding_top",
       "min": 0,
       "max": 100,
-      "step": 4,
+      "step": 2,
       "unit": "px",
       "label": "Top padding",
-      "default": 36
+      "default": 80
     },
     {
       "type": "range",
       "id": "padding_bottom",
       "min": 0,
       "max": 100,
-      "step": 4,
+      "step": 2,
       "unit": "px",
       "label": "Bottom padding",
-      "default": 36
+      "default": 94
     }
   ],
   "blocks": [
