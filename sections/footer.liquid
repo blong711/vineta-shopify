@@ -124,7 +124,7 @@
                 <div class="tf-collapse-content">
                   <div class="footer-newsletter">
                     <p>{{ block.settings.text }}</p>
-                    {%- form 'customer', class: 'form-newsletter' -%}
+                    {%- form 'customer', class: 'form-newsletter', return_to: request.path -%}
                       <div class="subscribe-content">
                         <fieldset class="email">
                           <input type="email" name="contact[email]" class="subscribe-email" placeholder="{{ block.settings.placeholder }}" required>
@@ -137,6 +137,16 @@
                           </button>
                         </div>
                       </div>
+                      {%- if form.posted_successfully? -%}
+                        <div class="newsletter-success-message" style="margin-top: 10px; color: #28a745; font-size: 14px;">
+                          Thank you for subscribing to our newsletter!
+                        </div>
+                      {%- endif -%}
+                      {%- if form.errors -%}
+                        <div class="newsletter-error-message" style="margin-top: 10px; color: #dc3545; font-size: 14px;">
+                          {{ form.errors.messages['email'] }}
+                        </div>
+                      {%- endif -%}
                     {%- endform -%}
                   </div>
                 </div>
