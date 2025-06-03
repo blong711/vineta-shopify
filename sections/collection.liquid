@@ -174,11 +174,11 @@
                 <ul class="filter-group-check">
                   <li class="list-item">
                     <input type="radio" name="availability" class="tf-check" id="inStock">
-                    <label for="inStock" class="label"><span>In stock</span>&nbsp;<span class="count">(20)</span></label>
+                    <label for="inStock" class="label"><span>In stock</span>&nbsp;<span class="count">({{ collection.products | where: "available", true | size }})</span></label>
                   </li>
                   <li class="list-item">
                     <input type="radio" name="availability" class="tf-check" id="outStock">
-                    <label for="outStock" class="label"><span>Out of stock</span>&nbsp;<span class="count">(3)</span></label>
+                    <label for="outStock" class="label"><span>Out of stock</span>&nbsp;<span class="count">({{ collection.products | where: "available", false | size }})</span></label>
                   </li>
                 </ul>
               </div>
