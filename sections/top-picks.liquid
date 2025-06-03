@@ -54,7 +54,12 @@
                                         product: product,
                                         countdown_timer: block.settings.countdown_timer,
                                         available_quantity: block.settings.available_quantity,
-                                        sold_percentage: block.settings.sold_percentage
+                                        sold_percentage: block.settings.sold_percentage,
+                                        product-info: 'text-center',
+                                        show_color_swatches: block.settings.show_color_swatches,
+                                        show_size_swatches: block.settings.show_size_swatches,
+                                        show_case_type: block.settings.show_case_type,
+                                        size_swatches: block.settings.size_swatches,
                                     %}
                                 {% elsif layout == 'home-phonecase' %}
                                     {% render 'card-product',
