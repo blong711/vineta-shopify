@@ -457,9 +457,8 @@ document.addEventListener('DOMContentLoaded', function() {
                   totalElement.textContent = formatMoney(cartData.total_price);
                 }
                 // Update header cart count
-                const headerCount = document.querySelector('.count-box');
-                if (headerCount) {
-                  headerCount.textContent = cartData.item_count;
+                if (window.cart && typeof window.cart.updateHeaderCartCount === 'function') {
+                  window.cart.updateHeaderCartCount(cartData.item_count);
                 }
                 // Update shipping threshold progress bar
                 const progressBar = cartDrawer.querySelector('.tf-progress-bar .value');

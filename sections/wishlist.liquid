@@ -393,9 +393,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 
                 // Update header cart count
-                const headerCount = document.querySelector('.count-box');
-                if (headerCount) {
-                  headerCount.textContent = cartData.item_count;
+                if (window.cart && typeof window.cart.updateHeaderCartCount === 'function') {
+                  window.cart.updateHeaderCartCount(cartData.item_count);
                 }
 
                 // Update shipping threshold progress bar
