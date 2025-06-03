@@ -398,9 +398,9 @@ document.addEventListener('DOMContentLoaded', function() {
                       </div>
                       <div class="tf-mini-cart-item_quantity">
                         <div class="wg-quantity small">
-                          <button class="btn-quantity btn-minus" data-variant-id="${item.variant_id}">-</button>
+                          <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
                           <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
-                          <button class="btn-quantity btn-plus" data-variant-id="${item.variant_id}">+</button>
+                          <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
                         </div>
                       </div>
                     </div>
@@ -408,7 +408,7 @@ document.addEventListener('DOMContentLoaded', function() {
                   itemsContainer.appendChild(itemElement);
                 });
                 // Add event listeners for quantity buttons
-                itemsContainer.querySelectorAll('.btn-minus').forEach(button => {
+                itemsContainer.querySelectorAll('.btn-decrease').forEach(button => {
                   button.addEventListener('click', async function() {
                     const variantId = this.dataset.variantId;
                     const input = this.nextElementSibling;
@@ -420,7 +420,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                   });
                 });
-                itemsContainer.querySelectorAll('.btn-plus').forEach(button => {
+                itemsContainer.querySelectorAll('.btn-increase').forEach(button => {
                   button.addEventListener('click', async function() {
                     const variantId = this.dataset.variantId;
                     const input = this.previousElementSibling;
