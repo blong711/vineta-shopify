@@ -2319,12 +2319,11 @@ a:focus, a:hover {
 .header-default .nav-icon .nav-icon-item .count-box {
   position: absolute;
   height: 16px;
-  width: 16px;
+  min-width: 16px; /* Ensures circle shape at minimum */
   padding: 0 5px;
   font-size: 10px;
   font-weight: 500;
   border-radius: 50%;
-  line-height: 16px;
   z-index: 2;
   top: 0;
   right: 0;
@@ -2335,8 +2334,11 @@ a:focus, a:hover {
   white-space: nowrap;
   margin-top: 3px;
   margin-right: 3px;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .header-default .nav-icon .nav-icon-item .text {
   font-size: 14px;
   line-height: 21px;
@@ -10316,27 +10318,6 @@ a:focus, a:hover {
 }
 .header-default .nav-icon .nav-icon-item:hover {
   color: var(--primary);
-}
-.header-default .nav-icon .nav-icon-item .count-box {
-  position: absolute;
-  height: 16px;
-  width: 16px;
-  padding: 0 5px;
-  font-size: 10px;
-  font-weight: 500;
-  border-radius: 50%;
-  line-height: 16px;
-  z-index: 2;
-  top: 0;
-  right: 0;
-  transform: translate(50%, -50%);
-  color: var(--white);
-  background-color: var(--primary);
-  text-align: center;
-  white-space: nowrap;
-  margin-top: 3px;
-  margin-right: 3px;
-  display: block;
 }
 .header-default .nav-icon .nav-icon-item .text {
   font-size: 14px;
