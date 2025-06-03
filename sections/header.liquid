@@ -1353,6 +1353,17 @@ document.addEventListener('DOMContentLoaded', function() {
   height: {{ section.settings.sticky_header_height }}px;
 }
 
+/* Responsive Header Height */
+@media (max-width: 1199px) {
+  #header {
+    height: 64px;
+  }
+  
+  #header.header-visible {
+    height: 64px;
+  }
+}
+
 /* Menu Styles */
 .box-nav-menu .menu-item {
   margin: 0;
