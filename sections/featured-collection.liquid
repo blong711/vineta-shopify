@@ -130,7 +130,33 @@
     </div>
 {% elsif section.settings.layout == 'layout4' %}
     <div class="tf-slideshow slider-viewport slider-fashion-2">
-        <div dir="ltr" class="swiper tf-sw-slideshow swiper-initialized swiper-horizontal swiper-backface-hidden" data-preview="3" data-tablet="2" data-mobile="1.5" data-space="15" data-space-mb="5">
+        <div dir="ltr" class="swiper tf-sw-slideshow swiper-initialized swiper-horizontal swiper-backface-hidden" data-preview="3" data-tablet="2" data-mobile="1.5" data-space="15" data-space-mb="5" data-swiper='{
+            "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+            "spaceBetween": {{ section.settings.space_between }},
+            "speed": {{ section.settings.speed }},
+            "observer": true,
+            "observeParents": true,
+            "slidesPerGroup": 1,
+            "loop": {{ section.settings.enable_loop }},
+            {% if section.settings.enable_navigation %}
+            "navigation": {
+                "clickable": true,
+                "nextEl": ".nav-next-cls",
+                "prevEl": ".nav-prev-cls"
+            },
+            {% endif %}
+            "pagination": { "el": ".sw-pagination-cls", "clickable": true },
+            {% if section.settings.enable_autoplay %}
+            "autoplay": {
+                "delay": {{ section.settings.autoplay_speed }},
+                "disableOnInteraction": false
+            },
+            {% endif %}
+            "breakpoints": {
+                "768": { "slidesPerView": {{ section.settings.slides_per_view_tablet }}, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": {{ section.settings.slides_per_view_tablet }} },
+                "1024": { "slidesPerView": {{ section.settings.slides_per_view }}, "spaceBetween": {{ section.settings.space_between }}, "slidesPerGroup": {{ section.settings.slides_per_view }} }
+            }
+        }'>
             <div class="swiper-wrapper">
                 {% for block in section.blocks %}
                     {% assign collection = collections[block.settings.collection] %}

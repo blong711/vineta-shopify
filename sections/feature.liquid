@@ -10,7 +10,24 @@
             <h4 class="text-capitalize">{{ section.settings.heading | replace: '[br]', '<br class="d-none d-xl-block">' }}</h4>
         </div>
         <div class="fl-control-sw wow fadeInUp">
-            <div dir="ltr" class="swiper tf-swiper feature-swiper">
+            <div dir="ltr" class="swiper tf-swiper feature-swiper" data-swiper='{
+                "slidesPerView": 2,
+                "spaceBetween": 12,
+                "speed": 1000,
+                "observer": true,
+                "observeParents": true,
+                "slidesPerGroup": 2,
+                "navigation": {
+                  "clickable": true,
+                  "nextEl": ".nav-next-gear-up",
+                  "prevEl": ".nav-prev-gear-up"
+                },
+                "pagination": { "el": ".sw-pagination-gear-up", "clickable": true },
+                "breakpoints": {
+                  "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
+                  "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4 }
+                }
+              }'>
                 <div class="swiper-wrapper">
                     {% for block in section.blocks %}
                         <div class="swiper-slide" {{ block.shopify_attributes }}>
@@ -26,6 +43,7 @@
                         </div>
                     {% endfor %}
                 </div>
+                <div class="d-flex d-xl-none sw-dot-default sw-pagination-feature justify-content-center"></div>
             </div>
             <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-feature"></div>
             <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-feature"></div>
