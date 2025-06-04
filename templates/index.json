@@ -149,54 +149,18 @@
     },
     "best_sellers": {
       "type": "best-sellers",
-      "blocks": {
-        "product_VUHQCN": {
-          "type": "product",
-          "settings": {
-            "product": "turtleneck-t-shirt"
-          }
-        },
-        "product_eN74TF": {
-          "type": "product",
-          "settings": {
-            "product": "loose-fit-tee"
-          }
-        },
-        "product_wiXQhd": {
-          "type": "product",
-          "settings": {
-            "product": "crop-t-shirt"
-          }
-        },
-        "product_xpENxJ": {
-          "type": "product",
-          "settings": {
-            "product": "short-sleeve-sweat"
-          }
-        },
-        "product_ckWpwr": {
-          "type": "product",
-          "settings": {
-            "product": "polo-neck-t-shirt"
-          }
-        },
-        "product_Rgy6Xd": {
-          "type": "product",
-          "settings": {
-            "product": "round-neck-cotton-t-shirt"
-          }
-        }
-      },
-      "block_order": [
-        "product_VUHQCN",
-        "product_eN74TF",
-        "product_wiXQhd",
-        "product_xpENxJ",
-        "product_ckWpwr",
-        "product_Rgy6Xd"
-      ],
       "settings": {
         "section_title": "Best Sellers",
+        "product_source": "product_list",
+        "collection": "",
+        "product_list": [
+          "turtleneck-t-shirt",
+          "loose-fit-tee",
+          "crop-t-shirt",
+          "short-sleeve-sweat",
+          "polo-neck-t-shirt",
+          "round-neck-cotton-t-shirt"
+        ],
         "products_to_show": 4
       }
     },
