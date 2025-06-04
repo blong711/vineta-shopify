@@ -459,7 +459,13 @@
                                     <img src="{{ related_product.featured_image | image_url: width: 200 }}" alt="{{ related_product.title }}" width="200" height="200">
                                   </a>
                                   <div class="bundle-info">
-                                    <div class="bundle-title text-sm fw-medium">{{ related_product.title }}</div>
+                                    <div class="bundle-title text-sm fw-medium">
+                                      {% if related_product.id == product.id %}
+                                        This item: {{ related_product.title }}
+                                      {% else %}
+                                        {{ related_product.title }}
+                                      {% endif %}
+                                    </div>
                                     <div class="bundle-price text-md fw-medium">
                                       <span class="new-price">{{ related_product.price | money }}</span>
                                       {% if related_product.compare_at_price > related_product.price %}
