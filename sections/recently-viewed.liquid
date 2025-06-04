@@ -54,35 +54,36 @@
             }
           }
         }'>
-        <div class="swiper-wrapper">
-          {%- case block.type -%}
-            {%- when 'recently_viewed' -%}
-              {%- assign recently_viewed_products = product.recently_viewed | limit: block.settings.products_to_show -%}
-              {%- for product in recently_viewed_products -%}
-                <div class="swiper-slide">
-                  {% render 'card-product', product: product %}
-                </div>
-              {%- endfor -%}
-            {%- when 'featured_collection' -%}
-              {%- assign collection = collections[block.settings.collection] -%}
-              {%- for product in collection.products limit: block.settings.products_to_show -%}
-                <div class="swiper-slide">
-                  {% render 'card-product', product: product %}
-                </div>
-              {%- endfor -%}
-            {%- when 'related_products' -%}
-              {%- assign related_products = product.collections.first.products | where: "id" | is_not: product.id | limit: block.settings.products_to_show -%}
-              {%- for related_product in related_products -%}
-                <div class="swiper-slide">
-                  {% render 'card-product', product: related_product %}
-                </div>
-              {%- endfor -%}
-          {%- endcase -%}
+          <div class="swiper-wrapper">
+            {%- case block.type -%}
+              {%- when 'recently_viewed' -%}
+                {%- assign recently_viewed_products = product.recently_viewed | limit: block.settings.products_to_show -%}
+                {%- for product in recently_viewed_products -%}
+                  <div class="swiper-slide">
+                    {% render 'card-product', product: product %}
+                  </div>
+                {%- endfor -%}
+              {%- when 'featured_collection' -%}
+                {%- assign collection = collections[block.settings.collection] -%}
+                {%- for product in collection.products limit: block.settings.products_to_show -%}
+                  <div class="swiper-slide">
+                    {% render 'card-product', product: product %}
+                  </div>
+                {%- endfor -%}
+              {%- when 'related_products' -%}
+                {%- assign related_products = product.collections.first.products | where: "id" | is_not: product.id | limit: block.settings.products_to_show -%}
+                {%- for related_product in related_products -%}
+                  <div class="swiper-slide">
+                    {% render 'card-product', product: related_product %}
+                  </div>
+                {%- endfor -%}
+            {%- endcase -%}
+          </div>
+          <div class="d-flex d-xl-none sw-dot-default sw-pagination-viewed-{{ block.id }} justify-content-center"></div>
         </div>
-        <div class="d-flex d-xl-none sw-dot-default sw-pagination-viewed-{{ block.id }} justify-content-center"></div>
+        <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-viewed-{{ block.id }}"></div>
+        <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-viewed-{{ block.id }}"></div>
       </div>
-      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-viewed-{{ block.id }}"></div>
-      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-viewed-{{ block.id }}"></div>
     {%- endfor -%}
   </div>
 </section>
