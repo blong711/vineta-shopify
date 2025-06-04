@@ -227,47 +227,17 @@
     },
     "todays_picks": {
       "type": "todays-picks",
-      "blocks": {
-        "product_jbWk6R": {
-          "type": "product",
-          "settings": {
-            "product": "polo-neck-t-shirt"
-          }
-        },
-        "product_mrGJyY": {
-          "type": "product",
-          "settings": {
-            "product": "loose-fit-tee"
-          }
-        },
-        "product_LcDXVb": {
-          "type": "product",
-          "settings": {
-            "product": "crop-t-shirt"
-          }
-        },
-        "product_QGQtJk": {
-          "type": "product",
-          "settings": {
-            "product": "round-neck-cotton-t-shirt"
-          }
-        },
-        "product_9X67fV": {
-          "type": "product",
-          "settings": {
-            "product": "round-neck-boxy-t-shirt"
-          }
-        }
-      },
-      "block_order": [
-        "product_jbWk6R",
-        "product_mrGJyY",
-        "product_LcDXVb",
-        "product_QGQtJk",
-        "product_9X67fV"
-      ],
       "settings": {
         "title": "Today's Picks",
+        "product_source": "product_list",
+        "collection": "",
+        "product_list": [
+          "polo-neck-t-shirt",
+          "loose-fit-tee",
+          "crop-t-shirt",
+          "round-neck-boxy-t-shirt",
+          "round-neck-cotton-t-shirt"
+        ],
         "products_to_show": 4
       }
     },
