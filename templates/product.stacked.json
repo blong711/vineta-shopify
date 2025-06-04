@@ -15,8 +15,8 @@
         "countdown_timer_V6yRcr": {
           "type": "countdown_timer",
           "settings": {
-            "label": "Sale ends in:",
-            "metafield_key": "countdown.end_date"
+            "hurry_text": "HURRY UP!",
+            "label": "Sale ends in:"
           }
         },
         "sold_count": {
@@ -32,7 +32,10 @@
         "stock_count": {
           "type": "stock_count",
           "settings": {
-            "stock_count_text": "HURRY UP!"
+            "stock_count_text": "HURRY UP!",
+            "stock_prefix": "Only",
+            "stock_suffix": "items left!",
+            "stock_threshold": 50
           }
         },
         "variant_picker": {
@@ -73,7 +76,11 @@
         "delivery_info_HGiyGU": {
           "type": "delivery_info",
           "settings": {
+            "delivery_icon": "icon-car2",
+            "delivery_label": "Estimated delivery time:",
             "delivery_time": "3-5 days international",
+            "shipping_icon": "icon-shipping3",
+            "shipping_label": "Free shipping on",
             "free_shipping_text": "all orders over $150"
           }
         }
@@ -120,7 +127,14 @@
         "return_policies_bWH7Qn": {
           "type": "return_policies",
           "settings": {
-            "title": "Return Policies"
+            "title": "Return Policies",
+            "show_icon_1": true,
+            "show_icon_2": true,
+            "show_icon_3": true,
+            "show_icon_4": true,
+            "show_icon_5": true,
+            "show_icon_6": true,
+            "show_icon_7": true
           }
         }
       },
@@ -157,9 +171,10 @@
     "recently-viewed": {
       "type": "recently-viewed",
       "blocks": {
-        "recently_viewed": {
-          "type": "recently_viewed",
+        "featured_collection_hnnTJr": {
+          "type": "featured_collection",
           "settings": {
+            "collection": "men",
             "products_to_show": 8,
             "slides_per_view_mobile": 2,
             "slides_per_view_tablet": 3,
@@ -169,7 +184,7 @@
         }
       },
       "block_order": [
-        "recently_viewed"
+        "featured_collection_hnnTJr"
       ],
       "settings": {
         "title": "Recently Viewed"
