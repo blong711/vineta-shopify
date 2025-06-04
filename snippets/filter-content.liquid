@@ -13,12 +13,14 @@
   <div id="collections" class="collapse show">
     <ul class="list-categories current-scrollbar">
       {% for collection in collections %}
-        <li class="cate-item">
-          <a class="text-sm link" href="{{ collection.url }}">
-            <span>{{ collection.title }}</span>
-            <span class="count">({{ collection.products_count }})</span>
-          </a>
-        </li>
+        <ul class="collapse-body list-categories current-scrollbar">
+          <li class="cate-item">
+            <a class="text-sm link" href="{{ collection.url }}">
+              <span>{{ collection.title }}</span>
+              <span class="count">({{ collection.products_count }})</span>
+            </a>
+          </li>
+        </ul>
       {% endfor %}
     </ul>
                     </div>
