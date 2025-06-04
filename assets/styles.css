@@ -22866,10 +22866,10 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .banner-cls-phonecase .banner-content {
   background-color: unset;
-  border-radius: unset;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-radius: unset;
   gap: 24px;
 }
 .banner-cls-phonecase .banner-content > * {
@@ -27648,4 +27648,9 @@ prev.swiper-button-disabled {
 .blog-item-v2 .tag:hover {
   background-color: var(--primary);
   color: var(--white);
+}
+@media (min-width: 1200px) {
+  .tf-icon-box-v2 .icon {
+      font-size: 32px;
+  }
 }

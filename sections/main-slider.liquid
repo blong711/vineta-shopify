@@ -50,7 +50,7 @@
                                         {%- elsif section.settings.layout == 'layout3' -%}
                                             col-lg-5 col-md-6 col-sm-10
                                         {%- elsif section.settings.layout == 'layout4' -%}
-                                            col-lg-5 col-md-6 col-sm-10
+                                            col-lg-12 col-sm-6 col-12
                                         {%- else -%}
                                             col-lg-12 col-sm-6
                                         {%- endif -%}">
@@ -99,7 +99,7 @@
                                             <div class="box-btn-slider {% if section.settings.layout == 'layout2' %}fade-item fade-item-4{% else %}fade-item fade-item-3{% endif %} {% if section.settings.layout == 'layout2' %}text-center{% endif %}">
                                                 <a href="{{ block.settings.button_link }}" class="tf-btn {% if section.settings.layout == 'layout3' %}tf-btn btn-space1 animate-btn btn-green-2{% endif %}">
                                                     {{ block.settings.button_text }}
-                                                    <i class="icon {% if section.settings.layout == 'layout3' %}icon-arr-right3{% else %}icon-arr-right{% endif %}"></i>
+                                                    <i class="icon {% if section.settings.layout == 'layout3' %}icon-arr-right3{% elsif section.settings.layout == 'layout4' %}icon-arrow-top-left{% else %}icon-arr-right{% endif %}"></i>
                                                 </a>
                                             </div>
                                         </div>
