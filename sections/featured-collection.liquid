@@ -32,14 +32,14 @@
                 {% assign collection = collections[block.settings.collection] %}
                 <div class="swiper-slide" {{ block.shopify_attributes }}>
                     <div class="fs-cls lg hover-img">
-                        {% if collection.featured_image != blank %}
+                        {% if collection.featured_image != blank or block.settings.custom_image != blank %}
                             <div class="img-style image">
-                                <img src="{{ collection.featured_image | img_url: 'master' }}"
-                                    data-src="{{ collection.featured_image | img_url: 'master' }}" 
+                                <img src="{{ block.settings.custom_image | default: collection.featured_image | img_url: 'master' }}"
+                                    data-src="{{ block.settings.custom_image | default: collection.featured_image | img_url: 'master' }}" 
                                     alt="{{ collection.title | escape }}" 
                                     class="lazyload"
-                                    width="{{ collection.featured_image.width }}"
-                                    height="{{ collection.featured_image.height }}">
+                                    width="{{ block.settings.custom_image.width | default: collection.featured_image.width }}"
+                                    height="{{ block.settings.custom_image.height | default: collection.featured_image.height }}">
                             </div>
                         {% endif %}
                         <div class="content wow fadeInUp">
@@ -89,14 +89,14 @@
                     {% assign collection = collections[block.settings.collection] %}
                     <div class="swiper-slide" {{ block.shopify_attributes }}>
                         <div class="banner-shop hover-img style-left-center">
-                            {% if collection.featured_image != blank %}
+                            {% if collection.featured_image != blank or block.settings.custom_image != blank %}
                                 <a href="{{ collection.url }}" class="img-style d-block">
-                                    <img src="{{ collection.featured_image | img_url: 'master' }}"
-                                        data-src="{{ collection.featured_image | img_url: 'master' }}" 
+                                    <img src="{{ block.settings.custom_image | default: collection.featured_image | img_url: 'master' }}"
+                                        data-src="{{ block.settings.custom_image | default: collection.featured_image | img_url: 'master' }}" 
                                         alt="{{ collection.title | escape }}" 
                                         class="lazyload"
-                                        width="{{ collection.featured_image.width }}"
-                                        height="{{ collection.featured_image.height }}">
+                                        width="{{ block.settings.custom_image.width | default: collection.featured_image.width }}"
+                                        height="{{ block.settings.custom_image.height | default: collection.featured_image.height }}">
                                 </a>
                             {% endif %}
                             <div class="content">
@@ -164,14 +164,14 @@
                     {% assign collection = collections[block.settings.collection] %}
                     <div class="swiper-slide" {{ block.shopify_attributes }}>
                         <div class="fs-cls hover-img">
-                            {% if collection.featured_image != blank %}
+                            {% if collection.featured_image != blank or block.settings.custom_image != blank %}
                                 <div class="img-style image">
-                                    <img src="{{ collection.featured_image | img_url: 'master' }}"
-                                        data-src="{{ collection.featured_image | img_url: 'master' }}" 
+                                    <img src="{{ block.settings.custom_image | default: collection.featured_image | img_url: 'master' }}"
+                                        data-src="{{ block.settings.custom_image | default: collection.featured_image | img_url: 'master' }}" 
                                         alt="{{ collection.title | escape }}" 
                                         class="lazyload"
-                                        width="{{ collection.featured_image.width }}"
-                                        height="{{ collection.featured_image.height }}">
+                                        width="{{ block.settings.custom_image.width | default: collection.featured_image.width }}"
+                                        height="{{ block.settings.custom_image.height | default: collection.featured_image.height }}">
                                 </div>
                             {% endif %}
                             <div class="content">
@@ -224,14 +224,14 @@
                             {% assign collection = collections[block.settings.collection] %}
                             <div class="swiper-slide" {{ block.shopify_attributes }}>
                                 <div class="wg-cls style-abs asp-1 hover-img">
-                                    {% if collection.featured_image != blank %}
+                                    {% if collection.featured_image != blank or block.settings.custom_image != blank %}
                                         <a href="{{ collection.url }}" class="image img-style d-block">
-                                            <img src="{{ collection.featured_image | img_url: 'master' }}"
-                                                data-src="{{ collection.featured_image | img_url: 'master' }}" 
+                                            <img src="{{ block.settings.custom_image | default: collection.featured_image | img_url: 'master' }}"
+                                                data-src="{{ block.settings.custom_image | default: collection.featured_image | img_url: 'master' }}" 
                                                 alt="{{ collection.title | escape }}" 
                                                 class="lazyload"
-                                                width="{{ collection.featured_image.width }}"
-                                                height="{{ collection.featured_image.height }}">
+                                                width="{{ block.settings.custom_image.width | default: collection.featured_image.width }}"
+                                                height="{{ block.settings.custom_image.height | default: collection.featured_image.height }}">
                                         </a>
                                     {% endif %}
                                     <div class="cls-btn text-center">
@@ -425,6 +425,12 @@
                     "type": "collection",
                     "id": "collection",
                     "label": "Collection"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "custom_image",
+                    "label": "Custom Image",
+                    "info": "Optional: Upload a custom image instead of using the collection's featured image"
                 },
                 {
                     "type": "text",
