@@ -142,51 +142,93 @@
                 </div>
               </div>
             </div>
-          {% else %}
-            <div class="wrapper-gallery-scroll flat-single-grid{% if section.settings.layout == 'stacked' %} flat-single-stacked{% endif %}" id="gallery-started">
-              {% for media in product.media %}
-                {% case media.media_type %}
-                  {% when 'image' %}
-                    <img class="tf-image-zoom lazyload"
-                      src="{{ media | image_url: width: 800 }}"
-                      alt="{{ media.alt | default: product.title }}"
-                      width="400"
-                      height="600">
-                  {% when 'video' %}
-                    <div class="item position-relative">
-                      <video controls muted loop
-                        width="400"
-                        height="600"
-                        poster="{{ media.preview_image | image_url: width: 800 }}"
-                        {% if section.settings.enable_video_loop %}loop{% endif %}>
-                        {% for source in media.sources %}
-                          <source src="{{ source.url }}" type="{{ source.mime_type }}">
-                        {% endfor %}
-                        Your browser does not support the video tag.
-                      </video>
-                    </div>
-                  {% when 'model' %}
-                    <div class="item">
-                      <div class="tf-model-viewer">
-                        <model-viewer
-                          src="{{ media.sources[0].url }}"
-                          alt="{{ media.alt | default: product.title }}"
-                          ar
-                          camera-controls
-                          poster="{{ media.preview_image | image_url: width: 800 }}"
-                          class="tf-model-viewer-ui disabled" tabindex="1"
-                          data-js-focus-visible="" ar-status="not-presenting"
-                          >
-                        </model-viewer>
-                      </div>
-                      <div class="tf-model-viewer-ui-button">
-                        <div class="wrap-btn-viewer">
-                            <i class="icon icon-btn3d"></i>
+          {% elsif section.settings.layout == 'grid' %}
+            <div class="wrapper-gallery-scroll flat-single-grid" id="gallery-started">
+                {% for media in product.media %}
+                  <a href="{{ media | image_url: width: 800 }}" 
+                     data-scroll="{{ color | handle }}" 
+                     target="_blank" 
+                     class="item item-scroll-target" 
+                     data-pswp-width="{{ media.width }}px" 
+                     data-pswp-height="{{ media.height }}px">
+                    {% case media.media_type %}
+                      {% when 'image' %}
+                        <img class="tf-image-zoom lazyload" 
+                             data-zoom="{{ media | image_url: width: 1200 }}"
+                             data-src="{{ media | image_url: width: 400 }}"
+                             src="{{ media | image_url: width: 200 }}"
+                             alt="{{ media.alt | default: product.title }}"
+                             width="{{ media.width }}"
+                             height="{{ media.height }}">
+                      {% when 'video' %}
+                        <div class="wrap-btn-viewer style-video">
+                          <i class="icon icon-video"></i>
                         </div>
-                      </div>
-                    </div>
-                {% endcase %}
-              {% endfor %}
+                        <img class="tf-image-zoom lazyload"
+                             data-zoom="{{ media.preview_image | image_url: width: 1200 }}"
+                             data-src="{{ media.preview_image | image_url: width: 400 }}"
+                             src="{{ media.preview_image | image_url: width: 200 }}"
+                             alt="Video thumbnail"
+                             width="{{ media.preview_image.width }}"
+                             height="{{ media.preview_image.height }}">
+                      {% when 'model' %}
+                        <div class="wrap-btn-viewer">
+                          <i class="icon icon-btn3d"></i>
+                        </div>
+                        <img class="tf-image-zoom lazyload"
+                             data-zoom="{{ media.preview_image | image_url: width: 1200 }}"
+                             data-src="{{ media.preview_image | image_url: width: 400 }}"
+                             src="{{ media.preview_image | image_url: width: 200 }}"
+                             alt="3D model thumbnail"
+                             width="{{ media.preview_image.width }}"
+                             height="{{ media.preview_image.height }}">
+                    {% endcase %}
+                  </a>
+                {% endfor %}
+            </div>
+          {% elsif section.settings.layout == 'stacked' %}
+            <div class="wrapper-gallery-scroll flat-single-grid flat-single-stacked" id="gallery-started">
+                {% for media in product.media %}
+                  <a href="{{ media | image_url: width: 800 }}" 
+                     data-scroll="{{ color | handle }}" 
+                     target="_blank" 
+                     class="item item-scroll-target" 
+                     data-pswp-width="{{ media.width }}px" 
+                     data-pswp-height="{{ media.height }}px">
+                    {% case media.media_type %}
+                      {% when 'image' %}
+                        <img class="tf-image-zoom lazyload" 
+                             data-zoom="{{ media | image_url: width: 1200 }}"
+                             data-src="{{ media | image_url: width: 400 }}"
+                             src="{{ media | image_url: width: 200 }}"
+                             alt="{{ media.alt | default: product.title }}"
+                             width="{{ media.width }}"
+                             height="{{ media.height }}">
+                      {% when 'video' %}
+                        <div class="wrap-btn-viewer style-video">
+                          <i class="icon icon-video"></i>
+                        </div>
+                        <img class="tf-image-zoom lazyload"
+                             data-zoom="{{ media.preview_image | image_url: width: 1200 }}"
+                             data-src="{{ media.preview_image | image_url: width: 400 }}"
+                             src="{{ media.preview_image | image_url: width: 200 }}"
+                             alt="Video thumbnail"
+                             width="{{ media.preview_image.width }}"
+                             height="{{ media.preview_image.height }}">
+                      {% when 'model' %}
+                        <div class="wrap-btn-viewer">
+                          <i class="icon icon-btn3d"></i>
+                        </div>
+                        <img class="tf-image-zoom lazyload"
+                             data-zoom="{{ media.preview_image | image_url: width: 1200 }}"
+                             data-src="{{ media.preview_image | image_url: width: 400 }}"
+                             src="{{ media.preview_image | image_url: width: 200 }}"
+                             alt="3D model thumbnail"
+                             width="{{ media.preview_image.width }}"
+                             height="{{ media.preview_image.height }}">
+                    {% endcase %}
+                  </a>
+                {% endfor %}
             </div>
           {% endif %}
         </div>
