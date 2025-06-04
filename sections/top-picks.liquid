@@ -45,45 +45,79 @@
                     }
                 }'>
                 <div class="swiper-wrapper wow fadeInUp">
-                    {% for block in section.blocks %}
-                        {% if block.type == 'product' %}
-                            {% assign product = all_products[block.settings.product] %}
-                            <div class="swiper-slide" {{ block.shopify_attributes }}>
+                    {%- if section.settings.product_source == 'collection' and section.settings.collection != blank -%}
+                        {%- for product in section.settings.collection.products limit: 12 -%}
+                            <div class="swiper-slide">
                                 {% if layout == 'default' %}
                                     {% render 'card-product',
                                         product: product,
-                                        countdown_timer: block.settings.countdown_timer,
-                                        available_quantity: block.settings.available_quantity,
-                                        sold_percentage: block.settings.sold_percentage,
+                                        show_sale_badge: section.settings.show_sale_badge,
+                                        sale_badge_text: section.settings.sale_badge_text,
                                         product-info: 'text-center',
-                                        show_color_swatches: block.settings.show_color_swatches,
-                                        show_size_swatches: block.settings.show_size_swatches,
-                                        show_case_type: block.settings.show_case_type,
-                                        size_swatches: block.settings.size_swatches,
+                                        show_color_swatches: section.settings.show_color_swatches,
+                                        show_size_swatches: section.settings.show_size_swatches,
+                                        show_case_type: section.settings.show_case_type,
+                                        size_swatches: section.settings.size_swatches
                                     %}
                                 {% elsif layout == 'home-phonecase' %}
                                     {% render 'card-product',
                                         product: product,
-                                        show_sale_badge: block.settings.show_sale_badge,
-                                        sale_badge_text: block.settings.sale_badge_text,
-                                        show_color_swatches: block.settings.show_color_swatches,
-                                        show_size_swatches: block.settings.show_size_swatches,
-                                        show_case_type: block.settings.show_case_type,
-                                        size_swatches: block.settings.size_swatches,
+                                        show_sale_badge: section.settings.show_sale_badge,
+                                        sale_badge_text: section.settings.sale_badge_text,
+                                        show_color_swatches: section.settings.show_color_swatches,
+                                        show_size_swatches: section.settings.show_size_swatches,
+                                        show_case_type: section.settings.show_case_type,
+                                        size_swatches: section.settings.size_swatches
                                     %}
                                 {% else %}
                                     {% render 'card-product',
                                         product: product,
-                                        show_sale_badge: block.settings.show_sale_badge,
-                                        sale_badge_text: block.settings.sale_badge_text,
-                                        show_color_swatches: block.settings.show_color_swatches,
-                                        show_size_swatches: block.settings.show_size_swatches,
-                                        size_swatches: block.settings.size_swatches
+                                        show_sale_badge: section.settings.show_sale_badge,
+                                        sale_badge_text: section.settings.sale_badge_text,
+                                        show_color_swatches: section.settings.show_color_swatches,
+                                        show_size_swatches: section.settings.show_size_swatches,
+                                        size_swatches: section.settings.size_swatches
                                     %}
                                 {% endif %}
                             </div>
-                        {% endif %}
-                    {% endfor %}
+                        {%- endfor -%}
+                    {%- elsif section.settings.product_source == 'product_list' and section.settings.product_list != blank -%}
+                        {%- for product in section.settings.product_list -%}
+                            <div class="swiper-slide">
+                                {% if layout == 'default' %}
+                                    {% render 'card-product',
+                                        product: product,
+                                        show_sale_badge: section.settings.show_sale_badge,
+                                        sale_badge_text: section.settings.sale_badge_text,
+                                        product-info: 'text-center',
+                                        show_color_swatches: section.settings.show_color_swatches,
+                                        show_size_swatches: section.settings.show_size_swatches,
+                                        show_case_type: section.settings.show_case_type,
+                                        size_swatches: section.settings.size_swatches
+                                    %}
+                                {% elsif layout == 'home-phonecase' %}
+                                    {% render 'card-product',
+                                        product: product,
+                                        show_sale_badge: section.settings.show_sale_badge,
+                                        sale_badge_text: section.settings.sale_badge_text,
+                                        show_color_swatches: section.settings.show_color_swatches,
+                                        show_size_swatches: section.settings.show_size_swatches,
+                                        show_case_type: section.settings.show_case_type,
+                                        size_swatches: section.settings.size_swatches
+                                    %}
+                                {% else %}
+                                    {% render 'card-product',
+                                        product: product,
+                                        show_sale_badge: section.settings.show_sale_badge,
+                                        sale_badge_text: section.settings.sale_badge_text,
+                                        show_color_swatches: section.settings.show_color_swatches,
+                                        show_size_swatches: section.settings.show_size_swatches,
+                                        size_swatches: section.settings.size_swatches
+                                    %}
+                                {% endif %}
+                            </div>
+                        {%- endfor -%}
+                    {%- endif -%}
                 </div>
                 {% if layout == 'home-phonecase' %}
                 <div class="sw-pagination-top-pick position-relative"></div>
@@ -144,6 +178,35 @@
         },
         {
             "type": "select",
+            "id": "product_source",
+            "label": "Product Source",
+            "options": [
+                {
+                    "value": "collection",
+                    "label": "Collection"
+                },
+                {
+                    "value": "product_list",
+                    "label": "Product List"
+                }
+            ],
+            "default": "collection"
+        },
+        {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection",
+            "info": "Select a collection to display its products"
+        },
+        {
+            "type": "product_list",
+            "id": "product_list",
+            "label": "Product List",
+            "info": "Select products to display",
+            "limit": 12
+        },
+        {
+            "type": "select",
             "id": "spacing",
             "label": "Section Spacing",
             "options": [
@@ -194,6 +257,43 @@
             "id": "view_all_text",
             "label": "View All Text",
             "default": "View all"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_sale_badge",
+            "label": "Show Sale Badge",
+            "default": false
+        },
+        {
+            "type": "text",
+            "id": "sale_badge_text",
+            "label": "Sale Badge Text",
+            "default": "Sale"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_color_swatches",
+            "label": "Show Color Swatches",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_size_swatches",
+            "label": "Show Size Swatches",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "show_case_type",
+            "label": "Show Case Type",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "size_swatches",
+            "label": "Size Swatches",
+            "info": "Comma-separated list of sizes",
+            "default": "S,M,L,XL"
         }
     ],
     "blocks": [
@@ -208,18 +308,6 @@
                 },
                 {
                     "type": "checkbox",
-                    "id": "show_sale_badge",
-                    "label": "Show Sale Badge",
-                    "default": false
-                },
-                {
-                    "type": "text",
-                    "id": "sale_badge_text",
-                    "label": "Sale Badge Text",
-                    "default": "Sale"
-                },
-                {
-                    "type": "checkbox",
                     "id": "show_trending_badge",
                     "label": "Show Trending Badge",
                     "default": false
@@ -229,31 +317,6 @@
                     "id": "trending_badge_text",
                     "label": "Trending Badge Text",
                     "default": "Trending"
-                },
-                {
-                    "type": "checkbox",
-                    "id": "show_color_swatches",
-                    "label": "Show Color Swatches",
-                    "default": true
-                },
-                {
-                    "type": "checkbox",
-                    "id": "show_size_swatches",
-                    "label": "Show Size Swatches",
-                    "default": false
-                },
-                {
-                    "type": "checkbox",
-                    "id": "show_case_type",
-                    "label": "Show Case Type",
-                    "default": true
-                },
-                {
-                    "type": "text",
-                    "id": "size_swatches",
-                    "label": "Size Swatches",
-                    "info": "Comma-separated list of sizes",
-                    "default": "S,M,L,XL"
                 },
                 {
                     "type": "checkbox",
