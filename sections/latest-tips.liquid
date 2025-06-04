@@ -113,27 +113,56 @@
         <div class="swiper-wrapper">
           {%- for block in section.blocks -%}
             <div class="swiper-slide" {{ block.shopify_attributes }}>
-              <div class="news-item hover-img">
-                <a href="{{ block.settings.link }}" class="image-box img-style">
-                  {%- if block.settings.image != blank -%}
-                    {{ block.settings.image | image_url: width: 600 | image_tag:
-                      loading: 'lazy',
-                      width: 600,
-                      height: 400,
-                      class: 'lazyload',
-                      alt: block.settings.title
-                    }}
-                  {%- else -%}
-                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                  {%- endif -%}
-                </a>
-                <div class="content">
-                  <a href="{{ block.settings.link }}" class="title fw-medium link text-xl text-line-clamp-2">
-                    {{ block.settings.title }}
+              <div class="blog-item-v2">
+                <div class="entry-image hover-img">
+                  <a href="{{ block.settings.link }}" class="image-box img-style">
+                    {%- if block.settings.image != blank -%}
+                      {{ block.settings.image | image_url: width: 600 | image_tag:
+                        loading: 'lazy',
+                        width: 600,
+                        height: 400,
+                        class: 'lazyload',
+                        alt: block.settings.title
+                      }}
+                    {%- else -%}
+                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
                   </a>
+                  {% if block.settings.tags != blank %}
+                    {% assign tags = block.settings.tags | split: ',' %}
+                    <div class="entry-tag">
+                      {% for tag in tags %}
+                        <span class="tag">{{ tag | strip }}</span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="entry-content">
+                  <div class="info-box">
+                    <ul class="meta-list">
+                      {% if block.settings.author != blank %}
+                        <li class="item">by {{ block.settings.author }}</li>
+                      {% endif %}
+                      {% if block.settings.date != blank %}
+                        <li class="item">{{ block.settings.date }}</li>
+                      {% endif %}
+                      {% if block.settings.comments != blank %}
+                        <li class="item">{{ block.settings.comments }}</li>
+                      {% endif %}
+                    </ul>
+                    <a href="{{ block.settings.link }}" class="title fw-medium link text-xl text-line-clamp-2">
+                      {{ block.settings.title }}
+                    </a>
+                    {% if block.settings.description != blank %}
+                      <p class="desc text-main text-sm text-line-clamp-2">
+                        {{ block.settings.description }}
+                      </p>
+                    {% endif %}
+                  </div>
                   <a href="{{ block.settings.link }}" class="btn-readmore link">
                     {{ block.settings.read_more_text }} <i class="icon icon-arr-right"></i>
                   </a>
+                  
                 </div>
               </div>
             </div>
