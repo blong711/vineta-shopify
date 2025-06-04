@@ -17261,9 +17261,9 @@ button.animate-btn::after,
   flex-grow: 1;
 }
 .tf-product-info-wrap .tf-product-total-quantity .wg-quantity .quantity-product,
-.tf-product-info-wrap .tf-product-total-quantity .wg-quantity .btn-quantity {
+/* .tf-product-info-wrap .tf-product-total-quantity .wg-quantity .btn-quantity {
   height: 50px;
-}
+} */
 .tf-product-info-wrap .tf-product-total-quantity .tf-btn {
   text-transform: none;
 }
@@ -27660,4 +27660,21 @@ prev.swiper-button-disabled {
 ;
   align-items: center;
   justify-content: space-between;
+}
+@media (min-width: 992px) {
+  .wg-quantity .quantity-product, .wg-quantity .btn-quantity {
+      height: 48px;
+  }
+}
+@media (min-width: 768px) {
+  .wg-quantity .quantity-product, .wg-quantity .btn-quantity {
+      height: 46px;
+  }
+}
+@media (max-width: 767px) {
+  .tf-btn {
+      font-size: 14px;
+      line-height: 24px;
+      padding: 8px 20px;
+  }
 }
