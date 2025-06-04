@@ -27156,6 +27156,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   display: grid;
   max-width: 560px;
   margin: auto;
+  gap: 12px;
 }
 .tf-page-title .breadcrumb-list {
   justify-content: center;
@@ -27682,4 +27683,72 @@ prev.swiper-button-disabled {
   display: grid
 ;
   gap: 24px;
+}
+.tf-product-info-wrap .product-stock .out-of-stock {
+  background-color: rgba(37, 37, 37, 0.1);
+  color: #252525;
+}
+@media (min-width: 1200px) {
+  .tf-product-info-wrap .product-stock .stock {
+      margin-right: 14px;
+  }
+}
+@media (min-width: 1200px) {
+  .form-out-stock {
+      padding: 48px;
+      gap: 32px;
+  }
+}
+@media (min-width: 768px) {
+  .form-out-stock {
+      padding: 30px;
+  }
+}
+.form-out-stock {
+  border-radius: 10px;
+  border: 1px solid var(--dark);
+  padding: 30px 15px;
+  display: grid
+;
+  gap: 24px;
+}
+@media (min-width: 1200px) {
+  .form-out-stock .box-title-out-stock {
+      gap: 24px;
+  }
+}
+.form-out-stock .box-title-out-stock {
+  display: grid
+;
+  gap: 12px;
+}
+.form-out-stock .group-form-field {
+  display: grid
+;
+  gap: 15px;
+}
+.tf-field {
+  position: relative;
+}
+.tf-field.style-3 .tf-input {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.tf-field.style-2 .tf-input {
+  padding: 24px 20px 6px;
+  height: 50px;
+}
+.tf-field.style-3 .tf-field-label {
+  left: 12px;
+}
+.tf-field .tf-field-label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 20px;
+  transition: all 0.1s ease;
+  cursor: text;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(102, 112, 133, 0.8);
 }

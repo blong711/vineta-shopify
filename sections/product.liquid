@@ -268,7 +268,7 @@
                             {{ sold_count_text }}
                           </span>
                         {% else %}
-                          <span class="stock out-of-stock">{{ block.settings.out_of_stock_text }}</span>
+                          <span style="font-size: 14px" class="stock out-of-stock">{{ block.settings.out_of_stock_text }}</span>
                         {% endif %}
                       </div>
                     {% when 'stock_count' %}
@@ -406,21 +406,44 @@
               </div>
 
               <div class="tf-product-total-quantity">
-                <div class="group-btn">
-                  <div class="wg-quantity">
-                    <button class="btn-quantity minus-btn">-</button>
-                    <input class="quantity-product font-4" type="text" name="number" value="1" min="1">
-                    <button class="btn-quantity plus-btn">+</button>
+                {% if product.available %}
+                  <div class="group-btn">
+                    <div class="wg-quantity">
+                      <button class="btn-quantity minus-btn">-</button>
+                      <input class="quantity-product font-4" type="text" name="number" value="1" min="1">
+                      <button class="btn-quantity plus-btn">+</button>
+                    </div>
+                    <a href="javascript:void(0);" 
+                       class="tf-btn hover-primary add-to-cart" 
+                       data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                       data-quantity="1"
+                       aria-label="Add to cart">Add to cart</a>
                   </div>
-                  <a href="javascript:void(0);" 
-                     class="tf-btn hover-primary add-to-cart" 
-                     data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-                     data-quantity="1"
-                     aria-label="Add to cart">Add to cart</a>
-                </div>
-                <a href="#" class="tf-btn btn-primary w-100 animate-btn">Buy it now</a>
-                <a href="/checkout" style="font-size: 14px" class="more-choose-payment link">More payment options</a>
+                  <a href="#" class="tf-btn btn-primary w-100 animate-btn">Buy it now</a>
+                  <a href="/checkout" style="font-size: 14px" class="more-choose-payment link">More payment options</a>
+                {% else %}
+                  <button class="tf-btn btn-out-stock w-100">This product is currently unavailable</button>
+                {% endif %}
               </div>
+              {% unless product.available %}
+                <form class="form-out-stock" action="#">
+                  <div class="box-title-out-stock">
+                    <div class="text-xl fw-medium">Notify me when it back in stock</div>
+                    <p class="text-md text-main">Enter your email address to be notified if the product becomes available again.</p>
+                  </div>
+                  <div class="group-form-field">
+                    <div class="tf-field style-2 style-3">
+                      <input class="tf-field-input tf-input" id="name" placeholder=" " type="text" name="name">
+                      <label class="tf-field-label" for="name">Name</label>
+                    </div>
+                    <div class="tf-field style-2 style-3">
+                      <input class="tf-field-input tf-input" id="email" placeholder=" " type="email" name="email">
+                      <label class="tf-field-label" for="email">Email</label>
+                    </div>
+                  </div>
+                  <button class="tf-btn animate-btn">Submit</button>
+                </form>
+              {% endunless %}
 
               {% for block in section.blocks %}
                 {% case block.type %}
