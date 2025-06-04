@@ -33,16 +33,29 @@
           }
         }'>
         <div class="swiper-wrapper">
-          {%- for block in section.blocks -%}
-            <div class="swiper-slide" {{ block.shopify_attributes }}>
-              {% render 'card-product',
-                product: block.settings.product,
-                show_sale_badge: true,
-                show_color_swatches: true,
-                selected_variant: block.settings.product.selected_or_first_available_variant
-              %}
-            </div>
-          {%- endfor -%}
+          {%- if section.settings.product_source == 'collection' and section.settings.collection != blank -%}
+            {%- for product in section.settings.collection.products limit: 12 -%}
+              <div class="swiper-slide">
+                {% render 'card-product',
+                  product: product,
+                  show_sale_badge: true,
+                  show_color_swatches: true,
+                  selected_variant: product.selected_or_first_available_variant
+                %}
+              </div>
+            {%- endfor -%}
+          {%- elsif section.settings.product_source == 'product_list' and section.settings.product_list != blank -%}
+            {%- for product in section.settings.product_list -%}
+              <div class="swiper-slide">
+                {% render 'card-product',
+                  product: product,
+                  show_sale_badge: true,
+                  show_color_swatches: true,
+                  selected_variant: product.selected_or_first_available_variant
+                %}
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
         </div>
         <div class="d-flex d-xl-none sw-dot-default sw-pagination-seller justify-content-center"></div>
       </div>
@@ -63,6 +76,35 @@
       "default": "Best Sellers"
     },
     {
+      "type": "select",
+      "id": "product_source",
+      "label": "Product Source",
+      "options": [
+        {
+          "value": "collection",
+          "label": "Collection"
+        },
+        {
+          "value": "product_list",
+          "label": "Product List"
+        }
+      ],
+      "default": "collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Select a collection to display its products"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Product List",
+      "info": "Select products to display",
+      "limit": 12
+    },
+    {
       "type": "range",
       "id": "products_to_show",
       "min": 2,
@@ -73,41 +115,13 @@
       "info": "Number of products visible in the slider at the same time"
     }
   ],
-  "max_blocks": 12,
-  "blocks": [
-    {
-      "type": "product",
-      "name": "Product",
-      "settings": [
-        {
-          "type": "product",
-          "id": "product",
-          "label": "Product"
-        }
-      ]
-    }
-  ],
   "presets": [
     {
       "name": "Best Sellers",
       "settings": {
         "section_title": "Best Sellers",
         "products_to_show": 4
-      },
-      "blocks": [
-        {
-          "type": "product"
-        },
-        {
-          "type": "product"
-        },
-        {
-          "type": "product"
-        },
-        {
-          "type": "product"
-        }
-      ]
+      }
     }
   ]
 }
