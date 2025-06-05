@@ -605,8 +605,9 @@
           }
         }
 
-        // Only update URL if not using infinite scroll
-        if (!document.querySelector('[data-pagination-type="infinite_scroll"]')) {
+        // Only update URL for regular pagination
+        const paginationType = document.querySelector('.wrapper-control-shop').dataset.paginationType;
+        if (paginationType === 'pagination') {
           window.history.pushState({}, '', url.toString());
         }
 
