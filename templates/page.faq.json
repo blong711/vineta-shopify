@@ -1,22 +1,28 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "breadcrumb": {
-      "type": "breadcrumb"
+      "type": "breadcrumb",
+      "settings": {
+        "show_breadcrumb": true
+      }
     },
     "page_title": {
-      "type": "page-title"
+      "type": "page-title",
+      "settings": {
+        "background_image": "shopify://shop_images/page-title_1.jpg"
+      }
     },
     "faq": {
       "type": "faq",
-      "settings": {
-        "contact_title": "Contact Us",
-        "contact_text_1": "If you have an issue or question that requires immediate assistance, you can click the button below to chat live with a Customer Service representative.",
-        "contact_text_2": "Please allow 06 - 12 business days from the time your package arrives back to us for a refund to be issued.",
-        "contact_button_text": "Contact us",
-        "contact_button_link": "/pages/contact-us",
-        "chat_button_text": "Chat with us",
-        "chat_button_link": "#"
-      },
       "blocks": {
         "shopping": {
           "type": "faq_category",
@@ -65,7 +71,16 @@
         "shopping",
         "payment",
         "returns"
-      ]
+      ],
+      "settings": {
+        "contact_title": "Contact Us",
+        "contact_text_1": "If you have an issue or question that requires immediate assistance, you can click the button below to chat live with a Customer Service representative.",
+        "contact_text_2": "Please allow 06 - 12 business days from the time your package arrives back to us for a refund to be issued.",
+        "contact_button_text": "Contact us",
+        "contact_button_link": "/pages/contact-us",
+        "chat_button_text": "Chat with us",
+        "chat_button_link": "#"
+      }
     }
   },
   "order": [
