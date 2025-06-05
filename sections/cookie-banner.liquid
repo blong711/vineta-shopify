@@ -82,9 +82,11 @@
       </div>
     </div>
   </div>
+{% endif %}
 
-  {% javascript %}
-    document.addEventListener('DOMContentLoaded', function() {
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', function() {
+    {% if section.settings.enable_cookie_banner %}
       const cookieBanner = document.getElementById('cookie-banner');
       const acceptButton = document.getElementById('accept-cookie');
       const cookieName = 'cookie_consent';
@@ -117,6 +119,6 @@
           cookieBanner.style.display = 'none';
         });
       }
-    });
-  {% endjavascript %}
-{% endif %}
+    {% endif %}
+  });
+{% endjavascript %}
