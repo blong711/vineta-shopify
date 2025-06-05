@@ -47,37 +47,53 @@
         <div class="col-md-6">
           {% if section.settings.layout == 'default' %}
             <div class="tf-product-media-wrap sticky-top">
-              <div class="thumbs-slider">
-                <div dir="ltr" class="swiper tf-product-media-thumbs other-image-zoom" data-preview="4" data-direction="vertical">
+              <div class="thumbs-slider" id="gallery-started">
+                <div dir="ltr" class="swiper tf-product-media-thumbs" data-preview="4"
+                  data-direction="vertical">
                   <div class="swiper-wrapper stagger-wrap">
                     {% for media in product.media %}
                       <div class="swiper-slide stagger-item" data-media-type="{{ media.media_type }}" data-media-id="{{ media.id }}">
                         <div class="item position-relative">
                           {% case media.media_type %}
                             {% when 'image' %}
-                              <img class="tf-image-zoom lazyload"
-                                src="{{ media | image_url: width: 100 }}"
-                                alt="{{ media.alt | default: product.title }}"
-                                width="100"
-                                height="150">
+                              <a href="{{ media | image_url: width: 1200 }}" 
+                                 class="tf-image-zoom" 
+                                 data-pswp-width="{{ media.width }}px" 
+                                 data-pswp-height="{{ media.height }}px">
+                                <img class="lazyload"
+                                  src="{{ media | image_url: width: 100 }}"
+                                  alt="{{ media.alt | default: product.title }}"
+                                  width="100"
+                                  height="150">
+                              </a>
                             {% when 'video' %}
                               <div class="wrap-btn-viewer style-video">
                                 <i class="icon icon-video"></i>
                               </div>
-                              <img class="tf-image-zoom lazyload"
-                                src="{{ media.preview_image | image_url: width: 100 }}"
-                                alt="Video thumbnail"
-                                width="100"
-                                height="150">
+                              <a href="{{ media.preview_image | image_url: width: 1200 }}" 
+                                 class="tf-image-zoom" 
+                                 data-pswp-width="{{ media.preview_image.width }}px" 
+                                 data-pswp-height="{{ media.preview_image.height }}px">
+                                <img class="lazyload"
+                                  src="{{ media.preview_image | image_url: width: 100 }}"
+                                  alt="Video thumbnail"
+                                  width="100"
+                                  height="150">
+                              </a>
                             {% when 'model' %}
                               <div class="wrap-btn-viewer">
                                 <i class="icon icon-btn3d"></i>
                               </div>
-                              <img class="tf-image-zoom lazyload"
-                                src="{{ media.preview_image | image_url: width: 100 }}"
-                                alt="3D model thumbnail"
-                                width="100"
-                                height="150">
+                              <a href="{{ media.preview_image | image_url: width: 1200 }}" 
+                                 class="tf-image-zoom" 
+                                 data-pswp-width="{{ media.preview_image.width }}px" 
+                                 data-pswp-height="{{ media.preview_image.height }}px">
+                                <img class="lazyload"
+                                  src="{{ media.preview_image | image_url: width: 100 }}"
+                                  alt="3D model thumbnail"
+                                  width="100"
+                                  height="150">
+                              </a>
                           {% endcase %}
                         </div>
                       </div>
@@ -327,61 +343,30 @@
               {% endfor %}
               <!-- End Countdown Timer Block -->
               </div>
+
               <div class="tf-product-info-variant">
-                {% unless product.has_only_default_variant %}
-                  {% for block in section.blocks %}
-                    {% if block.type == 'variant_picker' %}
-                      {% for option in product.options_with_values %}
-                        <div class="variant-picker-item variant-{{ option.name | handle }}">
-                          <div class="variant-picker-label">
-                            <div>
-                              {{ option.name }}:
-                              <span class="variant-picker-label-value value-current{{ option.name }}">{{ option.selected_value }}</span>
-                            </div>
-                            {% if option.name == 'Size' %}
-                              {% for block2 in section.blocks %}
-                                {% if block2.type == 'size_guide' %}
-                                  <a href="#sizeGuide" data-bs-toggle="modal" class="size-guide link" {{ block2.shopify_attributes }}>{{ block2.settings.size_guide_text }}</a>
+                  {% if product.metafields.affiliate.url %}
+                    <a href="{{ product.metafields.affiliate.url }}" class="tf-btn w-100 animate-btn">{{ product.metafields.affiliate.button_text | default: 'Buy on Amazon' }}</a>
+                  {% else %}
+                    {% unless product.has_only_default_variant %}
+                      {% for block in section.blocks %}
+                        {% if block.type == 'variant_picker' %}
+                          {% for option in product.options_with_values %}
+                            <div class="variant-picker-item variant-{{ option.name | handle }}">
+                              <div class="variant-picker-label">
+                                <div>
+                                  {{ option.name }}:
+                                  <span class="variant-picker-label-value value-current{{ option.name }}">{{ option.selected_value }}</span>
+                                </div>
+                                {% if option.name == 'Size' %}
+                                  {% for block2 in section.blocks %}
+                                    {% if block2.type == 'size_guide' %}
+                                      <a href="#sizeGuide" data-bs-toggle="modal" class="size-guide link" {{ block2.shopify_attributes }}>{{ block2.settings.size_guide_text }}</a>
+                                    {% endif %}
+                                  {% endfor %}
                                 {% endif %}
-                              {% endfor %}
-                            {% endif %}
-                          </div>
-                          {% if block.settings.color_selector_type == 'dropdown' and option.name == 'Color' or block.settings.color_selector_type == 'dropdown' and option.name == 'Size' %}
-                            <div class="tf-variant-dropdown full" data-bs-toggle="dropdown">
-                              <div class="btn-select">
-                                <span class="text-sort-value value-current{{ option.name }}">{{ option.selected_value }}</span>
-                                <span class="icon icon-arrow-down"></span>
                               </div>
-                              <div class="dropdown-menu">
-                                {% for value in option.values %}
-                                  <div class="select-item{% if value == option.selected_value %} active{% endif %}"
-                                       data-value="{{ value | handle }}"
-                                       {% if option.name == 'Color' %} data-color="{{ value | handle }}"{% endif %}>
-                                    <span class="text-value-item">{{ value }}</span>
-                                  </div>
-                                {% endfor %}
-                              </div>
-                            </div>
-                          {% else %}
-                            <div class="variant-picker-values">
-                              {% if option.name == 'Color' %}
-                                {% for value in option.values %}
-                                  <div class="hover-tooltip tooltip-bot color-btn btn-scroll-target color-size-{{ block.settings.color_selector_size }}{% if value == option.selected_value %} active{% endif %}"
-                                       data-scroll="{{ value | handle }}"
-                                       data-option="{{ option.name | handle }}"
-                                       data-value="{{ value | handle }}">
-                                    <span class="check-color bg-{{ value | handle }}"></span>
-                                    <span class="tooltip">{{ value }}</span>
-                                  </div>
-                                {% endfor %}
-                              {% elsif option.name == 'Size' %}
-                                {% for value in option.values %}
-                                  <span class="size-btn{% if value == option.selected_value %} active{% endif %}"
-                                        data-size="{{ value | handle }}"
-                                        data-option="{{ option.name | handle }}"
-                                        data-value="{{ value | handle }}">{{ value }}</span>
-                                {% endfor %}
-                              {% else %}
+                              {% if block.settings.color_selector_type == 'dropdown' and option.name == 'Color' or block.settings.color_selector_type == 'dropdown' and option.name == 'Size' %}
                                 <div class="tf-variant-dropdown full" data-bs-toggle="dropdown">
                                   <div class="btn-select">
                                     <span class="text-sort-value value-current{{ option.name }}">{{ option.selected_value }}</span>
@@ -389,38 +374,75 @@
                                   </div>
                                   <div class="dropdown-menu">
                                     {% for value in option.values %}
-                                      <div class="select-item{% if value == option.selected_value %} active{% endif %}" data-value="{{ value | handle }}">
+                                      <div class="select-item{% if value == option.selected_value %} active{% endif %}"
+                                          data-value="{{ value | handle }}"
+                                          {% if option.name == 'Color' %} data-color="{{ value | handle }}"{% endif %}>
                                         <span class="text-value-item">{{ value }}</span>
                                       </div>
                                     {% endfor %}
                                   </div>
                                 </div>
+                              {% else %}
+                                <div class="variant-picker-values">
+                                  {% if option.name == 'Color' %}
+                                    {% for value in option.values %}
+                                      <div class="hover-tooltip tooltip-bot color-btn btn-scroll-target color-size-{{ block.settings.color_selector_size }}{% if value == option.selected_value %} active{% endif %}"
+                                          data-scroll="{{ value | handle }}"
+                                          data-option="{{ option.name | handle }}"
+                                          data-value="{{ value | handle }}">
+                                        <span class="check-color bg-{{ value | handle }}"></span>
+                                        <span class="tooltip">{{ value }}</span>
+                                      </div>
+                                    {% endfor %}
+                                  {% elsif option.name == 'Size' %}
+                                    {% for value in option.values %}
+                                      <span class="size-btn{% if value == option.selected_value %} active{% endif %}"
+                                            data-size="{{ value | handle }}"
+                                            data-option="{{ option.name | handle }}"
+                                            data-value="{{ value | handle }}">{{ value }}</span>
+                                    {% endfor %}
+                                  {% else %}
+                                    <div class="tf-variant-dropdown full" data-bs-toggle="dropdown">
+                                      <div class="btn-select">
+                                        <span class="text-sort-value value-current{{ option.name }}">{{ option.selected_value }}</span>
+                                        <span class="icon icon-arrow-down"></span>
+                                      </div>
+                                      <div class="dropdown-menu">
+                                        {% for value in option.values %}
+                                          <div class="select-item{% if value == option.selected_value %} active{% endif %}" data-value="{{ value | handle }}">
+                                            <span class="text-value-item">{{ value }}</span>
+                                          </div>
+                                        {% endfor %}
+                                      </div>
+                                    </div>
+                                  {% endif %}
+                                </div>
                               {% endif %}
                             </div>
-                          {% endif %}
-                        </div>
+                          {% endfor %}
+                        {% endif %}
                       {% endfor %}
-                    {% endif %}
-                  {% endfor %}
-                {% endunless %}
+                    {% endunless %}
+                  {% endif %}
               </div>
-
               <div class="tf-product-total-quantity">
                 {% if product.available %}
-                  <div class="group-btn">
-                    <div class="wg-quantity">
-                      <button class="btn-quantity minus-btn">-</button>
-                      <input class="quantity-product font-4" type="text" name="number" value="1" min="1">
-                      <button class="btn-quantity plus-btn">+</button>
+                  {% unless product.metafields.affiliate.url %}
+                    <div class="group-btn">
+                      <div class="wg-quantity">
+                        <button class="btn-quantity minus-btn">-</button>
+                        <input class="quantity-product font-4" type="text" name="number" value="1" min="1">
+                        <button class="btn-quantity plus-btn">+</button>
+                      </div>
+                      <a href="javascript:void(0);" 
+                        class="tf-btn hover-primary add-to-cart" 
+                        data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                        data-quantity="1"
+                        aria-label="Add to cart">Add to cart</a>
                     </div>
-                    <a href="javascript:void(0);" 
-                       class="tf-btn hover-primary add-to-cart" 
-                       data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-                       data-quantity="1"
-                       aria-label="Add to cart">Add to cart</a>
-                  </div>
-                  <a href="#" class="tf-btn btn-primary w-100 animate-btn">Buy it now</a>
-                  <a href="/checkout" style="font-size: 14px" class="more-choose-payment link">More payment options</a>
+                    <a href="#" class="tf-btn btn-primary w-100 animate-btn">Buy it now</a>
+                    <a href="/checkout" style="font-size: 14px" class="more-choose-payment link">More payment options</a>
+                  {% endunless %}
                 {% else %}
                   <button class="tf-btn btn-out-stock w-100">This product is currently unavailable</button>
                 {% endif %}
