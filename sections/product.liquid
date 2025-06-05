@@ -466,9 +466,20 @@
                   <button class="tf-btn animate-btn">Submit</button>
                 </form>
               {% endunless %}
-
               {% for block in section.blocks %}
                 {% case block.type %}
+                  {% when 'pickup_available' %}
+                    <div class="tf-product-pickup-available">
+                      <span class="icon icon-fill-check-circle"></span>
+                      <div class="content">
+                          <div class="text-sm d-flex">
+                              <p class="fw-medium">Pickup available at {{ block.settings.store_name }}.</p> Usually ready
+                              in {{ block.settings.ready_time }}.
+                          </div>
+                          <a href="#pickUp" data-bs-toggle="offcanvas"
+                              class="check-availability link">{{ block.settings.check_availability_text }}</a>
+                      </div>
+                  </div>
                   {% when 'extra_links' %}
                     {% if block.settings.show_wishlist or block.settings.show_compare or block.settings.show_ask_question or block.settings.show_share %}
                       <div class="tf-product-info-extra-link" {{ block.shopify_attributes }}>
@@ -2528,6 +2539,31 @@ document.addEventListener('DOMContentLoaded', function() {
       ]
     },
     {
+      "type": "pickup_available",
+      "name": "Pickup Availability",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "store_name",
+          "label": "Store Name",
+          "default": "Sydney Store"
+        },
+        {
+          "type": "text",
+          "id": "ready_time",
+          "label": "Ready Time",
+          "default": "24 hours"
+        },
+        {
+          "type": "text",
+          "id": "check_availability_text",
+          "label": "Check Availability Text",
+          "default": "Check availability other stores"
+        }
+      ]
+    },
+    {
       "type": "countdown_timer",
       "name": "Countdown Timer",
       "limit": 1,
@@ -2594,6 +2630,9 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         {
           "type": "variant_picker"
+        },
+        {
+          "type": "pickup_available"
         },
         {
           "type": "countdown_timer"
