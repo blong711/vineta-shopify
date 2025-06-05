@@ -1,0 +1,122 @@
+{% schema %}
+{
+  "name": "Cookie Banner",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_cookie_banner",
+      "label": "Enable Cookie Banner",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "message",
+      "label": "Cookie Message",
+      "default": "The cookie settings on this website are set to \"allow all cookies\" to give you the very best experience. Please click Accept Cookies to continue to use the site."
+    },
+    {
+      "type": "text",
+      "id": "privacy_button_text",
+      "label": "Privacy Policy Button Text",
+      "default": "Privacy Policy"
+    },
+    {
+      "type": "url",
+      "id": "privacy_link",
+      "label": "Privacy Policy Link"
+    },
+    {
+      "type": "text",
+      "id": "accept_button_text",
+      "label": "Accept Button Text",
+      "default": "Accept Cookies"
+    },
+    {
+      "type": "select",
+      "id": "expiry_days",
+      "label": "Cookie Expiry (Days)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 day"
+        },
+        {
+          "value": "7",
+          "label": "7 days"
+        },
+        {
+          "value": "30",
+          "label": "30 days"
+        },
+        {
+          "value": "365",
+          "label": "1 year"
+        }
+      ],
+      "default": "30"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cookie Banner",
+      "category": "Popup"
+    }
+  ]
+}
+{% endschema %}
+
+{% if section.settings.enable_cookie_banner %}
+  <div class="cookie-banner" id="cookie-banner" style="display: none;">
+    <div class="overplay"></div>
+    <div class="content">
+      <p class="text-md">{{ section.settings.message }}</p>
+      <div class="button-group">
+        {% if section.settings.privacy_link %}
+          <a class="btn-out-line-white btn-submit-total tf-btn" href="{{ section.settings.privacy_link }}">
+            {{ section.settings.privacy_button_text }}
+          </a>
+        {% endif %}
+        <button id="accept-cookie" class="accept-button btn-out-line-white btn-submit-total tf-btn">
+          {{ section.settings.accept_button_text }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {% javascript %}
+    document.addEventListener('DOMContentLoaded', function() {
+      const cookieBanner = document.getElementById('cookie-banner');
+      const acceptButton = document.getElementById('accept-cookie');
+      const cookieName = 'cookie_consent';
+      const expiryDays = {{ section.settings.expiry_days }};
+
+      // Check if cookie consent was already given
+      function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+      }
+
+      // Set cookie with expiry
+      function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        const expires = `expires=${date.toUTCString()}`;
+        document.cookie = `${name}=${value};${expires};path=/`;
+      }
+
+      // Show banner if no consent cookie exists
+      if (!getCookie(cookieName)) {
+        cookieBanner.style.display = 'block';
+      }
+
+      // Handle accept button click
+      if (acceptButton) {
+        acceptButton.addEventListener('click', function() {
+          setCookie(cookieName, 'accepted', expiryDays);
+          cookieBanner.style.display = 'none';
+        });
+      }
+    });
+  {% endjavascript %}
+{% endif %}
