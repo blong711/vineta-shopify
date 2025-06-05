@@ -17247,9 +17247,9 @@ button.animate-btn::after,
   right: -8px;
   color: var(--dark);
 }
-.tf-product-info-wrap .tf-product-total-quantity {
+/* .tf-product-info-wrap .tf-product-total-quantity {
   margin-bottom: 24px;
-}
+} */
 .tf-product-info-wrap .tf-product-total-quantity .group-btn {
   margin-bottom: 12px;
   display: flex;
@@ -17293,9 +17293,9 @@ button.animate-btn::after,
 .tf-product-info-wrap .tf-product-info-extra-link .product-extra-icon .icon {
   font-size: 18px;
 }
-.tf-product-info-wrap .tf-product-info-trust-seal {
+/* .tf-product-info-wrap .tf-product-info-trust-seal {
   margin-bottom: 24px;
-}
+} */
 .tf-product-info-wrap .tf-product-info-trust-seal .list-card {
   margin-top: 12px;
   display: flex;
@@ -17330,7 +17330,7 @@ button.animate-btn::after,
 }
 .tf-product-info-wrap .tf-product-pickup-available {
   display: flex;
-  margin: 32px 0px;
+  margin: 8px 0px;
   gap: 8px;
 }
 .tf-product-info-wrap .tf-product-pickup-available .icon {
@@ -27750,4 +27750,9 @@ prev.swiper-button-disabled {
   font-size: 14px;
   line-height: 20px;
   color: rgba(102, 112, 133, 0.8);
+}
+.tf-product-info-wrap .tf-product-info-list {
+  display: grid
+;
+  gap: 24px;
 }
