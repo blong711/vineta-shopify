@@ -258,7 +258,7 @@
         </div>
     {%- endcase -%}
 
-    <div class="wrapper-control-shop">
+    <div class="wrapper-control-shop" data-pagination-type="{{ section.settings.pagination_type }}">
       <div class="meta-filter-shop">
         <div id="product-count-grid" class="count-text"></div>
         <div id="product-count-list" class="count-text"></div>
@@ -541,8 +541,12 @@
     const loadMoreListBtn = document.getElementById('loadMoreListBtn');
     const loadMoreGridBtn = document.getElementById('loadMoreGridBtn');
     let currentPage = 1;
+    let isLoading = false;
 
     async function loadMoreProducts(layout) {
+      if (isLoading) return;
+      isLoading = true;
+
       const url = new URL(window.location.href);
       currentPage++;
       url.searchParams.set('page', currentPage);
@@ -580,7 +584,51 @@
         initializeProductEvents();
       } catch (error) {
         console.error('Error loading more products:', error);
+      } finally {
+        isLoading = false;
       }
+    }
+
+    // Infinite scroll functionality
+    function initializeInfiniteScroll() {
+      const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !isLoading) {
+            const layout = listLayout.style.display === 'block' ? 'list' : 'grid';
+            loadMoreProducts(layout);
+          }
+        });
+      }, options);
+
+      // Observe the last product in the grid/list
+      function observeLastProduct() {
+        const layout = listLayout.style.display === 'block' ? listLayout : gridLayout;
+        const products = layout.querySelectorAll('.loadItem');
+        if (products.length > 0) {
+          observer.observe(products[products.length - 1]);
+        }
+      }
+
+      // Initial observation
+      observeLastProduct();
+
+      // Re-observe after new products are loaded
+      const originalLoadMoreProducts = loadMoreProducts;
+      loadMoreProducts = async function(layout) {
+        await originalLoadMoreProducts(layout);
+        observeLastProduct();
+      };
+    }
+
+    // Initialize infinite scroll if enabled
+    if (document.querySelector('[data-pagination-type="infinite_scroll"]')) {
+      initializeInfiniteScroll();
     }
 
     if (loadMoreListBtn) {
@@ -783,7 +831,7 @@
       "min": 8,
       "max": 48,
       "step": 4,
-      "default": 16
+      "default": 12
     },
     {
       "type": "select",
@@ -841,6 +889,10 @@
         {
           "value": "load_more",
           "label": "Load More"
+        },
+        {
+          "value": "infinite_scroll",
+          "label": "Infinite Scroll"
         }
       ],
       "default": "pagination"
