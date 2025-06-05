@@ -153,8 +153,8 @@
 
       {%- if section.settings.show_related_posts -%}
         <div class="related-post">
-          {% if article.previous %}
-            <a href="{{ article.previous.url }}" class="post prev">
+          {% if blog.previous_article %}
+            <a href="{{ blog.previous_article.url }}" class="post prev">
               <div class="icon">
                 <i class="icon-arr-left"></i>
               </div>
@@ -164,8 +164,8 @@
               </div>
             </a>
           {% endif %}
-          {% if article.next %}
-            <a href="{{ article.next.url }}" class="post next">
+          {% if blog.next_article %}
+            <a href="{{ blog.next_article.url }}" class="post next">
               <div class="text-wrap-right">
                 <p>NEXT POST</p>
                 <p class="name-post">{{ article.next.title }}</p>
