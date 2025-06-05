@@ -100,7 +100,7 @@
           {% paginate blog.articles by section.settings.posts_per_page %}
             {% for article in blog.articles %}
               <div class="blog-post-item hover-img">
-                <div class="entry_image blog-list-img-style">
+                <div class="entry_image {% if section.settings.layout == 'grid' %}blog-list-img-style{% endif %}">
                   <a href="{{ article.url }}" class="img-style">
                     {% if article.image %}
                       {{ article.image | image_url: width: 800 | image_tag: 
