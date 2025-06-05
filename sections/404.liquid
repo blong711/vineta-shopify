@@ -1,0 +1,65 @@
+{% schema %}
+{
+  "name": "404 Page",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "error_image",
+      "label": "404 Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Whoops!"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "We couldn't find the page you were looking for."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Return to Homepage"
+    }
+  ],
+  "presets": [
+    {
+      "name": "404 Page",
+      "category": "Page"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="flat-spacing">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="wg-404">
+          <div class="image">
+            {% if section.settings.error_image %}
+              {{ section.settings.error_image | image_url: width: 800 | image_tag: 
+                loading: 'lazy',
+                alt: '404',
+                class: 'lazyload'
+              }}
+            {% endif %}
+          </div>
+          <p class="title">
+            {{ section.settings.title }}
+          </p>
+          <p class="text-md sub text-main">{{ section.settings.subtitle }}</p>
+          <div class="bot">
+            <a href="{{ routes.root_url }}" class="tf-btn btn-fill animate-btn">
+              {{ section.settings.button_text }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> 
