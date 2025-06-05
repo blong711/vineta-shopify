@@ -61,7 +61,7 @@
             {{ section.settings.subtitle }}
           </p>
           <div class="wg-countdown">
-            <span class="js-countdown" data-timer="{{ section.settings.countdown_date | date: '%s' }}" data-labels="Days,Hours,Mins,Secs"></span>
+            <span class="js-countdown" data-date="{{ section.settings.countdown_date }}" data-labels="Days,Hours,Mins,Secs"></span>
           </div>
           <div class="form-email-wrap">
             <form action="#" class="form-newsletter" method="post" accept-charset="utf-8" data-mailchimp="true">
@@ -98,7 +98,7 @@
   document.addEventListener('DOMContentLoaded', function() {
     const countdownElement = document.querySelector('.js-countdown');
     if (countdownElement) {
-      const endDate = new Date(countdownElement.dataset.timer * 1000);
+      const endDate = new Date(countdownElement.dataset.date);
       
       function updateCountdown() {
         const now = new Date();
