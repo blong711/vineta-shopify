@@ -1,0 +1,125 @@
+{% schema %}
+{
+  "name": "Coming Soon",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Coming Soon!"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "We couldn't find the page you were looking for. We suggest you return to homepage"
+    },
+    {
+      "type": "text",
+      "id": "countdown_date",
+      "label": "Countdown Date",
+      "info": "Format: YYYY-MM-DD HH:mm:ss",
+      "default": "2024-12-31 23:59:59"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Return to Homepage"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email Input Placeholder",
+      "default": "Your email address"
+    },
+    {
+      "type": "text",
+      "id": "submit_button_text",
+      "label": "Submit Button Text",
+      "default": "Get Notify"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Coming Soon",
+      "category": "Page"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="s-coming-soon">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="wg-coming-soon">
+          <p class="title text-center">
+            {{ section.settings.title }}
+          </p>
+          <p class="text-md sub text-main text-center">
+            {{ section.settings.subtitle }}
+          </p>
+          <div class="wg-countdown">
+            <span class="js-countdown" data-timer="{{ section.settings.countdown_date | date: '%s' }}" data-labels="Days,Hours,Mins,Secs"></span>
+          </div>
+          <div class="form-email-wrap">
+            <form action="#" class="form-newsletter" method="post" accept-charset="utf-8" data-mailchimp="true">
+              <div class="subscribe-content">
+                <fieldset class="email">
+                  <input type="email" 
+                         name="email-form" 
+                         class="subscribe-email"
+                         placeholder="{{ section.settings.email_placeholder }}" 
+                         tabindex="0" 
+                         aria-required="true"
+                         required>
+                </fieldset>
+                <div class="button-submit">
+                  <button class="subscribe-button text-sm style-small" type="submit">
+                    {{ section.settings.submit_button_text }}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="bot">
+            <a href="{{ routes.root_url }}" class="tf-btn btn-fill hover-primary animate-btn">
+              {{ section.settings.button_text }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', function() {
+    const countdownElement = document.querySelector('.js-countdown');
+    if (countdownElement) {
+      const endDate = new Date(countdownElement.dataset.timer * 1000);
+      
+      function updateCountdown() {
+        const now = new Date();
+        const diff = endDate - now;
+        
+        if (diff <= 0) {
+          countdownElement.textContent = 'Time is up!';
+          return;
+        }
+        
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        
+        const labels = countdownElement.dataset.labels.split(',');
+        countdownElement.textContent = `${days} ${labels[0]}, ${hours} ${labels[1]}, ${minutes} ${labels[2]}, ${seconds} ${labels[3]}`;
+      }
+      
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    }
+  });
+{% endjavascript %} 
