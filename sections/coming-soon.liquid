@@ -61,7 +61,7 @@
             {{ section.settings.subtitle }}
           </p>
           <div class="wg-countdown">
-            <span class="js-countdown" data-date="{{ section.settings.countdown_date }}" data-labels="Days,Hours,Mins,Secs"></span>
+            <span class="js-countdown" data-countdown="{{ section.settings.countdown_date }}" data-labels="Days,Hours,Mins,Secs"></span>
           </div>
           <div class="form-email-wrap">
             <form action="#" class="form-newsletter" method="post" accept-charset="utf-8" data-mailchimp="true">
@@ -93,33 +93,3 @@
     </div>
   </div>
 </section>
-
-{% javascript %}
-  document.addEventListener('DOMContentLoaded', function() {
-    const countdownElement = document.querySelector('.js-countdown');
-    if (countdownElement) {
-      const endDate = new Date(countdownElement.dataset.date);
-      
-      function updateCountdown() {
-        const now = new Date();
-        const diff = endDate - now;
-        
-        if (diff <= 0) {
-          countdownElement.textContent = 'Time is up!';
-          return;
-        }
-        
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-        
-        const labels = countdownElement.dataset.labels.split(',');
-        countdownElement.textContent = `${days} ${labels[0]}, ${hours} ${labels[1]}, ${minutes} ${labels[2]}, ${seconds} ${labels[3]}`;
-      }
-      
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
-    }
-  });
-{% endjavascript %} 
