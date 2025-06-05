@@ -41,30 +41,6 @@
       "type": "url",
       "id": "privacy_link",
       "label": "Privacy Policy Link"
-    },
-    {
-      "type": "header",
-      "content": "Social Media Links"
-    },
-    {
-      "type": "url",
-      "id": "twitter_link",
-      "label": "Twitter Link"
-    },
-    {
-      "type": "url",
-      "id": "facebook_link",
-      "label": "Facebook Link"
-    },
-    {
-      "type": "url",
-      "id": "instagram_link",
-      "label": "Instagram Link"
-    },
-    {
-      "type": "url",
-      "id": "youtube_link",
-      "label": "YouTube Link"
     }
   ],
   "presets": [
@@ -112,30 +88,30 @@
         </form>
 
         <ul class="tf-social-icon style-default justify-content-center">
-          {% if section.settings.twitter_link %}
+          {% if settings.social_twitter_link != blank %}
             <li>
-              <a href="{{ section.settings.twitter_link }}" class="social-x">
+              <a href="{{ settings.social_twitter_link }}" class="social-x">
                 <i class="icon icon-x"></i>
               </a>
             </li>
           {% endif %}
-          {% if section.settings.facebook_link %}
+          {% if settings.social_facebook_link != blank %}
             <li>
-              <a href="{{ section.settings.facebook_link }}" class="social-facebook">
+              <a href="{{ settings.social_facebook_link }}" class="social-facebook">
                 <i class="icon icon-fb2"></i>
               </a>
             </li>
           {% endif %}
-          {% if section.settings.instagram_link %}
+          {% if settings.social_instagram_link != blank %}
             <li>
-              <a href="{{ section.settings.instagram_link }}" class="social-instagram">
+              <a href="{{ settings.social_instagram_link }}" class="social-instagram">
                 <i class="icon icon-instagram"></i>
               </a>
             </li>
           {% endif %}
-          {% if section.settings.youtube_link %}
+          {% if settings.social_youtube_link != blank %}
             <li>
-              <a href="{{ section.settings.youtube_link }}" class="social-youtube">
+              <a href="{{ settings.social_youtube_link }}" class="social-youtube">
                 <i class="icon icon-youtube"></i>
               </a>
             </li>
