@@ -361,24 +361,6 @@
               </button>
             </div>
           {% endif %}
-        {% elsif section.settings.pagination_type == 'infinite_scroll' %}
-          {% if paginate.next %}
-            <div class="wd-load d-flex justify-content-center">
-              <button id="infiniteScrollGrid" class="tf-btn btn-dark2 tf-loading animate-btn animate-dark">
-                <div class="spinner-circle">
-                  <span class="spinner-circle1 spinner-child"></span>
-                  <span class="spinner-circle2 spinner-child"></span>
-                  <span class="spinner-circle3 spinner-child"></span>
-                  <span class="spinner-circle4 spinner-child"></span>
-                  <span class="spinner-circle5 spinner-child"></span>
-                  <span class="spinner-circle6 spinner-child"></span>
-                  <span class="spinner-circle7 spinner-child"></span>
-                  <span class="spinner-circle8 spinner-child"></span>
-                  <span class="spinner-circle9 spinner-child"></span>
-                </div>
-              </button>
-            </div>
-          {% endif %}
         {% else %}
           {% if paginate.pages > 1 %}
             <ul class="wg-pagination">
@@ -707,70 +689,6 @@
         maxValue.textContent = currency + Math.round(values[1]);
       });
     }
-
-    // Handle infinite scroll functionality
-    const infiniteScrollGrid = document.getElementById('infiniteScrollGrid');
-    let isLoading = false;
-    let currentPage = 1;
-
-    async function loadMoreProductsInfinite() {
-      if (isLoading) return;
-      isLoading = true;
-
-      const url = new URL(window.location.href);
-      currentPage++;
-      url.searchParams.set('page', currentPage);
-
-      try {
-        const response = await fetch(url);
-        const html = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-
-        const newProducts = doc.querySelectorAll('.tf-grid-layout .loadItem');
-        const targetContainer = document.getElementById('gridLayout');
-        
-        newProducts.forEach(product => {
-          targetContainer.insertBefore(product, targetContainer.querySelector('.wd-load'));
-        });
-
-        // Check if there are more products to load
-        const hasNextPage = doc.querySelector('.tf-grid-layout .wd-load');
-        if (!hasNextPage) {
-          // Remove infinite scroll button if no more products
-          if (infiniteScrollGrid) {
-            infiniteScrollGrid.closest('.wd-load').remove();
-          }
-        }
-
-        // Update URL without reload
-        window.history.pushState({}, '', url.toString());
-
-        // Reinitialize any necessary event listeners
-        initializeProductEvents();
-      } catch (error) {
-        console.error('Error loading more products:', error);
-      } finally {
-        isLoading = false;
-      }
-    }
-
-    // Intersection Observer for infinite scroll
-    if (infiniteScrollGrid) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !isLoading) {
-            loadMoreProductsInfinite();
-          }
-        });
-      }, {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-      });
-
-      observer.observe(infiniteScrollGrid);
-    }
   });
 </script>
 
@@ -923,10 +841,6 @@
         {
           "value": "load_more",
           "label": "Load More"
-        },
-        {
-          "value": "infinite_scroll",
-          "label": "Infinite Scroll"
         }
       ],
       "default": "pagination"
