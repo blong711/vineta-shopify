@@ -361,7 +361,7 @@
               </button>
             </div>
           {% endif %}
-        {% else %}
+        {% elsif section.settings.pagination_type == 'pagination' %}
           {% if paginate.pages > 1 %}
             <ul class="wg-pagination">
               {% if paginate.previous %}
@@ -388,6 +388,24 @@
                 </li>
               {% endif %}
             </ul>
+          {% endif %}
+        {% else %}
+          {% if paginate.next %}
+            <div class="wd-load d-flex justify-content-center" id="infiniteScrollLoader" style="display: none;">
+              <button class="tf-btn btn-dark2 tf-loading animate-btn animate-dark">
+                <div class="spinner-circle">
+                  <span class="spinner-circle1 spinner-child"></span>
+                  <span class="spinner-circle2 spinner-child"></span>
+                  <span class="spinner-circle3 spinner-child"></span>
+                  <span class="spinner-circle4 spinner-child"></span>
+                  <span class="spinner-circle5 spinner-child"></span>
+                  <span class="spinner-circle6 spinner-child"></span>
+                  <span class="spinner-circle7 spinner-child"></span>
+                  <span class="spinner-circle8 spinner-child"></span>
+                  <span class="spinner-circle9 spinner-child"></span>
+                </div>
+              </button>
+            </div>
           {% endif %}
         {% endif %}
       </div>
@@ -547,6 +565,12 @@
       if (isLoading) return;
       isLoading = true;
 
+      // Show spinner if infinite scroll is enabled
+      const infiniteScrollLoader = document.getElementById('infiniteScrollLoader');
+      if (infiniteScrollLoader) {
+        infiniteScrollLoader.style.display = 'flex';
+      }
+
       const url = new URL(window.location.href);
       currentPage++;
       url.searchParams.set('page', currentPage);
@@ -575,10 +599,16 @@
           if (loadMoreBtn) {
             loadMoreBtn.closest('.wd-load').remove();
           }
+          // Remove infinite scroll loader if no more products
+          if (infiniteScrollLoader) {
+            infiniteScrollLoader.remove();
+          }
         }
 
-        // Update URL without reload
-        window.history.pushState({}, '', url.toString());
+        // Only update URL if not using infinite scroll
+        if (!document.querySelector('[data-pagination-type="infinite_scroll"]')) {
+          window.history.pushState({}, '', url.toString());
+        }
 
         // Reinitialize any necessary event listeners
         initializeProductEvents();
@@ -586,6 +616,10 @@
         console.error('Error loading more products:', error);
       } finally {
         isLoading = false;
+        // Hide spinner after loading is complete
+        if (infiniteScrollLoader) {
+          infiniteScrollLoader.style.display = 'none';
+        }
       }
     }
 
