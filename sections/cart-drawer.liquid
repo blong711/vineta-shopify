@@ -35,22 +35,30 @@
           </div>
           <div class="tf-mini-cart-bottom">
             <div class="tf-mini-cart-tool">
+              {% if section.settings.enable_gift_wrap %}
               <div class="tf-mini-cart-tool-btn btn-add-gift">
                 <i class="icon icon-gift2"></i>
                 <div class="text-xxs">Add gift wrap</div>
               </div>
+              {% endif %}
+              {% if section.settings.enable_order_note %}
               <div class="tf-mini-cart-tool-btn btn-add-note">
                 <i class="icon icon-note"></i>
                 <div class="text-xxs">Order note</div>
               </div>
+              {% endif %}
+              {% if section.settings.enable_coupon %}
               <div class="tf-mini-cart-tool-btn btn-coupon">
                 <i class="icon icon-coupon"></i>
                 <div class="text-xxs">Coupon</div>
               </div>
+              {% endif %}
+              {% if section.settings.enable_shipping_calculator %}
               <div class="tf-mini-cart-tool-btn btn-estimate-shipping">
                 <i class="icon icon-car"></i>
                 <div class="text-xxs">Shipping</div>
               </div>
+              {% endif %}
             </div>
             <div class="tf-mini-cart-bottom-wrap">
               <div class="tf-cart-totals-discounts">
@@ -77,11 +85,12 @@
             </div>
           </div>
         </div>
+        {% if section.settings.enable_gift_wrap %}
         <div class="tf-mini-cart-tool-openable add-gift">
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form action="/cart" method="post" class="tf-mini-cart-tool-content">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">Add gift wrap</div>
-            <div class="tf-mini-cart-tool-text1 text-dark-1">The product will be wrapped carefully. Free is only <span class="text fw-medium text-dark">$10.00</span>. Do you want a gift wrap?</div>
+            <div class="tf-mini-cart-tool-text1 text-dark-1">{{ section.settings.gift_wrap_message | replace: '$10.00', section.settings.gift_wrap_price | money }}</div>
             <input type="hidden" name="attributes[gift_wrap]" value="true">
             <div class="tf-cart-tool-btns">
               <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Save</button>
@@ -89,22 +98,26 @@
             </div>
           </form>
         </div>
+        {% endif %}
+        {% if section.settings.enable_order_note %}
         <div class="tf-mini-cart-tool-openable add-note">
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form action="/cart" method="post" class="tf-mini-cart-tool-content">
             <label for="Cart-note" class="tf-mini-cart-tool-text text-sm fw-medium">Order note</label>
-            <textarea name="note" id="Cart-note" placeholder="Instruction for seller...">{{ cart.note }}</textarea>
+            <textarea name="note" id="Cart-note" placeholder="{{ section.settings.order_note_placeholder }}">{{ cart.note }}</textarea>
             <div class="tf-cart-tool-btns">
               <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Save</button>
               <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">Close</div>
             </div>
           </form>
         </div>
+        {% endif %}
+        {% if section.settings.enable_coupon %}
         <div class="tf-mini-cart-tool-openable coupon">
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form action="/cart" method="post" class="tf-mini-cart-tool-content">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">Add coupon</div>
-            <div class="tf-mini-cart-tool-text1 text-dark-1">* Discount will be calculated and applied at checkout</div>
+            <div class="tf-mini-cart-tool-text1 text-dark-1">{{ section.settings.coupon_message }}</div>
             <input type="text" name="discount" placeholder="Enter coupon code">
             <div class="tf-cart-tool-btns">
               <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Apply Coupon</button>
@@ -112,10 +125,12 @@
             </div>
           </form>
         </div>
+        {% endif %}
+        {% if section.settings.enable_shipping_calculator %}
         <div class="tf-mini-cart-tool-openable estimate-shipping">
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form id="shipping-form" class="tf-mini-cart-tool-content" data-shipping-calculator>
-            <div class="tf-mini-cart-tool-text text-sm fw-medium">Shipping estimates</div>
+            <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ section.settings.shipping_calculator_title }}</div>
             <div class="field">
               <p class="text-sm">Country</p>
               <div class="tf-select">
@@ -142,6 +157,7 @@
             </div>
           </form>
         </div>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -167,6 +183,76 @@
       "id": "show_recommendations",
       "label": "Show product recommendations",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Gift Wrap Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_gift_wrap",
+      "label": "Enable gift wrap option",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "gift_wrap_price",
+      "label": "Gift wrap price",
+      "default": "10.00"
+    },
+    {
+      "type": "text",
+      "id": "gift_wrap_message",
+      "label": "Gift wrap message",
+      "default": "The product will be wrapped carefully. Free is only $10.00. Do you want a gift wrap?"
+    },
+    {
+      "type": "header",
+      "content": "Order Note Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_order_note",
+      "label": "Enable order note option",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "order_note_placeholder",
+      "label": "Order note placeholder text",
+      "default": "Instruction for seller..."
+    },
+    {
+      "type": "header",
+      "content": "Coupon Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_coupon",
+      "label": "Enable coupon option",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "coupon_message",
+      "label": "Coupon message",
+      "default": "* Discount will be calculated and applied at checkout"
+    },
+    {
+      "type": "header",
+      "content": "Shipping Calculator Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_shipping_calculator",
+      "label": "Enable shipping calculator",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "shipping_calculator_title",
+      "label": "Shipping calculator title",
+      "default": "Shipping estimates"
     }
   ],
   "presets": [
