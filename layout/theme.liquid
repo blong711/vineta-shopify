@@ -336,5 +336,15 @@
       {% section 'newsletter-popup' %}
       {% section 'cookie-banner' %}
     </div>
+
+    <script>
+      window.theme = {
+        settings: {
+          free_shipping_threshold: {{ settings.free_shipping_threshold | default: 10000 }},
+          progress_message: {{ settings.progress_message | json | default: '"Spend <span class=\'fw-medium\'>[amount]</span> more to get <span class=\'fw-medium\'>Free Shipping</span>"' }},
+          free_shipping_message: {{ settings.free_shipping_message | json | default: '"Congratulations! You\'ve unlocked <span class=\'fw-medium\'>Free Shipping</span>"' }}
+        }
+      };
+    </script>
   </body>
 </html> 

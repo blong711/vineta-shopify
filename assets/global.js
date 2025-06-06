@@ -1223,7 +1223,7 @@ class Cart {
    * @param {number} totalPrice - Current cart total in cents
    */
   updateShippingThreshold(totalPrice) {
-    const threshold = 100 * 100; // $100 in cents
+    const threshold = window.theme?.settings?.free_shipping_threshold || 10000; // Default to $100 if not set
     const progressBar = document.querySelector('.tf-progress-bar .value');
     if (!progressBar) return;
     
@@ -1235,9 +1235,10 @@ class Cart {
     const thresholdText = document.querySelector('.tf-mini-cart-threshold .text');
     if (thresholdText) {
       if (totalPrice >= threshold) {
-        thresholdText.innerHTML = 'Congratulations! You\'ve unlocked <span class="fw-medium">Free Shipping</span>';
+        thresholdText.innerHTML = window.theme?.settings?.free_shipping_message || 'Congratulations! You\'ve unlocked <span class="fw-medium">Free Shipping</span>';
       } else {
-        thresholdText.innerHTML = `Spend <span class="fw-medium">$${remaining.toFixed(2)}</span> more to get <span class="fw-medium">Free Shipping</span>`;
+        const progressMessage = window.theme?.settings?.progress_message || 'Spend <span class="fw-medium">[amount]</span> more to get <span class="fw-medium">Free Shipping</span>';
+        thresholdText.innerHTML = progressMessage.replace('[amount]', `$${remaining.toFixed(2)}`);
       }
     }
   }
