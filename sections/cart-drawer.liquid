@@ -143,6 +143,17 @@
   </div>
 </div>
 
+<script>
+  if (Shopify.designMode) {
+    document.addEventListener('shopify:section:select', function(event) {
+      if (event.target.id === 'shopify-section-cart-drawer') {
+        var cartDrawer = new bootstrap.Offcanvas(document.getElementById('shoppingCart'));
+        cartDrawer.show();
+      }
+    });
+  }
+</script>
+
 {% schema %}
 {
   "name": "Cart Drawer",
