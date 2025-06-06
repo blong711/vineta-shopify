@@ -104,12 +104,14 @@
         const date = new Date();
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         const expires = `expires=${date.toUTCString()}`;
-        document.cookie = `${name}=${value};${expires};path=/`;
+        document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax`;
       }
 
       // Show banner if no consent cookie exists
       if (!getCookie(cookieName)) {
         cookieBanner.style.display = 'block';
+      } else {
+        cookieBanner.style.display = 'none';
       }
 
       // Handle accept button click
