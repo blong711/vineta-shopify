@@ -8,6 +8,31 @@
     "theme_support_url": "https://help.shopify.com/en/manual/online-store/themes/getting-started/theme-support"
   },
   {
+    "name": "Free Shipping",
+    "settings": [
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "Free Shipping Threshold",
+        "default": 10000,
+        "info": "Amount in cents (e.g., 10000 = $100.00)"
+      },
+      {
+        "type": "text",
+        "id": "progress_message",
+        "label": "Progress Message",
+        "default": "Spend [amount] more to get Free Shipping",
+        "info": "Use [amount] to show the remaining amount needed"
+      },
+      {
+        "type": "text",
+        "id": "free_shipping_message",
+        "label": "Free Shipping Message",
+        "default": "Congratulations! You've unlocked Free Shipping"
+      }
+    ]
+  },
+  {
     "name": "Favicon",
     "settings": [
       {

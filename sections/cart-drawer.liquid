@@ -8,10 +8,14 @@
     <div class="wrap">
         <div class="tf-mini-cart-threshold">
           <div class="text">
-          Spend <span class="fw-medium">$100</span> more to get <span class="fw-medium">Free Shipping</span>
+          {% if cart.total_price >= settings.free_shipping_threshold %}
+            {{ settings.free_shipping_message }}
+          {% else %}
+            {{ settings.progress_message | replace: '[amount]', settings.free_shipping_threshold | minus: cart.total_price | money }}
+          {% endif %}
           </div>
           <div class="tf-progress-bar tf-progress-ship">
-          <div class="value" style="width: 0%;" data-progress="0">
+          <div class="value" style="width: {{ cart.total_price | times: 100.0 | divided_by: settings.free_shipping_threshold | at_most: 100 }}%;" data-progress="{{ cart.total_price | times: 100.0 | divided_by: settings.free_shipping_threshold | at_most: 100 }}">
               <i class="icon icon-car"></i>
             </div>
           </div>

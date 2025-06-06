@@ -9,18 +9,18 @@
           {% if block.type == 'shipping_progress' %}
             <div class="tf-cart-head text-center" {{ block.shopify_attributes }}>
               <p class="text-xl-3 title text-dark-4">
-                {% if cart.total_price >= block.settings.free_shipping_threshold %}
-                  {{ block.settings.free_shipping_message }}
+                {% if cart.total_price >= settings.free_shipping_threshold %}
+                  {{ settings.free_shipping_message }}
                 {% else %}
-                  {{ block.settings.progress_message | replace: '[amount]', block.settings.free_shipping_threshold | minus: cart.total_price | money }}
+                  {{ settings.progress_message | replace: '[amount]', settings.free_shipping_threshold | minus: cart.total_price | money }}
                 {% endif %}
-          </p>
-          <div class="progress-sold tf-progress-ship">
-                <div class="value" style="width: {{ cart.total_price | times: 100.0 | divided_by: block.settings.free_shipping_threshold | at_most: 100 }}%;" data-progress="{{ cart.total_price | times: 100.0 | divided_by: block.settings.free_shipping_threshold | at_most: 100 }}">
-              <i class="icon icon-car"></i>
+              </p>
+              <div class="progress-sold tf-progress-ship">
+                <div class="value" style="width: {{ cart.total_price | times: 100.0 | divided_by: settings.free_shipping_threshold | at_most: 100 }}%;" data-progress="{{ cart.total_price | times: 100.0 | divided_by: settings.free_shipping_threshold | at_most: 100 }}">
+                  <i class="icon icon-car"></i>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
           {% endif %}
         {% endfor %}
       </div>
