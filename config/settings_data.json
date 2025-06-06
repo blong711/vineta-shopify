@@ -9,6 +9,7 @@
  */
 {
   "current": {
+    "free_shipping_threshold": 20000,
     "font_library": "google",
     "heading_font_family": "\"Poppins\", sans-serif",
     "body_font_family": "\"Poppins\", sans-serif",
@@ -665,6 +666,17 @@
           "button_text": "Send",
           "privacy_text": "Will be used in accordance with our Privacy Policy",
           "privacy_link": "shopify://pages/privacy-policy"
+        }
+      },
+      "cookie-banner": {
+        "type": "cookie-banner",
+        "settings": {
+          "enable_cookie_banner": true,
+          "message": "The cookie settings on this website are set to \"allow all cookies\" to give you the very best experience. Please click Accept Cookies to continue to use the site.",
+          "privacy_button_text": "Privacy Policy",
+          "privacy_link": "",
+          "accept_button_text": "Accept Cookies",
+          "expiry_days": "30"
         }
       }
     },
