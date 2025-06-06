@@ -163,6 +163,18 @@
     });
   });
 </script>
+
+{% if request.design_mode %}
+<script>
+  document.addEventListener('shopify:section:select', function(event) {
+    if (event.target.id === 'shopify-section-search-drawer') {
+      const searchModal = new bootstrap.Modal(document.getElementById('search'));
+      searchModal.show();
+    }
+  });
+</script>
+{% endif %}
+
 <style>
 .search-input::-webkit-search-clear-button {
   display: none !important;
