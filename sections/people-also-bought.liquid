@@ -265,10 +265,88 @@
   ],
   "presets": [
     {
-      "name": "People Also Bought",
+      "name": "Related Products",
+      "category": "Product slider",
+      "settings": {
+        "title": "You May Also Like"
+      },
       "blocks": [
         {
-          "type": "related_products"
+          "type": "related_products",
+          "settings": {
+            "products_to_show": 8,
+            "slides_per_view_mobile": 2,
+            "slides_per_view_tablet": 3,
+            "slides_per_view_desktop": 4,
+            "space_between": 12
+          }
+        }
+      ]
+    },
+    {
+      "name": "Featured Collection",
+      "category": "Product",
+      "settings": {
+        "title": "Featured Products"
+      },
+      "blocks": [
+        {
+          "type": "featured_collection",
+          "settings": {
+            "products_to_show": 8,
+            "slides_per_view_mobile": 2,
+            "slides_per_view_tablet": 3,
+            "slides_per_view_desktop": 4,
+            "space_between": 12
+          }
+        }
+      ]
+    },
+    {
+      "name": "Recently Viewed",
+      "category": "Product",
+      "settings": {
+        "title": "Recently Viewed"
+      },
+      "blocks": [
+        {
+          "type": "recently_viewed",
+          "settings": {
+            "products_to_show": 8,
+            "slides_per_view_mobile": 2,
+            "slides_per_view_tablet": 3,
+            "slides_per_view_desktop": 4,
+            "space_between": 12
+          }
+        }
+      ]
+    },
+    {
+      "name": "Complete Product Recommendations",
+      "category": "Product",
+      "settings": {
+        "title": "Complete Your Look"
+      },
+      "blocks": [
+        {
+          "type": "related_products",
+          "settings": {
+            "products_to_show": 6,
+            "slides_per_view_mobile": 2,
+            "slides_per_view_tablet": 3,
+            "slides_per_view_desktop": 3,
+            "space_between": 16
+          }
+        },
+        {
+          "type": "featured_collection",
+          "settings": {
+            "products_to_show": 6,
+            "slides_per_view_mobile": 2,
+            "slides_per_view_tablet": 3,
+            "slides_per_view_desktop": 3,
+            "space_between": 16
+          }
         }
       ]
     }
