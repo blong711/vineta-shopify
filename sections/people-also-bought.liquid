@@ -1,90 +1,50 @@
 {%- comment -%}People Also Bought Section{%- endcomment -%}
-{%- assign has_products = false -%}
-{%- for block in section.blocks -%}
-  {%- case block.type -%}
-    {%- when 'related_products' -%}
-      {%- assign related_products = product.collections.first.products | where: "id" | is_not: product.id | limit: block.settings.products_to_show -%}
-      {%- if related_products.size > 0 -%}
-        {%- assign has_products = true -%}
-      {%- endif -%}
-    {%- when 'featured_collection' -%}
-      {%- assign collection = collections[block.settings.collection] -%}
-      {%- if collection.products.size > 0 -%}
-        {%- assign has_products = true -%}
-      {%- endif -%}
-    {%- when 'recently_viewed' -%}
-      {%- assign recently_viewed = product.recently_viewed | limit: block.settings.products_to_show -%}
-      {%- if recently_viewed.size > 0 -%}
-        {%- assign has_products = true -%}
-      {%- endif -%}
-  {%- endcase -%}
-{%- endfor -%}
-
-{%- if has_products -%}
+{%- assign related_products = product.collections.first.products | where: "id", product.id | slice: 0, section.settings.products_to_show -%}
+{%- if related_products.size > 0 -%}
 <section>
   <div class="container">
     <div class="flat-title wow fadeInUp">
       <h4 class="title">{{ section.settings.title }}</h4>
     </div>
-    {%- for block in section.blocks -%}
-      <div class="hover-sw-nav hover-sw-2 wow fadeInUp" {{ block.shopify_attributes }}>
-        <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
-          "slidesPerView": {{ section.settings.slides_per_view_mobile }},
-          "spaceBetween": {{ section.settings.space_between }},
-          "speed": 800,
-          "observer": true,
-          "observeParents": true,
-          "slidesPerGroup": {{ section.settings.slides_per_view_mobile }},
-          "navigation": {
-            "clickable": true,
-            "nextEl": ".nav-next-bought-{{ block.id }}",
-            "prevEl": ".nav-prev-bought-{{ block.id }}"
+    <div class="hover-sw-nav hover-sw-2 wow fadeInUp">
+      <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
+        "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+        "spaceBetween": {{ section.settings.space_between }},
+        "speed": 800,
+        "observer": true,
+        "observeParents": true,
+        "slidesPerGroup": {{ section.settings.slides_per_view_mobile }},
+        "navigation": {
+          "clickable": true,
+          "nextEl": ".nav-next-bought",
+          "prevEl": ".nav-prev-bought"
+        },
+        "pagination": { "el": ".sw-pagination-bought", "clickable": true },
+        "breakpoints": {
+          "768": { 
+            "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
+            "spaceBetween": {{ section.settings.space_between }}, 
+            "slidesPerGroup": {{ section.settings.slides_per_view_tablet }}
           },
-          "pagination": { "el": ".sw-pagination-bought-{{ block.id }}", "clickable": true },
-          "breakpoints": {
-            "768": { 
-              "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
-              "spaceBetween": {{ section.settings.space_between }}, 
-              "slidesPerGroup": {{ section.settings.slides_per_view_tablet }}
-            },
-            "1200": { 
-              "slidesPerView": {{ section.settings.slides_per_view_desktop }}, 
-              "spaceBetween": {{ section.settings.space_between }}, 
-              "slidesPerGroup": {{ section.settings.slides_per_view_desktop }}
-            }
+          "1200": { 
+            "slidesPerView": {{ section.settings.slides_per_view_desktop }}, 
+            "spaceBetween": {{ section.settings.space_between }}, 
+            "slidesPerGroup": {{ section.settings.slides_per_view_desktop }}
           }
-        }'>
-          <div class="swiper-wrapper">
-            {%- case block.type -%}
-              {%- when 'related_products' -%}
-                {%- assign related_products = product.collections.first.products | where: "id" | is_not: product.id | limit: block.settings.products_to_show -%}
-                {%- for related_product in related_products -%}
-                  <div class="swiper-slide">
-                    {% render 'card-product', product: related_product %}
-                  </div>
-                {%- endfor -%}
-              {%- when 'featured_collection' -%}
-                {%- assign collection = collections[block.settings.collection] -%}
-                {%- for product in collection.products limit: block.settings.products_to_show -%}
-                  <div class="swiper-slide">
-                    {% render 'card-product', product: product %}
-                  </div>
-                {%- endfor -%}
-              {%- when 'recently_viewed' -%}
-                {%- assign recently_viewed = product.recently_viewed | limit: block.settings.products_to_show -%}
-                {%- for product in recently_viewed -%}
-                  <div class="swiper-slide">
-                    {% render 'card-product', product: product %}
-                  </div>
-                {%- endfor -%}
-            {%- endcase -%}
-          </div>
-          <div class="d-flex d-xl-none sw-dot-default sw-pagination-bought-{{ block.id }} justify-content-center"></div>
+        }
+      }'>
+        <div class="swiper-wrapper">
+          {%- for related_product in related_products -%}
+            <div class="swiper-slide">
+              {% render 'card-product', product: related_product %}
+            </div>
+          {%- endfor -%}
         </div>
-        <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-bought-{{ block.id }}"></div>
-        <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-bought-{{ block.id }}"></div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-bought justify-content-center"></div>
       </div>
-    {%- endfor -%}
+      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-bought"></div>
+      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-bought"></div>
+    </div>
   </div>
 </section>
 {%- endif -%}
@@ -98,6 +58,15 @@
       "id": "title",
       "label": "Title",
       "default": "People Also Bought"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 12,
+      "step": 2,
+      "default": 8,
+      "label": "Number of products to show"
     },
     {
       "type": "range",
@@ -136,143 +105,18 @@
       "label": "Space between slides"
     }
   ],
-  "blocks": [
-    {
-      "type": "related_products",
-      "name": "Related Products",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "range",
-          "id": "products_to_show",
-          "min": 4,
-          "max": 12,
-          "step": 2,
-          "default": 8,
-          "label": "Number of products to show"
-        }
-      ]
-    },
-    {
-      "type": "featured_collection",
-      "name": "Featured Collection",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "collection",
-          "id": "collection",
-          "label": "Collection"
-        },
-        {
-          "type": "range",
-          "id": "products_to_show",
-          "min": 4,
-          "max": 12,
-          "step": 2,
-          "default": 8,
-          "label": "Number of products to show"
-        }
-      ]
-    },
-    {
-      "type": "recently_viewed",
-      "name": "Recently Viewed",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "range",
-          "id": "products_to_show",
-          "min": 4,
-          "max": 12,
-          "step": 2,
-          "default": 8,
-          "label": "Number of products to show"
-        }
-      ]
-    }
-  ],
   "presets": [
     {
-      "name": "Related Products",
+      "name": "People Also Bought",
       "category": "Product slider",
       "settings": {
-        "title": "You May Also Like",
+        "title": "People Also Bought",
+        "products_to_show": 8,
         "slides_per_view_mobile": 2,
         "slides_per_view_tablet": 3,
         "slides_per_view_desktop": 4,
         "space_between": 12
-      },
-      "blocks": [
-        {
-          "type": "related_products",
-          "settings": {
-            "products_to_show": 8
-          }
-        }
-      ]
-    },
-    {
-      "name": "Featured Collection",
-      "category": "Product",
-      "settings": {
-        "title": "Featured Products",
-        "slides_per_view_mobile": 2,
-        "slides_per_view_tablet": 3,
-        "slides_per_view_desktop": 4,
-        "space_between": 12
-      },
-      "blocks": [
-        {
-          "type": "featured_collection",
-          "settings": {
-            "products_to_show": 8
-          }
-        }
-      ]
-    },
-    {
-      "name": "Recently Viewed",
-      "category": "Product",
-      "settings": {
-        "title": "Recently Viewed",
-        "slides_per_view_mobile": 2,
-        "slides_per_view_tablet": 3,
-        "slides_per_view_desktop": 4,
-        "space_between": 12
-      },
-      "blocks": [
-        {
-          "type": "recently_viewed",
-          "settings": {
-            "products_to_show": 8
-          }
-        }
-      ]
-    },
-    {
-      "name": "Complete Product Recommendations",
-      "category": "Product",
-      "settings": {
-        "title": "Complete Your Look",
-        "slides_per_view_mobile": 2,
-        "slides_per_view_tablet": 3,
-        "slides_per_view_desktop": 3,
-        "space_between": 16
-      },
-      "blocks": [
-        {
-          "type": "related_products",
-          "settings": {
-            "products_to_show": 6
-          }
-        },
-        {
-          "type": "featured_collection",
-          "settings": {
-            "products_to_show": 6
-          }
-        }
-      ]
+      }
     }
   ]
 }

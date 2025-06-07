@@ -1,90 +1,50 @@
 {%- comment -%}Recently Viewed Section{%- endcomment -%}
-{%- assign has_products = false -%}
-{%- for block in section.blocks -%}
-  {%- case block.type -%}
-    {%- when 'recently_viewed' -%}
-      {%- assign recently_viewed_products = product.recently_viewed_products | slice: 0, section.settings.products_to_show -%}
-      {%- if recently_viewed_products.size > 0 -%}
-        {%- assign has_products = true -%}
-      {%- endif -%}
-    {%- when 'featured_collection' -%}
-      {%- assign collection = collections[block.settings.collection] -%}
-      {%- if collection.products.size > 0 -%}
-        {%- assign has_products = true -%}
-      {%- endif -%}
-    {%- when 'related_products' -%}
-      {%- assign related_products = product.collections.first.products | where: "id", product.id | slice: 0, section.settings.products_to_show -%}
-      {%- if related_products.size > 0 -%}
-        {%- assign has_products = true -%}
-      {%- endif -%}
-  {%- endcase -%}
-{%- endfor -%}
-
-{%- if has_products -%}
+{%- assign recently_viewed_products = product.recently_viewed_products | slice: 0, section.settings.products_to_show -%}
+{%- if recently_viewed_products.size > 0 -%}
 <section class="flat-spacing">
   <div class="container">
     <div class="flat-title wow fadeInUp">
       <h4 class="title">{{ section.settings.title }}</h4>
     </div>
-    {%- for block in section.blocks -%}
-      <div class="hover-sw-nav hover-sw-2 wow fadeInUp" {{ block.shopify_attributes }}>
-        <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
-          "slidesPerView": {{ section.settings.slides_per_view_mobile }},
-          "spaceBetween": {{ section.settings.space_between }},
-          "speed": 800,
-          "observer": true,
-          "observeParents": true,
-          "slidesPerGroup": {{ section.settings.slides_per_view_mobile }},
-          "navigation": {
-            "clickable": true,
-            "nextEl": ".nav-next-viewed-{{ block.id }}",
-            "prevEl": ".nav-prev-viewed-{{ block.id }}"
+    <div class="hover-sw-nav hover-sw-2 wow fadeInUp">
+      <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
+        "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+        "spaceBetween": {{ section.settings.space_between }},
+        "speed": 800,
+        "observer": true,
+        "observeParents": true,
+        "slidesPerGroup": {{ section.settings.slides_per_view_mobile }},
+        "navigation": {
+          "clickable": true,
+          "nextEl": ".nav-next-viewed",
+          "prevEl": ".nav-prev-viewed"
+        },
+        "pagination": { "el": ".sw-pagination-viewed", "clickable": true },
+        "breakpoints": {
+          "768": { 
+            "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
+            "spaceBetween": {{ section.settings.space_between }}, 
+            "slidesPerGroup": {{ section.settings.slides_per_view_tablet }}
           },
-          "pagination": { "el": ".sw-pagination-viewed-{{ block.id }}", "clickable": true },
-          "breakpoints": {
-            "768": { 
-              "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
-              "spaceBetween": {{ section.settings.space_between }}, 
-              "slidesPerGroup": {{ section.settings.slides_per_view_tablet }}
-            },
-            "1200": { 
-              "slidesPerView": {{ section.settings.slides_per_view_desktop }}, 
-              "spaceBetween": {{ section.settings.space_between }}, 
-              "slidesPerGroup": {{ section.settings.slides_per_view_desktop }}
-            }
+          "1200": { 
+            "slidesPerView": {{ section.settings.slides_per_view_desktop }}, 
+            "spaceBetween": {{ section.settings.space_between }}, 
+            "slidesPerGroup": {{ section.settings.slides_per_view_desktop }}
           }
-        }'>
-          <div class="swiper-wrapper">
-            {%- case block.type -%}
-              {%- when 'recently_viewed' -%}
-                {%- assign recently_viewed_products = product.recently_viewed_products | slice: 0, section.settings.products_to_show -%}
-                {%- for product in recently_viewed_products -%}
-                  <div class="swiper-slide">
-                    {% render 'card-product', product: product %}
-                  </div>
-                {%- endfor -%}
-              {%- when 'featured_collection' -%}
-                {%- assign collection = collections[block.settings.collection] -%}
-                {%- for product in collection.products limit: section.settings.products_to_show -%}
-                  <div class="swiper-slide">
-                    {% render 'card-product', product: product %}
-                  </div>
-                {%- endfor -%}
-              {%- when 'related_products' -%}
-                {%- assign related_products = product.collections.first.products | where: "id", product.id | slice: 0, section.settings.products_to_show -%}
-                {%- for related_product in related_products -%}
-                  <div class="swiper-slide">
-                    {% render 'card-product', product: related_product %}
-                  </div>
-                {%- endfor -%}
-            {%- endcase -%}
-          </div>
-          <div class="d-flex d-xl-none sw-dot-default sw-pagination-viewed-{{ block.id }} justify-content-center"></div>
+        }
+      }'>
+        <div class="swiper-wrapper">
+          {%- for product in recently_viewed_products -%}
+            <div class="swiper-slide">
+              {% render 'card-product', product: product %}
+            </div>
+          {%- endfor -%}
         </div>
-        <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-viewed-{{ block.id }}"></div>
-        <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-viewed-{{ block.id }}"></div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-viewed justify-content-center"></div>
       </div>
-    {%- endfor -%}
+      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-viewed"></div>
+      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-viewed"></div>
+    </div>
   </div>
 </section>
 {%- endif -%}
@@ -145,39 +105,10 @@
       "label": "Space between slides"
     }
   ],
-  "blocks": [
-    {
-      "type": "recently_viewed",
-      "name": "Recently Viewed",
-      "limit": 1
-    },
-    {
-      "type": "featured_collection",
-      "name": "Featured Collection",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "collection",
-          "id": "collection",
-          "label": "Collection"
-        }
-      ]
-    },
-    {
-      "type": "related_products",
-      "name": "Related Products",
-      "limit": 1
-    }
-  ],
   "presets": [
     {
       "name": "Recently Viewed",
-      "category": "Product slider",
-      "blocks": [
-        {
-          "type": "recently_viewed"
-        }
-      ]
+      "category": "Product slider"
     }
   ]
 }
