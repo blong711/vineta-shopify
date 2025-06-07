@@ -2,20 +2,33 @@
 <section>
   <div class="container">
     <div dir="ltr" class="swiper tf-swiper" data-swiper='{
-      "slidesPerView": 1,
-      "spaceBetween": 12,
-      "speed": 1000,
+      "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+      "spaceBetween": {{ section.settings.space_between }},
+      "speed": {{ section.settings.transition_speed }},
       "observer": true,
       "observeParents": true,
-      "navigation": {
+      "loop": {{ section.settings.loop }},
+      "navigation": {% if section.settings.show_navigation %}{
         "clickable": true,
         "nextEl": ".nav-next-shop",
         "prevEl": ".nav-prev-shop"
-      },
-      "pagination": { "el": ".sw-pagination-shop", "clickable": true },
+      }{% else %}false{% endif %},
+      "pagination": {% if section.settings.show_pagination %}{
+        "el": ".sw-pagination-shop",
+        "clickable": true
+      }{% else %}false{% endif %},
+      "autoplay": {% if section.settings.autoplay %}{
+        "delay": {{ section.settings.autoplay_speed }}
+      }{% else %}false{% endif %},
       "breakpoints": {
-        "768": { "slidesPerView": 2, "spaceBetween": 12 },
-        "1200": { "slidesPerView": 2, "spaceBetween": 24 }
+        "768": {
+          "slidesPerView": {{ section.settings.slides_per_view_tablet }},
+          "spaceBetween": {{ section.settings.space_between }}
+        },
+        "1200": {
+          "slidesPerView": {{ section.settings.slides_per_view_desktop }},
+          "spaceBetween": {{ section.settings.space_between }}
+        }
       }
     }'>
       <div class="swiper-wrapper">
@@ -61,7 +74,90 @@
 {
   "name": "Banner Carousel",
   "tag": "section",
-  "settings": [],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Slider Settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Slides per view (Mobile)",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Slides per view (Tablet)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Slides per view (Desktop)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "space_between",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "label": "Space between slides",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "min": 300,
+      "max": 2000,
+      "step": 100,
+      "label": "Transition speed (ms)",
+      "default": 1000
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 1000,
+      "max": 9000,
+      "step": 500,
+      "label": "Autoplay speed (ms)",
+      "default": 3000
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Enable infinite loop",
+      "default": true
+    }
+  ],
   "blocks": [
     {
       "type": "banner",

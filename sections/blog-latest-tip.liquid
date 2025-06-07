@@ -90,6 +90,99 @@
       "step": 1,
       "default": 3,
       "label": "Slides per view (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_group_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1,
+      "label": "Slides per group (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_group_tablet",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2,
+      "label": "Slides per group (Tablet)"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_group_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "label": "Slides per group (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "space_between_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 12,
+      "label": "Space between slides (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "space_between_desktop",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "default": 24,
+      "label": "Space between slides (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "min": 300,
+      "max": 2000,
+      "step": 100,
+      "default": 800,
+      "label": "Transition speed (ms)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 1000,
+      "max": 9000,
+      "step": 500,
+      "default": 3000,
+      "label": "Autoplay speed (ms)"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Enable infinite loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause autoplay on hover",
+      "default": true
     }
   ],
   "presets": [
@@ -108,27 +201,33 @@
     </div>
     <div dir="ltr" class="swiper tf-swiper" data-swiper='{
       "slidesPerView": {{ section.settings.slides_per_view_mobile }},
-      "spaceBetween": 12,
-      "speed": 800,
-      "observer": true,
-      "observeParents": true,
-      "slidesPerGroup": 1,
-      "navigation": {
+      "spaceBetween": {{ section.settings.space_between_mobile }},
+      "speed": {{ section.settings.transition_speed }},
+      "slidesPerGroup": {{ section.settings.slides_per_group_mobile }},
+      "loop": {{ section.settings.loop }},
+      "navigation": {% if section.settings.show_navigation %}{
         "clickable": true,
         "nextEl": ".nav-next-new",
         "prevEl": ".nav-prev-new"
-      },
-      "pagination": { "el": ".sw-pagination-new", "clickable": true },
+      }{% else %}false{% endif %},
+      "pagination": {% if section.settings.show_pagination %}{
+        "el": ".sw-pagination-new",
+        "clickable": true
+      }{% else %}false{% endif %},
+      "autoplay": {% if section.settings.autoplay %}{
+        "delay": {{ section.settings.autoplay_speed }},
+        "pauseOnMouseEnter": {{ section.settings.pause_on_hover }}
+      }{% else %}false{% endif %},
       "breakpoints": {
-        "577": { 
-          "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
-          "spaceBetween": 12, 
-          "slidesPerGroup": 2 
+        "577": {
+          "slidesPerView": {{ section.settings.slides_per_view_tablet }},
+          "spaceBetween": {{ section.settings.space_between_mobile }},
+          "slidesPerGroup": {{ section.settings.slides_per_group_tablet }}
         },
-        "1200": { 
-          "slidesPerView": {{ section.settings.slides_per_view_desktop }}, 
-          "spaceBetween": 24, 
-          "slidesPerGroup": 4
+        "1200": {
+          "slidesPerView": {{ section.settings.slides_per_view_desktop }},
+          "spaceBetween": {{ section.settings.space_between_desktop }},
+          "slidesPerGroup": {{ section.settings.slides_per_group_desktop }}
         }
       }
     }'>
