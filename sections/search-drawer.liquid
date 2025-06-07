@@ -170,6 +170,9 @@
     if (event.target.id === 'shopify-section-search-drawer') {
       const searchModal = new bootstrap.Modal(document.getElementById('search'));
       searchModal.show();
+    } else {
+      // Force close the search drawer by triggering the close button
+      document.querySelector('#search .icon-close-popup').click();
     }
   });
 </script>
