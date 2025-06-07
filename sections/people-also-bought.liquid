@@ -29,12 +29,12 @@
     {%- for block in section.blocks -%}
       <div class="hover-sw-nav hover-sw-2 wow fadeInUp" {{ block.shopify_attributes }}>
         <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
-          "slidesPerView": {{ block.settings.slides_per_view_mobile }},
-          "spaceBetween": {{ block.settings.space_between }},
+          "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+          "spaceBetween": {{ section.settings.space_between }},
           "speed": 800,
           "observer": true,
           "observeParents": true,
-          "slidesPerGroup": {{ block.settings.slides_per_view_mobile }},
+          "slidesPerGroup": {{ section.settings.slides_per_view_mobile }},
           "navigation": {
             "clickable": true,
             "nextEl": ".nav-next-bought-{{ block.id }}",
@@ -43,14 +43,14 @@
           "pagination": { "el": ".sw-pagination-bought-{{ block.id }}", "clickable": true },
           "breakpoints": {
             "768": { 
-              "slidesPerView": {{ block.settings.slides_per_view_tablet }}, 
-              "spaceBetween": {{ block.settings.space_between }}, 
-              "slidesPerGroup": {{ block.settings.slides_per_view_tablet }}
+              "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
+              "spaceBetween": {{ section.settings.space_between }}, 
+              "slidesPerGroup": {{ section.settings.slides_per_view_tablet }}
             },
             "1200": { 
-              "slidesPerView": {{ block.settings.slides_per_view_desktop }}, 
-              "spaceBetween": {{ block.settings.space_between }}, 
-              "slidesPerGroup": {{ block.settings.slides_per_view_desktop }}
+              "slidesPerView": {{ section.settings.slides_per_view_desktop }}, 
+              "spaceBetween": {{ section.settings.space_between }}, 
+              "slidesPerGroup": {{ section.settings.slides_per_view_desktop }}
             }
           }
         }'>
@@ -98,6 +98,42 @@
       "id": "title",
       "label": "Title",
       "default": "People Also Bought"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2,
+      "label": "Slides per view (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Slides per view (tablet)"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Slides per view (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "space_between",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 12,
+      "label": "Space between slides"
     }
   ],
   "blocks": [
@@ -114,42 +150,6 @@
           "step": 2,
           "default": 8,
           "label": "Number of products to show"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_mobile",
-          "min": 1,
-          "max": 3,
-          "step": 1,
-          "default": 2,
-          "label": "Slides per view (mobile)"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_tablet",
-          "min": 2,
-          "max": 4,
-          "step": 1,
-          "default": 3,
-          "label": "Slides per view (tablet)"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_desktop",
-          "min": 3,
-          "max": 6,
-          "step": 1,
-          "default": 4,
-          "label": "Slides per view (desktop)"
-        },
-        {
-          "type": "range",
-          "id": "space_between",
-          "min": 0,
-          "max": 30,
-          "step": 2,
-          "default": 12,
-          "label": "Space between slides"
         }
       ]
     },
@@ -171,42 +171,6 @@
           "step": 2,
           "default": 8,
           "label": "Number of products to show"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_mobile",
-          "min": 1,
-          "max": 3,
-          "step": 1,
-          "default": 2,
-          "label": "Slides per view (mobile)"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_tablet",
-          "min": 2,
-          "max": 4,
-          "step": 1,
-          "default": 3,
-          "label": "Slides per view (tablet)"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_desktop",
-          "min": 3,
-          "max": 6,
-          "step": 1,
-          "default": 4,
-          "label": "Slides per view (desktop)"
-        },
-        {
-          "type": "range",
-          "id": "space_between",
-          "min": 0,
-          "max": 30,
-          "step": 2,
-          "default": 12,
-          "label": "Space between slides"
         }
       ]
     },
@@ -223,42 +187,6 @@
           "step": 2,
           "default": 8,
           "label": "Number of products to show"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_mobile",
-          "min": 1,
-          "max": 3,
-          "step": 1,
-          "default": 2,
-          "label": "Slides per view (mobile)"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_tablet",
-          "min": 2,
-          "max": 4,
-          "step": 1,
-          "default": 3,
-          "label": "Slides per view (tablet)"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_desktop",
-          "min": 3,
-          "max": 6,
-          "step": 1,
-          "default": 4,
-          "label": "Slides per view (desktop)"
-        },
-        {
-          "type": "range",
-          "id": "space_between",
-          "min": 0,
-          "max": 30,
-          "step": 2,
-          "default": 12,
-          "label": "Space between slides"
         }
       ]
     }
@@ -268,17 +196,17 @@
       "name": "Related Products",
       "category": "Product slider",
       "settings": {
-        "title": "You May Also Like"
+        "title": "You May Also Like",
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "space_between": 12
       },
       "blocks": [
         {
           "type": "related_products",
           "settings": {
-            "products_to_show": 8,
-            "slides_per_view_mobile": 2,
-            "slides_per_view_tablet": 3,
-            "slides_per_view_desktop": 4,
-            "space_between": 12
+            "products_to_show": 8
           }
         }
       ]
@@ -287,17 +215,17 @@
       "name": "Featured Collection",
       "category": "Product",
       "settings": {
-        "title": "Featured Products"
+        "title": "Featured Products",
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "space_between": 12
       },
       "blocks": [
         {
           "type": "featured_collection",
           "settings": {
-            "products_to_show": 8,
-            "slides_per_view_mobile": 2,
-            "slides_per_view_tablet": 3,
-            "slides_per_view_desktop": 4,
-            "space_between": 12
+            "products_to_show": 8
           }
         }
       ]
@@ -306,17 +234,17 @@
       "name": "Recently Viewed",
       "category": "Product",
       "settings": {
-        "title": "Recently Viewed"
+        "title": "Recently Viewed",
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "space_between": 12
       },
       "blocks": [
         {
           "type": "recently_viewed",
           "settings": {
-            "products_to_show": 8,
-            "slides_per_view_mobile": 2,
-            "slides_per_view_tablet": 3,
-            "slides_per_view_desktop": 4,
-            "space_between": 12
+            "products_to_show": 8
           }
         }
       ]
@@ -325,27 +253,23 @@
       "name": "Complete Product Recommendations",
       "category": "Product",
       "settings": {
-        "title": "Complete Your Look"
+        "title": "Complete Your Look",
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 3,
+        "space_between": 16
       },
       "blocks": [
         {
           "type": "related_products",
           "settings": {
-            "products_to_show": 6,
-            "slides_per_view_mobile": 2,
-            "slides_per_view_tablet": 3,
-            "slides_per_view_desktop": 3,
-            "space_between": 16
+            "products_to_show": 6
           }
         },
         {
           "type": "featured_collection",
           "settings": {
-            "products_to_show": 6,
-            "slides_per_view_mobile": 2,
-            "slides_per_view_tablet": 3,
-            "slides_per_view_desktop": 3,
-            "space_between": 16
+            "products_to_show": 6
           }
         }
       ]
