@@ -171,9 +171,11 @@
 <script>
   if (Shopify.designMode) {
     document.addEventListener('shopify:section:select', function(event) {
+      var cartDrawer = new bootstrap.Offcanvas(document.getElementById('shoppingCart'));
       if (event.target.id === 'shopify-section-cart-drawer') {
-        var cartDrawer = new bootstrap.Offcanvas(document.getElementById('shoppingCart'));
         cartDrawer.show();
+      } else {
+        cartDrawer.hide();
       }
     });
   }
