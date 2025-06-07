@@ -86,7 +86,7 @@
                             <button type="button" class="tf-btn w-100 animate-btn buy-now-btn btn-primary" data-product-id="{{ product.id }}">
                                 Buy It Now
                             </button>
-                            <a href="{{ product.url }}" class="more-choose-payment link">More payment options</a>
+                            <a href="{{ product.url }}" style="font-size: 14px;" class="more-choose-payment link">More payment options</a>
                         </div>
                         <a href="{{ product.url }}" class="view-details link">View full details <i class="icon icon-arrow-right"></i></a>
                     </div>
@@ -362,6 +362,20 @@
               this.classList.add('loading');
               if (window.cart) {
                 await window.cart.updateQuantity(variantId, quantity, 'add');
+                // Close the modal properly
+                const modal = document.getElementById('quickView');
+                if (modal) {
+                  modal.classList.remove('show');
+                  modal.classList.add('modal');
+                  modal.removeAttribute('style');
+                  modal.removeAttribute('aria-modal');
+                  modal.removeAttribute('role');
+                  document.body.classList.remove('modal-open');
+                  const backdrop = document.querySelector('.modal-backdrop');
+                  if (backdrop) {
+                    backdrop.remove();
+                  }
+                }
                 // Fetch updated cart data
                 const response = await fetch('/cart.js');
                 const cartData = await response.json();
