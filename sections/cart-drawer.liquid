@@ -178,6 +178,13 @@
         cartDrawer.hide();
       }
     });
+
+    document.addEventListener('shopify:section:deselect', function(event) {
+      if (event.target.id === 'shopify-section-cart-drawer') {
+        var cartDrawer = new bootstrap.Offcanvas(document.getElementById('shoppingCart'));
+        cartDrawer.hide();
+      }
+    });
   }
 </script>
 
