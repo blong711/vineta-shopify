@@ -2,7 +2,7 @@
 <div class="offcanvas offcanvas-end popup-style-1 popup-shopping-cart" id="shoppingCart">
   <div class="canvas-wrapper">
     <div class="popup-header">
-      <span class="title">Shopping cart</span>
+      <span class="title">{{ 'cart.drawer.title' | t }}</span>
       <span class="icon-close icon-close-popup" data-bs-dismiss="offcanvas"></span>
     </div>
     <div class="wrap">
@@ -26,8 +26,8 @@
               <div class="tf-mini-cart-items" style="overflow-y: auto; max-height: calc(100vh - 300px);">
                 <div id="cart-items-placeholder">
                   <div class="empty-cart">
-                    <p>Your cart is currently empty.</p>
-                    <a href="/collections/all" class="tf-btn animate-btn d-inline-flex bg-dark-2">Continue shopping</a>
+                    <p>{{ 'cart.drawer.empty_cart' | t }}</p>
+                    <a href="/collections/all" class="tf-btn animate-btn d-inline-flex bg-dark-2">{{ 'cart.drawer.continue_shopping' | t }}</a>
                   </div>
                 </div>
               </div>
@@ -38,34 +38,34 @@
               {% if section.settings.enable_gift_wrap %}
               <div class="tf-mini-cart-tool-btn btn-add-gift">
                 <i class="icon icon-gift2"></i>
-                <div class="text-xxs">Add gift wrap</div>
+                <div class="text-xxs">{{ 'cart.drawer.gift_wrap.title' | t }}</div>
               </div>
               {% endif %}
               {% if section.settings.enable_order_note %}
               <div class="tf-mini-cart-tool-btn btn-add-note">
                 <i class="icon icon-note"></i>
-                <div class="text-xxs">Order note</div>
+                <div class="text-xxs">{{ 'cart.drawer.order_note.title' | t }}</div>
               </div>
               {% endif %}
               {% if section.settings.enable_coupon %}
               <div class="tf-mini-cart-tool-btn btn-coupon">
                 <i class="icon icon-coupon"></i>
-                <div class="text-xxs">Coupon</div>
+                <div class="text-xxs">{{ 'cart.drawer.coupon.title' | t }}</div>
               </div>
               {% endif %}
               {% if section.settings.enable_shipping_calculator %}
               <div class="tf-mini-cart-tool-btn btn-estimate-shipping">
                 <i class="icon icon-car"></i>
-                <div class="text-xxs">Shipping</div>
+                <div class="text-xxs">{{ 'cart.drawer.shipping.title' | t }}</div>
               </div>
               {% endif %}
             </div>
             <div class="tf-mini-cart-bottom-wrap">
               <div class="tf-cart-totals-discounts">
-                <div class="tf-cart-total text-xl fw-medium">Total:</div>
+                <div class="tf-cart-total text-xl fw-medium">{{ 'cart.drawer.total' | t }}</div>
               <div class="tf-totals-total-value text-xl fw-medium cart-total-price">$0.00</div>
               </div>
-              <div class="tf-cart-tax text-sm opacity-8">Taxes and shipping calculated at checkout</div>
+              <div class="tf-cart-tax text-sm opacity-8">{{ 'cart.drawer.taxes_shipping' | t }}</div>
               <div class="tf-cart-checkbox">
                 <div class="tf-checkbox-wrapp">
                   <input type="checkbox" id="CartDrawer-Form_agree" name="agree_checkbox" required>
@@ -74,13 +74,13 @@
                   </div>
                 </div>
                 <label for="CartDrawer-Form_agree" class="text-sm">
-                  I agree with the
-                  <a href="/pages/terms-and-conditions" title="Terms of Service" class="fw-medium">terms and conditions</a>
+                  {{ 'cart.drawer.terms_agree' | t }}
+                  <a href="/pages/terms-and-conditions" title="Terms of Service" class="fw-medium">{{ 'cart.drawer.terms_link' | t }}</a>
                 </label>
               </div>
               <div class="tf-mini-cart-view-checkout">
-                <a href="/cart" class="tf-btn animate-btn d-inline-flex bg-dark-2 w-100 justify-content-center">View cart</a>
-                <button type="button" class="tf-btn btn-out-line-dark2 w-100 justify-content-center checkout-btn" id="checkout-button" disabled>Check out</button>
+                <a href="/cart" class="tf-btn animate-btn d-inline-flex bg-dark-2 w-100 justify-content-center">{{ 'cart.drawer.view_cart' | t }}</a>
+                <button type="button" class="tf-btn btn-out-line-dark2 w-100 justify-content-center checkout-btn" id="checkout-button" disabled>{{ 'cart.drawer.checkout' | t }}</button>
               </div>
             </div>
           </div>
@@ -89,12 +89,12 @@
         <div class="tf-mini-cart-tool-openable add-gift">
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form action="/cart" method="post" class="tf-mini-cart-tool-content">
-            <div class="tf-mini-cart-tool-text text-sm fw-medium">Add gift wrap</div>
-            <div class="tf-mini-cart-tool-text1 text-dark-1">{{ section.settings.gift_wrap_message | replace: '$10.00', section.settings.gift_wrap_price | money }}</div>
+            <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.gift_wrap.title' | t }}</div>
+            <div class="tf-mini-cart-tool-text1 text-dark-1">{{ 'cart.drawer.gift_wrap.message' | t | replace: '{price}', section.settings.gift_wrap_price | money }}</div>
             <input type="hidden" name="attributes[gift_wrap]" value="true">
             <div class="tf-cart-tool-btns">
-              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Save</button>
-              <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">Close</div>
+              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">{{ 'cart.drawer.gift_wrap.save' | t }}</button>
+              <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">{{ 'cart.drawer.gift_wrap.close' | t }}</div>
             </div>
           </form>
         </div>
@@ -103,11 +103,11 @@
         <div class="tf-mini-cart-tool-openable add-note">
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form action="/cart" method="post" class="tf-mini-cart-tool-content">
-            <label for="Cart-note" class="tf-mini-cart-tool-text text-sm fw-medium">Order note</label>
-            <textarea name="note" id="Cart-note" placeholder="{{ section.settings.order_note_placeholder }}">{{ cart.note }}</textarea>
+            <label for="Cart-note" class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.order_note.title' | t }}</label>
+            <textarea name="note" id="Cart-note" placeholder="{{ 'cart.drawer.order_note.placeholder' | t }}">{{ cart.note }}</textarea>
             <div class="tf-cart-tool-btns">
-              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Save</button>
-              <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">Close</div>
+              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">{{ 'cart.drawer.order_note.save' | t }}</button>
+              <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">{{ 'cart.drawer.order_note.close' | t }}</div>
             </div>
           </form>
         </div>
@@ -116,12 +116,12 @@
         <div class="tf-mini-cart-tool-openable coupon">
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form action="/cart" method="post" class="tf-mini-cart-tool-content">
-            <div class="tf-mini-cart-tool-text text-sm fw-medium">Add coupon</div>
-            <div class="tf-mini-cart-tool-text1 text-dark-1">{{ section.settings.coupon_message }}</div>
-            <input type="text" name="discount" placeholder="Enter coupon code">
+            <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.coupon.title' | t }}</div>
+            <div class="tf-mini-cart-tool-text1 text-dark-1">{{ 'cart.drawer.coupon.message' | t }}</div>
+            <input type="text" name="discount" placeholder="{{ 'cart.drawer.coupon.placeholder' | t }}">
             <div class="tf-cart-tool-btns">
-              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Apply Coupon</button>
-              <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">Cancel</div>
+              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">{{ 'cart.drawer.coupon.apply' | t }}</button>
+              <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">{{ 'cart.drawer.coupon.cancel' | t }}</div>
             </div>
           </form>
         </div>
@@ -130,9 +130,9 @@
         <div class="tf-mini-cart-tool-openable estimate-shipping">
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form id="shipping-form" class="tf-mini-cart-tool-content" data-shipping-calculator>
-            <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ section.settings.shipping_calculator_title }}</div>
+            <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.shipping.title' | t }}</div>
             <div class="field">
-              <p class="text-sm">Country</p>
+              <p class="text-sm">{{ 'cart.drawer.shipping.country' | t }}</p>
               <div class="tf-select">
                 <select class="w-100" id="shipping-country-form" name="address[country]" data-default="{{ customer.default_address.country }}">
                   {{ country_option_tags }}
@@ -140,20 +140,20 @@
               </div>
             </div>
             <div class="field">
-              <p class="text-sm">State/Province</p>
+              <p class="text-sm">{{ 'cart.drawer.shipping.province' | t }}</p>
               <div class="tf-select">
                 <select id="shipping-province-form" name="address[province]" data-default="{{ customer.default_address.province }}"></select>
               </div>
             </div>
             <div class="field">
-              <p class="text-sm">Zipcode</p>
+              <p class="text-sm">{{ 'cart.drawer.shipping.zipcode' | t }}</p>
               <input type="text" data-opend-focus id="zipcode" name="address[zip]" value="{{ customer.default_address.zip }}">
             </div>
             <div id="zipcode-message" class="error" style="display: none;"></div>
             <div id="zipcode-success" class="success" style="display: none;"></div>
             <div class="tf-cart-tool-btns">
-              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Calculate Shipping</button>
-              <div class="tf-mini-cart-tool-primary text-center fw-6 w-100 tf-mini-cart-tool-close">Cancel</div>
+              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">{{ 'cart.drawer.shipping.calculate' | t }}</button>
+              <div class="tf-mini-cart-tool-primary text-center fw-6 w-100 tf-mini-cart-tool-close">{{ 'cart.drawer.shipping.cancel' | t }}</div>
             </div>
           </form>
         </div>
@@ -201,12 +201,6 @@
       "default": "10.00"
     },
     {
-      "type": "text",
-      "id": "gift_wrap_message",
-      "label": "Gift wrap message",
-      "default": "The product will be wrapped carefully. Free is only $10.00. Do you want a gift wrap?"
-    },
-    {
       "type": "header",
       "content": "Order Note Settings"
     },
@@ -215,12 +209,6 @@
       "id": "enable_order_note",
       "label": "Enable order note option",
       "default": true
-    },
-    {
-      "type": "text",
-      "id": "order_note_placeholder",
-      "label": "Order note placeholder text",
-      "default": "Instruction for seller..."
     },
     {
       "type": "header",
@@ -233,12 +221,6 @@
       "default": true
     },
     {
-      "type": "text",
-      "id": "coupon_message",
-      "label": "Coupon message",
-      "default": "* Discount will be calculated and applied at checkout"
-    },
-    {
       "type": "header",
       "content": "Shipping Calculator Settings"
     },
@@ -247,12 +229,6 @@
       "id": "enable_shipping_calculator",
       "label": "Enable shipping calculator",
       "default": true
-    },
-    {
-      "type": "text",
-      "id": "shipping_calculator_title",
-      "label": "Shipping calculator title",
-      "default": "Shipping estimates"
     }
   ],
   "presets": [
