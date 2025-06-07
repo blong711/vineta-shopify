@@ -40,10 +40,10 @@
                   <table class="table-page-cart" {{ block.shopify_attributes }}>
                 <thead>
                   <tr>
-                        <th>{{ block.settings.product_column_title }}</th>
-                        <th>{{ block.settings.price_column_title }}</th>
-                        <th>{{ block.settings.quantity_column_title }}</th>
-                        <th>{{ block.settings.total_column_title }}</th>
+                        <th>{{ 'cart.cart_items.product_column' | t }}</th>
+                        <th>{{ 'cart.cart_items.price_column' | t }}</th>
+                        <th>{{ 'cart.cart_items.quantity_column' | t }}</th>
+                        <th>{{ 'cart.cart_items.total_column' | t }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -67,7 +67,7 @@
                             <div class="variants">{{ item.variant.title }}</div>
                           {% endif %}
                           <div></div>
-                              <span class="remove-cart link remove" data-item-id="{{ item.key }}" data-variant-id="{{ item.variant.id }}">{{ block.settings.remove_text }}</span>
+                              <span class="remove-cart link remove" data-item-id="{{ item.key }}" data-variant-id="{{ item.variant.id }}">{{ 'cart.cart_items.remove_text' | t }}</span>
                         </div>
                       </td>
                           <td class="tf-cart-item_price text-center" data-cart-title="{{ block.settings.price_column_title }}">
@@ -110,8 +110,8 @@
               {% for block in section.blocks %}
                 {% if block.type == 'discount_code' %}
                   <div class="box-ip-discount" {{ block.shopify_attributes }}>
-                    <input type="text" placeholder="{{ block.settings.placeholder_text }}" name="discount_code">
-                    <button type="button" class="tf-btn radius-6 btn-out-line-dark-2">{{ block.settings.button_text }}</button>
+                    <input type="text" placeholder="{{ 'cart.discount_code.placeholder' | t }}" name="discount_code">
+                    <button type="button" class="tf-btn radius-6 btn-out-line-dark-2">{{ 'cart.discount_code.button_text' | t }}</button>
               </div>
                 {% endif %}
               {% endfor %}
@@ -119,7 +119,7 @@
               {% for block in section.blocks %}
                 {% if block.type == 'cart_note' %}
                   <div class="cart-note" {{ block.shopify_attributes }}>
-                    <label for="note" class="text-md fw-medium">{{ block.settings.label_text }}</label>
+                    <label for="note" class="text-md fw-medium">{{ 'cart.cart_note.label' | t }}</label>
                 <textarea id="note" name="note">{{ cart.note }}</textarea>
               </div>
                 {% endif %}
@@ -246,20 +246,19 @@
               {% if block.type == 'checkout' %}
                 <div class="cart-head" {{ block.shopify_attributes }}>
               <div class="total-discount text-xl fw-medium">
-                    <span>{{ block.settings.total_label }}:</span>
+                    <span>{{ 'cart.checkout.total_label' | t }}:</span>
                 <span class="total">{{ cart.total_price | money }}</span>
               </div>
-                  <p class="text-sm text-dark-4">{{ block.settings.tax_message }}</p>
+                  <p class="text-sm text-dark-4">{{ 'cart.checkout.tax_message' | t }}</p>
             </div>
 
             <div class="check-agree">
               <input type="checkbox" class="tf-check" id="check-agree" required>
-              <label for="check-agree" class="label text-dark-4">I agree with <a href="{{block.settings.terms_url}}" class="text-dark-4 fw-medium text-underline link">term and
-                conditions</a></label>
+              <label for="check-agree" class="label text-dark-4">{{ 'cart.checkout.terms_text' | t }} <a href="{{block.settings.terms_url}}" class="text-dark-4 fw-medium text-underline link">{{ 'cart.checkout.terms_link' | t }}</a></label>
             </div>
 
             <div class="checkout-btn">
-                  <button type="submit" class="tf-btn btn-dark2 animate-btn w-100" id="checkout-button" disabled>{{ block.settings.checkout_button_text }}</button>
+                  <button type="submit" class="tf-btn btn-dark2 animate-btn w-100" id="checkout-button" disabled>{{ 'cart.checkout.checkout_button' | t }}</button>
             </div>
               {% endif %}
             {% endfor %}
@@ -433,39 +432,7 @@
     {
       "type": "cart_items",
       "name": "Cart Items",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "product_column_title",
-          "label": "Product Column Title",
-          "default": "Product"
-        },
-        {
-          "type": "text",
-          "id": "price_column_title",
-          "label": "Price Column Title",
-          "default": "Price"
-        },
-        {
-          "type": "text",
-          "id": "quantity_column_title",
-          "label": "Quantity Column Title",
-          "default": "Quantity"
-        },
-        {
-          "type": "text",
-          "id": "total_column_title",
-          "label": "Total Column Title",
-          "default": "Total"
-        },
-        {
-          "type": "text",
-          "id": "remove_text",
-          "label": "Remove Text",
-          "default": "Remove"
-        }
-      ]
+      "limit": 1
     },
     {
       "type": "gift_wrap",
@@ -501,34 +468,12 @@
     {
       "type": "discount_code",
       "name": "Discount Code",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "placeholder_text",
-          "label": "Placeholder Text",
-          "default": "Discount code"
-        },
-        {
-          "type": "text",
-          "id": "button_text",
-          "label": "Button Text",
-          "default": "Apply"
-        }
-      ]
+      "limit": 1
     },
     {
       "type": "cart_note",
       "name": "Cart Note",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "label_text",
-          "label": "Label Text",
-          "default": "Special instructions for seller"
-        }
-      ]
+      "limit": 1
     },
     {
       "type": "features",
@@ -806,27 +751,9 @@
       "settings": [
         {
           "type": "text",
-          "id": "total_label",
-          "label": "Total Label",
-          "default": "Total"
-        },
-        {
-          "type": "text",
-          "id": "tax_message",
-          "label": "Tax Message",
-          "default": "Taxes and shipping calculated at checkout"
-        },
-        {
-          "type": "text",
           "id": "terms_url",
           "label": "Terms URL",
           "default": "/pages/terms-and-conditions"
-        },
-        {
-          "type": "text",
-          "id": "checkout_button_text",
-          "label": "Checkout Button Text",
-          "default": "Checkout"
         }
       ]
     },
