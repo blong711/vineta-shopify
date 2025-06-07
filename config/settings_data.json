@@ -355,7 +355,13 @@
       "cart-drawer": {
         "type": "cart-drawer",
         "settings": {
-          "show_recommendations": true
+          "show_recommendations": true,
+          "enable_gift_wrap": true,
+          "gift_wrap_product": "gift-wrap",
+          "gift_wrap_variant_id": "",
+          "enable_order_note": true,
+          "enable_coupon": true,
+          "enable_shipping_calculator": true
         }
       },
       "search-drawer": {
@@ -368,18 +374,6 @@
             "round-neck-boxy-t-shirt",
             "round-neck-cotton-t-shirt"
           ]
-        }
-      },
-      "login-drawer": {
-        "type": "login-drawer",
-        "settings": {
-          "title": "Log in"
-        }
-      },
-      "register-drawer": {
-        "type": "register-drawer",
-        "settings": {
-          "title": "Create account"
         }
       },
       "mobile-menu": {
