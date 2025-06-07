@@ -3,7 +3,7 @@
 {%- for block in section.blocks -%}
   {%- case block.type -%}
     {%- when 'recently_viewed' -%}
-      {%- assign recently_viewed_products = product.recently_viewed_products | slice: 0, block.settings.products_to_show -%}
+      {%- assign recently_viewed_products = product.recently_viewed_products | slice: 0, section.settings.products_to_show -%}
       {%- if recently_viewed_products.size > 0 -%}
         {%- assign has_products = true -%}
       {%- endif -%}
@@ -13,7 +13,7 @@
         {%- assign has_products = true -%}
       {%- endif -%}
     {%- when 'related_products' -%}
-      {%- assign related_products = product.collections.first.products | where: "id", product.id | slice: 0, block.settings.products_to_show -%}
+      {%- assign related_products = product.collections.first.products | where: "id", product.id | slice: 0, section.settings.products_to_show -%}
       {%- if related_products.size > 0 -%}
         {%- assign has_products = true -%}
       {%- endif -%}
@@ -29,12 +29,12 @@
     {%- for block in section.blocks -%}
       <div class="hover-sw-nav hover-sw-2 wow fadeInUp" {{ block.shopify_attributes }}>
         <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
-          "slidesPerView": {{ block.settings.slides_per_view_mobile }},
-          "spaceBetween": {{ block.settings.space_between }},
+          "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+          "spaceBetween": {{ section.settings.space_between }},
           "speed": 800,
           "observer": true,
           "observeParents": true,
-          "slidesPerGroup": {{ block.settings.slides_per_view_mobile }},
+          "slidesPerGroup": {{ section.settings.slides_per_view_mobile }},
           "navigation": {
             "clickable": true,
             "nextEl": ".nav-next-viewed-{{ block.id }}",
@@ -43,21 +43,21 @@
           "pagination": { "el": ".sw-pagination-viewed-{{ block.id }}", "clickable": true },
           "breakpoints": {
             "768": { 
-              "slidesPerView": {{ block.settings.slides_per_view_tablet }}, 
-              "spaceBetween": {{ block.settings.space_between }}, 
-              "slidesPerGroup": {{ block.settings.slides_per_view_tablet }}
+              "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
+              "spaceBetween": {{ section.settings.space_between }}, 
+              "slidesPerGroup": {{ section.settings.slides_per_view_tablet }}
             },
             "1200": { 
-              "slidesPerView": {{ block.settings.slides_per_view_desktop }}, 
-              "spaceBetween": {{ block.settings.space_between }}, 
-              "slidesPerGroup": {{ block.settings.slides_per_view_desktop }}
+              "slidesPerView": {{ section.settings.slides_per_view_desktop }}, 
+              "spaceBetween": {{ section.settings.space_between }}, 
+              "slidesPerGroup": {{ section.settings.slides_per_view_desktop }}
             }
           }
         }'>
           <div class="swiper-wrapper">
             {%- case block.type -%}
               {%- when 'recently_viewed' -%}
-                {%- assign recently_viewed_products = product.recently_viewed_products | slice: 0, block.settings.products_to_show -%}
+                {%- assign recently_viewed_products = product.recently_viewed_products | slice: 0, section.settings.products_to_show -%}
                 {%- for product in recently_viewed_products -%}
                   <div class="swiper-slide">
                     {% render 'card-product', product: product %}
@@ -65,13 +65,13 @@
                 {%- endfor -%}
               {%- when 'featured_collection' -%}
                 {%- assign collection = collections[block.settings.collection] -%}
-                {%- for product in collection.products limit: block.settings.products_to_show -%}
+                {%- for product in collection.products limit: section.settings.products_to_show -%}
                   <div class="swiper-slide">
                     {% render 'card-product', product: product %}
                   </div>
                 {%- endfor -%}
               {%- when 'related_products' -%}
-                {%- assign related_products = product.collections.first.products | where: "id", product.id | slice: 0, block.settings.products_to_show -%}
+                {%- assign related_products = product.collections.first.products | where: "id", product.id | slice: 0, section.settings.products_to_show -%}
                 {%- for related_product in related_products -%}
                   <div class="swiper-slide">
                     {% render 'card-product', product: related_product %}
@@ -98,60 +98,58 @@
       "id": "title",
       "label": "Title",
       "default": "Recently Viewed"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 12,
+      "step": 2,
+      "default": 8,
+      "label": "Number of products to show"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2,
+      "label": "Slides per view (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Slides per view (tablet)"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Slides per view (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "space_between",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 12,
+      "label": "Space between slides"
     }
   ],
   "blocks": [
     {
       "type": "recently_viewed",
       "name": "Recently Viewed",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "range",
-          "id": "products_to_show",
-          "min": 4,
-          "max": 12,
-          "step": 2,
-          "default": 8,
-          "label": "Number of products to show"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_mobile",
-          "min": 1,
-          "max": 3,
-          "step": 1,
-          "default": 2,
-          "label": "Slides per view (mobile)"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_tablet",
-          "min": 2,
-          "max": 4,
-          "step": 1,
-          "default": 3,
-          "label": "Slides per view (tablet)"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_desktop",
-          "min": 3,
-          "max": 6,
-          "step": 1,
-          "default": 4,
-          "label": "Slides per view (desktop)"
-        },
-        {
-          "type": "range",
-          "id": "space_between",
-          "min": 0,
-          "max": 30,
-          "step": 2,
-          "default": 12,
-          "label": "Space between slides"
-        }
-      ]
+      "limit": 1
     },
     {
       "type": "featured_collection",
@@ -162,105 +160,13 @@
           "type": "collection",
           "id": "collection",
           "label": "Collection"
-        },
-        {
-          "type": "range",
-          "id": "products_to_show",
-          "min": 4,
-          "max": 12,
-          "step": 2,
-          "default": 8,
-          "label": "Number of products to show"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_mobile",
-          "min": 1,
-          "max": 3,
-          "step": 1,
-          "default": 2,
-          "label": "Slides per view (mobile)"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_tablet",
-          "min": 2,
-          "max": 4,
-          "step": 1,
-          "default": 3,
-          "label": "Slides per view (tablet)"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_desktop",
-          "min": 3,
-          "max": 6,
-          "step": 1,
-          "default": 4,
-          "label": "Slides per view (desktop)"
-        },
-        {
-          "type": "range",
-          "id": "space_between",
-          "min": 0,
-          "max": 30,
-          "step": 2,
-          "default": 12,
-          "label": "Space between slides"
         }
       ]
     },
     {
       "type": "related_products",
       "name": "Related Products",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "range",
-          "id": "products_to_show",
-          "min": 4,
-          "max": 12,
-          "step": 2,
-          "default": 8,
-          "label": "Number of products to show"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_mobile",
-          "min": 1,
-          "max": 3,
-          "step": 1,
-          "default": 2,
-          "label": "Slides per view (mobile)"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_tablet",
-          "min": 2,
-          "max": 4,
-          "step": 1,
-          "default": 3,
-          "label": "Slides per view (tablet)"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_desktop",
-          "min": 3,
-          "max": 6,
-          "step": 1,
-          "default": 4,
-          "label": "Slides per view (desktop)"
-        },
-        {
-          "type": "range",
-          "id": "space_between",
-          "min": 0,
-          "max": 30,
-          "step": 2,
-          "default": 12,
-          "label": "Space between slides"
-        }
-      ]
+      "limit": 1
     }
   ],
   "presets": [
