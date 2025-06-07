@@ -317,8 +317,8 @@
       {% section 'footer' %}
       {% section 'cart-drawer' %}
       {% section 'search-drawer' %}
-      {% section 'login-drawer' %}
-      {% section 'register-drawer' %}
+      {% render 'login-drawer' %}
+      {% render 'register-drawer' %}
       {% section 'mobile-menu' %}
       
       {% if settings.enable_compare %}
@@ -337,7 +337,6 @@
       {% section 'cookie-banner' %}
       {% render 'quickview-modal' %}
       {% render 'compare-drawer' %}
-      {% section 'filter-content' %}
     </div>
 
     <script>
