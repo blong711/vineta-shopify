@@ -92,15 +92,16 @@
           </div>
         </div>
         <div dir="ltr" class="swiper tf-swiper" data-swiper='{
-          "slidesPerView": 1,
-          "spaceBetween": 12,
+          "slidesPerView": {{ block.settings.slides_per_view_mobile }},
+          "spaceBetween": {{ block.settings.space_between }},
           "speed": 800,
           "observer": true,
           "observeParents": true,
-          "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+          "pagination": { "el": ".sw-pagination-iconbox", "clickable": true, "enabled": {{ block.settings.show_pagination }} },
+          "autoplay": {% if block.settings.autoplay %}{ "delay": {{ block.settings.autoplay_speed }} }{% else %}false{% endif %},
           "breakpoints": {
-            "575": { "slidesPerView":2, "spaceBetween": 12}, 
-            "992": { "slidesPerView": 3, "spaceBetween": 24}
+            "575": { "slidesPerView": {{ block.settings.slides_per_view_tablet }}, "spaceBetween": {{ block.settings.space_between }}}, 
+            "992": { "slidesPerView": {{ block.settings.slides_per_view_desktop }}, "spaceBetween": {{ block.settings.space_between }}}
           }
         }'>
           <div class="swiper-wrapper">
@@ -259,6 +260,67 @@
           "id": "text",
           "label": "Text",
           "default": "<p>Our skilled stylists have thoughtfully assembled seasonal outfits that are both trendy and timeless. With a variety of looks, they're here to inspire your next fashion-forward ensemble.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Slider Settings"
+        },
+        {
+          "type": "range",
+          "id": "slides_per_view_mobile",
+          "min": 1,
+          "max": 2,
+          "step": 1,
+          "label": "Slides per view (Mobile)",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "slides_per_view_tablet",
+          "min": 2,
+          "max": 3,
+          "step": 1,
+          "label": "Slides per view (Tablet)",
+          "default": 2
+        },
+        {
+          "type": "range",
+          "id": "slides_per_view_desktop",
+          "min": 3,
+          "max": 4,
+          "step": 1,
+          "label": "Slides per view (Desktop)",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "space_between",
+          "min": 0,
+          "max": 50,
+          "step": 2,
+          "label": "Space between slides",
+          "default": 24
+        },
+        {
+          "type": "checkbox",
+          "id": "show_pagination",
+          "label": "Show pagination dots",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Enable autoplay",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "autoplay_speed",
+          "min": 1000,
+          "max": 9000,
+          "step": 500,
+          "label": "Autoplay speed (ms)",
+          "default": 3000
         }
       ]
     },
