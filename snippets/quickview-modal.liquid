@@ -51,6 +51,10 @@
                                 {%- else -%}
                                     <h6 class="price-new">{{ product.price | money }}</h6>
                                 {%- endif -%}
+                                {%- if product.compare_at_price > product.price -%}
+                                  {%- assign discount_percentage = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+                                  <span class="badge-sale">{{ discount_percentage }}% Off</span>
+                                {%- endif -%}
                             </div>
                             <p class="text">{{ product.description | strip_html | truncatewords: 30 }}</p>
                         </div>
@@ -185,9 +189,11 @@
         // Update price
         const priceContainer = modal.querySelector('.product-info-price');
         if (selectedVariant.compare_at_price > selectedVariant.price) {
+          const discountPercentage = Math.round(((selectedVariant.compare_at_price - selectedVariant.price) / selectedVariant.compare_at_price) * 100);
           priceContainer.innerHTML = `
             <h6 class="price-new price-on-sale">${formatMoney(selectedVariant.price)}</h6>
             <h6 class="price-old">${formatMoney(selectedVariant.compare_at_price)}</h6>
+            <span class="badge-sale">${discountPercentage}% Off</span>
           `;
         } else {
           priceContainer.innerHTML = `
@@ -284,9 +290,11 @@
             const priceContainer = modal.querySelector('.product-info-price');
             if (priceContainer) {
               if (selectedVariant.compare_at_price > selectedVariant.price) {
+                const discountPercentage = Math.round(((selectedVariant.compare_at_price - selectedVariant.price) / selectedVariant.compare_at_price) * 100);
                 priceContainer.innerHTML = `
                   <h6 class="price-new price-on-sale">${formatMoney(selectedVariant.price)}</h6>
                   <h6 class="price-old">${formatMoney(selectedVariant.compare_at_price)}</h6>
+                  <span class="badge-sale">${discountPercentage}% Off</span>
                 `;
               } else {
                 priceContainer.innerHTML = `
@@ -609,9 +617,11 @@
           if (selectedVariant) {
             const priceContainer = modal.querySelector('.product-info-price');
             if (selectedVariant.compare_at_price > selectedVariant.price) {
+              const discountPercentage = Math.round(((selectedVariant.compare_at_price - selectedVariant.price) / selectedVariant.compare_at_price) * 100);
               priceContainer.innerHTML = `
                 <h6 class="price-new price-on-sale">${formatMoney(selectedVariant.price)}</h6>
                 <h6 class="price-old">${formatMoney(selectedVariant.compare_at_price)}</h6>
+                <span class="badge-sale">${discountPercentage}% Off</span>
               `;
             } else {
               priceContainer.innerHTML = `
