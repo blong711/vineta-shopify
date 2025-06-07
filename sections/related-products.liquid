@@ -1,5 +1,5 @@
 {%- comment -%}Related Products Section{%- endcomment -%}
-<section class="flat-spacing pt-0">
+<section class="flat-spacing {{ section.settings.padding_top }}">
   <div class="container">
     <div class="flat-title wow fadeInUp">
       <h4 class="title">{{ section.settings.title }}</h4>
@@ -24,13 +24,13 @@
         }
       }'>
         <div class="swiper-wrapper">
-          {% assign related_products = collections.all.products | sort: 'created_at' | reverse | limit: settings.products_to_show %}
+          {% assign related_products = collections.all.products | sort: section.settings.sort_by | sort_order: section.settings.sort_order | slice: 0, section.settings.products_to_show %}
           {% for product in related_products %}
             <div class="swiper-slide">
               {% render 'card-product',
                 product: product,
-                show_sale_badge: true,
-                show_color_swatches: true
+                show_sale_badge: section.settings.show_sale_badge,
+                show_color_swatches: section.settings.show_color_swatches
               %}
             </div>
           {% endfor %}
@@ -61,6 +61,86 @@
       "step": 1,
       "label": "Products to show",
       "default": 6
+    },
+    {
+      "type": "select",
+      "id": "sort_by",
+      "label": "Sort products by",
+      "options": [
+        {
+          "value": "created_at",
+          "label": "Date created"
+        },
+        {
+          "value": "price",
+          "label": "Price"
+        },
+        {
+          "value": "title",
+          "label": "Title"
+        },
+        {
+          "value": "best-selling",
+          "label": "Best selling"
+        }
+      ],
+      "default": "created_at"
+    },
+    {
+      "type": "select",
+      "id": "sort_order",
+      "label": "Sort order",
+      "options": [
+        {
+          "value": "asc",
+          "label": "Ascending"
+        },
+        {
+          "value": "desc",
+          "label": "Descending"
+        }
+      ],
+      "default": "desc"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sale_badge",
+      "label": "Show sale badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_color_swatches",
+      "label": "Show color swatches",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "label": "Top padding",
+      "options": [
+        {
+          "value": "pt-0",
+          "label": "None"
+        },
+        {
+          "value": "pt-1",
+          "label": "Small"
+        },
+        {
+          "value": "pt-2",
+          "label": "Medium"
+        },
+        {
+          "value": "pt-3",
+          "label": "Large"
+        }
+      ],
+      "default": "pt-0"
     }
   ]
 }

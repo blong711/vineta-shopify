@@ -301,7 +301,7 @@
 
           {% for block in section.blocks %}
             {% if block.type == 'testimonial' %}
-              <div class="cart-box testimonial-cart-box" {{ block.shopify_attributes }}>
+              <div class="cart-box testimonial-cart-box" {{ block.shopify_attributes }} style="background-color: {{ block.settings.background_color }}; color: {{ block.settings.text_color }}; padding: {{ block.settings.padding }}px; border-radius: {{ block.settings.border_radius }}px;">
             <div dir="ltr" class="swiper tf-swiper" data-swiper='{
               "slidesPerView": 1,
               "spaceBetween": 12,
@@ -317,7 +317,7 @@
                     {% if block.settings.testimonial1_review != blank %}
                     <div class="swiper-slide">
                       <div class="box-testimonial-main">
-                        <span class="quote icon-quote5"></span>
+                        <span class="quote {{ block.settings.quote_style }}" style="color: {{ block.settings.quote_color }};"></span>
                         <div class="content">
                           <div class="list-star-default">
                             {% for i in (1..5) %}
@@ -340,7 +340,7 @@
                     {% if block.settings.testimonial2_review != blank %}
                       <div class="swiper-slide">
                         <div class="box-testimonial-main">
-                          <span class="quote icon-quote5"></span>
+                          <span class="quote {{ block.settings.quote_style }}" style="color: {{ block.settings.quote_color }};"></span>
                           <div class="content">
                             <div class="list-star-default">
                               {% for i in (1..5) %}
@@ -363,7 +363,7 @@
                     {% if block.settings.testimonial3_review != blank %}
                       <div class="swiper-slide">
                         <div class="box-testimonial-main">
-                          <span class="quote icon-quote5"></span>
+                          <span class="quote {{ block.settings.quote_style }}" style="color: {{ block.settings.quote_color }};"></span>
                           <div class="content">
                             <div class="list-star-default">
                               {% for i in (1..5) %}
@@ -792,6 +792,68 @@
       "name": "Testimonial",
       "limit": 1,
       "settings": [
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "default": "#f8f9fa"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#212529"
+        },
+        {
+          "type": "color",
+          "id": "quote_color",
+          "label": "Quote Icon Color",
+          "default": "#6c757d"
+        },
+        {
+          "type": "range",
+          "id": "padding",
+          "min": 20,
+          "max": 60,
+          "step": 5,
+          "unit": "px",
+          "label": "Padding",
+          "default": 30
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "label": "Border Radius",
+          "default": 8
+        },
+        {
+          "type": "select",
+          "id": "quote_style",
+          "label": "Quote Style",
+          "options": [
+            {
+              "value": "icon-quote5",
+              "label": "Style 1"
+            },
+            {
+              "value": "icon-quote4",
+              "label": "Style 2"
+            },
+            {
+              "value": "icon-quote3",
+              "label": "Style 3"
+            }
+          ],
+          "default": "icon-quote5"
+        },
         {
           "type": "header",
           "content": "Testimonial 1"
