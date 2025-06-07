@@ -90,7 +90,12 @@
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form action="/cart" method="post" class="tf-mini-cart-tool-content">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.gift_wrap.title' | t }}</div>
-            <div class="tf-mini-cart-tool-text1 text-dark-1">{{ 'cart.drawer.gift_wrap.message' | t: price: section.settings.gift_wrap_price | money }}</div>
+            {% assign gift_wrap_product = all_products[section.settings.gift_wrap_product] %}
+            {% assign gift_wrap_variant = gift_wrap_product.variants[0] %}
+            {% if section.settings.gift_wrap_variant_id != blank %}
+              {% assign gift_wrap_variant = gift_wrap_product.variants | where: "id", section.settings.gift_wrap_variant_id | first %}
+            {% endif %}
+            <div class="tf-mini-cart-tool-text1 text-dark-1">{{ 'cart.drawer.gift_wrap.message' | t: price: gift_wrap_variant.price | money }}</div>
             <input type="hidden" name="attributes[gift_wrap]" value="true">
             <div class="tf-cart-tool-btns">
               <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">{{ 'cart.drawer.gift_wrap.save' | t }}</button>
@@ -195,10 +200,16 @@
       "default": true
     },
     {
+      "type": "product",
+      "id": "gift_wrap_product",
+      "label": "Gift Wrap Product",
+      "info": "Select the product to use for gift wrapping."
+    },
+    {
       "type": "text",
-      "id": "gift_wrap_price",
-      "label": "Gift wrap price",
-      "default": "10.00"
+      "id": "gift_wrap_variant_id",
+      "label": "Gift Wrap Variant ID (optional)",
+      "info": "If your gift wrap product has multiple variants, enter the variant ID to use. Leave blank to use the first variant."
     },
     {
       "type": "header",
