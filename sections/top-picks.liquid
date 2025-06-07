@@ -23,25 +23,47 @@
         </div>
         <div class="fl-control-sw">
             <div dir="ltr" class="swiper tf-swiper" data-swiper='{
-                    "slidesPerView": 2,
-                    "spaceBetween": 12,
-                    "speed": 800,
-                    "observer": true,
-                    "observeParents": true,
-                    "slidesPerGroup": {% if layout == 'home-phonecase' %}1{% else %}2{% endif %},
+                    "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+                    "spaceBetween": {{ section.settings.space_between_mobile }},
+                    "speed": {{ section.settings.transition_speed }},
+                    "observer": {{ section.settings.enable_observer }},
+                    "observeParents": {{ section.settings.enable_observer }},
+                    "slidesPerGroup": {{ section.settings.slides_per_group_mobile }},
+                    "loop": {{ section.settings.enable_loop }},
                     {% if layout == 'home-phonecase' %}
-                    "pagination": { "el": ".sw-pagination-top-pick", "clickable": true, "type": "progressbar" },
+                    "pagination": { 
+                        "el": ".sw-pagination-top-pick", 
+                        "clickable": true, 
+                        "type": "progressbar",
+                        "enabled": {{ section.settings.show_pagination }}
+                    }
                     {% else %}
-                    "navigation": {
+                    "navigation": {% if section.settings.show_navigation %}{
                         "clickable": true,
                         "nextEl": ".nav-next-top-pick",
                         "prevEl": ".nav-prev-top-pick"
-                    },
-                    "pagination": { "el": ".sw-pagination-top-pick", "clickable": true },
-                    {% endif %}
+                    }{% else %}false{% endif %},
+                    "pagination": {% if section.settings.show_pagination %}{
+                        "el": ".sw-pagination-top-pick",
+                        "clickable": true
+                    }{% else %}false{% endif %}
+                    {% endif %},
+                    "autoplay": {% if section.settings.enable_autoplay %}{
+                        "delay": {{ section.settings.autoplay_speed }},
+                        "pauseOnMouseEnter": {{ section.settings.pause_on_hover }},
+                        "disableOnInteraction": false
+                    }{% else %}false{% endif %},
                     "breakpoints": {
-                    "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": {% if layout == 'home-phonecase' %}1{% else %}3{% endif %} },
-                    "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": {% if layout == 'home-phonecase' %}1{% else %}4{% endif %} }
+                        "768": {
+                            "slidesPerView": {{ section.settings.slides_per_view_tablet }},
+                            "spaceBetween": {{ section.settings.space_between_mobile }},
+                            "slidesPerGroup": {{ section.settings.slides_per_group_tablet }}
+                        },
+                        "1200": {
+                            "slidesPerView": {{ section.settings.slides_per_view_desktop }},
+                            "spaceBetween": {{ section.settings.space_between_desktop }},
+                            "slidesPerGroup": {{ section.settings.slides_per_group_desktop }}
+                        }
                     }
                 }'>
                 <div class="swiper-wrapper wow fadeInUp">

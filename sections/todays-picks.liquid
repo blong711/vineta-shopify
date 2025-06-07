@@ -6,31 +6,37 @@
     <div class="fl-control-sw2 pos2 wow fadeInUp">
       <div dir="ltr" class="swiper tf-swiper wrap-sw-over" 
         data-swiper='{
-          "slidesPerView": 2,
-          "spaceBetween": 12,
-          "speed": 800,
-          "observer": true,
-          "observeParents": true,
-          "slidesPerGroup": 2,
-          "navigation": {
+          "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+          "spaceBetween": {{ section.settings.space_between_mobile }},
+          "speed": {{ section.settings.transition_speed }},
+          "observer": {{ section.settings.enable_observer }},
+          "observeParents": {{ section.settings.enable_observer }},
+          "slidesPerGroup": {{ section.settings.slides_per_group_mobile }},
+          "loop": {{ section.settings.enable_loop }},
+          "navigation": {% if section.settings.show_navigation %}{
             "clickable": true,
             "nextEl": ".nav-next-top-pick",
             "prevEl": ".nav-prev-top-pick"
-          },
-          "pagination": { 
-            "el": ".sw-pagination-top-pick", 
-            "clickable": true 
-          },
+          }{% else %}false{% endif %},
+          "pagination": {% if section.settings.show_pagination %}{
+            "el": ".sw-pagination-top-pick",
+            "clickable": true
+          }{% else %}false{% endif %},
+          "autoplay": {% if section.settings.enable_autoplay %}{
+            "delay": {{ section.settings.autoplay_speed }},
+            "pauseOnMouseEnter": {{ section.settings.pause_on_hover }},
+            "disableOnInteraction": false
+          }{% else %}false{% endif %},
           "breakpoints": {
-            "768": { 
-              "slidesPerView": 3, 
-              "spaceBetween": 12, 
-              "slidesPerGroup": 3 
+            "768": {
+              "slidesPerView": {{ section.settings.slides_per_view_tablet }},
+              "spaceBetween": {{ section.settings.space_between_mobile }},
+              "slidesPerGroup": {{ section.settings.slides_per_group_tablet }}
             },
-            "1200": { 
-              "slidesPerView": {{ section.settings.products_to_show }}, 
-              "spaceBetween": 24, 
-              "slidesPerGroup": {{ section.settings.products_to_show }}
+            "1200": {
+              "slidesPerView": {{ section.settings.slides_per_view_desktop }},
+              "spaceBetween": {{ section.settings.space_between_desktop }},
+              "slidesPerGroup": {{ section.settings.slides_per_group_desktop }}
             }
           }
         }'>
@@ -107,14 +113,135 @@
       "limit": 12
     },
     {
+      "type": "header",
+      "content": "Slider Settings"
+    },
+    {
       "type": "range",
-      "id": "products_to_show",
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Slides per view (Mobile)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Slides per view (Tablet)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
       "min": 2,
       "max": 6,
       "step": 1,
-      "label": "Products to show at once",
-      "default": 4,
-      "info": "Number of products visible in the slider at the same time"
+      "label": "Slides per view (Desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "slides_per_group_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Slides per group (Mobile)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "slides_per_group_tablet",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Slides per group (Tablet)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "slides_per_group_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Slides per group (Desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "space_between_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "label": "Space between slides (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "space_between_desktop",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "label": "Space between slides (Desktop)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "min": 300,
+      "max": 2000,
+      "step": 100,
+      "label": "Transition speed (ms)",
+      "default": 800
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation buttons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 1000,
+      "max": 9000,
+      "step": 500,
+      "label": "Autoplay speed (ms)",
+      "default": 3000
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause autoplay on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_loop",
+      "label": "Enable infinite loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_observer",
+      "label": "Enable observer",
+      "default": true,
+      "info": "Update slider when DOM changes"
     }
   ],
   "presets": [
@@ -123,7 +250,7 @@
       "category": "Product slider",
       "settings": {
         "title": "Today's Picks",
-        "products_to_show": 4
+        "slides_per_view_desktop": 4
       }
     }
   ]

@@ -9,21 +9,38 @@
     </div>
     <div class="fl-control-sw wow fadeInUp">
       <div dir="ltr" class="swiper tf-swiper" data-swiper='{
-        "slidesPerView": 2,
-        "spaceBetween": 12,
-        "speed": 1000,
-        "observer": true,
-        "observeParents": true,
-        "slidesPerGroup": 2,
-        "navigation": {
+        "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+        "spaceBetween": {{ section.settings.space_between_mobile }},
+        "speed": {{ section.settings.transition_speed }},
+        "observer": {{ section.settings.enable_observer }},
+        "observeParents": {{ section.settings.enable_observer }},
+        "slidesPerGroup": {{ section.settings.slides_per_group_mobile }},
+        "loop": {{ section.settings.enable_loop }},
+        "navigation": {% if section.settings.show_navigation %}{
           "clickable": true,
           "nextEl": ".nav-next-gear-up",
           "prevEl": ".nav-prev-gear-up"
-        },
-        "pagination": { "el": ".sw-pagination-gear-up", "clickable": true },
+        }{% else %}false{% endif %},
+        "pagination": {% if section.settings.show_pagination %}{
+          "el": ".sw-pagination-gear-up",
+          "clickable": true
+        }{% else %}false{% endif %},
+        "autoplay": {% if section.settings.enable_autoplay %}{
+          "delay": {{ section.settings.autoplay_speed }},
+          "pauseOnMouseEnter": {{ section.settings.pause_on_hover }},
+          "disableOnInteraction": false
+        }{% else %}false{% endif %},
         "breakpoints": {
-          "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
-          "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4 }
+          "768": {
+            "slidesPerView": {{ section.settings.slides_per_view_tablet }},
+            "spaceBetween": {{ section.settings.space_between_mobile }},
+            "slidesPerGroup": {{ section.settings.slides_per_group_tablet }}
+          },
+          "1200": {
+            "slidesPerView": {{ section.settings.slides_per_view_desktop }},
+            "spaceBetween": {{ section.settings.space_between_desktop }},
+            "slidesPerGroup": {{ section.settings.slides_per_group_desktop }}
+          }
         }
       }'>
         <div class="swiper-wrapper">
@@ -71,6 +88,137 @@
       "id": "heading",
       "label": "Heading",
       "default": "Top-quality equipment for all your cycling needs"
+    },
+    {
+      "type": "header",
+      "content": "Slider Settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Slides per view (Mobile)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Slides per view (Tablet)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "label": "Slides per view (Desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "slides_per_group_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Slides per group (Mobile)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "slides_per_group_tablet",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Slides per group (Tablet)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "slides_per_group_desktop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Slides per group (Desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "space_between_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "label": "Space between slides (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "space_between_desktop",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "label": "Space between slides (Desktop)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "min": 300,
+      "max": 2000,
+      "step": 100,
+      "label": "Transition speed (ms)",
+      "default": 1000
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation buttons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 1000,
+      "max": 9000,
+      "step": 500,
+      "label": "Autoplay speed (ms)",
+      "default": 3000
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause autoplay on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_loop",
+      "label": "Enable infinite loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_observer",
+      "label": "Enable observer",
+      "default": true,
+      "info": "Update slider when DOM changes"
     }
   ],
   "blocks": [

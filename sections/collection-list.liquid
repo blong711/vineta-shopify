@@ -71,17 +71,33 @@
     <div class="flat-spacing-5 line-top flat-wrap-iconbox" {{ block.shopify_attributes }}>
       <div class="container">
         <div dir="ltr" class="swiper tf-swiper wow fadeInUp" data-swiper='{
-          "slidesPerView": 1,
-          "spaceBetween": 12,
-          "speed": 800,
+          "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+          "spaceBetween": {{ section.settings.space_between_mobile }},
+          "speed": {{ section.settings.transition_speed }},
           "observer": true,
           "observeParents": true,
-          "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+          "loop": {{ section.settings.loop }},
+          "navigation": {% if section.settings.show_navigation %}{
+            "clickable": true,
+            "nextEl": ".nav-next-iconbox",
+            "prevEl": ".nav-prev-iconbox"
+          }{% else %}false{% endif %},
+          "pagination": {% if section.settings.show_pagination %}{
+            "el": ".sw-pagination-iconbox",
+            "clickable": true
+          }{% else %}false{% endif %},
+          "autoplay": {% if section.settings.autoplay %}{
+            "delay": {{ section.settings.autoplay_speed }}
+          }{% else %}false{% endif %},
           "breakpoints": {
-            "575": { "slidesPerView": 2, "spaceBetween": 24}, 
-            "768": { "slidesPerView": 3, "spaceBetween": 24},
-            "1200": { "slidesPerView": 3, "spaceBetween": 100},
-            "1440": { "slidesPerView": 3, "spaceBetween": 205}
+            "575": {
+              "slidesPerView": {{ section.settings.slides_per_view_tablet }},
+              "spaceBetween": {{ section.settings.space_between_mobile }}
+            },
+            "768": {
+              "slidesPerView": {{ section.settings.slides_per_view_desktop }},
+              "spaceBetween": {{ section.settings.space_between_desktop }}
+            }
           }
         }'>
           <div class="swiper-wrapper">
@@ -136,6 +152,97 @@
       "step": 6,
       "default": 6,
       "label": "Collections per page"
+    },
+    {
+      "type": "header",
+      "content": "Icon Box Slider Settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Slides per view (Mobile)",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Slides per view (Tablet)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Slides per view (Desktop)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "space_between_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "label": "Space between slides (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "space_between_desktop",
+      "min": 0,
+      "max": 205,
+      "step": 5,
+      "label": "Space between slides (Desktop)",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "min": 300,
+      "max": 2000,
+      "step": 100,
+      "label": "Transition speed (ms)",
+      "default": 800
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation buttons",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 1000,
+      "max": 9000,
+      "step": 500,
+      "label": "Autoplay speed (ms)",
+      "default": 3000
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Enable infinite loop",
+      "default": true
     }
   ],
   "blocks": [
