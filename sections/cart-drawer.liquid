@@ -90,7 +90,7 @@
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form action="/cart" method="post" class="tf-mini-cart-tool-content">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.gift_wrap.title' | t }}</div>
-            <div class="tf-mini-cart-tool-text1 text-dark-1">{{ 'cart.drawer.gift_wrap.message' | t | replace: '{price}', section.settings.gift_wrap_price | money }}</div>
+            <div class="tf-mini-cart-tool-text1 text-dark-1">{{ 'cart.drawer.gift_wrap.message' | t: price: section.settings.gift_wrap_price | money }}</div>
             <input type="hidden" name="attributes[gift_wrap]" value="true">
             <div class="tf-cart-tool-btns">
               <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">{{ 'cart.drawer.gift_wrap.save' | t }}</button>
