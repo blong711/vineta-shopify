@@ -25,11 +25,40 @@
         {% endif %}
       </div>
       {% if template contains 'collection' and collection.description != blank %}
-        <p style="font-size: 14px;" class="desc text-md text-main">{{ collection.description }}</p>
+        <p style="font-size: 14px;" class="desc text-md text-main">
+          <span class="description-short">{{ collection.description | strip_html | truncate: 120 }}</span>
+          <span class="description-full" style="display: none;">{{ collection.description | strip_html }}</span>
+          {% if collection.description.size > 120 %}
+            <button class="read-more-btn" style="background: none; border: none; color: #666; cursor: pointer; padding: 0; margin-left: 5px; text-decoration: underline;">Read More</button>
+          {% endif %}
+        </p>
       {% endif %}
     </div>
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const readMoreBtns = document.querySelectorAll('.read-more-btn');
+    readMoreBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const descContainer = this.parentElement;
+        const shortDesc = descContainer.querySelector('.description-short');
+        const fullDesc = descContainer.querySelector('.description-full');
+        
+        if (shortDesc.style.display !== 'none') {
+          shortDesc.style.display = 'none';
+          fullDesc.style.display = 'inline';
+          this.textContent = 'Show Less';
+        } else {
+          shortDesc.style.display = 'inline';
+          fullDesc.style.display = 'none';
+          this.textContent = 'Read More';
+        }
+      });
+    });
+  });
+</script>
 
 {% schema %}
 {
