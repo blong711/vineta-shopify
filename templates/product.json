@@ -146,7 +146,14 @@
         "return_policies_bWH7Qn": {
           "type": "return_policies",
           "settings": {
-            "title": "Return Policies"
+            "title": "Return Policies",
+            "show_icon_1": true,
+            "show_icon_2": true,
+            "show_icon_3": true,
+            "show_icon_4": true,
+            "show_icon_5": true,
+            "show_icon_6": true,
+            "show_icon_7": true
           }
         }
       },
@@ -165,11 +172,7 @@
         "related_products": {
           "type": "related_products",
           "settings": {
-            "products_to_show": 8,
-            "slides_per_view_mobile": 2,
-            "slides_per_view_tablet": 3,
-            "slides_per_view_desktop": 4,
-            "space_between": 12
+            "products_to_show": 8
           }
         }
       },
@@ -177,29 +180,31 @@
         "related_products"
       ],
       "settings": {
-        "title": "People Also Bought"
+        "title": "People Also Bought",
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "space_between": 12
       }
     },
     "recently-viewed": {
       "type": "recently-viewed",
       "blocks": {
-        "featured_collection_F3MRx9": {
-          "type": "featured_collection",
-          "settings": {
-            "collection": "women",
-            "products_to_show": 8,
-            "slides_per_view_mobile": 2,
-            "slides_per_view_tablet": 3,
-            "slides_per_view_desktop": 4,
-            "space_between": 12
-          }
+        "recently_viewed_yxCMeQ": {
+          "type": "recently_viewed",
+          "settings": {}
         }
       },
       "block_order": [
-        "featured_collection_F3MRx9"
+        "recently_viewed_yxCMeQ"
       ],
       "settings": {
-        "title": "Recently Viewed"
+        "title": "Recently Viewed",
+        "products_to_show": 8,
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "space_between": 12
       }
     }
   },
