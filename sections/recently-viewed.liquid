@@ -3,7 +3,7 @@
 {%- for block in section.blocks -%}
   {%- case block.type -%}
     {%- when 'recently_viewed' -%}
-      {%- assign recently_viewed_products = product.recently_viewed | limit: block.settings.products_to_show -%}
+      {%- assign recently_viewed_products = product.recently_viewed_products | slice: 0, block.settings.products_to_show -%}
       {%- if recently_viewed_products.size > 0 -%}
         {%- assign has_products = true -%}
       {%- endif -%}
@@ -13,7 +13,7 @@
         {%- assign has_products = true -%}
       {%- endif -%}
     {%- when 'related_products' -%}
-      {%- assign related_products = product.collections.first.products | where: "id" | is_not: product.id | limit: block.settings.products_to_show -%}
+      {%- assign related_products = product.collections.first.products | where: "id", product.id | slice: 0, block.settings.products_to_show -%}
       {%- if related_products.size > 0 -%}
         {%- assign has_products = true -%}
       {%- endif -%}
@@ -57,7 +57,7 @@
           <div class="swiper-wrapper">
             {%- case block.type -%}
               {%- when 'recently_viewed' -%}
-                {%- assign recently_viewed_products = product.recently_viewed | limit: block.settings.products_to_show -%}
+                {%- assign recently_viewed_products = product.recently_viewed_products | slice: 0, block.settings.products_to_show -%}
                 {%- for product in recently_viewed_products -%}
                   <div class="swiper-slide">
                     {% render 'card-product', product: product %}
@@ -71,7 +71,7 @@
                   </div>
                 {%- endfor -%}
               {%- when 'related_products' -%}
-                {%- assign related_products = product.collections.first.products | where: "id" | is_not: product.id | limit: block.settings.products_to_show -%}
+                {%- assign related_products = product.collections.first.products | where: "id", product.id | slice: 0, block.settings.products_to_show -%}
                 {%- for related_product in related_products -%}
                   <div class="swiper-slide">
                     {% render 'card-product', product: related_product %}
