@@ -216,24 +216,24 @@
           {% for block in section.blocks %}
             {% if block.type == 'shipping_estimates' %}
               <div class="cart-box shipping-cart-box" {{ block.shopify_attributes }}>
-                <div class="text-lg title fw-medium">{{ block.settings.title }}</div>
+                <div class="text-lg title fw-medium">{{ 'cart.shipping_estimates.title' | t }}</div>
                 <fieldset class="field">
-                  <label for="country" class="text-sm">{{ block.settings.country_label }}</label>
-                  <input type="text" id="country" placeholder="{{ block.settings.country_placeholder }}">
+                  <label for="country" class="text-sm">{{ 'cart.shipping_estimates.country_label' | t }}</label>
+                  <input type="text" id="country" placeholder="{{ 'cart.shipping_estimates.country_placeholder' | t }}">
                 </fieldset>
                 <fieldset class="field">
-                  <label for="state" class="text-sm">{{ block.settings.state_label }}</label>
-                  <input type="text" id="state" placeholder="{{ block.settings.state_placeholder }}">
+                  <label for="state" class="text-sm">{{ 'cart.shipping_estimates.state_label' | t }}</label>
+                  <input type="text" id="state" placeholder="{{ 'cart.shipping_estimates.state_placeholder' | t }}">
                 </fieldset>
                 <fieldset class="field">
-                  <label for="code" class="text-sm">{{ block.settings.zipcode_label }}</label>
-                  <input type="text" id="code" placeholder="{{ block.settings.zipcode_placeholder }}">
+                  <label for="code" class="text-sm">{{ 'cart.shipping_estimates.zipcode_label' | t }}</label>
+                  <input type="text" id="code" placeholder="{{ 'cart.shipping_estimates.zipcode_placeholder' | t }}">
                 </fieldset>
-                <button type="button" class="tf-btn btn-dark2 animate-btn w-100">{{ block.settings.button_text }}</button>
+                <button type="button" class="tf-btn btn-dark2 animate-btn w-100">{{ 'cart.shipping_estimates.button_text' | t }}</button>
                 
                 <!-- Add shipping rates display container -->
                 <div class="shipping-rates-container" style="display: none; margin-top: 20px;">
-                  <div class="shipping-rates-header text-md fw-medium">Available Shipping Rates</div>
+                  <div class="shipping-rates-header text-md fw-medium">{{ 'cart.shipping_estimates.available_rates' | t }}</div>
                   <div class="shipping-rates-list"></div>
                   <div class="shipping-rates-error text-sm text-danger" style="display: none;"></div>
                 </div>
@@ -797,57 +797,7 @@
     {
       "type": "shipping_estimates",
       "name": "Shipping Estimates",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Shipping estimates"
-        },
-        {
-          "type": "text",
-          "id": "country_label",
-          "label": "Country Label",
-          "default": "Country"
-        },
-        {
-          "type": "text",
-          "id": "country_placeholder",
-          "label": "Country Placeholder",
-          "default": "United State"
-        },
-        {
-          "type": "text",
-          "id": "state_label",
-          "label": "State Label",
-          "default": "State/Province"
-        },
-        {
-          "type": "text",
-          "id": "state_placeholder",
-          "label": "State Placeholder",
-          "default": "State/Province"
-        },
-        {
-          "type": "text",
-          "id": "zipcode_label",
-          "label": "Zipcode Label",
-          "default": "Zipcode"
-        },
-        {
-          "type": "text",
-          "id": "zipcode_placeholder",
-          "label": "Zipcode Placeholder",
-          "default": "41000"
-        },
-        {
-          "type": "text",
-          "id": "button_text",
-          "label": "Button Text",
-          "default": "Estimate"
-        }
-      ]
+      "limit": 1
     },
     {
       "type": "checkout",
