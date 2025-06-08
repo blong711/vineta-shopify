@@ -539,11 +539,11 @@
                         </div>
 
                       {% when 'delivery_info' %}
-                        <div class="tf-product-info-delivery-return{% if block.settings.layout_style == 'horizontal' %} layout-horizontal{% endif %}" {{ block.shopify_attributes }}>
+                        <div class="tf-product-info-delivery-return" {{ block.shopify_attributes }}>
                           {% if block.settings.show_delivery_info %}
                             <div class="product-delivery">
-                              <div class="icon {{ block.settings.delivery_icon }}" style="color: {{ block.settings.icon_color }}; font-size: {{ block.settings.icon_size }}px;"></div>
-                              <p class="text-md" style="color: {{ block.settings.text_color }};">
+                              <div class="icon {{ block.settings.delivery_icon }}" font-size: {{ block.settings.icon_size }}px;"></div>
+                              <p class="text-md">
                                 {{ block.settings.delivery_label }} 
                                 <span class="fw-medium">{{ block.settings.delivery_time }}</span>
                               </p>
@@ -551,8 +551,8 @@
                           {% endif %}
                           {% if block.settings.show_free_shipping %}
                             <div class="product-delivery">
-                              <div class="icon {{ block.settings.shipping_icon }}" style="color: {{ block.settings.icon_color }}; font-size: {{ block.settings.icon_size }}px;"></div>
-                              <p class="text-md" style="color: {{ block.settings.text_color }};">
+                              <div class="icon {{ block.settings.shipping_icon }}" font-size: {{ block.settings.icon_size }}px;"></div>
+                              <p class="text-md">
                                 {{ block.settings.shipping_label }} 
                                 <span class="fw-medium">{{ block.settings.free_shipping_text }}</span>
                               </p>
@@ -2499,28 +2499,6 @@ document.addEventListener('DOMContentLoaded', function() {
         {
           "type": "header",
           "content": "Style Settings"
-        },
-        {
-          "type": "select",
-          "id": "layout_style",
-          "label": "Layout Style",
-          "options": [
-            { "value": "vertical", "label": "Vertical" },
-            { "value": "horizontal", "label": "Horizontal" }
-          ],
-          "default": "vertical"
-        },
-        {
-          "type": "color",
-          "id": "icon_color",
-          "label": "Icon Color",
-          "default": "#000000"
-        },
-        {
-          "type": "color",
-          "id": "text_color",
-          "label": "Text Color",
-          "default": "#666666"
         },
         {
           "type": "range",
