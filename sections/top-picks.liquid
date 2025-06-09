@@ -216,6 +216,141 @@
             "id": "view_all_text",
             "label": "View All Text",
             "default": "View all"
+        },
+        {
+            "type": "header",
+            "content": "Slider Settings"
+        },
+        {
+            "type": "range",
+            "id": "slides_per_view_mobile",
+            "min": 1,
+            "max": 3,
+            "step": 1,
+            "label": "Slides per view (Mobile)",
+            "default": 1
+        },
+        {
+            "type": "range",
+            "id": "slides_per_view_tablet",
+            "min": 2,
+            "max": 4,
+            "step": 1,
+            "label": "Slides per view (Tablet)",
+            "default": 2
+        },
+        {
+            "type": "range",
+            "id": "slides_per_view_desktop",
+            "min": 3,
+            "max": 6,
+            "step": 1,
+            "label": "Slides per view (Desktop)",
+            "default": 4
+        },
+        {
+            "type": "range",
+            "id": "space_between_mobile",
+            "min": 0,
+            "max": 50,
+            "step": 5,
+            "unit": "px",
+            "label": "Space between slides (Mobile)",
+            "default": 10
+        },
+        {
+            "type": "range",
+            "id": "space_between_desktop",
+            "min": 0,
+            "max": 50,
+            "step": 5,
+            "unit": "px",
+            "label": "Space between slides (Desktop)",
+            "default": 20
+        },
+        {
+            "type": "range",
+            "id": "slides_per_group_mobile",
+            "min": 1,
+            "max": 3,
+            "step": 1,
+            "label": "Slides per group (Mobile)",
+            "default": 1
+        },
+        {
+            "type": "range",
+            "id": "slides_per_group_tablet",
+            "min": 1,
+            "max": 4,
+            "step": 1,
+            "label": "Slides per group (Tablet)",
+            "default": 2
+        },
+        {
+            "type": "range",
+            "id": "slides_per_group_desktop",
+            "min": 1,
+            "max": 6,
+            "step": 1,
+            "label": "Slides per group (Desktop)",
+            "default": 3
+        },
+        {
+            "type": "range",
+            "id": "transition_speed",
+            "min": 100,
+            "max": 1000,
+            "step": 100,
+            "unit": "ms",
+            "label": "Transition Speed",
+            "default": 300
+        },
+        {
+            "type": "checkbox",
+            "id": "show_navigation",
+            "label": "Show Navigation Arrows",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_pagination",
+            "label": "Show Pagination",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_autoplay",
+            "label": "Enable Autoplay",
+            "default": false
+        },
+        {
+            "type": "range",
+            "id": "autoplay_speed",
+            "min": 1000,
+            "max": 9000,
+            "step": 500,
+            "unit": "ms",
+            "label": "Autoplay Speed",
+            "default": 3000
+        },
+        {
+            "type": "checkbox",
+            "id": "pause_on_hover",
+            "label": "Pause on Hover",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_loop",
+            "label": "Enable Loop",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_observer",
+            "label": "Enable Observer",
+            "info": "Watch for changes in the slider container and update",
+            "default": true
         }
     ],
     "blocks": [
