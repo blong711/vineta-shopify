@@ -37,27 +37,27 @@
         }
       }'>
         <div class="swiper-wrapper">
-          {%- for article in section.settings.blog.articles limit: section.settings.post_limit -%}
-            <div class="swiper-slide">
+          {%- for article in section.blocks -%}
+            <div class="swiper-slide" {{ article.shopify_attributes }}>
               <div class="news-item hover-img">
-                <a href="{{ article.url }}" class="image-box img-style">
-                  {%- if article.image != blank -%}
-                    {{ article.image | image_url: width: 600 | image_tag:
+                <a href="{{ article.settings.article.url }}" class="image-box img-style">
+                  {%- if article.settings.article.image != blank -%}
+                    {{ article.settings.article.image | image_url: width: 600 | image_tag:
                       loading: 'lazy',
                       width: 600,
                       height: 400,
                       class: 'lazyload',
-                      alt: article.title
+                      alt: article.settings.article.title
                     }}
                   {%- else -%}
                     {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
                   {%- endif -%}
                 </a>
                 <div class="content">
-                  <a href="{{ article.url }}" class="title fw-medium link text-xl text-line-clamp-2">
-                    {{ article.title }}
+                  <a href="{{ article.settings.article.url }}" class="title fw-medium link text-xl text-line-clamp-2">
+                    {{ article.settings.article.title }}
                   </a>
-                  <a href="{{ article.url }}" class="btn-readmore link">
+                  <a href="{{ article.settings.article.url }}" class="btn-readmore link">
                     {{ section.settings.read_more_text }} <i class="icon icon-arr-right"></i>
                   </a>
                 </div>
@@ -111,26 +111,26 @@
         }
       }'>
         <div class="swiper-wrapper">
-          {%- for article in section.settings.blog.articles limit: section.settings.post_limit -%}
-            <div class="swiper-slide">
+          {%- for article in section.blocks -%}
+            <div class="swiper-slide" {{ article.shopify_attributes }}>
               <div class="blog-item-v2">
                 <div class="entry-image hover-img">
-                  <a href="{{ article.url }}" class="image-box img-style">
-                    {%- if article.image != blank -%}
-                      {{ article.image | image_url: width: 600 | image_tag:
+                  <a href="{{ article.settings.article.url }}" class="image-box img-style">
+                    {%- if article.settings.article.image != blank -%}
+                      {{ article.settings.article.image | image_url: width: 600 | image_tag:
                         loading: 'lazy',
                         width: 600,
                         height: 400,
                         class: 'lazyload',
-                        alt: article.title
+                        alt: article.settings.article.title
                       }}
                     {%- else -%}
                       {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
                     {%- endif -%}
                   </a>
-                  {% if article.tags.size > 0 %}
+                  {% if article.settings.article.tags.size > 0 %}
                     <div class="entry-tag">
-                      {% for tag in article.tags limit: 3 %}
+                      {% for tag in article.settings.article.tags limit: 3 %}
                         <span class="tag">{{ tag }}</span>
                       {% endfor %}
                     </div>
@@ -139,22 +139,22 @@
                 <div class="entry-content">
                   <div class="info-box">
                     <ul class="meta-list">
-                      <li class="item">by {{ article.author }}</li>
-                      <li class="item">{{ article.published_at | date: "%b %d, %Y" }}</li>
-                      {% if article.comments_enabled? %}
-                        <li class="item">{{ article.comments_count }} Comments</li>
+                      <li class="item">by {{ article.settings.article.author }}</li>
+                      <li class="item">{{ article.settings.article.published_at | date: "%b %d, %Y" }}</li>
+                      {% if article.settings.article.comments_enabled? %}
+                        <li class="item">{{ article.settings.article.comments_count }} Comments</li>
                       {% endif %}
                     </ul>
-                    <a href="{{ article.url }}" class="title fw-medium link text-xl text-line-clamp-2">
-                      {{ article.title }}
+                    <a href="{{ article.settings.article.url }}" class="title fw-medium link text-xl text-line-clamp-2">
+                      {{ article.settings.article.title }}
                     </a>
-                    {% if article.excerpt != blank %}
+                    {% if article.settings.article.excerpt != blank %}
                       <p class="desc text-main text-sm text-line-clamp-2">
-                        {{ article.excerpt | strip_html | truncatewords: 30 }}
+                        {{ article.settings.article.excerpt | strip_html | truncatewords: 30 }}
                       </p>
                     {% endif %}
                   </div>
-                  <a href="{{ article.url }}" class="btn-readmore link">
+                  <a href="{{ article.settings.article.url }}" class="btn-readmore link">
                     {{ section.settings.read_more_text }} <i class="icon icon-arr-right"></i>
                   </a>
                 </div>
@@ -204,26 +204,26 @@
         }
       }'>
         <div class="swiper-wrapper">
-          {%- for article in section.settings.blog.articles limit: section.settings.post_limit -%}
-            <div class="swiper-slide">
+          {%- for article in section.blocks -%}
+            <div class="swiper-slide" {{ article.shopify_attributes }}>
               <div class="blog-item-v2">
                 <div class="entry-image hover-img">
-                  <a href="{{ article.url }}" class="image-box img-style">
-                    {%- if article.image != blank -%}
-                      {{ article.image | image_url: width: 600 | image_tag:
+                  <a href="{{ article.settings.article.url }}" class="image-box img-style">
+                    {%- if article.settings.article.image != blank -%}
+                      {{ article.settings.article.image | image_url: width: 600 | image_tag:
                         loading: 'lazy',
                         width: 600,
                         height: 400,
                         class: 'lazyload',
-                        alt: article.title
+                        alt: article.settings.article.title
                       }}
                     {%- else -%}
                       {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
                     {%- endif -%}
                   </a>
-                  {% if article.tags.size > 0 %}
+                  {% if article.settings.article.tags.size > 0 %}
                     <div class="entry-tag">
-                      {% for tag in article.tags limit: 3 %}
+                      {% for tag in article.settings.article.tags limit: 3 %}
                         <span class="tag">{{ tag }}</span>
                       {% endfor %}
                     </div>
@@ -232,22 +232,22 @@
                 <div class="entry-content">
                   <div class="info-box">
                     <ul class="meta-list">
-                      <li class="item">by {{ article.author }}</li>
-                      <li class="item">{{ article.published_at | date: "%b %d, %Y" }}</li>
-                      {% if article.comments_enabled? %}
-                        <li class="item">{{ article.comments_count }} Comments</li>
+                      <li class="item">by {{ article.settings.article.author }}</li>
+                      <li class="item">{{ article.settings.article.published_at | date: "%b %d, %Y" }}</li>
+                      {% if article.settings.article.comments_enabled? %}
+                        <li class="item">{{ article.settings.article.comments_count }} Comments</li>
                       {% endif %}
                     </ul>
-                    <a href="{{ article.url }}" class="title fw-medium link text-xl text-line-clamp-2">
-                      {{ article.title }}
+                    <a href="{{ article.settings.article.url }}" class="title fw-medium link text-xl text-line-clamp-2">
+                      {{ article.settings.article.title }}
                     </a>
-                    {% if article.excerpt != blank %}
+                    {% if article.settings.article.excerpt != blank %}
                       <p class="desc text-main text-sm text-line-clamp-2">
-                        {{ article.excerpt | strip_html | truncatewords: 30 }}
+                        {{ article.settings.article.excerpt | strip_html | truncatewords: 30 }}
                       </p>
                     {% endif %}
                   </div>
-                  <a href="{{ article.url }}" class="btn-readmore link">
+                  <a href="{{ article.settings.article.url }}" class="btn-readmore link">
                     {{ section.settings.read_more_text }} <i class="icon icon-arr-right"></i>
                   </a>
                 </div>
@@ -289,20 +289,6 @@
         { "value": "layout3", "label": "Layout 3 (Blog Style)" }
       ],
       "default": "layout1"
-    },
-    {
-      "type": "blog",
-      "id": "blog",
-      "label": "Blog"
-    },
-    {
-      "type": "range",
-      "id": "post_limit",
-      "min": 2,
-      "max": 12,
-      "step": 1,
-      "label": "Number of posts to show",
-      "default": 6
     },
     {
       "type": "text",
@@ -439,10 +425,34 @@
       "default": 94
     }
   ],
+  "blocks": [
+    {
+      "type": "article",
+      "name": "Article",
+      "settings": [
+        {
+          "type": "article",
+          "id": "article",
+          "label": "Article"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
       "name": "Blog Carousel",
-      "category": "Blog Slider"
+      "category": "Blog Slider",
+      "blocks": [
+        {
+          "type": "article"
+        },
+        {
+          "type": "article"
+        },
+        {
+          "type": "article"
+        }
+      ]
     }
   ]
 }
