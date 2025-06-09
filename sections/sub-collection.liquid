@@ -6,7 +6,7 @@
 {% endcomment %}
 
 <div class="flat-spacing-{{ section.settings.spacing }}">
-  <div class="container{% if section.settings.container_width == 'narrow' %}-6{% endif %}">
+  <div class="container{% if section.settings.container_width == 'narrow' %}-6{% endif %}" style="max-width: {{ section.settings.width }}px;">
     <div class="fl-control-sw pos1">
       <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp" data-swiper='{
         "slidesPerView": {{ section.settings.slides_per_view_mobile }},
@@ -102,6 +102,16 @@
 {
   "name": "Sub Collection",
   "settings": [
+    {
+      "type": "range",
+      "id": "width",
+      "min": 1000,
+      "max": 1600,
+      "step": 8,
+      "unit": "px",
+      "label": "Section width",
+      "default": 1488
+    },
     {
       "type": "select",
       "id": "layout",

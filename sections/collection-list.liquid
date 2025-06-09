@@ -1,6 +1,6 @@
 {%- comment -%}Collection List Section{%- endcomment -%}
 <section class="flat-spacing-24">
-  <div class="container">
+  <div class="container" style="max-width: {{ section.settings.width }}px;">
     <div class="flat-wrap-cls tf-grid-layout tf-col-2 xl-col-3">
       {%- paginate collections by section.settings.collections_per_page -%}
         {%- for collection in collections -%}
@@ -144,6 +144,16 @@
 {
   "name": "Collection List",
   "settings": [
+    {
+      "type": "range",
+      "id": "width",
+      "min": 1000,
+      "max": 1600,
+      "step": 8,
+      "unit": "px",
+      "label": "Section width",
+      "default": 1488
+    },
     {
       "type": "range",
       "id": "collections_per_page",
