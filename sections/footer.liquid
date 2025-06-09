@@ -22,28 +22,28 @@
         <ul class="tf-social-icon style-large">
           {%- if section.settings.social_facebook_link != blank -%}
             <li>
-              <a href="{{ section.settings.social_facebook_link }}" class="social-item social-facebook" target="_blank" rel="noopener">
+              <a href="https://{{ section.settings.social_facebook_link | remove: 'https://' | remove: 'http://' }}" class="social-item social-facebook" target="_blank" rel="noopener">
                 <i class="icon icon-fb"></i>
               </a>
             </li>
           {%- endif -%}
           {%- if section.settings.social_instagram_link != blank -%}
             <li>
-              <a href="{{ section.settings.social_instagram_link }}" class="social-item social-instagram" target="_blank" rel="noopener">
+              <a href="https://{{ section.settings.social_instagram_link | remove: 'https://' | remove: 'http://' }}" class="social-item social-instagram" target="_blank" rel="noopener">
                 <i class="icon icon-instagram"></i>
               </a>
             </li>
           {%- endif -%}
           {%- if section.settings.social_linkedin_link != blank -%}
             <li>
-              <a href="{{ section.settings.social_linkedin_link }}" class="social-item social-linkedin" target="_blank" rel="noopener">
+              <a href="https://{{ section.settings.social_linkedin_link | remove: 'https://' | remove: 'http://' }}" class="social-item social-linkedin" target="_blank" rel="noopener">
                 <i class="icon icon-linkedin"></i>
               </a>
             </li>
           {%- endif -%}
           {%- if section.settings.social_x_link != blank -%}
             <li>
-              <a href="{{ section.settings.social_x_link }}" class="social-item social-x" target="_blank" rel="noopener">
+              <a href="https://{{ section.settings.social_x_link | remove: 'https://' | remove: 'http://' }}" class="social-item social-x" target="_blank" rel="noopener">
                 <i class="icon icon-x"></i>
               </a>
             </li>
