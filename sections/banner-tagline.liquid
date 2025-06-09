@@ -1,6 +1,6 @@
 <!-- Banner Tagline-->
 <section class="flat-spacing-3">
-    <div class="container-3">
+    <div class="container-3" style="max-width: {{ section.settings.width }}px;">
         <div class="banner-tagline-phonecase hover-img hover-shine">
             <div class="image shine-item img-style">
                 <img src="{{ section.settings.image | image_url }}" 
@@ -35,6 +35,16 @@
 {
     "name": "Banner Tagline",
     "settings": [
+        {
+            "type": "range",
+            "id": "width",
+            "min": 1000,
+            "max": 1600,
+            "step": 8,
+            "unit": "px",
+            "label": "Section width",
+            "default": 1560
+        },
         {
             "type": "image_picker",
             "id": "image",
