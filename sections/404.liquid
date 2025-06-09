@@ -3,6 +3,16 @@
   "name": "404 Page",
   "settings": [
     {
+      "type": "range",
+      "id": "width",
+      "min": 1000,
+      "max": 1600,
+      "step": 8,
+      "unit": "px",
+      "label": "Section width",
+      "default": 1488
+    },
+    {
       "type": "image_picker",
       "id": "error_image",
       "label": "404 Image"
@@ -36,7 +46,7 @@
 {% endschema %}
 
 <section class="flat-spacing">
-  <div class="container">
+  <div class="container" style="max-width: {{ section.settings.width }}px;">
     <div class="row">
       <div class="col-lg-12">
         <div class="wg-404">
