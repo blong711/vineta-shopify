@@ -1,6 +1,6 @@
 <!-- Gear Up -->
 <section class="flat-spacing-3">
-  <div class="container">
+  <div class="container" style="max-width: {{ section.settings.width }}px;">
     <div class="flat-title-v2 text-center justify-items-center wow fadeInUp">
       <a href="{{ section.settings.gear_up_link }}" class="tf-btn btn-out-line-green btn-small text-uppercase">
         {{ section.settings.gear_up_text }}
@@ -44,19 +44,33 @@
         }
       }'>
         <div class="swiper-wrapper">
-          {% for block in section.blocks %}
-            <div class="swiper-slide" {{ block.shopify_attributes }}>
-              {% render 'card-product',
-                product: block.settings.product,
-                vendor: block.settings.vendor,
-                show_sale_badge: block.settings.show_sale_badge,
-                sale_badge_text: block.settings.sale_badge_text,
-                show_color_swatches: block.settings.show_color_swatches,
-                class: 'style-border',
-                product-info: 'text-center'
-              %}
-            </div>
-          {% endfor %}
+          {%- if section.settings.product_source == 'collection' and section.settings.collection != blank -%}
+            {%- for product in section.settings.collection.products limit: 12 -%}
+              <div class="swiper-slide">
+                {% render 'card-product',
+                  product: product,
+                  show_sale_badge: true,
+                  show_color_swatches: true,
+                  selected_variant: product.selected_or_first_available_variant,
+                  class: 'style-border',
+                  product-info: 'text-center'
+                %}
+              </div>
+            {%- endfor -%}
+          {%- elsif section.settings.product_source == 'product_list' and section.settings.product_list != blank -%}
+            {%- for product in section.settings.product_list -%}
+              <div class="swiper-slide">
+                {% render 'card-product',
+                  product: product,
+                  show_sale_badge: true,
+                  show_color_swatches: true,
+                  selected_variant: product.selected_or_first_available_variant,
+                  class: 'style-border',
+                  product-info: 'text-center'
+                %}
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
         </div>
         <div class="d-flex d-xl-none sw-dot-default sw-pagination-gear-up justify-content-center"></div>
       </div>
@@ -73,6 +87,16 @@
   "tag": "section",
   "settings": [
     {
+      "type": "range",
+      "id": "width",
+      "min": 1000,
+      "max": 1600,
+      "step": 8,
+      "unit": "px",
+      "label": "Section width",
+      "default": 1488
+    },
+    {
       "type": "text",
       "id": "gear_up_text",
       "label": "Gear Up Text",
@@ -88,6 +112,35 @@
       "id": "heading",
       "label": "Heading",
       "default": "Top-quality equipment for all your cycling needs"
+    },
+    {
+      "type": "select",
+      "id": "product_source",
+      "label": "Product Source",
+      "options": [
+        {
+          "value": "collection",
+          "label": "Collection"
+        },
+        {
+          "value": "product_list",
+          "label": "Product List"
+        }
+      ],
+      "default": "collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Select a collection to display its products"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Product List",
+      "info": "Select products to display",
+      "limit": 12
     },
     {
       "type": "header",
@@ -262,26 +315,28 @@
     {
       "name": "Gear Up",
       "category": "Product slider",
-      "blocks": [
-        {
-          "type": "product",
-          "settings": {
-            "vendor": "KALKHOFF",
-            "show_sale_badge": true,
-            "sale_badge_text": "20% Off",
-            "show_color_swatches": true
-          }
-        },
-        {
-          "type": "product",
-          "settings": {
-            "vendor": "GASGAS",
-            "show_sale_badge": true,
-            "sale_badge_text": "20% Off",
-            "show_color_swatches": true
-          }
-        }
-      ]
+      "settings": {
+        "gear_up_text": "Gear Up",
+        "heading": "Top-quality equipment for all your cycling needs",
+        "product_source": "collection",
+        "collection": "all",
+        "slides_per_view_desktop": 4,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_mobile": 2,
+        "slides_per_group_desktop": 4,
+        "slides_per_group_tablet": 3,
+        "slides_per_group_mobile": 2,
+        "space_between_desktop": 24,
+        "space_between_mobile": 12,
+        "transition_speed": 1000,
+        "show_navigation": true,
+        "show_pagination": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 3000,
+        "pause_on_hover": true,
+        "enable_loop": true,
+        "enable_observer": true
+      }
     }
   ]
 }

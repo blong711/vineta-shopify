@@ -1,5 +1,5 @@
 <section class="s-store-location flat-spacing-13">
-  <div class="container" style="padding-left: 15px; padding-right: 15px;">
+  <div class="container" style="max-width: {{ section.settings.width }}px; padding-left: 15px; padding-right: 15px;">
     <div class="row">
       <div class="col-lg-12">
         <div class="wg-map">
@@ -89,7 +89,18 @@
 {% schema %}
 {
   "name": "Store Locations",
-  "settings": [],
+  "settings": [
+    {
+      "type": "range",
+      "id": "width",
+      "min": 1000,
+      "max": 1600,
+      "step": 8,
+      "unit": "px",
+      "label": "Section width",
+      "default": 1488
+    }
+  ],
   "blocks": [
     {
       "type": "store",
@@ -142,8 +153,11 @@
   ],
   "presets": [
     {
-      "name": "Store Locations",
+      "name": "Store Locations main",
       "category": "Store Location",
+      "settings": {
+        "width": 1488
+      },
       "blocks": [
         {
           "type": "store",

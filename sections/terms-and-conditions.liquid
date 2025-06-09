@@ -1,5 +1,5 @@
 <section class="s-term-user flat-spacing-25">
-  <div class="container">
+  <div class="container" style="max-width: {{ section.settings.width }}px;">
     <div class="row">
       <div class="col-lg-12">
         <div class="content">
@@ -20,7 +20,18 @@
 {% schema %}
 {
   "name": "Terms and Conditions",
-  "settings": [],
+  "settings": [
+    {
+      "type": "range",
+      "id": "width",
+      "min": 1000,
+      "max": 1600,
+      "step": 8,
+      "unit": "px",
+      "label": "Section width",
+      "default": 1488
+    }
+  ],
   "blocks": [
     {
       "type": "term_section",
@@ -43,8 +54,11 @@
   ],
   "presets": [
     {
-      "name": "Terms and Conditions",
+      "name": "Terms and Conditions main",
       "category": "Terms and Conditions",
+      "settings": {
+        "width": 1488
+      },
       "blocks": [
         {
           "type": "term_section",

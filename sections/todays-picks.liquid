@@ -1,5 +1,5 @@
 <section class="flat-spacing-3 pt-0 overflow-hidden">
-  <div class="container">
+  <div class="container" style="max-width: {{ section.settings.width }}px;">
     <div class="flat-title wow fadeInUp">
       <h4 class="title">{{ section.settings.title }}</h4>
     </div>
@@ -77,6 +77,16 @@
 {
   "name": "Today's Picks",
   "settings": [
+    {
+      "type": "range",
+      "id": "width",
+      "min": 1000,
+      "max": 1600,
+      "step": 8,
+      "unit": "px",
+      "label": "Section width",
+      "default": 1488
+    },
     {
       "type": "text",
       "id": "title",
@@ -250,7 +260,24 @@
       "category": "Product slider",
       "settings": {
         "title": "Today's Picks",
-        "slides_per_view_desktop": 4
+        "product_source": "collection",
+        "collection": "all",
+        "slides_per_view_desktop": 4,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_mobile": 2,
+        "slides_per_group_desktop": 4,
+        "slides_per_group_tablet": 3,
+        "slides_per_group_mobile": 2,
+        "space_between_desktop": 24,
+        "space_between_mobile": 12,
+        "transition_speed": 800,
+        "show_navigation": true,
+        "show_pagination": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 3000,
+        "pause_on_hover": true,
+        "enable_loop": true,
+        "enable_observer": true
       }
     }
   ]

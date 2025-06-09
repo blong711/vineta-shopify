@@ -67,45 +67,65 @@
                     }
                 }'>
                 <div class="swiper-wrapper wow fadeInUp">
-                    {% for block in section.blocks %}
-                        {% if block.type == 'product' %}
-                            {% assign product = all_products[block.settings.product] %}
-                            <div class="swiper-slide" {{ block.shopify_attributes }}>
+                    {%- if section.settings.product_source == 'collection' and section.settings.collection != blank -%}
+                        {%- for product in section.settings.collection.products limit: 12 -%}
+                            <div class="swiper-slide">
                                 {% if layout == 'default' %}
                                     {% render 'card-product',
                                         product: product,
-                                        countdown_timer: block.settings.countdown_timer,
-                                        available_quantity: block.settings.available_quantity,
-                                        sold_percentage: block.settings.sold_percentage,
-                                        product-info: 'text-center',
-                                        show_color_swatches: block.settings.show_color_swatches,
-                                        show_size_swatches: block.settings.show_size_swatches,
-                                        show_case_type: block.settings.show_case_type,
-                                        size_swatches: block.settings.size_swatches,
+                                        show_sale_badge: true,
+                                        show_color_swatches: true,
+                                        show_size_swatches: true,
+                                        show_case_type: true
                                     %}
                                 {% elsif layout == 'home-phonecase' %}
                                     {% render 'card-product',
                                         product: product,
-                                        show_sale_badge: block.settings.show_sale_badge,
-                                        sale_badge_text: block.settings.sale_badge_text,
-                                        show_color_swatches: block.settings.show_color_swatches,
-                                        show_size_swatches: block.settings.show_size_swatches,
-                                        show_case_type: block.settings.show_case_type,
-                                        size_swatches: block.settings.size_swatches,
+                                        show_sale_badge: true,
+                                        show_color_swatches: true,
+                                        show_size_swatches: true,
+                                        show_case_type: true
                                     %}
                                 {% else %}
                                     {% render 'card-product',
                                         product: product,
-                                        show_sale_badge: block.settings.show_sale_badge,
-                                        sale_badge_text: block.settings.sale_badge_text,
-                                        show_color_swatches: block.settings.show_color_swatches,
-                                        show_size_swatches: block.settings.show_size_swatches,
-                                        size_swatches: block.settings.size_swatches
+                                        show_sale_badge: true,
+                                        show_color_swatches: true,
+                                        show_size_swatches: true
                                     %}
                                 {% endif %}
                             </div>
-                        {% endif %}
-                    {% endfor %}
+                        {%- endfor -%}
+                    {%- elsif section.settings.product_source == 'product_list' and section.settings.product_list != blank -%}
+                        {%- for product in section.settings.product_list -%}
+                            <div class="swiper-slide">
+                                {% if layout == 'default' %}
+                                    {% render 'card-product',
+                                        product: product,
+                                        show_sale_badge: true,
+                                        show_color_swatches: true,
+                                        show_size_swatches: true,
+                                        show_case_type: true
+                                    %}
+                                {% elsif layout == 'home-phonecase' %}
+                                    {% render 'card-product',
+                                        product: product,
+                                        show_sale_badge: true,
+                                        show_color_swatches: true,
+                                        show_size_swatches: true,
+                                        show_case_type: true
+                                    %}
+                                {% else %}
+                                    {% render 'card-product',
+                                        product: product,
+                                        show_sale_badge: true,
+                                        show_color_swatches: true,
+                                        show_size_swatches: true
+                                    %}
+                                {% endif %}
+                            </div>
+                        {%- endfor -%}
+                    {%- endif -%}
                 </div>
                 {% if layout == 'home-phonecase' %}
                 <div class="sw-pagination-top-pick position-relative"></div>
@@ -163,6 +183,35 @@
             "id": "description",
             "label": "Section Description",
             "default": "Explore our most popular pieces that customers can't get enough of"
+        },
+        {
+            "type": "select",
+            "id": "product_source",
+            "label": "Product Source",
+            "options": [
+                {
+                    "value": "collection",
+                    "label": "Collection"
+                },
+                {
+                    "value": "product_list",
+                    "label": "Product List"
+                }
+            ],
+            "default": "collection"
+        },
+        {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection",
+            "info": "Select a collection to display its products"
+        },
+        {
+            "type": "product_list",
+            "id": "product_list",
+            "label": "Product List",
+            "info": "Select products to display",
+            "limit": 12
         },
         {
             "type": "select",
@@ -353,115 +402,32 @@
             "default": true
         }
     ],
-    "blocks": [
-        {
-            "type": "product",
-            "name": "Product",
-            "settings": [
-                {
-                    "type": "product",
-                    "id": "product",
-                    "label": "Product"
-                },
-                {
-                    "type": "checkbox",
-                    "id": "show_sale_badge",
-                    "label": "Show Sale Badge",
-                    "default": false
-                },
-                {
-                    "type": "text",
-                    "id": "sale_badge_text",
-                    "label": "Sale Badge Text",
-                    "default": "Sale"
-                },
-                {
-                    "type": "checkbox",
-                    "id": "show_trending_badge",
-                    "label": "Show Trending Badge",
-                    "default": false
-                },
-                {
-                    "type": "text",
-                    "id": "trending_badge_text",
-                    "label": "Trending Badge Text",
-                    "default": "Trending"
-                },
-                {
-                    "type": "checkbox",
-                    "id": "show_color_swatches",
-                    "label": "Show Color Swatches",
-                    "default": true
-                },
-                {
-                    "type": "checkbox",
-                    "id": "show_size_swatches",
-                    "label": "Show Size Swatches",
-                    "default": false
-                },
-                {
-                    "type": "checkbox",
-                    "id": "show_case_type",
-                    "label": "Show Case Type",
-                    "default": true
-                },
-                {
-                    "type": "text",
-                    "id": "size_swatches",
-                    "label": "Size Swatches",
-                    "info": "Comma-separated list of sizes",
-                    "default": "S,M,L,XL"
-                },
-                {
-                    "type": "checkbox",
-                    "id": "show_countdown",
-                    "label": "Show Countdown Timer",
-                    "default": false
-                },
-                {
-                    "type": "text",
-                    "id": "countdown_timer",
-                    "label": "Countdown Timer",
-                    "info": "Format: YYYY/MM/DD HH:MM:SS",
-                    "default": "2024/12/31 23:59:59"
-                },
-                {
-                    "type": "number",
-                    "id": "available_quantity",
-                    "label": "Available Quantity",
-                    "default": 50
-                },
-                {
-                    "type": "range",
-                    "id": "sold_percentage",
-                    "min": 0,
-                    "max": 100,
-                    "step": 5,
-                    "unit": "%",
-                    "label": "Sold Percentage",
-                    "default": 50
-                }
-            ]
-        }
-    ],
     "presets": [
         {
             "name": "Top Picks",
             "category": "Product slider",
-            "blocks": [
-                {
-                    "type": "product"
-                },
-                {
-                    "type": "product"
-                },
-                {
-                    "type": "product"
-                },
-                {
-                    "type": "product"
-                }
-            ]
+            "settings": {
+                "title": "Top Picks You'll Love",
+                "description": "Explore our most popular pieces that customers can't get enough of",
+                "product_source": "collection",
+                "collection": "all",
+                "slides_per_view_desktop": 4,
+                "slides_per_view_tablet": 2,
+                "slides_per_view_mobile": 1,
+                "slides_per_group_desktop": 3,
+                "slides_per_group_tablet": 2,
+                "slides_per_group_mobile": 1,
+                "space_between_desktop": 20,
+                "space_between_mobile": 10,
+                "transition_speed": 300,
+                "show_navigation": true,
+                "show_pagination": true,
+                "enable_autoplay": false,
+                "autoplay_speed": 3000,
+                "pause_on_hover": true,
+                "enable_loop": false,
+                "enable_observer": true
+            }
         }
     ]
 }
