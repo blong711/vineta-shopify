@@ -7,7 +7,7 @@
 
 {% paginate collection.products by section.settings.products_per_page %}
 <section class="flat-spacing-24" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
-  <div class="container">
+  <div class="container" style="max-width: {{ section.settings.width }}px;">
     {%- case section.settings.filter_type -%}
       {%- when 'drawer' -%}
         <!-- Filter Drawer -->
@@ -781,6 +781,16 @@
   "settings": [
     {
       "type": "range",
+      "id": "width",
+      "min": 1000,
+      "max": 1600,
+      "step": 8,
+      "unit": "px",
+      "label": "Section width",
+      "default": 1488
+    },
+    {
+      "type": "range",
       "id": "padding_top",
       "label": "Padding top",
       "min": 0,
@@ -1002,6 +1012,28 @@
       "name": "Collection",
       "category": "Collection"
     }
-  ]
+  ],
+  "templates": ["collection"],
+  "preview": {
+    "settings": {
+      "width": 1488,
+      "padding_top": 36,
+      "padding_bottom": 36,
+      "filter_type": "drawer",
+      "card_style": "style-1",
+      "default_grid_columns": "4",
+      "products_per_page": 12,
+      "default_view": "grid",
+      "default_sort": "best-selling",
+      "pagination_type": "pagination",
+      "show_collections": true,
+      "collections_title": "Collections",
+      "show_on_sale": true,
+      "on_sale_title": "On sale",
+      "show_banner": true,
+      "banner_title": "Elevate\nYour Style",
+      "banner_button_text": "Shop Now"
+    }
+  }
 }
 {% endschema %}
