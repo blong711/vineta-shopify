@@ -816,22 +816,51 @@
   /* Wish List 
   ------------------------------------------------------------------------------------- */
   var wishList = function () {
-    $(".btn-add-wishlist").on("click", function () {
-      $(this).toggleClass("added-wishlist");
-    });
-    $(".card-product .wishlist").on("click", function () {
-      $(this).toggleClass("addwishlist"); 
-  
-      let icon = $(this).find(".icon"); 
-      let tooltip = $(this).find(".tooltip");
-  
-      if ($(this).hasClass("addwishlist")) {
+    // Function to update wishlist UI
+    function updateWishlistUI(element, isWishlisted) {
+      let icon = element.find(".icon");
+      let tooltip = element.find(".tooltip");
+      
+      if (isWishlisted) {
+        element.addClass("addwishlist");
         icon.removeClass("icon-heart2").addClass("icon-trash");
-        tooltip.text("Remove Wishlist");
+        tooltip.text("Remove from Wishlist");
       } else {
+        element.removeClass("addwishlist");
         icon.removeClass("icon-trash").addClass("icon-heart2");
         tooltip.text("Add to Wishlist");
       }
+    }
+
+    // Initialize wishlist state from localStorage
+    $(".card-product .wishlist").each(function() {
+      const productId = $(this).find("[data-wishlist]").data("id");
+      if (productId) {
+        const isWishlisted = localStorage.getItem(`wishlist_${productId}`) === "true";
+        updateWishlistUI($(this), isWishlisted);
+      }
+    });
+
+    // Handle wishlist button clicks
+    $(".btn-add-wishlist").on("click", function () {
+      $(this).toggleClass("added-wishlist");
+    });
+
+    $(".card-product .wishlist").on("click", function () {
+      const $this = $(this);
+      const productId = $this.find("[data-wishlist]").data("id");
+      const isCurrentlyWishlisted = $this.hasClass("addwishlist");
+      
+      // Toggle wishlist state
+      const newWishlistState = !isCurrentlyWishlisted;
+      
+      // Update localStorage
+      if (productId) {
+        localStorage.setItem(`wishlist_${productId}`, newWishlistState);
+      }
+      
+      // Update UI
+      updateWishlistUI($this, newWishlistState);
     });
   };
 
