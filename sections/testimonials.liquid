@@ -259,7 +259,7 @@
                         "prevEl": ".nav-prev-tes"
                     }{% else %}false{% endif %},
                     "pagination": {% if section.settings.show_pagination %}{
-                        "el": ".sw-pagination-tes",
+                        "el": ".sw-pagination-testimonial",
                         "clickable": true
                     }{% else %}false{% endif %},
                     "autoplay": {% if section.settings.enable_autoplay %}{
@@ -331,7 +331,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="sw-dot-default sw-pagination-tes justify-content-center"></div>
+                    <div class="sw-dot-default sw-pagination-testimonial justify-content-center"></div>
                 </div>
             {% elsif section.settings.layout == 'home-fashion-women' %}
                 <div class="wrapper-thumbs-tes-2 flat-thumbs-tes">
@@ -447,7 +447,6 @@
                     </div>
                 </div>
             {% elsif section.settings.layout == 'home-fashion-02' %}
-                </div>
                 <div class="slider-layout-right wow fadeInUp">
                     <div dir="ltr" class="swiper tf-swiper tf-sw-right" data-swiper='{
                         "slidesPerView": {{ section.settings.slides_per_view_mobile }},
