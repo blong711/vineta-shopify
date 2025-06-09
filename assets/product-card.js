@@ -423,6 +423,69 @@ const ProductCard = {
     });
   },
 
+  // Initialize variant selection
+  initializeVariantSelection() {
+    document.querySelectorAll('.card-product').forEach(card => {
+      const variantSelect = card.querySelector('select[data-variant-id]');
+      if (variantSelect) {
+        variantSelect.addEventListener('change', async (e) => {
+          try {
+            const oldVariantId = variantSelect.dataset.variantId;
+            const newVariantId = e.target.value;
+            
+            // Update the data-variant-id attribute on the select
+            variantSelect.dataset.variantId = newVariantId;
+            
+            // Update all elements with data-variant-id in this card
+            card.querySelectorAll('[data-variant-id]').forEach(el => {
+              el.dataset.variantId = newVariantId;
+            });
+
+            // Update add to cart button
+            const addToCartBtn = card.querySelector('.add-to-cart');
+            if (addToCartBtn) {
+              addToCartBtn.dataset.variantId = newVariantId;
+            }
+
+            // Update wishlist button if it exists
+            const wishlistBtn = card.querySelector('[data-wishlist]');
+            if (wishlistBtn) {
+              wishlistBtn.dataset.id = newVariantId;
+            }
+
+            // Update compare button if it exists
+            const compareBtn = card.querySelector('[data-compare]');
+            if (compareBtn) {
+              compareBtn.dataset.id = newVariantId;
+            }
+
+            // Update color swatch if it exists
+            const colorSwatch = card.querySelector(`.color-swatch[data-variant-id="${newVariantId}"]`);
+            if (colorSwatch) {
+              card.querySelectorAll('.color-swatch').forEach(swatch => {
+                swatch.classList.remove('active');
+              });
+              colorSwatch.classList.add('active');
+            }
+
+            // Update product image if variant has an image
+            const variantImage = colorSwatch?.querySelector('img')?.getAttribute('data-src');
+            if (variantImage) {
+              const mainImage = card.querySelector('.img-product');
+              const hoverImage = card.querySelector('.img-hover');
+              if (mainImage) mainImage.src = variantImage;
+              if (hoverImage) hoverImage.src = variantImage;
+            }
+          } catch (error) {
+            console.error('Error changing variant:', error);
+            // Revert the select to the old value
+            e.target.value = oldVariantId;
+          }
+        });
+      }
+    });
+  },
+
   // Initialize all product card functionality
   init() {
     // Add countdown hover styles
@@ -449,8 +512,7 @@ const ProductCard = {
         z-index: 1 !important;
       }
       .tf-mini-cart-item .tf-mini-cart-info .info-variant {
-        display: flex
-        ;
+        display: flex;
         gap: 10px;
         position: relative;
         width: max-content;
@@ -478,6 +540,7 @@ const ProductCard = {
     this.initializeVariantImageSwitching();
     this.initializeCartEvents();
     this.initializeQuantityControls();
+    this.initializeVariantSelection();
 
     // Initialize wishlist and compare buttons state
     if (window.wishlistCompare) {

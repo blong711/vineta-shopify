@@ -909,6 +909,51 @@ class Cart {
           console.error('Error updating cart:', error);
         }
       }
+      // Handle variant selection changes
+      else if (event.target.tagName === 'SELECT' && event.target.hasAttribute('data-variant-id')) {
+        const oldVariantId = event.target.dataset.variantId;
+        const newVariantId = event.target.value;
+        const quantity = parseInt(event.target.closest('.tf-mini-cart-item').querySelector('.quantity-product').value);
+
+        try {
+          // First remove the old variant
+          const removeResponse = await fetch('/cart/change.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: oldVariantId,
+              quantity: 0
+            })
+          });
+          if (!removeResponse.ok) throw new Error('Failed to remove old variant');
+
+          // Then add the new variant
+          const addResponse = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: newVariantId,
+              quantity: quantity
+            })
+          });
+          if (!addResponse.ok) throw new Error('Failed to add new variant');
+
+          // Fetch updated cart data and update UI
+          const cartResponse = await fetch('/cart.js');
+          if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+          const cartData = await cartResponse.json();
+          this.updateCartDisplay(cartData);
+          this.updateHeaderCartCount(cartData.item_count);
+        } catch (error) {
+          console.error('Error changing variant:', error);
+          // Revert the select to the old value
+          event.target.value = oldVariantId;
+        }
+      }
     });
   }
 

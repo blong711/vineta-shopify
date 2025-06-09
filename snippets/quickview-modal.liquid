@@ -574,6 +574,113 @@
     
         console.log('Initializing variant selection');
         
+        // Handle select element changes
+        const variantSelect = modal.querySelector('select[data-variant-id]');
+        if (variantSelect) {
+          variantSelect.addEventListener('change', async (e) => {
+            try {
+              const oldVariantId = variantSelect.dataset.variantId;
+              const newVariantId = e.target.value;
+              
+              // Update the data-variant-id attribute on the select
+              variantSelect.dataset.variantId = newVariantId;
+              
+              // Update all elements with data-variant-id in this modal
+              modal.querySelectorAll('[data-variant-id]').forEach(el => {
+                el.dataset.variantId = newVariantId;
+              });
+
+              // Update add to cart button
+              const addToCartBtn = modal.querySelector('.add-to-cart');
+              if (addToCartBtn) {
+                addToCartBtn.dataset.variantId = newVariantId;
+              }
+
+              // Update wishlist button if it exists
+              const wishlistBtn = modal.querySelector('[data-wishlist]');
+              if (wishlistBtn) {
+                wishlistBtn.dataset.id = newVariantId;
+              }
+
+              // Update compare button if it exists
+              const compareBtn = modal.querySelector('[data-compare]');
+              if (compareBtn) {
+                compareBtn.dataset.id = newVariantId;
+              }
+
+              // Find the selected variant
+              const selectedVariant = currentProduct.variants.find(v => v.id === parseInt(newVariantId));
+              if (selectedVariant) {
+                // Update price display
+                const priceContainer = modal.querySelector('.product-info-price');
+                if (priceContainer) {
+                  if (selectedVariant.compare_at_price > selectedVariant.price) {
+                    const discountPercentage = Math.round(((selectedVariant.compare_at_price - selectedVariant.price) / selectedVariant.compare_at_price) * 100);
+                    priceContainer.innerHTML = `
+                      <h6 class="price-new price-on-sale">${formatMoney(selectedVariant.price)}</h6>
+                      <h6 class="price-old">${formatMoney(selectedVariant.compare_at_price)}</h6>
+                      <span class="badge-sale">${discountPercentage}% Off</span>
+                    `;
+                  } else {
+                    priceContainer.innerHTML = `
+                      <h6 class="price-new">${formatMoney(selectedVariant.price)}</h6>
+                    `;
+                  }
+                }
+
+                // Update variant options UI
+                currentProduct.options.forEach((option, index) => {
+                  const optionValue = selectedVariant[`option${index + 1}`];
+                  const optionName = option.name.toLowerCase();
+                  
+                  // Update color swatches if it's a color option
+                  if (optionName === 'color' || optionName === 'colour') {
+                    const colorBtns = modal.querySelectorAll('.color-btn');
+                    colorBtns.forEach(btn => {
+                      if (btn.dataset.optionValue === optionValue) {
+                        btn.classList.add('active');
+                      } else {
+                        btn.classList.remove('active');
+                      }
+                    });
+                  }
+                  
+                  // Update size buttons if it's a size option
+                  if (optionName === 'size') {
+                    const sizeBtns = modal.querySelectorAll('.size-btn');
+                    sizeBtns.forEach(btn => {
+                      if (btn.dataset.optionValue === optionValue) {
+                        btn.classList.add('active');
+                      } else {
+                        btn.classList.remove('active');
+                      }
+                    });
+                  }
+
+                  // Update option value display
+                  const valueDisplay = modal.querySelector(`.value-current${optionName}`);
+                  if (valueDisplay) {
+                    valueDisplay.textContent = optionValue;
+                  }
+                });
+
+                // Update product image if variant has an image
+                if (selectedVariant.featured_image) {
+                  const mainImage = modal.querySelector('.product-img img');
+                  if (mainImage) {
+                    mainImage.src = selectedVariant.featured_image.src;
+                    mainImage.setAttribute('data-src', selectedVariant.featured_image.src);
+                  }
+                }
+              }
+            } catch (error) {
+              console.error('Error changing variant:', error);
+              // Revert the select to the old value
+              e.target.value = oldVariantId;
+            }
+          });
+        }
+        
         // Use event delegation for variant selection
         variantContainer.addEventListener('click', function(e) {
           const button = e.target.closest('.color-btn, .size-btn');
@@ -626,6 +733,13 @@
           if (addToCartBtn && selectedVariant) {
             addToCartBtn.dataset.variantId = selectedVariant.id;
           }
+
+          // Update select element if it exists
+          const variantSelect = modal.querySelector('select[data-variant-id]');
+          if (variantSelect && selectedVariant) {
+            variantSelect.value = selectedVariant.id;
+            variantSelect.dataset.variantId = selectedVariant.id;
+          }
           
           // Update price
           if (selectedVariant) {
@@ -641,68 +755,6 @@
               priceContainer.innerHTML = `
                 <h6 class="price-new">${formatMoney(selectedVariant.price)}</h6>
               `;
-            }
-    
-            // Update product image if variant has an image
-            if (selectedVariant.featured_image) {
-              console.log('Variant has featured image:', selectedVariant.featured_image);
-              const swiperWrapper = modal.querySelector('.swiper-wrapper');
-              const slides = swiperWrapper.querySelectorAll('.swiper-slide');
-              
-              console.log('Total slides:', slides.length);
-              
-              // Find the index of the slide with the variant image
-              let variantSlideIndex = -1;
-              slides.forEach((slide, index) => {
-                const mediaId = slide.dataset.mediaId;
-                const matchingMedia = currentProduct.media.find(m => m.id === parseInt(mediaId));
-                if (matchingMedia?.id === selectedVariant.featured_image.id) {
-                  variantSlideIndex = index;
-                }
-              });
-    
-              console.log('Final variant slide index:', variantSlideIndex);
-    
-              if (variantSlideIndex !== -1) {
-                // For loop mode, find the correct looped slide index
-                if (quickviewSwiper) {
-                  let targetIndex = variantSlideIndex;
-                  quickviewSwiper.slides.forEach((slide, idx) => {
-                    if (slide.getAttribute('data-media-id') == selectedVariant.featured_image.id) {
-                      targetIndex = idx;
-                    }
-                  });
-                  console.log('Sliding to looped index:', targetIndex);
-                  setTimeout(() => {
-                    quickviewSwiper.slideTo(targetIndex, 300);
-                  }, 50);
-                } else {
-                  console.log('Swiper not found');
-                }
-              } else {
-                console.log('Variant image not found in slides, updating first slide');
-                // If variant image not found, update the first slide
-                const firstSlide = slides[0];
-                if (firstSlide) {
-                  const images = firstSlide.querySelectorAll('img');
-                  images.forEach(img => {
-                    img.setAttribute('data-src', selectedVariant.featured_image.src);
-                    img.setAttribute('src', selectedVariant.featured_image.src);
-                    img.setAttribute('alt', selectedVariant.featured_image.alt || currentProduct.title);
-                  });
-                  // Slide to first slide
-                  if (quickviewSwiper) {
-                    console.log('Sliding to first slide');
-                    setTimeout(() => {
-                      quickviewSwiper.slideTo(0, 300);
-                    }, 50);
-                  } else {
-                    console.log('Swiper not found');
-                  }
-                }
-              }
-            } else {
-              console.log('Variant has no featured image');
             }
           }
         });
