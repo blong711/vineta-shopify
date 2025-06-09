@@ -37,28 +37,28 @@
         }
       }'>
         <div class="swiper-wrapper">
-          {%- for block in section.blocks -%}
-            <div class="swiper-slide" {{ block.shopify_attributes }}>
+          {%- for article in section.settings.blog.articles limit: section.settings.post_limit -%}
+            <div class="swiper-slide">
               <div class="news-item hover-img">
-                <a href="{{ block.settings.link }}" class="image-box img-style">
-                  {%- if block.settings.image != blank -%}
-                    {{ block.settings.image | image_url: width: 600 | image_tag:
+                <a href="{{ article.url }}" class="image-box img-style">
+                  {%- if article.image != blank -%}
+                    {{ article.image | image_url: width: 600 | image_tag:
                       loading: 'lazy',
                       width: 600,
                       height: 400,
                       class: 'lazyload',
-                      alt: block.settings.title
+                      alt: article.title
                     }}
                   {%- else -%}
                     {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
                   {%- endif -%}
                 </a>
                 <div class="content">
-                  <a href="{{ block.settings.link }}" class="title fw-medium link text-xl text-line-clamp-2">
-                    {{ block.settings.title }}
+                  <a href="{{ article.url }}" class="title fw-medium link text-xl text-line-clamp-2">
+                    {{ article.title }}
                   </a>
-                  <a href="{{ block.settings.link }}" class="btn-readmore link">
-                    {{ block.settings.read_more_text }} <i class="icon icon-arr-right"></i>
+                  <a href="{{ article.url }}" class="btn-readmore link">
+                    {{ section.settings.read_more_text }} <i class="icon icon-arr-right"></i>
                   </a>
                 </div>
               </div>
@@ -76,7 +76,7 @@
 <section class="flat-spacing-3 {% if section.settings.layout == 'layout2' %}pb-0{% else %} pt-0{% endif %} section-{{ section.id }}-padding" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   <div class="container" style="max-width: {{ section.settings.width }}px;">
     <div class="flat-title-v2 text-center justify-items-center wow fadeInUp">
-      <a href="{{ section.settings.blog_link }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.blog_button_text }}</a>
+      <a href="{{ section.settings.blog.url }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.blog_button_text }}</a>
       <h4 class="text-capitalize">{{ section.settings.title }}</h4>
     </div>
     <div class="fl-control-sw wow fadeInUp">
@@ -111,28 +111,27 @@
         }
       }'>
         <div class="swiper-wrapper">
-          {%- for block in section.blocks -%}
-            <div class="swiper-slide" {{ block.shopify_attributes }}>
+          {%- for article in section.settings.blog.articles limit: section.settings.post_limit -%}
+            <div class="swiper-slide">
               <div class="blog-item-v2">
                 <div class="entry-image hover-img">
-                  <a href="{{ block.settings.link }}" class="image-box img-style">
-                    {%- if block.settings.image != blank -%}
-                      {{ block.settings.image | image_url: width: 600 | image_tag:
+                  <a href="{{ article.url }}" class="image-box img-style">
+                    {%- if article.image != blank -%}
+                      {{ article.image | image_url: width: 600 | image_tag:
                         loading: 'lazy',
                         width: 600,
                         height: 400,
                         class: 'lazyload',
-                        alt: block.settings.title
+                        alt: article.title
                       }}
                     {%- else -%}
                       {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
                     {%- endif -%}
                   </a>
-                  {% if block.settings.tags != blank %}
-                    {% assign tags = block.settings.tags | split: ',' %}
+                  {% if article.tags.size > 0 %}
                     <div class="entry-tag">
-                      {% for tag in tags %}
-                        <span class="tag">{{ tag | strip }}</span>
+                      {% for tag in article.tags limit: 3 %}
+                        <span class="tag">{{ tag }}</span>
                       {% endfor %}
                     </div>
                   {% endif %}
@@ -140,29 +139,24 @@
                 <div class="entry-content">
                   <div class="info-box">
                     <ul class="meta-list">
-                      {% if block.settings.author != blank %}
-                        <li class="item">by {{ block.settings.author }}</li>
-                      {% endif %}
-                      {% if block.settings.date != blank %}
-                        <li class="item">{{ block.settings.date }}</li>
-                      {% endif %}
-                      {% if block.settings.comments != blank %}
-                        <li class="item">{{ block.settings.comments }}</li>
+                      <li class="item">by {{ article.author }}</li>
+                      <li class="item">{{ article.published_at | date: "%b %d, %Y" }}</li>
+                      {% if article.comments_enabled? %}
+                        <li class="item">{{ article.comments_count }} Comments</li>
                       {% endif %}
                     </ul>
-                    <a href="{{ block.settings.link }}" class="title fw-medium link text-xl text-line-clamp-2">
-                      {{ block.settings.title }}
+                    <a href="{{ article.url }}" class="title fw-medium link text-xl text-line-clamp-2">
+                      {{ article.title }}
                     </a>
-                    {% if block.settings.description != blank %}
+                    {% if article.excerpt != blank %}
                       <p class="desc text-main text-sm text-line-clamp-2">
-                        {{ block.settings.description }}
+                        {{ article.excerpt | strip_html | truncatewords: 30 }}
                       </p>
                     {% endif %}
                   </div>
-                  <a href="{{ block.settings.link }}" class="btn-readmore link">
-                    {{ block.settings.read_more_text }} <i class="icon icon-arr-right"></i>
+                  <a href="{{ article.url }}" class="btn-readmore link">
+                    {{ section.settings.read_more_text }} <i class="icon icon-arr-right"></i>
                   </a>
-                  
                 </div>
               </div>
             </div>
@@ -210,28 +204,27 @@
         }
       }'>
         <div class="swiper-wrapper">
-          {%- for block in section.blocks -%}
-            <div class="swiper-slide" {{ block.shopify_attributes }}>
+          {%- for article in section.settings.blog.articles limit: section.settings.post_limit -%}
+            <div class="swiper-slide">
               <div class="blog-item-v2">
                 <div class="entry-image hover-img">
-                  <a href="{{ block.settings.link }}" class="image-box img-style">
-                    {%- if block.settings.image != blank -%}
-                      {{ block.settings.image | image_url: width: 600 | image_tag:
+                  <a href="{{ article.url }}" class="image-box img-style">
+                    {%- if article.image != blank -%}
+                      {{ article.image | image_url: width: 600 | image_tag:
                         loading: 'lazy',
                         width: 600,
                         height: 400,
                         class: 'lazyload',
-                        alt: block.settings.title
+                        alt: article.title
                       }}
                     {%- else -%}
                       {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
                     {%- endif -%}
                   </a>
-                  {% if block.settings.tags != blank %}
-                    {% assign tags = block.settings.tags | split: ',' %}
+                  {% if article.tags.size > 0 %}
                     <div class="entry-tag">
-                      {% for tag in tags %}
-                        <span class="tag">{{ tag | strip }}</span>
+                      {% for tag in article.tags limit: 3 %}
+                        <span class="tag">{{ tag }}</span>
                       {% endfor %}
                     </div>
                   {% endif %}
@@ -239,27 +232,23 @@
                 <div class="entry-content">
                   <div class="info-box">
                     <ul class="meta-list">
-                      {% if block.settings.author != blank %}
-                        <li class="item">by {{ block.settings.author }}</li>
-                      {% endif %}
-                      {% if block.settings.date != blank %}
-                        <li class="item">{{ block.settings.date }}</li>
-                      {% endif %}
-                      {% if block.settings.comments != blank %}
-                        <li class="item">{{ block.settings.comments }}</li>
+                      <li class="item">by {{ article.author }}</li>
+                      <li class="item">{{ article.published_at | date: "%b %d, %Y" }}</li>
+                      {% if article.comments_enabled? %}
+                        <li class="item">{{ article.comments_count }} Comments</li>
                       {% endif %}
                     </ul>
-                    <a href="{{ block.settings.link }}" class="title fw-medium link text-xl text-line-clamp-2">
-                      {{ block.settings.title }}
+                    <a href="{{ article.url }}" class="title fw-medium link text-xl text-line-clamp-2">
+                      {{ article.title }}
                     </a>
-                    {% if block.settings.description != blank %}
+                    {% if article.excerpt != blank %}
                       <p class="desc text-main text-sm text-line-clamp-2">
-                        {{ block.settings.description }}
+                        {{ article.excerpt | strip_html | truncatewords: 30 }}
                       </p>
                     {% endif %}
                   </div>
-                  <a href="{{ block.settings.link }}" class="btn-readmore link">
-                    {{ block.settings.read_more_text }} <i class="icon icon-arr-right"></i>
+                  <a href="{{ article.url }}" class="btn-readmore link">
+                    {{ section.settings.read_more_text }} <i class="icon icon-arr-right"></i>
                   </a>
                 </div>
               </div>
@@ -302,6 +291,20 @@
       "default": "layout1"
     },
     {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "post_limit",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "label": "Number of posts to show",
+      "default": 6
+    },
+    {
       "type": "text",
       "id": "title",
       "label": "Title",
@@ -321,10 +324,10 @@
       "info": "Only used in Layout 2"
     },
     {
-      "type": "url",
-      "id": "blog_link",
-      "label": "Blog Link",
-      "info": "Only used in Layout 2"
+      "type": "text",
+      "id": "read_more_text",
+      "label": "Read more text",
+      "default": "Read more"
     },
     {
       "type": "checkbox",
@@ -436,81 +439,10 @@
       "default": 94
     }
   ],
-  "blocks": [
-    {
-      "type": "tip",
-      "name": "Tip",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Tech Trends 2025: Must-Have Gadgets & Innovations"
-        },
-        {
-          "type": "text",
-          "id": "description",
-          "label": "Description",
-          "default": "Collaboration is at the heart of what we do. From understanding your goals to delivering tailored solutions..."
-        },
-        {
-          "type": "text",
-          "id": "author",
-          "label": "Author",
-          "default": "Admin"
-        },
-        {
-          "type": "text",
-          "id": "date",
-          "label": "Date",
-          "default": "Jan 21, 2025"
-        },
-        {
-          "type": "text",
-          "id": "comments",
-          "label": "Comments",
-          "default": "03 Comments"
-        },
-        {
-          "type": "text",
-          "id": "read_more_text",
-          "label": "Read more text",
-          "default": "Read more"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
-        },
-        {
-          "type": "text",
-          "id": "tags",
-          "label": "Tags",
-          "info": "Comma-separated list of tags"
-        }
-      ]
-    }
-  ],
   "presets": [
     {
       "name": "Blog Carousel",
-      "category": "Blog Slider",
-      "blocks": [
-        {
-          "type": "tip"
-        },
-        {
-          "type": "tip"
-        },
-        {
-          "type": "tip"
-        }
-      ]
+      "category": "Blog Slider"
     }
   ]
 }

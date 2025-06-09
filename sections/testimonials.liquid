@@ -222,9 +222,6 @@
                     },
                     {
                         "type": "testimonial"
-                    },
-                    {
-                        "type": "testimonial"
                     }
                 ]
             }
@@ -259,7 +256,7 @@
                         "prevEl": ".nav-prev-tes"
                     }{% else %}false{% endif %},
                     "pagination": {% if section.settings.show_pagination %}{
-                        "el": ".sw-pagination-testimonial",
+                        "el": ".sw-pagination-tes",
                         "clickable": true
                     }{% else %}false{% endif %},
                     "autoplay": {% if section.settings.enable_autoplay %}{
@@ -331,7 +328,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="sw-dot-default sw-pagination-testimonial justify-content-center"></div>
+                    <div class="sw-dot-default sw-pagination-tes justify-content-center"></div>
                 </div>
             {% elsif section.settings.layout == 'home-fashion-women' %}
                 <div class="wrapper-thumbs-tes-2 flat-thumbs-tes">
@@ -446,16 +443,16 @@
                         </div>
                     </div>
                 </div>
-            {% elsif section.settings.layout == 'home                </div>
--fashion-02' %}
+            {% elsif section.settings.layout == 'home-fashion-02' %}
+                </div>
                 <div class="slider-layout-right wow fadeInUp">
                     <div dir="ltr" class="swiper tf-swiper tf-sw-right" data-swiper='{
-                        "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+                        "slidesPerView": 1,
                         "spaceBetween": {{ section.settings.space_between_mobile }},
                         "speed": {{ section.settings.transition_speed }},
                         "observer": {{ section.settings.enable_observer }},
                         "observeParents": {{ section.settings.enable_observer }},
-                        "slidesPerGroup": {{ section.settings.slides_per_group_mobile }},
+                        "slidesPerGroup": 1,
                         "loop": {{ section.settings.enable_loop }},
                         "navigation": {% if section.settings.show_navigation %}{
                             "clickable": true,
@@ -472,16 +469,8 @@
                             "disableOnInteraction": false
                         }{% else %}false{% endif %},
                         "breakpoints": {
-                            "768": {
-                                "slidesPerView": {{ section.settings.slides_per_view_tablet }},
-                                "spaceBetween": {{ section.settings.space_between_mobile }},
-                                "slidesPerGroup": {{ section.settings.slides_per_group_tablet }}
-                            },
-                            "1200": {
-                                "slidesPerView": {{ section.settings.slides_per_view_desktop }},
-                                "spaceBetween": {{ section.settings.space_between_desktop }},
-                                "slidesPerGroup": {{ section.settings.slides_per_group_desktop }}
-                            }
+                            "768": { "slidesPerView": 1.5, "spaceBetween": 12},
+                            "1200": { "slidesPerView": 2.3, "spaceBetween": 24}
                         }
                     }'>
                         <div class="swiper-wrapper">
@@ -568,7 +557,7 @@
                         "prevEl": ".nav-prev-tes"
                     }{% else %}false{% endif %},
                     "pagination": {% if section.settings.show_pagination %}{
-                        "el": ".stion-testimonial",
+                        "el": ".sw-pagination-tes",
                         "clickable": true
                     }{% else %}false{% endif %},
                     "autoplay": {% if section.settings.enable_autoplay %}{
@@ -640,7 +629,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="sw-dot-default stion-testimonial justify-content-center"></div>
+                    <div class="sw-dot-default sw-pagination-tes justify-content-center"></div>
                 </div>
             {% endif %}
         </div>
