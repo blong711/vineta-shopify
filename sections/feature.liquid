@@ -44,19 +44,33 @@
                 }
             }'>
                 <div class="swiper-wrapper">
-                    {% for block in section.blocks %}
-                        <div class="swiper-slide" {{ block.shopify_attributes }}>
-                            {% render 'card-product',
-                                product: block.settings.product,
-                                show_sale_badge: true,
-                                sale_badge_text: block.settings.sale_badge,
-                                show_color_swatches: true,
-                                vendor: block.settings.brand,
-                                class: 'style-border',
-                                product-info: 'text-center'
-                            %}
-                        </div>
-                    {% endfor %}
+                    {%- if section.settings.product_source == 'collection' and section.settings.collection != blank -%}
+                        {%- for product in section.settings.collection.products limit: 12 -%}
+                            <div class="swiper-slide">
+                                {% render 'card-product',
+                                    product: product,
+                                    show_sale_badge: true,
+                                    show_color_swatches: true,
+                                    selected_variant: product.selected_or_first_available_variant,
+                                    class: 'style-border',
+                                    product-info: 'text-center'
+                                %}
+                            </div>
+                        {%- endfor -%}
+                    {%- elsif section.settings.product_source == 'product_list' and section.settings.product_list != blank -%}
+                        {%- for product in section.settings.product_list -%}
+                            <div class="swiper-slide">
+                                {% render 'card-product',
+                                    product: product,
+                                    show_sale_badge: true,
+                                    show_color_swatches: true,
+                                    selected_variant: product.selected_or_first_available_variant,
+                                    class: 'style-border',
+                                    product-info: 'text-center'
+                                %}
+                            </div>
+                        {%- endfor -%}
+                    {%- endif -%}
                 </div>
                 <div class="d-flex d-xl-none sw-dot-default sw-pagination-feature justify-content-center"></div>
             </div>
@@ -133,6 +147,35 @@ document.addEventListener('DOMContentLoaded', function() {
             "id": "heading",
             "label": "Heading",
             "default": "Discover our top picks for [br] every ride"
+        },
+        {
+            "type": "select",
+            "id": "product_source",
+            "label": "Product Source",
+            "options": [
+                {
+                    "value": "collection",
+                    "label": "Collection"
+                },
+                {
+                    "value": "product_list",
+                    "label": "Product List"
+                }
+            ],
+            "default": "collection"
+        },
+        {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection",
+            "info": "Select a collection to display its products"
+        },
+        {
+            "type": "product_list",
+            "id": "product_list",
+            "label": "Product List",
+            "info": "Select products to display",
+            "limit": 12
         },
         {
             "type": "header",
@@ -253,48 +296,30 @@ document.addEventListener('DOMContentLoaded', function() {
             "default": true
         }
     ],
-    "blocks": [
-        {
-            "type": "product",
-            "name": "Product",
-            "settings": [
-                {
-                    "type": "product",
-                    "id": "product",
-                    "label": "Product"
-                },
-                {
-                    "type": "text",
-                    "id": "brand",
-                    "label": "Brand Name"
-                },
-                {
-                    "type": "text",
-                    "id": "sale_badge",
-                    "label": "Sale Badge Text",
-                    "info": "Leave empty to hide badge"
-                }
-            ]
-        }
-    ],
     "presets": [
         {
             "name": "Featured Products",
             "category": "Product slider",
-            "blocks": [
-                {
-                    "type": "product"
-                },
-                {
-                    "type": "product"
-                },
-                {
-                    "type": "product"
-                },
-                {
-                    "type": "product"
-                }
-            ]
+            "settings": {
+                "button_text": "Featured Products",
+                "heading": "Discover our top picks for [br] every ride",
+                "product_source": "collection",
+                "collection": "all",
+                "slides_per_view_desktop": 4,
+                "slides_per_view_tablet": 3,
+                "slides_per_view_mobile": 2,
+                "slides_per_group_desktop": 4,
+                "slides_per_group_tablet": 3,
+                "slides_per_group_mobile": 2,
+                "space_between_desktop": 24,
+                "space_between_mobile": 12,
+                "transition_speed": 1000,
+                "show_navigation": true,
+                "show_pagination": true,
+                "autoplay": false,
+                "autoplay_speed": 3000,
+                "loop": true
+            }
         }
     ]
 }
