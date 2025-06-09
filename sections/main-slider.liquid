@@ -40,12 +40,14 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="
-                                        {%- if section.settings.layout == 'layout1' and block.settings.content_alignment == 'right' -%}
-                                            col-lg-5 offset-lg-7 col-sm-6 offset-sm-6
-                                        {%- elsif block.settings.content_alignment == 'center' -%}
+                                        {%- if block.settings.content_alignment == 'center' -%}
                                             mx-auto text-center col-lg-8 col-md-10 col-sm-12
                                         {%- elsif block.settings.content_alignment == 'right' -%}
-                                            offset-lg-8 col-lg-4 col-sm-6 offset-6
+                                            {%- if section.settings.layout == 'default' -%}
+                                                col-lg-5 offset-lg-7 col-sm-6 offset-sm-6 offset-3 col-12
+                                            {%- else -%}
+                                                offset-lg-8 col-lg-4 col-sm-6 offset-6
+                                            {%- endif -%}
                                         {%- elsif section.settings.layout == 'layout2' -%}
                                         {%- elsif section.settings.layout == 'layout3' -%}
                                             col-lg-5 col-md-6 col-sm-10
