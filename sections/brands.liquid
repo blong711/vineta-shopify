@@ -1,6 +1,8 @@
 {% schema %}
   {
     "name": "Brand",
+    "tag": "section",
+    "class": "section",
     "settings": [
       {
         "type": "range",
@@ -88,6 +90,7 @@
       {
         "type": "brand",
         "name": "Brand",
+        "limit": 12,
         "settings": [
           {
             "type": "image_picker",
@@ -128,9 +131,28 @@
           }
         ]
       }
-    ]
+    ],
+    "templates": ["index", "page"],
+    "content_for_index": "{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}"
   }
 {% endschema %}
+
+{% comment %}
+  Preview content for theme editor
+{% endcomment %}
+{% if request.design_mode %}
+  <div class="section-preview">
+    <div class="container" style="max-width: {{ section.settings.width }}px;">
+      <div class="row">
+        {% for i in (1..6) %}
+          <div class="col">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endif %}
 
 <style>
   .brand-item img {
