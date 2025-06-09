@@ -1,6 +1,6 @@
 {% if section.settings.layout == 'layout1' %}
 <section class="flat-spacing-3 {% if section.settings.layout == 'home-bicycle' %}pb-0{% else %} pt-0{% endif %} section-{{ section.id }}-padding" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
-  <div class="container">
+  <div class="container" style="max-width: {{ section.settings.width }}px;">
     <div class="flat-title wow fadeInUp">
       <h4 class="title">{{ section.settings.title }}</h4>
       <p class="desc text-main text-md">{{ section.settings.description }}</p>
@@ -74,7 +74,7 @@
 </section>
 {% elsif section.settings.layout == 'layout2' %}
 <section class="flat-spacing-3 {% if section.settings.layout == 'layout2' %}pb-0{% else %} pt-0{% endif %} section-{{ section.id }}-padding" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
-  <div class="container">
+  <div class="container" style="max-width: {{ section.settings.width }}px;">
     <div class="flat-title-v2 text-center justify-items-center wow fadeInUp">
       <a href="{{ section.settings.blog_link }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.blog_button_text }}</a>
       <h4 class="text-capitalize">{{ section.settings.title }}</h4>
@@ -177,7 +177,7 @@
 </section>
 {% else %}
 <section class="flat-spacing-29 pt-0" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
-  <div class="container">
+  <div class="container" style="max-width: {{ section.settings.width }}px;">
     <div class="flat-title wow fadeInUp">
       <h4 class="title">{{ section.settings.title }}</h4>
       <p class="desc text-main text-md">{{ section.settings.description }}</p>
@@ -280,6 +280,16 @@
   "name": "Blog Carousel",
   "tag": "div",
   "settings": [
+    {
+      "type": "range",
+      "id": "width",
+      "min": 1000,
+      "max": 1600,
+      "step": 8,
+      "unit": "px",
+      "label": "Section width",
+      "default": 1488
+    },
     {
       "type": "select",
       "id": "layout",

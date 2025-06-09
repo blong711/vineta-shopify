@@ -3,6 +3,16 @@
   "name": "Latest Tips & Trends",
   "settings": [
     {
+      "type": "range",
+      "id": "width",
+      "min": 1000,
+      "max": 1600,
+      "step": 8,
+      "unit": "px",
+      "label": "Section width",
+      "default": 1488
+    },
+    {
       "type": "header",
       "content": "Section Settings"
     },
@@ -195,7 +205,7 @@
 {% endschema %}
 
 <section class="flat-spacing-25">
-  <div class="container">
+  <div class="container" style="max-width: {{ section.settings.width }}px;">
     <div class="flat-title mb_2 wow fadeInUp">
       <h4 class="title">{{ section.settings.title }}</h4>
     </div>

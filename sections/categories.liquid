@@ -2,7 +2,7 @@
   {%- case section.settings.layout -%}
     {%- when 'layout1' -%}
       <section class="flat-spacing-3">
-        <div class="container">
+        <div class="container" style="max-width: {{ section.settings.width }}px;">
           <div class="flat-animate-tab">
             <div class="flat-title-tab-categories wow fadeInUp text-center">
               <h4 class="title">{{ section.settings.title }}</h4>
@@ -86,7 +86,7 @@
       </section>
     {%- when 'layout2' -%}
       <section class="flat-spacing-3">
-        <div class="container">
+        <div class="container" style="max-width: {{ section.settings.width }}px;">
           <div class="flat-title text-start wow fadeInUp">
             <h4 class="title">{{ section.settings.title }}</h4>
           </div>
@@ -158,7 +158,7 @@
       </section>
     {%- when 'bicycle' -%}
       <section>
-        <div class="container">
+        <div class="container" style="max-width: {{ section.settings.width }}px;">
           <div class="flat-title-v2 text-center justify-items-center wow fadeInUp">
             <a href="{{ routes.collections_url }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.button_text }}</a>
             <h4>
@@ -226,7 +226,7 @@
       </section>
     {%- when 'phonecase' -%}
       <section class="flat-spacing-11">
-        <div class="container">
+        <div class="container" style="max-width: {{ section.settings.width }}px;">
           <div class="flat-title wow fadeInUp">
             <h4 class="title">{{ section.settings.title }}</h4>
           </div>
@@ -302,6 +302,16 @@
 {
   "name": "Categories",
   "settings": [
+    {
+      "type": "range",
+      "id": "width",
+      "min": 1000,
+      "max": 1600,
+      "step": 8,
+      "unit": "px",
+      "label": "Section width",
+      "default": 1488
+    },
     {
       "type": "select",
       "id": "layout",
