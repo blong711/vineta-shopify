@@ -540,14 +540,24 @@
 
                       {% when 'delivery_info' %}
                         <div class="tf-product-info-delivery-return" {{ block.shopify_attributes }}>
-                          <div class="product-delivery">
-                            <div class="icon {{ block.settings.delivery_icon }}"></div>
-                            <p class="text-md">{{ block.settings.delivery_label }} <span class="fw-medium">{{ block.settings.delivery_time }}</span></p>
-                          </div>
-                          <div class="product-delivery">
-                            <div class="icon {{ block.settings.shipping_icon }}"></div>
-                            <p class="text-md">{{ block.settings.shipping_label }} <span class="fw-medium">{{ block.settings.free_shipping_text }}</span></p>
-                          </div>
+                          {% if block.settings.show_delivery_info %}
+                            <div class="product-delivery">
+                              <div class="icon {{ block.settings.delivery_icon }}" font-size: {{ block.settings.icon_size }}px;"></div>
+                              <p class="text-md">
+                                {{ block.settings.delivery_label }} 
+                                <span class="fw-medium">{{ block.settings.delivery_time }}</span>
+                              </p>
+                            </div>
+                          {% endif %}
+                          {% if block.settings.show_free_shipping %}
+                            <div class="product-delivery">
+                              <div class="icon {{ block.settings.shipping_icon }}" font-size: {{ block.settings.icon_size }}px;"></div>
+                              <p class="text-md">
+                                {{ block.settings.shipping_label }} 
+                                <span class="fw-medium">{{ block.settings.free_shipping_text }}</span>
+                              </p>
+                            </div>
+                          {% endif %}
                         </div>
 
                       {% when 'fbt' %}
@@ -2411,7 +2421,7 @@ document.addEventListener('DOMContentLoaded', function() {
       "settings": [
         {
           "type": "header",
-          "content": "Delivery Time"
+          "content": "Delivery Time Settings"
         },
         {
           "type": "select",
@@ -2439,8 +2449,14 @@ document.addEventListener('DOMContentLoaded', function() {
           "default": "3-5 days international"
         },
         {
+          "type": "checkbox",
+          "id": "show_delivery_info",
+          "label": "Show Delivery Info",
+          "default": true
+        },
+        {
           "type": "header",
-          "content": "Free Shipping"
+          "content": "Free Shipping Settings"
         },
         {
           "type": "select",
@@ -2466,6 +2482,33 @@ document.addEventListener('DOMContentLoaded', function() {
           "id": "free_shipping_text",
           "label": "Free Shipping Text",
           "default": "all orders over $150"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_free_shipping",
+          "label": "Show Free Shipping Info",
+          "default": true
+        },
+        {
+          "type": "number",
+          "id": "free_shipping_threshold",
+          "label": "Free Shipping Threshold",
+          "default": 150,
+          "info": "Amount in dollars for free shipping qualification"
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "min": 16,
+          "max": 48,
+          "step": 2,
+          "unit": "px",
+          "label": "Icon Size",
+          "default": 24
         }
       ]
     },
