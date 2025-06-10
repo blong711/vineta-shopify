@@ -19,7 +19,13 @@
                     {% assign slide_class = 'reverse-slide' %}
                 {% endif %}
                 <div class="swiper-slide" {{ block.shopify_attributes }}>
-                    <div class="slider-wrap bg-type-{{ forloop.index }} {{ slide_class }}" style="{% if forloop.first and section.settings.image_height_mode == 'adapt_first' %}height: auto;{% elsif section.settings.image_height_mode == 'fill' %}height: 100vh;{% elsif section.settings.image_height_mode == 'fixed' %}{% endif %}">
+                    <div class="slider-wrap 
+                        {% if section.settings.layout == 'layout2' %}
+                            bg-type-{{ forloop.index | plus: 6 }}
+                        {% else %}
+                            bg-type-{{ forloop.index }}
+                        {% endif %}
+                        {{ slide_class }}" style="{% if forloop.first and section.settings.image_height_mode == 'adapt_first' %}height: auto;{% elsif section.settings.image_height_mode == 'fill' %}height: 100vh;{% elsif section.settings.image_height_mode == 'fixed' %}{% endif %}">
                         <div class="image">
                             {% if block.settings.image != blank or block.settings.image_mobile != blank %}
                                 <picture>

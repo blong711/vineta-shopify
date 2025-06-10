@@ -1,7 +1,9 @@
 {% assign active_tab = section.settings.default_tab %}
 
 <div class="flat-spacing-3">
-  <div class="container">
+  {% if section.settings.width == 'boxed' %}
+    <div class="container" style="padding-left: 15px; padding-right: 15px;">
+  {% endif %}
     <div class="flat-animate-tab">
       <div class="flat-title wow fadeInUp">
         <ul class="menu-tab-line style-lg justify-content-center" role="tablist">
@@ -48,7 +50,9 @@
         {% endfor %}
       </div>
     </div>
-  </div>
+  {% if section.settings.width == 'boxed' %}
+    </div>
+  {% endif %}
 </div>
 
 {% schema %}
@@ -74,6 +78,22 @@
         }
       ],
       "default": "seller"
+    },
+    {
+        "type": "select",
+        "id": "width",
+        "label": "Section width",
+        "options": [
+            {
+                "value": "full",
+                "label": "Full width"
+            },
+            {
+                "value": "boxed",
+                "label": "Boxed"
+            }
+        ],
+        "default": "boxed"
     }
   ],
   "blocks": [

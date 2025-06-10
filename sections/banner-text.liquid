@@ -1,6 +1,8 @@
 <!-- Banner with text-->
 <div class="{% if section.settings.layout == 'home-fashion-02' %}s-banner-with-text banner-text-fashion flat-spacing-3 pt-0{% else %}s-banner-product{% endif %}">
-  <div class="container">
+  {% if section.settings.width == 'boxed' %}
+    <div class="container" style="padding-left: 15px; padding-right: 15px;">
+  {% endif %}
     {% if section.settings.layout == 'home-fashion-02' %}
       <div class="row flex-wrap-reverse">
         <div class="col-md-5">
@@ -50,7 +52,7 @@
         </div>
       </div>
     {% else %}
-    <div class="content-banner">
+    <div class="content-banner" style="margin-left: 0px; margin-right: 0px;">
       <div class="image-wrap hover-img">
         {% if section.settings.banner_product != blank %}
           {% assign banner_product = section.settings.banner_product %}
@@ -130,13 +132,15 @@
         </div>
       </div>
     {% endif %}
-  </div>
+  {% if section.settings.width == 'boxed' %}
+    </div>
+  {% endif %}
 </div>
 <!-- /Banner with text -->
 
 {% schema %}
 {
-  "name": "Banner Text Fashion Women",
+  "name": "Banner Text",
   "settings": [
     {
       "type": "select",
@@ -147,6 +151,22 @@
         { "value": "home-fashion-02", "label": "Home Fashion 02 (Banner Text)" }
       ],
       "default": "default"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "boxed"
     },
     {
       "type": "product",
@@ -208,6 +228,19 @@
           "label": "Product"
         }
       ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner Text",
+      "category": "Banner",
+      "settings": {
+        "layout": "default",
+        "width": "boxed",
+        "title": "Elevating Your Style Journey",
+        "description": "Discover timeless pieces that define elegance and sophistication.",
+        "button_text": "Shop Now"
+      }
     }
   ]
 }

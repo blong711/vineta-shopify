@@ -175,7 +175,7 @@
 {% if section.settings.layout == 'layout1' %}
   <div class="flat-spacing-2" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
     {% if section.settings.width == 'boxed' %}
-      <div class="container">
+      <div class="container" style="padding-left: 15px; padding-right: 15px;">
     {% endif %}
       <div class="infiniteslide tf-brand" data-clone="{{ section.settings.clone }}" data-style="{{ section.settings.style }}" data-speed="{{ section.settings.speed }}">
         {% for block in section.blocks %}
@@ -214,7 +214,7 @@
 {% else %}
   <div style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
     {% if section.settings.width == 'boxed' %}
-      <div class="container">
+      <div class="container" style="padding-left: 15px; padding-right: 15px;">
     {% endif %}
       <div dir="ltr" class="swiper tf-swiper sw-brand swiper-initialized swiper-horizontal swiper-backface-hidden" data-swiper='{
         "slidesPerView": 2,

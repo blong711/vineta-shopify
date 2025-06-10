@@ -231,7 +231,7 @@
     
     <!-- Testimonial Section -->
     <section class="tf-testimonial {% if section.settings.layout == 'home-electronic' %}flat-spacing-2 pb-0{% elsif section.settings.layout == 'home-fashion-women' %}flat-spacing-3{% elsif section.settings.layout == 'home-fashion-02' %}flat-spacing-3{% elsif section.settings.layout == 'home-phonecase' %}bg-white mx_40 radius-16 flat-spacing-2{% endif %}">
-        <div class="{% if section.settings.layout == 'home-phonecase' %}container-5{% else %}container{% endif %}">
+        <div class="{% if section.settings.layout == 'home-phonecase' %}container-5{% else %}container{% endif %}" style="padding-left: 15px; padding-right: 15px;">
             {% if section.settings.layout != 'home-fashion-women' %}
                 <div class="flat-title {% if section.settings.layout == 'home-electronic' %}text-start{% elsif section.settings.layout == 'home-phonecase' %}gap-10{% endif %} wow fadeInUp">
                     {% if section.settings.layout == 'home-phonecase' %}
