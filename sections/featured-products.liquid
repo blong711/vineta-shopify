@@ -1,12 +1,24 @@
+{%- comment -%}
+  Featured Products Section
+  Usage: {% section 'featured-products' %}
+{%- endcomment -%}
+
 <section class="flat-spacing-3 overflow-hidden {% if section.settings.remove_top_padding %}pt-0{% endif %}">
   {% if section.settings.width == 'boxed' %}
     <div class="container">
   {% endif %}
-    <div class="flat-title wow fadeInUp">
-      <h4 class="title">{{ section.settings.title }}</h4>
-    </div>
-    <div class="fl-control-sw2 pos2 wow fadeInUp">
-      <div dir="ltr" class="swiper tf-swiper wrap-sw-over" 
+    {% if section.settings.layout == 'default' %}
+      <div class="flat-title wow fadeInUp">
+        <h4 class="title">{{ section.settings.title }}</h4>
+      </div>
+    {% else %}
+      <div class="flat-title-v2 justify-items-center text-center wow fadeInUp">
+        <a href="{{ section.settings.button_url }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.button_text }}</a>
+        <h4 class="text-capitalize">{{ section.settings.heading | replace: '[br]', '<br class="d-none d-xl-block">' }}</h4>
+      </div>
+    {% endif %}
+    <div class="fl-control-sw{% if section.settings.layout == 'feature' %}2{% endif %} pos2 wow fadeInUp">
+      <div dir="ltr" class="swiper tf-swiper {% if section.settings.layout == 'feature' %}feature-swiper{% else %}wrap-sw-over{% endif %}" 
         data-swiper='{
           "slidesPerView": {{ section.settings.slides_per_view_mobile }},
           "spaceBetween": {{ section.settings.space_between_mobile }},
@@ -50,7 +62,9 @@
                   product: product,
                   show_sale_badge: true,
                   show_color_swatches: true,
-                  selected_variant: product.selected_or_first_available_variant
+                  selected_variant: product.selected_or_first_available_variant,
+                  class: section.settings.layout == 'feature' ? 'style-border' : '',
+                  product-info: section.settings.layout == 'feature' ? 'text-center' : ''
                 %}
               </div>
             {%- endfor -%}
@@ -61,7 +75,9 @@
                   product: product,
                   show_sale_badge: true,
                   show_color_swatches: true,
-                  selected_variant: product.selected_or_first_available_variant
+                  selected_variant: product.selected_or_first_available_variant,
+                  class: section.settings.layout == 'feature' ? 'style-border' : '',
+                  product-info: section.settings.layout == 'feature' ? 'text-center' : ''
                 %}
               </div>
             {%- endfor -%}
@@ -98,10 +114,43 @@
       "default": "boxed"
     },
     {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "feature",
+          "label": "Feature"
+        }
+      ],
+      "default": "default"
+    },
+    {
       "type": "text",
       "id": "title",
       "label": "Title",
       "default": "Featured Products"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Featured Products"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Discover our top picks for [br] every ride"
     },
     {
       "type": "checkbox",
@@ -276,6 +325,8 @@
       "category": "Product slider",
       "settings": {
         "title": "Featured Products",
+        "button_text": "Featured Products",
+        "heading": "Discover our top picks for [br] every ride",
         "product_source": "collection",
         "collection": "all",
         "slides_per_view_desktop": 4,

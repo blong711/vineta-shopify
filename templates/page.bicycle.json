@@ -186,11 +186,29 @@
       }
     },
     "feature_Lx6awP": {
-      "type": "feature",
+      "type": "featured-products",
       "settings": {
+        "layout": "feature",
         "button_text": "Featured Products",
-        "button_url": "shopify://collections/all",
-        "heading": "Discover our top picks for [br] every ride"
+        "heading": "Discover our top picks for [br] every ride",
+        "product_source": "collection",
+        "collection": "all",
+        "slides_per_view_desktop": 4,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_mobile": 2,
+        "slides_per_group_desktop": 4,
+        "slides_per_group_tablet": 3,
+        "slides_per_group_mobile": 2,
+        "space_between_desktop": 24,
+        "space_between_mobile": 12,
+        "transition_speed": 800,
+        "show_navigation": true,
+        "show_pagination": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 3000,
+        "pause_on_hover": true,
+        "enable_loop": true,
+        "enable_observer": true
       }
     },
     "banner_carousel_wRYeNx": {
