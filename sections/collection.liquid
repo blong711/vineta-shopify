@@ -1015,6 +1015,38 @@
       "type": "url",
       "id": "banner_button_url",
       "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Filter categories"
+    },
+    {
+      "type": "text",
+      "id": "categories_heading",
+      "label": "Heading",
+      "default": "Product categories",
+      "info": "Not show if blank"
+    },
+    {
+      "type": "radio",
+      "id": "categories_mode",
+      "label": "Show all / Show a link list",
+      "options": [
+        { "value": "all", "label": "Show all" },
+        { "value": "link_list", "label": "Show link list" }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "link_list",
+      "id": "categories_link_list",
+      "label": "Choose link list"
+    },
+    {
+      "type": "checkbox",
+      "id": "categories_show_count",
+      "label": "Show count",
+      "default": false
     }
   ],
   "presets": [
