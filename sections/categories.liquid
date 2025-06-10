@@ -179,12 +179,12 @@
         {% endif %}
         <div class="slider-layout-right">
           <div dir="ltr" class="swiper tf-swiper tf-sw-right" data-swiper='{
-            "slidesPerView": {{ section.settings.slides_per_view_mobile }},
-            "spaceBetween": {{ section.settings.space_between_mobile }},
+            "slidesPerView": 2,
+            "spaceBetween": 12,
             "speed": {{ section.settings.transition_speed }},
             "observer": true,
             "observeParents": true,
-            "loop": {{ section.settings.loop }},
+            "slidesPerGroup": 2,
             "navigation": {% if section.settings.show_navigation %}{
               "clickable": true,
               "nextEl": ".nav-next-categories",
@@ -194,17 +194,21 @@
               "el": ".sw-pagination-cls-2",
               "clickable": true
             }{% else %}false{% endif %},
-            "autoplay": {% if section.settings.autoplay %}{
-              "delay": {{ section.settings.autoplay_speed }}
-            }{% else %}false{% endif %},
             "breakpoints": {
               "768": {
-                "slidesPerView": {{ section.settings.slides_per_view_tablet }},
-                "spaceBetween": {{ section.settings.space_between_mobile }}
+                "slidesPerView": 2.7,
+                "spaceBetween": 12,
+                "slidesPerGroup": 2
               },
               "992": {
-                "slidesPerView": {{ section.settings.slides_per_view_desktop }},
-                "spaceBetween": {{ section.settings.space_between_desktop }}
+                "slidesPerView": 3.7,
+                "spaceBetween": 24,
+                "slidesPerGroup": 3
+              }
+              "1200": {
+                "slidesPerView": 4.58,
+                "spaceBetween": 24,
+                "slidesPerGroup": 3
               }
             }
           }'>
