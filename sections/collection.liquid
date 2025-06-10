@@ -957,27 +957,16 @@
       "content": "On Sale Section"
     },
     {
+      "type": "checkbox",
+      "id": "show_on_sale",
+      "label": "Show On Sale Section",
+      "default": true
+    },
+    {
       "type": "text",
       "id": "on_sale_title",
       "label": "On Sale Title",
-      "default": "On sale",
-      "info": "Not show if blank"
-    },
-    {
-      "type": "radio",
-      "id": "on_sale_source",
-      "label": "On Sale Source",
-      "options": [
-        { "value": "collection", "label": "This Collection" },
-        { "value": "product_list", "label": "Selected Product List" }
-      ],
-      "default": "collection"
-    },
-    {
-      "type": "product_list",
-      "id": "on_sale_products",
-      "label": "Select Products for On Sale",
-      "limit": 10
+      "default": "On sale"
     },
     {
       "type": "header",
@@ -1060,6 +1049,8 @@
         "default_sort": "best-selling",
         "pagination_type": "pagination",
         "collections_title": "Collections",
+        "show_on_sale": true,
+        "on_sale_title": "On sale",
         "show_banner": true,
         "banner_title": "Elevate\nYour Style",
         "banner_button_text": "Shop Now"
