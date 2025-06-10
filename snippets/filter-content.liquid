@@ -4,7 +4,6 @@
 {%- endcomment -%}
 
 {%- comment -%} Configuration Options {%- endcomment -%}
-{%- assign show_collections = section.settings.show_collections | default: true -%}
 {%- assign show_on_sale = section.settings.show_on_sale | default: true -%}
 {%- assign show_banner = section.settings.show_banner | default: true -%}
 {%- assign banner_title = section.settings.banner_title | default: 'Elevate Your Style' -%}
@@ -16,14 +15,13 @@
 
 <form id="collection-filters-form" method="GET" action="{{ collection.url }}" class="filter-form">
   <!-- Categories -->
-  {% if show_collections %}
+{%- if section.settings.collections_title != blank -%}
   <div class="widget-facet">
     <div class="facet-title text-xl fw-medium" data-bs-target="#collections" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="collections">
       <span>{{ section.settings.collections_title | default: 'Collections' }}</span>
       <span class="icon icon-arrow-up"></span>
     </div>
     <div id="collections" class="collapse show">
-      {%- if categories_heading != blank -%}
         <ul class="list-categories current-scrollbar">
           {%- if categories_mode == 'all' or categories_mode == blank -%}
             {%- for collection in collections -%}
@@ -53,10 +51,9 @@
             {%- endfor -%}
           {%- endif -%}
         </ul>
-      {%- endif -%}
     </div>
   </div>
-  {% endif %}
+  {%- endif -%}
 
   <!-- Availability -->
   <div class="widget-facet">
