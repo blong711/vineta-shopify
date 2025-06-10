@@ -14,13 +14,21 @@
                 <fieldset class="text">
                   <input type="search" name="q" placeholder="Search" class="search-input" tabindex="0" value="{{ search.terms | escape }}" aria-required="true" required>
                 </fieldset>
-                <button type="submit">
+                <button type="submit" class="search-submit-btn">
                   <i class="icon icon-search"></i>
+                  <div class="spinner-border spinner-border-sm d-none" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
                 </button>
               </form>
               <div class="search-suggestions-grid mt-4" style="display: none;">
                 <div class="wrapper-shop tf-grid-layout tf-col-4" id="search-suggestions-container">
                   <!-- Search suggestions will be loaded here -->
+                </div>
+                <div class="suggestions-loading d-none">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
                 </div>
               </div>
               <div class="popular-searches justify-content-md-center">
@@ -235,8 +243,13 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.querySelector('.search-input');
+    const searchForm = document.querySelector('.form-search');
+    const searchSubmitBtn = document.querySelector('.search-submit-btn');
+    const searchIcon = searchSubmitBtn.querySelector('.icon-search');
+    const searchSpinner = searchSubmitBtn.querySelector('.spinner-border');
     const suggestionsContainer = document.querySelector('.search-suggestions-grid');
     const suggestionsWrapper = document.getElementById('search-suggestions-container');
+    const suggestionsLoading = document.querySelector('.suggestions-loading');
     let searchTimeout;
 
     // Format money helper function
@@ -246,6 +259,12 @@
         currency: 'USD'
       });
     };
+
+    // Handle form submission
+    searchForm.addEventListener('submit', function(e) {
+      searchIcon.classList.add('d-none');
+      searchSpinner.classList.remove('d-none');
+    });
 
     searchInput.addEventListener('input', function(e) {
       const query = e.target.value.trim();
@@ -259,11 +278,19 @@
         return;
       }
 
+      // Show loading state
+      suggestionsContainer.style.display = 'block';
+      suggestionsWrapper.style.display = 'none';
+      suggestionsLoading.classList.remove('d-none');
+
       // Set new timeout for search
       searchTimeout = setTimeout(() => {
         fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=8`)
           .then(response => response.json())
           .then(data => {
+            suggestionsLoading.classList.add('d-none');
+            suggestionsWrapper.style.display = 'grid';
+            
             if (data.resources.results.products.length > 0) {
               suggestionsWrapper.innerHTML = data.resources.results.products.map(product => `
                 <div class="loadItem card-product grid style-1">
@@ -284,7 +311,6 @@
                   </div>
                 </div>
               `).join('');
-              suggestionsContainer.style.display = 'block';
             } else {
               suggestionsContainer.style.display = 'none';
             }
@@ -292,6 +318,7 @@
           .catch(error => {
             console.error('Error fetching search suggestions:', error);
             suggestionsContainer.style.display = 'none';
+            suggestionsLoading.classList.add('d-none');
           });
       }, 300); // 300ms delay to prevent too many requests
     });
@@ -337,5 +364,22 @@
   display: none !important;
   width: 0 !important;
   height: 0 !important;
+}
+
+.search-submit-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-submit-btn .spinner-border {
+  position: absolute;
+}
+
+.suggestions-loading {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
 }
 </style>
