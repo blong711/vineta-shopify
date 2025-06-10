@@ -30,7 +30,7 @@
               <div id="material-{{ block.id }}" class="collapse">
                 <div class="accordion-body widget-material">
                   <div class="item">
-                    <p class="fw-medium title">{{ block.settings.subtitle }}</p>
+                    <p class="fw-medium title">Materials Care</p>
                     <ul>
                       {%- if product.metafields.material.content -%}
                         <li>Content: {{ product.metafields.material.content }}</li>
@@ -313,12 +313,6 @@
           "id": "title",
           "label": "Title",
           "default": "Materials"
-        },
-        {
-          "type": "text",
-          "id": "subtitle",
-          "label": "Subtitle",
-          "default": "Materials Care"
         }
       ]
     },
