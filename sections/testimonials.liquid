@@ -335,37 +335,7 @@
             {% elsif section.settings.layout == 'home-fashion-women' %}
                 <div class="wrapper-thumbs-tes-2 flat-thumbs-tes">
                     <div class="box-left">
-                        <div dir="ltr" class="swiper tf-tes-main" data-swiper='{
-                            "slidesPerView": {{ section.settings.slides_per_view_mobile }},
-                            "spaceBetween": {{ section.settings.space_between_mobile }},
-                            "speed": {{ section.settings.transition_speed }},
-                            "observer": {{ section.settings.enable_observer }},
-                            "observeParents": {{ section.settings.enable_observer }},
-                            "slidesPerGroup": {{ section.settings.slides_per_group_mobile }},
-                            "loop": {{ section.settings.enable_loop }},
-                            "navigation": {% if section.settings.show_navigation %}{
-                                "clickable": true,
-                                "nextEl": ".nav-next-tes",
-                                "prevEl": ".nav-prev-tes"
-                            }{% else %}false{% endif %},
-                            "autoplay": {% if section.settings.enable_autoplay %}{
-                                "delay": {{ section.settings.autoplay_speed }},
-                                "pauseOnMouseEnter": {{ section.settings.pause_on_hover }},
-                                "disableOnInteraction": false
-                            }{% else %}false{% endif %},
-                            "breakpoints": {
-                                "768": {
-                                    "slidesPerView": {{ section.settings.slides_per_view_tablet }},
-                                    "spaceBetween": {{ section.settings.space_between_mobile }},
-                                    "slidesPerGroup": {{ section.settings.slides_per_group_tablet }}
-                                },
-                                "1200": {
-                                    "slidesPerView": {{ section.settings.slides_per_view_desktop }},
-                                    "spaceBetween": {{ section.settings.space_between_desktop }},
-                                    "slidesPerGroup": {{ section.settings.slides_per_group_desktop }}
-                                }
-                            }
-                        }'>
+                        <div dir="ltr" class="swiper tf-tes-main" data-space-lg="24" data-space="12">
                             <div class="swiper-wrapper">
                                 {% for block in section.blocks %}
                                     <div class="swiper-slide" {{ block.shopify_attributes }}>
@@ -412,13 +382,7 @@
                         </div>
                     </div>
                     <div class="box-right">
-                        <div dir="ltr" class="swiper tf-thumb-tes" data-swiper='{
-                            "slidesPerView": 1,
-                            "spaceBetween": 12,
-                            "speed": 800,
-                            "observer": true,
-                            "observeParents": true
-                        }'>
+                        <div dir="ltr" class="swiper tf-thumb-tes" data-space-lg="24" data-space="12">
                             <div class="swiper-wrapper">
                                 {% for block in section.blocks %}
                                     <div class="swiper-slide hover-img">
