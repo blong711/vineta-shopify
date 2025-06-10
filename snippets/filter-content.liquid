@@ -25,7 +25,6 @@
     </div>
     <div id="collections" class="collapse show">
       {%- if categories_heading != blank -%}
-        <div class="facet-title text-xl fw-medium">{{ categories_heading }}</div>
         <ul class="list-categories current-scrollbar">
           {%- if categories_mode == 'all' or categories_mode == blank -%}
             {%- for collection in collections -%}
