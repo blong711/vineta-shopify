@@ -18,7 +18,7 @@
             "image": "shopify://shop_images/slider-electronic-1.webp",
             "content_alignment": "left",
             "subtitle": "APPLE WATCHES COLLECTION",
-            "heading": "Sale up to 15% Off",
+            "heading": "Sale up to<br>15% Off",
             "subheading": "Discover the latest trends in fashion that speak your style.",
             "button_text": "Shop Now",
             "button_link": ""
@@ -136,6 +136,7 @@
         "text_z9JGfP"
       ],
       "settings": {
+        "width": "full",
         "background_color": "#e8f5e9"
       }
     },
@@ -195,10 +196,21 @@
         "category_KNqnMA"
       ],
       "settings": {
+        "width": "boxed",
         "layout": "layout2",
         "title": "Categories",
         "button_text": "Categories",
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 6,
+        "space_between_mobile": 12,
+        "space_between_desktop": 24,
+        "transition_speed": 800,
         "show_navigation": true,
+        "show_pagination": true,
+        "autoplay": false,
+        "autoplay_speed": 3000,
+        "loop": true,
         "products_per_collection": 6
       }
     },
@@ -209,16 +221,36 @@
         "subtitle": "Discover our top picks",
         "title": "Top Picks You'll Love",
         "description": "Explore our most popular pieces that customers can't get enough of",
+        "product_source": "collection",
+        "collection": "",
+        "product_list": [],
         "spacing": "flat-spacing-8",
         "background_color": "bg-surface",
         "show_view_all": true,
         "view_all_link": "",
-        "view_all_text": "View all"
+        "view_all_text": "View all",
+        "slides_per_view_mobile": 1,
+        "slides_per_view_tablet": 2,
+        "slides_per_view_desktop": 4,
+        "space_between_mobile": 10,
+        "space_between_desktop": 20,
+        "slides_per_group_mobile": 1,
+        "slides_per_group_tablet": 2,
+        "slides_per_group_desktop": 3,
+        "transition_speed": 300,
+        "show_navigation": true,
+        "show_pagination": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 3000,
+        "pause_on_hover": true,
+        "enable_loop": false,
+        "enable_observer": true
       }
     },
     "banner_collection_FdpGhY": {
       "type": "banner-collection",
       "settings": {
+        "width": "boxed",
         "layout": "electric",
         "video": "",
         "image": "shopify://shop_images/phone_fd87091c-31c7-45cc-a9df-9faf0d09f4f8.png",
@@ -280,10 +312,30 @@
         "product_my7cKK"
       ],
       "settings": {
+        "width": "boxed",
         "show_section": true,
         "title": "Hot Deals",
         "description": "Explore our most popular pieces that customers can't get enough of",
-        "global_countdown": "46556"
+        "global_countdown": "46556",
+        "product_source": "collection",
+        "collection": "",
+        "product_list": [],
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "slides_per_group_mobile": 2,
+        "slides_per_group_tablet": 3,
+        "slides_per_group_desktop": 4,
+        "space_between_mobile": 12,
+        "space_between_desktop": 24,
+        "transition_speed": 800,
+        "show_navigation": true,
+        "show_pagination": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 3000,
+        "pause_on_hover": true,
+        "enable_loop": true,
+        "enable_observer": true
       }
     },
     "testimonials_qDiw3x": {
@@ -348,7 +400,23 @@
       "settings": {
         "layout": "home-electronic",
         "title": "Happy Customers",
-        "subtitle": "Experience with our products"
+        "subtitle": "Experience with our products",
+        "slides_per_view_mobile": 1,
+        "slides_per_view_tablet": 2,
+        "slides_per_view_desktop": 3,
+        "slides_per_group_mobile": 1,
+        "slides_per_group_tablet": 2,
+        "slides_per_group_desktop": 3,
+        "space_between_mobile": 12,
+        "space_between_desktop": 24,
+        "transition_speed": 800,
+        "show_navigation": true,
+        "show_pagination": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 3000,
+        "pause_on_hover": true,
+        "enable_loop": true,
+        "enable_observer": true
       }
     },
     "brands_7RCQfR": {
@@ -408,6 +476,7 @@
       "settings": {
         "padding_top": 80,
         "padding_bottom": 80,
+        "width": "boxed",
         "layout": "layout2",
         "speed": 80,
         "style": "left",
@@ -416,76 +485,13 @@
     },
     "latest_tips_HkyXtE": {
       "type": "blog-carousel",
-      "blocks": {
-        "tip_BAfxjK": {
-          "type": "tip",
-          "settings": {
-            "image": "shopify://shop_images/blog06-928x928.webp",
-            "title": "A complete guide to electronic product photography",
-            "description": "Collaboration is at the heart of what we do. From understanding your goals to delivering tailored solutions...",
-            "author": "Jack",
-            "date": "Jan 15, 2025",
-            "comments": "04 Comments",
-            "read_more_text": "Read more",
-            "link": "shopify://blogs/lifestyle/5-style-staples-every-woman-needs",
-            "tags": "Electric, Gadgets"
-          }
-        },
-        "tip_jbbTpq": {
-          "type": "tip",
-          "settings": {
-            "image": "shopify://shop_images/blog05-928x928.webp",
-            "title": "The Evolution of Apple AirPods: A Full History",
-            "description": "Collaboration is at the heart of what we do. From understanding your goals to delivering tailored solutions...",
-            "author": "Alex",
-            "date": "Jan 19, 2025",
-            "comments": "03 Comments",
-            "read_more_text": "Read more",
-            "link": "shopify://blogs/design/chic-looks-with-one-timeless-color",
-            "tags": "Trends"
-          }
-        },
-        "tip_XiH8xD": {
-          "type": "tip",
-          "settings": {
-            "image": "shopify://shop_images/blog04-928x928.webp",
-            "title": "Budget Fitness Trackers That Keep You Active for Cheap",
-            "description": "Collaboration is at the heart of what we do. From understanding your goals to delivering tailored solutions...",
-            "author": "Henry",
-            "date": "May 7, 2025",
-            "comments": "02 Comments",
-            "read_more_text": "Read more",
-            "link": "shopify://blogs/design/monochrome-style-made-easy",
-            "tags": "Innovation"
-          }
-        },
-        "tip_DPY3pk": {
-          "type": "tip",
-          "settings": {
-            "image": "shopify://shop_images/blog-eletric1_1d0cceff-cd13-4a98-bed3-6fbf918c6ba9.jpg",
-            "title": "Tech Trends 2025: Must-Have Gadgets & Innovations",
-            "description": "Technology is more than convenience. It's about enhancing everyday life with smart, seamless solutions.",
-            "author": "Jack",
-            "date": "Jan 21, 2025",
-            "comments": "04 Comments",
-            "read_more_text": "Read more",
-            "link": "shopify://blogs/lifestyle/5-timeless-wardrobe-essentials-every-woman-should-own",
-            "tags": ""
-          }
-        }
-      },
-      "block_order": [
-        "tip_BAfxjK",
-        "tip_jbbTpq",
-        "tip_XiH8xD",
-        "tip_DPY3pk"
-      ],
       "settings": {
+        "width": "boxed",
         "layout": "layout3",
         "title": "Latest Tips & Trends",
         "description": "Discover expert advice, style inspiration, and product updates on our blog.",
         "blog_button_text": "OUR BLOG",
-        "blog_link": "",
+        "read_more_text": "Read more",
         "autoplay": true,
         "autoplay_speed": 5000,
         "slides_per_view_mobile": 1,
