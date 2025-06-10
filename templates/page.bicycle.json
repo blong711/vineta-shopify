@@ -130,6 +130,7 @@
       "settings": {
         "padding_top": 60,
         "padding_bottom": 60,
+        "width": "boxed",
         "layout": "layout1",
         "speed": 80,
         "style": "left",
@@ -178,21 +179,37 @@
         "category_YNyYtr"
       ],
       "settings": {
+        "width": "boxed",
         "layout": "bicycle",
         "title": "Explore a variety of high-performance bikes,built for speed, durability, and adventure.",
         "button_text": "Categories",
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 6,
+        "space_between_mobile": 12,
+        "space_between_desktop": 24,
+        "transition_speed": 800,
         "show_navigation": true,
+        "show_pagination": true,
+        "autoplay": false,
+        "autoplay_speed": 3000,
+        "loop": false,
         "products_per_collection": 6
       }
     },
     "feature_Lx6awP": {
       "type": "featured-products",
       "settings": {
+        "width": "boxed",
         "layout": "feature",
+        "title": "Featured Products",
         "button_text": "Featured Products",
+        "button_url": "",
         "heading": "Discover our top picks for [br] every ride",
+        "remove_top_padding": false,
         "product_source": "collection",
         "collection": "all",
+        "product_list": [],
         "slides_per_view_mobile": 2,
         "slides_per_view_tablet": 3,
         "slides_per_view_desktop": 4,
@@ -239,7 +256,19 @@
         "banner_egVzen",
         "banner_nPaLEr"
       ],
-      "settings": {}
+      "settings": {
+        "width": "boxed",
+        "slides_per_view_mobile": 1,
+        "slides_per_view_tablet": 2,
+        "slides_per_view_desktop": 2,
+        "space_between": 12,
+        "transition_speed": 1000,
+        "show_navigation": true,
+        "show_pagination": true,
+        "autoplay": false,
+        "autoplay_speed": 3000,
+        "loop": true
+      }
     },
     "gear_up_MHV8ye": {
       "type": "gear-up",
@@ -303,14 +332,35 @@
         "product_jWit3Y"
       ],
       "settings": {
+        "width": "boxed",
         "gear_up_text": "Gear Up",
         "gear_up_link": "",
-        "heading": "Top-quality equipmentfor all your cycling needs"
+        "heading": "Top-quality equipmentfor all your cycling needs",
+        "product_source": "collection",
+        "collection": "",
+        "product_list": [],
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "slides_per_group_mobile": 2,
+        "slides_per_group_tablet": 3,
+        "slides_per_group_desktop": 4,
+        "space_between_mobile": 12,
+        "space_between_desktop": 24,
+        "transition_speed": 1000,
+        "show_navigation": true,
+        "show_pagination": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 3000,
+        "pause_on_hover": true,
+        "enable_loop": true,
+        "enable_observer": true
       }
     },
     "banner_collection_bU8kji": {
       "type": "banner-collection",
       "settings": {
+        "width": "boxed",
         "layout": "bicycle",
         "video": "https://cdn.shopify.com/videos/c/o/v/2d529c5e28844928a71f15172180d425.mp4",
         "title": "Unleash Your Ride",
@@ -323,10 +373,12 @@
     "latest_tips_6hgy4m": {
       "type": "blog-carousel",
       "settings": {
+        "width": "boxed",
         "layout": "layout2",
         "title": "Ride the Future: E-Bike Insights & Trendseds",
         "description": "Discover expert advice, style inspiration, and product updates on our blog.",
         "blog_button_text": "OUR BLOG",
+        "read_more_text": "Read more",
         "autoplay": true,
         "autoplay_speed": 5000,
         "slides_per_view_mobile": 1,
