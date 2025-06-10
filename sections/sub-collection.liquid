@@ -6,7 +6,9 @@
 {% endcomment %}
 
 <div class="flat-spacing-{{ section.settings.spacing }}">
-  <div class="container{% if section.settings.container_width == 'narrow' %}-6{% endif %}" style="max-width: {{ section.settings.width }}px;">
+  {% if section.settings.width == 'boxed' %}
+    <div class="container{% if section.settings.container_width == 'narrow' %}-6{% endif %}">
+  {% endif %}
     <div class="fl-control-sw pos1">
       <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp" data-swiper='{
         "slidesPerView": {{ section.settings.slides_per_view_mobile }},
@@ -95,7 +97,9 @@
       <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls"></div>
       <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls"></div>
     </div>
-  </div>
+  {% if section.settings.width == 'boxed' %}
+    </div>
+  {% endif %}
 </div>
 
 {% schema %}
@@ -103,14 +107,20 @@
   "name": "Sub Collection",
   "settings": [
     {
-      "type": "range",
+      "type": "select",
       "id": "width",
-      "min": 1000,
-      "max": 1600,
-      "step": 8,
-      "unit": "px",
       "label": "Section width",
-      "default": 1488
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "boxed"
     },
     {
       "type": "select",

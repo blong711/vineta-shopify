@@ -156,10 +156,10 @@
       }
     },
     "best_sellers": {
-      "type": "best-sellers",
+      "type": "featured-products",
       "settings": {
-        "width": 1488,
-        "section_title": "Best Sellers",
+        "width": "boxed",
+        "title": "Best Sellers",
         "product_source": "product_list",
         "collection": "",
         "product_list": [
@@ -181,9 +181,11 @@
         "transition_speed": 800,
         "show_navigation": true,
         "show_pagination": true,
-        "autoplay": false,
+        "enable_autoplay": false,
         "autoplay_speed": 3000,
-        "loop": true
+        "pause_on_hover": true,
+        "enable_loop": true,
+        "enable_observer": true
       }
     },
     "banner_countdown": {
@@ -259,10 +261,11 @@
       }
     },
     "todays_picks": {
-      "type": "todays-picks",
+      "type": "featured-products",
       "settings": {
-        "width": 1488,
+        "width": "boxed",
         "title": "Today's Picks",
+        "remove_top_padding": true,
         "product_source": "product_list",
         "collection": "",
         "product_list": [
@@ -313,7 +316,7 @@
             "product": "Crop T-shirt",
             "product_url": "shopify://products/crop-t-shirt",
             "price": "$99.00",
-            "review": "I love the dress I purchased! The fabric is so soft, and the fit is perfect. I’ve gotten so many compliments on it. Will definitely shop here again!",
+            "review": "I love the dress I purchased! The fabric is so soft, and the fit is perfect. I've gotten so many compliments on it. Will definitely shop here again!",
             "title": "Elegance and Comfort Combined"
           }
         },

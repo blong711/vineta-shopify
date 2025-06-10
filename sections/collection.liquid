@@ -7,7 +7,9 @@
 
 {% paginate collection.products by section.settings.products_per_page %}
 <section class="flat-spacing-24" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
-  <div class="container" style="max-width: {{ section.settings.width }}px;">
+  {% if section.settings.width == 'boxed' %}
+    <div class="container">
+  {% endif %}
     {%- case section.settings.filter_type -%}
       {%- when 'drawer' -%}
         <!-- Filter Drawer -->
@@ -424,7 +426,9 @@
       {%- endif -%}
       </div>
     {%- endif -%}
-  </div>
+  {% if section.settings.width == 'boxed' %}
+    </div>
+  {% endif %}
 </section>
 {% endpaginate %}
 
@@ -780,14 +784,20 @@
   "name": "Collection",
   "settings": [
     {
-      "type": "range",
+      "type": "select",
       "id": "width",
-      "min": 1000,
-      "max": 1600,
-      "step": 8,
-      "unit": "px",
       "label": "Section width",
-      "default": 1488
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "boxed"
     },
     {
       "type": "range",
@@ -1012,7 +1022,7 @@
       "name": "Collection",
       "category": "Collection",
       "settings": {
-        "width": 1488,
+        "width": "boxed",
         "padding_top": 36,
         "padding_bottom": 36,
         "filter_type": "drawer",

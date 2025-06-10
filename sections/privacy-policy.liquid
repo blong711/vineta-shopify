@@ -1,5 +1,7 @@
 <section class="s-term-user flat-spacing-2">
-  <div class="container" style="max-width: {{ section.settings.width }}px;">
+  {% if section.settings.width == 'boxed' %}
+    <div class="container">
+  {% endif %}
     <div class="row">
       <div class="col-lg-12">
         <div class="content">
@@ -14,7 +16,9 @@
         </div>
       </div>
     </div>
-  </div>
+  {% if section.settings.width == 'boxed' %}
+    </div>
+  {% endif %}
 </section>
 
 {% schema %}
@@ -22,14 +26,20 @@
   "name": "Privacy Policy",
   "settings": [
     {
-      "type": "range",
+      "type": "select",
       "id": "width",
-      "min": 1000,
-      "max": 1600,
-      "step": 8,
-      "unit": "px",
       "label": "Section width",
-      "default": 1488
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "boxed"
     }
   ],
   "blocks": [
@@ -54,7 +64,7 @@
   ],
   "presets": [
     {
-      "name": "Privacy Policy",
+      "name": "Privacy Policy main",
       "category": "Privacy Policy",
       "blocks": [
         {

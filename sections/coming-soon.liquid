@@ -3,14 +3,20 @@
   "name": "Coming Soon",
   "settings": [
     {
-      "type": "range",
+      "type": "select",
       "id": "width",
-      "min": 1000,
-      "max": 1600,
-      "step": 8,
-      "unit": "px",
       "label": "Section width",
-      "default": 1488
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "boxed"
     },
     {
       "type": "text",
@@ -60,7 +66,9 @@
 {% endschema %}
 
 <section class="s-coming-soon">
-  <div class="container" style="max-width: {{ section.settings.width }}px;">
+  {% if section.settings.width == 'boxed' %}
+    <div class="container">
+  {% endif %}
     <div class="row">
       <div class="col-lg-12">
         <div class="wg-coming-soon">
@@ -101,5 +109,7 @@
         </div>
       </div>
     </div>
-  </div>
+  {% if section.settings.width == 'boxed' %}
+    </div>
+  {% endif %}
 </section>

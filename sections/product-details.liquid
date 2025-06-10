@@ -1,6 +1,8 @@
 {%- comment -%}Product Details Section{%- endcomment -%}
 <section class="flat-spacing pt-0">
-  <div class="container" style="max-width: {{ section.settings.width }}px;">
+  {% if section.settings.width == 'boxed' %}
+    <div class="container">
+  {% endif %}
     {%- if section.settings.layout == 'accordion' -%}
       {%- for block in section.blocks -%}
         {%- case block.type -%}
@@ -247,7 +249,9 @@
         </div>
       </div>
     {%- endif -%}
-  </div>
+  {% if section.settings.width == 'boxed' %}
+    </div>
+  {% endif %}
 </section>
 
 {% schema %}
@@ -255,14 +259,20 @@
   "name": "Product Details",
   "settings": [
     {
-      "type": "range",
+      "type": "select",
       "id": "width",
-      "min": 1000,
-      "max": 1600,
-      "step": 8,
-      "unit": "px",
       "label": "Section width",
-      "default": 1488
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "boxed"
     },
     {
       "type": "select",

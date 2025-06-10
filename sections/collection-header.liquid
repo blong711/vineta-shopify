@@ -5,7 +5,9 @@
 {% endcomment %}
 
 <div class="collection-header">
-  <div class="container">
+  {% if section.settings.width == 'boxed' %}
+    <div class="container">
+  {% endif %}
     {% if section.settings.show_collection_image and collection.image %}
       <div class="collection-image">
         <img 
@@ -25,13 +27,31 @@
         </div>
       {% endif %}
     </div>
-  </div>
+  {% if section.settings.width == 'boxed' %}
+    </div>
+  {% endif %}
 </div>
 
 {% schema %}
 {
   "name": "Collection Header",
   "settings": [
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "boxed"
+    },
     {
       "type": "checkbox",
       "id": "show_collection_image",

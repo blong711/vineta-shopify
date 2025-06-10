@@ -1,6 +1,8 @@
 {%- if section.settings.show_section -%}
   <section class="bg-surface flat-spacing-8">
-    <div class="container" style="max-width: {{ section.settings.width }}px;">
+    {% if section.settings.width == 'boxed' %}
+      <div class="container">
+    {% endif %}
       <div class="flat-title mb_1 style-between wow fadeInUp">
         <div class="box-title">
           <h4 class="title">{{ section.settings.title }}</h4>
@@ -78,7 +80,9 @@
         <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-deal"></div>
         <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-deal"></div>
       </div>
-    </div>
+    {% if section.settings.width == 'boxed' %}
+      </div>
+    {% endif %}
   </section>
 {%- endif -%}
 
@@ -87,14 +91,20 @@
   "name": "Hot Deals",
   "settings": [
     {
-      "type": "range",
+      "type": "select",
       "id": "width",
-      "min": 1000,
-      "max": 1600,
-      "step": 8,
-      "unit": "px",
       "label": "Section width",
-      "default": 1488
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "boxed"
     },
     {
       "type": "checkbox",

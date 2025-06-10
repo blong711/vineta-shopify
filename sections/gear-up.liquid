@@ -1,6 +1,8 @@
 <!-- Gear Up -->
 <section class="flat-spacing-3">
-  <div class="container" style="max-width: {{ section.settings.width }}px;">
+  {% if section.settings.width == 'boxed' %}
+    <div class="container">
+  {% endif %}
     <div class="flat-title-v2 text-center justify-items-center wow fadeInUp">
       <a href="{{ section.settings.gear_up_link }}" class="tf-btn btn-out-line-green btn-small text-uppercase">
         {{ section.settings.gear_up_text }}
@@ -77,7 +79,9 @@
       <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-gear-up"></div>
       <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-gear-up"></div>
     </div>
-  </div>
+  {% if section.settings.width == 'boxed' %}
+    </div>
+  {% endif %}
 </section>
 <!-- /Gear Up -->
 
@@ -87,14 +91,20 @@
   "tag": "section",
   "settings": [
     {
-      "type": "range",
+      "type": "select",
       "id": "width",
-      "min": 1000,
-      "max": 1600,
-      "step": 8,
-      "unit": "px",
       "label": "Section width",
-      "default": 1488
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "boxed"
     },
     {
       "type": "text",

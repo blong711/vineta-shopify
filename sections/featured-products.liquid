@@ -1,5 +1,7 @@
-<section class="flat-spacing-3 pt-0 overflow-hidden">
-  <div class="container" style="max-width: {{ section.settings.width }}px;">
+<section class="flat-spacing-3 overflow-hidden {% if section.settings.remove_top_padding %}pt-0{% endif %}">
+  {% if section.settings.width == 'boxed' %}
+    <div class="container">
+  {% endif %}
     <div class="flat-title wow fadeInUp">
       <h4 class="title">{{ section.settings.title }}</h4>
     </div>
@@ -15,11 +17,11 @@
           "loop": {{ section.settings.enable_loop }},
           "navigation": {% if section.settings.show_navigation %}{
             "clickable": true,
-            "nextEl": ".nav-next-top-pick",
-            "prevEl": ".nav-prev-top-pick"
+            "nextEl": ".nav-next-featured",
+            "prevEl": ".nav-prev-featured"
           }{% else %}false{% endif %},
           "pagination": {% if section.settings.show_pagination %}{
-            "el": ".sw-pagination-top-pick",
+            "el": ".sw-pagination-featured",
             "clickable": true
           }{% else %}false{% endif %},
           "autoplay": {% if section.settings.enable_autoplay %}{
@@ -65,33 +67,47 @@
             {%- endfor -%}
           {%- endif -%}
         </div>
-        <div class="d-flex d-xl-none sw-dot-default sw-pagination-top-pick justify-content-center"></div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-featured justify-content-center"></div>
       </div>
-      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-top-pick"></div>
-      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-top-pick"></div>
+      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-featured"></div>
+      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-featured"></div>
     </div>
-  </div>
+  {% if section.settings.width == 'boxed' %}
+    </div>
+  {% endif %}
 </section>
 
 {% schema %}
 {
-  "name": "Today's Picks",
+  "name": "Featured Products",
   "settings": [
     {
-      "type": "range",
+      "type": "select",
       "id": "width",
-      "min": 1000,
-      "max": 1600,
-      "step": 8,
-      "unit": "px",
       "label": "Section width",
-      "default": 1488
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "boxed"
     },
     {
       "type": "text",
       "id": "title",
       "label": "Title",
-      "default": "Today's Picks"
+      "default": "Featured Products"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_top_padding",
+      "label": "Remove top padding",
+      "default": false
     },
     {
       "type": "select",
@@ -256,10 +272,10 @@
   ],
   "presets": [
     {
-      "name": "Today's Picks",
+      "name": "Featured Products",
       "category": "Product slider",
       "settings": {
-        "title": "Today's Picks",
+        "title": "Featured Products",
         "product_source": "collection",
         "collection": "all",
         "slides_per_view_desktop": 4,
@@ -282,4 +298,4 @@
     }
   ]
 }
-{% endschema %}
+{% endschema %} 

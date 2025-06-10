@@ -1,6 +1,8 @@
 {%- comment -%}Collection List Section{%- endcomment -%}
 <section class="flat-spacing-24">
-  <div class="container" style="max-width: {{ section.settings.width }}px;">
+  {% if section.settings.width == 'boxed' %}
+    <div class="container">
+  {% endif %}
     <div class="flat-wrap-cls tf-grid-layout tf-col-2 xl-col-3">
       {%- paginate collections by section.settings.collections_per_page -%}
         {%- for collection in collections -%}
@@ -63,13 +65,17 @@
         {%- endif -%}
       {%- endpaginate -%}
     </div>
-  </div>
+  {% if section.settings.width == 'boxed' %}
+    </div>
+  {% endif %}
 </section>
 
 {%- for block in section.blocks -%}
   {%- if block.type == 'icon_box' -%}
     <div class="flat-spacing-5 line-top flat-wrap-iconbox" {{ block.shopify_attributes }}>
-      <div class="container">
+      {% if section.settings.width == 'boxed' %}
+        <div class="container">
+      {% endif %}
         <div dir="ltr" class="swiper tf-swiper wow fadeInUp" data-swiper='{
           "slidesPerView": {{ section.settings.slides_per_view_mobile }},
           "spaceBetween": {{ section.settings.space_between_mobile }},
@@ -118,7 +124,9 @@
           </div>
           <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
         </div>
-      </div>
+      {% if section.settings.width == 'boxed' %}
+        </div>
+      {% endif %}
     </div>
   {%- endif -%}
 {%- endfor -%}
@@ -145,14 +153,20 @@
   "name": "Collection List",
   "settings": [
     {
-      "type": "range",
+      "type": "select",
       "id": "width",
-      "min": 1000,
-      "max": 1600,
-      "step": 8,
-      "unit": "px",
       "label": "Section width",
-      "default": 1488
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "boxed"
     },
     {
       "type": "range",
