@@ -2,7 +2,9 @@
   {%- case section.settings.layout -%}
     {%- when 'layout1' -%}
       <section class="flat-spacing-3">
-        <div class="container" style="max-width: {{ section.settings.width }}px;">
+        {% if section.settings.width == 'boxed' %}
+          <div class="container">
+        {% endif %}
           <div class="flat-animate-tab">
             <div class="flat-title-tab-categories wow fadeInUp text-center">
               <h4 class="title">{{ section.settings.title }}</h4>
@@ -24,37 +26,36 @@
               {% for block in section.blocks %}
                 {% if block.type == 'tab' %}
                   <div class="tab-pane {% if forloop.first %}active show{% endif %}" id="tab-{{ block.id }}" role="tabpanel">
-                    <div dir="ltr" class="swiper tf-swiper" 
-                      data-swiper='{
-                        "slidesPerView": {{ section.settings.slides_per_view_mobile }},
-                        "spaceBetween": {{ section.settings.space_between_mobile }},
-                        "speed": {{ section.settings.transition_speed }},
-                        "observer": true,
-                        "observeParents": true,
-                        "loop": {{ section.settings.loop }},
-                        "navigation": {% if section.settings.show_navigation %}{
-                          "clickable": true,
-                          "nextEl": ".nav-next-categories",
-                          "prevEl": ".nav-prev-categories"
-                        }{% else %}false{% endif %},
-                        "pagination": {% if section.settings.show_pagination %}{
-                          "el": ".sw-pagination-categories",
-                          "clickable": true
-                        }{% else %}false{% endif %},
-                        "autoplay": {% if section.settings.autoplay %}{
-                          "delay": {{ section.settings.autoplay_speed }}
-                        }{% else %}false{% endif %},
-                        "breakpoints": {
-                          "575": {
-                            "slidesPerView": {{ section.settings.slides_per_view_tablet }},
-                            "spaceBetween": {{ section.settings.space_between_mobile }}
-                          },
-                          "768": {
-                            "slidesPerView": {{ section.settings.slides_per_view_desktop }},
-                            "spaceBetween": {{ section.settings.space_between_desktop }}
-                          }
+                    <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+                      "slidesPerView": {{ section.settings.slides_per_view_mobile }},
+                      "spaceBetween": {{ section.settings.space_between_mobile }},
+                      "speed": {{ section.settings.transition_speed }},
+                      "observer": true,
+                      "observeParents": true,
+                      "loop": {{ section.settings.loop }},
+                      "navigation": {% if section.settings.show_navigation %}{
+                        "clickable": true,
+                        "nextEl": ".nav-next-categories",
+                        "prevEl": ".nav-prev-categories"
+                      }{% else %}false{% endif %},
+                      "pagination": {% if section.settings.show_pagination %}{
+                        "el": ".sw-pagination-categories",
+                        "clickable": true
+                      }{% else %}false{% endif %},
+                      "autoplay": {% if section.settings.autoplay %}{
+                        "delay": {{ section.settings.autoplay_speed }}
+                      }{% else %}false{% endif %},
+                      "breakpoints": {
+                        "575": {
+                          "slidesPerView": {{ section.settings.slides_per_view_tablet }},
+                          "spaceBetween": {{ section.settings.space_between_mobile }}
+                        },
+                        "768": {
+                          "slidesPerView": {{ section.settings.slides_per_view_desktop }},
+                          "spaceBetween": {{ section.settings.space_between_desktop }}
                         }
-                      }'>
+                      }
+                    }'>
                       <div class="swiper-wrapper">
                         {% for collection in block.settings.collections %}
                           {% if collection != blank %}
@@ -82,11 +83,15 @@
               {% endfor %}
             </div>
           </div>
-        </div>
+        {% if section.settings.width == 'boxed' %}
+          </div>
+        {% endif %}
       </section>
     {%- when 'layout2' -%}
       <section class="flat-spacing-3">
-        <div class="container" style="max-width: {{ section.settings.width }}px;">
+        {% if section.settings.width == 'boxed' %}
+          <div class="container">
+        {% endif %}
           <div class="flat-title text-start wow fadeInUp">
             <h4 class="title">{{ section.settings.title }}</h4>
           </div>
@@ -154,18 +159,24 @@
               {% endif %}
             </div>
           </div>
-        </div>
+        {% if section.settings.width == 'boxed' %}
+          </div>
+        {% endif %}
       </section>
     {%- when 'bicycle' -%}
       <section>
-        <div class="container" style="max-width: {{ section.settings.width }}px;">
+        {% if section.settings.width == 'boxed' %}
+          <div class="container">
+        {% endif %}
           <div class="flat-title-v2 text-center justify-items-center wow fadeInUp">
             <a href="{{ routes.collections_url }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.button_text }}</a>
             <h4>
               {{ section.settings.title | newline_to_br }}
             </h4>
           </div>
-        </div>
+        {% if section.settings.width == 'boxed' %}
+          </div>
+        {% endif %}
         <div class="slider-layout-right">
           <div dir="ltr" class="swiper tf-swiper tf-sw-right" data-swiper='{
             "slidesPerView": {{ section.settings.slides_per_view_mobile }},
@@ -226,7 +237,9 @@
       </section>
     {%- when 'phonecase' -%}
       <section class="flat-spacing-11">
-        <div class="container" style="max-width: {{ section.settings.width }}px;">
+        {% if section.settings.width == 'boxed' %}
+          <div class="container">
+        {% endif %}
           <div class="flat-title wow fadeInUp">
             <h4 class="title">{{ section.settings.title }}</h4>
           </div>
@@ -293,7 +306,9 @@
               <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-cate"></div>
             {% endif %}
           </div>
-        </div>
+        {% if section.settings.width == 'boxed' %}
+          </div>
+        {% endif %}
       </section>
   {%- endcase -%}
 {%- endif -%}
@@ -303,14 +318,20 @@
   "name": "Categories",
   "settings": [
     {
-      "type": "range",
+      "type": "select",
       "id": "width",
-      "min": 1000,
-      "max": 1600,
-      "step": 8,
-      "unit": "px",
       "label": "Section width",
-      "default": 1488
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "boxed"
     },
     {
       "type": "select",
@@ -333,7 +354,7 @@
           "value": "phonecase",
           "label": "Phonecase Layout"
         }
-      ],
+      ],  
       "default": "layout1"
     },
     {

@@ -1,6 +1,8 @@
 <!-- Banner Collection-->
 <div class="s-banner-colection banner-cls-{{ section.settings.layout }} {% if section.settings.layout == 'bicycle' %}style-abs{% else %}flat-spacing-3{% endif %} {% if section.settings.layout == 'fashion-02' %}flat-spacing-6{% endif %} {% if section.settings.layout == 'phonecase' %}flat-spacing-2{% endif %}">
-  <div class="{% if section.settings.layout == 'phonecase' %}container-full{% else %}container{% endif %}" style="max-width: {{ section.settings.width }}px;">
+  {% if section.settings.width == 'boxed' %}
+    <div class="{% if section.settings.layout == 'phonecase' %}container-full{% else %}container{% endif %}">
+  {% endif %}
     <div class="banner-content {% if section.settings.layout == 'electric' or section.settings.layout == 'fashion-02' %}tf-grid-layout tf-col-2 hover-overlay-2{% endif %} {% if section.settings.layout == 'phonecase' %}hover-shine{% endif %}">
       {% if section.settings.layout == 'phonecase' %}
         <div class="box-content wow fadeInUp">
@@ -90,7 +92,9 @@
         </div>
       {% endif %}
     </div>
-  </div>
+  {% if section.settings.width == 'boxed' %}
+    </div>
+  {% endif %}
 </div>
 <!-- /Banner Collection-->
 
@@ -99,14 +103,20 @@
   "name": "Banner Collection",
   "settings": [
     {
-      "type": "range",
+      "type": "select",
       "id": "width",
-      "min": 1000,
-      "max": 1600,
-      "step": 8,
-      "unit": "px",
       "label": "Section width",
-      "default": 1488
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "boxed"
     },
     {
       "type": "select",

@@ -1,6 +1,8 @@
 <!-- Banner Tagline-->
 <section class="flat-spacing-3">
-    <div class="container-3" style="max-width: {{ section.settings.width }}px;">
+    {% if section.settings.width == 'boxed' %}
+        <div class="container-3">
+    {% endif %}
         <div class="banner-tagline-phonecase hover-img hover-shine">
             <div class="image shine-item img-style">
                 <img src="{{ section.settings.image | image_url }}" 
@@ -27,7 +29,9 @@
                 </ul>
             </div>
         </div>
-    </div>
+    {% if section.settings.width == 'boxed' %}
+        </div>
+    {% endif %}
 </section>
 <!-- /Banner Tagline -->
 
@@ -36,14 +40,20 @@
     "name": "Banner Tagline",
     "settings": [
         {
-            "type": "range",
+            "type": "select",
             "id": "width",
-            "min": 1000,
-            "max": 1600,
-            "step": 8,
-            "unit": "px",
             "label": "Section width",
-            "default": 1560
+            "options": [
+                {
+                    "value": "full",
+                    "label": "Full width"
+                },
+                {
+                    "value": "boxed",
+                    "label": "Boxed"
+                }
+            ],
+            "default": "boxed"
         },
         {
             "type": "image_picker",

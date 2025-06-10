@@ -3,14 +3,20 @@
   "name": "Blog Sub Collection",
   "settings": [
     {
-      "type": "range",
+      "type": "select",
       "id": "width",
-      "min": 1000,
-      "max": 1600,
-      "step": 8,
-      "unit": "px",
       "label": "Section width",
-      "default": 1488
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "boxed"
     },
     {
       "type": "text",
@@ -135,7 +141,9 @@
 
 <!-- Sub Collection -->
 <div class="flat-spacing-24 pb-0" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
-  <div class="container" style="max-width: {{ section.settings.width }}px; padding-left: 15px; padding-right: 15px;">
+  {% if section.settings.width == 'boxed' %}
+    <div class="container" style="padding-left: 15px; padding-right: 15px;">
+  {% endif %}
     <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp" data-swiper='{
       "slidesPerView": {{ section.settings.slides_per_view_mobile }},
       "spaceBetween": 12,
@@ -199,7 +207,9 @@
       <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls justify-content-center swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal"></div>
       <div class="swiper-pagination sw-pagination-category"></div>
     </div>
-  </div>
+  {% if section.settings.width == 'boxed' %}
+    </div>
+  {% endif %}
 </div>
 <!-- /Sub Collection -->
 

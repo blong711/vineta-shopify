@@ -1,21 +1,27 @@
 {%- if section.blocks.size > 0 -%}
   <div class="marquee-sale bg-light-green-2">
-    <div class="marquee-wrapper">
-      <div class="initial-child-container">
-        {%- for block in section.blocks -%}
-          <div class="marquee-child-item" {{ block.shopify_attributes }}>
-            {%- if block.settings.text != blank -%}
-              <p class="display-xs fw-medium">{{ block.settings.text }}</p>
-            {%- endif -%}
-          </div>
-          {%- unless forloop.last -%}
-            <div class="marquee-child-item">
-              <i class="icon-flash-star"></i>
+    {% if section.settings.width == 'boxed' %}
+      <div class="container">
+    {% endif %}
+      <div class="marquee-wrapper">
+        <div class="initial-child-container">
+          {%- for block in section.blocks -%}
+            <div class="marquee-child-item" {{ block.shopify_attributes }}>
+              {%- if block.settings.text != blank -%}
+                <p class="display-xs fw-medium">{{ block.settings.text }}</p>
+              {%- endif -%}
             </div>
-          {%- endunless -%}
-        {%- endfor -%}
+            {%- unless forloop.last -%}
+              <div class="marquee-child-item">
+                <i class="icon-flash-star"></i>
+              </div>
+            {%- endunless -%}
+          {%- endfor -%}
+        </div>
       </div>
-    </div>
+    {% if section.settings.width == 'boxed' %}
+      </div>
+    {% endif %}
   </div>
 {%- endif -%}
 
@@ -23,6 +29,22 @@
 {
   "name": "Marquee Sale",
   "settings": [
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "full"
+    },
     {
       "type": "color",
       "id": "background_color",

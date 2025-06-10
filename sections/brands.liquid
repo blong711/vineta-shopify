@@ -25,14 +25,20 @@
         "default": 0
       },
       {
-        "type": "range",
+        "type": "select",
         "id": "width",
-        "min": 1000,
-        "max": 1600,
-        "step": 8,
-        "unit": "px",
         "label": "Section width",
-        "default": 1488
+        "options": [
+          {
+            "value": "full",
+            "label": "Full width"
+          },
+          {
+            "value": "boxed",
+            "label": "Boxed"
+          }
+        ],
+        "default": "boxed"
       },
       {
         "type": "select",
@@ -168,7 +174,9 @@
 
 {% if section.settings.layout == 'layout1' %}
   <div class="flat-spacing-2" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
-    <div class="container" style="max-width: {{ section.settings.width }}px;">
+    {% if section.settings.width == 'boxed' %}
+      <div class="container">
+    {% endif %}
       <div class="infiniteslide tf-brand" data-clone="{{ section.settings.clone }}" data-style="{{ section.settings.style }}" data-speed="{{ section.settings.speed }}">
         {% for block in section.blocks %}
           <div class="brand-item" {{ block.shopify_attributes }}>
@@ -199,11 +207,15 @@
           </div>
         {% endfor %}
       </div>
-    </div>
+    {% if section.settings.width == 'boxed' %}
+      </div>
+    {% endif %}
   </div>
 {% else %}
   <div style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
-    <div class="container" style="max-width: {{ section.settings.width }}px;">
+    {% if section.settings.width == 'boxed' %}
+      <div class="container">
+    {% endif %}
       <div dir="ltr" class="swiper tf-swiper sw-brand swiper-initialized swiper-horizontal swiper-backface-hidden" data-swiper='{
         "slidesPerView": 2,
         "spaceBetween": 0,
@@ -252,6 +264,8 @@
         <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
       </div>
       <div class="d-flex d-xl-none sw-dot-default sw-pagination-brand justify-content-center swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal"></div>
-    </div>
+    {% if section.settings.width == 'boxed' %}
+      </div>
+    {% endif %}
   </div>
 {% endif %} 
