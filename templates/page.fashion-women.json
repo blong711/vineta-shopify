@@ -39,7 +39,7 @@
         "slide_yWQ7aN": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Women_fashion_v3.webp",
+            "image": "shopify://shop_images/woman-3_3fe83e8b-c789-4ab8-9419-9d2e8e992c86.png",
             "content_alignment": "left",
             "subtitle": "SUMMER COLLECTION",
             "heading": "Feminine Elegance",
@@ -113,16 +113,24 @@
         "collection_tTJMpq"
       ],
       "settings": {
+        "width": "boxed",
         "layout": "layout2",
-        "speed": 800,
-        "slides_per_view": 3,
-        "slides_per_view_tablet": 2,
         "slides_per_view_mobile": 1,
-        "space_between": 0,
+        "slides_per_view_tablet": 2,
+        "slides_per_view": 3,
+        "slides_per_group_mobile": 1,
+        "slides_per_group_tablet": 2,
+        "slides_per_group_desktop": 3,
+        "space_between_mobile": 12,
+        "space_between_desktop": 24,
+        "speed": 800,
         "enable_navigation": true,
+        "show_pagination": true,
         "enable_autoplay": false,
         "autoplay_speed": 5000,
-        "enable_loop": true
+        "pause_on_hover": true,
+        "enable_loop": true,
+        "enable_observer": true
       }
     },
     "top_sellers_VRntpt": {
@@ -226,7 +234,23 @@
       "settings": {
         "layout": "home-fashion-women",
         "title": "Happy Customers",
-        "subtitle": "Experience with our products"
+        "subtitle": "Experience with our products",
+        "slides_per_view_mobile": 1,
+        "slides_per_view_tablet": 2,
+        "slides_per_view_desktop": 3,
+        "slides_per_group_mobile": 1,
+        "slides_per_group_tablet": 2,
+        "slides_per_group_desktop": 3,
+        "space_between_mobile": 12,
+        "space_between_desktop": 24,
+        "transition_speed": 800,
+        "show_navigation": true,
+        "show_pagination": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 3000,
+        "pause_on_hover": true,
+        "enable_loop": true,
+        "enable_observer": true
       }
     },
     "brands_4Uwhrt": {
@@ -286,6 +310,7 @@
       "settings": {
         "padding_top": 0,
         "padding_bottom": 60,
+        "width": "boxed",
         "layout": "layout2",
         "speed": 80,
         "style": "left",
@@ -344,6 +369,7 @@
         "image_x9KAKR"
       ],
       "settings": {
+        "width": "boxed",
         "title": "Shop by @Gram",
         "instagram_user_id": "",
         "instagram_access_token": ""
