@@ -79,9 +79,13 @@
             "delivery_icon": "icon-car2",
             "delivery_label": "Estimated delivery time:",
             "delivery_time": "3-5 days international",
+            "show_delivery_info": true,
             "shipping_icon": "icon-shipping3",
             "shipping_label": "Free shipping on",
-            "free_shipping_text": "all orders over $150"
+            "free_shipping_text": "all orders over $150",
+            "show_free_shipping": true,
+            "free_shipping_threshold": 150,
+            "icon_size": 24
           }
         },
         "fbt_4G7Epn": {
@@ -116,6 +120,7 @@
       ],
       "settings": {
         "layout": "default",
+        "width": "boxed",
         "show_sticky_cart": true,
         "enable_video_loop": true,
         "enable_variant_by_image": true,
@@ -132,28 +137,19 @@
         "description": {
           "type": "description",
           "settings": {
-            "title": "Description",
-            "default_content": "<p>No description available</p>"
+            "title": "Description"
           }
         },
         "materials_QxmpJW": {
           "type": "materials",
           "settings": {
-            "title": "Materials",
-            "subtitle": "Materials Care"
+            "title": "Materials"
           }
         },
         "return_policies_bWH7Qn": {
           "type": "return_policies",
           "settings": {
-            "title": "Return Policies",
-            "show_icon_1": true,
-            "show_icon_2": true,
-            "show_icon_3": true,
-            "show_icon_4": true,
-            "show_icon_5": true,
-            "show_icon_6": true,
-            "show_icon_7": true
+            "title": "Return Policies"
           }
         }
       },
@@ -163,6 +159,7 @@
         "return_policies_bWH7Qn"
       ],
       "settings": {
+        "width": "boxed",
         "layout": "accordion"
       }
     },
@@ -170,6 +167,8 @@
       "type": "people-also-bought",
       "settings": {
         "title": "People Also Bought",
+        "width": "full",
+        "products_to_show": 8,
         "slides_per_view_mobile": 2,
         "slides_per_view_tablet": 3,
         "slides_per_view_desktop": 4,
@@ -180,6 +179,7 @@
       "type": "recently-viewed",
       "settings": {
         "title": "Recently Viewed",
+        "width": "boxed",
         "products_to_show": 8,
         "slides_per_view_mobile": 2,
         "slides_per_view_tablet": 3,
