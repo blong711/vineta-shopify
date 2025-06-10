@@ -59,47 +59,32 @@
                   <div class="swiper-wrapper stagger-wrap">
                     {% for media in product.media %}
                       <div class="swiper-slide stagger-item" data-media-type="{{ media.media_type }}" data-media-id="{{ media.id }}">
-                        <div class="item position-relative">
+                        <div class="item">
                           {% case media.media_type %}
                             {% when 'image' %}
-                              <a href="{{ media | image_url: width: 1200 }}" 
-                                 class="tf-image-zoom" 
-                                 data-pswp-width="{{ media.width }}px" 
-                                 data-pswp-height="{{ media.height }}px">
-                                <img class="lazyload"
-                                  src="{{ media | image_url: width: 100 }}"
-                                  alt="{{ media.alt | default: product.title }}"
-                                  width="100"
-                                  height="150">
-                              </a>
+                              <img class="lazyload"
+                                src="{{ media | image_url: width: 100 }}"
+                                alt="{{ media.alt | default: product.title }}"
+                                width="100"
+                                height="150">
                             {% when 'video' %}
                               <div class="wrap-btn-viewer style-video">
                                 <i class="icon icon-video"></i>
                               </div>
-                              <a href="{{ media.preview_image | image_url: width: 1200 }}" 
-                                 class="tf-image-zoom" 
-                                 data-pswp-width="{{ media.preview_image.width }}px" 
-                                 data-pswp-height="{{ media.preview_image.height }}px">
-                                <img class="lazyload"
-                                  src="{{ media.preview_image | image_url: width: 100 }}"
-                                  alt="Video thumbnail"
-                                  width="100"
-                                  height="150">
-                              </a>
+                              <img class="lazyload"
+                                src="{{ media.preview_image | image_url: width: 100 }}"
+                                alt="Video thumbnail"
+                                width="100"
+                                height="150">
                             {% when 'model' %}
                               <div class="wrap-btn-viewer">
                                 <i class="icon icon-btn3d"></i>
                               </div>
-                              <a href="{{ media.preview_image | image_url: width: 1200 }}" 
-                                 class="tf-image-zoom" 
-                                 data-pswp-width="{{ media.preview_image.width }}px" 
-                                 data-pswp-height="{{ media.preview_image.height }}px">
-                                <img class="lazyload"
-                                  src="{{ media.preview_image | image_url: width: 100 }}"
-                                  alt="3D model thumbnail"
-                                  width="100"
-                                  height="150">
-                              </a>
+                              <img class="lazyload"
+                                src="{{ media.preview_image | image_url: width: 100 }}"
+                                alt="3D model thumbnail"
+                                width="100"
+                                height="150">
                           {% endcase %}
                         </div>
                       </div>
