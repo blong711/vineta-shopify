@@ -149,45 +149,26 @@
     },
     "people-also-bought": {
       "type": "people-also-bought",
-      "blocks": {
-        "related_products": {
-          "type": "related_products",
-          "settings": {
-            "products_to_show": 8,
-            "slides_per_view_mobile": 2,
-            "slides_per_view_tablet": 3,
-            "slides_per_view_desktop": 4,
-            "space_between": 12
-          }
-        }
-      },
-      "block_order": [
-        "related_products"
-      ],
       "settings": {
-        "title": "People Also Bought"
+        "title": "People Also Bought",
+        "width": "boxed",
+        "products_to_show": 8,
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "space_between": 12
       }
     },
     "recently-viewed": {
       "type": "recently-viewed",
-      "blocks": {
-        "featured_collection_hnnTJr": {
-          "type": "featured_collection",
-          "settings": {
-            "collection": "men",
-            "products_to_show": 8,
-            "slides_per_view_mobile": 2,
-            "slides_per_view_tablet": 3,
-            "slides_per_view_desktop": 4,
-            "space_between": 12
-          }
-        }
-      },
-      "block_order": [
-        "featured_collection_hnnTJr"
-      ],
       "settings": {
-        "title": "Recently Viewed"
+        "title": "Recently Viewed",
+        "width": "boxed",
+        "products_to_show": 8,
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "space_between": 12
       }
     }
   },
