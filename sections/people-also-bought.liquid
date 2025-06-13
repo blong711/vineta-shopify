@@ -1,5 +1,5 @@
 {%- comment -%}People Also Bought Section{%- endcomment -%}
-{%- assign related_products = product.collections.first.products | where: "id", product.id | slice: 0, section.settings.products_to_show -%}
+{%- assign related_products = product.collections.first.products | reject: "id", product.id | slice: 0, section.settings.products_to_show -%}
 {%- if related_products.size > 0 -%}
 <section>
 {% if section.settings.width == 'boxed' %}
