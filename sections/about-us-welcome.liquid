@@ -1,0 +1,64 @@
+<!-- Welcome Section -->
+<section class="flat-spacing-3 pb-0" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="flat-title-2 d-xl-flex justify-content-xl-between">
+      <div class="box-title">
+        <p class="display-lg-2 fw-medium">
+          {{ section.settings.title }}
+        </p>
+        <p class="text-xl">
+          {{ section.settings.subtitle }}
+        </p>
+      </div>
+      <div class="box-text">
+        <p class="text-md">
+          {{ section.settings.text | replace: 'Vineta', '<span class="fw-medium">Vineta</span>' | remove: '<p>' | remove: '</p>' }}
+        </p>
+      </div>
+    </div>
+    <div class="image radius-16 overflow-hidden banner-about">
+      <img src="{{ section.settings.image | img_url: 'master' }}" 
+           data-src="{{ section.settings.image | img_url: 'master' }}" 
+           alt="{{ section.settings.image.alt | escape }}" 
+           class="w-100 h-100 object-fit-cover ls-is-cached lazyloaded" width="600" height="400">
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About Us Welcome",
+  "category": "About Us",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Welcome to Vineta"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "The Ultimate Fashion Destination"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>At Vineta, we bring you thoughtfully curated collections that blend contemporary designs with timeless elegance. With over 15 years of experience, we cater to fashion enthusiasts who appreciate quality, style, and versatility.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Us Welcome",
+      "category": "About Us"
+    }
+  ]
+}
+{% endschema %} 

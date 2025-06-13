@@ -1,0 +1,56 @@
+<!-- Testimonial Section -->
+<section class="flat-spacing-15 pt-0" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="box-testimonial-quote text-center">
+      <div class="list-star-default justify-content-center">
+        {% for i in (1..5) %}
+          <i class="icon-star text-green"></i>
+        {% endfor %}
+      </div>
+      <p class="text-xl-2 lh-xl-32">
+        {{ section.settings.text }}
+      </p>
+      <div class="box-author">
+        <div class="avt">
+          <img src="{{ section.settings.author_image | img_url: 'master' }}" 
+               alt="{{ section.settings.author_name | escape }}" width="100" height="100">
+        </div>
+        <p class="text-md lh-xl-26 fw-medium">
+          {{ section.settings.author_name }}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About Us Testimonial",
+  "category": "About Us",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Testimonial Text",
+      "default": "\"I've ordered from many places, but I have to say, this shop offers the best shipping experience ever. Thank you so much for the outstanding service!\""
+    },
+    {
+      "type": "text",
+      "id": "author_name",
+      "label": "Author Name",
+      "default": "Vincent P"
+    },
+    {
+      "type": "image_picker",
+      "id": "author_image",
+      "label": "Author Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Us Testimonial",
+      "category": "About Us"
+    }
+  ]
+}
+{% endschema %} 

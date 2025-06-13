@@ -1,0 +1,113 @@
+<!-- Why Choose Section -->
+<section class="flat-spacing-3" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="flat-title-2 text-center">
+      <p class="display-md-2 fw-medium">
+        {{ section.settings.title }}
+      </p>
+      <p class="text-md text-main">
+        {{ section.settings.text | remove: '<p>' | remove: '</p>' }}
+      </p>
+    </div>
+    <div class="row">
+      <div class="col-xl-7 col-md-6">
+        <ul class="list-esd d-md-flex flex-md-column justify-content-md-center h-100">
+          {% for block in section.blocks %}
+            <li class="item" {{ block.shopify_attributes }}>
+              <h6>
+                {{ block.settings.title }}
+              </h6>
+              <p class="text-md text-main">
+                {{ block.settings.text | remove: '<p>' | remove: '</p>'}}
+              </p>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-xl-5 col-md-6">
+        <div class="image radius-16 overflow-hidden w-100 h-100">
+          <img src="{{ section.settings.image | img_url: 'master' }}" 
+               data-src="{{ section.settings.image | img_url: 'master' }}" 
+               alt="{{ section.settings.image.alt | escape }}" 
+               class="lazyload w-100 h-100 object-fit-cover" width="600" height="400">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About Us Why Choose",
+  "category": "About Us",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Why Choose Vineta"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Our products are crafted with innovation and an eye for the latest trends. We push the boundaries of traditional fashion, delivering bold, fresh designs that inspire confidence and individuality.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_item",
+      "name": "Feature Item",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Feature Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Feature description goes here.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Us Why Choose",
+      "category": "About Us",
+      "blocks": [
+        {
+          "type": "feature_item",
+          "settings": {
+            "title": "Ethics & Responsibility",
+            "text": "<p>At Vineta, we are dedicated to upholding the highest ethical standards in production. We ensure mindful manufacturing through regular audits, training, and a strong focus on responsible sourcing.</p>"
+          }
+        },
+        {
+          "type": "feature_item",
+          "settings": {
+            "title": "Style Meets Durability",
+            "text": "<p>From classic tailoring to casual staples, our Vineta collections embrace the latest trends while prioritizing comfort and long-lasting quality.</p>"
+          }
+        },
+        {
+          "type": "feature_item",
+          "settings": {
+            "title": "Express Yourself",
+            "text": "<p>Our designs are crafted with the latest fashion trends in mind, offering flexibility for individual expression, especially for the modern, style-conscious youth.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 
