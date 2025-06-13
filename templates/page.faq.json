@@ -24,55 +24,65 @@
     "faq": {
       "type": "faq",
       "blocks": {
-        "shopping": {
-          "type": "faq_category",
+        "faq_question_3AWJWM": {
+          "type": "faq_question",
           "settings": {
-            "category_title": "Shopping Information",
-            "question_0": "How long will it take for my order to ship?",
-            "answer_0": "<p>Orders are typically processed within 1-2 business days and shipped via standard delivery within 3-5 business days.</p>",
-            "question_1": "Do you offer free shipping?",
-            "answer_1": "<p>Yes, we offer free standard shipping on orders over $50.</p>",
-            "question_2": "Can I change my shipping address after placing an order?",
-            "answer_2": "<p>Yes, you can change your shipping address within 24 hours of placing your order.</p>",
-            "question_3": "What if my package is delayed or lost?",
-            "answer_3": "<p>If your package is delayed or lost, please contact our customer service team with your order number.</p>"
+            "category": "Shopping Information",
+            "question": "How long will it take for my order to ship?",
+            "answer": "<p>Orders are typically processed and shipped within 1–3 business days. You'll receive a confirmation email once your order is on the way<br/><br/></p>"
           }
         },
-        "payment": {
-          "type": "faq_category",
+        "faq_question_Q6nLEi": {
+          "type": "faq_question",
           "settings": {
-            "category_title": "Payment Information",
-            "question_0": "What payment methods do you accept?",
-            "answer_0": "<p>We accept all major credit cards, PayPal, and bank transfers.</p>",
-            "question_1": "Is my payment information secure?",
-            "answer_1": "<p>Yes, we use industry-standard encryption to protect your payment information.</p>",
-            "question_2": "Do you offer installment payments?",
-            "answer_2": "<p>Yes, we offer installment payments through our payment partners.</p>",
-            "question_3": "What happens if my payment fails?",
-            "answer_3": "<p>If your payment fails, we'll notify you and you can try again with a different payment method.</p>"
+            "category": "Shopping Information",
+            "question": "Do you offer free shipping?",
+            "answer": "<p>Yes, we offer free standard shipping on orders over $50. Shipping rates will be calculated at checkout for smaller orders.<br/><br/></p>"
           }
         },
-        "returns": {
-          "type": "faq_category",
+        "faq_question_QredTq": {
+          "type": "faq_question",
           "settings": {
-            "category_title": "Return & Exchange",
-            "question_0": "What is your return policy?",
-            "answer_0": "<p>We accept returns within 14 days of delivery. Items must be unworn, unwashed, and in their original condition.</p>",
-            "question_1": "How do I return an item?",
-            "answer_1": "<p>Simply contact our customer service team for a return authorization, and we'll provide instructions for shipping the item back.</p>",
-            "question_2": "Are there any items that cannot be returned?",
-            "answer_2": "<p>Yes, sale items, personalized products, and undergarments are non-returnable.</p>",
-            "question_3": "When will I receive my refund?",
-            "answer_3": "<p>Once your return is received and inspected, we will process the refund within 5-7 business days.</p>"
+            "category": "Payment Information",
+            "question": "What payment methods do you accept?",
+            "answer": "<p>We accept all major credit cards, PayPal, Apple Pay, and Google Pay. All transactions are secure and encrypted for your protection<br/><br/></p>"
+          }
+        },
+        "faq_question_rD4zmL": {
+          "type": "faq_question",
+          "settings": {
+            "category": "Payment Information",
+            "question": "Is my payment information secure?",
+            "answer": "<p>Yes, your payment information is 100% secure. We use industry-standard encryption and trusted payment gateways to ensure your data is protected at all times.<br/><br/></p>"
+          }
+        },
+        "faq_question_mBmpnC": {
+          "type": "faq_question",
+          "settings": {
+            "category": "Return & Exchange",
+            "question": "What is your return policy?",
+            "answer": "<p>We accept returns within 14 days of delivery. Items must be unworn, unwashed, and in their original condition.</p>"
+          }
+        },
+        "faq_question_BTL34K": {
+          "type": "faq_question",
+          "settings": {
+            "category": "Return & Exchange",
+            "question": "How do I return an item?",
+            "answer": "<p>Simply contact our customer service team for a return authorization, and we’ll provide instructions for shipping the item back.</p>"
           }
         }
       },
       "block_order": [
-        "shopping",
-        "payment",
-        "returns"
+        "faq_question_3AWJWM",
+        "faq_question_Q6nLEi",
+        "faq_question_QredTq",
+        "faq_question_rD4zmL",
+        "faq_question_mBmpnC",
+        "faq_question_BTL34K"
       ],
       "settings": {
+        "width": "boxed",
         "contact_title": "Contact Us",
         "contact_text_1": "If you have an issue or question that requires immediate assistance, you can click the button below to chat live with a Customer Service representative.",
         "contact_text_2": "Please allow 06 - 12 business days from the time your package arrives back to us for a refund to be issued.",
