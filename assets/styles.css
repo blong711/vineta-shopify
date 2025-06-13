@@ -17268,8 +17268,7 @@ button.animate-btn::after,
   text-transform: none;
 }
 .tf-product-info-wrap .tf-product-total-quantity .btn-out-stock {
-  background-color: var(--text);
-  border-color: var(--text);
+  opacity: 0.5;
   cursor: not-allowed;
 }
 .tf-product-info-wrap .tf-product-total-quantity .more-choose-payment {
@@ -27794,4 +27793,7 @@ prev.swiper-button-disabled {
 }
 .s-blog-list-v1 .blog-post-item, .s-blog-list-v2 .blog-post-item {
   margin-bottom: 40px;
+}
+.pb-80 {
+  padding-bottom: 80px;
 }
