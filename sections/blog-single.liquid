@@ -100,6 +100,17 @@
               {% if article.author.image %}
                 {{ article.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
               {% endif %}
+              {% if article.author.image %}
+                {{ article.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
+              {% else %}
+                <img src="{{ 'blog-author-1.jpg' | asset_url }}" 
+                     data-src="{{ 'blog-author-1.jpg' | asset_url }}"
+                     loading="lazy"
+                     class="lazyload"
+                     alt="{{ article.author }}"
+                     width="50"
+                     height="50">
+              {% endif %}
             </div>
             <p class="entry_name">
               Post by <span class="fw-medium">{{ article.author }}</span>
@@ -178,7 +189,7 @@
               </div>
               <div class="text-wrap-left">
                 <p>PREVIOUS POST</p>
-                <p class="name-post">{{ article.previous.title }}</p>
+                <p class="name-post">{{ blog.previous_article.title }}</p>
               </div>
             </a>
           {% endif %}
@@ -186,7 +197,7 @@
             <a href="{{ blog.next_article.url }}" class="post next">
               <div class="text-wrap-right">
                 <p>NEXT POST</p>
-                <p class="name-post">{{ article.next.title }}</p>
+                <p class="name-post">{{ blog.next_article.title }}</p>
               </div>
               <div class="icon">
                 <i class="icon-arr-right2"></i>
