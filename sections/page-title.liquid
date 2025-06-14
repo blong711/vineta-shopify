@@ -5,6 +5,8 @@
       <h4 class="title">
         {% if template == 'list-collections' %}
           Collections
+        {% elsif template == 'page.compare' %}
+          Compare Products
         {% else %}
           {{ page_title | default: settings.title }}
         {% endif %}
