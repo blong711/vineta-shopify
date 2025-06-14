@@ -138,6 +138,14 @@
                             class: 'lazyload',
                             alt: article.author
                           }}
+                        {% else %}
+                          <img src="{{ 'blog-author-1.jpg' | asset_url }}" 
+                               data-src="{{ 'blog-author-1.jpg' | asset_url }}"
+                               loading="lazy"
+                               class="lazyload"
+                               alt="{{ article.author }}"
+                               width="50"
+                               height="50">
                         {% endif %}
                       </div>
                       <p class="entry_name">
