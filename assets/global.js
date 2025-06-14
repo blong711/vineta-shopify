@@ -413,10 +413,10 @@ class WishlistCompare {
         <img class="lazyload" data-src="${product.image}" src="${product.image}" alt="${product.title}">
       </a>
       <div class="content">
-        <div class="text-title">
+        <div class="text-title text-left">
           <a class="link text-line-clamp-2" href="${product.url}">${product.title}</a>
         </div>
-        <p class="price-wrap">
+        <p class="price-wrap text-left">
           <span class="new-price text-primary">${product.price}</span>
           ${product.comparePrice ? `<span class="old-price text-decoration-line-through text-dark-1">${product.comparePrice}</span>` : ''}
         </p>

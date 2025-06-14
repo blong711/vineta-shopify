@@ -25,10 +25,10 @@
                                             height="400">
                                     </a>
                                     <div class="content">
-                                        <div class="text-title">
+                                        <div class="text-title text-left">
                                             <a class="link text-line-clamp-2" href="{{ product.url }}">{{ product.title }}</a>
                                         </div>
-                                        <p class="price-wrap">
+                                        <p class="price-wrap text-left">
                                             <span class="new-price text-primary">{{ product.price | money }}</span>
                                             {% if product.compare_at_price > product.price %}
                                                 <span class="old-price text-decoration-line-through text-dark-1">{{ product.compare_at_price | money }}</span>
