@@ -27,7 +27,7 @@
                     <div class="content">
                         <a class="tf-compare-title link text-md fw-medium" href="{{ product.url }}">{{ product.title }}</a>
                         <p class="price-wrap fw-medium text-md">
-                            <span class="price-new text-primary">{{ product.price | money }}</span>
+                            <span class="price-new text-primary">${{ product.price | money }}</span>
                             {% if product.compare_at_price > product.price %}
                                 <span class="price-old text-dark">{{ product.compare_at_price | money }}</span>
                             {% endif %}
@@ -90,7 +90,7 @@
             <p class="text-md fw-medium">Vendor</p>
         </div>
         {% for product in collections.all.products %}
-            <div class="tf-compare-col tf-compare-value text-center" data-product-id="{{ product.id }}">
+            <div class="tf-compare-col" data-product-id="{{ product.id }}">
                 <p class="text-sm">{{ product.vendor }}</p>
             </div>
         {% endfor %}
@@ -101,7 +101,7 @@
             <p class="text-md fw-medium">Color</p>
         </div>
         {% for product in collections.all.products %}
-            <div class="tf-compare-col tf-compare-value text-center" data-product-id="{{ product.id }}">
+            <div class="tf-compare-col" data-product-id="{{ product.id }}">
                 <p class="text-sm">
                     {%- assign color_values = '' -%}
                     {%- if product.options != blank -%}
@@ -131,7 +131,7 @@
       <div class="content">
         <a class="tf-compare-title link text-md fw-medium" href=""></a>
         <p class="price-wrap fw-medium text-md">
-          <span class="price-new text-primary"></span>
+          <span class="price-new text-primary">$${(window.Shopify && Shopify.formatMoney) ? Shopify.formatMoney(product.variants[0].price, "{{ shop.money_format }}") : product.variants[0].price}</span>
           <span class="price-old text-dark" style="display:none"></span>
         </p>
         <div class="tf-compare-btn">
@@ -178,7 +178,7 @@ function createRow(label, values, rowClass = '') {
   // Product columns
   values.forEach(html => {
     const col = document.createElement('div');
-    col.className = 'tf-compare-col tf-compare-value text-center';
+    col.className = 'tf-compare-col';
     col.innerHTML = html;
     row.appendChild(col);
   });
@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         <div class="content">
           <a class="tf-compare-title link text-md fw-medium" href="/products/${product.handle}">${product.title}</a>
           <p class="price-wrap fw-medium text-md">
-            <span class="price-new text-primary">${(window.Shopify && Shopify.formatMoney) ? Shopify.formatMoney(product.variants[0].price, "{{ shop.money_format }}") : product.variants[0].price}</span>
+            <span class="price-new text-primary">$${(window.Shopify && Shopify.formatMoney) ? Shopify.formatMoney(product.variants[0].price, "{{ shop.money_format }}") : product.variants[0].price}</span>
             ${product.variants[0].compare_at_price && product.variants[0].compare_at_price > product.variants[0].price
               ? `<span class="price-old text-dark">${(window.Shopify && Shopify.formatMoney) ? Shopify.formatMoney(product.variants[0].compare_at_price, "{{ shop.money_format }}") : product.variants[0].compare_at_price}</span>`
               : ''}
