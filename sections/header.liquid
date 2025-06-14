@@ -1427,4 +1427,11 @@ document.addEventListener('DOMContentLoaded', function() {
   visibility: visible;
 }
 {% endif %}
+
+/* Remove border and box-shadow from header when sticky */
+#header,
+#header.header-visible {
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
 </style> 

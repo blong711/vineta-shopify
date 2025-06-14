@@ -363,6 +363,21 @@ document.addEventListener('DOMContentLoaded', function() {
   // Handle gift wrap
   const giftWrapCheckbox = document.getElementById('checkGift');
   if (giftWrapCheckbox) {
+    // Check if gift wrap exists in cart on page load
+    const checkGiftWrapInCart = async () => {
+      try {
+        const cartData = await fetch('/cart.js').then(res => res.json());
+        const variantId = giftWrapCheckbox.dataset.variantId;
+        const hasGiftWrap = cartData.items.some(item => item.variant_id == variantId);
+        giftWrapCheckbox.checked = hasGiftWrap;
+      } catch (error) {
+        console.error('Error checking gift wrap in cart:', error);
+      }
+    };
+
+    // Check gift wrap status on page load
+    checkGiftWrapInCart();
+
     giftWrapCheckbox.addEventListener('change', async function() {
       const variantId = this.dataset.variantId;
       if (!variantId) return;
@@ -416,7 +431,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 </td>
               `;
               
-              cartTableBody.appendChild(giftWrapRow);
+              // Insert at the top of the cart table
+              if (cartTableBody.firstChild) {
+                cartTableBody.insertBefore(giftWrapRow, cartTableBody.firstChild);
+              } else {
+                cartTableBody.appendChild(giftWrapRow);
+              }
               
               // Re-bind event listeners for the new gift wrap item
               const removeButton = giftWrapRow.querySelector('.remove-cart');
