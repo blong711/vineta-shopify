@@ -61,7 +61,7 @@
             <p class="text-md fw-medium">Availability</p>
         </div>
         {% for product in collections.all.products %}
-            <div class="tf-compare-col tf-compare-field tf-compare-stock {% unless product.variants[0].available %}text-red{% endunless %}" data-product-id="{{ product.id }}">
+            <div style="font-size: 14px;" class="tf-compare-col tf-compare-field tf-compare-stock {% unless product.variants[0].available %}text-red{% endunless %}" data-product-id="{{ product.id }}">
                 <div class="icon">
                     {% if product.variants[0].available %}
                         <i class="icon-fill-check-circle"></i>
@@ -90,7 +90,7 @@
             <p class="text-md fw-medium">Vendor</p>
         </div>
         {% for product in collections.all.products %}
-            <div class="tf-compare-col" data-product-id="{{ product.id }}">
+            <div class="tf-compare-col tf-compare-field tf-compare-stock" data-product-id="{{ product.id }}">
                 <p class="text-sm">{{ product.vendor }}</p>
             </div>
         {% endfor %}
@@ -101,7 +101,7 @@
             <p class="text-md fw-medium">Color</p>
         </div>
         {% for product in collections.all.products %}
-            <div class="tf-compare-col" data-product-id="{{ product.id }}">
+            <div class="tf-compare-col tf-compare-field tf-compare-stock" data-product-id="{{ product.id }}">
                 <p class="text-sm">
                     {%- assign color_values = '' -%}
                     {%- if product.options != blank -%}
@@ -177,10 +177,14 @@ function createRow(label, values, rowClass = '') {
   row.appendChild(labelCol);
   // Product columns
   values.forEach(html => {
-    const col = document.createElement('div');
-    col.className = 'tf-compare-col';
-    col.innerHTML = html;
-    row.appendChild(col);
+    if (label === 'Vendor') {
+      row.insertAdjacentHTML('beforeend', html);
+    } else {
+      const col = document.createElement('div');
+      col.className = 'tf-compare-col';
+      col.innerHTML = html;
+      row.appendChild(col);
+    }
   });
   return row;
 }
@@ -251,7 +255,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       const available = product.variants[0].available;
       const colClass = `tf-compare-col tf-compare-field tf-compare-stock${!available ? ' text-red' : ''}`;
       return `
-        <div class="${colClass}">
+        <div style="font-size: 14px;" class="${colClass}">
           <div class="icon">
             ${available
               ? '<i class="icon-fill-check-circle"></i>'
@@ -266,7 +270,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     // 3. Vendor row
     const vendorRowValues = compareProducts.map(product =>
-      `<p class="text-sm">${product.vendor || ''}</p>`
+      `<div class="tf-compare-col tf-compare-field text-center"><p class="text-sm">${product.vendor || ''}</p></div>`
     );
     compareContent.appendChild(createRow('Vendor', vendorRowValues));
 
@@ -280,7 +284,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           colorOption = colors.join(', ');
         }
       }
-      return `<p class="text-sm">${colorOption || 'N/A'}</p>`;
+      return `<div class="tf-compare-col tf-compare-field text-center"><p class="text-sm">${colorOption || 'N/A'}</p></div>`;
     });
     compareContent.appendChild(createRow('Color', colorRowValues));
   }
