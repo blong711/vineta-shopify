@@ -208,16 +208,19 @@ document.addEventListener('DOMContentLoaded', async function() {
   async function renderCompareTable() {
     const compareIds = localStorage.getItem('theme4:compare:id') ? localStorage.getItem('theme4:compare:id').split(',') : [];
     if (compareIds.length === 0) {
-      compareContent.innerHTML = '<div class="text-center"><p>No products to compare</p></div>';
+      compareContent.innerHTML = '';
+      document.getElementById('compareTable').style.display = 'none';
       return;
     }
     const allProducts = await fetchAllProducts();
     const compareProducts = allProducts.filter(p => compareIds.includes(p.id.toString()));
     if (compareProducts.length === 0) {
-      compareContent.innerHTML = '<div class="text-center"><p>No products to compare</p></div>';
+      compareContent.innerHTML = '';
+      document.getElementById('compareTable').style.display = 'none';
       return;
     }
     compareContent.innerHTML = '';
+    document.getElementById('compareTable').style.display = 'block';
 
     // 1. Image/Title/Price row
     const imageRowValues = compareProducts.map(product => `
