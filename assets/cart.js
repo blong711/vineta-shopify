@@ -153,9 +153,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
       try {
         let newQuantity;
-        if (this.classList.contains('btn-minus')) {
+        if (this.classList.contains('minus')) {
           newQuantity = currentValue > 1 ? currentValue - 1 : 0;
-        } else if (this.classList.contains('btn-plus')) {
+        } else if (this.classList.contains('plus')) {
           newQuantity = currentValue + 1;
         }
 
@@ -421,9 +421,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 </td>
                 <td class="tf-cart-item_quantity">
                   <div class="wg-quantity">
-                    <button type="button" class="btn-quantity btn-minus" data-variant-id="${giftWrapItem.variant_id}" data-item-id="${giftWrapItem.key}">-</button>
+                    <button type="button" class="btn-quantity minus" data-variant-id="${giftWrapItem.variant_id}" data-item-id="${giftWrapItem.key}">-</button>
                     <input class="quantity-product" type="text" name="updates[]" value="1" min="0" data-variant-id="${giftWrapItem.variant_id}" data-item-id="${giftWrapItem.key}">
-                    <button type="button" class="btn-quantity btn-plus" data-variant-id="${giftWrapItem.variant_id}" data-item-id="${giftWrapItem.key}">+</button>
+                    <button type="button" class="btn-quantity plus" data-variant-id="${giftWrapItem.variant_id}" data-item-id="${giftWrapItem.key}">+</button>
                   </div>
                 </td>
                 <td class="tf-cart-item_total text-center">

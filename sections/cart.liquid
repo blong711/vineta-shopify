@@ -78,9 +78,9 @@
                       </td>
                           <td class="tf-cart-item_quantity" data-cart-title="{{ block.settings.quantity_column_title }}">
                         <div class="wg-quantity">
-                          <button type="button" class="btn-quantity btn-minus" data-variant-id="{{ item.variant.id }}" data-item-id="{{ item.key }}">-</button>
+                          <button type="button" class="btn-quantity minus" data-variant-id="{{ item.variant.id }}" data-item-id="{{ item.key }}">-</button>
                           <input class="quantity-product" type="text" name="updates[]" value="{{ item.quantity }}" min="0" data-variant-id="{{ item.variant.id }}" data-item-id="{{ item.key }}">
-                          <button type="button" class="btn-quantity btn-plus" data-variant-id="{{ item.variant.id }}" data-item-id="{{ item.key }}">+</button>
+                          <button type="button" class="btn-quantity plus" data-variant-id="{{ item.variant.id }}" data-item-id="{{ item.key }}">+</button>
                         </div>
                       </td>
                           <td class="tf-cart-item_total text-center" data-cart-title="{{ block.settings.total_column_title }}">
