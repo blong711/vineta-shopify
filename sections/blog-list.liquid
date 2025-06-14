@@ -149,7 +149,7 @@
                         {% endif %}
                       </div>
                       <p class="entry_name">
-                        Post by <span class="fw-medium">{{ article.author }}</span>
+                        Post by <span class="fw-medium">{{ article.author | truncate: 10 }}</span>
                       </p>
                     </li>
                     <li class="br-line"></li>
@@ -212,14 +212,19 @@
                 <p class="sb-title text-xl fw-medium">Categories</p>
                 <div class="sb-content">
                   <ul class="category-blog-list">
-                    {% for blog in all_blogs %}
-                      <li>
-                        <a href="{{ blog.url }}" class="text-md link">
-                          {{ blog.title }}
-                        </a>
-                      </li>
+                    {% assign blog_handles = "news,design,Lifestyle,bags,accessories,dresses" | split: "," %}
+                    {% for handle in blog_handles %}
+                      {% assign cat_blog = blogs[handle] %}
+                      {% if cat_blog %}
+                        <li>
+                          <a href="{{ cat_blog.url }}" class="text-md link">
+                            {{ cat_blog.title }}
+                          </a>
+                        </li>
+                      {% endif %}
                     {% endfor %}
                   </ul>
+                  
                 </div>
               </div>
             {% endif %}
