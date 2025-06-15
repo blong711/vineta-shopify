@@ -502,14 +502,16 @@
                         </div>
                         <div class="rating-breakdown">
                           {%- for i in (1..5) -%}
+                            {%- assign rating_key = 'rating_' | append: i -%}
+                            {%- assign rating_count_key = 'rating_count_' | append: i -%}
                             <div class="rating-breakdown-item">
                               <div class="rating-score">
-                                {{ 6-i }} <i class="icon icon-star"></i>
+                                {{ 6 | minus: i }} <i class="icon icon-star"></i>
                               </div>
                               <div class="rating-bar">
-                                <div class="value" style="width: {{ block.settings['rating_' | append: i] }}%;"></div>
+                                <div class="value" style="width: {{ block.settings[rating_key] }}%;"></div>
                               </div>
-                              <span class="rating-count">{{ block.settings['rating_count_' | append: i] }}</span>
+                              <span class="rating-count">{{ block.settings[rating_count_key] }}</span>
                             </div>
                           {%- endfor -%}
                         </div>
@@ -547,8 +549,8 @@
                           <span class="text-md">Your rating *</span>
                           <div class="list-rating-check">
                             {%- for i in (1..5) -%}
-                              <input type="radio" id="star{{ 6-i }}" name="rate" value="{{ 6-i }}">
-                              <label for="star{{ 6-i }}" title="text"></label>
+                              <input type="radio" id="star{{ 6 | minus: i }}" name="rate" value="{{ 6 | minus: i }}">
+                              <label for="star{{ 6 | minus: i }}" title="text"></label>
                             {%- endfor -%}
                           </div>
                         </div>
