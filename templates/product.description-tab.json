@@ -1,0 +1,198 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "product": {
+      "type": "product",
+      "blocks": {
+        "countdown_timer_V6yRcr": {
+          "type": "countdown_timer",
+          "settings": {
+            "hurry_text": "HURRY UP!",
+            "label": "Sale ends in:"
+          }
+        },
+        "sold_count": {
+          "type": "sold_count",
+          "settings": {
+            "in_stock_text": "In Stock",
+            "out_of_stock_text": "Out of Stock",
+            "sold_count_text": "{count} sold in last 24 hours",
+            "min_sold_count": 4,
+            "max_sold_count": 22
+          }
+        },
+        "stock_count": {
+          "type": "stock_count",
+          "settings": {
+            "stock_count_text": "HURRY UP!",
+            "stock_prefix": "Only",
+            "stock_suffix": "items left!",
+            "stock_threshold": 50
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "pick_mode": "first_available",
+            "enable_history_state": false,
+            "hide_sold_out": false,
+            "color_selector_type": "swatch_rounded",
+            "color_selector_size": "medium"
+          }
+        },
+        "size_guide_wQx3n6": {
+          "type": "size_guide",
+          "settings": {
+            "size_guide_text": "Size Guide",
+            "size_guide_source": "metafield",
+            "size_guide_page": "size-guide",
+            "size_guide_metafield": "size_guide.content"
+          }
+        },
+        "extra_links_QjbTXb": {
+          "type": "extra_links",
+          "settings": {
+            "show_wishlist": true,
+            "show_compare": true,
+            "show_ask_question": true,
+            "show_share": true
+          }
+        },
+        "trust_and_payment": {
+          "type": "trust_and_payment",
+          "settings": {
+            "trust_seal_text": "Guarantee Safe Checkout:",
+            "svg_list": "visa,paypal,master,american_express,diners"
+          }
+        },
+        "delivery_info_HGiyGU": {
+          "type": "delivery_info",
+          "settings": {
+            "delivery_icon": "icon-car2",
+            "delivery_label": "Estimated delivery time:",
+            "delivery_time": "3-5 days international",
+            "show_delivery_info": true,
+            "shipping_icon": "icon-shipping3",
+            "shipping_label": "Free shipping on",
+            "free_shipping_text": "all orders over $150",
+            "show_free_shipping": true,
+            "free_shipping_threshold": 150,
+            "icon_size": 24
+          }
+        },
+        "fbt_4G7Epn": {
+          "type": "fbt",
+          "settings": {
+            "fbt_title": "Frequently Bought Together",
+            "fbt_source": "manual",
+            "fbt_products": [
+              "crop-t-shirt",
+              "polo-neck-t-shirt",
+              "round-neck-boxy-t-shirt",
+              "round-neck-cotton-t-shirt",
+              "turtleneck-t-shirt"
+            ],
+            "fbt_metafield": "fbt.products",
+            "max_products": 3,
+            "fbt_margin_top": 42,
+            "fbt_margin_bottom": 0
+          }
+        }
+      },
+      "block_order": [
+        "countdown_timer_V6yRcr",
+        "sold_count",
+        "stock_count",
+        "variant_picker",
+        "size_guide_wQx3n6",
+        "extra_links_QjbTXb",
+        "trust_and_payment",
+        "delivery_info_HGiyGU",
+        "fbt_4G7Epn"
+      ],
+      "settings": {
+        "layout": "default",
+        "width": "boxed",
+        "show_sticky_cart": true,
+        "enable_video_loop": true,
+        "enable_variant_by_image": true,
+        "enable_video_autoplay": true,
+        "show_slider_nav": true,
+        "padding_top": 0,
+        "padding_bottom": 100,
+        "padding_mobile_rate": 50,
+        "enable_image_zoom": true
+      }
+    },
+    "product-details": {
+      "type": "product-details",
+      "blocks": {
+        "description": {
+          "type": "description",
+          "settings": {
+            "title": "Description"
+          }
+        },
+        "materials_QxmpJW": {
+          "type": "materials",
+          "settings": {
+            "title": "Materials"
+          }
+        },
+        "return_policies_bWH7Qn": {
+          "type": "return_policies",
+          "settings": {
+            "title": "Return Policies"
+          }
+        }
+      },
+      "block_order": [
+        "description",
+        "materials_QxmpJW",
+        "return_policies_bWH7Qn"
+      ],
+      "settings": {
+        "width": "boxed",
+        "layout": "accordion"
+      }
+    },
+    "people-also-bought": {
+      "type": "people-also-bought",
+      "settings": {
+        "title": "People Also Bought",
+        "width": "boxed",
+        "products_to_show": 8,
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "space_between": 12
+      }
+    },
+    "recently-viewed": {
+      "type": "recently-viewed",
+      "settings": {
+        "title": "Recently Viewed",
+        "width": "boxed",
+        "products_to_show": 8,
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "space_between": 12
+      }
+    }
+  },
+  "order": [
+    "product",
+    "product-details",
+    "people-also-bought",
+    "recently-viewed"
+  ]
+}
