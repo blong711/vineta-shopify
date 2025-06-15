@@ -662,6 +662,71 @@
                             </form>
                           </div>
                         {% endif %}
+                      {% when 'special_deal' %}
+                        <form class="form-buyX-getY" action="#">
+                          <h6 class="title-buyX-getY">{{ block.settings.title }}</h6>
+                          <div class="group-item-product">
+                            <div class="item-product">
+                              <div class="ribbon effect-flash text-md">Buy {{ block.settings.buy_quantity }}</div>
+                              <div class="img-product">
+                                {% if block.settings.buy_product != blank %}
+                                  {{ block.settings.buy_product.featured_image | image_url: width: 200 | image_tag:
+                                    loading: 'lazy',
+                                    class: 'lazyload',
+                                    alt: block.settings.buy_product.title
+                                  }}
+                                {% endif %}
+                              </div>
+                              <div class="info-product">
+                                <a href="{{ block.settings.buy_product.url }}" class="name-product text-md fw-medium text-line-clamp-2">
+                                  {{ block.settings.buy_product.title }}
+                                </a>
+                                <span class="price-product text-md fw-medium">{{ block.settings.buy_product.price | money }}</span>
+                                <div class="variant-product tf-select">
+                                  <select name="buy_variant">
+                                    {% for variant in block.settings.buy_product.variants %}
+                                      <option value="{{ variant.id }}" {% if variant == block.settings.buy_product.selected_or_first_available_variant %}selected="selected"{% endif %}>
+                                        {{ variant.title }}
+                                      </option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            <img class="arrow" src="{{ 'arr.png' | asset_url }}" alt="">
+                            <div class="item-product">
+                              <div class="ribbon effect-flash text-md">Get {{ block.settings.get_quantity }} Off {{ block.settings.discount_percent }}%</div>
+                              <div class="img-product">
+                                {% if block.settings.get_product != blank %}
+                                  {{ block.settings.get_product.featured_image | image_url: width: 200 | image_tag:
+                                    loading: 'lazy',
+                                    class: 'lazyload',
+                                    alt: block.settings.get_product.title
+                                  }}
+                                {% endif %}
+                              </div>
+                              <div class="info-product">
+                                <a href="{{ block.settings.get_product.url }}" class="name-product text-md fw-medium text-line-clamp-2">
+                                  {{ block.settings.get_product.title }}
+                                </a>
+                                <div class="price-product text-md fw-medium">
+                                  <span class="new-price">{{ block.settings.get_product.price | money }}</span>
+                                  <span class="old-price">{{ block.settings.get_product.compare_at_price | money }}</span>
+                                </div>
+                                <div class="variant-product tf-select">
+                                  <select name="get_variant">
+                                    {% for variant in block.settings.get_product.variants %}
+                                      <option value="{{ variant.id }}" {% if variant == block.settings.get_product.selected_or_first_available_variant %}selected="selected"{% endif %}>
+                                        {{ variant.title }}
+                                      </option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <button type="submit" class="tf-btn btn-primary effect-flash">{{ block.settings.button_text }}</button>
+                        </form>
                     {% endcase %}
                   {% endfor %}
                 </div>
@@ -2374,6 +2439,53 @@ document.addEventListener('DOMContentLoaded', function() {
           "id": "svg_list",
           "label": "SVG list",
           "default": "visa,paypal,master,american_express,diners"
+        }
+      ]
+    },
+    {
+      "type": "special_deal",
+      "name": "Special Deal",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Special Deal"
+        },
+        {
+          "type": "product",
+          "id": "buy_product",
+          "label": "Buy Product"
+        },
+        {
+          "type": "text",
+          "id": "buy_quantity",
+          "label": "Buy Quantity",
+          "default": "1"
+        },
+        {
+          "type": "product",
+          "id": "get_product",
+          "label": "Get Product"
+        },
+        {
+          "type": "text",
+          "id": "get_quantity",
+          "label": "Get Quantity",
+          "default": "1"
+        },
+        {
+          "type": "text",
+          "id": "discount_percent",
+          "label": "Discount Percent",
+          "default": "20"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Grab this deal"
         }
       ]
     },
