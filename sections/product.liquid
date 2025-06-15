@@ -1571,6 +1571,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Remove .tf-zoom-main logic (no longer needed)
   // Add new zoom-at-cursor logic for all .tf-image-zoom and .tf-image-zoom-inner
+  {% if section.settings.enable_image_zoom %}
   document.querySelectorAll('.tf-image-zoom, .tf-image-zoom-inner').forEach(image => {
     image.addEventListener('mousemove', function(e) {
       const rect = this.getBoundingClientRect();
@@ -1584,6 +1585,7 @@ document.addEventListener('DOMContentLoaded', function() {
       this.style.transformOrigin = 'center center';
     });
   });
+  {% endif %}
 
   document.querySelectorAll('.tf-model-viewer-ui-button .icon-btn3d').forEach(function(icon) {
     icon.addEventListener('click', function() {
@@ -2286,6 +2288,17 @@ document.addEventListener('DOMContentLoaded', function() {
       "step": 1,
       "unit": "%",
       "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Product Gallery"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_image_zoom",
+      "label": "Enable Image Zoom",
+      "default": true,
+      "info": "Enable zoom effect when hovering over product images"
     }
   ],
   "blocks": [
