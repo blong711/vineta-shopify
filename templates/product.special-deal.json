@@ -66,6 +66,18 @@
             "show_share": true
           }
         },
+        "special_deal_EkHFdy": {
+          "type": "special_deal",
+          "settings": {
+            "title": "Special Deal",
+            "buy_product": "crop-t-shirt",
+            "buy_quantity": "1",
+            "get_product": "typography-printed-round-neck",
+            "get_quantity": "1",
+            "discount_percent": "20",
+            "button_text": "Grab this deal"
+          }
+        },
         "trust_and_payment": {
           "type": "trust_and_payment",
           "settings": {
@@ -87,24 +99,6 @@
             "free_shipping_threshold": 150,
             "icon_size": 24
           }
-        },
-        "fbt_4G7Epn": {
-          "type": "fbt",
-          "settings": {
-            "fbt_title": "Frequently Bought Together",
-            "fbt_source": "manual",
-            "fbt_products": [
-              "crop-t-shirt",
-              "polo-neck-t-shirt",
-              "round-neck-boxy-t-shirt",
-              "round-neck-cotton-t-shirt",
-              "turtleneck-t-shirt"
-            ],
-            "fbt_metafield": "fbt.products",
-            "max_products": 3,
-            "fbt_margin_top": 42,
-            "fbt_margin_bottom": 0
-          }
         }
       },
       "block_order": [
@@ -114,9 +108,9 @@
         "variant_picker",
         "size_guide_wQx3n6",
         "extra_links_QjbTXb",
+        "special_deal_EkHFdy",
         "trust_and_payment",
-        "delivery_info_HGiyGU",
-        "fbt_4G7Epn"
+        "delivery_info_HGiyGU"
       ],
       "settings": {
         "layout": "default",
