@@ -140,16 +140,19 @@
     const popupShown = localStorage.getItem('newsletterPopupShown');
     const popup = document.querySelector('.modal-newsletter');
     
+    // If popup was previously shown, hide it immediately
+    if (popupShown === 'true' && popup) {
+      popup.style.display = 'none';
+      return; // Exit early if popup was already shown
+    }
+    
+    // Only show popup if it hasn't been shown before
     if (!popupShown && popup) {
       // Show popup after 3 seconds
       setTimeout(() => {
         const modal = new bootstrap.Modal(popup);
         modal.show();
       }, 3000);
-    } else if (popupShown === 'true' && popup) {
-      // If popup was previously shown and "Don't show again" was checked,
-      // ensure the popup is hidden
-      popup.style.display = 'none';
     }
     
     // Handle form submission
