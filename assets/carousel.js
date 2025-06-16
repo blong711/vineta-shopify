@@ -56,17 +56,17 @@ if ($(".tf-sw-slideshow").length > 0) {
     var swiper = new Swiper(".tf-sw-slideshow", swiperSlider);
 }
 
-if ($(".tf-swiper").length > 0) {
-    $(".tf-swiper").each(function () {
-        const config = $(this).data("swiper");
-        config.preventClicks = false;
-        config.preventClicksPropagation = false;
-        if (this.swiper) {
-            this.swiper.destroy(true, true);
-        }
-        new Swiper(this, config);
-    });
-}
+// if ($(".tf-swiper").length > 0) {
+//     $(".tf-swiper").each(function () {
+//         const config = $(this).data("swiper");
+//         config.preventClicks = false;
+//         config.preventClicksPropagation = false;
+//         if (this.swiper) {
+//             this.swiper.destroy(true, true);
+//         }
+//         new Swiper(this, config);
+//     });
+// }
 
 if ($(".tf-single-slide").length > 0) {
     var main = new Swiper(".tf-single-slide", {
