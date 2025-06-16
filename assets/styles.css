@@ -27825,3 +27825,111 @@ prev.swiper-button-disabled {
 .text-left {
   text-align: left !important;
 }
+.form-buyX-getY {
+  border-radius: 16px;
+  border: 1px solid #272727;
+  padding: 30px 20px;
+  .title-buyX-getY {
+      text-align: center;
+      margin-bottom: 32px;
+  }
+  .tf-btn {
+      width: 100%;
+  }
+  .item-product {
+      text-align: center;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      @include transition3;
+      position: relative;
+      &:hover {
+          box-shadow: 0px 4px 20px 0px #0000001a;
+      }
+      img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+      }
+      .img-product {
+          border-radius: 8px;
+          overflow: hidden;
+      }
+      select {
+          padding-top: 7px;
+          padding-bottom: 7px;
+          font-size: 14px;
+          line-height: 20px;
+          color: rgba(102, 112, 133, 0.8);
+          border-radius: 6px;
+      }
+      .info-product {
+          padding-top: 20px;
+      }
+      .name-product {
+          margin-bottom: 10px;
+          display: block;
+      }
+      .price-product {
+          display: inline-flex;
+          gap: 6px;
+      }
+      .variant-product {
+          margin-top: 14px;
+      }
+      .new-price {
+          color: var(--primary);
+      }
+      .old-price {
+          text-decoration: line-through;
+          color: rgba(0, 0, 0, 0.6);
+      }
+      .ribbon {
+          position: absolute;
+          top: -7px;
+          left: -7px;
+          background-color: #a78bfa;
+          color: var(--white);
+          padding: 5px;
+          padding-left: 14px;
+          padding-right: 28px;
+          text-transform: uppercase;
+          font-weight: 500;
+          clip-path: polygon(100% 0%, 86% 50%, 100% 100%, 0 100%, 0% 50%, 0 0);
+          z-index: 2;
+      }
+      &::before {
+          content: "";
+          position: absolute;
+          top: 26px;
+          left: -7px;
+          border-top: 7px solid #7154b4;
+          border-right: 7px solid transparent;
+          -webkit-transform: rotate(45deg);
+          transform: rotate(90deg);
+      }
+  }
+  .group-item-product {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 32px;
+      .arrow {
+          width: 52px;
+          height: 52px;
+          margin-left: -12px;
+      }
+  }
+}
+@media (min-width: 1200px) {
+  .form-buyX-getY {
+      padding: 36px 32px;
+      .title-buyX-getY {
+          margin-bottom: 47px;
+      }
+      .group-item-product {
+          margin-bottom: 55px;
+      }
+  }
+}
