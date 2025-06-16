@@ -18,14 +18,14 @@
         </div>
         <div class="tf-grid-layout lg-col-3 sm-col-2">
           {% for block in section.blocks %}
-            <div class="box-store" {{ block.shopify_attributes }} data-map-url="{{ block.settings.address_link }}">
+            <div class="box-store" {{ block.shopify_attributes }} data-map-url="{{ block.settings.address_link | escape }}">
               <div class="content">
                 <p class="title">{{ block.settings.store_name }}</p>
                 <ul class="contact-list">
                   <li>
                     <p>
                       Address:
-                      <a class="link" href="{{ block.settings.address_link }}" target="_blank">
+                      <a class="link" href="" target="_blank">
                         {{ block.settings.address }}
                       </a>
                     </p>
@@ -81,10 +81,16 @@
       block.addEventListener('click', function() {
         const mapUrl = this.getAttribute('data-map-url');
         if (mapUrl) {
-          // Extract the src URL from the iframe embed code
-          const srcMatch = mapUrl.match(/src="([^"]+)"/);
-          if (srcMatch && srcMatch[1]) {
-            mapIframe.src = srcMatch[1];
+          try {
+            // Create a temporary div to parse the HTML
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = mapUrl;
+            const iframe = tempDiv.querySelector('iframe');
+            if (iframe && iframe.src) {
+              mapIframe.src = iframe.src;
+            }
+          } catch (error) {
+            console.error('Error parsing map URL:', error);
           }
         }
       });
@@ -138,7 +144,7 @@
           "default": "15 Yarran st, Punchbowl, NSW, Australia"
         },
         {
-          "type": "liquid",
+          "type": "html",
           "id": "address_link",
           "label": "Address Link",
           "default": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3312.9152927000003!2d151.0523!3d-33.8675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDUyJzAzLjAiUyAxNTnCsDAzJzA4LjMiRQ!5e0!3m2!1sen!2sau!4v1234567890!5m2!1sen!2sau\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
