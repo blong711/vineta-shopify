@@ -604,8 +604,21 @@ class WishlistCompare {
       .modal-compare .icon-close.remove:hover {
         color: #ff0000;
       }
+
+      /* Prevent scrollbar from causing layout shifts */
+      html {
+        scrollbar-gutter: stable;
+      }
+      
+      body.cart-drawer-open {
+        padding-right: var(--scrollbar-width, 0px);
+      }
     `;
     document.head.appendChild(style);
+
+    // Calculate and set scrollbar width
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
   }
 
   clearCompareList() {
@@ -1463,4 +1476,44 @@ class Cart {
 // Initialize cart when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   window.cart = new Cart();
-}); 
+});
+
+window.openCartDrawer = function() {
+  const cartDrawer = getCartDrawer();
+  if (!cartDrawer) return;
+  // Close other offcanvas
+  document.querySelectorAll('.offcanvas.show').forEach(offcanvas => {
+    if (offcanvas.id !== 'shoppingCart') {
+      offcanvas.classList.remove('show');
+      const offcanvasBackdrop = document.querySelector('.offcanvas-backdrop');
+      if (offcanvasBackdrop) offcanvasBackdrop.classList.remove('show');
+    }
+  });
+  // Close modals
+  document.querySelectorAll('.modal.show').forEach(modal => {
+    modal.classList.remove('show', 'modal');
+    const modalBackdrop = document.querySelector('.modal-backdrop');
+    if (modalBackdrop) modalBackdrop.remove();
+  });
+  // Show backdrop
+  const cartBackdrop = ensureBackdrop();
+  if (cartBackdrop) cartBackdrop.classList.add('show');
+  cartDrawer.classList.add('show');
+  // Add class to body to prevent scrollbar from disappearing
+  document.body.classList.add('cart-drawer-open');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeCartDrawer = function() {
+  const cartDrawer = getCartDrawer();
+  const backdrop = document.querySelector('.offcanvas-backdrop');
+  if (cartDrawer) cartDrawer.classList.remove('show');
+  if (backdrop) {
+    backdrop.classList.remove('show');
+    // Remove the backdrop element when closing
+    backdrop.remove();
+  }
+  // Remove class from body
+  document.body.classList.remove('cart-drawer-open');
+  document.body.style.overflow = '';
+}; 
