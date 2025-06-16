@@ -81,14 +81,10 @@
       block.addEventListener('click', function() {
         const mapUrl = this.getAttribute('data-map-url');
         if (mapUrl) {
-          // Handle short URLs (maps.app.goo.gl)
-          if (mapUrl.includes('maps.app.goo.gl')) {
-            // For short URLs, we need to use the embed URL directly
-            mapIframe.src = mapUrl.replace('maps.app.goo.gl', 'www.google.com/maps/embed');
-          } else {
-            // Handle regular Google Maps URLs
-            const embedUrl = mapUrl.replace('maps?', 'maps/embed?');
-            mapIframe.src = embedUrl;
+          // Extract the src URL from the iframe embed code
+          const srcMatch = mapUrl.match(/src="([^"]+)"/);
+          if (srcMatch && srcMatch[1]) {
+            mapIframe.src = srcMatch[1];
           }
         }
       });
@@ -145,7 +141,8 @@
           "type": "text",
           "id": "address_link",
           "label": "Address Link",
-          "default": "https://www.google.com/maps?q=15Yarranst,Punchbowl,NSW,Australia"
+          "default": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3312.9152927000003!2d151.0523!3d-33.8675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDUyJzAzLjAiUyAxNTnCsDAzJzA4LjMiRQ!5e0!3m2!1sen!2sau!4v1234567890!5m2!1sen!2sau\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
+          "info": "Paste the full Google Maps iframe embed code here"
         },
         {
           "type": "text",
@@ -187,7 +184,7 @@
           "settings": {
             "store_name": "Store 1 Sydney",
             "address": "15 Yarran st, Punchbowl, NSW, Australia",
-            "address_link": "https://www.google.com/maps?q=15Yarranst,Punchbowl,NSW,Australia",
+            "address_link": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3312.9152927000003!2d151.0523!3d-33.8675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDUyJzAzLjAiUyAxNTnCsDAzJzA4LjMiRQ!5e0!3m2!1sen!2sau!4v1234567890!5m2!1sen!2sau\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
             "phone": "+1 234 567",
             "email": "contact@vince.com",
             "hours": "8am - 7pm, Mon - Sat",
