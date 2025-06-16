@@ -81,9 +81,15 @@
       block.addEventListener('click', function() {
         const mapUrl = this.getAttribute('data-map-url');
         if (mapUrl) {
-          // Convert the Google Maps URL to an embed URL
-          const embedUrl = mapUrl.replace('maps?', 'maps/embed?');
-          mapIframe.src = embedUrl;
+          // Handle short URLs (maps.app.goo.gl)
+          if (mapUrl.includes('maps.app.goo.gl')) {
+            // For short URLs, we need to use the embed URL directly
+            mapIframe.src = mapUrl.replace('maps.app.goo.gl', 'www.google.com/maps/embed');
+          } else {
+            // Handle regular Google Maps URLs
+            const embedUrl = mapUrl.replace('maps?', 'maps/embed?');
+            mapIframe.src = embedUrl;
+          }
         }
       });
     });
