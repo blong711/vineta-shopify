@@ -82,12 +82,6 @@
                      required>
             </fieldset>
           </div>
-          <div class="mb_20">
-            <label class="d-flex align-items-center">
-              <input type="checkbox" name="do_not_show" class="me-2">
-              <span class="text-sm">Don't show this popup again</span>
-            </label>
-          </div>
           <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">
             {{ section.settings.button_text }}
           </button>
@@ -136,22 +130,24 @@
 
 {% javascript %}
   document.addEventListener('DOMContentLoaded', function() {
-    // Check if popup was already shown
-    const popupShown = localStorage.getItem('newsletterPopupShown');
+    // Check if popup was already shown in this session
+    const popupShown = sessionStorage.getItem('newsletterPopupShown');
     const popup = document.querySelector('.modal-newsletter');
     
-    // If popup was previously shown, hide it immediately
+    // If popup was previously shown in this session, hide it immediately
     if (popupShown === 'true' && popup) {
       popup.style.display = 'none';
       return; // Exit early if popup was already shown
     }
     
-    // Only show popup if it hasn't been shown before
+    // Only show popup if it hasn't been shown in this session
     if (!popupShown && popup) {
       // Show popup after 3 seconds
       setTimeout(() => {
         const modal = new bootstrap.Modal(popup);
         modal.show();
+        // Mark popup as shown for this session
+        sessionStorage.setItem('newsletterPopupShown', 'true');
       }, 3000);
     }
     
@@ -162,13 +158,6 @@
         e.preventDefault();
         // Add your newsletter subscription logic here
         const email = this.querySelector('input[type="email"]').value;
-        const doNotShow = this.querySelector('input[name="do_not_show"]').checked;
-        
-        if (doNotShow) {
-          localStorage.setItem('newsletterPopupShown', 'true');
-          // Hide the popup immediately
-          popup.style.display = 'none';
-        }
         
         console.log('Newsletter subscription for:', email);
         // Close popup after submission
