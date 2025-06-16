@@ -776,6 +776,86 @@
         maxValue.textContent = currency + Math.round(values[1]);
       });
     }
+
+    // Handle filter form submission
+    const filterForm = document.getElementById('collection-filters-form');
+    if (filterForm) {
+      filterForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const formData = new FormData(filterForm);
+        const url = new URL(window.location.href);
+        
+        // Clear existing filter parameters
+        for (const param of url.searchParams.keys()) {
+          if (param.startsWith('filter.v.')) {
+            url.searchParams.delete(param);
+          }
+        }
+        
+        // Add new filter parameters
+        for (const [key, value] of formData.entries()) {
+          if (value) {
+            url.searchParams.set(key, value);
+          }
+        }
+        
+        try {
+          const response = await fetch(url);
+          const html = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          
+          // Update product grids
+          const newGrid = doc.querySelector('.tf-grid-layout');
+          const newList = doc.querySelector('.tf-list-layout');
+          const productGrid = document.querySelector('.tf-grid-layout');
+          const productList = document.querySelector('.tf-list-layout');
+          
+          if (newGrid && productGrid) productGrid.innerHTML = newGrid.innerHTML;
+          if (newList && productList) productList.innerHTML = newList.innerHTML;
+          
+          // Update URL without reload
+          window.history.pushState({}, '', url.toString());
+          
+          // Reinitialize any necessary event listeners
+          initializeProductEvents();
+        } catch (error) {
+          console.error('Error updating products:', error);
+        }
+      });
+    }
+
+    // Handle checkbox changes
+    const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+    filterCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        filterForm.dispatchEvent(new Event('submit'));
+      });
+    });
+
+    // Handle price range changes
+    const priceRange = document.getElementById('price-value-range');
+    if (priceRange) {
+      const minInput = document.getElementById('price-min-input');
+      const maxInput = document.getElementById('price-max-input');
+      
+      priceRange.noUiSlider.on('change', function(values) {
+        if (minInput) minInput.value = Math.round(values[0]);
+        if (maxInput) maxInput.value = Math.round(values[1]);
+        filterForm.dispatchEvent(new Event('submit'));
+      });
+    }
+
+    // Handle reset price button
+    const resetPriceBtn = document.querySelector('.reset-price');
+    if (resetPriceBtn) {
+      resetPriceBtn.addEventListener('click', function() {
+        const minPrice = parseInt(priceRange.dataset.rangeMin);
+        const maxPrice = parseInt(priceRange.dataset.rangeMax);
+        priceRange.noUiSlider.set([minPrice, maxPrice]);
+        filterForm.dispatchEvent(new Event('submit'));
+      });
+    }
   });
 </script>
 
