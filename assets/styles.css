@@ -26696,8 +26696,8 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
     line-height: 26px;
   }
   .text-md {
-    font-size: 14px;
-    line-height: 22px;
+    font-size: 14px !important;
+    line-height: 22px !important;
   }
   .body-text {
     font-size: 14px;
@@ -27138,7 +27138,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 }
 @media (min-width: 768px) {
   .tf-page-title {
-      padding: 64px 0px;
+      padding: 64px 0px !important;
   }
 }
 .tf-page-title {
