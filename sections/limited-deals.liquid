@@ -15,7 +15,6 @@
         "observer": {{ section.settings.enable_observer }},
         "observeParents": {{ section.settings.enable_observer }},
         "slidesPerGroup": {{ section.settings.slides_per_group_mobile }},
-        "loop": {{ section.settings.enable_loop }},
         "navigation": {% if section.settings.show_navigation %}{
           "clickable": true,
           "nextEl": ".nav-next-deal",
@@ -263,12 +262,6 @@
       "type": "checkbox",
       "id": "pause_on_hover",
       "label": "Pause autoplay on hover",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_loop",
-      "label": "Enable infinite loop",
       "default": true
     },
     {

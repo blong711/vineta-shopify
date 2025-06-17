@@ -29,7 +29,6 @@
                     "observer": {{ section.settings.enable_observer }},
                     "observeParents": {{ section.settings.enable_observer }},
                     "slidesPerGroup": {{ section.settings.slides_per_group_mobile }},
-                    "loop": {{ section.settings.enable_loop }},
                     {% if layout == 'home-phonecase' %}
                     "pagination": { 
                         "el": ".sw-pagination-top-pick", 
@@ -385,12 +384,6 @@
             "id": "pause_on_hover",
             "label": "Pause on Hover",
             "default": true
-        },
-        {
-            "type": "checkbox",
-            "id": "enable_loop",
-            "label": "Enable Loop",
-            "default": false
         },
         {
             "type": "checkbox",
