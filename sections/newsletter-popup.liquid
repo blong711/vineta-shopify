@@ -85,6 +85,12 @@
           <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">
             {{ section.settings.button_text }}
           </button>
+          <div class="mt-3">
+            <label class="d-flex align-items-center justify-content-center">
+              <input type="checkbox" id="dont-show-again" class="me-2">
+              <span class="text-sm">Don't show this popup again</span>
+            </label>
+          </div>
         </form>
 
         <ul class="tf-social-icon style-default justify-content-center">
@@ -130,18 +136,20 @@
 
 {% javascript %}
   document.addEventListener('DOMContentLoaded', function() {
-    // Check if popup was already shown in this session
+    // Check if popup was permanently disabled
+    const popupDisabled = localStorage.getItem('newsletterPopupDisabled');
+    // Check if popup was shown in this session
     const popupShown = sessionStorage.getItem('newsletterPopupShown');
     const popup = document.querySelector('.modal-newsletter');
     
-    // If popup was previously shown in this session, hide it immediately
-    if (popupShown === 'true' && popup) {
+    // If popup was permanently disabled or shown in this session, hide it immediately
+    if ((popupDisabled === 'true' || popupShown === 'true') && popup) {
       popup.style.display = 'none';
-      return; // Exit early if popup was already shown
+      return; // Exit early if popup was already shown or disabled
     }
     
-    // Only show popup if it hasn't been shown in this session
-    if (!popupShown && popup) {
+    // Only show popup if it hasn't been shown in this session and isn't disabled
+    if (!popupShown && !popupDisabled && popup) {
       // Show popup after 3 seconds
       setTimeout(() => {
         const modal = new bootstrap.Modal(popup);
@@ -158,6 +166,12 @@
         e.preventDefault();
         // Add your newsletter subscription logic here
         const email = this.querySelector('input[type="email"]').value;
+        const dontShowAgain = this.querySelector('#dont-show-again').checked;
+        
+        // If "Don't show again" is checked, save this preference
+        if (dontShowAgain) {
+          localStorage.setItem('newsletterPopupDisabled', 'true');
+        }
         
         console.log('Newsletter subscription for:', email);
         // Close popup after submission

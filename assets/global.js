@@ -1453,11 +1453,7 @@ class Cart {
       }
 
       // Show/hide the count element based on count
-      if (count > 0) {
-        element.style.display = '';
-      } else {
-        element.style.display = 'none';
-      }
+      element.style.display = '';
     });
 
     // Also update any elements with data-cart-count attribute

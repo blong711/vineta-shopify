@@ -133,7 +133,7 @@ const ProductCard = {
     
     // Update header cart count
     document.querySelectorAll('.cart-count').forEach(element => {
-      element.textContent = cartData.item_count;
+      element.textContent = cartData.item_count || '0';
     });
 
     // Update shipping threshold
@@ -536,6 +536,9 @@ const ProductCard = {
     `;
     document.head.appendChild(style);
 
+    // Initialize cart count
+    this.initializeCartCount();
+
     // Initialize all features
     this.initializeVariantImageSwitching();
     this.initializeCartEvents();
@@ -545,6 +548,26 @@ const ProductCard = {
     // Initialize wishlist and compare buttons state
     if (window.wishlistCompare) {
       window.wishlistCompare.updateButtonsState();
+    }
+  },
+
+  // Initialize cart count
+  async initializeCartCount() {
+    try {
+      const response = await fetch('/cart.js');
+      if (!response.ok) throw new Error('Failed to fetch cart data');
+      const cartData = await response.json();
+      
+      // Update all cart count elements
+      document.querySelectorAll('.cart-count').forEach(element => {
+        element.textContent = cartData.item_count || '0';
+      });
+    } catch (error) {
+      console.error('Error initializing cart count:', error);
+      // Set count to 0 if there's an error
+      document.querySelectorAll('.cart-count').forEach(element => {
+        element.textContent = '0';
+      });
     }
   }
 };
