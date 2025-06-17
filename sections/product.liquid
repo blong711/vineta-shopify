@@ -554,7 +554,22 @@
                             {% endif %}
                           </div>
                         {% endif %}
-
+                        {% if product.id or product.collections.first.title %}
+                        <ul class="tf-product-cate-sku text-md">
+                          {% if product.id %}
+                          <li class="item-cate-sku">
+                            <span class="label">SKU:</span>
+                            <span class="value">{{ product.id }}</span>
+                          </li>
+                          {% endif %}
+                          {% if product.collections.first.title %}
+                          <li class="item-cate-sku">
+                            <span class="label">Categories:</span>
+                            <span class="value">{{ product.collections.first.title }}</span>
+                          </li>
+                          {% endif %}
+                        </ul>
+                        {% endif %}
                       {% when 'trust_and_payment' %}
                         <div class="tf-product-info-trust-seal text-center" {{ block.shopify_attributes }}>
                           <p class="text-md text-dark-2 text-seal fw-medium">{{ block.settings.trust_seal_text }}</p>
