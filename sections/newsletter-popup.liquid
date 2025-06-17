@@ -134,50 +134,36 @@
   </div>
 </div>
 
-{% javascript %}
+<script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Check if popup was permanently disabled
-    const popupDisabled = localStorage.getItem('newsletterPopupDisabled');
-    // Check if popup was shown in this session
-    const popupShown = sessionStorage.getItem('newsletterPopupShown');
     const popup = document.querySelector('.modal-newsletter');
+    const dontShowAgainCheckbox = document.getElementById('dont-show-again');
+    const closeButtons = document.querySelectorAll('.btn-hide-popup, [data-bs-dismiss="modal"]');
     
-    // If popup was permanently disabled or shown in this session, hide it immediately
-    if ((popupDisabled === 'true' || popupShown === 'true') && popup) {
-      popup.style.display = 'none';
-      return; // Exit early if popup was already shown or disabled
+    // Check if popup should be hidden
+    if (localStorage.getItem('newsletterPopupHidden') === 'true') {
+      if (popup) {
+        popup.remove();
+      }
+      return;
     }
-    
-    // Only show popup if it hasn't been shown in this session and isn't disabled
-    if (!popupShown && !popupDisabled && popup) {
-      // Show popup after 3 seconds
-      setTimeout(() => {
-        const modal = new bootstrap.Modal(popup);
-        modal.show();
-        // Mark popup as shown for this session
-        sessionStorage.setItem('newsletterPopupShown', 'true');
-      }, 3000);
-    }
-    
-    // Handle form submission
-    const form = popup?.querySelector('.form-newsletter');
-    if (form) {
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Add your newsletter subscription logic here
-        const email = this.querySelector('input[type="email"]').value;
-        const dontShowAgain = this.querySelector('#dont-show-again').checked;
-        
-        // If "Don't show again" is checked, save this preference
-        if (dontShowAgain) {
-          localStorage.setItem('newsletterPopupDisabled', 'true');
+
+    // Handle checkbox change
+    dontShowAgainCheckbox.addEventListener('change', function() {
+      if (this.checked) {
+        localStorage.setItem('newsletterPopupHidden', 'true');
+      } else {
+        localStorage.removeItem('newsletterPopupHidden');
+      }
+    });
+
+    // Handle close buttons
+    closeButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        if (dontShowAgainCheckbox.checked && popup) {
+          popup.remove();
         }
-        
-        console.log('Newsletter subscription for:', email);
-        // Close popup after submission
-        const modal = bootstrap.Modal.getInstance(popup);
-        modal.hide();
       });
-    }
+    });
   });
-{% endjavascript %} 
+</script>
