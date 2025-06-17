@@ -178,7 +178,6 @@
         "enable_autoplay": false,
         "autoplay_speed": 3000,
         "pause_on_hover": true,
-        "enable_loop": false,
         "enable_observer": true
       }
     },
@@ -250,6 +249,46 @@
     },
     "banner-tagline": {
       "type": "banner-tagline",
+      "blocks": {
+        "feature_KtbjD3": {
+          "type": "feature",
+          "settings": {
+            "icon": "icon-protection",
+            "heading": "Durable Protection",
+            "text": "Our cases are designed to withstand drops and scratches, keeping your phone safe."
+          }
+        },
+        "feature_CGzJYe": {
+          "type": "feature",
+          "settings": {
+            "icon": "icon-designs",
+            "heading": "Stylish Designs",
+            "text": "Choose from a wide range of trendy and unique designs that suit your style."
+          }
+        },
+        "feature_cRw8tD": {
+          "type": "feature",
+          "settings": {
+            "icon": "icon-fit",
+            "heading": "Perfect Fit",
+            "text": "Each case is precisely crafted to fit your phone model, ensuring easy access to all buttons and ports."
+          }
+        },
+        "feature_KChgrN": {
+          "type": "feature",
+          "settings": {
+            "icon": "icon-quality",
+            "heading": "Affordable Quality",
+            "text": "Enjoy premium protection without breaking the bank."
+          }
+        }
+      },
+      "block_order": [
+        "feature_KtbjD3",
+        "feature_CGzJYe",
+        "feature_cRw8tD",
+        "feature_KChgrN"
+      ],
       "settings": {
         "width": "boxed",
         "image": "shopify://shop_images/phonecase_04.webp",
