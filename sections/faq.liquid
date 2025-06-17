@@ -6,8 +6,8 @@
       <div class="col-lg-4">
         <div class="sb-contact">
           <p class="title">{{ section.settings.contact_title }}</p>
-          <p class="sub">{{ section.settings.contact_text_1 }}</p>
-          <p class="sub">{{ section.settings.contact_text_2 }}</p>
+          <p class="sub" style="font-size: 14px;">{{ section.settings.contact_text_1 }}</p>
+          <p class="sub" style="font-size: 14px;">{{ section.settings.contact_text_2 }}</p>
           <div class="btn-group">
             <a href="{{ section.settings.contact_button_link }}" class="tf-btn btn-fill hover-primary">
               {{ section.settings.contact_button_text }}
@@ -42,7 +42,7 @@
                            aria-labelledby="heading{{ block.id }}" 
                            data-bs-parent="#accordion{{ forloop.parentloop.index }}">
                         <div class="accordion-body">
-                          {{ block.settings.answer }}
+                          <p style="font-size: 14px;" class="term-text body-text text-main">{{ block.settings.answer | newline_to_br | remove: '<p>' | remove: '</p>' }}</p>
                         </div>
                       </div>
                     </div>

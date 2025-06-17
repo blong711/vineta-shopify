@@ -9,7 +9,7 @@
             <div class="term-item" {{ block.shopify_attributes }}>
               <p class="term-title">{{ block.settings.title }}</p>
               <div class="text-wrap">
-                {{ block.settings.content | newline_to_br }}
+                <p class="term-text body-text text-main">{{ block.settings.content | newline_to_br | remove: '<p>' | remove: '</p>' }}</p>
               </div>
             </div>
           {% endfor %}
