@@ -3,7 +3,7 @@
   Usage: {% section 'featured-products' %}
 {%- endcomment -%}
 
-<section class="flat-spacing-3 overflow-hidden {% if section.settings.remove_top_padding %}pt-0{% endif %}">
+<section class="flat-spacing-3 overflow-hidden {% if section.settings.remove_top_padding %}pt-0{% endif %}" id="featured-products-{{ section.id }}">
   {% if section.settings.width == 'boxed' %}
     <div class="container">
   {% endif %}
@@ -29,11 +29,11 @@
           "loop": {{ section.settings.enable_loop }},
           "navigation": {% if section.settings.show_navigation %}{
             "clickable": true,
-            "nextEl": ".nav-next-featured",
-            "prevEl": ".nav-prev-featured"
+            "nextEl": ".nav-next-featured-{{ section.id }}",
+            "prevEl": ".nav-prev-featured-{{ section.id }}"
           }{% else %}false{% endif %},
           "pagination": {% if section.settings.show_pagination %}{
-            "el": ".sw-pagination-featured",
+            "el": ".sw-pagination-featured-{{ section.id }}",
             "clickable": true
           }{% else %}false{% endif %},
           "autoplay": {% if section.settings.enable_autoplay %}{
@@ -83,10 +83,10 @@
             {%- endfor -%}
           {%- endif -%}
         </div>
-        <div class="d-flex d-xl-none sw-dot-default sw-pagination-featured justify-content-center"></div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-featured-{{ section.id }} justify-content-center"></div>
       </div>
-      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-featured"></div>
-      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-featured"></div>
+      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-featured-{{ section.id }}"></div>
+      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-featured-{{ section.id }}"></div>
     </div>
   {% if section.settings.width == 'boxed' %}
     </div>
