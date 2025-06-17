@@ -32,7 +32,6 @@
                       "speed": {{ section.settings.transition_speed }},
                       "observer": true,
                       "observeParents": true,
-                      "loop": {{ section.settings.loop }},
                       "navigation": {% if section.settings.show_navigation %}{
                         "clickable": true,
                         "nextEl": ".nav-next-categories",
@@ -103,7 +102,6 @@
                 "speed": {{ section.settings.transition_speed }},
                 "observer": true,
                 "observeParents": true,
-                "loop": {{ section.settings.loop }},
                 "navigation": {% if section.settings.show_navigation %}{
                   "clickable": true,
                   "nextEl": ".nav-next-categories",
@@ -244,7 +242,6 @@
             "speed": {{ section.settings.transition_speed }},
             "observer": true,
             "observeParents": true,
-            "loop": {{ section.settings.loop }},
             "navigation": {% if section.settings.show_navigation %}{
               "clickable": true,
               "nextEl": ".nav-next-cate",
@@ -258,14 +255,9 @@
               "delay": {{ section.settings.autoplay_speed }}
             }{% else %}false{% endif %},
             "breakpoints": {
-              "575": {
-                "slidesPerView": {{ section.settings.slides_per_view_tablet }},
-                "spaceBetween": {{ section.settings.space_between_mobile }}
-              },
-              "768": {
-                "slidesPerView": {{ section.settings.slides_per_view_desktop }},
-                "spaceBetween": {{ section.settings.space_between_desktop }}
-              }
+              "575": { "slidesPerView": 3, "spaceBetween": 12 ,"slidesPerGroup": 2 },    
+              "768": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 3 },
+              "1200": { "slidesPerView": 6, "spaceBetween": 64, "slidesPerGroup": 3}
             }
           }'>
             <div class="swiper-wrapper">
@@ -448,12 +440,6 @@
       "step": 500,
       "label": "Autoplay speed (ms)",
       "default": 3000
-    },
-    {
-      "type": "checkbox",
-      "id": "loop",
-      "label": "Enable infinite loop",
-      "default": true
     },
     {
       "type": "range",
