@@ -27818,6 +27818,11 @@ prev.swiper-button-disabled {
   width: 100%;
 }
 @media (max-width: 767px) {
+  .s-banner-product .content-banner {
+    display: flex;
+    gap: 85px;
+    justify-content: center;
+  }
   .modal-compare .title {
       margin-bottom: 24px;
   }
@@ -27931,5 +27936,12 @@ prev.swiper-button-disabled {
       .group-item-product {
           margin-bottom: 55px;
       }
+  }
+}
+@media (max-width: 1024px) {
+  .s-banner-product .content-banner {
+    display: flex;
+    gap: 85px;
+    justify-content: center;
   }
 }
