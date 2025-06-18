@@ -79,9 +79,29 @@
             "delivery_icon": "icon-car2",
             "delivery_label": "Estimated delivery time:",
             "delivery_time": "3-5 days international",
+            "show_delivery_info": true,
             "shipping_icon": "icon-shipping3",
             "shipping_label": "Free shipping on",
-            "free_shipping_text": "all orders over $150"
+            "free_shipping_text": "all orders over $150",
+            "show_free_shipping": true,
+            "free_shipping_threshold": 150,
+            "icon_size": 24
+          }
+        },
+        "fbt_N6gmQE": {
+          "type": "fbt",
+          "settings": {
+            "fbt_title": "Frequently Bought Together",
+            "fbt_source": "manual",
+            "fbt_products": [
+              "black-sleeves",
+              "captain-foots",
+              "classic-sweater"
+            ],
+            "fbt_metafield": "fbt.products",
+            "max_products": 3,
+            "fbt_margin_top": 42,
+            "fbt_margin_bottom": 0
           }
         }
       },
@@ -93,10 +113,13 @@
         "size_guide_wQx3n6",
         "extra_links_QjbTXb",
         "trust_and_payment",
-        "delivery_info_HGiyGU"
+        "delivery_info_HGiyGU",
+        "fbt_N6gmQE"
       ],
       "settings": {
         "layout": "stacked",
+        "thumbnail_position": "left",
+        "width": "boxed",
         "show_sticky_cart": true,
         "enable_video_loop": true,
         "enable_variant_by_image": true,
@@ -104,7 +127,8 @@
         "show_slider_nav": true,
         "padding_top": 0,
         "padding_bottom": 100,
-        "padding_mobile_rate": 50
+        "padding_mobile_rate": 50,
+        "enable_image_zoom": true
       }
     },
     "product-details": {
@@ -113,8 +137,7 @@
         "description": {
           "type": "description",
           "settings": {
-            "title": "Description",
-            "default_content": "<p>No description available</p>"
+            "title": "Description"
           }
         },
         "materials_QxmpJW": {
@@ -127,14 +150,7 @@
         "return_policies_bWH7Qn": {
           "type": "return_policies",
           "settings": {
-            "title": "Return Policies",
-            "show_icon_1": true,
-            "show_icon_2": true,
-            "show_icon_3": true,
-            "show_icon_4": true,
-            "show_icon_5": true,
-            "show_icon_6": true,
-            "show_icon_7": true
+            "title": "Return Policies"
           }
         }
       },
@@ -144,6 +160,7 @@
         "return_policies_bWH7Qn"
       ],
       "settings": {
+        "width": "boxed",
         "layout": "accordion"
       }
     },
