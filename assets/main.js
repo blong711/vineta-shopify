@@ -680,7 +680,6 @@
         value = value - 1;
       }
       $input.val(value);
-      console.log(value);
     });
 
     $(".plus-btn").on("click", function (e) {

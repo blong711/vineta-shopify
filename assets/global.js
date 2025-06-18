@@ -38,9 +38,7 @@ class WishlistCompare {
    */
   init() {
     // Initialize event listeners
-    console.log('Initializing WishlistCompare event listeners');
     document.addEventListener('click', (e) => {
-      console.log('Click event detected:', e.target);
       this.handleClick(e);
     });
     document.addEventListener('keydown', this.handleKeydown.bind(this));
@@ -128,41 +126,24 @@ class WishlistCompare {
    * @param {Event} event - Click event object
    */
   handleClick(event) {
-    console.log('handleClick called, checking for target');
     const target = event.target.closest('[data-wishlist], [data-compare]');
-    console.log('Found target:', target);
     if (!target) {
-      console.log('No valid target found');
       return;
     }
-
-    console.log('Click target:', target);
-    console.log('Target dataset:', target.dataset);
-    console.log('Target attributes:', {
-      'data-id': target.getAttribute('data-id'),
-      'data-action': target.getAttribute('data-action'),
-      'data-compare': target.hasAttribute('data-compare'),
-      'data-wishlist': target.hasAttribute('data-wishlist')
-    });
-
     const isWishlist = target.hasAttribute('data-wishlist');
     const productId = target.getAttribute('data-id');
     const action = target.getAttribute('data-action');
 
-    console.log('Click handler:', { isWishlist, productId, action });
 
     if (isWishlist) {
       this.handleWishlist(productId, action);
     } else if (action === 'clear') {
       this.clearCompareList();
     } else if (action === 'add') {
-      console.log('Adding to compare, product ID:', productId);
       this.addToCompare(productId);
     } else if (action === 'remove') {
-      console.log('Removing from compare, product ID:', productId);
       this.removeFromCompare(productId);
     } else {
-      console.log('No matching action found');
     }
   }
 
@@ -242,7 +223,6 @@ class WishlistCompare {
    * @param {string} productId - Product ID to add
    */
   addToCompare(productId) {
-    console.log('addToCompare called with ID:', productId);
     
     if (!productId) {
       console.error('No product ID provided for compare');
@@ -250,13 +230,10 @@ class WishlistCompare {
     }
 
     if (this.compareList.includes(productId)) {
-      console.log('Product already in compare list:', productId);
       return;
     }
     
-    console.log('Current compare list:', this.compareList);
     this.compareList.unshift(productId);
-    console.log('Updated compare list:', this.compareList);
     
     if (this.compareList.length > this.compareLimit) {
       this.compareList.pop();
@@ -267,7 +244,6 @@ class WishlistCompare {
     
     // Only show drawer if we have valid product data
     const productData = this.getProductData(productId);
-    console.log('Product data retrieved:', productData);
     
     if (productData) {
       this.showCompareDrawer();
@@ -427,7 +403,6 @@ class WishlistCompare {
   }
 
   getProductData(productId) {
-    console.log('getProductData called with ID:', productId);
     
     if (!productId) {
       console.error('No product ID provided');
@@ -473,7 +448,6 @@ class WishlistCompare {
                          productSection.querySelector('.display-sm.price-new')?.textContent?.trim() ||
                          productSection.querySelector('.product-info-price .price-new')?.textContent?.trim();
       
-      console.log('Product section data:', { productName, productImage, productPrice });
 
       if (productId && (productName || productImage || productPrice)) {
         const productData = {
@@ -484,14 +458,12 @@ class WishlistCompare {
           price: productPrice || '',
           comparePrice: productSection.querySelector('.price-old')?.textContent?.trim() || ''
         };
-        console.log('Returning product data from section:', productData);
         return productData;
       }
     }
 
     // Try to find the product in card-product elements
     const allProducts = document.querySelectorAll('.card-product');
-    console.log('Found card-product elements:', allProducts.length);
     
     for (const card of allProducts) {
       // Check for product ID in various locations
@@ -499,7 +471,6 @@ class WishlistCompare {
                     card.querySelector('[data-id]')?.getAttribute('data-id') ||
                     card.querySelector('.quickview')?.getAttribute('data-product-id');
                     
-      console.log('Checking card with ID:', cardId);
       
       if (cardId === productId) {
         // Get image URL with validation
@@ -528,14 +499,12 @@ class WishlistCompare {
           comparePrice: card.querySelector('.price-old')?.textContent?.trim() || ''
         };
         
-        console.log('Returning product data from card:', productData);
         return productData;
       }
     }
 
     // If we still haven't found the product, try looking for any element with the product ID
     const productElement = document.querySelector(`[data-product-id="${productId}"], [data-id="${productId}"]`);
-    console.log('Product element found:', !!productElement);
     
     if (!productElement) {
       console.error('Product data not found for ID:', productId);
@@ -570,13 +539,11 @@ class WishlistCompare {
       comparePrice: container.querySelector('.price-old')?.textContent?.trim() || ''
     };
 
-    console.log('Returning product data from element:', productData);
     return productData;
   }
 
   showNotification(message) {
     // Implement your notification system here
-    console.log(message);
   }
 
   addStyles() {
@@ -705,19 +672,16 @@ class Cart {
    * Sets up event listeners and loads initial cart data
    */
   initializeCartDrawer() {
-    console.log('Initializing cart drawer');
     
     // Wait for cart drawer to be available
     const checkCartDrawer = setInterval(() => {
       const cartDrawer = document.getElementById('shoppingCart');
       if (cartDrawer) {
-        console.log('Cart drawer found, setting up');
         clearInterval(checkCartDrawer);
         this.setupCartDrawer(cartDrawer);
         
         // Fetch cart data and update display
         this.createCartPromise().then(cartData => {
-          console.log('Cart data loaded:', cartData.items.length, 'items');
           this.updateCartDisplay(cartData);
         }).catch(error => {
           console.error('Error loading cart data:', error);
@@ -728,7 +692,6 @@ class Cart {
     // Clear interval after 5 seconds if drawer not found
     setTimeout(() => {
       clearInterval(checkCartDrawer);
-      console.log('Cart drawer initialization timed out');
     }, 5000);
   }
 
@@ -737,7 +700,6 @@ class Cart {
    * @param {HTMLElement} cartDrawer - The cart drawer DOM element
    */
   setupCartDrawer(cartDrawer) {
-    console.log('Setting up cart drawer events');
     
     // Ensure the structure is correct
     const cartItemsContainer = cartDrawer.querySelector('.tf-mini-cart-items');
@@ -751,7 +713,6 @@ class Cart {
       // Force proper styling for scrolling
       cartItemsContainer.style.overflowY = 'auto';
       cartItemsContainer.style.maxHeight = 'calc(100vh - 280px)';
-      console.log('Cart items container styled for scrolling');
     }
     
     const closeBtn = cartDrawer.querySelector('.icon-close-popup');
@@ -759,7 +720,6 @@ class Cart {
       closeBtn.addEventListener('click', () => {
         cartDrawer.classList.remove('show');
       });
-      console.log('Close button event listener added');
     }
     
     // Add event delegation for cart item interactions
@@ -1002,7 +962,6 @@ class Cart {
   async updateQuantity(id, quantity, action) {
     // Prevent concurrent requests
     if (this.processingRequests) {
-      console.log('Request in progress, please wait...');
       return;
     }
     
@@ -1015,7 +974,6 @@ class Cart {
         button.classList.add('loading');
       }
 
-      console.log(`Processing cart update: ${action} - ID: ${id}, Quantity: ${quantity}`);
       
       // Make API request
       const response = await fetch(action === this.actions.add ? '/cart/add.js' : '/cart/change.js', {
@@ -1036,7 +994,6 @@ class Cart {
       }
 
       const cartData = await response.json();
-      console.log('Cart update successful', cartData);
       
       // Update cart state
       this.updateCartState(cartData, id, action);
@@ -1078,7 +1035,6 @@ class Cart {
    * Handles backdrop and body styles
    */
   showCartDrawer() {
-    console.log('Opening cart drawer');
     if (window.openCartDrawer) {
       // Use our custom function that prevents full-screen backdrop
       window.openCartDrawer();
@@ -1088,7 +1044,6 @@ class Cart {
       if (cartDrawer) {
         // Log cart contents before showing drawer
         const cartItems = cartDrawer.querySelectorAll('.tf-mini-cart-item');
-        console.log(`Cart drawer contains ${cartItems.length} items before showing`);
         
         cartDrawer.classList.add('show');
         
@@ -1127,7 +1082,6 @@ class Cart {
    * @param {Object} cartData - Cart data to display
    */
   updateCartDisplay(cartData) {
-    console.log('Updating cart display with', cartData?.items?.length || 0, 'items');
     
     // Safeguard if cartData is not provided
     if (!cartData) {
@@ -1148,17 +1102,9 @@ class Cart {
       return;
     }
     
-    // Debug log to check structure
-    console.log('Cart drawer structure:', 
-      cartDrawer.querySelector('.tf-mini-cart-main') ? 'Has main container' : 'Missing main container',
-      cartDrawer.querySelector('.tf-mini-cart-sroll') ? 'Has scroll container' : 'Missing scroll container',
-      cartItemsContainer ? 'Has items container' : 'Missing items container'
-    );
-    
     // Remove placeholder if it exists
     const placeholder = cartItemsContainer.querySelector('#cart-items-placeholder');
     if (placeholder) {
-      console.log('Removing cart placeholder');
       placeholder.remove();
     }
     
@@ -1167,14 +1113,11 @@ class Cart {
     
     // Clear existing items (exclude placeholder)
     const existingItems = cartItemsContainer.querySelectorAll('.tf-mini-cart-item');
-    console.log(`Removing ${existingItems.length} existing cart items`);
     existingItems.forEach(item => item.remove());
 
     // Add new items
     if (cartData.items && cartData.items.length > 0) {
-      console.log(`Adding ${cartData.items.length} items to cart drawer`);
       cartData.items.forEach((item, index) => {
-        console.log(`Creating element for item ${index + 1}: ${item.title}`);
         const itemElement = document.createElement('div');
         itemElement.className = 'tf-mini-cart-item file-delete';
         itemElement.dataset.variantId = item.variant_id;
@@ -1253,7 +1196,6 @@ class Cart {
       }, 10);
     } else {
       // Show empty cart message if no items
-      console.log('Cart is empty, showing empty cart message');
       cartItemsContainer.innerHTML = `
         <div class="empty-cart">
           <p>Your cart is currently empty.</p>
@@ -1273,7 +1215,6 @@ class Cart {
     
     // Log final item count
     const finalItems = cartItemsContainer.querySelectorAll('.tf-mini-cart-item');
-    console.log(`Cart drawer now contains ${finalItems.length} items after update`);
   }
 
   /**

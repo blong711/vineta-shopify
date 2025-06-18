@@ -1058,10 +1058,8 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOM Content Loaded - Initializing product page');
   
   {% if section.settings.layout == 'default' %}
-    console.log('Initializing default layout with Swiper');
     
     // Default layout with Swiper
     const galleryThumbs = new Swiper('.tf-product-media-thumbs', {
@@ -1105,7 +1103,6 @@ document.addEventListener('DOMContentLoaded', function() {
           });
         },
         slideChange: function() {
-          console.log('Slide changed to index:', this.activeIndex);
           const activeSlide = this.slides[this.activeIndex];
           const mediaId = parseInt(activeSlide.getAttribute('data-media-id'));
           const productMedia = {{ product.media | json }};
@@ -1150,7 +1147,6 @@ document.addEventListener('DOMContentLoaded', function() {
           const activeVideo = activeSlide.querySelector('video');
           if (activeVideo) {
             activeVideo.play().catch(error => {
-              console.log('Error playing video:', error);
             });
           }
         }
@@ -1187,9 +1183,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Disable navigation buttons when at start/end
     function updateNavigationButtons() {
-      console.log('Updating navigation buttons');
-      console.log('Is beginning:', galleryMain.isBeginning);
-      console.log('Is end:', galleryMain.isEnd);
       
       const prevButton = document.querySelector('.thumbs-prev');
       const nextButton = document.querySelector('.thumbs-next');
@@ -1242,53 +1235,34 @@ document.addEventListener('DOMContentLoaded', function() {
       '{{ option.name | handle }}': '{{ option.selected_value | handle }}',
     {% endfor %}
   };
-  console.log('Initial selected options:', selectedOptions);
 
   // Function to find variant by color
   function findVariantByColor(color) {
-    console.log('=== findVariantByColor ===');
-    console.log('Input color:', color);
     if (!color) {
-      console.log('No color provided, returning null');
       return null;
     }
 
     const variants = {{ product.variants | json }};
     const options = {{ product.options | json }};
-    console.log('All variants:', variants);
-    console.log('Product options:', options);
     
     // Get current size selection
     const activeSizeBtn = document.querySelector('.size-btn.active');
     const selectedSize = activeSizeBtn ? activeSizeBtn.getAttribute('data-value') : null;
-    console.log('Current selected size:', selectedSize);
     
     // Find variant that matches both color and size
     for (const variant of variants) {
-      console.log('Checking variant:', variant);
       const matchesColor = variant.option1 && variant.option1.toLowerCase() === color.toLowerCase();
       const matchesSize = !selectedSize || (variant.option2 && variant.option2.toLowerCase() === selectedSize.toLowerCase());
       
-      console.log('Variant matches:', {
-        color: matchesColor,
-        size: matchesSize,
-        variantColor: variant.option1,
-        variantSize: variant.option2
-      });
-      
       if (matchesColor && matchesSize) {
-        console.log('Found matching variant:', variant);
         return variant;
       }
     }
-    console.log('No variant found for color:', color);
     return null;
   }
 
   // Function to find variant ID based on selected options
   function findVariantId() {
-    console.log('=== findVariantId ===');
-    console.log('Current selected options:', selectedOptions);
     
     const variants = {{ product.variants | json }};
     const options = {{ product.options | json }};
@@ -1299,11 +1273,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedColor = activeColorBtn ? activeColorBtn.getAttribute('data-scroll') : null;
     const selectedSize = activeSizeBtn ? activeSizeBtn.getAttribute('data-value') : null;
     
-    console.log('Current selections:', {
-      color: selectedColor,
-      size: selectedSize
-    });
-    
     // Find variant that matches all selected options
     const matchingVariant = variants.find(variant => {
       const matchesColor = !selectedColor || 
@@ -1311,34 +1280,21 @@ document.addEventListener('DOMContentLoaded', function() {
       const matchesSize = !selectedSize || 
         (variant.option2 && variant.option2.toLowerCase() === selectedSize.toLowerCase());
       
-      console.log('Checking variant:', {
-        id: variant.id,
-        option1: variant.option1,
-        option2: variant.option2,
-        matchesColor,
-        matchesSize
-      });
-      
       return matchesColor && matchesSize;
     });
     
-    console.log('Found matching variant:', matchingVariant);
     return matchingVariant ? matchingVariant.id : null;
   }
 
   // Function to update variant selection
   function updateVariantSelection(variant) {
-    console.log('=== updateVariantSelection ===');
-    console.log('Input variant:', variant);
     if (!variant) {
-      console.log('No variant provided, skipping update');
       return;
     }
 
     // Update add to cart button
     const addToCartBtn = document.querySelector('.add-to-cart');
     if (addToCartBtn) {
-      console.log('Updating add to cart button variant ID:', variant.id);
       addToCartBtn.dataset.variantId = variant.id;
       
       // Update quantity in add to cart button
@@ -1353,12 +1309,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const priceElement = document.querySelector('.price-new');
     const oldPriceElement = document.querySelector('.price-old');
     if (priceElement) {
-      console.log('Updating price to:', formatMoney(variant.price));
       priceElement.textContent = formatMoney(variant.price);
     }
     if (oldPriceElement) {
       if (variant.compare_at_price > variant.price) {
-        console.log('Updating compare at price to:', formatMoney(variant.compare_at_price));
         oldPriceElement.textContent = formatMoney(variant.compare_at_price);
         oldPriceElement.style.display = 'inline';
       } else {
@@ -1369,7 +1323,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update selected options
     selectedOptions['color'] = variant.option1 ? variant.option1.toLowerCase() : '';
     selectedOptions['size'] = variant.option2 ? variant.option2.toLowerCase() : '';
-    console.log('Updated selected options:', selectedOptions);
 
     // Update the label value for each option
     const options = {{ product.options_with_values | json }};
@@ -1384,22 +1337,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update main image gallery
     const mainSwiper = document.querySelector('.tf-product-media-main')?.swiper;
-    console.log('Main swiper found:', !!mainSwiper);
     
     if (mainSwiper) {
       const slides = mainSwiper.slides;
-      console.log('Total slides:', slides.length);
       let foundMatchingSlide = false;
       
       // First try to find a slide that matches the variant's featured image
       if (variant.featured_image) {
-        console.log('Variant has featured image:', variant.featured_image);
         for (let i = 0; i < slides.length; i++) {
           const mediaId = parseInt(slides[i].getAttribute('data-media-id'));
-          console.log('Checking slide', i, 'mediaId:', mediaId, 'against variant image id:', variant.featured_image.id);
           
           if (mediaId === variant.featured_image.id) {
-            console.log('Found exact variant image match at slide:', i);
             mainSwiper.slideTo(i);
             foundMatchingSlide = true;
             break;
@@ -1409,17 +1357,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // If no exact match found, try to find the first image for this variant
       if (!foundMatchingSlide) {
-        console.log('No exact match found, trying to find variant image by variant_ids');
         const productMedia = {{ product.media | json }};
-        console.log('Product media:', productMedia);
         
         for (let i = 0; i < slides.length; i++) {
           const mediaId = parseInt(slides[i].getAttribute('data-media-id'));
           const media = productMedia.find(m => m.id === mediaId);
-          console.log('Checking slide', i, 'media:', media);
           
           if (media && media.variant_ids && media.variant_ids.includes(variant.id)) {
-            console.log('Found variant image at slide:', i);
             mainSwiper.slideTo(i);
             foundMatchingSlide = true;
             break;
@@ -1427,12 +1371,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         // Fallback: try matching by src if variant.featured_image.src exists
         if (!foundMatchingSlide && variant.featured_image && variant.featured_image.src) {
-          console.log('No match by variant_ids, trying to match by src');
           for (let i = 0; i < slides.length; i++) {
             const mediaId = parseInt(slides[i].getAttribute('data-media-id'));
             const media = productMedia.find(m => m.id === mediaId);
             if (media && media.src === variant.featured_image.src) {
-              console.log('Found variant image by src at slide:', i);
               mainSwiper.slideTo(i);
               foundMatchingSlide = true;
               break;
@@ -1538,22 +1480,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Only set the active class for initial page load
   const initialVariant = {{ product.selected_or_first_available_variant | json }};
-  console.log('=== Initial Variant ===');
-  console.log('Initial variant:', initialVariant);
 
   if (initialVariant) {
     updateVariantSelection(initialVariant);
     // Set initial color button active state
     const initialColor = initialVariant.option1;
-    console.log('Initial color:', initialColor);
     if (initialColor) {
       const colorBtn = Array.from(document.querySelectorAll('.color-btn')).find(
         btn => btn.getAttribute('data-scroll') && btn.getAttribute('data-scroll').toLowerCase() === initialColor.toLowerCase()
       );
-      console.log('Found initial color button:', colorBtn);
       if (colorBtn) {
         colorBtn.classList.add('active');
-        console.log('Set initial color button active state');
       }
     }
   }
@@ -1934,7 +1871,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const cartData = await response.json();
-        console.log('Bundle added to cart successfully:', cartData);
 
         // Update cart drawer
         const cartDrawer = document.getElementById('shoppingCart');
@@ -2045,9 +1981,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (window.cart && window.cart.showCartDrawer) {
           window.cart.showCartDrawer();
         }
-
-        // Show success message
-        console.log(`Successfully added ${items.length} items to cart`);
         
       } catch (error) {
         console.error('Error adding bundle to cart:', error);
@@ -2382,10 +2315,6 @@ document.addEventListener('DOMContentLoaded', function() {
       const formData = new FormData(this);
       const name = formData.get('name');
       const email = formData.get('email');
-      
-      // Here you would typically send the data to your backend
-      // For now, we'll just show the success message
-      console.log('Notify stock form submitted:', { name, email });
       
       // Hide the form and show success message
       notifyForm.style.display = 'none';

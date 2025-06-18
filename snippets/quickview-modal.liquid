@@ -98,16 +98,13 @@
     <script>
     let quickviewSwiper = null;
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('DOM Content Loaded');
       let selectedVariant = null;
       let currentProduct = null;
       let productCache = new Map(); // Cache for product data
     
       // Initialize quickview functionality
       function initQuickview() {
-        console.log('Initializing quickview');
         const quickviewButtons = document.querySelectorAll('.quickview');
-        console.log('Found quickview buttons:', quickviewButtons.length);
     
         // Preload product data for all quickview buttons
         quickviewButtons.forEach(button => {
@@ -130,7 +127,6 @@
             const productData = await productResponse.json();
             // Cache the product data
             productCache.set(productHandle, productData);
-            console.log('Preloaded product:', productHandle);
           }
         } catch (error) {
           console.error(`Error fetching product data for ${productHandle}:`, error);
@@ -140,7 +136,6 @@
       // Handle quickview button click
       async function handleQuickviewClick(e) {
         e.preventDefault();
-        console.log('Quickview button clicked');
         
         const productHandle = this.dataset.productHandle;
         const productId = this.dataset.productId;
@@ -182,7 +177,6 @@
     
       // Update modal content
       function updateModalContent(modal) {
-        console.log('updateModalContent called');
         // Update product title
         modal.querySelector('.product-info-name').textContent = currentProduct.title;
         
@@ -230,17 +224,11 @@
             prevEl: '.single-slide-prev',
           }
         });
-        console.log('Swiper initialized:', quickviewSwiper);
         quickviewSwiper.on('slideChange', function () {
-          console.log('Swiper slideChange event fired');
           const modal = document.getElementById('quickView');
           const activeSlide = modal.querySelector('.swiper-slide.swiper-slide-active');
           if (!activeSlide) return;
           const mediaId = parseInt(activeSlide.getAttribute('data-media-id'));
-          console.log('Active slide mediaId:', mediaId);
-          // Log all product media and all variant featured_images
-          console.log('currentProduct.media:', currentProduct.media);
-          console.log('All variant featured_images:', currentProduct.variants.map(v => v.featured_image));
           // Try to match by id first, then by src
           let matchingVariant = currentProduct.variants.find(v => v.featured_image && v.featured_image.id == mediaId);
           if (!matchingVariant) {
@@ -256,7 +244,6 @@
               }
             }
           }
-          console.log('matchingVariant:', matchingVariant);
           if (!matchingVariant) {
             console.log('No matching variant for mediaId:', mediaId);
           }
@@ -308,7 +295,6 @@
             }
           }
         });
-        console.log('slideChange event handler attached');
         
         // Update variant options
         const variantContainer = modal.querySelector('.tf-product-info-variant');
@@ -318,7 +304,6 @@
         }
     
         if (currentProduct.variants.length > 1) {
-          console.log('Product has variants, updating variant options');
           variantContainer.innerHTML = currentProduct.options.map(option => `
             <div class="variant-picker-item variant-${option.name.toLowerCase()}">
               <div class="variant-picker-label">
@@ -571,9 +556,7 @@
       function initVariantSelection(modal) {
         const variantContainer = modal.querySelector('.tf-product-info-variant');
         if (!variantContainer) return;
-    
-        console.log('Initializing variant selection');
-        
+            
         // Handle select element changes
         const variantSelect = modal.querySelector('select[data-variant-id]');
         if (variantSelect) {
@@ -687,7 +670,6 @@
           if (!button) return;
           
           e.preventDefault();
-          console.log('Button clicked:', button.dataset.optionName, button.dataset.optionValue);
           
           const optionName = button.dataset.optionName;
           const optionValue = button.dataset.optionValue;
@@ -700,14 +682,12 @@
           
           // Remove active class from all buttons in this option group
           const optionGroup = variantContainer.querySelectorAll(`[data-option-name="${optionName}"]`);
-          console.log('Found option group:', optionGroup.length);
           optionGroup.forEach(btn => {
             btn.classList.remove('active');
           });
           
           // Add active class to clicked button
           button.classList.add('active');
-          console.log('Added active class to:', button);
           
           // Find matching variant
           const selectedOptions = {};
@@ -719,14 +699,12 @@
               selectedOptions[name] = value;
             }
           });
-          console.log('Selected options:', selectedOptions);
           
           selectedVariant = currentProduct.variants.find(variant => {
             return Object.keys(selectedOptions).every(option => 
               variant[`option${currentProduct.options.findIndex(o => o.name === option) + 1}`] === selectedOptions[option]
             );
           });
-          console.log('Selected variant:', selectedVariant);
           
           // Update add-to-cart button with selected variant id
           const addToCartBtn = modal.querySelector('.add-to-cart');

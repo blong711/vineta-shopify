@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
   
   function updateWishlistDisplay() {
     const wishlistIds = localStorage.getItem('theme4:wishlist:id') ? localStorage.getItem('theme4:wishlist:id').split(',') : [];
-    console.log('Wishlist IDs from localStorage:', wishlistIds);
     
     if (wishlistIds.length === 0) {
       gridLayout.classList.remove('tf-grid-layout');
@@ -53,11 +52,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Clean up the IDs and ensure they're numbers
     const cleanWishlistIds = wishlistIds.map(id => id.trim()).filter(id => id);
-    console.log('Cleaned wishlist IDs:', cleanWishlistIds);
     
     // Create a map of product IDs for faster lookup
     const wishlistIdMap = new Set(cleanWishlistIds);
-    console.log('Wishlist ID Map:', Array.from(wishlistIdMap));
     
     // Function to fetch all products with pagination
     function fetchAllProducts(page = 1, limit = 250) {
@@ -77,23 +74,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fetch all products
     fetchAllProducts()
       .then(allProducts => {
-        console.log('All fetched products:', allProducts);
         
         // Filter to only include wishlist products
         const products = allProducts.filter(product => {
           const productId = product.id.toString();
           const isInWishlist = wishlistIdMap.has(productId);
-          console.log(`Product ${productId} (${product.title}) in wishlist:`, isInWishlist);
           return isInWishlist;
         });
         
-        console.log('Filtered products:', products);
-        console.log('Expected products count:', cleanWishlistIds.length);
-        console.log('Actual products count:', products.length);
-        
         // Find missing product IDs
         const missingIds = cleanWishlistIds.filter(id => !products.some(p => p.id.toString() === id));
-        console.log('Missing product IDs:', missingIds);
         
         if (missingIds.length > 0) {
           // Try to fetch missing products individually
@@ -122,7 +112,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function displayProducts(products, cleanWishlistIds) {
     if (products.length === 0) {
-      console.log('No matching products found');
       gridLayout.innerHTML = '';
       return;
     }
@@ -131,14 +120,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const sortedProducts = products.sort((a, b) => {
       const aIndex = cleanWishlistIds.indexOf(a.id.toString());
       const bIndex = cleanWishlistIds.indexOf(b.id.toString());
-      console.log(`Sorting: ${a.id} (${a.title}) at index ${aIndex}, ${b.id} (${b.title}) at index ${bIndex}`);
       return aIndex - bIndex;
     });
     
-    console.log('Sorted products:', sortedProducts.map(p => ({ id: p.id, title: p.title })));
     
     const wishlistHTML = sortedProducts.map(product => {
-      console.log('Processing product:', product.id, product.title);
       return `
       <div class="card-product grid file-delete style-wishlist style-3 ${!product.variants[0].available ? 'out-of-stock' : ''}" data-product-id="${product.id}">
         <i class="icon icon-close remove" data-wishlist data-id="${product.id}" data-action="remove"></i>
@@ -296,7 +282,6 @@ document.addEventListener('DOMContentLoaded', function() {
           
           // Add item to cart exactly once
           if (window.cart) {
-            console.log(`Adding to cart: variant ${variantId}, quantity ${quantity}`);
             await window.cart.updateQuantity(variantId, quantity, 'add');
             
             // Fetch updated cart data
@@ -619,22 +604,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Add slideChange event to update color swatch active state
             modalSwiper.on('slideChange', function () {
-              console.log('[wishlist] Swiper slideChange event fired');
               const modal = document.getElementById('quickView');
               const activeSlide = modal.querySelector('.swiper-slide.swiper-slide-active');
-              if (!activeSlide) { console.log('[wishlist] No active slide found'); return; }
+              if (!activeSlide) {; return; }
               const mediaId = parseInt(activeSlide.getAttribute('data-media-id'));
-              console.log('[wishlist] Active slide mediaId:', mediaId);
               // Find the matching variant by featured_image.id
               let matchingVariant = product.variants.find(v => v.featured_image && v.featured_image.id == mediaId);
-              console.log('[wishlist] Matching variant by id:', matchingVariant);
               // Fallback: match by image src if not found by id
               if (!matchingVariant) {
                 const activeImg = activeSlide.querySelector('img');
                 if (activeImg) {
                   const activeSrc = activeImg.getAttribute('src');
                   matchingVariant = product.variants.find(v => v.featured_image && v.featured_image.src === activeSrc);
-                  console.log('[wishlist] Fallback matching variant by src:', matchingVariant);
                 }
               }
               if (matchingVariant) {
@@ -645,7 +626,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (colorOptionIndex !== -1) {
                   const colorOption = product.options[colorOptionIndex];
                   const colorValue = matchingVariant[`option${colorOptionIndex + 1}`];
-                  console.log('[wishlist] Color value for this variant:', colorValue);
                   // Update color swatch active state
                   const variantContainer = modal.querySelector('.tf-product-info-variant');
                   if (variantContainer) {
@@ -657,7 +637,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         btn.classList.add('active');
                         const label = variantContainer.querySelector('.value-currentColor');
                         if (label) label.textContent = colorValue;
-                        console.log('[wishlist] Set color swatch active:', colorValue);
                       } else {
                         btn.classList.remove('active');
                       }
@@ -676,10 +655,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add event listeners for size buttons
             modal.querySelectorAll('.size-btn').forEach(sizeBtn => {
               sizeBtn.addEventListener('click', function() {
-                console.log('Size button clicked:', this.dataset.size);
                 
                 const sizeValue = this.dataset.size;
-                console.log('Selected size value:', sizeValue);
                 
                 // Update active state
                 this.closest('.variant-picker-values').querySelectorAll('.size-btn').forEach(btn => {
@@ -691,35 +668,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 const selectedSize = modal.querySelector('.value-currentSize');
                 if (selectedSize) {
                   selectedSize.textContent = sizeValue.charAt(0).toUpperCase() + sizeValue.slice(1);
-                  console.log('Updated size text to:', selectedSize.textContent);
                 }
                 
                 // Get current color selection
                 const activeColorBtn = modal.querySelector('.color-btn.active');
-                const selectedColor = activeColorBtn ? activeColorBtn.dataset.optionValue : null;
-                console.log('Current selected color:', selectedColor);
-                
+                const selectedColor = activeColorBtn ? activeColorBtn.dataset.optionValue : null;                
                 // Find the correct variant based on both color and size
                 const variant = product.variants.find(v => {
                   const matchesColor = !selectedColor || v.option1 === selectedColor;
                   const matchesSize = v.option2 === sizeValue;
-                  console.log('Checking variant:', {
-                    variantId: v.id,
-                    option1: v.option1,
-                    option2: v.option2,
-                    matchesColor,
-                    matchesSize
-                  });
+
                   return matchesColor && matchesSize;
                 });
                 
-                console.log('Found matching variant:', variant);
                 
                 // Update add to cart button with the correct variant ID
                 const addToCartBtn = modal.querySelector('.add-to-cart');
                 if (addToCartBtn && variant) {
                   addToCartBtn.dataset.variantId = variant.id;
-                  console.log('Updated add to cart button variant ID:', variant.id);
                 } else {
                   console.log('Could not update add to cart button:', {
                     hasAddToCartBtn: !!addToCartBtn,
@@ -732,7 +698,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add event listeners for color buttons
             modal.querySelectorAll('.color-btn').forEach(colorBtn => {
               colorBtn.addEventListener('click', function() {
-                console.log('Color button clicked:', this.dataset.optionValue);
                 
                 const optionValue = this.dataset.optionValue;
                 const colorClass = this.dataset.color;
@@ -747,35 +712,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 const selectedColor = modal.querySelector('.value-currentColor');
                 if (selectedColor) {
                   selectedColor.textContent = optionValue;
-                  console.log('Updated color text to:', optionValue);
                 }
                 
                 // Get current size selection
                 const activeSizeBtn = modal.querySelector('.size-btn.active');
                 const selectedSize = activeSizeBtn ? activeSizeBtn.dataset.size : null;
-                console.log('Current selected size:', selectedSize);
                 
                 // Find the correct variant based on both color and size
                 const variant = product.variants.find(v => {
                   const matchesColor = v.option1 === optionValue;
                   const matchesSize = !selectedSize || v.option2 === selectedSize;
-                  console.log('Checking variant:', {
-                    variantId: v.id,
-                    option1: v.option1,
-                    option2: v.option2,
-                    matchesColor,
-                    matchesSize
-                  });
                   return matchesColor && matchesSize;
                 });
                 
-                console.log('Found matching variant:', variant);
                 
                 // Update add to cart button with the correct variant ID
                 const addToCartBtn = modal.querySelector('.add-to-cart');
                 if (addToCartBtn && variant) {
                   addToCartBtn.dataset.variantId = variant.id;
-                  console.log('Updated add to cart button variant ID:', variant.id);
                 } else {
                   console.log('Could not update add to cart button:', {
                     hasAddToCartBtn: !!addToCartBtn,
@@ -787,17 +741,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (variant && variant.featured_image) {
                   // Find the Swiper instance
                   const swiperInstance = modal.querySelector('.tf-single-slide')?.swiper;
-                  console.log('Swiper instance:', swiperInstance);
                   const slides = modal.querySelectorAll('.swiper-slide');
-                  console.log('Slides found:', slides.length);
-                  console.log('Variant featured_image:', variant.featured_image);
                   let targetIndex = -1;
                   slides.forEach((slide, idx) => {
-                    console.log(`Slide ${idx} data-media-id:`, slide.dataset.mediaId);
-                    console.log(`Comparing slide ${idx} mediaId (${slide.dataset.mediaId}) with variant.featured_image.id (${variant.featured_image.id})`);
                     if (slide.dataset.mediaId == variant.featured_image.id) {
                       targetIndex = idx;
-                      console.log('Match found at index:', idx);
                     }
                   });
                   if (swiperInstance && targetIndex !== -1) {
@@ -809,7 +757,6 @@ document.addEventListener('DOMContentLoaded', function() {
                       if (img) {
                         img.src = variant.featured_image.src;
                         img.setAttribute('data-src', variant.featured_image.src);
-                        console.log(`Updated slide ${idx} image to:`, variant.featured_image.src);
                       }
                     });
                   } else {
@@ -818,7 +765,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (mainImage) {
                       mainImage.src = variant.featured_image.src;
                       mainImage.setAttribute('data-src', variant.featured_image.src);
-                      console.log('Updated main image to:', variant.featured_image.src);
                     }
                   }
                 }
@@ -841,7 +787,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const addToCartBtn = modal.querySelector('.add-to-cart');
                 if (addToCartBtn) {
                   addToCartBtn.dataset.variantId = initialVariant.id;
-                  console.log('Set initial variant ID:', initialVariant.id, 'Size:', selectedSize);
                 }
               }
             }
