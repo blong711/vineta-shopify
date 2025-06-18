@@ -179,10 +179,15 @@
     });
   }
 
-  // Shipping calculator province field visibility
+  // Shipping calculator functionality
   document.addEventListener('DOMContentLoaded', function() {
     const countrySelect = document.getElementById('shipping-country-form');
     const provinceFieldContainer = document.getElementById('province-field-container');
+    const provinceSelect = document.getElementById('shipping-province-form');
+    const zipcodeInput = document.getElementById('zipcode');
+    const zipcodeMessage = document.getElementById('zipcode-message');
+    const zipcodeSuccess = document.getElementById('zipcode-success');
+    const shippingForm = document.getElementById('shipping-form');
     
     if (countrySelect && provinceFieldContainer) {
       function toggleProvinceField() {
@@ -196,8 +201,27 @@
             provinceFieldContainer.style.display = 'none';
           } else {
             provinceFieldContainer.style.display = 'block';
+            updateProvinceOptions(provinces);
           }
         }
+      }
+      
+      function updateProvinceOptions(provinces) {
+        provinceSelect.innerHTML = '';
+        
+        // Add default option
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Select Province/State';
+        provinceSelect.appendChild(defaultOption);
+        
+        // Add province options
+        provinces.forEach((province) => {
+          const option = document.createElement('option');
+          option.value = province[0];
+          option.textContent = province[1];
+          provinceSelect.appendChild(option);
+        });
       }
       
       // Initial check
@@ -205,6 +229,178 @@
       
       // Listen for country changes
       countrySelect.addEventListener('change', toggleProvinceField);
+    }
+
+    // Zipcode validation function
+    function validateZipcode(zipcode, country) {
+      let regex;
+
+      switch (country) {
+        case "Australia":
+          regex = /^\d{4}$/;
+          break;
+        case "Austria":
+          regex = /^\d{4}$/;
+          break;
+        case "Belgium":
+          regex = /^\d{4}$/;
+          break;
+        case "Canada":
+          regex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+          break;
+        case "Czech Republic":
+          regex = /^\d{5}$/;
+          break;
+        case "Denmark":
+          regex = /^\d{4}$/;
+          break;
+        case "Finland":
+          regex = /^\d{5}$/;
+          break;
+        case "France":
+          regex = /^\d{5}$/;
+          break;
+        case "Germany":
+          regex = /^\d{5}$/;
+          break;
+        case "United States":
+          regex = /^\d{5}(-\d{4})?$/;
+          break;
+        case "United Kingdom":
+          regex = /^[A-Za-z]{1,2}\d[A-Za-z\d]? \d[A-Za-z]{2}$/;
+          break;
+        case "India":
+          regex = /^\d{6}$/;
+          break;
+        case "Japan":
+          regex = /^\d{3}-\d{4}$/;
+          break;
+        case "Mexico":
+          regex = /^\d{5}$/;
+          break;
+        case "South Korea":
+          regex = /^\d{5}$/;
+          break;
+        case "Spain":
+          regex = /^\d{5}$/;
+          break;
+        case "Italy":
+          regex = /^\d{5}$/;
+          break;
+        case "Vietnam":
+          regex = /^\d{6}$/;
+          break;
+        default:
+          return true;
+      }
+
+      return regex.test(zipcode);
+    }
+
+    // Format money function
+    function formatMoney(cents) {
+      const dollars = (cents / 100).toFixed(2);
+      return `$${dollars}`;
+    }
+
+    // Handle form submission
+    if (shippingForm) {
+      shippingForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        
+        const country = countrySelect.value;
+        const province = provinceSelect.value;
+        const zipcode = zipcodeInput.value.trim();
+        
+        // Reset previous messages
+        zipcodeMessage.style.display = 'none';
+        zipcodeSuccess.style.display = 'none';
+        zipcodeMessage.textContent = '';
+        zipcodeSuccess.innerHTML = '';
+        
+        // Validate inputs
+        if (!country) {
+          zipcodeMessage.textContent = 'Please select a country.';
+          zipcodeMessage.style.display = 'block';
+          return;
+        }
+        
+        if (!zipcode) {
+          zipcodeMessage.textContent = 'Please enter a zipcode.';
+          zipcodeMessage.style.display = 'block';
+          return;
+        }
+        
+        // Validate zipcode format
+        if (!validateZipcode(zipcode, country)) {
+          zipcodeMessage.textContent = 'Please enter a valid zipcode for the selected country.';
+          zipcodeMessage.style.display = 'block';
+          return;
+        }
+        
+        // Show loading state
+        const submitButton = shippingForm.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.textContent;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Calculating...';
+        
+        try {
+          // Prepare shipping address
+          const shippingAddress = {
+            country: country,
+            zip: zipcode
+          };
+          
+          // Add province if available
+          if (province) {
+            shippingAddress.province = province;
+          }
+          
+          // Fetch shipping rates from Shopify
+          const response = await fetch('/cart/shipping_rates.json', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+              shipping_address: shippingAddress
+            })
+          });
+          
+          if (!response.ok) {
+            throw new Error('Failed to fetch shipping rates');
+          }
+          
+          const data = await response.json();
+          
+          if (data.shipping_rates && data.shipping_rates.length > 0) {
+            // Display shipping rates
+            let successHTML = '<p>Available shipping rates for your address:</p>';
+            
+            data.shipping_rates.forEach((rate, index) => {
+              const price = formatMoney(rate.price);
+              const deliveryTime = rate.delivery_time ? ` (${rate.delivery_time})` : '';
+              successHTML += `<p class="shipping-rate">${rate.name}: <span class="price">${price}</span>${deliveryTime}</p>`;
+            });
+            
+            zipcodeSuccess.innerHTML = successHTML;
+            zipcodeSuccess.style.display = 'block';
+          } else {
+            zipcodeMessage.textContent = 'No shipping rates available for this address.';
+            zipcodeMessage.style.display = 'block';
+          }
+          
+        } catch (error) {
+          console.error('Error fetching shipping rates:', error);
+          zipcodeMessage.textContent = 'Failed to calculate shipping rates. Please try again.';
+          zipcodeMessage.style.display = 'block';
+        } finally {
+          // Restore button state
+          submitButton.disabled = false;
+          submitButton.textContent = originalButtonText;
+        }
+      });
     }
   });
 </script>
