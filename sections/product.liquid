@@ -456,9 +456,9 @@
                         {% endunless %}
                       {% endif %}
                   </div>
+                  {% unless product.metafields.affiliate.url %}
                   <div class="tf-product-total-quantity">
                     {% if product.available %}
-                      {% unless product.metafields.affiliate.url %}
                         <div class="group-btn">
                           <div class="wg-quantity">
                             <button class="btn-quantity minus-btn">-</button>
@@ -473,11 +473,11 @@
                         </div>
                         <a href="#" class="tf-btn btn-primary w-100 animate-btn">Buy it now</a>
                         <a href="/checkout" style="font-size: 14px" class="more-choose-payment link">More payment options</a>
-                      {% endunless %}
                     {% else %}
                       <button class="tf-btn btn-out-stock w-100">This product is currently unavailable</button>
                     {% endif %}
                   </div>
+                {% endunless %}
                   {% unless product.available %}
                     <form class="form-out-stock" action="#">
                       <div class="box-title-out-stock">
