@@ -78,17 +78,16 @@
 
     <!-- Third-party JavaScript -->
     <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
-    <script src="{{ 'photoswipe.esm.min.js' | asset_url }}" defer></script>
-    <script src="{{ 'photoswipe-lightbox.esm.min.js' | asset_url }}" defer></script>
+    <!-- PhotoSwipe is loaded as ES module in zoom.js -->
     <script src="{{ 'drift.min.js' | asset_url }}" defer></script>
-    <script src="{{ 'image-compare-viewer.min.js' | asset_url }}" defer></script>
+    <script type="module" src="{{ 'image-compare-viewer.js' | asset_url }}" defer></script>
     <script src="{{ 'lazysize.min.js' | asset_url }}" defer></script>
-    <script src="{{ 'model-viewer.min.js' | asset_url }}" defer></script>
+    <!-- model-viewer is loaded as ES module from CDN -->
     <script src="{{ 'multiple-modal.js' | asset_url }}" defer></script>
     <script src="{{ 'nouislider.min.js' | asset_url }}" defer></script>
     <script src="{{ 'simpleParallaxVanilla.umd.js' | asset_url }}" defer></script>
     <script src="{{ 'wow.min.js' | asset_url }}" defer></script>
-    <script src="{{ 'zoom.js' | asset_url }}" defer></script>
+    <script type="module" src="{{ 'zoom.js' | asset_url }}" defer></script>
     <script src="{{ 'carousel.js' | asset_url }}" defer></script>
     <script src="{{ 'count-down.js' | asset_url }}" defer></script>
     <script src="{{ 'infinityslide.js' | asset_url }}" defer></script>

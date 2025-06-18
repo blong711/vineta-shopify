@@ -135,7 +135,6 @@
                 "speed": {{ block.settings.transition_speed }},
                 "observer": true,
                 "observeParents": true,
-                "loop": {{ block.settings.loop }},
                 "pagination": {% if block.settings.show_pagination %}{ "el": ".sw-pagination-iconbox", "clickable": true }{% else %}false{% endif %},
                 "autoplay": {% if block.settings.autoplay %}{ "delay": {{ block.settings.autoplay_speed }} }{% else %}false{% endif %},
                 "breakpoints": {
@@ -564,12 +563,6 @@
           "step": 500,
           "label": "Autoplay speed (ms)",
           "default": 3000
-        },
-        {
-          "type": "checkbox",
-          "id": "loop",
-          "label": "Enable infinite loop",
-          "default": true
         },
         {
           "type": "header",

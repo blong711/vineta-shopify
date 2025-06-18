@@ -237,7 +237,7 @@
                     <li class="item">
                       <a href="{{ post.url }}" class="img-box">
                         <img data-src="{{ post.image | img_url: '80x80', crop: 'center' }}" 
-                             src="{{ 'placeholder.png' | asset_url }}"
+                             src="{{ post.image | img_url }}"
                              alt="{{ post.title }}" 
                              width="80" 
                              height="80"

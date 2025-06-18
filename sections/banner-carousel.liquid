@@ -9,7 +9,6 @@
       "speed": {{ section.settings.transition_speed }},
       "observer": true,
       "observeParents": true,
-      "loop": {{ section.settings.loop }},
       "navigation": {% if section.settings.show_navigation %}{
         "clickable": true,
         "nextEl": ".nav-next-shop",
@@ -170,12 +169,6 @@
       "step": 500,
       "label": "Autoplay speed (ms)",
       "default": 3000
-    },
-    {
-      "type": "checkbox",
-      "id": "loop",
-      "label": "Enable infinite loop",
-      "default": true
     }
   ],
   "blocks": [

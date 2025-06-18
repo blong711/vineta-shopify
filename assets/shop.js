@@ -44,6 +44,11 @@
     const priceSlider = document.getElementById("price-value-range");
     const filterForm = document.getElementById("collection-filters-form");
 
+    // Only proceed if priceSlider exists
+    if (!priceSlider) {
+      return;
+    }
+
     const minPrice = parseInt(priceSlider.dataset.min, 10) || 0;
     const maxPrice = parseInt(priceSlider.dataset.max, 10) || 500;
 
@@ -59,19 +64,24 @@
 
     // Handle checkbox changes
     $('.tf-check').on('change', function() {
-      filterForm.submit();
+      if (filterForm) {
+        filterForm.submit();
+      }
     });
 
-    priceSlider.noUiSlider.on("update", function (values) {
-      filters.minPrice = parseInt(values[0], 10);
-      filters.maxPrice = parseInt(values[1], 10);
+    // Only set up noUiSlider if priceSlider exists
+    if (priceSlider && priceSlider.noUiSlider) {
+      priceSlider.noUiSlider.on("update", function (values) {
+        filters.minPrice = parseInt(values[0], 10);
+        filters.maxPrice = parseInt(values[1], 10);
 
-      $("#price-min-value").text(filters.minPrice);
-      $("#price-max-value").text(filters.maxPrice);
+        $("#price-min-value").text(filters.minPrice);
+        $("#price-max-value").text(filters.maxPrice);
 
-      applyFilters();
-      updateMetaFilter();
-    });
+        applyFilters();
+        updateMetaFilter();
+      });
+    }
 
     $(".size-check").on("click",function () {
       filters.size = $(this).find(".size").text().trim();
@@ -169,7 +179,9 @@
       if (filterType === "price") {
         filters.minPrice = minPrice;
         filters.maxPrice = maxPrice;
-        priceSlider.noUiSlider.set([minPrice, maxPrice]);
+        if (priceSlider && priceSlider.noUiSlider) {
+          priceSlider.noUiSlider.set([minPrice, maxPrice]);
+        }
       }
 
       if (filterType === "sale") {
@@ -194,7 +206,9 @@
       $('input[name="brand"]').prop("checked", false);
       $('input[name="availability"]').prop("checked", false);
       $(".size-check, .color-check").removeClass("active");
-      priceSlider.noUiSlider.set([minPrice, maxPrice]);
+      if (priceSlider && priceSlider.noUiSlider) {
+        priceSlider.noUiSlider.set([minPrice, maxPrice]);
+      }
 
       applyFilters();
       updateMetaFilter();
@@ -203,7 +217,9 @@
     $(".reset-price").on("click",function(){
       filters.minPrice = minPrice;
       filters.maxPrice = maxPrice;
-      priceSlider.noUiSlider.set([minPrice, maxPrice]);
+      if (priceSlider && priceSlider.noUiSlider) {
+        priceSlider.noUiSlider.set([minPrice, maxPrice]);
+      }
       applyFilters();
       updateMetaFilter();
     })

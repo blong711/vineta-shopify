@@ -147,12 +147,6 @@
             },
             {
                 "type": "checkbox",
-                "id": "enable_loop",
-                "label": "Enable infinite loop",
-                "default": true
-            },
-            {
-                "type": "checkbox",
                 "id": "enable_observer",
                 "label": "Enable observer",
                 "default": true,
@@ -249,7 +243,6 @@
                     "observer": {{ section.settings.enable_observer }},
                     "observeParents": {{ section.settings.enable_observer }},
                     "slidesPerGroup": {{ section.settings.slides_per_group_mobile }},
-                    "loop": {{ section.settings.enable_loop }},
                     "navigation": {% if section.settings.show_navigation %}{
                         "clickable": true,
                         "nextEl": ".nav-next-tes",
@@ -419,7 +412,6 @@
                         "observer": {{ section.settings.enable_observer }},
                         "observeParents": {{ section.settings.enable_observer }},
                         "slidesPerGroup": 1,
-                        "loop": {{ section.settings.enable_loop }},
                         "navigation": {% if section.settings.show_navigation %}{
                             "clickable": true,
                             "nextEl": ".nav-next-tes",
@@ -520,7 +512,6 @@
                     "observer": {{ section.settings.enable_observer }},
                     "observeParents": {{ section.settings.enable_observer }},
                     "slidesPerGroup": {{ section.settings.slides_per_group_mobile }},
-                    "loop": {{ section.settings.enable_loop }},
                     "navigation": {% if section.settings.show_navigation %}{
                         "clickable": true,
                         "nextEl": ".nav-next-tes",
