@@ -66,7 +66,7 @@
 {% endschema %}
 
 {% if section.settings.enable_cookie_banner %}
-  <div class="cookie-banner" id="cookie-banner" style="display: none;">
+  <div class="cookie-banner" id="cookie-banner" style="display: none;" data-expiry-days="{{ section.settings.expiry_days }}">
     <div class="overplay"></div>
     <div class="content">
       <p class="text-md">{{ section.settings.message }}</p>
@@ -86,41 +86,43 @@
 
 {% javascript %}
   document.addEventListener('DOMContentLoaded', function() {
-    {% if section.settings.enable_cookie_banner %}
-      const cookieBanner = document.getElementById('cookie-banner');
-      const acceptButton = document.getElementById('accept-cookie');
-      const cookieName = 'cookie_consent';
-      const expiryDays = {{ section.settings.expiry_days }};
+    const cookieBanner = document.getElementById('cookie-banner');
+    const acceptButton = document.getElementById('accept-cookie');
+    
+    // Only proceed if the banner exists (meaning it's enabled)
+    if (!cookieBanner) return;
+    
+    const cookieName = 'cookie_consent';
+    const expiryDays = parseInt(cookieBanner.dataset.expiryDays);
 
-      // Check if cookie consent was already given
-      function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-      }
+    // Check if cookie consent was already given
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
 
-      // Set cookie with expiry
-      function setCookie(name, value, days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        const expires = `expires=${date.toUTCString()}`;
-        document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax`;
-      }
+    // Set cookie with expiry
+    function setCookie(name, value, days) {
+      const date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      const expires = `expires=${date.toUTCString()}`;
+      document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax`;
+    }
 
-      // Show banner if no consent cookie exists
-      if (!getCookie(cookieName)) {
-        cookieBanner.style.display = 'block';
-      } else {
+    // Show banner if no consent cookie exists
+    if (!getCookie(cookieName)) {
+      cookieBanner.style.display = 'block';
+    } else {
+      cookieBanner.style.display = 'none';
+    }
+
+    // Handle accept button click
+    if (acceptButton) {
+      acceptButton.addEventListener('click', function() {
+        setCookie(cookieName, 'accepted', expiryDays);
         cookieBanner.style.display = 'none';
-      }
-
-      // Handle accept button click
-      if (acceptButton) {
-        acceptButton.addEventListener('click', function() {
-          setCookie(cookieName, 'accepted', expiryDays);
-          cookieBanner.style.display = 'none';
-        });
-      }
-    {% endif %}
+      });
+    }
   });
 {% endjavascript %}

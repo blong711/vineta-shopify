@@ -212,38 +212,3 @@
   {% endif %}
 </div>
 <!-- /Sub Collection -->
-
-{% javascript %}
-document.addEventListener('DOMContentLoaded', function() {
-  const swiper = new Swiper('.blog-sub-collection .tf-swiper', {
-    slidesPerView: 2,
-    spaceBetween: 12,
-    speed: 800,
-    observer: true,
-    observeParents: true,
-    slidesPerGroup: 2,
-    navigation: {
-      clickable: true,
-      nextEl: '.nav-next-cls',
-      prevEl: '.nav-prev-cls'
-    },
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-      dynamicBullets: true
-    },
-    breakpoints: {
-      768: {
-        slidesPerView: 3,
-        spaceBetween: 20,
-        slidesPerGroup: 3
-      },
-      1200: {
-        slidesPerView: {{ section.settings.slides_per_view_desktop }},
-        spaceBetween: 20,
-        slidesPerGroup: {{ section.settings.slides_per_group }}
-      }
-    }
-  });
-});
-{% endjavascript %} 
