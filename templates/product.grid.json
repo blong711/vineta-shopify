@@ -87,6 +87,24 @@
             "free_shipping_threshold": 150,
             "icon_size": 24
           }
+        },
+        "fbt_9aDTQ4": {
+          "type": "fbt",
+          "settings": {
+            "fbt_title": "Frequently Bought Together",
+            "fbt_source": "manual",
+            "fbt_products": [
+              "short-sleeve-sweat",
+              "crop-t-shirt",
+              "polo-neck-t-shirt",
+              "round-neck-boxy-t-shirt",
+              "round-neck-cotton-t-shirt"
+            ],
+            "fbt_metafield": "fbt.products",
+            "max_products": 3,
+            "fbt_margin_top": 42,
+            "fbt_margin_bottom": 0
+          }
         }
       },
       "block_order": [
@@ -97,10 +115,12 @@
         "size_guide_wQx3n6",
         "extra_links_QjbTXb",
         "trust_and_payment",
-        "delivery_info_HGiyGU"
+        "delivery_info_HGiyGU",
+        "fbt_9aDTQ4"
       ],
       "settings": {
         "layout": "grid",
+        "thumbnail_position": "left",
         "width": "boxed",
         "show_sticky_cart": true,
         "enable_video_loop": true,
@@ -109,7 +129,8 @@
         "show_slider_nav": true,
         "padding_top": 0,
         "padding_bottom": 100,
-        "padding_mobile_rate": 50
+        "padding_mobile_rate": 50,
+        "enable_image_zoom": true
       }
     },
     "product-details": {
@@ -124,7 +145,8 @@
         "materials_QxmpJW": {
           "type": "materials",
           "settings": {
-            "title": "Materials"
+            "title": "Materials",
+            "subtitle": "Materials Care"
           }
         },
         "return_policies_bWH7Qn": {
