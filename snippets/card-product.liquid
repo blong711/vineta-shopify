@@ -12,13 +12,13 @@
   <div class="card-product-wrapper asp-ratio-1">
     <a href="{{ product.url }}" class="product-img">
       {%- if product.featured_image != blank -%}
-        {{ product.featured_image | img_url: width: 400 | image_tag:
+        {{ product.featured_image | image_url: width: 400 | image_tag:
           loading: 'lazy',
           class: 'img-product lazyloaded',
           alt: product.title
         }}
         {%- if product.images[1] != blank -%}
-          {{ product.images[1] | img_url: width: 400 | image_tag:
+          {{ product.images[1] | image_url: width: 400 | image_tag:
             loading: 'lazy',
             class: 'img-hover lazyloaded',
             alt: product.title
@@ -119,12 +119,12 @@
                   data-option-name="{{ option.name }}"
                   data-option-value="{{ value | escape }}"
                   {%- if variant.featured_image != blank -%}
-                    data-variant-image="{{ variant.featured_image | img_url: width: 400 }}"
+                    data-variant-image="{{ variant.featured_image | image_url: width: 400 }}"
                   {%- endif -%}>
                 <span class="tooltip color-filter">{{ value }}</span>
                 <span class="swatch-value bg-{{ value | handleize }}"></span>
                 {%- if variant.featured_image != blank -%}
-                  {{ variant.featured_image | img_url: width: 100 | image_tag:
+                  {{ variant.featured_image | image_url: width: 100 | image_tag:
                     loading: 'lazy',
                     class: 'lazyload',
                     alt: value
@@ -144,7 +144,7 @@
   <div class="card-product-wrapper asp-ratio-1">
     <a href="{{ product.url }}" class="product-img">
       {%- if product.featured_image != blank -%}
-        {{ product.featured_image | img_url: width: 400 | image_tag:
+        {{ product.featured_image | image_url: width: 400 | image_tag:
           loading: 'lazy',
           width: product.featured_image.width,
           height: product.featured_image.height,
@@ -152,7 +152,7 @@
           alt: product.title
         }}
         {%- if product.images[1] != blank -%}
-          {{ product.images[1] | img_url: width: 400 | image_tag:
+          {{ product.images[1] | image_url: width: 400 | image_tag:
             loading: 'lazy',
             width: product.images[1].width,
             height: product.images[1].height,
@@ -252,12 +252,12 @@
                   data-option-name="{{ option.name }}"
                   data-option-value="{{ value | escape }}"
                   {%- if variant.featured_image != blank -%}
-                    data-variant-image="{{ variant.featured_image | img_url: width: 400 }}"
+                    data-variant-image="{{ variant.featured_image | image_url: width: 400 }}"
                   {%- endif -%}>
                 <span class="tooltip">{{ value }}</span>
                 <span class="swatch-value bg-{{ value | handleize }}"></span>
                 {%- if variant.featured_image != blank -%}
-                  {{ variant.featured_image | img_url: width: 100 | image_tag:
+                  {{ variant.featured_image | image_url: width: 100 | image_tag:
                     loading: 'lazy',
                     class: 'lazyload',
                     alt: value,
@@ -422,7 +422,7 @@
   <div class="card-product-wrapper asp-ratio-1">
     <a href="{{ product.url }}" class="product-img">
       {%- if product.featured_image != blank -%}
-        {{ product.featured_image | img_url: width: 400 | image_tag:
+        {{ product.featured_image | image_url: width: 400 | image_tag:
           loading: 'lazy',
           width: product.featured_image.width,
           height: product.featured_image.height,
@@ -430,7 +430,7 @@
           alt: product.title
         }}
         {%- if product.images[1] != blank -%}
-          {{ product.images[1] | img_url: width: 400 | image_tag:
+          {{ product.images[1] | image_url: width: 400 | image_tag:
             loading: 'lazy',
             width: product.images[1].width,
             height: product.images[1].height,
@@ -536,7 +536,7 @@
   <div class="card-product-wrapper asp-ratio-1">
     <a href="{{ product.url }}" class="product-img">
       {%- if product.featured_image != blank -%}
-        {{ product.featured_image | img_url: width: 400 | image_tag:
+        {{ product.featured_image | image_url: width: 400 | image_tag:
           loading: 'lazy',
           width: product.featured_image.width,
           height: product.featured_image.height,
@@ -544,7 +544,7 @@
           alt: product.title
         }}
         {%- if product.images[1] != blank -%}
-          {{ product.images[1] | img_url: width: 400 | image_tag:
+          {{ product.images[1] | image_url: width: 400 | image_tag:
             loading: 'lazy',
             width: product.images[1].width,
             height: product.images[1].height,
@@ -656,12 +656,12 @@
                   data-option-name="{{ option.name }}"
                   data-option-value="{{ value | escape }}"
                   {%- if variant.featured_image != blank -%}
-                    data-variant-image="{{ variant.featured_image | img_url: width: 400 }}"
+                    data-variant-image="{{ variant.featured_image | image_url: width: 400 }}"
                   {%- endif -%}>
                 <span class="tooltip color-filter">{{ value }}</span>
                 <span class="swatch-value bg-{{ value | handleize }}"></span>
                 {%- if variant.featured_image != blank -%}
-                  {{ variant.featured_image | img_url: width: 100 | image_tag:
+                  {{ variant.featured_image | image_url: width: 100 | image_tag:
                     loading: 'lazy',
                     class: 'lazyload',
                     alt: value
