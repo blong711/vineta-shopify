@@ -122,7 +122,6 @@
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form action="/cart" method="post" class="tf-mini-cart-tool-content">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.coupon.title' | t }}</div>
-            <div class="tf-mini-cart-tool-text1 text-dark-1">{{ 'cart.drawer.coupon.message' | t }}</div>
             <input type="text" name="discount" placeholder="{{ 'cart.drawer.coupon.placeholder' | t }}">
             <div class="tf-cart-tool-btns">
               <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">{{ 'cart.drawer.coupon.apply' | t }}</button>
@@ -144,7 +143,7 @@
                 </select>
               </div>
             </div>
-            <div class="field">
+            <div class="field" id="province-field-container">
               <p class="text-sm">{{ 'cart.drawer.shipping.province' | t }}</p>
               <div class="tf-select">
                 <select id="shipping-province-form" name="address[province]" data-default="{{ customer.default_address.province }}"></select>
@@ -179,6 +178,35 @@
       }
     });
   }
+
+  // Shipping calculator province field visibility
+  document.addEventListener('DOMContentLoaded', function() {
+    const countrySelect = document.getElementById('shipping-country-form');
+    const provinceFieldContainer = document.getElementById('province-field-container');
+    
+    if (countrySelect && provinceFieldContainer) {
+      function toggleProvinceField() {
+        const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+        const provincesData = selectedOption.getAttribute('data-provinces');
+        
+        if (provincesData) {
+          const provinces = JSON.parse(provincesData);
+          
+          if (provinces.length === 0) {
+            provinceFieldContainer.style.display = 'none';
+          } else {
+            provinceFieldContainer.style.display = 'block';
+          }
+        }
+      }
+      
+      // Initial check
+      toggleProvinceField();
+      
+      // Listen for country changes
+      countrySelect.addEventListener('change', toggleProvinceField);
+    }
+  });
 </script>
 
 {% schema %}
