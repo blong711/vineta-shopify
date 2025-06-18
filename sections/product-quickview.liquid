@@ -9,7 +9,9 @@
                         <img class="lazyload" 
                             data-src="{{ image | img_url: '600x' }}"
                             src="{{ image | img_url: '600x' }}" 
-                            alt="{{ image.alt | escape }}">
+                            alt="{{ image.alt | escape }}"
+                            width="600"
+                            height="600">
                     </div>
                 </div>
             {% endfor %}

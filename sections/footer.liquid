@@ -13,7 +13,11 @@
         <div class="footer-logo">
           <a href="{{ routes.root_url }}">
             {%- if section.settings.logo != blank -%}
-              <img src="{{ section.settings.logo | img_url: 'master' }}" class="logo" alt="{{ section.settings.logo.alt | default: shop.name }}">
+              <img src="{{ section.settings.logo | img_url: 'master' }}" 
+                class="logo" 
+                alt="{{ section.settings.logo.alt | default: shop.name }}"
+                width="150"
+                height="50">
             {%- else -%}
               <span class="h2">{{ shop.name }}</span>
             {%- endif -%}

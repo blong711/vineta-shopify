@@ -96,7 +96,16 @@
           </div>
         </div>
 
-        {% if search.results | map: 'vendor' | uniq | size > 0 %}
+        {% assign vendors = search.results | map: 'vendor' | uniq %}
+        {% assign has_vendors = false %}
+        {% for vendor in vendors %}
+          {% if vendor != blank %}
+            {% assign has_vendors = true %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+        
+        {% if has_vendors %}
           <div class="dropdown dropdown-filter">
             <div class="dropdown-toggle" id="brand" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
               <span class="text-value">Brand</span>
@@ -104,14 +113,16 @@
             </div>
             <div class="dropdown-menu" aria-labelledby="brand">
               <ul class="filter-group-check">
-                {% for vendor in search.results | map: 'vendor' | uniq %}
-                  <li class="list-item">
-                    <input type="radio" name="brand" class="tf-check" id="{{ vendor | handle }}">
-                    <label for="{{ vendor | handle }}" class="label">
-                      <span>{{ vendor }}</span>&nbsp;
-                      <span class="count">({{ search.results | where: "vendor", vendor | size }})</span>
-                    </label>
-                  </li>
+                {% for vendor in vendors %}
+                  {% if vendor != blank %}
+                    <li class="list-item">
+                      <input type="radio" name="brand" class="tf-check" id="{{ vendor | handle }}">
+                      <label for="{{ vendor | handle }}" class="label">
+                        <span>{{ vendor }}</span>&nbsp;
+                        <span class="count">({{ search.results | where: "vendor", vendor | size }})</span>
+                      </label>
+                    </li>
+                  {% endif %}
                 {% endfor %}
               </ul>
             </div>

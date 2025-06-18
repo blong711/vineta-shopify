@@ -40,7 +40,11 @@
         }
       }'>
         <div class="swiper-wrapper">
-          {% assign related_products = collections.all.products | sort: section.settings.sort_by | sort_order: section.settings.sort_order | slice: 0, section.settings.products_to_show %}
+          {% assign related_products = collections.all.products | sort: section.settings.sort_by %}
+          {% if section.settings.sort_order == 'desc' %}
+            {% assign related_products = related_products | reverse %}
+          {% endif %}
+          {% assign related_products = related_products | slice: 0, section.settings.products_to_show %}
           {% for product in related_products %}
             <div class="swiper-slide">
               {% render 'card-product',

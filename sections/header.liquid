@@ -36,7 +36,7 @@
           <div class="col-xl-2 col-md-4 col-6 text-center">
             <a href="{{ routes.root_url }}" class="logo-header">
               {%- if section.settings.logo != blank -%}
-                <img src="{{ section.settings.logo | image_url: width: section.settings.logo_width }}"
+                <img src="{{ section.settings.logo | img_url: width: section.settings.logo_width }}"
                   alt="{{ section.settings.logo.alt | default: shop.name }}"
                   width="{{ section.settings.logo_width }}"
                   height="{{ section.settings.logo_width | divided_by: section.settings.logo.aspect_ratio }}"
@@ -135,6 +135,8 @@
                                   <a href="{{ block.settings.banner_link }}">
                                     <img src="{{ block.settings.banner_image | img_url: 'master' }}"
                                       alt="{{ block.settings.title }}"
+                                      width="300"
+                                      height="200"
                                       class="lazyload">
                                   </a>
                                 </div>
@@ -148,7 +150,11 @@
                                   {%- for product in block.settings.products -%}
                                     <div class="mega-menu-product">
                                       <a href="{{ product.url }}">
-                                        <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" class="lazyload">
+                                        <img src="{{ product.featured_image | img_url: 'medium' }}" 
+                                          alt="{{ product.title }}" 
+                                          width="150"
+                                          height="150"
+                                          class="lazyload">
                                         <h4>{{ product.title }}</h4>
                                         <p class="price">{{ product.price | money }}</p>
                                       </a>
@@ -161,6 +167,8 @@
                                   <a href="{{ block.settings.banner_link }}">
                                     <img src="{{ block.settings.banner_image | img_url: 'master' }}"
                                       alt="{{ block.settings.title }}"
+                                      width="300"
+                                      height="200"
                                       class="lazyload">
                                   </a>
                                 </div>
@@ -185,6 +193,8 @@
                                   <a href="{{ block.settings.banner_link }}">
                                     <img src="{{ block.settings.banner_image | img_url: 'master' }}"
                                       alt="{{ block.settings.title }}"
+                                      width="300"
+                                      height="200"
                                       class="lazyload">
                                   </a>
                                 </div>
@@ -212,7 +222,11 @@
                                     {%- for post in blogs[block.settings.blog].articles limit: block.settings.posts_limit -%}
                                       <div class="mega-menu-post">
                                         <a href="{{ post.url }}">
-                                          <img src="{{ post.image | img_url: 'medium' }}" alt="{{ post.title }}" class="lazyload">
+                                          <img src="{{ post.image | img_url: 'medium' }}" 
+                                            alt="{{ post.title }}" 
+                                            width="120"
+                                            height="120"
+                                            class="lazyload">
                                           <h4>{{ post.title }}</h4>
                                           <p class="date">{{ post.published_at | date: '%B %d, %Y' }}</p>
                                         </a>
@@ -296,7 +310,11 @@
                                     {%- for product in block.settings.products -%}
                                       <div class="mega-menu-product">
                                         <a href="{{ product.url }}">
-                                          <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" class="lazyload">
+                                          <img src="{{ product.featured_image | img_url: 'medium' }}" 
+                                            alt="{{ product.title }}" 
+                                            width="150"
+                                            height="150"
+                                            class="lazyload">
                                           <h4>{{ product.title }}</h4>
                                           <p class="price">{{ product.price | money }}</p>
                                         </a>
@@ -342,7 +360,11 @@
                                       {%- for post in blogs[block.settings.blog].articles limit: block.settings.posts_limit -%}
                                         <div class="mega-menu-post">
                                           <a href="{{ post.url }}">
-                                            <img src="{{ post.image | img_url: 'medium' }}" alt="{{ post.title }}" class="lazyload">
+                                            <img src="{{ post.image | img_url: 'medium' }}" 
+                                              alt="{{ post.title }}" 
+                                              width="120"
+                                              height="120"
+                                              class="lazyload">
                                             <h4>{{ post.title }}</h4>
                                             <p class="date">{{ post.published_at | date: '%B %d, %Y' }}</p>
                                           </a>
@@ -377,7 +399,7 @@
         <div class="col-xl-2 col-md-4 col-6 text-xxl-center">
           <a href="{{ routes.root_url }}" class="logo-header">
             {%- if section.settings.logo != blank -%}
-              <img src="{{ section.settings.logo | image_url: width: section.settings.logo_width }}"
+              <img src="{{ section.settings.logo | img_url: width: section.settings.logo_width }}"
                 alt="{{ section.settings.logo.alt | default: shop.name }}"
                 width="{{ section.settings.logo_width }}"
                 height="{{ section.settings.logo_width | divided_by: section.settings.logo.aspect_ratio }}"
@@ -445,7 +467,7 @@
         <div class="col-xl-2 col-md-4 col-6">
           <a href="{{ routes.root_url }}" class="logo-header">
             {%- if section.settings.logo != blank -%}
-              <img src="{{ section.settings.logo | image_url: width: section.settings.logo_width }}"
+              <img src="{{ section.settings.logo | img_url: width: section.settings.logo_width }}"
                 alt="{{ section.settings.logo.alt | default: shop.name }}"
                 width="{{ section.settings.logo_width }}"
                 height="{{ section.settings.logo_width | divided_by: section.settings.logo.aspect_ratio }}"
