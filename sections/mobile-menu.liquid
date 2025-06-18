@@ -59,13 +59,29 @@
       <div class="bottom-bar-language">
         {% if section.settings.show_currency_selector %}
           <div class="tf-currencies">
-            {{ section.settings.currency_selector }}
+            <select class="image-select center style-default type-currencies" name="currency">
+              {% for currency in shop.enabled_currencies %}
+                <option value="{{ currency.iso_code }}" {% if currency == cart.currency %}selected{% endif %}>
+                  {% if currency.iso_code == 'USD' %}
+                    USD $
+                  {% else %}
+                    {{ currency.name }} ({{ currency.iso_code }} {{ currency.symbol }})
+                  {% endif %}
+                </option>
+              {% endfor %}
+            </select>
           </div>
         {% endif %}
         
         {% if section.settings.show_language_selector %}
           <div class="tf-languages">
-            {{ section.settings.language_selector }}
+            <select class="image-select center style-default type-languages" name="language">
+              {% for locale in shop.published_locales %}
+                <option value="{{ locale.iso_code }}" {% if locale.primary %}selected{% endif %}>
+                  {{ locale.name }}
+                </option>
+              {% endfor %}
+            </select>
           </div>
         {% endif %}
       </div>
