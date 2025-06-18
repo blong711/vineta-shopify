@@ -7,29 +7,29 @@
         <div class="sub-menu mega-menu mega-home">
           <div class="box-search">
             <div class="tf-select">
-              <select name="pagetype" id="pagetype">
-                <option value="">Page Type</option>
-                <option value="fashion">Fashion</option>
-                <option value="furniture">Furniture</option>
-                <option value="electronics">Electronics</option>
-                <option value="accessories">Accessories</option>
-                <option value="food">Food & Drink</option>
-                <option value="georgia">Other</option>
+              <select name="pagetype" id="pagetype" class="demo-filter-select">
+                <option value="">All Categories</option>
+                {% for child in link.links %}
+                  <option value="{{ child.title | handleize }}">{{ child.title }}</option>
+                {% endfor %}
               </select>
             </div>
-            <form class="form-search">
-              <input type="text" placeholder="Search demo..." tabindex="0" aria-required="true" required>
+            <form class="form-search" id="demo-search-form">
+              <input type="text" id="demo-search-input" placeholder="Search demo..." tabindex="0" aria-required="true" required>
               <button type="submit"><i class="icon icon-search"></i></button>
             </form>
           </div>
           {% if link.links != blank %}
-            <div class="row-demo">
+            <div class="row-demo" id="row-demo-container">
               {% for child in link.links %}
                 {% assign child_handle = child.title | handleize %}
                 {% assign image_key = 'home_image_' | append: child_handle %}
                 {% assign block = section.blocks | where: "type", "mega_menu_html" | first %}
                 {% assign subitem_image = block.settings[image_key] %}
-                <div class="demo-item">
+                <div class="demo-item" 
+                     data-title="{{ child.title | downcase }}" 
+                     data-category="{{ child_handle }}"
+                     data-search="{{ child.title | downcase }} {{ child_handle }}">
                   <a href="{{ child.url }}" class="demo-image">
                     {% if subitem_image != blank %}
                       <img src="{{ subitem_image | image_url: width: 200 }}" alt="{{ child.title }}" width="200" height="120">
@@ -42,6 +42,79 @@
                 </div>
               {% endfor %}
             </div>
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.getElementById('demo-search-input');
+                const categorySelect = document.getElementById('pagetype');
+                const demoItems = document.querySelectorAll('.demo-item');
+                const searchForm = document.getElementById('demo-search-form');
+                
+                function filterDemoItems() {
+                  const searchTerm = searchInput.value.toLowerCase();
+                  const selectedCategory = categorySelect.value;
+                  
+                  demoItems.forEach(function(item) {
+                    const title = item.getAttribute('data-title');
+                    const category = item.getAttribute('data-category');
+                    const searchData = item.getAttribute('data-search');
+                    
+                    let showItem = true;
+                    
+                    // Filter by search term
+                    if (searchTerm && !searchData.includes(searchTerm)) {
+                      showItem = false;
+                    }
+                    
+                    // Filter by category
+                    if (selectedCategory && category !== selectedCategory) {
+                      showItem = false;
+                    }
+                    
+                    // Show/hide item
+                    if (showItem) {
+                      item.style.display = 'block';
+                    } else {
+                      item.style.display = 'none';
+                    }
+                  });
+                  
+                  // Show "no results" message if no items match
+                  const visibleItems = document.querySelectorAll('.demo-item[style*="display: block"], .demo-item:not([style*="display: none"])');
+                  let noResultsMsg = document.getElementById('no-results-message');
+                  
+                  if (visibleItems.length === 0) {
+                    if (!noResultsMsg) {
+                      noResultsMsg = document.createElement('div');
+                      noResultsMsg.id = 'no-results-message';
+                      noResultsMsg.className = 'no-results';
+                      noResultsMsg.innerHTML = '<p>No demos found.</p>';
+                      document.getElementById('row-demo-container').appendChild(noResultsMsg);
+                    }
+                    noResultsMsg.style.display = 'block';
+                  } else {
+                    if (noResultsMsg) {
+                      noResultsMsg.style.display = 'none';
+                    }
+                  }
+                }
+                
+                // Event listeners
+                if (searchInput) {
+                  searchInput.addEventListener('input', filterDemoItems);
+                }
+                
+                if (categorySelect) {
+                  categorySelect.addEventListener('change', filterDemoItems);
+                }
+                
+                if (searchForm) {
+                  searchForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    filterDemoItems();
+                  });
+                }
+              });
+            </script>
           {% endif %}
         </div>
       {% when 'shop' %}
