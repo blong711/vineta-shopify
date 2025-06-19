@@ -604,6 +604,71 @@
                             {% endif %}
                           </div>
                         {% endif %}
+                        {% when 'special_deal' %}
+                          <form class="form-buyX-getY" action="#">
+                            <h6 class="title-buyX-getY">{{ block.settings.title }}</h6>
+                            <div class="group-item-product">
+                              <div class="item-product">
+                                <div class="ribbon effect-flash text-md">Buy {{ block.settings.buy_quantity }}</div>
+                                <div class="img-product">
+                                  {% if block.settings.buy_product != blank %}
+                                    {{ block.settings.buy_product.featured_image | image_url: width: 200 | image_tag:
+                                      loading: 'lazy',
+                                      class: 'lazyload',
+                                      alt: block.settings.buy_product.title
+                                    }}
+                                  {% endif %}
+                                </div>
+                                <div class="info-product">
+                                  <a href="{{ block.settings.buy_product.url }}" class="name-product text-md fw-medium text-line-clamp-2">
+                                    {{ block.settings.buy_product.title }}
+                                  </a>
+                                  <span class="price-product text-md fw-medium">{{ block.settings.buy_product.price | money }}</span>
+                                  <div class="variant-product tf-select">
+                                    <select name="buy_variant">
+                                      {% for variant in block.settings.buy_product.variants %}
+                                        <option value="{{ variant.id }}" {% if variant == block.settings.buy_product.selected_or_first_available_variant %}selected="selected"{% endif %}>
+                                          {{ variant.title }}
+                                        </option>
+                                      {% endfor %}
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <img class="arrow" src="{{ 'arr.png' | asset_url }}" alt="" width="24" height="24">
+                              <div class="item-product">
+                                <div class="ribbon effect-flash text-md">Get {{ block.settings.get_quantity }} Off {{ block.settings.discount_percent }}%</div>
+                                <div class="img-product">
+                                  {% if block.settings.get_product != blank %}
+                                    {{ block.settings.get_product.featured_image | image_url: width: 200 | image_tag:
+                                      loading: 'lazy',
+                                      class: 'lazyload',
+                                      alt: block.settings.get_product.title
+                                    }}
+                                  {% endif %}
+                                </div>
+                                <div class="info-product">
+                                  <a href="{{ block.settings.get_product.url }}" class="name-product text-md fw-medium text-line-clamp-2">
+                                    {{ block.settings.get_product.title }}
+                                  </a>
+                                  <div class="price-product text-md fw-medium">
+                                    <span class="new-price">{{ block.settings.get_product.price | money }}</span>
+                                    <span class="old-price">{{ block.settings.get_product.compare_at_price | money }}</span>
+                                  </div>
+                                  <div class="variant-product tf-select">
+                                    <select name="get_variant">
+                                      {% for variant in block.settings.get_product.variants %}
+                                        <option value="{{ variant.id }}" {% if variant == block.settings.get_product.selected_or_first_available_variant %}selected="selected"{% endif %}>
+                                          {{ variant.title }}
+                                        </option>
+                                      {% endfor %}
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <button type="submit" class="tf-btn btn-primary effect-flash animate-btn btn-special-deal">{{ block.settings.button_text }}</button>
+                          </form>
                         {% if product.id or product.collections.first.title %}
                         <ul class="tf-product-cate-sku text-md">
                           {% if product.id %}
@@ -727,71 +792,6 @@
                             </form>
                           </div>
                         {% endif %}
-                      {% when 'special_deal' %}
-                        <form class="form-buyX-getY" action="#">
-                          <h6 class="title-buyX-getY">{{ block.settings.title }}</h6>
-                          <div class="group-item-product">
-                            <div class="item-product">
-                              <div class="ribbon effect-flash text-md">Buy {{ block.settings.buy_quantity }}</div>
-                              <div class="img-product">
-                                {% if block.settings.buy_product != blank %}
-                                  {{ block.settings.buy_product.featured_image | image_url: width: 200 | image_tag:
-                                    loading: 'lazy',
-                                    class: 'lazyload',
-                                    alt: block.settings.buy_product.title
-                                  }}
-                                {% endif %}
-                              </div>
-                              <div class="info-product">
-                                <a href="{{ block.settings.buy_product.url }}" class="name-product text-md fw-medium text-line-clamp-2">
-                                  {{ block.settings.buy_product.title }}
-                                </a>
-                                <span class="price-product text-md fw-medium">{{ block.settings.buy_product.price | money }}</span>
-                                <div class="variant-product tf-select">
-                                  <select name="buy_variant">
-                                    {% for variant in block.settings.buy_product.variants %}
-                                      <option value="{{ variant.id }}" {% if variant == block.settings.buy_product.selected_or_first_available_variant %}selected="selected"{% endif %}>
-                                        {{ variant.title }}
-                                      </option>
-                                    {% endfor %}
-                                  </select>
-                                </div>
-                              </div>
-                            </div>
-                            <img class="arrow" src="{{ 'arr.png' | asset_url }}" alt="" width="24" height="24">
-                            <div class="item-product">
-                              <div class="ribbon effect-flash text-md">Get {{ block.settings.get_quantity }} Off {{ block.settings.discount_percent }}%</div>
-                              <div class="img-product">
-                                {% if block.settings.get_product != blank %}
-                                  {{ block.settings.get_product.featured_image | image_url: width: 200 | image_tag:
-                                    loading: 'lazy',
-                                    class: 'lazyload',
-                                    alt: block.settings.get_product.title
-                                  }}
-                                {% endif %}
-                              </div>
-                              <div class="info-product">
-                                <a href="{{ block.settings.get_product.url }}" class="name-product text-md fw-medium text-line-clamp-2">
-                                  {{ block.settings.get_product.title }}
-                                </a>
-                                <div class="price-product text-md fw-medium">
-                                  <span class="new-price">{{ block.settings.get_product.price | money }}</span>
-                                  <span class="old-price">{{ block.settings.get_product.compare_at_price | money }}</span>
-                                </div>
-                                <div class="variant-product tf-select">
-                                  <select name="get_variant">
-                                    {% for variant in block.settings.get_product.variants %}
-                                      <option value="{{ variant.id }}" {% if variant == block.settings.get_product.selected_or_first_available_variant %}selected="selected"{% endif %}>
-                                        {{ variant.title }}
-                                      </option>
-                                    {% endfor %}
-                                  </select>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <button type="submit" class="tf-btn btn-primary effect-flash animate-btn btn-special-deal">{{ block.settings.button_text }}</button>
-                        </form>
                     {% endcase %}
                   {% endfor %}
                 </div>
