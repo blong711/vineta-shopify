@@ -99,9 +99,6 @@
             <div class="avatar">
               {% if article.author.image %}
                 {{ article.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
-              {% endif %}
-              {% if article.author.image %}
-                {{ article.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
               {% else %}
                 <img src="{{ 'blog-author-1.jpg' | asset_url }}" 
                      data-src="{{ 'blog-author-1.jpg' | asset_url }}"

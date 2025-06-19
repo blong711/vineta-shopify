@@ -279,7 +279,15 @@
                       <div class="avatar">
                         {%- if section.settings.article_1.author.image -%}
                           {{ section.settings.article_1.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
-                        {%- endif -%}
+                        {% else %}
+                          <img src="{{ 'blog-author-1.jpg' | asset_url }}" 
+                               data-src="{{ 'blog-author-1.jpg' | asset_url }}"
+                               loading="lazy"
+                               class="lazyload"
+                               alt="{{ article.author }}"
+                               width="50"
+                               height="50">
+                        {% endif %}
                       </div>
                       <p class="entry_name">
                         Post by <span class="fw-medium">{{ section.settings.article_1.author | truncate: 12 }}</span>
@@ -344,7 +352,15 @@
                       <div class="avatar">
                         {%- if section.settings.article_2.author.image -%}
                           {{ section.settings.article_2.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
-                        {%- endif -%}
+                        {% else %}
+                          <img src="{{ 'blog-author-1.jpg' | asset_url }}" 
+                               data-src="{{ 'blog-author-1.jpg' | asset_url }}"
+                               loading="lazy"
+                               class="lazyload"
+                               alt="{{ article.author }}"
+                               width="50"
+                               height="50">
+                        {% endif %}
                       </div>
                       <p class="entry_name">
                         Post by <span class="fw-medium">{{ section.settings.article_2.author | truncate: 12 }}</span>
@@ -409,7 +425,15 @@
                       <div class="avatar">
                         {%- if section.settings.article_3.author.image -%}
                           {{ section.settings.article_3.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
-                        {%- endif -%}
+                        {% else %}
+                          <img src="{{ 'blog-author-1.jpg' | asset_url }}" 
+                               data-src="{{ 'blog-author-1.jpg' | asset_url }}"
+                               loading="lazy"
+                               class="lazyload"
+                               alt="{{ article.author }}"
+                               width="50"
+                               height="50">
+                        {% endif %}
                       </div>
                       <p class="entry_name">
                         Post by <span class="fw-medium">{{ section.settings.article_3.author | truncate: 12 }}</span>
@@ -474,7 +498,15 @@
                       <div class="avatar">
                         {%- if section.settings.article_4.author.image -%}
                           {{ section.settings.article_4.author.image | image_url: width: 100 | image_tag: loading: 'lazy', class: 'lazyload' }}
-                        {%- endif -%}
+                        {% else %}
+                          <img src="{{ 'blog-author-1.jpg' | asset_url }}" 
+                               data-src="{{ 'blog-author-1.jpg' | asset_url }}"
+                               loading="lazy"
+                               class="lazyload"
+                               alt="{{ article.author }}"
+                               width="50"
+                               height="50">
+                        {% endif %}
                       </div>
                       <p class="entry_name">
                         Post by <span class="fw-medium">{{ section.settings.article_4.author | truncate: 12 }}</span>
