@@ -52,7 +52,7 @@
           "type": "size_guide",
           "settings": {
             "size_guide_text": "Size Guide",
-            "size_guide_source": "metafield",
+            "size_guide_source": "page",
             "size_guide_page": "size-guide",
             "size_guide_metafield": "size_guide.content"
           }
@@ -78,6 +78,10 @@
             "button_text": "Grab this deal"
           }
         },
+        "sku_block": {
+          "type": "sku",
+          "settings": {}
+        },
         "trust_and_payment": {
           "type": "trust_and_payment",
           "settings": {
@@ -99,10 +103,6 @@
             "free_shipping_threshold": 150,
             "icon_size": 24
           }
-        },
-        "sku_block": {
-          "type": "sku",
-          "settings": {}
         }
       },
       "block_order": [

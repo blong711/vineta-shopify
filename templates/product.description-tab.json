@@ -52,7 +52,7 @@
           "type": "size_guide",
           "settings": {
             "size_guide_text": "Size Guide",
-            "size_guide_source": "metafield",
+            "size_guide_source": "page",
             "size_guide_page": "size-guide",
             "size_guide_metafield": "size_guide.content"
           }
@@ -65,6 +65,10 @@
             "show_ask_question": true,
             "show_share": true
           }
+        },
+        "sku_block": {
+          "type": "sku",
+          "settings": {}
         },
         "trust_and_payment": {
           "type": "trust_and_payment",
@@ -87,10 +91,6 @@
             "free_shipping_threshold": 150,
             "icon_size": 24
           }
-        },
-        "sku_block": {
-          "type": "sku",
-          "settings": {}
         },
         "fbt_4G7Epn": {
           "type": "fbt",
@@ -125,6 +125,7 @@
       ],
       "settings": {
         "layout": "default",
+        "thumbnail_position": "left",
         "width": "boxed",
         "show_sticky_cart": true,
         "enable_video_loop": true,
