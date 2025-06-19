@@ -144,6 +144,7 @@
       <div class="tf-filter-dropdown">
         <span class="title-filter">Filter:</span>
         <div class="meta-dropdown-filter">
+          <!-- Availability Filter -->
           <div class="dropdown dropdown-filter">
             <div class="dropdown-toggle" id="availability" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
               <span class="text-value">Availability</span>
@@ -152,87 +153,89 @@
             <div class="dropdown-menu" aria-labelledby="availability">
               <ul class="filter-group-check">
                 <li class="list-item">
-                  <input type="radio" name="availability" class="tf-check" id="inStock">
-                  <label for="inStock" class="label"><span>In stock</span>&nbsp;<span class="count">({{ collection.products | where: "available", true | size }})</span></label>
+                  <input type="checkbox"
+                    name="filter.v.availability"
+                    value="1"
+                    id="Filter-availability-1"
+                    {% if current_tags contains 'filter.v.availability:1' %}checked{% endif %}
+                    class="filter-checkbox tf-check">
+                  <label for="Filter-availability-1" class="label">
+                    <span>In stock</span>
+                    <span class="count">({{ collection.products | where: "available", true | size }})</span>
+                  </label>
                 </li>
                 <li class="list-item">
-                  <input type="radio" name="availability" class="tf-check" id="outStock">
-                  <label for="outStock" class="label"><span>Out of stock</span>&nbsp;<span class="count">({{ collection.products | where: "available", false | size }})</span></label>
+                  <input type="checkbox"
+                    name="filter.v.availability"
+                    value="0"
+                    id="Filter-availability-2"
+                    {% if current_tags contains 'filter.v.availability:0' %}checked{% endif %}
+                    class="filter-checkbox tf-check">
+                  <label for="Filter-availability-2" class="label">
+                    <span>Out of stock</span>
+                    <span class="count">({{ collection.products | where: "available", false | size }})</span>
+                  </label>
                 </li>
               </ul>
             </div>
           </div>
-          <div class="dropdown dropdown-filter">
-            <div class="dropdown-toggle" id="price" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-              <span class="text-value">Price</span>
-              <span class="icon icon-arr-down"></span>
-            </div>
-            <div class="dropdown-menu" aria-labelledby="price">
-              <div class="widget-price filter-price">
-                <div class="price-val-range" id="price-value-range" data-min="0" data-max="500"></div>
-                <div class="box-value-price">
-                  <span class="text-sm">Price:</span>
-                  <div class="price-box">
-                    <div class="price-val" id="price-min-value" data-currency="$"></div>
-                    <span>-</span>
-                    <div class="price-val" id="price-max-value" data-currency="$"></div>
-                  </div>
+
+          <!-- Dynamic Shopify Filters -->
+          {%- for filter in collection.filters -%}
+            {%- if filter.label != 'Availability' -%}
+              <div class="dropdown dropdown-filter">
+                <div class="dropdown-toggle" id="filter-{{ filter.label | handle }}" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                  <span class="text-value">{{ filter.label }}</span>
+                  <span class="icon icon-arr-down"></span>
+                </div>
+                <div class="dropdown-menu" aria-labelledby="filter-{{ filter.label | handle }}">
+                  {%- case filter.type -%}
+                    {%- when 'boolean' or 'list' -%}
+                      <ul class="filter-group-check">
+                        {%- for filter_value in filter.values -%}
+                          <li class="list-item">
+                            <input type="checkbox"
+                              name="{{ filter_value.param_name }}"
+                              value="{{ filter_value.value }}"
+                              id="Filter-{{ filter.label | escape }}-{{ forloop.index }}"
+                              {% if filter_value.active -%}checked{%- endif %}
+                              {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
+                              class="filter-checkbox tf-check">
+                            <label for="Filter-{{ filter.label | escape }}-{{ forloop.index }}" class="label">
+                              <span>{{ filter_value.label }}</span>
+                              <span class="count">({{ filter_value.count }})</span>
+                            </label>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    {%- when 'price_range' -%}
+                      <div class="widget-price filter-price">
+                        <span class="reset-price">Reset</span>
+                        <div class="price-val-range" id="price-value-range" 
+                          data-min="{{ filter.min_value.value | default: 0 | money_without_currency | round }}"
+                          data-max="{{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}"
+                          data-range-min="{{ filter.range_min | money_without_currency | round }}"
+                          data-range-max="{{ filter.range_max | money_without_currency | round }}"></div>
+                        <div class="box-value-price">
+                          <span class="text-sm">Price:</span>
+                          <div class="price-box">
+                            <div class="price-val" id="price-min-value" data-currency="{{ shop.currency.symbol }}">
+                              {{ filter.min_value.value | default: 0 | money_without_currency | round }}
+                            </div>
+                            <span>-</span>
+                            <div class="price-val" id="price-max-value" data-currency="{{ shop.currency.symbol }}">
+                              {{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}
+                            </div>
+                          </div>
+                        </div>
+                        <input type="hidden" name="filter.v.price.gte" id="price-min-input" value="{{ filter.min_value.value | default: 0 | money_without_currency | round }}">
+                        <input type="hidden" name="filter.v.price.lte" id="price-max-input" value="{{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}">
+                      </div>
+                  {%- endcase -%}
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="dropdown dropdown-filter">
-            <div class="dropdown-toggle" id="color" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-              <span class="text-value">Color</span>
-              <span class="icon icon-arr-down"></span>
-            </div>
-            <div class="dropdown-menu" aria-labelledby="color">
-              <div class="filter-color-box flat-check-list">
-                <div class="check-item color-item color-check"><span class="color bg-yellow"></span><span class="color-text">Yellow</span></div>
-                <div class="check-item color-item color-check"><span class="color bg-dark"></span><span class="color-text">Black</span></div>
-                <div class="check-item color-item color-check line"><span class="color bg-white"></span><span class="color-text">White</span></div>
-                <div class="check-item color-item color-check"><span class="color bg-purple-3"></span><span class="color-text">Purple</span></div>
-                <div class="check-item color-item color-check"><span class="color bg-light-orange"></span><span class="color-text">Light Orange</span></div>
-                <div class="check-item color-item color-check"><span class="color bg-light-pink-4"></span><span class="color-text">Light Pink</span></div>
-                <div class="check-item color-item color-check"><span class="color bg-pink"></span><span class="color-text">Pink</span></div>
-                <div class="check-item color-item color-check"><span class="color bg-dark-green"></span><span class="color-text">Dark Green</span></div>
-                <div class="check-item color-item color-check"><span class="color bg-grey-4"></span><span class="color-text">Grey</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="dropdown dropdown-filter">
-            <div class="dropdown-toggle" id="size" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-              <span class="text-value">Size</span>
-              <span class="icon icon-arr-down"></span>
-            </div>
-            <div class="dropdown-menu" aria-labelledby="size">
-              <div class="filter-size-box flat-check-list">
-                <div class="check-item size-item size-check"><span class="size">XS</span>&nbsp;<span class="count">(10)</span></div>
-                <div class="check-item size-item size-check"><span class="size">S</span>&nbsp;<span class="count">(8)</span></div>
-                <div class="check-item size-item size-check"><span class="size">L</span>&nbsp;<span class="count">(20)</span></div>
-                <div class="check-item size-item size-check"><span class="size">M</span>&nbsp;<span class="count">(10)</span></div>
-                <div class="check-item size-item size-check"><span class="size">XL</span>&nbsp;<span class="count">(20)</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="dropdown dropdown-filter">
-            <div class="dropdown-toggle" id="brand" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-              <span class="text-value">Brand</span>
-              <span class="icon icon-arr-down"></span>
-            </div>
-            <div class="dropdown-menu" aria-labelledby="brand">
-              <ul class="filter-group-check">
-                <li class="list-item">
-                  <input type="radio" name="brand" class="tf-check" id="Vineta">
-                  <label for="Vineta" class="label"><span>Vineta</span>&nbsp;<span class="count">(11)</span></label>
-                </li>
-                <li class="list-item">
-                  <input type="radio" name="brand" class="tf-check" id="Zotac">
-                  <label for="Zotac" class="label"><span>Zotac</span>&nbsp;<span class="count">(20)</span></label>
-                </li>
-              </ul>
-            </div>
-          </div>
+            {%- endif -%}
+          {%- endfor -%}
         </div>
       </div>
     {%- endif -%}
