@@ -12,24 +12,32 @@
     "page-title": {
       "type": "page-title",
       "settings": {
-        "background_image": "shopify://shop_images/page-title_1.jpg",
-        "custom_title": "",
-        "contact_title": "",
-        "about_title": "",
-        "wishlist_title": "",
-        "compare_title": ""
+        "background_image": "shopify://shop_images/page-title_1.jpg"
       }
     },
     "main": {
       "type": "collection",
       "settings": {
+        "width": "boxed",
+        "padding_top": 64,
+        "padding_bottom": 80,
         "filter_type": "drawer",
         "card_style": "1",
         "default_grid_columns": "4",
         "products_per_page": 16,
         "default_view": "grid",
         "default_sort": "best-selling",
-        "pagination_type": "load_more"
+        "pagination_type": "load_more",
+        "show_on_sale": true,
+        "on_sale_title": "On sale",
+        "show_banner": true,
+        "banner_title": "ElevateYour Style",
+        "banner_button_text": "Shop Now",
+        "banner_button_url": "",
+        "collections_title": "Collections",
+        "categories_mode": "all",
+        "categories_link_list": "",
+        "categories_show_count": false
       }
     }
   },
