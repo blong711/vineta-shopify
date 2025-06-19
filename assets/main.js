@@ -544,7 +544,7 @@
     if ($(".tf-dropdown").length > 0) {
       $(".select-item").on("click",function (event) {
         $(this)
-          .closest(".tf-dropdown")
+          .closest(".tf-variant-dropdown")
           .find(".text-sort-value")
           .text($(this).find(".text-value-item").text());
 

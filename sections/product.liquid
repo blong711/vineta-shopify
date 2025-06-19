@@ -447,8 +447,8 @@
                                       <div class="dropdown-menu">
                                         {% for value in option.values %}
                                           <div class="select-item{% if value == option.selected_value %} active{% endif %}"
-                                              data-value="{{ value | handle }}"
-                                              {% if option.name == 'Color' %} data-color="{{ value | handle }}"{% endif %}>
+                                              data-value="{{ value | handle }}" data-option="{{ option.name | handle }}"
+                                              {% if option.name == 'Color' %} data-color="{{ value | handle }}"{% endif %} {% if option.name == 'Size' %} data-size="{{ value | handle }}"{% endif %}>
                                             <span class="text-value-item">{{ value }}</span>
                                           </div>
                                         {% endfor %}
@@ -1235,7 +1235,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const options = {{ product.options | json }};
     
     // Get current size selection
-    const activeSizeBtn = document.querySelector('.size-btn.active');
+    const activeSizeBtn = document.querySelector('.size-btn.active, .select-item.active');
     const selectedSize = activeSizeBtn ? activeSizeBtn.getAttribute('data-value') : null;
     
     // Find variant that matches both color and size
@@ -1258,7 +1258,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Get current selections
     const activeColorBtn = document.querySelector('.color-btn.active');
-    const activeSizeBtn = document.querySelector('.size-btn.active');
+    const activeSizeBtn = document.querySelector('.size-btn.active, .select-item.active');
     const selectedColor = activeColorBtn ? activeColorBtn.getAttribute('data-scroll') : null;
     const selectedSize = activeSizeBtn ? activeSizeBtn.getAttribute('data-value') : null;
     
@@ -1388,7 +1388,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set the active size button based on the selected size
     if (variant && variant.option2) {
       const size = variant.option2.toLowerCase();
-      document.querySelectorAll('.size-btn').forEach(btn => {
+      document.querySelectorAll('.size-btn, .select-item').forEach(btn => {
         if (btn.getAttribute('data-value') && btn.getAttribute('data-value').toLowerCase() === size) {
           btn.classList.add('active');
         } else {
@@ -1413,10 +1413,10 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Handle size variant selection
-  document.querySelectorAll('.size-btn').forEach(button => {
+  document.querySelectorAll('.size-btn, .select-item').forEach(button => {
     button.addEventListener('click', function() {
       const size = this.getAttribute('data-value');
-      document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.size-btn, .select-item').forEach(btn => btn.classList.remove('active'));
       this.classList.add('active');
       
       // Update selected options

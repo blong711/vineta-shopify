@@ -324,7 +324,10 @@
       const sortValue = $(this).data("sort-value");
       $(".select-item").removeClass("active");
       $(this).addClass("active");
-      $(".text-sort-value").text($(this).find(".text-value-item").text());
+      $(this)
+        .closest(".tf-dropdown")
+        .find(".text-sort-value")
+        .text($(this).find(".text-value-item").text());
 
       applyFilter(sortValue, isListActive);
     });
