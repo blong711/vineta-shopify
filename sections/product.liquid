@@ -857,27 +857,7 @@
         <span class="icon-close icon-close-popup" data-bs-dismiss="modal" aria-label="Close"></span>
       </div>
       <div class="tf-rte">
-        <!-- Debug Info - Always show -->
-        <div style="background: #f0f0f0; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc;">
-          <strong>Size Guide Settings Debug:</strong><br>
-          Source: {{ size_guide_block.settings.size_guide_source }}<br>
-          Page Handle: {{ size_guide_block.settings.size_guide_page }}<br>
-          Page Blank: {{ size_guide_block.settings.size_guide_page | blank }}<br>
-          Metafield: {{ size_guide_block.settings.size_guide_metafield }}<br>
-          Metafield Blank: {{ size_guide_block.settings.size_guide_metafield | blank }}
-        </div>
-
-        {% if size_guide_block.settings.size_guide_source == 'page' and size_guide_block.settings.size_guide_page != blank %}
-          <!-- Debug Info (remove after fixing) -->
-          <div style="background: #f0f0f0; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc;">
-            <strong>Debug Info:</strong><br>
-            Page Handle: {{ size_guide_block.settings.size_guide_page }}<br>
-            Page Object: {{ pages[size_guide_block.settings.size_guide_page] | json }}<br>
-            Page Content Length: {{ pages[size_guide_block.settings.size_guide_page].content | size }}<br>
-            Page Title: {{ pages[size_guide_block.settings.size_guide_page].title }}<br>
-            Page URL: {{ pages[size_guide_block.settings.size_guide_page].url }}
-          </div>
-          
+        {% if size_guide_block.settings.size_guide_source == 'page' and size_guide_block.settings.size_guide_page != blank %}     
           {% if pages[size_guide_block.settings.size_guide_page].content != blank %}
             {{ pages[size_guide_block.settings.size_guide_page].content }}
           {% else %}
@@ -890,15 +870,6 @@
           {{ product.metafields[metafield_namespace][metafield_key] }}
         {% else %}
           <p>No size guide content found.</p>
-          <!-- Debug Info (remove after fixing) -->
-          <div style="background: #f0f0f0; padding: 10px; margin-top: 15px; border: 1px solid #ccc;">
-            <strong>Debug Info:</strong><br>
-            Source: {{ size_guide_block.settings.size_guide_source }}<br>
-            Page Setting: {{ size_guide_block.settings.size_guide_page }}<br>
-            Metafield Setting: {{ size_guide_block.settings.size_guide_metafield }}<br>
-            Page Blank: {{ size_guide_block.settings.size_guide_page | blank }}<br>
-            Metafield Blank: {{ size_guide_block.settings.size_guide_metafield | blank }}
-          </div>
         {% endif %}
       </div>
     </div>
