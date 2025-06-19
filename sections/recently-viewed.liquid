@@ -1,7 +1,6 @@
-{%- comment -%}Random Products Section{%- endcomment -%}
-{%- if section.settings.collection != blank -%}
-  {%- assign random_products = section.settings.collection.products | slice: 0, section.settings.products_to_show -%}
-  {%- if random_products.size > 0 -%}
+{%- comment -%}Recently Viewed Section{%- endcomment -%}
+{%- assign recently_viewed_products = product.recently_viewed_products | slice: 0, section.settings.products_to_show -%}
+{%- if recently_viewed_products.size > 0 -%}
 <section class="flat-spacing">
 {% if section.settings.width == 'boxed' %}
   <div class="container">
@@ -37,7 +36,7 @@
         }
       }'>
         <div class="swiper-wrapper">
-          {%- for product in random_products -%}
+          {%- for product in recently_viewed_products -%}
             <div class="swiper-slide">
               {% render 'card-product', product: product %}
             </div>
@@ -53,7 +52,6 @@
 {% endif %}
 </section>
   {%- endif -%}
-{%- endif -%}
 
 {% schema %}
 {
@@ -64,12 +62,6 @@
       "id": "title",
       "label": "Title",
       "default": "Recently Viewed"
-    },
-    {
-      "type": "collection",
-      "id": "collection",
-      "label": "Collection",
-      "info": "Select a collection to display products from"
     },
     {
       "type": "select",
