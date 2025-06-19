@@ -25838,7 +25838,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
     display: flex;
   }
   .xl-pb-70 {
-    padding-bottom: 65px;
+    padding-bottom: 65px !important;
   }
   .offcanvas-search.type-search-product .wrapper-shop {
     grid-template-columns: repeat(3, 1fr);
@@ -26684,7 +26684,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
     line-height: 28px;
   }
   .text-xl {
-    font-size: 18px;
+    font-size: 18px !important;
     line-height: 28px;
   }
   .text-xl-2 {
@@ -27067,7 +27067,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
     display: block;
     position: relative;
     padding-right: 20px;
-    line-height: 24px;
+    line-height: 24px !important;
   }
   .footer-heading-mobile::after {
     position: absolute;
@@ -27597,7 +27597,7 @@ prev.swiper-button-disabled {
 } */
 @media (max-width: 575px) {
   .text-xl {
-      font-size: 16px;
+      font-size: 16px !important;
       line-height: 26px;
   }
 }

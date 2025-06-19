@@ -761,6 +761,31 @@ class Cart {
           const cartResponse = await fetch('/cart.js');
           if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
           const cartData = await cartResponse.json();
+          
+          // Ensure we have complete product data for all items
+          if (cartData.items && cartData.items.length > 0) {
+            await Promise.all(cartData.items.map(async (item) => {
+              try {
+                const productResponse = await fetch(`/products/${item.handle}.js`);
+                if (productResponse.ok) {
+                  const productData = await productResponse.json();
+                  // Add variants data to the cart item
+                  item.variants = productData.variants;
+                }
+              } catch (error) {
+                console.error(`Error fetching product data for ${item.handle}:`, error);
+              }
+              // Make sure images are available
+              if (!item.image) {
+                item.image = item.featured_image?.url || item.product_featured_image || '/no-image.jpg';
+              }
+              // Normalize URL format
+              if (!item.url) {
+                item.url = `/products/${item.handle}`;
+              }
+            }));
+          }
+          
           this.updateCartDisplay(cartData);
           this.updateHeaderCartCount(cartData.item_count);
         } catch (error) {
@@ -788,6 +813,31 @@ class Cart {
           const cartResponse = await fetch('/cart.js');
           if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
           const cartData = await cartResponse.json();
+          
+          // Ensure we have complete product data for all items
+          if (cartData.items && cartData.items.length > 0) {
+            await Promise.all(cartData.items.map(async (item) => {
+              try {
+                const productResponse = await fetch(`/products/${item.handle}.js`);
+                if (productResponse.ok) {
+                  const productData = await productResponse.json();
+                  // Add variants data to the cart item
+                  item.variants = productData.variants;
+                }
+              } catch (error) {
+                console.error(`Error fetching product data for ${item.handle}:`, error);
+              }
+              // Make sure images are available
+              if (!item.image) {
+                item.image = item.featured_image?.url || item.product_featured_image || '/no-image.jpg';
+              }
+              // Normalize URL format
+              if (!item.url) {
+                item.url = `/products/${item.handle}`;
+              }
+            }));
+          }
+          
           this.updateCartDisplay(cartData);
           this.updateHeaderCartCount(cartData.item_count);
         } catch (error) {
@@ -815,6 +865,31 @@ class Cart {
             const cartResponse = await fetch('/cart.js');
             if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
             const cartData = await cartResponse.json();
+            
+            // Ensure we have complete product data for all items
+            if (cartData.items && cartData.items.length > 0) {
+              await Promise.all(cartData.items.map(async (item) => {
+                try {
+                  const productResponse = await fetch(`/products/${item.handle}.js`);
+                  if (productResponse.ok) {
+                    const productData = await productResponse.json();
+                    // Add variants data to the cart item
+                    item.variants = productData.variants;
+                  }
+                } catch (error) {
+                  console.error(`Error fetching product data for ${item.handle}:`, error);
+                }
+                // Make sure images are available
+                if (!item.image) {
+                  item.image = item.featured_image?.url || item.product_featured_image || '/no-image.jpg';
+                }
+                // Normalize URL format
+                if (!item.url) {
+                  item.url = `/products/${item.handle}`;
+                }
+              }));
+            }
+            
             this.updateCartDisplay(cartData);
             this.updateHeaderCartCount(cartData.item_count);
           } catch (error) {
@@ -876,6 +951,31 @@ class Cart {
           const cartResponse = await fetch('/cart.js');
           if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
           const cartData = await cartResponse.json();
+          
+          // Ensure we have complete product data for all items
+          if (cartData.items && cartData.items.length > 0) {
+            await Promise.all(cartData.items.map(async (item) => {
+              try {
+                const productResponse = await fetch(`/products/${item.handle}.js`);
+                if (productResponse.ok) {
+                  const productData = await productResponse.json();
+                  // Add variants data to the cart item
+                  item.variants = productData.variants;
+                }
+              } catch (error) {
+                console.error(`Error fetching product data for ${item.handle}:`, error);
+              }
+              // Make sure images are available
+              if (!item.image) {
+                item.image = item.featured_image?.url || item.product_featured_image || '/no-image.jpg';
+              }
+              // Normalize URL format
+              if (!item.url) {
+                item.url = `/products/${item.handle}`;
+              }
+            }));
+          }
+          
           this.updateCartDisplay(cartData);
           this.updateHeaderCartCount(cartData.item_count);
         } catch (error) {
@@ -919,6 +1019,31 @@ class Cart {
           const cartResponse = await fetch('/cart.js');
           if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
           const cartData = await cartResponse.json();
+          
+          // Ensure we have complete product data for all items
+          if (cartData.items && cartData.items.length > 0) {
+            await Promise.all(cartData.items.map(async (item) => {
+              try {
+                const productResponse = await fetch(`/products/${item.handle}.js`);
+                if (productResponse.ok) {
+                  const productData = await productResponse.json();
+                  // Add variants data to the cart item
+                  item.variants = productData.variants;
+                }
+              } catch (error) {
+                console.error(`Error fetching product data for ${item.handle}:`, error);
+              }
+              // Make sure images are available
+              if (!item.image) {
+                item.image = item.featured_image?.url || item.product_featured_image || '/no-image.jpg';
+              }
+              // Normalize URL format
+              if (!item.url) {
+                item.url = `/products/${item.handle}`;
+              }
+            }));
+          }
+          
           this.updateCartDisplay(cartData);
           this.updateHeaderCartCount(cartData.item_count);
         } catch (error) {

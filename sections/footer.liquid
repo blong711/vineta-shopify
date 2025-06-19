@@ -63,7 +63,7 @@
           {%- case block.type -%}
             {%- when 'contact' -%}
               <div class="footer-col-block s1" {{ block.shopify_attributes }}>
-                <div class="footer-heading footer-heading-mobile"
+                <div class="footer-heading footer-heading-mobile text-xl"
                   style="
                     font-size: {% case section.settings.heading_size %}{% when 'small' %}16px{% when 'medium' %}20px{% when 'large' %}26px{% endcase %};
                     font-weight: {% case section.settings.heading_font_weight %}{% when 'normal' %}400{% when 'medium' %}500{% when 'bold' %}700{% endcase %};
@@ -118,7 +118,7 @@
               </div>
             {%- when 'newsletter' -%}
               <div class="footer-inner-wrap footer-col-block s2" {{ block.shopify_attributes }}>
-                <div class="footer-heading footer-heading-mobile"
+                <div class="footer-heading footer-heading-mobile text-xl"
                   style="
                     font-size: {% case section.settings.heading_size %}{% when 'small' %}16px{% when 'medium' %}20px{% when 'large' %}26px{% endcase %};
                     font-weight: {% case section.settings.heading_font_weight %}{% when 'normal' %}400{% when 'medium' %}500{% when 'bold' %}700{% endcase %};
@@ -162,7 +162,7 @@
                 <div class="footer-inner-wrap s3">
               {%- endif -%}
                   <div class="footer-col-block inner-col" {{ block.shopify_attributes }}>
-                    <div class="footer-heading footer-heading-mobile"
+                    <div class="footer-heading footer-heading-mobile text-xl"
                       style="
                         font-size: {% case section.settings.heading_size %}{% when 'small' %}16px{% when 'medium' %}20px{% when 'large' %}26px{% endcase %};
                         font-weight: {% case section.settings.heading_font_weight %}{% when 'normal' %}400{% when 'medium' %}500{% when 'bold' %}700{% endcase %};
