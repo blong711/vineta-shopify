@@ -790,7 +790,7 @@
                               </div>
                             </div>
                           </div>
-                          <button type="submit" class="tf-btn btn-primary effect-flash">{{ block.settings.button_text }}</button>
+                          <button type="submit" class="tf-btn btn-primary effect-flash animate-btn btn-special-deal">{{ block.settings.button_text }}</button>
                         </form>
                     {% endcase %}
                   {% endfor %}
@@ -2314,6 +2314,93 @@ document.addEventListener('DOMContentLoaded', function() {
       
     });
   }
+
+  // Special Deal Add to Cart
+  document.querySelectorAll('.form-buyX-getY').forEach(form => {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const button = form.querySelector('.btn-special-deal');
+      if (button.classList.contains('loading')) return;
+
+      // Get selected variants
+      const buyVariant = form.querySelector('select[name="buy_variant"]').value;
+      const getVariant = form.querySelector('select[name="get_variant"]').value;
+
+      // You can adjust quantities if needed
+      const items = [
+        { id: buyVariant, quantity: 1 },
+        { id: getVariant, quantity: 1 }
+      ];
+
+      try {
+        button.classList.add('loading');
+        button.textContent = 'Adding...';
+
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items })
+        });
+
+        if (!response.ok) throw new Error('Failed to add items to cart');
+        const cartData = await response.json();
+
+        // Optionally update cart drawer, similar to FBT logic
+        const cartDrawer = document.getElementById('shoppingCart');
+        if (cartDrawer) {
+          const itemsContainer = cartDrawer.querySelector('.tf-mini-cart-items');
+          if (itemsContainer) {
+            itemsContainer.innerHTML = '';
+            cartData.items.forEach(item => {
+              const itemElement = document.createElement('div');
+              itemElement.className = 'tf-mini-cart-item';
+              itemElement.style.border = 'none';
+              itemElement.style.borderBottom = 'none';
+              itemElement.innerHTML = `
+                <div class="tf-mini-cart-image">
+                  <a href="${item.url}">
+                    <img class="lazyload" data-src="${item.image}" src="${item.image}" alt="${item.title}" loading="lazy">
+                  </a>
+                </div>
+                <div class="tf-mini-cart-info">
+                  <div class="d-flex justify-content-between">
+                    <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
+                    <i class="icon icon-close remove" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
+                  </div>
+                  <div class="d-flex gap-10">
+                    <div class="text-xs">${item.variant_title || ''}</div>
+                    <a href="#" class="link edit"><i class="icon-pen"></i></a>
+                  </div>
+                  <div class="tf-mini-cart-item_price">
+                    <p class="price-wrap text-sm fw-medium">
+                      <span class="new-price text-primary">${formatMoney(item.final_price)}</span>
+                    </p>
+                  </div>
+                  <div class="tf-mini-cart-item_quantity">
+                    <div class="wg-quantity small">
+                      <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
+                      <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
+                      <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
+                    </div>
+                  </div>
+                </div>
+              `;
+              itemsContainer.appendChild(itemElement);
+            });
+            // Add event listeners for quantity and remove buttons (reuse FBT logic if needed)
+          }
+        }
+        if (window.cart && window.cart.showCartDrawer) {
+          window.cart.showCartDrawer();
+        }
+      } catch (error) {
+        alert('Failed to add items to cart. Please try again.');
+      } finally {
+        button.classList.remove('loading');
+        button.textContent = form.querySelector('.btn-special-deal').dataset.originalText || button.textContent;
+      }
+    });
+  });
 });
 
 // Function to update header cart count
