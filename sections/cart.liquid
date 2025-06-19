@@ -70,20 +70,20 @@
                               <span class="remove-cart link remove" data-item-id="{{ item.key }}" data-variant-id="{{ item.variant.id }}">{{ 'cart.cart_items.remove_text' | t }}</span>
                         </div>
                       </td>
-                          <td class="tf-cart-item_price text-center" data-cart-title="{{ block.settings.price_column_title }}">
+                          <td class="tf-cart-item_price text-center" data-cart-title="Price">
                         <span class="cart-price price-on-sale text-md fw-medium">{{ item.final_price | money }}</span>
                         {% if item.original_price != item.final_price %}
                           <span class="compare-price">{{ item.original_price | money }}</span>
                         {% endif %}
                       </td>
-                          <td class="tf-cart-item_quantity" data-cart-title="{{ block.settings.quantity_column_title }}">
+                          <td class="tf-cart-item_quantity" data-cart-title="Quantity">
                         <div class="wg-quantity">
                           <button type="button" class="btn-quantity minus" data-variant-id="{{ item.variant.id }}" data-item-id="{{ item.key }}">-</button>
                           <input class="quantity-product" type="text" name="updates[]" value="{{ item.quantity }}" min="0" data-variant-id="{{ item.variant.id }}" data-item-id="{{ item.key }}">
                           <button type="button" class="btn-quantity plus" data-variant-id="{{ item.variant.id }}" data-item-id="{{ item.key }}">+</button>
                         </div>
                       </td>
-                          <td class="tf-cart-item_total text-center" data-cart-title="{{ block.settings.total_column_title }}">
+                          <td class="tf-cart-item_total text-center" data-cart-title="Total">
                         <div class="cart-total total-price text-md fw-medium">{{ item.final_line_price | money }}</div>
                       </td>
                     </tr>

@@ -416,17 +416,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span class="remove-cart link remove" data-item-id="${giftWrapItem.key}" data-variant-id="${giftWrapItem.variant_id}">Remove</span>
                   </div>
                 </td>
-                <td class="tf-cart-item_price text-center">
+                <td class="tf-cart-item_price text-center" data-cart-title="Price">
                   <span class="cart-price price-on-sale text-md fw-medium">${formatMoney(giftWrapItem.final_price)}</span>
                 </td>
-                <td class="tf-cart-item_quantity">
+                <td class="tf-cart-item_quantity" data-cart-title="Quantity">
                   <div class="wg-quantity">
                     <button type="button" class="btn-quantity minus" data-variant-id="${giftWrapItem.variant_id}" data-item-id="${giftWrapItem.key}">-</button>
                     <input class="quantity-product" type="text" name="updates[]" value="1" min="0" data-variant-id="${giftWrapItem.variant_id}" data-item-id="${giftWrapItem.key}">
                     <button type="button" class="btn-quantity plus" data-variant-id="${giftWrapItem.variant_id}" data-item-id="${giftWrapItem.key}">+</button>
                   </div>
                 </td>
-                <td class="tf-cart-item_total text-center">
+                <td class="tf-cart-item_total text-center" data-cart-title="Total">
                   <div class="cart-total total-price text-md fw-medium">${formatMoney(giftWrapItem.final_line_price)}</div>
                 </td>
               `;
@@ -501,9 +501,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                   try {
                     let newQuantity;
-                    if (this.classList.contains('btn-minus')) {
+                    if (this.classList.contains('minus')) {
                       newQuantity = currentValue > 1 ? currentValue - 1 : 0;
-                    } else if (this.classList.contains('btn-plus')) {
+                    } else if (this.classList.contains('plus')) {
                       newQuantity = currentValue + 1;
                     }
 
