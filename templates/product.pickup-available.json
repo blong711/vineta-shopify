@@ -52,7 +52,7 @@
           "type": "size_guide",
           "settings": {
             "size_guide_text": "Size Guide",
-            "size_guide_source": "metafield",
+            "size_guide_source": "page",
             "size_guide_page": "size-guide",
             "size_guide_metafield": "size_guide.content"
           }
@@ -74,6 +74,10 @@
             "show_share": true
           }
         },
+        "sku_block": {
+          "type": "sku",
+          "settings": {}
+        },
         "trust_and_payment": {
           "type": "trust_and_payment",
           "settings": {
@@ -87,14 +91,14 @@
             "delivery_icon": "icon-car2",
             "delivery_label": "Estimated delivery time:",
             "delivery_time": "3-5 days international",
+            "show_delivery_info": true,
             "shipping_icon": "icon-shipping3",
             "shipping_label": "Free shipping on",
-            "free_shipping_text": "all orders over $150"
+            "free_shipping_text": "all orders over $150",
+            "show_free_shipping": true,
+            "free_shipping_threshold": 150,
+            "icon_size": 24
           }
-        },
-        "sku_block": {
-          "type": "sku",
-          "settings": {}
         },
         "fbt_4G7Epn": {
           "type": "fbt",
@@ -130,6 +134,8 @@
       ],
       "settings": {
         "layout": "default",
+        "thumbnail_position": "left",
+        "width": "boxed",
         "show_sticky_cart": true,
         "enable_video_loop": true,
         "enable_variant_by_image": true,
@@ -137,7 +143,8 @@
         "show_slider_nav": true,
         "padding_top": 0,
         "padding_bottom": 100,
-        "padding_mobile_rate": 50
+        "padding_mobile_rate": 50,
+        "enable_image_zoom": true
       }
     },
     "product-details": {
@@ -169,6 +176,7 @@
         "return_policies_bWH7Qn"
       ],
       "settings": {
+        "width": "boxed",
         "layout": "accordion"
       }
     },
