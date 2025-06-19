@@ -130,22 +130,17 @@
               {% if block.type == 'features' %}
                 <div class="fl-iconbox wow fadeInUp" {{ block.shopify_attributes }}>
               <div dir="ltr" class="swiper tf-swiper sw-auto" data-swiper='{
-                "slidesPerView": {{ block.settings.slides_per_view_mobile }},
-                "spaceBetween": {{ block.settings.space_between_mobile }},
+                "slidesPerView": 1,
+                "spaceBetween": 12,
                 "speed": {{ block.settings.transition_speed }},
                 "observer": true,
                 "observeParents": true,
                 "pagination": {% if block.settings.show_pagination %}{ "el": ".sw-pagination-iconbox", "clickable": true }{% else %}false{% endif %},
                 "autoplay": {% if block.settings.autoplay %}{ "delay": {{ block.settings.autoplay_speed }} }{% else %}false{% endif %},
                 "breakpoints": {
-                  "575": { 
-                    "slidesPerView": {{ block.settings.slides_per_view_tablet }}, 
-                    "spaceBetween": {{ block.settings.space_between_mobile }}
-                  },
-                  "768": { 
-                    "slidesPerView": {{ block.settings.slides_per_view_desktop }}, 
-                    "spaceBetween": {{ block.settings.space_between_desktop }}
-                  }
+                  "575": { "slidesPerView": 2, "spaceBetween": 12, "slidesPerGroup": 2}, 
+                  "768": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3},
+                  "1200": { "slidesPerView": "auto", "spaceBetween": 24}
                 }
               }'>
                 <div class="swiper-wrapper">
@@ -162,7 +157,7 @@
                   </div>
                       {% endif %}
                       {% if block.settings.feature2_title != blank %}
-                  <div class="swiper-slide">a
+                  <div class="swiper-slide">
                     <div class="tf-icon-box justify-content-center justify-content-sm-start style-3">
                       <div class="box-icon">
                               <i class="icon {{ block.settings.feature2_icon }}"></i>
@@ -488,51 +483,6 @@
         {
           "type": "header",
           "content": "Slider Settings"
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_mobile",
-          "min": 1,
-          "max": 3,
-          "step": 1,
-          "label": "Slides per view (Mobile)",
-          "default": 1
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_tablet",
-          "min": 1,
-          "max": 4,
-          "step": 1,
-          "label": "Slides per view (Tablet)",
-          "default": 2
-        },
-        {
-          "type": "range",
-          "id": "slides_per_view_desktop",
-          "min": 1,
-          "max": 5,
-          "step": 1,
-          "label": "Slides per view (Desktop)",
-          "default": 3
-        },
-        {
-          "type": "range",
-          "id": "space_between_mobile",
-          "min": 0,
-          "max": 40,
-          "step": 10,
-          "label": "Space between slides (Mobile)",
-          "default": 10
-        },
-        {
-          "type": "range",
-          "id": "space_between_desktop",
-          "min": 0,
-          "max": 60,
-          "step": 10,
-          "label": "Space between slides (Desktop)",
-          "default": 20
         },
         {
           "type": "range",
