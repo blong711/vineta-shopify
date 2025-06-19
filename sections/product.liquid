@@ -6,30 +6,30 @@
   - Add to cart functionality
 {% endcomment %}
 <div class="breadcrumb-sec">
-  <div class="container">
-    <div class="breadcrumb-wrap">
-      <div class="breadcrumb-list">
-          <a class="breadcrumb-item" href="{{ routes.root_url }}" style="font-size: 14px;">Home</a>
-          {% if product.collections.size > 0 %}
-              <div class="breadcrumb-item dot" style="font-size: 14px;"><span></span></div>
-              <a class="breadcrumb-item" style="font-size: 14px;" href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
-          {% endif %}
-          <div class="breadcrumb-item dot" style="font-size: 14px;"><span></span></div>
-          <div class="breadcrumb-item current" style="font-size: 14px;">{{ product.title }}</div>
-      </div>
-      <div class="breadcrumb-prev-next">
-          {% if product.previous_product %}
-              <a href="{{ product.previous_product.url }}" class="breadcrumb-prev"><i class="icon icon-arr-left"></i></a>
-          {% endif %}
-          {% if product.collections.size > 0 %}
-              <a href="{{ product.collections.first.url }}" class="breadcrumb-back"><i class="icon icon-shop"></i></a>
-          {% endif %}
-          {% if product.next_product %}
-              <a href="{{ product.next_product.url }}" class="breadcrumb-next"><i class="icon icon-arr-right2"></i></a>
-          {% endif %}
-      </div>
+    <div class="container">
+          <div class="breadcrumb-wrap">
+            <div class="breadcrumb-list">
+                <a class="breadcrumb-item" href="{{ routes.root_url }}" style="font-size: 14px;">Home</a>
+                {% if product.collections.size > 0 %}
+                    <div class="breadcrumb-item dot" style="font-size: 14px;"><span></span></div>
+                    <a class="breadcrumb-item" style="font-size: 14px;" href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
+                {% endif %}
+                <div class="breadcrumb-item dot" style="font-size: 14px;"><span></span></div>
+                <div class="breadcrumb-item current" style="font-size: 14px;">{{ product.title }}</div>
+            </div>
+            <div class="breadcrumb-prev-next">
+                {% if product.previous_product %}
+                    <a href="{{ product.previous_product.url }}" class="breadcrumb-prev"><i class="icon icon-arr-left"></i></a>
+                {% endif %}
+                {% if product.collections.size > 0 %}
+                    <a href="{{ product.collections.first.url }}" class="breadcrumb-back"><i class="icon icon-shop"></i></a>
+                {% endif %}
+                {% if product.next_product %}
+                    <a href="{{ product.next_product.url }}" class="breadcrumb-next"><i class="icon icon-arr-right2"></i></a>
+                {% endif %}
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 <section class="flat-single-product" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; max-width: {{ section.settings.width }}px;">
   <style>
@@ -105,7 +105,7 @@
                             {% case media.media_type %}
                               {% when 'image' %}
                                 <img class="lazyload"
-                                  src="{{ media | img_url: width: 100 }}"
+                                  src="{{ media | image_url: width: 100 }}"
                                   alt="{{ media.alt | default: product.title }}"
                                   width="100"
                                   height="150">
@@ -114,7 +114,7 @@
                                   <i class="icon icon-video"></i>
                                 </div>
                                 <img class="lazyload"
-                                  src="{{ media.preview_image | img_url: width: 100 }}"
+                                  src="{{ media.preview_image | image_url: width: 100 }}"
                                   alt="Video thumbnail"
                                   width="100"
                                   height="150">
@@ -123,7 +123,7 @@
                                   <i class="icon icon-btn3d"></i>
                                 </div>
                                 <img class="lazyload"
-                                  src="{{ media.preview_image | img_url: width: 100 }}"
+                                  src="{{ media.preview_image | image_url: width: 100 }}"
                                   alt="3D model thumbnail"
                                   width="100"
                                   height="150">
@@ -142,7 +142,7 @@
                           {% case media.media_type %}
                             {% when 'image' %}
                               <img class="tf-image-zoom-inner lazyload"
-                                src="{{ media | img_url: width: 800 }}"
+                                src="{{ media | image_url: width: 800 }}"
                                 alt="{{ media.alt | default: product.title }}"
                                 width="auto"
                                 height="auto">
@@ -151,7 +151,7 @@
                                 <video controls muted
                                   width="400"
                                   height="600"
-                                  poster="{{ media.preview_image | img_url: width: 800 }}"
+                                  poster="{{ media.preview_image | image_url: width: 800 }}"
                                   {% if section.settings.enable_video_loop %}loop{% endif %}
                                   {% if section.settings.enable_video_autoplay %}autoplay{% endif %}>
                                   {% for source in media.sources %}
@@ -168,7 +168,7 @@
                                     alt="{{ media.alt | default: product.title }}"
                                     ar
                                     camera-controls
-                                    poster="{{ media.preview_image | img_url: width: 800 }}"
+                                    poster="{{ media.preview_image | image_url: width: 800 }}"
                                     class="tf-model-viewer-ui disabled" tabindex="1"
                                     data-js-focus-visible="" ar-status="not-presenting"
                                     >
@@ -199,7 +199,7 @@
                             {% case media.media_type %}
                               {% when 'image' %}
                                 <img class="lazyload"
-                                  src="{{ media | img_url: width: 100 }}"
+                                  src="{{ media | image_url: width: 100 }}"
                                   alt="{{ media.alt | default: product.title }}"
                                   width="100"
                                   height="150">
@@ -208,7 +208,7 @@
                                   <i class="icon icon-video"></i>
                                 </div>
                                 <img class="lazyload"
-                                  src="{{ media.preview_image | img_url: width: 100 }}"
+                                  src="{{ media.preview_image | image_url: width: 100 }}"
                                   alt="Video thumbnail"
                                   width="100"
                                   height="150">
@@ -217,7 +217,7 @@
                                   <i class="icon icon-btn3d"></i>
                                 </div>
                                 <img class="lazyload"
-                                  src="{{ media.preview_image | img_url: width: 100 }}"
+                                  src="{{ media.preview_image | image_url: width: 100 }}"
                                   alt="3D model thumbnail"
                                   width="100"
                                   height="150">
@@ -233,7 +233,7 @@
           {% elsif section.settings.layout == 'grid' %}
             <div class="wrapper-gallery-scroll flat-single-grid" id="gallery-started">
                 {% for media in product.media %}
-                  <a href="{{ media | img_url: width: 800 }}" 
+                  <a href="{{ media | image_url: width: 800 }}" 
                      data-scroll="{{ color | handle }}" 
                      target="_blank" 
                      class="item item-scroll-target" 
@@ -242,9 +242,9 @@
                     {% case media.media_type %}
                       {% when 'image' %}
                         <img class="tf-image-zoom lazyload" 
-                             data-zoom="{{ media | img_url: width: 1200 }}"
-                             data-src="{{ media | img_url: width: 400 }}"
-                             src="{{ media | img_url: width: 200 }}"
+                             data-zoom="{{ media | image_url: width: 1200 }}"
+                             data-src="{{ media | image_url: width: 400 }}"
+                             src="{{ media | image_url: width: 200 }}"
                              alt="{{ media.alt | default: product.title }}"
                              width="{{ media.width }}"
                              height="{{ media.height }}">
@@ -253,9 +253,9 @@
                           <i class="icon icon-video"></i>
                         </div>
                         <img class="tf-image-zoom lazyload"
-                             data-zoom="{{ media.preview_image | img_url: width: 1200 }}"
-                             data-src="{{ media.preview_image | img_url: width: 400 }}"
-                             src="{{ media.preview_image | img_url: width: 200 }}"
+                             data-zoom="{{ media.preview_image | image_url: width: 1200 }}"
+                             data-src="{{ media.preview_image | image_url: width: 400 }}"
+                             src="{{ media.preview_image | image_url: width: 200 }}"
                              alt="Video thumbnail"
                              width="{{ media.preview_image.width }}"
                              height="{{ media.preview_image.height }}">
@@ -264,9 +264,9 @@
                           <i class="icon icon-btn3d"></i>
                         </div>
                         <img class="tf-image-zoom lazyload"
-                             data-zoom="{{ media.preview_image | img_url: width: 1200 }}"
-                             data-src="{{ media.preview_image | img_url: width: 400 }}"
-                             src="{{ media.preview_image | img_url: width: 200 }}"
+                             data-zoom="{{ media.preview_image | image_url: width: 1200 }}"
+                             data-src="{{ media.preview_image | image_url: width: 400 }}"
+                             src="{{ media.preview_image | image_url: width: 200 }}"
                              alt="3D model thumbnail"
                              width="{{ media.preview_image.width }}"
                              height="{{ media.preview_image.height }}">
@@ -277,7 +277,7 @@
           {% elsif section.settings.layout == 'stacked' %}
             <div class="wrapper-gallery-scroll flat-single-grid flat-single-stacked" id="gallery-started">
                 {% for media in product.media %}
-                  <a href="{{ media | img_url: width: 800 }}" 
+                  <a href="{{ media | image_url: width: 800 }}" 
                      data-scroll="{{ color | handle }}" 
                      target="_blank" 
                      class="item item-scroll-target" 
@@ -286,9 +286,9 @@
                     {% case media.media_type %}
                       {% when 'image' %}
                         <img class="tf-image-zoom lazyload" 
-                             data-zoom="{{ media | img_url: width: 1200 }}"
-                             data-src="{{ media | img_url: width: 400 }}"
-                             src="{{ media | img_url: width: 200 }}"
+                             data-zoom="{{ media | image_url: width: 1200 }}"
+                             data-src="{{ media | image_url: width: 400 }}"
+                             src="{{ media | image_url: width: 200 }}"
                              alt="{{ media.alt | default: product.title }}"
                              width="{{ media.width }}"
                              height="{{ media.height }}">
@@ -297,9 +297,9 @@
                           <i class="icon icon-video"></i>
                         </div>
                         <img class="tf-image-zoom lazyload"
-                             data-zoom="{{ media.preview_image | img_url: width: 1200 }}"
-                             data-src="{{ media.preview_image | img_url: width: 400 }}"
-                             src="{{ media.preview_image | img_url: width: 200 }}"
+                             data-zoom="{{ media.preview_image | image_url: width: 1200 }}"
+                             data-src="{{ media.preview_image | image_url: width: 400 }}"
+                             src="{{ media.preview_image | image_url: width: 200 }}"
                              alt="Video thumbnail"
                              width="{{ media.preview_image.width }}"
                              height="{{ media.preview_image.height }}">
@@ -308,9 +308,9 @@
                           <i class="icon icon-btn3d"></i>
                         </div>
                         <img class="tf-image-zoom lazyload"
-                             data-zoom="{{ media.preview_image | img_url: width: 1200 }}"
-                             data-src="{{ media.preview_image | img_url: width: 400 }}"
-                             src="{{ media.preview_image | img_url: width: 200 }}"
+                             data-zoom="{{ media.preview_image | image_url: width: 1200 }}"
+                             data-src="{{ media.preview_image | image_url: width: 400 }}"
+                             src="{{ media.preview_image | image_url: width: 200 }}"
                              alt="3D model thumbnail"
                              width="{{ media.preview_image.width }}"
                              height="{{ media.preview_image.height }}">
@@ -415,7 +415,6 @@
                     {% endcase %}
                   {% endfor %}
                   <!-- End Countdown Timer Block -->
-                  </div>
 
                   <div class="tf-product-info-variant">
                       {% if product.metafields.affiliate.url %}
@@ -499,27 +498,27 @@
                       {% endif %}
                   </div>
                   {% unless product.metafields.affiliate.url %}
-                  <div class="tf-product-total-quantity">
-                    {% if product.available %}
-                        <div class="group-btn">
-                          <div class="wg-quantity">
-                            <button class="btn-quantity minus-btn">-</button>
-                            <input class="quantity-product font-4" type="text" name="number" value="1" min="1">
-                            <button class="btn-quantity plus-btn">+</button>
+                    <div class="tf-product-total-quantity">
+                      {% if product.available %}
+                          <div class="group-btn">
+                            <div class="wg-quantity">
+                              <button class="btn-quantity minus-btn">-</button>
+                              <input class="quantity-product font-4" type="text" name="number" value="1" min="1">
+                              <button class="btn-quantity plus-btn">+</button>
+                            </div>
+                            <a href="javascript:void(0);" 
+                              class="tf-btn hover-primary add-to-cart" 
+                              data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                              data-quantity="1"
+                              aria-label="Add to cart">Add to cart</a>
                           </div>
-                          <a href="javascript:void(0);" 
-                            class="tf-btn hover-primary add-to-cart" 
-                            data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-                            data-quantity="1"
-                            aria-label="Add to cart">Add to cart</a>
-                        </div>
-                        <a href="#" class="tf-btn btn-primary w-100 animate-btn">Buy it now</a>
-                        <a href="/checkout" style="font-size: 14px" class="more-choose-payment link">More payment options</a>
-                    {% else %}
-                      <button class="tf-btn btn-out-stock w-100">This product is currently unavailable</button>
-                    {% endif %}
-                  </div>
-                {% endunless %}
+                          <a href="#" class="tf-btn btn-primary w-100 animate-btn">Buy it now</a>
+                          <a href="/checkout" style="font-size: 14px" class="more-choose-payment link">More payment options</a>
+                      {% else %}
+                        <button class="tf-btn btn-out-stock w-100">This product is currently unavailable</button>
+                      {% endif %}
+                    </div>
+                  {% endunless %}
                   {% unless product.available %}
                     <form class="form-out-stock" id="notify-stock-form" action="#">
                       <div class="box-title-out-stock">
@@ -686,7 +685,7 @@
                                         <input type="checkbox"{% if forloop.first %} checked="checked"{% endif %} class="tf-check" data-product-id="{{ related_product.id }}">
                                       </div>
                                       <a href="{{ related_product.url }}" class="bundle-image">
-                                        <img src="{{ related_product.featured_image | img_url: width: 200 }}" alt="{{ related_product.title }}" width="200" height="200">
+                                        <img src="{{ related_product.featured_image | image_url: width: 200 }}" alt="{{ related_product.title }}" width="200" height="200">
                                       </a>
                                       <div class="bundle-info">
                                         <div class="bundle-title text-sm fw-medium">
@@ -736,7 +735,7 @@
                               <div class="ribbon effect-flash text-md">Buy {{ block.settings.buy_quantity }}</div>
                               <div class="img-product">
                                 {% if block.settings.buy_product != blank %}
-                                  {{ block.settings.buy_product.featured_image | img_url: width: 200 | image_tag:
+                                  {{ block.settings.buy_product.featured_image | image_url: width: 200 | image_tag:
                                     loading: 'lazy',
                                     class: 'lazyload',
                                     alt: block.settings.buy_product.title
@@ -759,12 +758,12 @@
                                 </div>
                               </div>
                             </div>
-                            <img class="arrow" src="{{ 'arr.png' | asset_url }}" alt="" width="20" height="20">
+                            <img class="arrow" src="{{ 'arr.png' | asset_url }}" alt="" width="24" height="24">
                             <div class="item-product">
                               <div class="ribbon effect-flash text-md">Get {{ block.settings.get_quantity }} Off {{ block.settings.discount_percent }}%</div>
                               <div class="img-product">
                                 {% if block.settings.get_product != blank %}
-                                  {{ block.settings.get_product.featured_image | img_url: width: 200 | image_tag:
+                                  {{ block.settings.get_product.featured_image | image_url: width: 200 | image_tag:
                                     loading: 'lazy',
                                     class: 'lazyload',
                                     alt: block.settings.get_product.title
@@ -802,6 +801,7 @@
         </div>
       </div>
     </div>
+  </div>
 
   {% if section.settings.show_sticky_cart %}
     <div class="tf-sticky-btn-atc">
@@ -809,7 +809,7 @@
         <div class="tf-height-observer w-100 d-flex align-items-center">
           <div class="tf-sticky-atc-product d-flex align-items-center">
             <div class="tf-sticky-atc-img">
-              <img class="lazyload" data-src="{{ product.featured_image | img_url: width: 100 }}" src="{{ product.featured_image | img_url: width: 50 }}" alt="{{ product.title }}" width="100" height="100">
+              <img class="lazyload" data-src="{{ product.featured_image | image_url: width: 100 }}" src="{{ product.featured_image | image_url: width: 50 }}" alt="{{ product.title }}" width="100" height="100">
             </div>
             <div class="tf-sticky-atc-title fw-5 d-xl-block d-none">{{ product.title }}</div>
           </div>
@@ -2403,9 +2403,31 @@ function updateMainAddToCartButton(variant) {
       "info": "Choose the position of thumbnails in default layout"
     },
     {
+      "type": "select",
+      "id": "width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "boxed"
+    },
+    {
       "type": "checkbox",
       "id": "show_sticky_cart",
       "label": "Show Sticky Add to Cart",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_video_loop",
+      "label": "Enable Video Looping",
       "default": true
     },
     {
