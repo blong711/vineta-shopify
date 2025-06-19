@@ -572,6 +572,70 @@
           "accept_button_text": "Accept Cookies",
           "expiry_days": "30"
         }
+      },
+      "pickup-available": {
+        "type": "pickup-available",
+        "blocks": {
+          "store_location_e3hdAq": {
+            "type": "store_location",
+            "settings": {
+              "store_name": "Sydney",
+              "store_display_name": "Sydney Store",
+              "ready_time": "24 hours",
+              "address_line_1": "15 George st",
+              "address_line_2": "",
+              "city_state": "Sydney, NSW 2000",
+              "country": "Australia",
+              "phone": "+1 234 4567",
+              "directions_link": "shopify://pages/store-location",
+              "directions_text": "Get direction"
+            }
+          },
+          "store_location_gAihyG": {
+            "type": "store_location",
+            "settings": {
+              "store_name": "Melbourne",
+              "store_display_name": "Melboure Store",
+              "ready_time": "24 hours",
+              "address_line_1": "15 Geogre st",
+              "address_line_2": "",
+              "city_state": "Sydney, NSW 2000",
+              "country": "Australia",
+              "phone": "+1 234 4567",
+              "directions_link": "shopify://pages/store-location",
+              "directions_text": "Get direction"
+            }
+          },
+          "store_location_3RhdGx": {
+            "type": "store_location",
+            "settings": {
+              "store_name": "Brisbane",
+              "store_display_name": "Brisbane Store",
+              "ready_time": "24 hours",
+              "address_line_1": "15 George st",
+              "address_line_2": "",
+              "city_state": "Sydney, NSW 2000",
+              "country": "Australia",
+              "phone": "+1 234 4567",
+              "directions_link": "shopify://pages/store-location",
+              "directions_text": "Get direction"
+            }
+          }
+        },
+        "block_order": [
+          "store_location_e3hdAq",
+          "store_location_gAihyG",
+          "store_location_3RhdGx"
+        ],
+        "settings": {
+          "show_pickup_info": true,
+          "default_store_name": "our store",
+          "default_ready_time": "24 hours",
+          "check_availability_text": "Check availability",
+          "popup_title": "Pickup Available",
+          "margin_top": 0,
+          "margin_bottom": 0
+        }
       }
     },
     "content_for_index": [],
