@@ -48,9 +48,10 @@
 {% endschema %}
 
 {% if section.settings.enable_cookie_banner %}
-  <div class="cookie-banner" id="cookie-banner" style="display: none;" data-expiry-days="{{ section.settings.expiry_days }}">
+  <div class="cookie-banner sys-cookies" id="cookie-banner" style="display: none;" 
+       data-configs='{"day_next": "{{ section.settings.expiry_days }}", "show": "1"}'>
     <div class="overplay"></div>
-    <div class="content">
+    <div class="content" id="drawerCookies">
       <p class="text-md">{{ 'cookie.message' | t }}</p>
       <div class="button-group">
         {% if section.settings.privacy_link %}
@@ -58,8 +59,11 @@
             {{ 'cookie.privacy_button' | t }}
           </a>
         {% endif %}
-        <button id="accept-cookie" class="accept-button btn-out-line-white btn-submit-total tf-btn">
+        <button id="accept-cookie" class="accept-button btn-out-line-white btn-submit-total tf-btn hdt-pp_cookies__accept-btn">
           {{ 'cookie.accept_button' | t }}
+        </button>
+        <button class="btn-out-line-white btn-submit-total tf-btn hdt-pp_cookies__decline-btn">
+          {{ 'cookie.decline_button' | t }}
         </button>
       </div>
     </div>
@@ -67,44 +71,105 @@
 {% endif %}
 
 {% javascript %}
-  document.addEventListener('DOMContentLoaded', function() {
-    const cookieBanner = document.getElementById('cookie-banner');
-    const acceptButton = document.getElementById('accept-cookie');
-    
-    // Only proceed if the banner exists (meaning it's enabled)
-    if (!cookieBanner) return;
-    
-    const cookieName = 'cookie_consent';
-    const expiryDays = parseInt(cookieBanner.dataset.expiryDays);
+// Global cookie functions
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
 
-    // Check if cookie consent was already given
-    function getCookie(name) {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
+function setCookie(name, value, days) {
+  const date = new Date();
+  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+  const expires = `expires=${date.toUTCString()}`;
+  document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax`;
+}
+
+class cookiesBar extends HTMLElement {
+  constructor() {
+    super();
+    this.cookies = JSON.parse(this.getAttribute("configs"));
+    this.cookies.cookiesName = "theme4:cookies";
+    this.cookies.drawer = this.querySelector("#drawerCookies");
+    this.isShowCookiesAll = (this.cookies.show == '1');
+    this.acceptBtn = this.cookies.drawer.querySelector(".hdt-pp_cookies__accept-btn");
+    this.declineBtn = this.cookies.drawer.querySelector(".hdt-pp_cookies__decline-btn");
+    this.loadCookieBanner(this);
+    let self = this;
+    this.acceptBtn?.addEventListener("click", this.handleAccept.bind(this));
+    this.declineBtn?.addEventListener("click", this.handleDecline.bind(this));
+    if (Shopify.designMode) {
+      document.addEventListener('shopify:section:select', (event) => {
+        const cookiesSelect = event.target.classList.contains('sys-cookies');
+        if (!cookiesSelect) return;
+        self.showCookiesBanner();
+      })
+      document.addEventListener('shopify:section:deselect', (event) => {
+        const cookiesSelect = event.target.classList.contains('sys-cookies');
+        if (!cookiesSelect) return;
+        self.hideCookiesBanner();
+      })
     }
-
-    // Set cookie with expiry
-    function setCookie(name, value, days) {
-      const date = new Date();
-      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-      const expires = `expires=${date.toUTCString()}`;
-      document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax`;
+  }
+  
+  handleAccept() {
+    if (this.isShowCookiesAll) {
+      setCookie(this.cookies.cookiesName, 'accepted', parseInt(this.cookies.day_next));
     }
+    window.Shopify.customerPrivacy.setTrackingConsent(true, this.hideCookiesBanner.bind(this));
+  }
 
-    // Show banner if no consent cookie exists
-    if (!getCookie(cookieName)) {
-      cookieBanner.style.display = 'block';
+  handleDecline() {
+    if (this.isShowCookiesAll) {
+      setCookie(this.cookies.cookiesName, 'accepted', parseInt(this.cookies.day_next));
+    }
+    window.Shopify.customerPrivacy.setTrackingConsent(false, this.hideCookiesBanner.bind(this));
+  }
+
+  showCookiesBanner() {
+    this.style.display = 'block';
+    document.querySelector("html").classList.remove("no-scroll");
+  }
+
+  hideCookiesBanner() {
+    this.style.display = 'none';
+  }
+
+  initCookieBanner() {
+    const userCanBeTracked = window.Shopify.customerPrivacy.userCanBeTracked();
+    const userTrackingConsent = window.Shopify.customerPrivacy.getTrackingConsent();
+
+    if ((!userCanBeTracked && userTrackingConsent === 'no_interaction') || this.isShowCookiesAll) {
+      if (!Shopify.designMode) {
+        this.showCookiesBanner();
+      }
+    }
+  }
+
+  loadCookieBanner() {
+    let self = this;
+    if (!this.cookies.drawer) return;
+    this.cookies.day_next = this.cookies.day_next || 60;
+    this.isShowCookiesAll = (this.cookies.show == '1');
+    if (getCookie(this.cookies.cookiesName) == 'accepted' || this.style.display === 'block') return;
+    if (window.Shopify.customerPrivacy) {
+      self.initCookieBanner();
     } else {
-      cookieBanner.style.display = 'none';
-    }
-
-    // Handle accept button click
-    if (acceptButton) {
-      acceptButton.addEventListener('click', function() {
-        setCookie(cookieName, 'accepted', expiryDays);
-        cookieBanner.style.display = 'none';
+      window.Shopify.loadFeatures([
+        {
+          name: 'consent-tracking-api',
+          version: '0.1',
+        }
+      ],
+      function (error) {
+        if (error) {
+          throw error;
+        }
+        self.initCookieBanner();
       });
     }
-  });
+  }
+}
+
+customElements.define('sys-cookies', cookiesBar);
 {% endjavascript %}
