@@ -2,11 +2,11 @@
 <section class="tf-page-title" {% if section.settings.background_image != blank %}style="background-image: url('{{ section.settings.background_image | image_url }}');"{% endif %}>
   <div class="container">
     <div class="box-title text-center">
-      <h4 class="title">{{ search.results_count }} search results for "{{ search.terms }}"</h4>
+      <h4 class="title">{{ 'general.search.results_with_count' | t: count: search.results_count, terms: search.terms }}</h4>
       <div class="breadcrumb-list">
-        <a style="font-size: 14px;" class="breadcrumb-item" href="/">Home</a>
+        <a style="font-size: 14px;" class="breadcrumb-item" href="/">{{ 'general.breadcrumbs.home' | t }}</a>
         <div class="breadcrumb-item dot"><span></span></div>
-        <span style="font-size: 14px;" class="breadcrumb-item current">Search Results</span> <br>
+        <span style="font-size: 14px;" class="breadcrumb-item current">{{ 'templates.search.title' | t }}</span> <br>
       </div>
     </div>
   </div>
@@ -17,24 +17,40 @@
     <div class="tf-shop-control">
       <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
         <div class="btn-select">
-          <span class="text-sort-value">{{ search.sort_by | default: 'best-selling' | replace: '-', ' ' | capitalize }}</span>
+          {%- assign sort_by = search.sort_by | default: 'best-selling' -%}
+          <span class="text-sort-value">
+            {%- case sort_by -%}
+              {%- when 'best-selling' -%}
+                {{ 'collections.sorting.best_selling' | t }}
+              {%- when 'title-ascending' -%}
+                {{ 'collections.sorting.az' | t }}
+              {%- when 'title-descending' -%}
+                {{ 'collections.sorting.za' | t }}
+              {%- when 'price-ascending' -%}
+                {{ 'collections.sorting.price_ascending' | t }}
+              {%- when 'price-descending' -%}
+                {{ 'collections.sorting.price_descending' | t }}
+              {%- else -%}
+                {{ sort_by | replace: '-', ' ' | capitalize }}
+            {%- endcase -%}
+          </span>
           <span class="icon icon-arr-down"></span>
         </div>
         <div class="dropdown-menu">
-          <div class="select-item{% if search.sort_by == 'best-selling' %} active{% endif %}" data-sort-value="best-selling">
-            <span class="text-value-item">Best selling</span>
+          <div class="select-item{% if search.sort_by == 'best-selling' or search.sort_by == nil %} active{% endif %}" data-sort-value="best-selling">
+            <span class="text-value-item">{{ 'collections.sorting.best_selling' | t }}</span>
           </div>
           <div class="select-item{% if search.sort_by == 'title-ascending' %} active{% endif %}" data-sort-value="title-ascending">
-            <span class="text-value-item">Alphabetically, A-Z</span>
+            <span class="text-value-item">{{ 'collections.sorting.az' | t }}</span>
           </div>
           <div class="select-item{% if search.sort_by == 'title-descending' %} active{% endif %}" data-sort-value="title-descending">
-            <span class="text-value-item">Alphabetically, Z-A</span>
+            <span class="text-value-item">{{ 'collections.sorting.za' | t }}</span>
           </div>
           <div class="select-item{% if search.sort_by == 'price-ascending' %} active{% endif %}" data-sort-value="price-ascending">
-            <span class="text-value-item">Price, low to high</span>
+            <span class="text-value-item">{{ 'collections.sorting.price_ascending' | t }}</span>
           </div>
           <div class="select-item{% if search.sort_by == 'price-descending' %} active{% endif %}" data-sort-value="price-descending">
-            <span class="text-value-item">Price, high to low</span>
+            <span class="text-value-item">{{ 'collections.sorting.price_descending' | t }}</span>
           </div>
         </div>
       </div>
@@ -66,22 +82,22 @@
 
     <!-- Filter Section -->
     <div class="tf-filter-dropdown">
-      <span class="title-filter">Filter:</span>
+      <span class="title-filter">{{ 'products.facets.filter_button' | t }}:</span>
       <div class="meta-dropdown-filter">
         <div class="dropdown dropdown-filter">
           <div class="dropdown-toggle" id="availability" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-            <span class="text-value">Availability</span>
+            <span class="text-value">{{ 'products.facets.availability' | t }}</span>
             <span class="icon icon-arr-down"></span>
           </div>
           <div class="dropdown-menu" aria-labelledby="availability">
             <ul class="filter-group-check">
               <li class="list-item">
                 <input type="radio" name="availability" class="tf-check" id="inStock">
-                <label for="inStock" class="label"><span>In stock</span>&nbsp;<span class="count">({{ search.results | where: "available", true | size }})</span></label>
+                <label for="inStock" class="label"><span>{{ 'products.facets.in_stock' | t }}</span>&nbsp;<span class="count">({{ search.results | where: "available", true | size }})</span></label>
               </li>
               <li class="list-item">
                 <input type="radio" name="availability" class="tf-check" id="outStock">
-                <label for="outStock" class="label"><span>Out of stock</span>&nbsp;<span class="count">({{ search.results | where: "available", false | size }})</span></label>
+                <label for="outStock" class="label"><span>{{ 'products.facets.out_of_stock' | t }}</span>&nbsp;<span class="count">({{ search.results | where: "available", false | size }})</span></label>
               </li>
             </ul>
           </div>
@@ -89,14 +105,14 @@
 
         <div class="dropdown dropdown-filter">
           <div class="dropdown-toggle" id="price" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-            <span class="text-value">Price</span>
+            <span class="text-value">{{ 'products.facets.price_label' | t }}</span>
             <span class="icon icon-arr-down"></span>
           </div>
           <div class="dropdown-menu" aria-labelledby="price">
             <div class="widget-price filter-price">
               <div class="price-val-range" id="price-value-range" data-min="0" data-max="500"></div>
               <div class="box-value-price">
-                <span class="text-sm">Price:</span>
+                <span class="text-sm">{{ 'sections.main-collection-product-grid.price_range_label' | t }}:</span>
                 <div class="price-box">
                   <div class="price-val" id="price-min-value" data-currency="$"></div>
                   <span>-</span>
@@ -119,7 +135,7 @@
         {% if has_vendors %}
           <div class="dropdown dropdown-filter">
             <div class="dropdown-toggle" id="brand" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-              <span class="text-value">Brand</span>
+              <span class="text-value">{{ 'products.facets.brand_label' | t }}</span>
               <span class="icon icon-arr-down"></span>
             </div>
             <div class="dropdown-menu" aria-labelledby="brand">
@@ -152,7 +168,7 @@
           {% endif %}
         </div>
         {% if current_tags.size > 0 %}
-          <button id="remove-all" class="remove-all-filters"><i class="icon icon-close"></i> Clear all filter</button>
+          <button id="remove-all" class="remove-all-filters"><i class="icon icon-close"></i> {{ 'products.facets.clear_all' | t }}</button>
         {% endif %}
       </div>
 
@@ -169,7 +185,7 @@
       </div>
     </div>
   {% else %}
-    <p>No results found for "{{ search.terms }}".</p>
+    <p>{{ 'general.search.no_results_html' | t: terms: search.terms }}</p>
   {% endif %}
 </div>
 
@@ -239,7 +255,13 @@
 
           // Update sort value display
           if (sortValueDisplay) {
-            sortValueDisplay.textContent = sortValue.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            const sortItem = document.querySelector(`.select-item[data-sort-value="${sortValue}"]`);
+            if (sortItem) {
+                sortValueDisplay.textContent = sortItem.querySelector('.text-value-item').textContent.trim();
+            } else {
+                // Fallback
+                sortValueDisplay.textContent = sortValue.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            }
           }
 
           // Update active state
@@ -272,7 +294,13 @@
 
           // Update sort value display
           if (sortValueDisplay) {
-            sortValueDisplay.textContent = sortValue.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            const sortItem = document.querySelector(`.select-item[data-sort-value="${sortValue}"]`);
+            if (sortItem) {
+                sortValueDisplay.textContent = sortItem.querySelector('.text-value-item').textContent.trim();
+            } else {
+                // Fallback
+                sortValueDisplay.textContent = sortValue.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            }
           }
 
           // Update active state

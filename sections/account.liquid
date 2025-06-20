@@ -43,22 +43,6 @@
       "id": "show_addresses",
       "label": "Show Addresses Link",
       "default": true
-    },
-    {
-      "type": "header",
-      "content": "Dashboard Content"
-    },
-    {
-      "type": "text",
-      "id": "welcome_message",
-      "label": "Welcome Message",
-      "default": "Hello"
-    },
-    {
-      "type": "text",
-      "id": "dashboard_notice",
-      "label": "Dashboard Notice",
-      "default": "Today is a great day to check your account page. You can check your last orders or have a look to your wishlist. Or maybe you can start to shop our latest offers?"
     }
   ],
   "blocks": [
@@ -66,39 +50,13 @@
       "type": "orders_box",
       "name": "Orders Box",
       "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Orders"
-        },
-        {
-          "type": "text",
-          "id": "description",
-          "label": "Description",
-          "default": "Check the history of all your orders"
-        }
-      ]
+      "settings": []
     },
     {
       "type": "wishlist_box",
       "name": "Wishlist Box",
       "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Wishlist"
-        },
-        {
-          "type": "text",
-          "id": "description",
-          "label": "Description",
-          "default": "Check your wishlist"
-        }
-      ]
+      "settings": []
     },
     {
       "type": "free_shipping",
@@ -176,13 +134,13 @@
         <div class="{{ section.settings.container_width }}">
             <ul class="breadcrumb-list">
                 <li class="item-breadcrumb">
-                    <a href="{{ routes.root_url }}" class="text">Home</a>
+                    <a href="{{ routes.root_url }}" class="text">{{ 'general.breadcrumbs.home' | t }}</a>
                 </li>
                 <li class="item-breadcrumb dot">
                     <span></span>
                 </li>
                 <li class="item-breadcrumb">
-                    <span class="text">Account</span>
+                    <span class="text">{{ 'customer.account.title' | t }}</span>
                 </li>
             </ul>
         </div>
@@ -193,7 +151,7 @@
     <section class="s-title-page">
         <div class="{{ section.settings.container_width }}">
             <h4 class="s-title letter-0 text-center">
-                My Account
+                {{ 'customer.account.title' | t }}
             </h4>
         </div>
     </section>
@@ -216,25 +174,25 @@
                         <div class="sidebar-account-wrap sidebar-content-wrap sticky-top d-lg-block d-none">
                             <ul class="my-account-nav">
                                 <li>
-                                    <a href="{{ routes.account_url }}" class="text-sm link fw-medium my-account-nav-item active">Dashboard</a>
+                                    <a href="{{ routes.account_url }}" class="text-sm link fw-medium my-account-nav-item active">{{ 'customer.account.dashboard' | t }}</a>
                                 </li>
                                 {% if section.settings.show_orders %}
                                 <li>
-                                    <a href="{{ routes.account_url }}/orders" class="text-sm link fw-medium my-account-nav-item">My Orders</a>
+                                    <a href="{{ routes.account_url }}/orders" class="text-sm link fw-medium my-account-nav-item">{{ 'customer.account.my_orders' | t }}</a>
                                 </li>
                                 {% endif %}
                                 {% if section.settings.show_wishlist %}
                                 <li>
-                                    <a href="{{ routes.account_url }}/wishlist" class="text-sm link fw-medium my-account-nav-item">My Wishlist</a>
+                                    <a href="{{ routes.account_url }}/wishlist" class="text-sm link fw-medium my-account-nav-item">{{ 'customer.account.my_wishlist' | t }}</a>
                                 </li>
                                 {% endif %}
                                 {% if section.settings.show_addresses %}
                                 <li>
-                                    <a href="{{ routes.account_addresses_url }}" class="text-sm link fw-medium my-account-nav-item">Addresses</a>
+                                    <a href="{{ routes.account_addresses_url }}" class="text-sm link fw-medium my-account-nav-item">{{ 'customer.account.addresses' | t }}</a>
                                 </li>
                                 {% endif %}
                                 <li>
-                                    <a href="{{ routes.account_logout_url }}" class="text-sm link fw-medium my-account-nav-item">Log Out</a>
+                                    <a href="{{ routes.account_logout_url }}" class="text-sm link fw-medium my-account-nav-item">{{ 'customer.account.log_out' | t }}</a>
                                 </li>
                             </ul>
                         </div>
@@ -242,124 +200,112 @@
                             <div class="box-account-title">
                                 <p class="hello-name display-sm fw-medium">
                                     {% if customer %}
-                                        {{ section.settings.welcome_message }} {{ customer.name }}!
-                                        <span>(not <span class="name">{{ customer.name }}</span>?</span>
-                                        <a href="{{ routes.account_logout_url }}" class="text-decoration-underline link">Log Out</a>
+                                        {{ 'customer.account.welcome' | t: name: customer.name }}
+                                        <span>({{ 'customer.account.not_you' | t: name: customer.name }}?</span>
+                                        <a href="{{ routes.account_logout_url }}" class="text-decoration-underline link">{{ 'customer.account.log_out' | t }}</a>
                                         <span>)</span>
                                     {% else %}
-                                        <a href="{{ routes.account_login_url }}" class="text-decoration-underline link">Log in</a>
+                                        <a href="{{ routes.account_login_url }}" class="text-decoration-underline link">{{ 'customer.account.log_in' | t }}</a>
                                     {% endif %}
                                 </p>
-                                <p class="notice text-sm">
-                                    {{ section.settings.dashboard_notice }}
+                                <p class="text-sm">
+                                    {{ 'customer.account.dashboard_notice' | t }}
                                 </p>
                             </div>
-                            <div class="content-account">
-                                <ul class="box-check-list flex-sm-nowrap">
-                                    {% for block in section.blocks %}
-                                        {% case block.type %}
-                                            {% when 'orders_box' %}
-                                                <li {{ block.shopify_attributes }}>
-                                                    <a href="{{ routes.account_url }}/orders" class="box-check text-center">
-                                                        <div class="icon">
-                                                            <i class="icon-order"></i>
-                                                            <span class="count-number text-sm text-white fw-medium">{{ customer.orders_count }}</span>
-                                                        </div>
-                                                        <div class="text">
-                                                            <div class="link name-type text-xl fw-medium">{{ block.settings.title }}</div>
-                                                            <p class="sub-type text-sm">{{ block.settings.description }}</p>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                            {% when 'wishlist_box' %}
-                                                <li {{ block.shopify_attributes }}>
-                                                    <a href="{{ routes.account_url }}/wishlist" class="box-check text-center">
-                                                        <div class="icon">
-                                                            <i class="icon-heart"></i>
-                                                            <span class="count-number text-sm text-white fw-medium">{{ customer.wishlist_count }}</span>
-                                                        </div>
-                                                        <div class="text">
-                                                            <div class="link name-type text-xl fw-medium">{{ block.settings.title }}</div>
-                                                            <p class="sub-type text-sm">{{ block.settings.description }}</p>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                        {% endcase %}
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                            <div class="my-acount-content account-dashboard">
-                                <div class="box-account-title">
-                                    <p class="hello-name display-sm fw-medium">
-                                        {% if customer %}
-                                            {{ section.settings.welcome_message }} {{ customer.name }}!
-                                            <span>(not <span class="name">{{ customer.name }}</span>?</span>
-                                            <a href="{{ routes.account_logout_url }}" class="text-decoration-underline link">Log Out</a>
-                                            <span>)</span>
-                                        {% else %}
-                                            <a href="{{ routes.account_login_url }}" class="text-decoration-underline link">Log in</a>
-                                        {% endif %}
-                                    </p>
-                                </div>
+                            <ul class="list-box-acount">
                                 {% for block in section.blocks %}
                                     {% case block.type %}
+                                        {% when 'orders_box' %}
+                                            <li class="box-item orders-box">
+                                                <div class="inner-box">
+                                                    <h6 class="title-box">
+                                                        <a href="{{ routes.account_url }}/orders">{{ 'customer.account.orders_box.title' | t }}</a>
+                                                    </h6>
+                                                    <p class="text-sm">{{ 'customer.account.orders_box.description' | t }}</p>
+                                                </div>
+                                            </li>
+                                        {% when 'wishlist_box' %}
+                                            <li class="box-item wishlist-box">
+                                                <div class="inner-box">
+                                                    <h6 class="title-box">
+                                                        <a href="{{ routes.account_url }}/wishlist">{{ 'customer.account.wishlist_box.title' | t }}</a>
+                                                    </h6>
+                                                    <p class="text-sm">{{ 'customer.account.wishlist_box.description' | t }}</p>
+                                                </div>
+                                            </li>
                                         {% when 'free_shipping' %}
-                                            <div class="banner-account" {{ block.shopify_attributes }}>
+                                        <li class="box-item free-shipping">
+                                            <div class="inner-box">
                                                 {% if block.settings.banner_image %}
-                                                    <div class="image">
-                                                        {{ block.settings.banner_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'lazyload' }}
+                                                    <div class="media">
+                                                        {{ block.settings.banner_image | image_url: width: 400 | image_tag: loading: 'lazy', class: 'lazyload' }}
                                                     </div>
                                                 {% endif %}
-                                                <div class="banner-content-right">
-                                                    <div class="banner-title">
-                                                        <p class="display-md fw-medium">
-                                                            Free Shipping
-                                                        </p>
-                                                        <p class="text-md">
-                                                            for all orders over ${{ block.settings.free_shipping_threshold }}
-                                                        </p>
-                                                    </div>
-                                                    <div class="banner-btn">
-                                                        <a href="{{ routes.all_products_collection_url }}" class="tf-btn animate-btn">
-                                                            Shop Now
-                                                        </a>
+                                                <div class="content">
+                                                    <p class="text-sm fw-bold title-box">
+                                                        {{ 'customer.account.free_shipping.title' | t: amount: block.settings.free_shipping_threshold }}
+                                                    </p>
+                                                    <p class="text-sm">{{ 'customer.account.free_shipping.description' | t }}</p>
+                                                    <div class="progress-bar">
+                                                        <div class="bar-inner"></div>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </li>
                                         {% when 'promo_banner' %}
-                                            <div class="banner-account banner-acc-countdown bg-linear d-flex align-items-center" {{ block.shopify_attributes }}>
-                                                <div class="banner-content-left">
-                                                    <div class="banner-title">
-                                                        <p class="sub text-md fw-medium">
-                                                            {{ block.settings.promo_title }}
-                                                        </p>
-                                                        <p class="display-xl fw-medium">
-                                                            {{ block.settings.promo_discount }}
-                                                        </p>
-                                                        <p class="sub text-md fw-medium">
-                                                            WITH PROMOTE CODE: {{ block.settings.promo_code }}
-                                                        </p>
+                                        <li class="box-item promo-banner">
+                                            <div class="inner-box">
+                                                {% if block.settings.product %}
+                                                    <div class="media">
+                                                        {{ block.settings.product.featured_image | image_url: width: 400 | image_tag: loading: 'lazy', class: 'lazyload' }}
                                                     </div>
-                                                    <div class="banner-btn">
-                                                        <a href="{{ routes.all_products_collection_url }}" class="tf-btn btn-white animate-btn animate-dark">
-                                                            Shop Now
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="banner-countdown">
-                                                    <div class="wg-countdown-2">
-                                                        <span class="js-countdown" data-timer="{{ block.settings.product.metafields.countdown.end_date | date: '%s' | minus: 'now' | date: '%s' }}" data-labels="Days,Hours,Mins,Secs"></span>
-                                                    </div>
+                                                {% endif %}
+                                                <div class="content">
+                                                    <p class="text-sm fw-bold title-box">{{ block.settings.promo_title }}</p>
+                                                    <p class="text-sm">{{ 'customer.account.promo_banner.discount_html' | t: discount: block.settings.promo_discount }}</p>
+                                                    <p class="text-sm">{{ 'customer.account.promo_banner.code' | t }}: <span class="fw-bold">{{ block.settings.promo_code }}</span></p>
                                                 </div>
                                             </div>
+                                        </li>
                                     {% endcase %}
                                 {% endfor %}
-                            </div>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- /Account -->
+</div>
+
+<!-- Mobile Nav -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mbAccount">
+    <div class="offcanvas-header">
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="my-account-nav">
+            <li>
+                <a href="{{ routes.account_url }}" class="text-sm link fw-medium my-account-nav-item active">{{ 'customer.account.dashboard' | t }}</a>
+            </li>
+            {% if section.settings.show_orders %}
+            <li>
+                <a href="{{ routes.account_url }}/orders" class="text-sm link fw-medium my-account-nav-item">{{ 'customer.account.my_orders' | t }}</a>
+            </li>
+            {% endif %}
+            {% if section.settings.show_wishlist %}
+            <li>
+                <a href="{{ routes.account_url }}/wishlist" class="text-sm link fw-medium my-account-nav-item">{{ 'customer.account.my_wishlist' | t }}</a>
+            </li>
+            {% endif %}
+            {% if section.settings.show_addresses %}
+            <li>
+                <a href="{{ routes.account_addresses_url }}" class="text-sm link fw-medium my-account-nav-item">{{ 'customer.account.addresses' | t }}</a>
+            </li>
+            {% endif %}
+            <li>
+                <a href="{{ routes.account_logout_url }}" class="text-sm link fw-medium my-account-nav-item">{{ 'customer.account.log_out' | t }}</a>
+            </li>
+        </ul>
+    </div>
 </div> 

@@ -11,8 +11,8 @@
         <!-- Empty state for compare page -->
         <div class="wrapper-compare tf-col-2 lg-col-3 xl-col-4" id="compareEmpty" style="padding-bottom: 80px; display: none;">
             <div class="tf-compare-empty text-center">
-                <p class="text-md text-noti" style="margin-bottom: 32px;">No products were added to compare.</p>
-                <a href="/" class="tf-btn animate-btn btn-back-shop">Back to Shopping</a>
+                <p class="text-md text-noti" style="margin-bottom: 32px;">{{ 'compare.empty.no_products' | t }}</p>
+                <a href="{{ routes.all_products_collection_url }}" class="tf-btn animate-btn btn-back-shop">{{ 'compare.empty.back_to_shop' | t }}</a>
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
                                aria-label="Add to cart"
                                {% unless product.variants[0].available %}style="pointer-events:none;opacity:0.5;"{% endunless %}>
                                 <i class="icon icon-cart"></i>
-                                <span class="tooltip">{% if product.variants[0].available %}Add to Cart{% else %}Sold Out{% endif %}</span>
+                                <span class="tooltip">{% if product.variants[0].available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
                             </a>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
 
     <div class="tf-compare-row">
         <div class="tf-compare-col tf-compare-field d-md-block d-none">
-            <p class="text-md fw-medium">Availability</p>
+            <p class="text-md fw-medium">{{ 'compare.fields.availability' | t }}</p>
         </div>
         {% for product in collections.all.products %}
             <div style="font-size: 14px;" class="tf-compare-col tf-compare-field tf-compare-stock {% unless product.variants[0].available %}text-red{% endunless %}" data-product-id="{{ product.id }}">
@@ -88,14 +88,14 @@
                         </svg>
                     {% endif %}
                 </div>
-                <span>{% if product.variants[0].available %}In Stock{% else %}Out of Stock{% endif %}</span>
+                <span>{% if product.variants[0].available %}{{ 'products.facets.in_stock' | t }}{% else %}{{ 'products.facets.out_of_stock' | t }}{% endif %}</span>
             </div>
         {% endfor %}
     </div>
 
     <div class="tf-compare-row">
         <div class="tf-compare-col tf-compare-field d-md-block d-none">
-            <p class="text-md fw-medium">Vendor</p>
+            <p class="text-md fw-medium">{{ 'compare.fields.vendor' | t }}</p>
         </div>
         {% for product in collections.all.products %}
             <div class="tf-compare-col tf-compare-field tf-compare-stock" data-product-id="{{ product.id }}">
@@ -106,7 +106,7 @@
 
     <div class="tf-compare-row">
         <div class="tf-compare-col tf-compare-field d-md-block d-none">
-            <p class="text-md fw-medium">Color</p>
+            <p class="text-md fw-medium">{{ 'compare.fields.color' | t }}</p>
         </div>
         {% for product in collections.all.products %}
             <div class="tf-compare-col tf-compare-field tf-compare-stock" data-product-id="{{ product.id }}">
@@ -122,7 +122,7 @@
                     {%- if color_values != blank -%}
                         {{ color_values }}
                     {%- else -%}
-                        N/A
+                        {{ 'compare.fields.na' | t }}
                     {%- endif -%}
                 </p>
             </div>
@@ -144,7 +144,7 @@
         </p>
         <div class="tf-compare-btn">
           <button type="button" class="tf-btn animate-btn w-100" data-add-to-cart data-product-id="">
-            Add to Cart
+            {{ 'products.product.add_to_cart' | t }}
           </button>
         </div>
       </div>

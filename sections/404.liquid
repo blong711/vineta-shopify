@@ -22,24 +22,6 @@
       "type": "image_picker",
       "id": "error_image",
       "label": "404 Image"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Title",
-      "default": "Whoops!"
-    },
-    {
-      "type": "text",
-      "id": "subtitle",
-      "label": "Subtitle",
-      "default": "We couldn't find the page you were looking for."
-    },
-    {
-      "type": "text",
-      "id": "button_text",
-      "label": "Button Text",
-      "default": "Return to Homepage"
     }
   ],
   "presets": [
@@ -68,12 +50,12 @@
             {% endif %}
           </div>
           <p class="title">
-            {{ section.settings.title }}
+            {{ 'general.404.title' | t }}
           </p>
-          <p class="text-md sub text-main">{{ section.settings.subtitle }}</p>
+          <p class="text-md sub text-main">{{ 'general.404.subtext_html' | t }}</p>
           <div class="bot">
             <a href="{{ routes.root_url }}" class="tf-btn btn-fill animate-btn">
-              {{ section.settings.button_text }}
+              {{ 'general.404.link' | t }}
             </a>
           </div>
         </div>

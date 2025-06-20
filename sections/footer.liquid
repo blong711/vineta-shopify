@@ -68,7 +68,11 @@
                     font-size: {% case section.settings.heading_size %}{% when 'small' %}16px{% when 'medium' %}20px{% when 'large' %}26px{% endcase %};
                     font-weight: {% case section.settings.heading_font_weight %}{% when 'normal' %}400{% when 'medium' %}500{% when 'bold' %}700{% endcase %};
                     margin-bottom: {{ section.settings.heading_margin_bottom }}px;">
-                  {{ block.settings.title }}
+                  {% if block.settings.title != blank %}
+                    {{ block.settings.title }}
+                  {% else %}
+                    {{ 'footer.blocks.contact.title' | t }}
+                  {% endif %}
                 </div>
                 <div class="tf-collapse-content">
                   <div class="footer-contact">
@@ -82,7 +86,11 @@
                             </svg>
                           </span>
                           <a target="_blank" href="https://www.google.com/maps?q={{ block.settings.address | url_encode }}">
-                            {{ block.settings.address }}
+                            {% if block.settings.address != blank %}
+                              {{ block.settings.address }}
+                            {% else %}
+                              {{ 'footer.blocks.contact.address' | t }}
+                            {% endif %}
                           </a>
                         </li>
                       {%- endif -%}
@@ -93,7 +101,13 @@
                                 <path d="M11.6666 9.4091L10.9841 8.4641C10.7324 8.12417 10.3574 7.89649 9.93972 7.82996C9.522 7.76343 9.09484 7.86335 8.74998 8.10827L8.09081 8.59243C7.13399 7.73698 6.36526 6.69214 5.83331 5.5241L6.49248 5.04577C6.837 4.79478 7.06794 4.41741 7.13464 3.99641C7.20135 3.5754 7.09838 3.14513 6.84831 2.79993L6.18331 1.86077C5.93339 1.51663 5.55703 1.28582 5.13698 1.21909C4.71693 1.15236 4.28757 1.25518 3.94331 1.50493L2.91664 2.23993C2.58681 2.47798 2.33009 2.80349 2.17547 3.17972C2.02086 3.55595 1.9745 3.96792 2.04164 4.3691C2.33803 6.09644 3.02915 7.73206 4.06118 9.14856C5.0932 10.5651 6.43827 11.7242 7.99164 12.5358C8.30603 12.696 8.65376 12.78 9.00664 12.7808C9.46814 12.7804 9.91756 12.6333 10.29 12.3608L11.3108 11.6666C11.4837 11.5428 11.6302 11.3858 11.7419 11.2048C11.8535 11.0238 11.9281 10.8224 11.9612 10.6123C11.9943 10.4023 11.9853 10.1877 11.9347 9.98113C11.8842 9.77457 11.793 9.58012 11.6666 9.4091ZM10.7975 10.9433L9.78248 11.6666C9.58631 11.8098 9.35413 11.8954 9.11199 11.914C8.86984 11.9325 8.62732 11.8832 8.41164 11.7716C6.97557 11.0225 5.73227 9.95129 4.779 8.6418C3.82572 7.33231 3.18832 5.82004 2.91664 4.22327C2.87745 3.98261 2.90577 3.73579 2.99846 3.51026C3.09114 3.28473 3.24455 3.08933 3.44164 2.94577L4.45664 2.21077C4.6131 2.09841 4.80765 2.05252 4.99783 2.08312C5.188 2.11373 5.35834 2.21833 5.47164 2.3741L6.15998 3.3191C6.27119 3.47659 6.31717 3.67098 6.28831 3.8616C6.27352 3.95579 6.24012 4.04608 6.19004 4.12721C6.13996 4.20834 6.07421 4.27867 5.99664 4.3341L5.05164 5.02243C4.97248 5.07857 4.91486 5.16007 4.88834 5.25342C4.86182 5.34678 4.86798 5.44639 4.90581 5.53577C5.52168 7.06896 6.5077 8.42575 7.77581 9.48493C7.85256 9.54453 7.94697 9.57689 8.04414 9.57689C8.14132 9.57689 8.23573 9.54453 8.31248 9.48493L9.25748 8.80243C9.41322 8.68947 9.60729 8.64263 9.79741 8.67214C9.98754 8.70164 10.1583 8.80508 10.2725 8.95993L10.9608 9.9166C11.072 10.0741 11.118 10.2685 11.0891 10.4591C11.0752 10.5552 11.0422 10.6475 10.9921 10.7306C10.942 10.8137 10.8759 10.886 10.7975 10.9433Z" fill="#0D0D0D"></path>
                             </svg>
                           </span>
-                          <a href="tel:{{ block.settings.phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' }}">{{ block.settings.phone }}</a>
+                          <a href="tel:{{ block.settings.phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' }}">
+                            {% if block.settings.phone != blank %}
+                              {{ block.settings.phone }}
+                            {% else %}
+                              {{ 'footer.blocks.contact.phone' | t }}
+                            {% endif %}
+                          </a>
                         </li>
                       {%- endif -%}
                       {%- if block.settings.email != blank -%}
@@ -103,13 +117,19 @@
                                 <path d="M11.8125 2.625H2.1875C1.8394 2.625 1.50556 2.76328 1.25942 3.00942C1.01328 3.25556 0.875 3.5894 0.875 3.9375V10.0625C0.875 10.4106 1.01328 10.7444 1.25942 10.9906C1.50556 11.2367 1.8394 11.375 2.1875 11.375H11.8125C12.1606 11.375 12.4944 11.2367 12.7406 10.9906C12.9867 10.7444 13.125 10.4106 13.125 10.0625V3.9375C13.125 3.5894 12.9867 3.25556 12.7406 3.00942C12.4944 2.76328 12.1606 2.625 11.8125 2.625ZM11.5675 3.5L7.28 7.07438C7.20139 7.13985 7.10231 7.17571 7 7.17571C6.89769 7.17571 6.79861 7.13985 6.72 7.07438L2.4325 3.5H11.5675ZM11.8125 10.5H2.1875C2.07147 10.5 1.96019 10.4539 1.87814 10.3719C1.79609 10.2898 1.75 10.1785 1.75 10.0625V4.06875L6.16 7.74375C6.39584 7.94019 6.69307 8.04776 7 8.04776C7.30693 8.04776 7.60416 7.94019 7.84 7.74375L12.25 4.06875V10.0625C12.25 10.1785 12.2039 10.2898 12.1219 10.3719C12.0398 10.4539 11.9285 10.5 11.8125 10.5Z" fill="#0D0D0D"></path>
                             </svg>
                           </span>
-                          <span>{{ block.settings.email }}</span>
+                          <span>
+                            {% if block.settings.email != blank %}
+                              {{ block.settings.email }}
+                            {% else %}
+                              {{ 'footer.blocks.contact.email' | t }}
+                            {% endif %}
+                          </span>
                         </li>
                       {%- endif -%}
                     </ul>
                     {%- if block.settings.map_link != blank -%}
                       <a href="{{ block.settings.map_link }}" class="tf-btn btn-line-dark fw-normal" target="_blank" rel="noopener">
-                        <span class="text-sm">Get direction</span>
+                        <span class="text-sm">{{ 'footer.contact.get_direction' | t: "Get direction" }}</span>
                         <i class="icon-arrow-top-left fs-8"></i>
                       </a>
                     {%- endif -%}
@@ -123,15 +143,25 @@
                     font-size: {% case section.settings.heading_size %}{% when 'small' %}16px{% when 'medium' %}20px{% when 'large' %}26px{% endcase %};
                     font-weight: {% case section.settings.heading_font_weight %}{% when 'normal' %}400{% when 'medium' %}500{% when 'bold' %}700{% endcase %};
                     margin-bottom: {{ section.settings.heading_margin_bottom }}px;">
-                  {{ block.settings.title }}
+                  {% if block.settings.title != blank %}
+                    {{ block.settings.title }}
+                  {% else %}
+                    {{ 'footer.blocks.newsletter.title' | t }}
+                  {% endif %}
                 </div>
                 <div class="tf-collapse-content">
                   <div class="footer-newsletter">
-                    <p>{{ block.settings.text }}</p>
+                    <p>
+                      {% if block.settings.text != blank %}
+                        {{ block.settings.text }}
+                      {% else %}
+                        {{ 'footer.blocks.newsletter.text' | t }}
+                      {% endif %}
+                    </p>
                     {%- form 'customer', class: 'form-newsletter', return_to: request.path -%}
                       <div class="subscribe-content">
                         <fieldset class="email">
-                          <input type="email" name="contact[email]" class="subscribe-email" placeholder="{{ block.settings.placeholder }}" required>
+                          <input type="email" name="contact[email]" class="subscribe-email" placeholder="{{ 'footer.newsletter.placeholder' | t: "Your email address" }}" required>
                         </fieldset>
                         <div class="button-submit">
                           <button class="subscribe-button animate-btn" type="submit" onclick="showNewsletterMessage()">
@@ -142,7 +172,7 @@
                         </div>
                       </div>
                       <div id="newsletter-submit-message" class="newsletter-submit-message" style="margin-top: 10px; color: #28a745; font-size: 14px; display: none;">
-                        Thank you for subscribing to our newsletter!
+                        {{ 'footer.newsletter.success_message' | t }}
                         </div>
                     {%- endform -%}
                     
@@ -167,7 +197,11 @@
                         font-size: {% case section.settings.heading_size %}{% when 'small' %}16px{% when 'medium' %}20px{% when 'large' %}26px{% endcase %};
                         font-weight: {% case section.settings.heading_font_weight %}{% when 'normal' %}400{% when 'medium' %}500{% when 'bold' %}700{% endcase %};
                         margin-bottom: {{ section.settings.heading_margin_bottom }}px;">
-                      {{ block.settings.title }}
+                      {% if block.settings.title != blank %}
+                        {{ block.settings.title }}
+                      {% else %}
+                        {{ 'footer.blocks.menu.title' | t }}
+                      {% endif %}
                     </div>
                     <div class="tf-collapse-content">
                       <ul class="footer-menu-list">
@@ -191,7 +225,8 @@
   <div class="footer-bottom">
     <div class="container">
       <div class="footer-bottom-wrap">
-        <p class="text-dark">{{ section.settings.copyrights }}</p>
+        {%- assign current_year = "now" | date: "%Y" -%}
+        <p class="text-dark">{{ 'footer.copyright' | t: year: current_year, site_name: shop.name }}</p>
         {%- if section.settings.show_payment_icons -%}
           {% assign payment_icons = section.settings.payment_icons | split: ',' %}
           <ul class="tf-payment" style="--payment-icon-size: {{ section.settings.payment_icons_size }}px">
@@ -253,105 +288,17 @@
       "label": "X (Twitter) URL"
     },
     {
-      "type": "header",
-      "content": "Main"
-    },
-    {
-      "type": "select",
-      "id": "heading_size",
-      "label": "Heading size",
-      "options": [
-        { "value": "small", "label": "Small" },
-        { "value": "medium", "label": "Medium" },
-        { "value": "large", "label": "Large" }
-      ],
-      "default": "medium"
-    },
-    {
-      "type": "select",
-      "id": "heading_font_weight",
-      "label": "Heading font weight",
-      "options": [
-        { "value": "normal", "label": "Normal" },
-        { "value": "medium", "label": "Medium" },
-        { "value": "bold", "label": "Bold" }
-      ],
-      "default": "medium"
-    },
-    {
-      "type": "range",
-      "id": "heading_margin_bottom",
-      "label": "Heading margin bottom",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 30
-    },
-    {
-      "type": "select",
-      "id": "text_size",
-      "label": "Text size",
-      "options": [
-        { "value": "small", "label": "Small" },
-        { "value": "medium", "label": "Medium" },
-        { "value": "large", "label": "Large" }
-      ],
-      "default": "medium"
-    },
-    {
-      "type": "range",
-      "id": "padding_top_main",
-      "label": "Padding top main",
-      "min": 0,
-      "max": 200,
-      "step": 2,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom_main",
-      "label": "Padding bottom main",
-      "min": 0,
-      "max": 200,
-      "step": 2,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "header",
-      "content": "Spacing"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 200,
-      "step": 4,
-      "unit": "px",
-      "label": "Top padding",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 200,
-      "step": 4,
-      "unit": "px",
-      "label": "Bottom padding",
-      "default": 0
-    },
-    {
-      "type": "header",
-      "content": "Bottom bar"
-    },
-    {
       "type": "checkbox",
       "id": "show_payment_icons",
-      "label": "Show payment icons",
+      "label": "Show Payment Icons",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "payment_icons",
+      "label": "Payment Icons",
+      "info": "Enter payment types separated by commas (e.g., visa, mastercard, paypal). Leave blank to show all enabled payment types.",
+      "default": "visa, mastercard, paypal, stripe"
     },
     {
       "type": "range",
@@ -360,50 +307,170 @@
       "max": 50,
       "step": 2,
       "unit": "px",
-      "label": "Payment icons size",
-      "default": 30
+      "label": "Payment Icons Size",
+      "default": 40
     },
     {
-      "type": "text",
-      "id": "payment_icons",
-      "label": "SVG list",
-      "default": "visa,paypal,master,american_express,diners_club"
+      "type": "header",
+      "content": "Style Settings"
     },
     {
-      "type": "textarea",
-      "id": "copyrights",
-      "label": "Copyrights",
-      "default": "© [year] <span class=\"\">Ecomus</span>. All rights reserved."
+      "type": "range",
+      "id": "padding_top_main",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_main",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 70
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text Size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "border",
+      "label": "Border Position",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "select",
+      "id": "border_main_position",
+      "label": "Border Width",
+      "options": [
+        {
+          "value": "full_width",
+          "label": "Full Width"
+        },
+        {
+          "value": "container_width",
+          "label": "Container Width"
+        }
+      ],
+      "default": "container_width"
+    },
+    {
+      "type": "header",
+      "content": "Heading Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading Font Weight",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "bold",
+          "label": "Bold"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "range",
+      "id": "heading_margin_bottom",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Margin Bottom",
+      "default": 20
     }
   ],
   "blocks": [
     {
       "type": "contact",
-      "name": "Contact Info",
+      "name": "Contact",
+      "limit": 1,
       "settings": [
         {
           "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "Business Contact"
+          "default": "Contact"
         },
         {
           "type": "text",
           "id": "address",
-          "label": "Address",
-          "default": "123 Yarran st, Punchbowl, NSW 2196, Australia"
+          "label": "Address"
         },
         {
           "type": "text",
           "id": "phone",
-          "label": "Phone",
-          "default": "(64) 8342 1245"
+          "label": "Phone"
         },
         {
           "type": "text",
           "id": "email",
-          "label": "Email",
-          "default": "support@example.com"
+          "label": "Email"
         },
         {
           "type": "url",
@@ -415,24 +482,18 @@
     {
       "type": "newsletter",
       "name": "Newsletter",
+      "limit": 1,
       "settings": [
         {
           "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "Subscribe Newsletter"
+          "default": "Newsletter"
         },
         {
           "type": "text",
           "id": "text",
-          "label": "Text",
-          "default": "We invite you to register to read the latest news, offers and events about our company. We promise not spam your inbox."
-        },
-        {
-          "type": "text",
-          "id": "placeholder",
-          "label": "Email Placeholder",
-          "default": "Email address"
+          "label": "Text"
         }
       ]
     },
@@ -444,7 +505,7 @@
           "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "About Us"
+          "default": "Menu"
         },
         {
           "type": "link_list",
@@ -454,43 +515,29 @@
       ]
     }
   ],
-  "presets": [
-    {
-      "name": "Footer",
-      "blocks": [
-        {
-          "type": "contact",
-          "settings": {
-            "title": "Business Contact",
-            "address": "123 Yarran st, Punchbowl, NSW 2196, Australia",
-            "phone": "(64) 8342 1245",
-            "email": "support@example.com"
-          }
-        },
-        {
-          "type": "newsletter",
-          "settings": {
-            "title": "Subscribe Newsletter",
-            "text": "We invite you to register to read the latest news, offers and events about our company. We promise not spam your inbox.",
-            "placeholder": "Email address"
-          }
-        },
-        {
-          "type": "menu",
-          "settings": {
-            "title": "About Us",
-            "menu": "footer"
-          }
-        },
-        {
-          "type": "menu",
-          "settings": {
-            "title": "Resource",
-            "menu": "footer"
-          }
+  "default": {
+    "blocks": [
+      {
+        "type": "contact"
+      },
+      {
+        "type": "newsletter"
+      },
+      {
+        "type": "menu",
+        "settings": {
+          "title": "Quick Links",
+          "menu": "footer"
         }
-      ]
-    }
-  ]
+      },
+      {
+        "type": "menu",
+        "settings": {
+          "title": "Information",
+          "menu": "footer"
+        }
+      }
+    ]
+  }
 }
 {% endschema %}

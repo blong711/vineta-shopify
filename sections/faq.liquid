@@ -5,15 +5,15 @@
     <div class="row">
       <div class="col-lg-4">
         <div class="sb-contact">
-          <p class="title">{{ section.settings.contact_title }}</p>
-          <p class="sub" style="font-size: 14px;">{{ section.settings.contact_text_1 }}</p>
-          <p class="sub" style="font-size: 14px;">{{ section.settings.contact_text_2 }}</p>
+          <p class="title">{{ 'faq.contact.title' | t }}</p>
+          <p class="sub" style="font-size: 14px;">{{ 'faq.contact.text_1' | t }}</p>
+          <p class="sub" style="font-size: 14px;">{{ 'faq.contact.text_2' | t }}</p>
           <div class="btn-group">
             <a href="{{ section.settings.contact_button_link }}" class="tf-btn btn-fill hover-primary">
-              {{ section.settings.contact_button_text }}
+              {{ 'faq.contact.contact_button' | t }}
             </a>
             <a href="{{ section.settings.chat_button_link }}" class="tf-btn btn-white hover-primary">
-              {{ section.settings.chat_button_text }}
+              {{ 'faq.contact.chat_button' | t }}
             </a>
           </div>
         </div>
@@ -80,39 +80,9 @@
       "default": "boxed"
     },
     {
-      "type": "text",
-      "id": "contact_title",
-      "label": "Contact Title",
-      "default": "Contact Us"
-    },
-    {
-      "type": "text",
-      "id": "contact_text_1",
-      "label": "Contact Text 1",
-      "default": "If you have an issue or question that requires immediate assistance, you can click the button below to chat live with a Customer Service representative."
-    },
-    {
-      "type": "text",
-      "id": "contact_text_2",
-      "label": "Contact Text 2",
-      "default": "Please allow 06 - 12 business days from the time your package arrives back to us for a refund to be issued."
-    },
-    {
-      "type": "text",
-      "id": "contact_button_text",
-      "label": "Contact Button Text",
-      "default": "Contact us"
-    },
-    {
       "type": "url",
       "id": "contact_button_link",
       "label": "Contact Button Link"
-    },
-    {
-      "type": "text",
-      "id": "chat_button_text",
-      "label": "Chat Button Text",
-      "default": "Chat with us"
     },
     {
       "type": "url",

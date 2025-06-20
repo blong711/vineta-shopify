@@ -4,7 +4,7 @@
       <a href="{{ section.settings.link }}" class="announcement-bar__link">
     {%- endif -%}
         <p class="announcement-bar__message">
-          {{ section.settings.text | escape }}
+          {{ 'sections.announcement_bar.text' | t }}
         </p>
     {%- if section.settings.link != blank -%}
       </a>
@@ -21,12 +21,6 @@
       "id": "show_announcement",
       "label": "Show announcement",
       "default": true
-    },
-    {
-      "type": "text",
-      "id": "text",
-      "label": "Announcement text",
-      "default": "Welcome to our store"
     },
     {
       "type": "url",

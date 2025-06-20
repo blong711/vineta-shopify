@@ -8,14 +8,15 @@
     <div class="wrap">
         <div class="tf-mini-cart-threshold">
           <div class="text">
-          {% if cart.total_price >= settings.free_shipping_threshold %}
-            {{ settings.free_shipping_message }}
+          {%- assign free_shipping_threshold = section.settings.free_shipping_threshold | times: 100 -%}
+          {% if cart.total_price >= free_shipping_threshold %}
+            {{ section.settings.free_shipping_message }}
           {% else %}
-            {{ settings.progress_message | replace: '[amount]', settings.free_shipping_threshold | minus: cart.total_price | money }}
+            {{ section.settings.progress_message | replace: '[amount]', free_shipping_threshold | minus: cart.total_price | money }}
           {% endif %}
           </div>
           <div class="tf-progress-bar tf-progress-ship">
-          <div class="value" style="width: {{ cart.total_price | times: 100.0 | divided_by: settings.free_shipping_threshold | at_most: 100 }}%;" data-progress="{{ cart.total_price | times: 100.0 | divided_by: settings.free_shipping_threshold | at_most: 100 }}">
+          <div class="value" style="width: {{ cart.total_price | times: 100.0 | divided_by: free_shipping_threshold | at_most: 100 }}%;" data-progress="{{ cart.total_price | times: 100.0 | divided_by: free_shipping_threshold | at_most: 100 }}">
               <i class="icon icon-car"></i>
             </div>
           </div>
@@ -27,7 +28,7 @@
                 <div id="cart-items-placeholder">
                   <div class="empty-cart">
                     <p>{{ 'cart.drawer.empty_cart' | t }}</p>
-                    <a href="/collections/all" class="tf-btn animate-btn d-inline-flex bg-dark-2">{{ 'cart.drawer.continue_shopping' | t }}</a>
+                    <a href="{{ routes.all_products_collection_url }}" class="tf-btn animate-btn d-inline-flex bg-dark-2">{{ 'cart.drawer.continue_shopping' | t }}</a>
                   </div>
                 </div>
               </div>
@@ -75,11 +76,11 @@
                 </div>
                 <label for="CartDrawer-Form_agree" class="text-sm">
                   {{ 'cart.drawer.terms_agree' | t }}
-                  <a href="/pages/terms-and-conditions" title="Terms of Service" class="fw-medium">{{ 'cart.drawer.terms_link' | t }}</a>
+                  <a href="{{ routes.root_url }}policies/terms-of-service" title="Terms of Service" class="fw-medium">{{ 'cart.drawer.terms_link' | t }}</a>
                 </label>
               </div>
               <div class="tf-mini-cart-view-checkout">
-                <a href="/cart" class="tf-btn animate-btn d-inline-flex bg-dark-2 w-100 justify-content-center">{{ 'cart.drawer.view_cart' | t }}</a>
+                <a href="{{ routes.cart_url }}" class="tf-btn animate-btn d-inline-flex bg-dark-2 w-100 justify-content-center">{{ 'cart.drawer.view_cart' | t }}</a>
                 <button type="button" class="tf-btn btn-out-line-dark2 w-100 justify-content-center checkout-btn" id="checkout-button" disabled>{{ 'cart.drawer.checkout' | t }}</button>
               </div>
             </div>
@@ -212,7 +213,7 @@
         // Add default option
         const defaultOption = document.createElement('option');
         defaultOption.value = '';
-        defaultOption.textContent = 'Select Province/State';
+        defaultOption.textContent = '{{ 'cart.drawer.shipping.select_province' | t }}';
         provinceSelect.appendChild(defaultOption);
         
         // Add province options
@@ -410,61 +411,63 @@
   "name": "Cart Drawer",
   "settings": [
     {
-      "type": "checkbox",
-      "id": "show_recommendations",
-      "label": "Show product recommendations",
-      "default": true
+      "type": "header",
+      "content": "Free Shipping Threshold"
+    },
+    {
+      "type": "text",
+      "id": "progress_message",
+      "label": "Progress Message",
+      "default": "You are [amount] away from free shipping!"
+    },
+    {
+      "type": "text",
+      "id": "free_shipping_message",
+      "label": "Free Shipping Message",
+      "default": "You've got free shipping!"
+    },
+    {
+      "type": "number",
+      "id": "free_shipping_threshold",
+      "label": "Free Shipping Threshold",
+      "default": 100
     },
     {
       "type": "header",
-      "content": "Gift Wrap Settings"
+      "content": "Cart Tools"
     },
     {
       "type": "checkbox",
       "id": "enable_gift_wrap",
-      "label": "Enable gift wrap option",
+      "label": "Enable Gift Wrap",
       "default": true
     },
     {
       "type": "product",
       "id": "gift_wrap_product",
-      "label": "Gift Wrap Product",
-      "info": "Select the product to use for gift wrapping."
+      "label": "Gift Wrap Product"
     },
     {
       "type": "text",
       "id": "gift_wrap_variant_id",
-      "label": "Gift Wrap Variant ID (optional)",
-      "info": "If your gift wrap product has multiple variants, enter the variant ID to use. Leave blank to use the first variant."
-    },
-    {
-      "type": "header",
-      "content": "Order Note Settings"
+      "label": "Gift Wrap Variant ID"
     },
     {
       "type": "checkbox",
       "id": "enable_order_note",
-      "label": "Enable order note option",
+      "label": "Enable Order Note",
       "default": true
-    },
-    {
-      "type": "header",
-      "content": "Coupon Settings"
     },
     {
       "type": "checkbox",
       "id": "enable_coupon",
-      "label": "Enable coupon option",
+      "label": "Enable Coupon",
       "default": true
-    },
-    {
-      "type": "header",
-      "content": "Shipping Calculator Settings"
     },
     {
       "type": "checkbox",
       "id": "enable_shipping_calculator",
-      "label": "Enable shipping calculator",
+      "label": "Enable Shipping Calculator",
       "default": true
     }
   ],
