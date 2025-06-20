@@ -194,35 +194,101 @@
     async function updateProductsWithSort(sortValue) {
       const url = new URL(window.location.href);
       const existingParams = new URLSearchParams(url.search);
-      existingParams.set('sort_by', sortValue);
       
-      try {
-        const response = await fetch(url.pathname + '?' + existingParams.toString());
-        const html = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
+      // Handle alphabetical sorting on client side
+      if (sortValue === 'title-ascending' || sortValue === 'title-descending') {
+        console.log('Triggering alphabetical sorting:', sortValue);
+        // Remove sort_by parameter for alphabetical sorting to get unsorted results
+        existingParams.delete('sort_by');
+        
+        try {
+          const response = await fetch(url.pathname + '?' + existingParams.toString());
+          const html = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
 
-        // Update product grid
-        const newGrid = doc.querySelector('.tf-grid-layout');
-        if (newGrid && productGrid) productGrid.innerHTML = newGrid.innerHTML;
+          // Update product grid
+          const newGrid = doc.querySelector('.tf-grid-layout');
+          if (newGrid && productGrid) {
+            const currentLayoutClass = productGrid.className;
+            
+            // Get all child nodes from the fetched grid, including text nodes (whitespace)
+            const allNodes = Array.from(newGrid.childNodes);
+            
+            // Separate product elements from other nodes (like whitespace)
+            const products = allNodes.filter(node => node.nodeType === 1 && node.classList.contains('card-product'));
+            const otherNodes = allNodes.filter(node => node.nodeType !== 1 || !node.classList.contains('card-product'));
+            
+            products.sort((a, b) => {
+              const titleA = a.querySelector('.name-product')?.textContent?.trim() || '';
+              const titleB = b.querySelector('.name-product')?.textContent?.trim() || '';
+              
+              if (sortValue === 'title-ascending') {
+                return titleA.localeCompare(titleB);
+              } else {
+                return titleB.localeCompare(titleA);
+              }
+            });
+            
+            // Re-render the live grid once with the sorted products
+            // Important: We only re-add the sorted product elements. The other nodes (whitespace)
+            // from the original fetch are discarded to prevent issues, but the sort is now
+            // performed on a clean list derived from the original structure.
+            productGrid.innerHTML = products.map(p => p.outerHTML).join('\n');
+            productGrid.className = currentLayoutClass;
+          }
 
-        // Update sort value display
-        if (sortValueDisplay) {
-          sortValueDisplay.textContent = sortValue.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+          // Update sort value display
+          if (sortValueDisplay) {
+            sortValueDisplay.textContent = sortValue.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+          }
+
+          // Update active state
+          sortItems.forEach(item => {
+            item.classList.toggle('active', item.dataset.sortValue === sortValue);
+          });
+
+          // Update URL without reload, preserving all filter parameters
+          existingParams.set('sort_by', sortValue);
+          window.history.pushState({}, '', url.pathname + '?' + existingParams.toString());
+
+          // Reinitialize any necessary event listeners
+          initializeProductEvents();
+        } catch (error) {
+          console.error('Error updating products:', error);
         }
+      } else {
+        // Handle server-side sorting for other options
+        existingParams.set('sort_by', sortValue);
+        
+        try {
+          const response = await fetch(url.pathname + '?' + existingParams.toString());
+          const html = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
 
-        // Update active state
-        sortItems.forEach(item => {
-          item.classList.toggle('active', item.dataset.sortValue === sortValue);
-        });
+          // Update product grid
+          const newGrid = doc.querySelector('.tf-grid-layout');
+          if (newGrid && productGrid) productGrid.innerHTML = newGrid.innerHTML;
 
-        // Update URL without reload
-        window.history.pushState({}, '', url.pathname + '?' + existingParams.toString());
+          // Update sort value display
+          if (sortValueDisplay) {
+            sortValueDisplay.textContent = sortValue.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+          }
 
-        // Reinitialize any necessary event listeners
-        initializeProductEvents();
-      } catch (error) {
-        console.error('Error updating products:', error);
+          // Update active state
+          sortItems.forEach(item => {
+            item.classList.toggle('active', item.dataset.sortValue === sortValue);
+          });
+
+          // Update URL without reload
+          window.history.pushState({}, '', url.pathname + '?' + existingParams.toString());
+
+          // Reinitialize any necessary event listeners
+          initializeProductEvents();
+        } catch (error) {
+          console.error('Error updating products:', error);
+        }
       }
     }
 
@@ -307,24 +373,12 @@
           url.searchParams.delete('filter.v.availability');
         }
 
-        try {
-          const response = await fetch(url);
-          const html = await response.text();
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(html, 'text/html');
-
-          // Update product grid
-          const newGrid = doc.querySelector('.tf-grid-layout');
-          if (newGrid && productGrid) productGrid.innerHTML = newGrid.innerHTML;
-
-          // Update URL without reload
-          window.history.pushState({}, '', url.toString());
-
-          // Reinitialize any necessary event listeners
-          initializeProductEvents();
-        } catch (error) {
-          console.error('Error updating products:', error);
-        }
+        // Update URL first
+        window.history.pushState({}, '', url.toString());
+        
+        // Use updateProductsWithSort to maintain current sort order
+        const currentSort = url.searchParams.get('sort_by') || 'best-selling';
+        updateProductsWithSort(currentSort);
       });
     });
 
@@ -339,24 +393,12 @@
           url.searchParams.delete('filter.v.option.brand');
         }
 
-        try {
-          const response = await fetch(url);
-          const html = await response.text();
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(html, 'text/html');
-
-          // Update product grid
-          const newGrid = doc.querySelector('.tf-grid-layout');
-          if (newGrid && productGrid) productGrid.innerHTML = newGrid.innerHTML;
-
-          // Update URL without reload
-          window.history.pushState({}, '', url.toString());
-
-          // Reinitialize any necessary event listeners
-          initializeProductEvents();
-        } catch (error) {
-          console.error('Error updating products:', error);
-        }
+        // Update URL first
+        window.history.pushState({}, '', url.toString());
+        
+        // Use updateProductsWithSort to maintain current sort order
+        const currentSort = url.searchParams.get('sort_by') || 'best-selling';
+        updateProductsWithSort(currentSort);
       });
     });
 
