@@ -1,6 +1,15 @@
 {%- comment -%}Recently Viewed Section{%- endcomment -%}
-{%- assign recently_viewed_products = product.recently_viewed_products | slice: 0, section.settings.products_to_show -%}
-{%- if recently_viewed_products.size > 0 -%}
+{%- assign all_products = collections.all.products | where: "available" -%}
+{%- assign products_to_show = section.settings.products_to_show -%}
+{%- assign all_products_count = all_products.size -%}
+{%- if all_products_count > products_to_show -%}
+  {%- assign max_offset = all_products_count | minus: products_to_show -%}
+  {%- assign random_offset = 'now' | date: '%s' | modulo: max_offset -%}
+  {%- assign random_products = all_products | slice: random_offset, products_to_show -%}
+{%- else -%}
+  {%- assign random_products = all_products -%}
+{%- endif -%}
+{%- if random_products.size > 0 -%}
 <section class="flat-spacing">
 {% if section.settings.width == 'boxed' %}
   <div class="container">
@@ -36,7 +45,7 @@
         }
       }'>
         <div class="swiper-wrapper">
-          {%- for product in recently_viewed_products -%}
+          {%- for product in random_products -%}
             <div class="swiper-slide">
               {% render 'card-product', product: product %}
             </div>
