@@ -7,6 +7,14 @@
                 <!-- Content will be loaded via JavaScript -->
             </div>
         </div>
+        
+        <!-- Empty state for compare page -->
+        <div class="wrapper-compare tf-col-2 lg-col-3 xl-col-4" id="compareEmpty" style="padding-bottom: 80px; display: none;">
+            <div class="tf-compare-empty text-center">
+                <p class="text-md text-noti" style="margin-bottom: 32px;">No products were added to compare.</p>
+                <a href="/" class="tf-btn animate-btn btn-back-shop">Back to Shopping</a>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -210,6 +218,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (compareIds.length === 0) {
       compareContent.innerHTML = '';
       document.getElementById('compareTable').style.display = 'none';
+      document.getElementById('compareEmpty').style.display = 'block';
       return;
     }
     const allProducts = await fetchAllProducts();
@@ -217,10 +226,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (compareProducts.length === 0) {
       compareContent.innerHTML = '';
       document.getElementById('compareTable').style.display = 'none';
+      document.getElementById('compareEmpty').style.display = 'block';
       return;
     }
     compareContent.innerHTML = '';
     document.getElementById('compareTable').style.display = 'block';
+    document.getElementById('compareEmpty').style.display = 'none';
 
     // 1. Image/Title/Price row
     const imageRowValues = compareProducts.map(product => `
