@@ -136,13 +136,16 @@ class cookiesBar extends HTMLElement {
   }
 
   initCookieBanner() {
+    // Don't show banner in theme customizer
+    if (Shopify.designMode) {
+      return;
+    }
+    
     const userCanBeTracked = window.Shopify.customerPrivacy.userCanBeTracked();
     const userTrackingConsent = window.Shopify.customerPrivacy.getTrackingConsent();
 
     if ((!userCanBeTracked && userTrackingConsent === 'no_interaction') || this.isShowCookiesAll) {
-      if (!Shopify.designMode) {
-        this.showCookiesBanner();
-      }
+      this.showCookiesBanner();
     }
   }
 
