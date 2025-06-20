@@ -904,6 +904,57 @@
     });
   };
 
+  /* Cookie Setting
+  -------------------------------------------------------------------------------------*/
+  var cookieSetting = function () {
+    if (window.Shopify && window.Shopify.designMode) {
+      return;
+    }
+    
+    $(".cookie-banner .overplay").on("click", function () {
+      $(".cookie-banner").hide();
+    });
+
+    function setCookie(name, value, days) {
+      const date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      const expires = "expires=" + date.toUTCString();
+      document.cookie = `${name}=${value}; ${expires}; path=/`;
+    }
+
+    function getCookie(name) {
+      const nameEQ = name + "=";
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.indexOf(nameEQ) === 0) {
+          return cookie.substring(nameEQ.length, cookie.length);
+        }
+      }
+      return null;
+    }
+
+    function checkCookie() {
+      const $cookieBanner = $("#cookie-banner");
+      const accepted = getCookie("cookieAccepted");
+
+      if (accepted) {
+        $cookieBanner.hide();
+      } else {
+        $cookieBanner.show();
+      }
+    }
+
+    $(document).ready(function () {
+      $("#accept-cookie").on("click", function () {
+        setCookie("cookieAccepted", "true", 30);
+        $("#cookie-banner").hide();
+      });
+
+      checkCookie();
+    });
+  };
+
   /* Preloader
   -------------------------------------------------------------------------------------*/
   var preloader = function () {
@@ -940,6 +991,9 @@
     });
   };
 
+
+
+
   // Dom Ready
   $(function () {
     selectImages();
@@ -972,8 +1026,10 @@
     wishList();
     scrollBottomSticky();
     handleSidebarFilter();
+    cookieSetting();
     preloader();
     goTop();
     new WOW().init();
+    
   });
 })(jQuery);
