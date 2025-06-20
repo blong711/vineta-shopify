@@ -3,10 +3,13 @@
   <div class="container">
     <div class="box-title text-center">
       <h4 class="title">Search results for "{{ search.terms }}"</h4>
+      {% if search.results_count > 0 %}
+        <p style="font-size: 14px;" class="breadcrumb-item current">{{ search.results_count }} products found</p>
+      {% endif %}
       <div class="breadcrumb-list">
         <a style="font-size: 14px;" class="breadcrumb-item" href="/">Home</a>
         <div class="breadcrumb-item dot"><span></span></div>
-        <span style="font-size: 14px;" class="breadcrumb-item current">Search Results</span>
+        <span style="font-size: 14px;" class="breadcrumb-item current">Search Results</span> <br>
       </div>
     </div>
   </div>
@@ -144,7 +147,6 @@
 
     <div class="wrapper-control-shop">
       <div class="meta-filter-shop">
-        <div id="product-count-grid" class="count-text">{{ search.results_count }} products found</div>
         <div id="applied-filters">
           {% if current_tags.size > 0 %}
             {% for tag in current_tags %}
