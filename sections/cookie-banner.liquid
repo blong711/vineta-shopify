@@ -94,21 +94,24 @@ class cookiesBar extends HTMLElement {
     this.isShowCookiesAll = (this.cookies.show == '1');
     this.acceptBtn = this.cookies.drawer.querySelector(".hdt-pp_cookies__accept-btn");
     this.declineBtn = this.cookies.drawer.querySelector(".hdt-pp_cookies__decline-btn");
-    this.loadCookieBanner(this);
+    
     let self = this;
     this.acceptBtn?.addEventListener("click", this.handleAccept.bind(this));
     this.declineBtn?.addEventListener("click", this.handleDecline.bind(this));
+
     if (Shopify.designMode) {
       document.addEventListener('shopify:section:select', (event) => {
         const cookiesSelect = event.target.classList.contains('sys-cookies');
         if (!cookiesSelect) return;
         self.showCookiesBanner();
-      })
+      });
       document.addEventListener('shopify:section:deselect', (event) => {
         const cookiesSelect = event.target.classList.contains('sys-cookies');
         if (!cookiesSelect) return;
         self.hideCookiesBanner();
-      })
+      });
+    } else {
+      this.loadCookieBanner();
     }
   }
   
@@ -136,11 +139,6 @@ class cookiesBar extends HTMLElement {
   }
 
   initCookieBanner() {
-    // Don't show banner in theme customizer
-    if (Shopify.designMode) {
-      return;
-    }
-    
     const userCanBeTracked = window.Shopify.customerPrivacy.userCanBeTracked();
     const userTrackingConsent = window.Shopify.customerPrivacy.getTrackingConsent();
 
@@ -152,12 +150,6 @@ class cookiesBar extends HTMLElement {
   loadCookieBanner() {
     let self = this;
     if (!this.cookies.drawer) return;
-    
-    // Don't load banner in theme customizer
-    if (Shopify.designMode) {
-      return;
-    }
-    
     this.cookies.day_next = this.cookies.day_next || 60;
     this.isShowCookiesAll = (this.cookies.show == '1');
     if (getCookie(this.cookies.cookiesName) == 'accepted' || this.style.display === 'block') return;
