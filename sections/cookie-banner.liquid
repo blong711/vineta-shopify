@@ -152,6 +152,12 @@ class cookiesBar extends HTMLElement {
   loadCookieBanner() {
     let self = this;
     if (!this.cookies.drawer) return;
+    
+    // Don't load banner in theme customizer
+    if (Shopify.designMode) {
+      return;
+    }
+    
     this.cookies.day_next = this.cookies.day_next || 60;
     this.isShowCookiesAll = (this.cookies.show == '1');
     if (getCookie(this.cookies.cookiesName) == 'accepted' || this.style.display === 'block') return;
