@@ -238,10 +238,12 @@
                         <div class="image">
                           <a href="{{ article.url }}" class="img-style d-block">
                             {% if article.image %}
-                              {{ article.image | image_url: width: 100 | image_tag: 
+                              {{ article.image | image_url: width: 98, height: 98, crop: 'center' | image_tag: 
                                 loading: 'lazy',
                                 class: 'lazyload',
-                                alt: article.title
+                                alt: article.title,
+                                width: 98,
+                                height: 98
                               }}
                             {% endif %}
                           </a>
@@ -337,4 +339,16 @@
     border-radius: 28px;
     display: block;
   }
-  </style>
+  .recent-blog-list .image {
+    width: 98px;
+    height: 98px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  .recent-blog-list .image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>
