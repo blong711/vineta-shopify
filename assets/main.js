@@ -835,7 +835,8 @@
     $(".card-product .wishlist").each(function() {
       const productId = $(this).find("[data-wishlist]").data("id");
       if (productId) {
-        const isWishlisted = localStorage.getItem(`wishlist_${productId}`) === "true";
+        const wishlistIds = localStorage.getItem('theme4:wishlist:id') ? localStorage.getItem('theme4:wishlist:id').split(',') : [];
+        const isWishlisted = wishlistIds.includes(productId.toString());
         updateWishlistUI($(this), isWishlisted);
       }
     });
@@ -853,9 +854,21 @@
       // Toggle wishlist state
       const newWishlistState = !isCurrentlyWishlisted;
       
-      // Update localStorage
+      // Update localStorage using the correct format
       if (productId) {
-        localStorage.setItem(`wishlist_${productId}`, newWishlistState);
+        const wishlistIds = localStorage.getItem('theme4:wishlist:id') ? localStorage.getItem('theme4:wishlist:id').split(',') : [];
+        
+        if (newWishlistState) {
+          // Add to wishlist
+          if (!wishlistIds.includes(productId.toString())) {
+            wishlistIds.unshift(productId.toString());
+            localStorage.setItem('theme4:wishlist:id', wishlistIds.join(','));
+          }
+        } else {
+          // Remove from wishlist
+          const updatedIds = wishlistIds.filter(id => id !== productId.toString());
+          localStorage.setItem('theme4:wishlist:id', updatedIds.join(','));
+        }
       }
       
       // Update UI
