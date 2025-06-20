@@ -103,7 +103,7 @@
                 <div class="entry_image {% if section.settings.layout == 'grid' %}blog-grid-img-style{% else %}blog-list-img-style{% endif %}">
                   <a href="{{ article.url }}" class="img-style">
                     {% if article.image %}
-                      {{ article.image | image_url: width: 800 | image_tag: 
+                      {{ article.image | image_url: width: 800, crop: 'center' | image_tag: 
                         loading: 'lazy',
                         class: 'lazyload',
                         alt: article.title
@@ -308,12 +308,7 @@
 <!-- /Section blog --> 
 <style>
   .blog-grid-img-style {
-    width: 100%;
-    aspect-ratio: 1/1; /* Adjust as needed for your design */
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    aspect-ratio: 25.5 / 21; /* Adjust as needed for your design */
   }
   .blog-grid-img-style img {
     width: 100%;
