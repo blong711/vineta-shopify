@@ -1,14 +1,35 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-  "name": "Wishlist",
   "sections": {
     "page-title": {
-      "type": "page-title"
+      "type": "page-title",
+      "settings": {}
     },
     "wishlist": {
-      "type": "wishlist"
+      "type": "wishlist",
+      "settings": {
+        "products_per_page": 8
+      }
     },
     "recently-viewed": {
-      "type": "recently-viewed"
+      "type": "recently-viewed",
+      "settings": {
+        "title": "Recently Viewed",
+        "width": "boxed",
+        "products_to_show": 8,
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "space_between": 12
+      }
     }
   },
   "order": [
@@ -16,4 +37,4 @@
     "wishlist",
     "recently-viewed"
   ]
-} 
+}
