@@ -99,7 +99,7 @@ class cookiesBar extends HTMLElement {
     this.acceptBtn?.addEventListener("click", this.handleAccept.bind(this));
     this.declineBtn?.addEventListener("click", this.handleDecline.bind(this));
 
-    if (Shopify.designMode) {
+    if (window.Shopify.designMode) {
       document.addEventListener('shopify:section:select', (event) => {
         const cookiesSelect = event.target.classList.contains('sys-cookies');
         if (!cookiesSelect) return;
