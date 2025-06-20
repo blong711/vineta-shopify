@@ -2,10 +2,7 @@
 <section class="tf-page-title" {% if section.settings.background_image != blank %}style="background-image: url('{{ section.settings.background_image | image_url }}');"{% endif %}>
   <div class="container">
     <div class="box-title text-center">
-      <h4 class="title">Search results for "{{ search.terms }}"</h4>
-      {% if search.results_count > 0 %}
-        <p style="font-size: 14px;" class="breadcrumb-item current">{{ search.results_count }} products found</p>
-      {% endif %}
+      <h4 class="title">{{ search.results_count }} search results for "{{ search.terms }}"</h4>
       <div class="breadcrumb-list">
         <a style="font-size: 14px;" class="breadcrumb-item" href="/">Home</a>
         <div class="breadcrumb-item dot"><span></span></div>
