@@ -209,33 +209,135 @@
     {%- if section.settings.show_comment_form -%}
       <div class="leave-comment-wrap">
         <p class="title">Leave a comment</p>
-        {% form 'new_comment', article, class: 'form-default' %}
-          <div class="wrap">
-            <div class="cols">
-              <fieldset>
-                <label for="CommentAuthor">Your name*</label>
-                <input id="CommentAuthor" type="text" name="comment[author]" required>
-              </fieldset>
-              <fieldset>
-                <label for="CommentEmail">Your email*</label>
-                <input id="CommentEmail" type="email" name="comment[email]" required>
-              </fieldset>
+        
+        {%- if article.comments_enabled? -%}
+          {%- if comment and comment.created_at -%}
+            <div class="comment-success" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+              <p>Thank you! Your comment has been submitted and is awaiting moderation.</p>
             </div>
-            <div class="cols">
-              <fieldset class="textarea">
-                <label for="CommentBody">Your comment*</label>
-                <textarea id="CommentBody" name="comment[body]" required></textarea>
-              </fieldset>
+          {%- endif -%}
+
+          {%- if comment.errors -%}
+            <div class="comment-errors" style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+              <p>There was an error submitting your comment:</p>
+              <ul>
+                {%- for error in comment.errors -%}
+                  <li>{{ error }}</li>
+                {%- endfor -%}
+              </ul>
             </div>
-            <p style="font-size: 14px;" class="notice">Please note, your email won't be published.</p>
-            <div class="button-submit">
-              <button class="tf-btn text-sm animate-btn" type="submit">Post comment</button>
+          {%- endif -%}
+
+          {% form 'new_comment', article, class: 'form-default' %}
+            <div class="wrap">
+              <div class="cols">
+                <fieldset>
+                  <label for="CommentAuthor">Your name*</label>
+                  <input id="CommentAuthor" type="text" name="comment[author]" value="{{ form.author }}" required>
+                </fieldset>
+                <fieldset>
+                  <label for="CommentEmail">Your email*</label>
+                  <input id="CommentEmail" type="email" name="comment[email]" value="{{ form.email }}" required>
+                </fieldset>
+              </div>
+              <div class="cols">
+                <fieldset class="textarea">
+                  <label for="CommentBody">Your comment*</label>
+                  <textarea id="CommentBody" name="comment[body]" required>{{ form.body }}</textarea>
+                </fieldset>
+              </div>
+              <p style="font-size: 14px;" class="notice">Please note, your email won't be published.</p>
+              <div class="button-submit">
+                <button class="tf-btn text-sm animate-btn" type="submit">Post comment</button>
+              </div>
             </div>
+          {% endform %}
+        {%- else -%}
+          <div class="comments-disabled" style="background: #e2e3e5; color: #383d41; padding: 15px; border-radius: 5px;">
+            <p>Comments are disabled for this article.</p>
           </div>
-        {% endform %}
+        {%- endif -%}
       </div>
     {%- endif -%}
   {% if section.settings.width == 'boxed' %}
   </div>
   {% endif %}
-</section> 
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const commentForm = document.querySelector('.form-default');
+  if (!commentForm) return;
+
+  commentForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const submitButton = this.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    
+    // Disable submit button and show loading
+    submitButton.disabled = true;
+    submitButton.textContent = 'Submitting...';
+    
+    // Remove any existing messages
+    const existingMessages = document.querySelectorAll('.comment-success, .comment-errors');
+    existingMessages.forEach(msg => msg.remove());
+    
+    fetch(window.location.href, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+    .then(response => response.text())
+    .then(html => {
+      // Create a temporary div to parse the response
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = html;
+      
+      // Check for success message
+      const successMsg = tempDiv.querySelector('.comment-success');
+      if (successMsg) {
+        // Insert success message before the form
+        commentForm.parentNode.insertBefore(successMsg.cloneNode(true), commentForm);
+        // Clear the form
+        commentForm.reset();
+      }
+      
+      // Check for error messages
+      const errorMsg = tempDiv.querySelector('.comment-errors');
+      if (errorMsg) {
+        // Insert error message before the form
+        commentForm.parentNode.insertBefore(errorMsg.cloneNode(true), commentForm);
+      }
+      
+      // If no success or error message, check if there are validation errors
+      if (!successMsg && !errorMsg) {
+        const formErrors = tempDiv.querySelectorAll('.field-error, .error');
+        if (formErrors.length > 0) {
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'comment-errors';
+          errorDiv.style.cssText = 'background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px;';
+          errorDiv.innerHTML = '<p>There was an error submitting your comment:</p><ul><li>Please check your input and try again.</li></ul>';
+          commentForm.parentNode.insertBefore(errorDiv, commentForm);
+        }
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'comment-errors';
+      errorDiv.style.cssText = 'background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px;';
+      errorDiv.innerHTML = '<p>There was an error submitting your comment. Please try again.</p>';
+      commentForm.parentNode.insertBefore(errorDiv, commentForm);
+    })
+    .finally(() => {
+      // Re-enable submit button
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
+    });
+  });
+});
+</script> 

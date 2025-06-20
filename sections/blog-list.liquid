@@ -92,8 +92,8 @@
 <!-- /sidebar-account -->
 
 <!-- Section blog -->
-<section class="s-blog-list-v1 sec-blog space-blog">
-  <div class="container">
+<section class="sec-blog space-blog {% if section.settings.layout == 'grid' %}s-blog-grid{% else %}s-blog-list-v1{% endif %}">
+  <div class="container" style="padding-left: 15px; padding-right: 15px;">
     <div class="row">
       <div class="col-lg-8">
         <div class="s-content {% if section.settings.layout == 'grid' %}s-blog-list-grid grid-2{% endif %}">
