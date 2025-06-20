@@ -745,6 +745,10 @@ document.addEventListener('DOMContentLoaded', function() {
       backdrop.remove();
     }
     document.body.style.overflow = '';
+    // Remove modal-open class from body
+    document.body.classList.remove('modal-open');
+    // Remove padding-right style from body
+    document.body.style.paddingRight = '';
   };
 
   // Set up event listeners after DOM is ready

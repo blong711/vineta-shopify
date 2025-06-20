@@ -1,0 +1,420 @@
+{%- comment -%}Search Page Section{%- endcomment -%}
+<section class="tf-page-title" {% if section.settings.background_image != blank %}style="background-image: url('{{ section.settings.background_image | image_url }}');"{% endif %}>
+  <div class="container">
+    <div class="box-title text-center">
+      <h4 class="title">Search results for "{{ search.terms }}"</h4>
+      <div class="breadcrumb-list">
+        <a style="font-size: 14px;" class="breadcrumb-item" href="/">Home</a>
+        <div class="breadcrumb-item dot"><span></span></div>
+        <span style="font-size: 14px;" class="breadcrumb-item current">Search Results</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container my-5">
+  {% if search.results_count > 0 %}
+    <div class="tf-shop-control">
+      <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
+        <div class="btn-select">
+          <span class="text-sort-value">{{ search.sort_by | default: 'best-selling' | replace: '-', ' ' | capitalize }}</span>
+          <span class="icon icon-arr-down"></span>
+        </div>
+        <div class="dropdown-menu">
+          <div class="select-item{% if search.sort_by == 'best-selling' %} active{% endif %}" data-sort-value="best-selling">
+            <span class="text-value-item">Best selling</span>
+          </div>
+          <div class="select-item{% if search.sort_by == 'title-ascending' %} active{% endif %}" data-sort-value="title-ascending">
+            <span class="text-value-item">Alphabetically, A-Z</span>
+          </div>
+          <div class="select-item{% if search.sort_by == 'title-descending' %} active{% endif %}" data-sort-value="title-descending">
+            <span class="text-value-item">Alphabetically, Z-A</span>
+          </div>
+          <div class="select-item{% if search.sort_by == 'price-ascending' %} active{% endif %}" data-sort-value="price-ascending">
+            <span class="text-value-item">Price, low to high</span>
+          </div>
+          <div class="select-item{% if search.sort_by == 'price-descending' %} active{% endif %}" data-sort-value="price-descending">
+            <span class="text-value-item">Price, high to low</span>
+          </div>
+        </div>
+      </div>
+
+      <ul class="tf-control-layout">
+        <li class="tf-view-layout-switch sw-layout-2" data-value-layout="tf-col-2">
+          <div class="item icon-grid-2">
+            <span></span>
+            <span></span>
+          </div>
+        </li>
+        <li class="tf-view-layout-switch sw-layout-3" data-value-layout="tf-col-3">
+          <div class="item icon-grid-3">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </li>
+        <li class="tf-view-layout-switch sw-layout-4 active" data-value-layout="tf-col-4">
+          <div class="item icon-grid-4">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="tf-filter-dropdown">
+      <span class="title-filter">Filter:</span>
+      <div class="meta-dropdown-filter">
+        <div class="dropdown dropdown-filter">
+          <div class="dropdown-toggle" id="availability" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+            <span class="text-value">Availability</span>
+            <span class="icon icon-arr-down"></span>
+          </div>
+          <div class="dropdown-menu" aria-labelledby="availability">
+            <ul class="filter-group-check">
+              <li class="list-item">
+                <input type="radio" name="availability" class="tf-check" id="inStock">
+                <label for="inStock" class="label"><span>In stock</span>&nbsp;<span class="count">({{ search.results | where: "available", true | size }})</span></label>
+              </li>
+              <li class="list-item">
+                <input type="radio" name="availability" class="tf-check" id="outStock">
+                <label for="outStock" class="label"><span>Out of stock</span>&nbsp;<span class="count">({{ search.results | where: "available", false | size }})</span></label>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="dropdown dropdown-filter">
+          <div class="dropdown-toggle" id="price" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+            <span class="text-value">Price</span>
+            <span class="icon icon-arr-down"></span>
+          </div>
+          <div class="dropdown-menu" aria-labelledby="price">
+            <div class="widget-price filter-price">
+              <div class="price-val-range" id="price-value-range" data-min="0" data-max="500"></div>
+              <div class="box-value-price">
+                <span class="text-sm">Price:</span>
+                <div class="price-box">
+                  <div class="price-val" id="price-min-value" data-currency="$"></div>
+                  <span>-</span>
+                  <div class="price-val" id="price-max-value" data-currency="$"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% assign vendors = search.results | map: 'vendor' | uniq %}
+        {% assign has_vendors = false %}
+        {% for vendor in vendors %}
+          {% if vendor != blank %}
+            {% assign has_vendors = true %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+        
+        {% if has_vendors %}
+          <div class="dropdown dropdown-filter">
+            <div class="dropdown-toggle" id="brand" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+              <span class="text-value">Brand</span>
+              <span class="icon icon-arr-down"></span>
+            </div>
+            <div class="dropdown-menu" aria-labelledby="brand">
+              <ul class="filter-group-check">
+                {% for vendor in vendors %}
+                  {% if vendor != blank %}
+                    <li class="list-item">
+                      <input type="radio" name="brand" class="tf-check" id="{{ vendor | handle }}">
+                      <label for="{{ vendor | handle }}" class="label">
+                        <span>{{ vendor }}</span>&nbsp;
+                        <span class="count">({{ search.results | where: "vendor", vendor | size }})</span>
+                      </label>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="wrapper-control-shop">
+      <div class="meta-filter-shop">
+        <div id="product-count-grid" class="count-text">{{ search.results_count }} products found</div>
+        <div id="applied-filters">
+          {% if current_tags.size > 0 %}
+            {% for tag in current_tags %}
+              <span class="filter-tag">{{ tag }} <i class="icon icon-close"></i></span>
+            {% endfor %}
+          {% endif %}
+        </div>
+        {% if current_tags.size > 0 %}
+          <button id="remove-all" class="remove-all-filters"><i class="icon icon-close"></i> Clear all filter</button>
+        {% endif %}
+      </div>
+
+      <div class="wrapper-shop tf-grid-layout tf-col-4">
+        {% for item in search.results %}
+          {% if item.object_type == 'product' %}
+            <div class="loadItem card-product grid style-1{% if item.options contains 'Size' %} card-product-size{% endif %}" 
+                 data-availability="{{ item.available | default: 'In stock' }}" 
+                 data-brand="{{ item.vendor }}">
+              {% render 'card-product', product: item %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  {% else %}
+    <p>No results found for "{{ search.terms }}".</p>
+  {% endif %}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Set default sort if none is specified
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has('sort_by')) {
+      url.searchParams.set('sort_by', 'best-selling');
+      window.history.replaceState({}, '', url.toString());
+      updateProductsWithSort('best-selling');
+    }
+
+    // Handle sort selection
+    const sortItems = document.querySelectorAll('.select-item');
+    const sortDropdown = document.querySelector('.tf-dropdown-sort');
+    const sortValueDisplay = document.querySelector('.text-sort-value');
+    const productGrid = document.querySelector('.tf-grid-layout');
+
+    // Function to update products with new sort
+    async function updateProductsWithSort(sortValue) {
+      const url = new URL(window.location.href);
+      const existingParams = new URLSearchParams(url.search);
+      existingParams.set('sort_by', sortValue);
+      
+      try {
+        const response = await fetch(url.pathname + '?' + existingParams.toString());
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Update product grid
+        const newGrid = doc.querySelector('.tf-grid-layout');
+        if (newGrid && productGrid) productGrid.innerHTML = newGrid.innerHTML;
+
+        // Update sort value display
+        if (sortValueDisplay) {
+          sortValueDisplay.textContent = sortValue.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+
+        // Update active state
+        sortItems.forEach(item => {
+          item.classList.toggle('active', item.dataset.sortValue === sortValue);
+        });
+
+        // Update URL without reload
+        window.history.pushState({}, '', url.pathname + '?' + existingParams.toString());
+
+        // Reinitialize any necessary event listeners
+        initializeProductEvents();
+      } catch (error) {
+        console.error('Error updating products:', error);
+      }
+    }
+
+    // Handle sort selection
+    sortItems.forEach(item => {
+      item.addEventListener('click', function() {
+        const sortValue = this.dataset.sortValue;
+        updateProductsWithSort(sortValue);
+        
+        // Close dropdown after selection
+        if (sortDropdown) {
+          const dropdown = bootstrap.Dropdown.getInstance(sortDropdown);
+          if (dropdown) {
+            dropdown.hide();
+          }
+        }
+      });
+    });
+
+    // Handle layout switching
+    const layoutSwitches = document.querySelectorAll('.tf-view-layout-switch');
+    const gridLayout = document.querySelector('.tf-grid-layout');
+
+    layoutSwitches.forEach(switchEl => {
+      switchEl.addEventListener('click', function() {
+        const layout = this.dataset.valueLayout;
+        
+        // Update active state
+        layoutSwitches.forEach(s => s.classList.remove('active'));
+        this.classList.add('active');
+
+        // Update grid layout
+        if (gridLayout) {
+          gridLayout.className = `wrapper-shop tf-grid-layout ${layout}`;
+        }
+      });
+    });
+
+    // Handle filter tag removal
+    const filterTags = document.querySelectorAll('.filter-tag');
+    filterTags.forEach(tag => {
+      tag.addEventListener('click', function() {
+        const tagText = this.textContent.trim();
+        const url = new URL(window.location.href);
+        const tags = url.searchParams.get('filter.v.tag')?.split(',') || [];
+        const newTags = tags.filter(t => t !== tagText);
+        
+        if (newTags.length > 0) {
+          url.searchParams.set('filter.v.tag', newTags.join(','));
+        } else {
+          url.searchParams.delete('filter.v.tag');
+        }
+        
+        updateProductsWithSort(url.searchParams.get('sort_by') || 'best-selling');
+      });
+    });
+
+    // Handle clear all filters
+    const clearAllBtn = document.getElementById('remove-all');
+    if (clearAllBtn) {
+      clearAllBtn.addEventListener('click', function() {
+        const url = new URL(window.location.href);
+        // Remove all filter parameters
+        for (const param of url.searchParams.keys()) {
+          if (param.startsWith('filter.v.')) {
+            url.searchParams.delete(param);
+          }
+        }
+        updateProductsWithSort(url.searchParams.get('sort_by') || 'best-selling');
+      });
+    }
+
+    // Handle availability filter
+    const availabilityInputs = document.querySelectorAll('input[name="availability"]');
+    availabilityInputs.forEach(input => {
+      input.addEventListener('change', async function() {
+        const url = new URL(window.location.href);
+        if (this.checked) {
+          const value = this.id === 'inStock' ? '1' : '0';
+          url.searchParams.set('filter.v.availability', value);
+        } else {
+          url.searchParams.delete('filter.v.availability');
+        }
+
+        try {
+          const response = await fetch(url);
+          const html = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+
+          // Update product grid
+          const newGrid = doc.querySelector('.tf-grid-layout');
+          if (newGrid && productGrid) productGrid.innerHTML = newGrid.innerHTML;
+
+          // Update URL without reload
+          window.history.pushState({}, '', url.toString());
+
+          // Reinitialize any necessary event listeners
+          initializeProductEvents();
+        } catch (error) {
+          console.error('Error updating products:', error);
+        }
+      });
+    });
+
+    // Handle brand filter
+    const brandInputs = document.querySelectorAll('input[name="brand"]');
+    brandInputs.forEach(input => {
+      input.addEventListener('change', async function() {
+        const url = new URL(window.location.href);
+        if (this.checked) {
+          url.searchParams.set('filter.v.option.brand', this.id);
+        } else {
+          url.searchParams.delete('filter.v.option.brand');
+        }
+
+        try {
+          const response = await fetch(url);
+          const html = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+
+          // Update product grid
+          const newGrid = doc.querySelector('.tf-grid-layout');
+          if (newGrid && productGrid) productGrid.innerHTML = newGrid.innerHTML;
+
+          // Update URL without reload
+          window.history.pushState({}, '', url.toString());
+
+          // Reinitialize any necessary event listeners
+          initializeProductEvents();
+        } catch (error) {
+          console.error('Error updating products:', error);
+        }
+      });
+    });
+
+    // Initialize price range slider
+    const priceRange = document.getElementById('price-value-range');
+    if (priceRange) {
+      const minPrice = parseInt(priceRange.dataset.min);
+      const maxPrice = parseInt(priceRange.dataset.max);
+      
+      noUiSlider.create(priceRange, {
+        start: [minPrice, maxPrice],
+        connect: true,
+        range: {
+          'min': 0,
+          'max': 500
+        }
+      });
+
+      const minValue = document.getElementById('price-min-value');
+      const maxValue = document.getElementById('price-max-value');
+      const currency = minValue.dataset.currency;
+
+      priceRange.noUiSlider.on('update', function(values) {
+        minValue.textContent = currency + Math.round(values[0]);
+        maxValue.textContent = currency + Math.round(values[1]);
+      });
+
+      // Handle price range changes
+      priceRange.noUiSlider.on('change', function(values) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('filter.v.price.gte', Math.round(values[0]));
+        url.searchParams.set('filter.v.price.lte', Math.round(values[1]));
+        
+        updateProductsWithSort(url.searchParams.get('sort_by') || 'best-selling');
+      });
+    }
+
+    // Function to initialize product-specific event listeners
+    function initializeProductEvents() {
+      // Add any product-specific event listeners here
+      // For example, quick view, add to cart, etc.
+    }
+
+    // Initialize product events
+    initializeProductEvents();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Search Page",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image",
+      "info": "Background image for the search page banner"
+    }
+  ]
+}
+{% endschema %} 
