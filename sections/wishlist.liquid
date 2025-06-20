@@ -5,6 +5,11 @@
       <div class="col-lg-12">
         <div class="wrapper-shop tf-grid-layout tf-col-2 lg-col-3 xl-col-4 style-1" id="gridLayout">
         </div>
+        <!-- Pagination -->
+        <div class="pagination-container" id="paginationContainer" style="display: none;">
+          <ul class="wg-pagination" id="pagination">
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -30,6 +35,13 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const gridLayout = document.getElementById('gridLayout');
+  const paginationContainer = document.getElementById('paginationContainer');
+  const pagination = document.getElementById('pagination');
+  
+  // Get products per page from theme settings
+  const productsPerPage = {{ section.settings.products_per_page }};
+  let currentPage = 1;
+  let allProducts = [];
   
   function updateWishlistDisplay() {
     const wishlistIds = localStorage.getItem('theme4:wishlist:id') ? localStorage.getItem('theme4:wishlist:id').split(',') : [];
@@ -44,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
           </div>
         </div>  
       `;
+      paginationContainer.style.display = 'none';
       return;
     }
 
@@ -73,10 +86,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Fetch all products
     fetchAllProducts()
-      .then(allProducts => {
+      .then(allFetchedProducts => {
         
         // Filter to only include wishlist products
-        const products = allProducts.filter(product => {
+        const products = allFetchedProducts.filter(product => {
           const productId = product.id.toString();
           const isInWishlist = wishlistIdMap.has(productId);
           return isInWishlist;
@@ -93,38 +106,150 @@ document.addEventListener('DOMContentLoaded', function() {
               .then(data => data.products[0])
           ))
           .then(missingProducts => {
-            const allProducts = [...products, ...missingProducts.filter(p => p)];
-            displayProducts(allProducts, cleanWishlistIds);
+            const allProductsWithMissing = [...products, ...missingProducts.filter(p => p)];
+            // Sort products to match the order in wishlistIds
+            const sortedProducts = allProductsWithMissing.sort((a, b) => {
+              const aIndex = cleanWishlistIds.indexOf(a.id.toString());
+              const bIndex = cleanWishlistIds.indexOf(b.id.toString());
+              return aIndex - bIndex;
+            });
+            
+            allProducts = sortedProducts;
+            currentPage = 1;
+            displayProductsWithPagination();
           })
           .catch(error => {
             console.error('Error fetching missing products:', error);
-            displayProducts(products, cleanWishlistIds);
+            const sortedProducts = products.sort((a, b) => {
+              const aIndex = cleanWishlistIds.indexOf(a.id.toString());
+              const bIndex = cleanWishlistIds.indexOf(b.id.toString());
+              return aIndex - bIndex;
+            });
+            allProducts = sortedProducts;
+            currentPage = 1;
+            displayProductsWithPagination();
           });
         } else {
-          displayProducts(products, cleanWishlistIds);
+          // Sort products to match the order in wishlistIds
+          const sortedProducts = products.sort((a, b) => {
+            const aIndex = cleanWishlistIds.indexOf(a.id.toString());
+            const bIndex = cleanWishlistIds.indexOf(b.id.toString());
+            return aIndex - bIndex;
+          });
+          
+          allProducts = sortedProducts;
+          currentPage = 1;
+          displayProductsWithPagination();
         }
       })
       .catch(error => {
         console.error('Error fetching wishlist products:', error);
         gridLayout.innerHTML = '';
+        paginationContainer.style.display = 'none';
       });
   }
 
-  function displayProducts(products, cleanWishlistIds) {
+  function displayProductsWithPagination() {
+    if (allProducts.length === 0) {
+      gridLayout.innerHTML = '';
+      paginationContainer.style.display = 'none';
+      return;
+    }
+    
+    // Calculate pagination
+    const totalPages = Math.ceil(allProducts.length / productsPerPage);
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = startIndex + productsPerPage;
+    const currentPageProducts = allProducts.slice(startIndex, endIndex);
+    
+    // Display current page products
+    displayProducts(currentPageProducts);
+    
+    // Update pagination
+    updatePagination(totalPages);
+  }
+  
+  function updatePagination(totalPages) {
+    if (totalPages <= 1) {
+      paginationContainer.style.display = 'none';
+      return;
+    }
+    
+    paginationContainer.style.display = 'block';
+    
+    let paginationHTML = '';
+    
+    // Previous button
+    if (currentPage > 1) {
+      paginationHTML += `
+        <li>
+          <a href="#" class="pagination-item" data-page="${currentPage - 1}">
+            <i class="icon-arr-left2"></i>
+          </a>
+        </li>
+      `;
+    }
+    
+    // Page numbers
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      if (i === currentPage) {
+        paginationHTML += `
+          <li class="active">
+            <div class="pagination-item">${i}</div>
+          </li>
+        `;
+      } else {
+        paginationHTML += `
+          <li>
+            <a href="#" class="pagination-item" data-page="${i}">${i}</a>
+          </li>
+        `;
+      }
+    }
+    
+    // Next button
+    if (currentPage < totalPages) {
+      paginationHTML += `
+        <li>
+          <a href="#" class="pagination-item" data-page="${currentPage + 1}">
+            <i class="icon-arr-right2"></i>
+          </a>
+        </li>
+      `;
+    }
+    
+    pagination.innerHTML = paginationHTML;
+    
+    // Add click event listeners to pagination
+    pagination.querySelectorAll('[data-page]').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const page = parseInt(this.dataset.page);
+        if (page !== currentPage) {
+          currentPage = page;
+          displayProductsWithPagination();
+          // Scroll to top of wishlist
+          gridLayout.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  }
+
+  function displayProducts(products) {
     if (products.length === 0) {
       gridLayout.innerHTML = '';
       return;
     }
     
-    // Sort products to match the order in wishlistIds
-    const sortedProducts = products.sort((a, b) => {
-      const aIndex = cleanWishlistIds.indexOf(a.id.toString());
-      const bIndex = cleanWishlistIds.indexOf(b.id.toString());
-      return aIndex - bIndex;
-    });
-    
-    
-    const wishlistHTML = sortedProducts.map(product => {
+    const wishlistHTML = products.map(product => {
       return `
       <div class="card-product grid file-delete style-wishlist style-3 ${!product.variants[0].available ? 'out-of-stock' : ''}" data-product-id="${product.id}">
         <i class="icon icon-close remove" data-wishlist data-id="${product.id}" data-action="remove"></i>
@@ -232,6 +357,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const updatedIds = wishlistIds.filter(id => id !== productId);
         localStorage.setItem('theme4:wishlist:id', updatedIds.join(','));
         
+        // Remove the product from allProducts array
+        allProducts = allProducts.filter(p => p.id.toString() !== productId);
+        
         // Remove the product card from UI
         productCard.remove();
         
@@ -249,6 +377,13 @@ document.addEventListener('DOMContentLoaded', function() {
           // Remove the event listener to prevent refresh
           document.removeEventListener('wishlist:updated', updateWishlistDisplay);
         } else {
+          // Recalculate pagination after removing item
+          const totalPages = Math.ceil(allProducts.length / productsPerPage);
+          if (currentPage > totalPages && totalPages > 0) {
+            currentPage = totalPages;
+          }
+          displayProductsWithPagination();
+          
           // Only dispatch event if there are still products
           document.dispatchEvent(new CustomEvent('wishlist:updated'));
         }
@@ -867,8 +1002,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         this.classList.add('active');
         
-        // Find the product and variant from the sorted products array
-        const product = sortedProducts.find(p => p.id.toString() === productId);
+        // Find the product and variant from the allProducts array
+        const product = allProducts.find(p => p.id.toString() === productId);
         if (product) {
           const variant = product.variants.find(v => v.id.toString() === variantId);
           if (variant) {
