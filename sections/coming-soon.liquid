@@ -72,10 +72,10 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="wg-coming-soon">
-          <p class="title text-center">
+          <p class="display-xl-2 title text-center">
             {{ section.settings.title }}
           </p>
-          <p class="text-md sub text-main text-center">
+          <p class="text-md sub text-main text-center" style="max-width: 480px">
             {{ section.settings.subtitle }}
           </p>
           <div class="wg-countdown">
@@ -100,6 +100,9 @@
                 </div>
               </div>
             </form>
+            <div id="coming-soon-submit-message" class="coming-soon-submit-message" style="margin-top: 15px; color: #28a745; font-size: 14px; display: none; text-align: center;">
+              Thank you! You've been successfully added to our notification list.
+            </div>
           </div>
           <div class="bot">
             <a href="{{ routes.root_url }}" class="tf-btn btn-fill hover-primary animate-btn">
@@ -113,3 +116,62 @@
     </div>
   {% endif %}
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const comingSoonForm = document.querySelector('.s-coming-soon .form-newsletter');
+    const successMessage = document.getElementById('coming-soon-submit-message');
+    
+    if (comingSoonForm) {
+      comingSoonForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const emailInput = this.querySelector('input[type="email"]');
+        const submitButton = this.querySelector('button[type="submit"]');
+        const email = emailInput.value;
+        
+        // Basic email validation
+        if (!email || !email.includes('@')) {
+          alert('Please enter a valid email address.');
+          return;
+        }
+        
+        // Disable submit button and show loading state
+        submitButton.disabled = true;
+        const originalText = submitButton.textContent;
+        submitButton.textContent = 'Submitting...';
+        
+        // Simulate form submission (you can replace this with actual API call)
+        setTimeout(() => {
+          // Hide the form
+          this.style.display = 'none';
+          
+          // Show success message
+          if (successMessage) {
+            successMessage.style.display = 'block';
+          }
+          
+          // Reset the form
+          this.reset();
+          
+          // Re-enable button (in case form is shown again)
+          submitButton.disabled = false;
+          submitButton.textContent = originalText;
+          
+          // Optional: Auto-hide success message after 5 seconds
+          setTimeout(() => {
+            if (successMessage) {
+              successMessage.style.transition = 'opacity 0.5s ease-out';
+              successMessage.style.opacity = '0';
+              setTimeout(() => {
+                successMessage.style.display = 'none';
+                successMessage.style.opacity = '1';
+              }, 500);
+            }
+          }, 5000);
+          
+        }, 1000); // Simulate 1 second delay
+      });
+    }
+  });
+</script>

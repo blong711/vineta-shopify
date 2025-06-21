@@ -25969,8 +25969,8 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   h2,
   .display-xl,
   .display-xl-2 {
-    font-size: 40px;
-    line-height: 52px;
+    font-size: 40px !important;
+    line-height: 52px !important;
   }
   h3,
   .display-lg,
@@ -27977,5 +27977,11 @@ prev.swiper-button-disabled {
       font-size: 14px;
       line-height: 22px;
       max-width: 320px;
+  }
+}
+@media (max-width: 767px) {
+  h2, .display-xl, .display-xl-2 {
+      font-size: 30px !important;
+      line-height: 42px !important;
   }
 }
