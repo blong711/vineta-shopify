@@ -107,11 +107,23 @@
         "banner_link": "shopify://collections",
         "banner_button_text": "Shop Now"
       }
+    },
+    "blog_sidebar": {
+      "type": "blog-sidebar",
+      "settings": {
+        "show_recent_posts": true,
+        "show_tags": true,
+        "sidebar_banner": "shopify://shop_images/sb-banner.jpg",
+        "banner_title": "Elevate Your Style",
+        "banner_link": "shopify://collections",
+        "banner_button_text": "Shop Now"
+      }
     }
   },
   "order": [
     "page_title",
     "blog_sub_collection",
-    "blog_list"
+    "blog_list",
+    "blog_sidebar"
   ]
 }
