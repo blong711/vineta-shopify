@@ -9,7 +9,7 @@
             <div class="term-item" {{ block.shopify_attributes }}>
               <p class="term-title">{{ block.settings.title }}</p>
               <div class="text-wrap">
-                <p class="term-text body-text text-main">{{ block.settings.content | newline_to_br | remove: '<p>' | remove: '</p>' }}</p>
+                <div class="term-text body-text text-main">{{ block.settings.content}}</div>
               </div>
             </div>
           {% endfor %}
@@ -54,10 +54,10 @@
           "default": "1. Returns"
         },
         {
-          "type": "richtext",
+          "type": "text",
           "id": "content",
           "label": "Content",
-          "default": "<p>We want you to be completely satisfied with your purchase. If for any reason you are not satisfied, you may return the item(s) within 30 days of receiving your order for a refund or exchange. To be eligible for a return, the item must be unused, in its original packaging, and in the same condition as you received it.</p>"
+          "default": "We want you to be completely satisfied with your purchase. If for any reason you are not satisfied, you may return the item(s) within 30 days of receiving your order for a refund or exchange. To be eligible for a return, the item must be unused, in its original packaging, and in the same condition as you received it."
         }
       ]
     }
