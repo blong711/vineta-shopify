@@ -266,6 +266,23 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  // Auto-hide existing success/error messages after 5 seconds
+  const existingMessages = document.querySelectorAll('.comment-success, .comment-errors');
+  existingMessages.forEach(msg => {
+    setTimeout(() => {
+      msg.style.transition = 'opacity 0.5s ease-out';
+      msg.style.opacity = '0';
+      setTimeout(() => msg.remove(), 500);
+    }, 5000);
+  });
+
+  // Clear messages from URL parameters on page load
+  if (window.location.search.includes('comment_posted') || window.location.search.includes('comment_error')) {
+    // Remove the parameters from URL without reloading
+    const newUrl = window.location.pathname + window.location.hash;
+    window.history.replaceState({}, document.title, newUrl);
+  }
+
   const commentForm = document.querySelector('.form-default');
   if (!commentForm) return;
 
@@ -301,16 +318,30 @@ document.addEventListener('DOMContentLoaded', function() {
       const successMsg = tempDiv.querySelector('.comment-success');
       if (successMsg) {
         // Insert success message before the form
-        commentForm.parentNode.insertBefore(successMsg.cloneNode(true), commentForm);
+        const clonedMsg = successMsg.cloneNode(true);
+        commentForm.parentNode.insertBefore(clonedMsg, commentForm);
         // Clear the form
         commentForm.reset();
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+          clonedMsg.style.transition = 'opacity 0.5s ease-out';
+          clonedMsg.style.opacity = '0';
+          setTimeout(() => clonedMsg.remove(), 500);
+        }, 5000);
       }
       
       // Check for error messages
       const errorMsg = tempDiv.querySelector('.comment-errors');
       if (errorMsg) {
         // Insert error message before the form
-        commentForm.parentNode.insertBefore(errorMsg.cloneNode(true), commentForm);
+        const clonedMsg = errorMsg.cloneNode(true);
+        commentForm.parentNode.insertBefore(clonedMsg, commentForm);
+        // Auto-hide after 8 seconds (longer for errors)
+        setTimeout(() => {
+          clonedMsg.style.transition = 'opacity 0.5s ease-out';
+          clonedMsg.style.opacity = '0';
+          setTimeout(() => clonedMsg.remove(), 500);
+        }, 8000);
       }
       
       // If no success or error message, check if there are validation errors
@@ -322,6 +353,12 @@ document.addEventListener('DOMContentLoaded', function() {
           errorDiv.style.cssText = 'background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px;';
           errorDiv.innerHTML = '<p>There was an error submitting your comment:</p><ul><li>Please check your input and try again.</li></ul>';
           commentForm.parentNode.insertBefore(errorDiv, commentForm);
+          // Auto-hide after 8 seconds
+          setTimeout(() => {
+            errorDiv.style.transition = 'opacity 0.5s ease-out';
+            errorDiv.style.opacity = '0';
+            setTimeout(() => errorDiv.remove(), 500);
+          }, 8000);
         }
       }
     })
@@ -332,6 +369,12 @@ document.addEventListener('DOMContentLoaded', function() {
       errorDiv.style.cssText = 'background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px;';
       errorDiv.innerHTML = '<p>There was an error submitting your comment. Please try again.</p>';
       commentForm.parentNode.insertBefore(errorDiv, commentForm);
+      // Auto-hide after 8 seconds
+      setTimeout(() => {
+        errorDiv.style.transition = 'opacity 0.5s ease-out';
+        errorDiv.style.opacity = '0';
+        setTimeout(() => errorDiv.remove(), 500);
+      }, 8000);
     })
     .finally(() => {
       // Re-enable submit button
