@@ -52,13 +52,39 @@
 }
 {% endschema %}
 
-<!-- Section wrapper for theme customizer -->
-<div class="newsletter-popup-section" style="min-height: 50px; display: flex; align-items: center; justify-content: center; background: #f8f9fa; border: 2px dashed #dee2e6; margin: 20px 0; cursor: pointer;">
-  <div class="text-center">
-    <i class="icon icon-mail" style="font-size: 24px; color: #6c757d; margin-bottom: 10px;"></i>
-    <p style="margin: 0; color: #6c757d; font-size: 14px;">Click to preview Newsletter Popup</p>
-  </div>
-</div>
+<style>
+  /* Theme customizer preview styles */
+  .shopify-editor-section[data-section-id="{{ section.id }}"] {
+    cursor: pointer;
+    position: relative;
+    min-height: 100px;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9f9f9;
+    transition: all 0.3s ease;
+  }
+  
+  .shopify-editor-section[data-section-id="{{ section.id }}"]:hover {
+    border-color: #007cba;
+    background: #f0f8ff;
+  }
+  
+  .shopify-editor-section[data-section-id="{{ section.id }}"]::before {
+    content: "📧 Click to preview Newsletter Popup";
+    font-size: 16px;
+    color: #666;
+    text-align: center;
+    pointer-events: none;
+  }
+  
+  .shopify-editor-section[data-section-id="{{ section.id }}"]:hover::before {
+    color: #007cba;
+    font-weight: 500;
+  }
+</style>
 
 <div class="modal modalCentered fade auto-popup modal-newsletter">
   <div class="modal-dialog modal-dialog-centered">
@@ -147,48 +173,53 @@
     const popup = document.querySelector('.modal-newsletter');
     const dontShowAgainCheckbox = document.getElementById('dont-show-again');
     const closeButtons = document.querySelectorAll('.btn-hide-popup, [data-bs-dismiss="modal"]');
-    const sectionWrapper = document.querySelector('.newsletter-popup-section');
     
-    // Check if we're in theme customizer
-    const isThemeCustomizer = window.Shopify && window.Shopify.designMode;
-    
-    // Check if popup should be hidden (only if not in theme customizer)
-    if (!isThemeCustomizer && localStorage.getItem('newsletterPopupHidden') === 'true') {
+    // Check if popup should be hidden
+    if (localStorage.getItem('newsletterPopupHidden') === 'true') {
       if (popup) {
         popup.remove();
       }
       return;
     }
 
-    // Handle section click in theme customizer
-    if (isThemeCustomizer && sectionWrapper) {
-      sectionWrapper.addEventListener('click', function() {
-        if (popup) {
-          // Create and show the modal using Bootstrap
-          const modal = new bootstrap.Modal(popup);
-          modal.show();
-        }
-      });
-    }
-
     // Handle checkbox change
-    if (dontShowAgainCheckbox) {
-      dontShowAgainCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-          localStorage.setItem('newsletterPopupHidden', 'true');
-        } else {
-          localStorage.removeItem('newsletterPopupHidden');
-        }
-      });
-    }
+    dontShowAgainCheckbox.addEventListener('change', function() {
+      if (this.checked) {
+        localStorage.setItem('newsletterPopupHidden', 'true');
+      } else {
+        localStorage.removeItem('newsletterPopupHidden');
+      }
+    });
 
     // Handle close buttons
     closeButtons.forEach(button => {
       button.addEventListener('click', function() {
-        if (dontShowAgainCheckbox && dontShowAgainCheckbox.checked && popup) {
+        if (dontShowAgainCheckbox.checked && popup) {
           popup.remove();
         }
       });
     });
   });
+
+  // Theme customizer functionality
+  if (typeof Shopify !== 'undefined' && Shopify.designMode) {
+    document.addEventListener('DOMContentLoaded', function() {
+      const sectionElement = document.querySelector('[data-section-id="{{ section.id }}"]');
+      const popup = document.querySelector('.modal-newsletter');
+      
+      if (sectionElement && popup) {
+        sectionElement.addEventListener('click', function(e) {
+          // Prevent triggering when clicking on section settings
+          if (e.target.closest('.shopify-editor-section__header') || 
+              e.target.closest('.shopify-editor-section__settings')) {
+            return;
+          }
+          
+          // Show the popup modal
+          const modal = new bootstrap.Modal(popup);
+          modal.show();
+        });
+      }
+    });
+  }
 </script>
