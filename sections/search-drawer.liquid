@@ -42,22 +42,22 @@
                   {% if section.settings.popular_searches_menu != blank %}
                     <ul>
                       {% for link in linklists[section.settings.popular_searches_menu].links %}
-                        <li><a class="link" href="{{ link.url }}">{{ link.title }}</a></li>
+                        <li><a class="link popular-search-link" href="#" data-search-term="{{ link.title | escape }}">{{ link.title }}</a></li>
                       {% endfor %}
                     </ul>
                   {% else %}
                     <ul>
-                      {% if section.settings.featured_link_url != blank %}
-                        <li><a class="link" href="{{ section.settings.featured_link_url }}">{{ section.settings.featured_link_text }}</a></li>
+                      {% if section.settings.featured_link_text != blank %}
+                        <li><a class="link popular-search-link" href="#" data-search-term="{{ section.settings.featured_link_text | escape }}">{{ section.settings.featured_link_text }}</a></li>
                       {% endif %}
-                      {% if section.settings.trendy_link_url != blank %}
-                        <li><a class="link" href="{{ section.settings.trendy_link_url }}">{{ section.settings.trendy_link_text }}</a></li>
+                      {% if section.settings.trendy_link_text != blank %}
+                        <li><a class="link popular-search-link" href="#" data-search-term="{{ section.settings.trendy_link_text | escape }}">{{ section.settings.trendy_link_text }}</a></li>
                       {% endif %}
-                      {% if section.settings.new_link_url != blank %}
-                        <li><a class="link" href="{{ section.settings.new_link_url }}">{{ section.settings.new_link_text }}</a></li>
+                      {% if section.settings.new_link_text != blank %}
+                        <li><a class="link popular-search-link" href="#" data-search-term="{{ section.settings.new_link_text | escape }}">{{ section.settings.new_link_text }}</a></li>
                       {% endif %}
-                      {% if section.settings.sale_link_url != blank %}
-                        <li><a class="link" href="{{ section.settings.sale_link_url }}">{{ section.settings.sale_link_text }}</a></li>
+                      {% if section.settings.sale_link_text != blank %}
+                        <li><a class="link popular-search-link" href="#" data-search-term="{{ section.settings.sale_link_text | escape }}">{{ section.settings.sale_link_text }}</a></li>
                       {% endif %}
                     </ul>
                   {% endif %}
@@ -201,21 +201,9 @@
     },
     {
       "type": "text",
-      "id": "featured_link_url",
-      "label": "Featured link URL",
-      "default": "/collections/all?sort_by=best-selling"
-    },
-    {
-      "type": "text",
       "id": "trendy_link_text",
       "label": "Trendy link text",
       "default": "Trendy"
-    },
-    {
-      "type": "text",
-      "id": "trendy_link_url",
-      "label": "Trendy link URL",
-      "default": "/collections/all?sort_by=created-descending"
     },
     {
       "type": "text",
@@ -225,21 +213,9 @@
     },
     {
       "type": "text",
-      "id": "new_link_url",
-      "label": "New link URL",
-      "default": "/collections/all?sort_by=created-descending"
-    },
-    {
-      "type": "text",
       "id": "sale_link_text",
       "label": "Sale link text",
       "default": "Sale"
-    },
-    {
-      "type": "text",
-      "id": "sale_link_url",
-      "label": "Sale link URL",
-      "default": "/collections/all?sort_by=price-descending&filter.v.option.price=on_sale"
     }
   ]
 }
@@ -343,6 +319,20 @@
       if (!e.target.closest('.search-suggestions-grid') && !e.target.closest('.search-input')) {
         suggestionsContainer.style.display = 'none';
         viewAllContainer.style.display = 'none';
+      }
+    });
+
+    // Handle popular search link clicks
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('popular-search-link')) {
+        e.preventDefault();
+        const searchTerm = e.target.getAttribute('data-search-term');
+        if (searchTerm) {
+          searchInput.value = searchTerm;
+          searchInput.focus();
+          // Trigger the search input event to show suggestions
+          searchInput.dispatchEvent(new Event('input'));
+        }
       }
     });
   });
