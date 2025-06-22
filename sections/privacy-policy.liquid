@@ -9,7 +9,7 @@
             <div class="term-item" {{ block.shopify_attributes }}>
               <p class="term-title">{{ block.settings.title }}</p>
               <div class="text-wrap">
-                <p class="term-text body-text text-main">{{ block.settings.content | remove: '<p>' | remove: '</p>' }}</p>
+                {{ block.settings.content | replace: '<p>', '<p class="term-text body-text text-main">' }}
               </div>
             </div>
           {% endfor %}
