@@ -10,6 +10,7 @@
 {
   "current": {
     "free_shipping_threshold": 10000,
+    "favicon": "shopify://shop_images/favicon.png",
     "font_library": "google",
     "heading_font_family": "\"Poppins\", sans-serif",
     "body_font_family": "\"Poppins\", sans-serif",
@@ -342,6 +343,8 @@
           "padding_top_main": 0,
           "padding_bottom_main": 0,
           "text_size": "medium",
+          "border": "top",
+          "border_main_position": "container_width",
           "heading_size": "medium",
           "heading_font_weight": "medium",
           "heading_margin_bottom": 30
@@ -350,6 +353,9 @@
       "cart-drawer": {
         "type": "cart-drawer",
         "settings": {
+          "progress_message": "You are [amount] away from free shipping!",
+          "free_shipping_message": "You've got free shipping!",
+          "free_shipping_threshold": 100,
           "enable_gift_wrap": true,
           "gift_wrap_product": "gift-wrap",
           "gift_wrap_variant_id": "",
