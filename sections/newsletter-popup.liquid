@@ -167,20 +167,3 @@
     });
   });
 </script>
-
-{% if request.design_mode %}
-<script>
-  document.addEventListener('shopify:section:select', function(event) {
-    if (event.target.id === 'shopify-section-{{ section.id }}') {
-      const newsletterModal = new bootstrap.Modal(document.querySelector('.modal-newsletter'));
-      newsletterModal.show();
-    } else {
-      // Force close the newsletter popup by triggering the close button
-      const closeButton = document.querySelector('.modal-newsletter .btn-hide-popup');
-      if (closeButton) {
-        closeButton.click();
-      }
-    }
-  });
-</script>
-{% endif %}
