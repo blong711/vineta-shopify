@@ -857,19 +857,14 @@
         <span class="icon-close icon-close-popup" data-bs-dismiss="modal" aria-label="Close"></span>
       </div>
       <div class="tf-rte">
-        {% if size_guide_block.settings.size_guide_source == 'page' and size_guide_block.settings.size_guide_page != blank %}     
+        {% if size_guide_block.settings.size_guide_page != blank %}     
           {% if pages[size_guide_block.settings.size_guide_page].content != blank %}
             {{ pages[size_guide_block.settings.size_guide_page].content }}
           {% else %}
             <p><strong>Error:</strong> The selected page "{{ pages[size_guide_block.settings.size_guide_page].title }}" has no content. Please add content to this page or select a different page.</p>
           {% endif %}
-        {% elsif size_guide_block.settings.size_guide_source == 'metafield' and size_guide_block.settings.size_guide_metafield != blank %}
-          {% assign metafield_parts = size_guide_block.settings.size_guide_metafield | split: '.' %}
-          {% assign metafield_namespace = metafield_parts[0] %}
-          {% assign metafield_key = metafield_parts[1] %}
-          {{ product.metafields[metafield_namespace][metafield_key] }}
         {% else %}
-          <p>No size guide content found.</p>
+          <p>No size guide content found. Please select a page in the theme settings.</p>
         {% endif %}
       </div>
     </div>
@@ -2750,28 +2745,10 @@ function updateMainAddToCartButton(variant) {
           "info": "This text appears on the size guide link next to the size selector"
         },
         {
-          "type": "select",
-          "id": "size_guide_source",
-          "label": "Size Guide Source",
-          "info": "Choose where to get the size guide content from",
-          "options": [
-            { "value": "page", "label": "Shopify Page" },
-            { "value": "metafield", "label": "Product Metafield" }
-          ],
-          "default": "page"
-        },
-        {
           "type": "page",
           "id": "size_guide_page",
           "label": "Size Guide Page",
           "info": "Select a Shopify page containing your size guide content. This is used when 'Shopify Page' is selected as the source."
-        },
-        {
-          "type": "text",
-          "id": "size_guide_metafield",
-          "label": "Size Guide Metafield (namespace.key)",
-          "default": "size_guide.content",
-          "info": "Enter the metafield reference in format: namespace.key (e.g. size_guide.content). This is used when 'Product Metafield' is selected as the source. The metafield should be added to your products."
         }
       ]
     },
@@ -2906,13 +2883,6 @@ function updateMainAddToCartButton(variant) {
           "label": "Select FBT Products",
           "limit": 5,
           "info": "Select products to show in Frequently Bought Together section"
-        },
-        {
-          "type": "text",
-          "id": "fbt_metafield",
-          "label": "FBT Metafield (namespace.key)",
-          "default": "fbt.products",
-          "info": "Enter the metafield reference in format: namespace.key (e.g. fbt.products). The metafield should contain an array of product handles."
         },
         {
           "type": "range",
