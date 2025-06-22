@@ -221,3 +221,47 @@
   </div>
   {% endif %}
 </form> 
+
+<script>
+  // Initialize price range slider if it exists and hasn't been initialized
+  document.addEventListener('DOMContentLoaded', function() {
+    const priceRange = document.getElementById('price-value-range');
+    if (priceRange && !priceRange.noUiSlider && typeof noUiSlider !== 'undefined') {
+      const minValue = document.getElementById('price-min-value');
+      const maxValue = document.getElementById('price-max-value');
+      const minInput = document.getElementById('price-min-input');
+      const maxInput = document.getElementById('price-max-input');
+      
+      if (minValue && maxValue) {
+        const currency = minValue.dataset.currency || '$';
+        const rangeMin = parseInt(priceRange.dataset.rangeMin) || 0;
+        const rangeMax = parseInt(priceRange.dataset.rangeMax) || 1000;
+        const currentMin = parseInt(priceRange.dataset.min) || rangeMin;
+        const currentMax = parseInt(priceRange.dataset.max) || rangeMax;
+
+        try {
+          noUiSlider.create(priceRange, {
+            start: [currentMin, currentMax],
+            connect: true,
+            range: {
+              'min': rangeMin,
+              'max': rangeMax
+            },
+            step: 1
+          });
+
+          // Update display values
+          priceRange.noUiSlider.on('update', function(values) {
+            if (minValue) minValue.textContent = currency + Math.round(values[0]);
+            if (maxValue) maxValue.textContent = currency + Math.round(values[1]);
+            if (minInput) minInput.value = Math.round(values[0]);
+            if (maxInput) maxInput.value = Math.round(values[1]);
+          });
+
+        } catch (error) {
+          console.error('Error initializing price range slider in filter content:', error);
+        }
+      }
+    }
+  });
+</script> 
