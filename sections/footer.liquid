@@ -226,7 +226,7 @@
     <div class="container">
       <div class="footer-bottom-wrap">
         {%- assign current_year = "now" | date: "%Y" -%}
-        <p class="text-dark">{{ 'footer.copyright' | t: year: current_year, site_name: shop.name }}</p>
+        <p class="text-dark">{{ 'footer.copyright_html' | t: year: current_year, site_name: shop.name }}</p>
         {%- if section.settings.show_payment_icons -%}
           {% assign payment_icons = section.settings.payment_icons | split: ',' %}
           <ul class="tf-payment" style="--payment-icon-size: {{ section.settings.payment_icons_size }}px">
