@@ -369,7 +369,7 @@
                   {%- assign has_policy_content = true -%}
                 {%- endif -%}
                 {%- if has_policy_content -%}
-                  <div class="tab-pane{% if forloop.first %} active show{% endif %} wd-product-descriptions" id="returnPolicies-{{ block.id }}" role="tabpanel">
+                  <div class="tab-pane{% if forloop.first %} active show{% endif %} wd-product-descriptions" id="return_policies-{{ block.id }}" role="tabpanel">
                     <ul class="list-policies">
                       {%- if product.metafields.return_policies.shopping_bag != blank -%}
                         <li>
