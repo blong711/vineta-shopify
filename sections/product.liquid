@@ -416,7 +416,7 @@
                   {% endfor %}
                   <!-- End Countdown Timer Block -->
 
-                  <div class="tf-product-info-variant">
+                  <div class="tf-product-info-variant" style="border-top: 1px solid var(--line); padding-top: 32px;">
                       {% if product.metafields.affiliate.url %}
                         <a href="{{ product.metafields.affiliate.url }}" class="tf-btn w-100 animate-btn">{{ product.metafields.affiliate.button_text | default: 'Buy on Amazon' }}</a>
                       {% else %}
