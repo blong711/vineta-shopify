@@ -370,12 +370,17 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Show empty state if no products left
         if (updatedIds.length === 0) {
-          // Remove all product cards
-          const allProductCards = gridLayout.querySelectorAll('.card-product');
-          allProductCards.forEach(card => card.remove());
-          
-          // Remove the event listener to prevent refresh
-          document.removeEventListener('wishlist:updated', updateWishlistDisplay);
+          // Show empty state immediately
+          gridLayout.classList.remove('tf-grid-layout');
+          gridLayout.innerHTML = `
+            <div class="wrapper-wishlist tf-col-2 lg-col-3 xl-col-4" style="padding-bottom: 80px;">
+              <div class="tf-wishlist-empty text-center">
+                <p class="text-md text-noti">No product were added to the wishlist.</p>
+                <a href="/" class="tf-btn animate-btn btn-back-shop">Back to Shopping</a>
+              </div>
+            </div>  
+          `;
+          paginationContainer.style.display = 'none';
         } else {
           // Recalculate pagination after removing item
           const totalPages = Math.ceil(allProducts.length / productsPerPage);

@@ -22,6 +22,54 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // Function to handle empty cart state
+  function handleEmptyCart() {
+    console.log('Handling empty cart state');
+    const mainRow = document.getElementById('cart-items-row');
+    const emptyCartContainer = document.getElementById('empty-cart-container');
+    
+    console.log('Main row found:', mainRow);
+    console.log('Empty cart container found:', emptyCartContainer);
+    
+    // Hide the entire cart layout (both columns)
+    if (mainRow) {
+      mainRow.style.display = 'none';
+      console.log('Hidden main row');
+    }
+    
+    // Show empty cart message container
+    if (emptyCartContainer) {
+      emptyCartContainer.style.display = 'flex';
+      console.log('Showed empty cart container');
+    } else {
+      console.log('Empty cart container not found');
+    }
+  }
+
+  // Function to handle cart with items state
+  function handleCartWithItems() {
+    console.log('Handling cart with items state');
+    const mainRow = document.getElementById('cart-items-row');
+    const emptyCartContainer = document.getElementById('empty-cart-container');
+    
+    console.log('Main row found:', mainRow);
+    console.log('Empty cart container found:', emptyCartContainer);
+    
+    // Show the entire cart layout (both columns)
+    if (mainRow) {
+      mainRow.style.display = 'flex';
+      console.log('Showed main row');
+    }
+    
+    // Hide empty cart message container
+    if (emptyCartContainer) {
+      emptyCartContainer.style.display = 'none';
+      console.log('Hidden empty cart container');
+    } else {
+      console.log('Empty cart container not found');
+    }
+  }
+
   // Function to update shipping progress
   function updateShippingProgress() {
     const cartTotal = parseFloat(document.querySelector('.total').textContent.replace(/[^0-9.-]+/g, ''));
@@ -95,6 +143,25 @@ document.addEventListener('DOMContentLoaded', function() {
   // Fetch cart data on page load
   fetchCartData();
 
+  // Initialize cart state on page load
+  async function initializeCartState() {
+    try {
+      const response = await fetch('/cart.js');
+      const cartData = await response.json();
+      
+      if (cartData.item_count === 0) {
+        handleEmptyCart();
+      } else {
+        handleCartWithItems();
+      }
+    } catch (error) {
+      console.error('Error initializing cart state:', error);
+    }
+  }
+
+  // Initialize cart state
+  initializeCartState();
+
   // Handle remove buttons in cart
   document.querySelectorAll('.remove-cart').forEach(button => {
     button.addEventListener('click', async function(e) {
@@ -118,22 +185,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!response.ok) throw new Error('Failed to remove item');
 
+        const cartData = await response.json();
+        console.log('Cart data after removal:', cartData);
+
         // Remove the item row from the table
         const itemRow = this.closest('.tf-cart-item');
         if (itemRow) {
           itemRow.remove();
         }
 
-        // Fetch updated cart data
-        await fetchCartData();
+        // Update cart totals and count
+        const cartTotal = document.querySelector('.total');
+        if (cartTotal) {
+          cartTotal.textContent = formatMoney(cartData.total_price);
+        }
+        const cartCount = document.querySelector('.cart-count');
+        if (cartCount) {
+          cartCount.textContent = cartData.item_count;
+        }
 
-        // If no items left, show empty cart message
-        const tbody = document.querySelector('.table-page-cart tbody');
-        if (tbody && tbody.children.length === 0) {
-          const emptyCart = document.querySelector('.empty-cart');
-          if (emptyCart) {
-            emptyCart.style.display = 'block';
-          }
+        // Update shipping progress
+        updateShippingProgress();
+
+        // Check if cart is now empty
+        if (cartData.item_count === 0) {
+          console.log('Cart is now empty, calling handleEmptyCart');
+          handleEmptyCart();
         }
       } catch (error) {
         console.error('Error removing item:', error);
@@ -216,13 +293,10 @@ document.addEventListener('DOMContentLoaded', function() {
             itemRow.remove();
           }
 
-          // If no items left, show empty cart message
-          const tbody = document.querySelector('.table-page-cart tbody');
-          if (tbody && tbody.children.length === 0) {
-            const emptyCart = document.querySelector('.empty-cart');
-            if (emptyCart) {
-              emptyCart.style.display = 'block';
-            }
+          // Check if cart is now empty
+          if (cartData.item_count === 0) {
+            console.log('Cart is now empty (quantity), calling handleEmptyCart');
+            handleEmptyCart();
           }
         }
       } catch (error) {
@@ -482,6 +556,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     // Uncheck the gift wrap checkbox
                     giftWrapCheckbox.checked = false;
+
+                    // Check if cart is now empty
+                    if (cartData.item_count === 0) {
+                      handleEmptyCart();
+                    }
                   } catch (error) {
                     console.error('Error removing item:', error);
                     alert('Failed to remove item. Please try again.');
@@ -564,6 +643,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         itemRow.remove();
                       }
                       giftWrapCheckbox.checked = false;
+
+                      // Check if cart is now empty
+                      if (cartData.item_count === 0) {
+                        handleEmptyCart();
+                      }
                     }
                   } catch (error) {
                     console.error('Error updating quantity:', error);
@@ -610,6 +694,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Update shipping progress
         updateShippingProgress();
+
+        // Check if cart is now empty
+        if (cartData.item_count === 0) {
+          handleEmptyCart();
+        }
       } catch (error) {
         console.error('Error updating gift wrap:', error);
         alert('Failed to update gift wrap. Please try again.');
