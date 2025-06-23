@@ -524,12 +524,12 @@
                              data-quantity="1"
                              aria-label="More payment options">More payment options</a>
                       {% else %}
-                        <button class="tf-btn btn-out-stock w-100">This product is currently unavailable</button>
+                        <button class="tf-btn btn-out-stock w-100" style="margin-bottom: 18px;">This product is currently unavailable</button>
                       {% endif %}
                     </div>
                   {% endunless %}
                   {% unless product.available %}
-                    <form class="form-out-stock" id="notify-stock-form" action="#">
+                    <form style="margin-bottom: 18px;" class="form-out-stock" id="notify-stock-form" action="#">
                       <div class="box-title-out-stock">
                         <div class="text-xl fw-medium">Notify me when it back in stock</div>
                         <p class="text-md text-main">Enter your email address to be notified if the product becomes available again.</p>
