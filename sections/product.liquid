@@ -512,8 +512,17 @@
                               data-quantity="1"
                               aria-label="Add to cart">Add to cart</a>
                           </div>
-                          <a href="/checkout" class="tf-btn btn-primary w-100 animate-btn">Buy it now</a>
-                          <a href="/checkout" style="font-size: 14px" class="more-choose-payment link">More payment options</a>
+                          <a href="javascript:void(0);" 
+                             class="tf-btn btn-primary w-100 animate-btn buy-it-now" 
+                             data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                             data-quantity="1"
+                             aria-label="Buy it now">Buy it now</a>
+                          <a href="javascript:void(0);" 
+                             style="font-size: 14px" 
+                             class="more-choose-payment link buy-it-now" 
+                             data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                             data-quantity="1"
+                             aria-label="More payment options">More payment options</a>
                       {% else %}
                         <button class="tf-btn btn-out-stock w-100">This product is currently unavailable</button>
                       {% endif %}
@@ -1042,6 +1051,34 @@
 .color-btn.color-size-small .check-color { width: 20px !important; height: 20px !important; }
 .color-btn.color-size-medium .check-color { width: 32px !important; height: 32px !important; }
 .color-btn.color-size-large .check-color { width: 44px !important; height: 44px !important; }
+
+/* Sticky Cart Button Styles */
+.tf-sticky-atc-btns {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.tf-sticky-atc-btns .tf-btn {
+  flex: 1;
+}
+
+@media (max-width: 767px) {
+  .tf-sticky-atc-btns {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .tf-sticky-atc-btns .tf-btn {
+    width: 100%;
+  }
+}
+
+/* Loading state for buy it now buttons */
+.buy-it-now.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
 </style>
 
 <script>
@@ -1905,7 +1942,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
               });
             });
-
+  
             itemsContainer.querySelectorAll('.btn-increase').forEach(button => {
               button.addEventListener('click', async function() {
                 const variantId = this.dataset.variantId;
@@ -2410,6 +2447,88 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+  // Handle buy it now buttons
+  document.querySelectorAll('.buy-it-now').forEach(button => {
+    button.addEventListener('click', async function(e) {
+      e.preventDefault();
+      
+      // Prevent multiple clicks
+      if (this.classList.contains('loading')) {
+        return;
+      }
+      
+      const variantId = this.dataset.variantId;
+      let quantity = 1;
+      
+      // Get quantity from the main product info input
+      const mainQuantityInput = document.querySelector('.tf-product-info-list .quantity-product');
+      if (mainQuantityInput) {
+        quantity = parseInt(mainQuantityInput.value) || 1;
+      }
+      
+      try {
+        // Show loading state
+        this.classList.add('loading');
+        const originalText = this.textContent;
+        this.textContent = 'Adding...';
+        
+        // Clear cart first (optional - remove this if you want to add to existing cart)
+        await fetch('/cart/clear.js', { method: 'POST' });
+        
+        // Add item to cart
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            items: [{
+              id: variantId,
+              quantity: quantity
+            }]
+          })
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to add item to cart');
+        }
+        
+        // Redirect to checkout
+        window.location.href = '/checkout';
+        
+      } catch (error) {
+        console.error('Error adding item to cart:', error);
+        alert('Failed to add item to cart. Please try again.');
+        // Reset button state
+        this.textContent = originalText;
+        this.classList.remove('loading');
+      }
+    });
+  });
+
+  // Function to update buy it now buttons when variant changes
+  function updateBuyItNowButtons(variant) {
+    document.querySelectorAll('.buy-it-now').forEach(button => {
+      if (variant) {
+        button.dataset.variantId = variant.id;
+        
+        // Update quantity from main product info input
+        const quantityInput = document.querySelector('.tf-product-info-list .quantity-product');
+        if (quantityInput) {
+          const quantity = parseInt(quantityInput.value) || 1;
+          button.dataset.quantity = quantity;
+        }
+      }
+    });
+  }
+
+  // Update the updateVariantSelection function to also update buy it now buttons
+  const originalUpdateVariantSelection = updateVariantSelection;
+  updateVariantSelection = function(variant) {
+    originalUpdateVariantSelection(variant);
+    updateBuyItNowButtons(variant);
+  };
 });
 
 // Function to update header cart count
