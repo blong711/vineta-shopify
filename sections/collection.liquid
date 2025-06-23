@@ -1051,7 +1051,7 @@
           const hasProducts = gridLayout.querySelector('.card-product');
 
           listLayout.style.display = layout === 'list' ? 'block' : 'none';
-          gridLayout.style.display = layout === 'list' ? 'none' : 'block';
+          gridLayout.style.display = layout === 'list' ? 'none' : '';
           
           if (layout !== 'list' && hasProducts) {
             gridLayout.classList.remove('tf-col-2', 'tf-col-3', 'tf-col-4');
