@@ -112,12 +112,12 @@
           {%- endif -%}
           {%- if section.settings.filter_type != 'horizontal' -%}
             <ul class="tf-control-layout">
-              {% comment %} <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
+              <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
                 <div class="item icon-list">
                   <span></span>
                   <span></span>
                 </div>
-              </li> {% endcomment %}
+              </li>
               <li class="tf-view-layout-switch sw-layout-2" data-value-layout="tf-col-2">
                 <div class="item icon-grid-2">
                   <span></span>
@@ -174,12 +174,12 @@
             </div>
           </div>
           <ul class="tf-control-layout">
-          {% comment %} <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
+          <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
             <div class="item icon-list">
               <span></span>
               <span></span>
             </div>
-          </li> {% endcomment %}
+          </li>
           <li class="tf-view-layout-switch sw-layout-2" data-value-layout="tf-col-2">
             <div class="item icon-grid-2">
               <span></span>
@@ -304,22 +304,6 @@
     {%- endif -%}
 
     <div class="wrapper-control-shop" data-pagination-type="{{ section.settings.pagination_type }}">
-      {% if collection.products.size > 0 %}
-        <div class="meta-filter-shop">
-          <div id="product-count-grid" class="count-text"></div>
-          <div id="product-count-list" class="count-text"></div>
-          <div id="applied-filters">
-            {% if current_tags.size > 0 %}
-              {% for tag in current_tags %}
-                <span class="filter-tag">{{ tag }} <i class="icon icon-close"></i></span>
-              {% endfor %}
-            {% endif %}
-          </div>
-          {% if current_tags.size > 0 %}
-            <button id="remove-all" class="remove-all-filters"><i class="icon icon-close"></i> Clear all filter</button>
-          {% endif %}
-        </div>
-      {% endif %}
 
       <!-- List View Layout -->
       <div class="tf-list-layout wrapper-shop" id="listLayout" style="display: none;">
@@ -1064,10 +1048,17 @@
 
         // Show/hide layouts
         if (listLayout && gridLayout) {
+          const hasProducts = gridLayout.querySelector('.card-product');
+
           listLayout.style.display = layout === 'list' ? 'block' : 'none';
           gridLayout.style.display = layout === 'list' ? 'none' : 'block';
-          if (layout !== 'list') {
-            gridLayout.className = `wrapper-shop tf-grid-layout ${layout}`;
+          
+          if (layout !== 'list' && hasProducts) {
+            gridLayout.classList.remove('tf-col-2', 'tf-col-3', 'tf-col-4');
+            if (!gridLayout.classList.contains('tf-grid-layout')) {
+              gridLayout.classList.add('tf-grid-layout');
+            }
+            gridLayout.classList.add(layout);
           }
         }
       });
