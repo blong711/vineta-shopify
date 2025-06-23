@@ -1088,7 +1088,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Default layout with Swiper
     const galleryThumbs = new Swiper('.tf-product-media-thumbs', {
-      direction: 'vertical',
+      direction: 'horizontal',
       slidesPerView: 4,
       spaceBetween: 10,
       navigation: {
@@ -1096,11 +1096,7 @@ document.addEventListener('DOMContentLoaded', function() {
         prevEl: '.thumbs-prev',
       },
       breakpoints: {
-        320: {
-          direction: 'horizontal',
-          slidesPerView: 4,
-        },
-        768: {
+        1200: {
           direction: 'vertical',
           slidesPerView: 4,
         }
