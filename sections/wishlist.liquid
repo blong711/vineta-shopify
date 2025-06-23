@@ -1024,21 +1024,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    // Add compare button click handlers
-    document.querySelectorAll('[data-compare]').forEach(button => {
-      button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const productId = this.dataset.id;
-        const action = this.dataset.action;
-
-        if (window.wishlistCompare) {
-          window.wishlistCompare.handleCompareClick({
-            productId,
-            action
-          });
-        }
-      });
-    });
+    // Compare button functionality is handled by global.js
   }
 
   // Initial update

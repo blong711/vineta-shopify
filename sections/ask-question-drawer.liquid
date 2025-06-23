@@ -6,57 +6,112 @@
         <span class="title text-xl-2 fw-medium">{{ section.settings.title | default: 'Ask a Question' }}</span>
         <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
       </div>
-      {%- form 'contact', id: 'AskQuestionForm', class: 'form-ask-question' -%}
-        <input type="hidden" name="contact[product]" value="{{ product.title | escape }}{% if product.selected_or_first_available_variant.title != 'Default Title' %} - {{ product.selected_or_first_available_variant.title | escape }}{% endif %}">
-        <input type="hidden" name="contact[product_url]" value="{{ shop.url }}{{ product.url }}">
-        <input type="hidden" name="contact[form_type]" value="ask_question">
-        
-        <div class="cols mb_15 flex-md-nowrap flex-wrap">
-          <fieldset class="">
-            <div class="text">{{ section.settings.name_label | default: 'Your name*' }}</div>
-            <input type="text" 
-              name="contact[name]" 
+      
+      <!-- Success Message Container -->
+      <div id="askQuestionSuccess" class="modal-body text-center" style="display: none;">
+        <div class="success-message">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="mb-3">
+            <circle cx="32" cy="32" r="32" fill="#28a745"/>
+            <path d="M20 32L28 40L44 24" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h4 class="text-success mb-2">{{ section.settings.success_title | default: 'Thank You!' }}</h4>
+          <p class="text-muted">{{ section.settings.success_message | default: 'Your question has been submitted successfully. We will get back to you soon!' }}</p>
+        </div>
+      </div>
+      
+      <!-- Form Container -->
+      <div id="askQuestionForm">
+        {%- form 'contact', id: 'AskQuestionForm', class: 'form-ask-question' -%}
+          <input type="hidden" name="contact[product]" value="{{ product.title | escape }}{% if product.selected_or_first_available_variant.title != 'Default Title' %} - {{ product.selected_or_first_available_variant.title | escape }}{% endif %}">
+          <input type="hidden" name="contact[product_url]" value="{{ shop.url }}{{ product.url }}">
+          <input type="hidden" name="contact[form_type]" value="ask_question">
+          
+          <div class="cols mb_15 flex-md-nowrap flex-wrap">
+            <fieldset class="">
+              <div class="text">{{ section.settings.name_label | default: 'Your name*' }}</div>
+              <input type="text" 
+                name="contact[name]" 
+                class=""
+                value="{% if customer %}{{ customer.name }}{% endif %}"
+                aria-required="true" 
+                required>
+            </fieldset>
+            <fieldset class="">
+              <div class="text">{{ section.settings.phone_label | default: 'Your phone number' }}</div>
+              <input type="tel" 
+                name="contact[phone]" 
+                class=""
+                value="{% if customer %}{{ customer.phone }}{% endif %}"
+                aria-required="true">
+            </fieldset>
+          </div>
+          <fieldset class="mb_15">
+            <div class="text">{{ section.settings.email_label | default: 'Your email*' }}</div>
+            <input type="email" 
+              name="contact[email]" 
               class=""
-              value="{% if customer %}{{ customer.name }}{% endif %}"
+              value="{% if customer %}{{ customer.email }}{% endif %}"
               aria-required="true" 
               required>
           </fieldset>
           <fieldset class="">
-            <div class="text">{{ section.settings.phone_label | default: 'Your phone number' }}</div>
-            <input type="tel" 
-              name="contact[phone]" 
+            <div class="text">{{ section.settings.message_label | default: 'Message*' }}</div>
+            <textarea 
+              name="contact[body]" 
+              rows="4" 
               class=""
-              value="{% if customer %}{{ customer.phone }}{% endif %}"
-              aria-required="true">
+              aria-required="true" 
+              required></textarea>
           </fieldset>
-        </div>
-        <fieldset class="mb_15">
-          <div class="text">{{ section.settings.email_label | default: 'Your email*' }}</div>
-          <input type="email" 
-            name="contact[email]" 
-            class=""
-            value="{% if customer %}{{ customer.email }}{% endif %}"
-            aria-required="true" 
-            required>
-        </fieldset>
-        <fieldset class="">
-          <div class="text">{{ section.settings.message_label | default: 'Message*' }}</div>
-          <textarea 
-            name="contact[body]" 
-            rows="4" 
-            class=""
-            aria-required="true" 
-            required></textarea>
-        </fieldset>
-        <div class="text-center">
-          <button type="submit" class="tf-btn animate-btn d-inline-flex justify-content-center">
-            <span>{{ section.settings.submit_label | default: 'Send Message' }}</span>
-          </button>
-        </div>
-      {%- endform -%}
+          <div class="text-center">
+            <button type="submit" class="tf-btn animate-btn d-inline-flex justify-content-center" id="askQuestionSubmit">
+              <span>{{ section.settings.submit_label | default: 'Send Message' }}</span>
+            </button>
+          </div>
+        {%- endform -%}
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const askQuestionForm = document.getElementById('AskQuestionForm');
+  const successContainer = document.getElementById('askQuestionSuccess');
+  const formContainer = document.getElementById('askQuestionForm');
+  const submitButton = document.getElementById('askQuestionSubmit');
+  
+  if (askQuestionForm) {
+    askQuestionForm.addEventListener('submit', function(e) {
+      // Don't prevent default - let the form submit normally
+      // But show success message immediately
+      
+      // Disable submit button and show loading state
+      submitButton.disabled = true;
+      const originalText = submitButton.querySelector('span').textContent;
+      submitButton.querySelector('span').textContent = 'Sending...';
+      
+      // Show success message immediately
+      setTimeout(() => {
+        formContainer.style.display = 'none';
+        successContainer.style.display = 'block';
+        
+        // Reset form
+        askQuestionForm.reset();
+        
+        // Reset button state
+        submitButton.disabled = false;
+        submitButton.querySelector('span').textContent = originalText;
+        
+        // Redirect after 3 seconds
+        setTimeout(() => {
+          window.location.href = '/contact#AskQuestionForm';
+        }, 3000);
+      }, 500); // Small delay to ensure form submission starts
+    });
+  }
+});
+</script>
 
 {% schema %}
 {
@@ -97,6 +152,18 @@
       "id": "submit_label",
       "label": "Submit Button Label",
       "default": "Send Message"
+    },
+    {
+      "type": "text",
+      "id": "success_title",
+      "label": "Success Message Title",
+      "default": "Thank You!"
+    },
+    {
+      "type": "textarea",
+      "id": "success_message",
+      "label": "Success Message",
+      "default": "Your question has been submitted successfully. We will get back to you soon!"
     }
   ]
 }

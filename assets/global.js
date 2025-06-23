@@ -104,7 +104,22 @@ class WishlistCompare {
    */
   getCompareList() {
     const stored = localStorage.getItem(this.compareKey);
-    return stored ? stored.split(',') : [];
+    if (!stored) return [];
+    
+    try {
+      // Try to parse as JSON (new format with product objects)
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0 && typeof parsed[0] === 'object') {
+        return parsed;
+      }
+    } catch (e) {
+      // If JSON parsing fails, it's the old format (comma-separated IDs)
+      console.log('Migrating from old compare format to new format');
+    }
+    
+    // Old format: comma-separated IDs
+    const oldFormat = stored.split(',').filter(id => id.trim());
+    return oldFormat;
   }
 
   /**
@@ -118,7 +133,7 @@ class WishlistCompare {
    * Save compare items to localStorage
    */
   saveCompareList() {
-    localStorage.setItem(this.compareKey, this.compareList.join(','));
+    localStorage.setItem(this.compareKey, JSON.stringify(this.compareList));
   }
 
   /**
@@ -223,34 +238,48 @@ class WishlistCompare {
    * @param {string} productId - Product ID to add
    */
   addToCompare(productId) {
-    
     if (!productId) {
       console.error('No product ID provided for compare');
       return;
     }
 
-    if (this.compareList.includes(productId)) {
+    // Check if product is already in compare list (handle both old and new formats)
+    const isAlreadyInList = this.compareList.some(item => 
+      (typeof item === 'string' && item === productId) || 
+      (typeof item === 'object' && item.id === productId)
+    );
+    
+    if (isAlreadyInList) {
+      console.log('Product already in compare list');
       return;
     }
+
+    // Get product data before adding to list
+    const productData = this.getProductData(productId);
+    if (!productData) {
+      console.error('Could not get product data for compare');
+      return;
+    }
+
+    // Store complete product data, not just ID
+    this.compareList.push(productData);
     
-    this.compareList.unshift(productId);
-    
+    // Limit the number of items
     if (this.compareList.length > this.compareLimit) {
-      this.compareList.pop();
+      this.compareList.shift(); // Remove oldest item
     }
     
     this.saveCompareList();
+    
+    // Update UI
     this.updateButtonsState();
+    this.updateCompareDrawer();
     
-    // Only show drawer if we have valid product data
-    const productData = this.getProductData(productId);
+    // Show the compare drawer
+    this.showCompareDrawer();
     
-    if (productData) {
-      this.showCompareDrawer();
-      this.showNotification('Added to compare');
-    } else {
-      console.error('Could not get product data for compare');
-    }
+    // Show notification
+    this.showNotification('Product added to compare');
   }
 
   /**
@@ -258,12 +287,7 @@ class WishlistCompare {
    * @param {string} productId - Product ID to remove
    */
   removeFromCompare(productId) {
-    if (!productId) {
-      console.error('No product ID provided for remove from compare');
-      return;
-    }
-
-    const index = this.compareList.indexOf(productId);
+    const index = this.compareList.findIndex(product => product.id === productId);
     if (index === -1) return;
     
     this.compareList.splice(index, 1);
@@ -293,7 +317,13 @@ class WishlistCompare {
     document.querySelectorAll('[data-compare]').forEach(button => {
       const productId = button.getAttribute('data-id');
       if (!productId) return; // Skip buttons without product ID (like Clear All)
-      const isInCompare = this.compareList.includes(productId);
+      
+      // Handle both old format (IDs only) and new format (product objects)
+      const isInCompare = this.compareList.some(item => 
+        (typeof item === 'string' && item === productId) || 
+        (typeof item === 'object' && item.id === productId)
+      );
+      
       button.setAttribute('data-action', isInCompare ? 'remove' : 'add');
       this.updateButtonText(button, isInCompare, 'compare');
     });
@@ -306,10 +336,25 @@ class WishlistCompare {
    * @param {string} type - Type of list ('wishlist' or 'compare')
    */
   updateButtonText(button, isActive, type) {
+    // Update tooltip if it exists
     const tooltip = button.querySelector('.tooltip');
     if (tooltip) {
       tooltip.textContent = isActive ? `Remove from ${type}` : `Add to ${type}`;
     }
+    
+    // Update button text content
+    const textElement = button.querySelector('.text');
+    if (textElement) {
+      if (type === 'compare') {
+        textElement.textContent = isActive ? 'Remove from compare' : 'Compare';
+      } else if (type === 'wishlist') {
+        textElement.textContent = isActive ? 'Remove from wishlist' : 'Add to wishlist';
+      }
+    }
+    
+    // Update aria-label for accessibility
+    const actionText = isActive ? `Remove from ${type}` : `Add to ${type}`;
+    button.setAttribute('aria-label', actionText);
   }
 
   /**
@@ -352,22 +397,36 @@ class WishlistCompare {
     const compareList = drawer.querySelector('.tf-compare-list');
     if (!compareList) return;
 
+
     // Clear existing items
     compareList.innerHTML = '';
 
-    // Add current compare items
-    this.compareList.forEach(productId => {
-      if (!productId) return; // Skip invalid product IDs
+    // Add current compare items using stored data
+    this.compareList.forEach((item, index) => {
+      let productData = item;
       
-      const product = this.getProductData(productId);
-      if (!product) {
-        console.error(`Could not get product data for ID: ${productId}`);
-        return;
+      // Handle migration from old format (string IDs) to new format (product objects)
+      if (typeof item === 'string' && item.trim()) {
+        productData = this.getProductData(item);
+        if (productData) {
+          // Update the item in the array to the new format
+          this.compareList[index] = productData;
+        } else {
+          console.error(`Could not get product data for old format ID: ${item}`);
+          return;
+        }
       }
-
-      const item = this.createCompareItem(product);
-      compareList.appendChild(item);
+      
+      if (!productData || !productData.id) return; // Skip invalid product data
+      
+      
+      // Use the stored product data directly
+      const itemElement = this.createCompareItem(productData);
+      compareList.appendChild(itemElement);
     });
+
+    // Save the updated list if we migrated any items
+    this.saveCompareList();
 
     // Hide modal if no items
     if (this.compareList.length === 0) {
@@ -409,6 +468,8 @@ class WishlistCompare {
       return null;
     }
 
+    console.log(`Looking for product data for ID: ${productId}`);
+
     // First try to get data from product section if we're on a product page
     const productSection = document.querySelector('.tf-product-info-wrap');
     let currentProductId = null;
@@ -417,6 +478,9 @@ class WishlistCompare {
       currentProductId = productSection.querySelector('[data-product-id]')?.getAttribute('data-product-id') ||
                         productSection.querySelector('[data-id]')?.getAttribute('data-id');
     }
+
+    console.log('Current page product ID:', currentProductId);
+    console.log('Is this the current product?', productId === currentProductId);
 
     if (productSection && productId === currentProductId) {
       // Try multiple selectors for product name
@@ -458,12 +522,14 @@ class WishlistCompare {
           price: productPrice || '',
           comparePrice: productSection.querySelector('.price-old')?.textContent?.trim() || ''
         };
+        console.log('Found product data from current page:', productData);
         return productData;
       }
     }
 
     // Try to find the product in card-product elements
     const allProducts = document.querySelectorAll('.card-product');
+    console.log(`Found ${allProducts.length} product cards on page`);
     
     for (const card of allProducts) {
       // Check for product ID in various locations
@@ -471,6 +537,7 @@ class WishlistCompare {
                     card.querySelector('[data-id]')?.getAttribute('data-id') ||
                     card.querySelector('.quickview')?.getAttribute('data-product-id');
                     
+      console.log(`Card ID: ${cardId}, Looking for: ${productId}`);
       
       if (cardId === productId) {
         // Get image URL with validation
