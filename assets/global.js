@@ -306,10 +306,25 @@ class WishlistCompare {
    * @param {string} type - Type of list ('wishlist' or 'compare')
    */
   updateButtonText(button, isActive, type) {
+    // Update tooltip if it exists
     const tooltip = button.querySelector('.tooltip');
     if (tooltip) {
       tooltip.textContent = isActive ? `Remove from ${type}` : `Add to ${type}`;
     }
+    
+    // Update button text content
+    const textElement = button.querySelector('.text');
+    if (textElement) {
+      if (type === 'compare') {
+        textElement.textContent = isActive ? 'Remove from compare' : 'Compare';
+      } else if (type === 'wishlist') {
+        textElement.textContent = isActive ? 'Remove from wishlist' : 'Add to wishlist';
+      }
+    }
+    
+    // Update aria-label for accessibility
+    const actionText = isActive ? `Remove from ${type}` : `Add to ${type}`;
+    button.setAttribute('aria-label', actionText);
   }
 
   /**
