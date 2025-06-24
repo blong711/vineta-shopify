@@ -16843,7 +16843,7 @@ button.animate-btn::after,
  ------------------------------------------------------------------------------ */
 /*--------- Abstracts variable ---------- */
 .flat-single-product {
-  padding: 27px 0px 100px;
+  padding: 0px 0px 100px;
 }
 
 .stagger-wrap .stagger-item {
@@ -26146,7 +26146,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
     max-height: 600px;
   }
   .flat-single-product {
-    padding: 27px 0px 80px;
+    padding: 0px 0px 80px;
   }
   .nav-swiper {
     width: 40px;
@@ -26852,7 +26852,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
     padding-bottom: 80px;
   }
   .flat-single-product {
-    padding: 27px 0px 60px;
+    padding: 0px 0px 60px;
   }
   .tf-product-info-wrap {
     margin-top: 40px;
@@ -28027,4 +28027,14 @@ prev.swiper-button-disabled {
 }
 .wrap-pos-nav.sw-over-product .nav-swiper {
   margin-top: 17px;
+}
+@media (max-width: 767px) {
+  .flat-single-product {
+      padding-bottom: 60px;
+  }
+}
+@media (max-width: 991px) {
+  .flat-single-product {
+      padding-bottom: 80px;
+  }
 }
