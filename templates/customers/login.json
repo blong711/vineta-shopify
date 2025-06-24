@@ -9,6 +9,14 @@
  */
  {
     "sections": {
+      "page_title": {
+        "type": "page-title",
+        "settings": {
+          "color_scheme": "",
+          "padding_top": 36,
+          "padding_bottom": 36
+        }
+      },
       "main": {
         "type": "main-login",
         "blocks": {
@@ -46,6 +54,7 @@
       }
     },
     "order": [
+      "page_title",
       "main"
     ]
   }
