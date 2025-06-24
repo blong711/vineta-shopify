@@ -501,6 +501,27 @@
     </div>
   {% endif %}
 </section>
+{% if section.settings.show_description %}
+  <div id="description" class="flat-spacing pt-0">
+    <div class="container">
+      <p class="text text-md text-center">
+        {{ collection.description | strip_html }}
+      </p>
+      {% if section.settings.related_collection_1 or section.settings.related_collection_2 %}
+        <p class="mt_12 text-md text-center">
+          {{ section.settings.related_collections_text }}
+          {% if section.settings.related_collection_1 %}
+            <a href="{{ collections[section.settings.related_collection_1].url }}" class="text-primary text-decoration-underline fw-medium">{{ collections[section.settings.related_collection_1].title | upcase }}</a>
+          {% endif %}
+          {% if section.settings.related_collection_1 and section.settings.related_collection_2 %} and {% endif %}
+          {% if section.settings.related_collection_2 %}
+            <a href="{{ collections[section.settings.related_collection_2].url }}" class="text-primary text-decoration-underline fw-medium">{{ collections[section.settings.related_collection_2].title | upcase }}</a>
+          {% endif %}.
+        </p>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
 {% endpaginate %}
 
 <script>
@@ -1552,6 +1573,32 @@
       "id": "categories_show_count",
       "label": "Show count",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Description Section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show Description Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "related_collections_text",
+      "label": "Related Collections Text",
+      "default": "Looking for more? Don't miss out on our other exciting collections for"
+    },
+    {
+      "type": "collection",
+      "id": "related_collection_1",
+      "label": "First Related Collection"
+    },
+    {
+      "type": "collection",
+      "id": "related_collection_2",
+      "label": "Second Related Collection"
     }
   ],
   "presets": [
