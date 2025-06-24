@@ -1,13 +1,12 @@
 <!-- sections/main-register.liquid -->
 <style>
-body, .register-outer { background: #fcfcfa; }
 .register-outer {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   padding-top: 60px;
+  padding-bottom: 30px;
 }
 
 .register-title-main {
@@ -19,9 +18,7 @@ body, .register-outer { background: #fcfcfa; }
 }
 
 .register-card {
-  background: #fff;
   border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   max-width: 520px;
   width: 100%;
   padding: 40px 32px 32px 32px;
@@ -31,8 +28,15 @@ body, .register-outer { background: #fcfcfa; }
 .register-title {
   font-size: 32px;
   font-weight: 400;
-  margin-bottom: 16px;
+  margin-bottom: 26px;
   text-align: left;
+}
+
+@media (max-width: 768px) {
+  .register-title {
+    font-size: 24px;
+    text-align: center;
+  }
 }
 
 .register-desc {
@@ -44,16 +48,14 @@ body, .register-outer { background: #fcfcfa; }
 }
 
 .form-field {
-  margin-bottom: 18px;
+  margin-bottom: 15px;
 }
 
 .form-input {
   width: 100%;
   padding: 16px 14px;
-  border: 1px solid #e5e5e5;
   border-radius: 4px;
   font-size: 17px;
-  background: #fcfcfa;
   color: #222;
   font-family: inherit;
   transition: border-color 0.2s;
@@ -79,7 +81,7 @@ body, .register-outer { background: #fcfcfa; }
   border: none;
   padding: 16px 0;
   border-radius: 4px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   margin-top: 8px;
@@ -97,11 +99,16 @@ body, .register-outer { background: #fcfcfa; }
 .login-link a {
     color: #222;
     text-decoration: underline;
+    text-underline-offset: 0.3em;
     font-size: 1rem;
 }
+.login-link a:hover {
+    color: #000;
+    text-decoration: none;
+}
 .login-link a svg {
-  width: 16px;
-  height: 16px;
+  width: 10px;
+  height: 10px;
   margin-left: 2px;
 }
 
@@ -120,7 +127,6 @@ body, .register-outer { background: #fcfcfa; }
 </style>
 
 <div class="register-outer">
-  <div class="register-title-main">Register</div>
   <div class="register-card">
     <div class="register-title">Register</div>
     <div class="register-desc">Sign up for early Sale access plus tailored new arrivals, trends and promotions. To opt out, click unsubscribe in our emails</div>
@@ -189,7 +195,7 @@ body, .register-outer { background: #fcfcfa; }
       <button class="submit-button" type="submit">Register</button>
       <div class="login-link">
         <a href="{{ routes.account_login_url }}">Already have an account? Log in here
-          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l6-6-6-6"/></svg>
+          <svg class="hdt-icon hdt-icon-2 hdt-inline-block" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><path d="M0.861539 8L0 7.13846L5.90769 1.23077H0.615385V0H8V7.38462H6.76923V2.09231L0.861539 8Z"></path></svg>
         </a>
       </div>
     {%- endform -%}

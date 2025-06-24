@@ -9,6 +9,12 @@
  */
  {
     "sections": {
+      "page_title": {
+        "type": "page-title",
+        "settings": {
+          "background_image": "shopify://shop_images/page-title_1.jpg"
+        }
+      },
       "main": {
         "type": "main-register",
         "settings": {
@@ -23,6 +29,7 @@
       }
     },
     "order": [
+      "page_title",
       "main"
     ]
   }
