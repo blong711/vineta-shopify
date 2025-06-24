@@ -149,21 +149,21 @@
                                 <a href="{{ routes.account_url }}"
                                     class="text-sm link fw-medium my-account-nav-item active">{{ 'customer.account.dashboard' | t }}</a>
                             </li>
-                            {% if section.settings.show_orders %}
+                            {% comment %} {% if section.settings.show_orders %}
                             <li>
                                 <a href="{{ routes.account_url }}/orders"
                                     class="text-sm link fw-medium my-account-nav-item">{{ 'customer.account.my_orders' | t }}</a>
                             </li>
-                            {% endif %}
+                            {% endif %} {% endcomment %}
                             {% if section.settings.show_wishlist %}
                             <li>
-                                <a href="{{ routes.account_url }}/wishlist"
+                                <a href="/pages/wishlist"
                                     class="text-sm link fw-medium my-account-nav-item">{{ 'customer.account.my_wishlist' | t }}</a>
                             </li>
                             {% endif %}
                             {% if section.settings.show_addresses %}
                             <li>
-                                <a href="{{ routes.account_addresses_url }}"
+                                <a href="/pages/store-location"
                                     class="text-sm link fw-medium my-account-nav-item">{{ 'customer.account.addresses' | t }}</a>
                             </li>
                             {% endif %}
@@ -186,7 +186,7 @@
                                 <a href="{{ routes.account_url }}/orders" class="text-primary text-decoration-underline">{{ 'customer.account.your_last_orders' | t }}</a>
                                 {% endif %}
                                 {% if section.settings.show_wishlist %}
-                                <a href="{{ routes.account_url }}/wishlist" class="text-primary text-decoration-underline">{{ 'customer.account.your_wishlist' | t }}</a>
+                                <a href="/pages/wishlist" class="text-primary text-decoration-underline">{{ 'customer.account.your_wishlist' | t }}</a>
                                 {% endif %}
                                 <a href="{{ routes.all_products_collection_url }}" class="text-primary text-decoration-underline">{{ 'customer.account.latest_offers' | t }}</a>
                             </p>
@@ -229,11 +229,11 @@
                                     <div class="banner-account" {{ block.shopify_attributes }}>
                                         {% if block.settings.banner_image %}
                                         <div class="image">
-                                            <img src="{{ block.settings.banner_image | image_url: width: 600 }}"
-                                                data-src="{{ block.settings.banner_image | image_url: width: 600 }}" 
-                                                alt="{{ block.settings.banner_image.alt | default: 'Free Shipping Banner' }}" 
-                                                class="lazyload"
-                                                width="600" height="300">
+                                          <img src="{{ block.settings.banner_image | image_url }}"
+                                            data-src="{{ block.settings.banner_image | image_url }}" 
+                                            alt="{{ block.settings.banner_image.alt | default: 'Free Shipping Banner' }}" 
+                                            class="lazyload"
+                                            style="width: 100%; height: auto;" width="600" height="300">
                                         </div>
                                         {% endif %}
                                         <div class="banner-content-right">
@@ -288,40 +288,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    {% when 'orders_box' %}
-                                    <div class="recent-orders-box" {{ block.shopify_attributes }}>
-                                        <h3 class="text-xl fw-medium mb-3">{{ 'customer.account.recent_orders' | t }}</h3>
-                                        {% if customer.orders.size > 0 %}
-                                            <div class="orders-list">
-                                                {% for order in customer.orders limit: 3 %}
-                                                <div class="order-item border rounded p-3 mb-2">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <div>
-                                                            <p class="fw-medium mb-1">{{ 'customer.order.order_number' | t: number: order.name }}</p>
-                                                            <p class="text-sm text-muted">{{ order.created_at | date: '%B %d, %Y' }}</p>
-                                                        </div>
-                                                        <div class="text-end">
-                                                            <p class="fw-medium">{{ order.total_price | money }}</p>
-                                                            <span class="badge bg-{{ order.fulfillment_status | handleize }}">{{ order.fulfillment_status | t }}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            <p class="text-muted">{{ 'customer.account.no_orders_yet' | t }}</p>
-                                        {% endif %}
-                                    </div>
-                                    
-                                    {% when 'wishlist_box' %}
-                                    <div class="wishlist-box" {{ block.shopify_attributes }}>
-                                        <h3 class="text-xl fw-medium mb-3">{{ 'customer.account.my_wishlist' | t }}</h3>
-                                        <div id="wishlist-items" class="wishlist-items">
-                                            <!-- Wishlist items will be loaded dynamically via JavaScript -->
-                                            <p class="text-muted">{{ 'customer.account.loading_wishlist' | t }}</p>
-                                        </div>
-                                    </div>
                                 {% endcase %}
                             {% endfor %}
                         </div>
@@ -332,37 +298,16 @@
         </div>
     </section>
 </div>
-
-<!-- Mobile Nav -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="mbAccount">
-    <div class="offcanvas-header">
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <ul class="my-account-nav">
-            <li>
-                <a href="{{ routes.account_url }}" class="text-sm link fw-medium my-account-nav-item active">{{ 'customer.account.dashboard' | t }}</a>
-            </li>
-            {% if section.settings.show_orders %}
-            <li>
-                <a href="{{ routes.account_url }}/orders" class="text-sm link fw-medium my-account-nav-item">{{ 'customer.account.my_orders' | t }}</a>
-            </li>
-            {% endif %}
-            {% if section.settings.show_wishlist %}
-            <li>
-                <a href="{{ routes.account_url }}/wishlist" class="text-sm link fw-medium my-account-nav-item">{{ 'customer.account.my_wishlist' | t }}</a>
-            </li>
-            {% endif %}
-            {% if section.settings.show_addresses %}
-            <li>
-                <a href="{{ routes.account_addresses_url }}" class="text-sm link fw-medium my-account-nav-item">{{ 'customer.account.addresses' | t }}</a>
-            </li>
-            {% endif %}
-            <li>
-                <a href="{{ routes.account_logout_url }}" class="text-sm link fw-medium my-account-nav-item">{{ 'customer.account.log_out' | t }}</a>
-            </li>
-        </ul>
-    </div>
+<div class="offcanvas offcanvas-start canvas-sidebar" id="mbAccount">
+  <div class="canvas-wrapper">
+      <div class="canvas-header">
+          <span class="title">SIDEBAR ACCOUNT</span>
+          <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="canvas-body">
+          <div class="sidebar-account-wrap sidebar-mobile-append"></div>
+      </div>
+  </div>
 </div>
 
 <script>
