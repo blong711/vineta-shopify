@@ -1782,7 +1782,15 @@ document.addEventListener('DOMContentLoaded', function() {
               if (comparePrice > price) {
                 totalComparePrice += comparePrice;
                 hasComparePrice = true;
+              } else {
+                // If no compare price or compare price is not higher, add current price to total old price
+                totalComparePrice += price;
+                hasComparePrice = true;
               }
+            } else {
+              // If no compare price attribute, add current price to total old price
+              totalComparePrice += price;
+              hasComparePrice = true;
             }
           } else if (priceElement) {
             const price = parseFloat(priceElement.textContent.replace(/[^0-9.-]+/g, ''));
@@ -1793,7 +1801,15 @@ document.addEventListener('DOMContentLoaded', function() {
               if (comparePrice > price) {
                 totalComparePrice += comparePrice;
                 hasComparePrice = true;
+              } else {
+                // If compare price is not higher than current price, add current price to total old price
+                totalComparePrice += price;
+                hasComparePrice = true;
               }
+            } else {
+              // If no old price element, add current price to total old price
+              totalComparePrice += price;
+              hasComparePrice = true;
             }
           }
         }
