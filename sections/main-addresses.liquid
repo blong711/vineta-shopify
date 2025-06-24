@@ -7,34 +7,6 @@
 
 <!-- Main Content -->
 <div class="main-content-account">
-    <!-- Breadcrumb -->
-    <div class="tf-breadcrumb">
-        <div class="container">
-            <ul class="breadcrumb-list">
-                <li class="item-breadcrumb">
-                    <a href="{{ routes.root_url }}" class="text">Home</a>
-                </li>
-                <li class="item-breadcrumb dot">
-                    <span></span>
-                </li>
-                <li class="item-breadcrumb">
-                    <span class="text">Account</span>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- /Breadcrumb -->
-
-    <!-- Title Page -->
-    <section class="s-title-page">
-        <div class="container">
-            <h4 class="s-title letter-0 text-center">
-                My Account
-            </h4>
-        </div>
-    </section>
-    <!-- /Title Page -->
-
     <!-- sidebar-account -->
     <div class="btn-sidebar-mb d-lg-none">
         <button data-bs-toggle="offcanvas" data-bs-target="#mbAccount">
@@ -56,18 +28,18 @@
                                         Dashboard
                                     </a>
                                 </li>
-                                <li>
+                                {% comment %} <li>
                                     <a href="{{ routes.account_url }}/orders" class="text-sm link fw-medium my-account-nav-item {% if template == 'customers/orders' %}active{% endif %}">
                                         My Orders
                                     </a>
-                                </li>
+                                </li> {% endcomment %}
                                 <li>
-                                    <a href="{{ routes.account_url }}/wishlist" class="text-sm link fw-medium my-account-nav-item {% if template == 'customers/wishlist' %}active{% endif %}">
+                                    <a href="/pages/wishlist" class="text-sm link fw-medium my-account-nav-item {% if template == 'customers/wishlist' %}active{% endif %}">
                                         My Wishlist
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ routes.account_addresses_url }}" class="text-sm link fw-medium my-account-nav-item {% if template == 'customers/addresses' %}active{% endif %}">
+                                    <a href="/account/addresses" class="text-sm link fw-medium my-account-nav-item {% if template == 'customers/addresses' %}active{% endif %}">
                                         Addresses
                                     </a>
                                 </li>
