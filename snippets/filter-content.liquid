@@ -26,7 +26,8 @@
     <div id="collections" class="collapse show">
         <ul class="list-categories current-scrollbar">
           {%- if categories_mode == 'all' or categories_mode == blank -%}
-            {%- for collection in collections -%}
+            {%- assign unique_collections = collections | uniq: 'title' -%}
+            {%- for collection in unique_collections -%}
               <li class="cate-item">
                 <a class="text-sm link" href="{{ collection.url }}">
                   <span>{{ collection.title }}</span>
@@ -37,7 +38,8 @@
               </li>
             {%- endfor -%}
           {%- elsif categories_mode == 'link_list' and categories_link_list != blank and linklists[categories_link_list] -%}
-            {%- for link in linklists[categories_link_list].links -%}
+            {%- assign unique_links = linklists[categories_link_list].links | uniq: 'title' -%}
+            {%- for link in unique_links -%}
               <li class="cate-item">
                 <a class="text-sm link" href="{{ link.url }}">
                   <span>{{ link.title }}</span>
