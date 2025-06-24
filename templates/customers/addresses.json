@@ -7,25 +7,21 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
-    "sections": {
-      "page-title": {
-        "type": "page-title",
-        "settings": {
-          "background_image": "shopify://shop_images/page-title_1.jpg"
-        }
-      },
-      "main": {
-        "type": "main-addresses",
-        "settings": {
-          "padding_top": 36,
-          "padding_bottom": 36
-        }
+{
+  "sections": {
+    "page-title": {
+      "type": "page-title",
+      "settings": {
+        "background_image": "shopify://shop_images/page-title_1.jpg"
       }
     },
-    "order": [
-      "page-title",
-      "main"
-    ]
-  }
-  
+    "main": {
+      "type": "main-addresses",
+      "settings": {}
+    }
+  },
+  "order": [
+    "page-title",
+    "main"
+  ]
+}
