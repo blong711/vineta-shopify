@@ -233,6 +233,7 @@
       const maxValue = document.getElementById('price-max-value');
       const minInput = document.getElementById('price-min-input');
       const maxInput = document.getElementById('price-max-input');
+      const resetButton = document.querySelector('.reset-price');
       
       if (minValue && maxValue) {
         const currency = minValue.dataset.currency || '$';
@@ -252,13 +253,34 @@
             step: 1
           });
 
-          // Update display values
+          // Update display values and form inputs
           priceRange.noUiSlider.on('update', function(values) {
             if (minValue) minValue.textContent = currency + Math.round(values[0]);
             if (maxValue) maxValue.textContent = currency + Math.round(values[1]);
             if (minInput) minInput.value = Math.round(values[0]);
             if (maxInput) maxInput.value = Math.round(values[1]);
           });
+
+          // Handle form submission when price range changes
+          priceRange.noUiSlider.on('change', function(values) {
+            const form = document.getElementById('collection-filters-form');
+            if (form) {
+              // Update the hidden inputs
+              if (minInput) minInput.value = Math.round(values[0]);
+              if (maxInput) maxInput.value = Math.round(values[1]);
+              
+              // Submit the form to update URL parameters
+              form.submit();
+            }
+          });
+
+          // Handle reset button
+          if (resetButton) {
+            resetButton.addEventListener('click', function(e) {
+              e.preventDefault();
+              priceRange.noUiSlider.set([rangeMin, rangeMax]);
+            });
+          }
 
         } catch (error) {
           console.error('Error initializing price range slider in filter content:', error);
