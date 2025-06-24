@@ -24,7 +24,7 @@
       <span class="icon icon-arrow-up"></span>
     </div>
     <div id="collections" class="collapse show">
-        <ul class="list-categories current-scrollbar">
+        <ul class="list-categories current-scrollbar collapse-body">
           {%- if categories_mode == 'all' or categories_mode == blank -%}
             {%- assign unique_collections = collections | uniq: 'title' -%}
             {%- for collection in unique_collections -%}
