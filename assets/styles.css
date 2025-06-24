@@ -16963,8 +16963,10 @@ button.animate-btn::after,
 }
 
 .tf-product-info-wrap .tf-product-info-heading {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 24px;
   display: grid;
-  gap: 24px;
+  gap: 12px;
 }
 /* .tf-product-info-wrap .tf-product-info-heading .product-info-name {
   margin-bottom: 12px;
@@ -28002,4 +28004,9 @@ prev.swiper-button-disabled {
 }
 .canvas-filter .sb-banner .banner-content {
   bottom: 24px;
+}
+@media (min-width: 1200px) {
+  .tf-product-info .tf-product-cate-sku {
+      margin: 8px 0px;
+  }
 }
