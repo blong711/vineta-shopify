@@ -31,7 +31,7 @@
         </div>
     </div>
 </div>
-<section class="flat-single-product" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; max-width: {{ section.settings.width }}px;">
+<section class="flat-single-product" style="max-width: {{ section.settings.width }}px;">
   <style>
     @media (max-width: 767px) {
       .flat-single-product {
@@ -2809,40 +2809,6 @@ function updateMainAddToCartButton(variant) {
       "id": "show_slider_nav",
       "label": "Use prev/next button",
       "default": true
-    },
-    {
-      "type": "header",
-      "content": "Section padding"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Top padding",
-      "min": 0,
-      "max": 200,
-      "step": 2,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Bottom padding",
-      "min": 0,
-      "max": 200,
-      "step": 2,
-      "unit": "px",
-      "default": 100
-    },
-    {
-      "type": "range",
-      "id": "padding_mobile_rate",
-      "label": "Rate padding (mobile)",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "%",
-      "default": 50
     },
     {
       "type": "header",
