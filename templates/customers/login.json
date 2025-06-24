@@ -7,55 +7,48 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
-    "sections": {
-      "page_title": {
-        "type": "page-title",
-        "settings": {
-          "color_scheme": "",
-          "padding_top": 36,
-          "padding_bottom": 36
-        }
-      },
-      "main": {
-        "type": "main-login",
-        "blocks": {
-          "cb5ba057-8abd-42c7-a522-28fe9cb57386": {
-            "type": "form",
-            "settings": {
-              "btn_full": false,
-              "btn_style": "solid",
-              "btn_fw": "semibold",
-              "btn_icon": "none"
-            }
-          },
-          "a745caeb-f6eb-46e0-bec1-c1352a680694": {
-            "type": "infos",
-            "settings": {
-              "title": "I'm new here",
-              "description": "Sign up for early Sale access plus tailored new arrivals, trends and promotions. To opt out, click unsubscribe in our emails.",
-              "btn_full": false,
-              "btn_style": "link",
-              "btn_fw": "semibold",
-              "btn_icon": "2"
-            }
-          }
-        },
-        "block_order": [
-          "cb5ba057-8abd-42c7-a522-28fe9cb57386",
-          "a745caeb-f6eb-46e0-bec1-c1352a680694"
-        ],
-        "settings": {
-          "color_scheme": "",
-          "padding_top": 60,
-          "padding_bottom": 113,
-          "padding_rate": 75
-        }
+{
+  "sections": {
+    "page_title": {
+      "type": "page-title",
+      "settings": {
+        "background_image": "shopify://shop_images/page-title_1.jpg"
       }
     },
-    "order": [
-      "page_title",
-      "main"
-    ]
-  }
-  
+    "main": {
+      "type": "main-login",
+      "blocks": {
+        "cb5ba057-8abd-42c7-a522-28fe9cb57386": {
+          "type": "form",
+          "settings": {
+            "btn_full": false,
+            "btn_style": "solid"
+          }
+        },
+        "a745caeb-f6eb-46e0-bec1-c1352a680694": {
+          "type": "infos",
+          "settings": {
+            "title": "I'm new here",
+            "description": "Sign up for early Sale access plus tailored new arrivals, trends and promotions. To opt out, click unsubscribe in our emails.",
+            "btn_full": false,
+            "btn_style": "link"
+          }
+        }
+      },
+      "block_order": [
+        "cb5ba057-8abd-42c7-a522-28fe9cb57386",
+        "a745caeb-f6eb-46e0-bec1-c1352a680694"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "padding_top": 60,
+        "padding_bottom": 113,
+        "padding_rate": 75
+      }
+    }
+  },
+  "order": [
+    "page_title",
+    "main"
+  ]
+}
