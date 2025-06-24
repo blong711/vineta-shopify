@@ -712,36 +712,61 @@
   /* Click Control 
   ------------------------------------------------------------------------------------- */
   var clickControl = function () {
-    $(".btn-add-address").on("click",function () {
-      $(".show-form-address").toggle();
-    });
-    $(".btn-hide-address").on("click",function () {
-      $(".show-form-address").hide();
-    });
-    $(".btn-delete-address").on("click",function () {
-      $(this).closest(".account-address-item").remove();
-      var item = $(this).closest(".account-address-item");
-      if (item.hasClass("editing")) {
-        $(".edit-form-address").toggle();
-        $(".edit-form-address").toggleClass("show");
+    $(".btn-delete-address").on("click",function (e) {
+      e.preventDefault();
+      
+      var formId = $(this).data("form");
+      var targetForm = $("#" + formId);
+      
+      if (targetForm.length > 0) {
+        // Extract address ID from form ID
+        var addressId = formId.replace('form-edit-', '');
+        
+        // Create a delete form using Shopify's standard delete URL
+        var deleteForm = $('<form>', {
+          'method': 'post',
+          'action': '/account/addresses/' + addressId
+        });
+        
+        // Add a hidden input to indicate this is a delete operation
+        deleteForm.append($('<input>', {
+          'type': 'hidden',
+          'name': '_method',
+          'value': 'delete'
+        }));
+        
+        // Add authenticity token if it exists
+        var authenticityToken = $('meta[name="csrf-token"]').attr('content') || 
+                               $('input[name="authenticity_token"]').val();
+        if (authenticityToken) {
+          deleteForm.append($('<input>', {
+            'type': 'hidden',
+            'name': 'authenticity_token',
+            'value': authenticityToken
+          }));
+        }
+        
+        // Append form to body and submit
+        $('body').append(deleteForm);
+        deleteForm.submit();
       }
     });
-
+    
     $(".btn-edit-address").on("click",function (e) {
       var item = $(this).closest(".account-address-item");
-      if ($(".edit-form-address").hasClass("show")) {
-        if (item.hasClass("editing")) {
-          $(".edit-form-address").toggle();
-          $(".edit-form-address").toggleClass("show");
-          $(".account-address-item").removeClass("editing");
-        } else {
-          $(".account-address-item").removeClass("editing");
-          item.addClass("editing");
-        }
-      } else {
-        $(".edit-form-address").toggle();
-        $(".edit-form-address").toggleClass("show");
-        $(this).closest(".account-address-item").toggleClass("editing");
+      var formId = $(this).data("form");
+      var targetForm = $("#" + formId);
+      
+      // Hide all edit forms first
+      $(".edit-form-address").hide();
+      $(".edit-form-address").removeClass("show");
+      $(".account-address-item").removeClass("editing");
+      
+      // Show only the target form
+      if (targetForm.length > 0) {
+        targetForm.show();
+        targetForm.addClass("show");
+        item.addClass("editing");
       }
     });
     $(".btn-hide-edit-address").on("click",function () {

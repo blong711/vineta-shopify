@@ -61,6 +61,7 @@
 
                                 {% form 'customer_address', customer.new_address %}
                                 <div class="wd-form-address form-default show-form-address" id="form-add-address" style="display: none;">
+                                    <input type="hidden" name="return_to" value="/account/addresses">
                                     <div class="cols">
                                         <fieldset>
                                             <label for="AddressFirstNameNew">First Name</label>
@@ -92,15 +93,13 @@
                                     <div class="cols">
                                         <fieldset>
                                             <label for="AddressCountryNew">Country/region</label>
-                                            <select id="AddressCountryNew" name="address[country]" data-default="{{ form.country }}" required>
-                                                {{ country_option_tags }}
-                                            </select>
+                                            <input type="text" id="AddressCountryNew" name="address[country]" value="{{ form.country }}" required>                        
                                         </fieldset>
                                     </div>
                                     <div class="cols">
                                         <fieldset>
                                             <label for="AddressProvinceNew">Province</label>
-                                            <select id="AddressProvinceNew" name="address[province]" data-default="{{ form.province }}" required></select>
+                                            <input type="text" id="AddressProvinceNew" name="address[province]" value="{{ form.province }}" required>
                                         </fieldset>
                                     </div>
                                     <div class="cols">
@@ -180,7 +179,8 @@
 
                                 {% for address in customer.addresses %}
                                 {% form 'customer_address', address %}
-                                <div class="wd-form-address form-default edit-form-address" id="form-edit-{{ address.id }}">
+                                <div class="wd-form-address form-default edit-form-address" id="form-edit-{{ address.id }}" style="display: none;">
+                                    <input type="hidden" name="return_to" value="/account/addresses">
                                     <div class="cols">
                                         <fieldset>
                                             <label for="AddressFirstName_{{ address.id }}">First Name</label>
@@ -212,15 +212,13 @@
                                     <div class="cols">
                                         <fieldset>
                                             <label for="AddressCountry_{{ address.id }}">Country/region</label>
-                                            <select id="AddressCountry_{{ address.id }}" name="address[country]" data-default="{{ form.country }}" required>
-                                                {{ country_option_tags }}
-                                            </select>
+                                            <input type="text" id="AddressCountry_{{ address.id }}" name="address[country]" value="{{ form.country }}" required>
                                         </fieldset>
                                     </div>
                                     <div class="cols">
                                         <fieldset>
                                             <label for="AddressProvince_{{ address.id }}">Province</label>
-                                            <select id="AddressProvince_{{ address.id }}" name="address[province]" data-default="{{ form.province }}" required></select>
+                                            <input type="text" id="AddressProvince_{{ address.id }}" name="address[province]" value="{{ form.province }}" required>
                                         </fieldset>
                                     </div>
                                     <div class="cols">
@@ -261,18 +259,24 @@
     </section>
     <!-- /Account -->
 </div>
+        <!-- sidebar account-->
+        <div class="offcanvas offcanvas-start canvas-filter canvas-sidebar canvas-sidebar-account" id="mbAccount">
+            <div class="canvas-wrapper">
+                <div class="canvas-header">
+                    <span class="title">SIDEBAR ACCOUNT</span>
+                    <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="canvas-body">
+                    <div class="sidebar-account-wrap sidebar-mobile-append"></div>
+                </div>
+            </div>
+        </div>
+        <!-- End sidebar account -->
 <!-- /Main Content -->
 
 {% javascript %}
   // Initialize province/state selectors
   document.addEventListener('DOMContentLoaded', function() {
-    const countrySelectors = document.querySelectorAll('select[data-default]');
-    countrySelectors.forEach(function(selector) {
-      new Shopify.CountryProvinceSelector(selector.id, selector.id.replace('Country', 'Province'), {
-        hideElement: selector.id.includes('New') ? 'AddressProvinceNew' : 'AddressProvince_' + selector.id.split('_')[1]
-      });
-    });
-
     // Handle add new address form
     const addAddressBtn = document.querySelector('.btn-add-address');
     const addAddressForm = document.getElementById('form-add-address');
@@ -291,46 +295,5 @@
         addAddressForm.style.display = 'none';
       });
     }
-
-    // Handle edit address forms
-    const editAddressBtns = document.querySelectorAll('.btn-edit-address');
-    const hideEditAddressBtns = document.querySelectorAll('.btn-hide-edit-address');
-    const deleteAddressBtns = document.querySelectorAll('.btn-delete-address');
-
-    editAddressBtns.forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const formId = this.getAttribute('data-form');
-        const form = document.getElementById(formId);
-        if (form) {
-          form.style.display = 'block';
-        }
-      });
-    });
-
-    hideEditAddressBtns.forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const form = this.closest('.edit-form-address');
-        if (form) {
-          form.style.display = 'none';
-        }
-      });
-    });
-
-    deleteAddressBtns.forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const formId = this.getAttribute('data-form');
-        const form = document.getElementById(formId);
-        if (form && confirm('Are you sure you want to delete this address?')) {
-          const deleteForm = document.createElement('form');
-          deleteForm.method = 'post';
-          deleteForm.action = form.action + '/delete';
-          document.body.appendChild(deleteForm);
-          deleteForm.submit();
-        }
-      });
-    });
   });
 {% endjavascript %}
