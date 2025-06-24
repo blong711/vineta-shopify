@@ -74,7 +74,7 @@
             <div class="login-content">
               {%- if block.settings.title != blank -%}<h2 class="form-heading">{{ block.settings.title }}</h2>{%- endif -%} 
               {%- if block.settings.description != blank -%}<p class="form-description">{{ block.settings.description }}</p>{%- endif -%} 
-              <a href="{{ routes.account_register_url }}" class="register-link">Register <span aria-hidden="true">↗</span></a>
+              <a href="{{ routes.account_register_url }}" class="register-link">Register</a>
             </div>
         {%- endcase -%}
       {%- endfor -%}
@@ -149,6 +149,12 @@ document.addEventListener('DOMContentLoaded', function() {
   font-weight: 400;
 }
 
+@media screen and (max-width: 989px) and (min-width: 750px) {
+  .form-heading {
+    font-size: 1.5rem !important;
+  }
+}
+
 .form-description {
   margin-bottom: 2rem;
   color: rgba(var(--color-foreground), 0.75);
@@ -156,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 .form-field {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .form-input {
@@ -201,6 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
 .forgot-link {
   color: #222;
   text-decoration: underline;
+  text-underline-offset: 0.3em;
   font-size: 1rem;
 }
 
@@ -246,6 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
 .error-list a {
   color: #d32f2f;
   text-decoration: underline;
+  text-underline-offset: 0.3em;
 }
 
 .login-content {
@@ -253,12 +261,12 @@ document.addEventListener('DOMContentLoaded', function() {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding-top: 2.5rem;
 }
 
 .register-link {
     color: #222;
     text-decoration: underline;
+    text-underline-offset: 0.3em;
     font-size: 1rem;
 }
 
@@ -283,6 +291,9 @@ document.addEventListener('DOMContentLoaded', function() {
     align-items: center;
     text-align: center;
     padding-top: 0;
+  }
+  .form-heading {
+    text-align: center;
   }
 }
 {%- endstyle -%}
