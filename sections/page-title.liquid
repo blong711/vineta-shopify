@@ -7,6 +7,8 @@
           Collections
         {% elsif template == 'page.compare' %}
           Compare Products
+        {% elsif template contains 'account' %}
+          My Account
         {% else %}
           {{ page_title | default: settings.title }}
         {% endif %}
