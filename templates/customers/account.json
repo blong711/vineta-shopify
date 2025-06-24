@@ -12,11 +12,7 @@
     "page-title": {
       "type": "page-title",
       "settings": {
-        "custom_title": "My Account",
-        "contact_title": "",
-        "about_title": "",
-        "wishlist_title": "",
-        "compare_title": ""
+        "background_image": "shopify://shop_images/page-title_1.jpg"
       }
     },
     "account": {
@@ -24,17 +20,11 @@
       "blocks": {
         "orders_box_jtBNwQ": {
           "type": "orders_box",
-          "settings": {
-            "title": "Orders",
-            "description": "Check the history of all your orders"
-          }
+          "settings": {}
         },
         "wishlist_box_hCeCeh": {
           "type": "wishlist_box",
-          "settings": {
-            "title": "Wishlist",
-            "description": "Check your wishlist"
-          }
+          "settings": {}
         },
         "free_shipping_x7dNx8": {
           "type": "free_shipping",
@@ -63,9 +53,7 @@
         "container_width": "container",
         "show_orders": true,
         "show_wishlist": true,
-        "show_addresses": true,
-        "welcome_message": "Hello",
-        "dashboard_notice": "Today is a great day to check your account page. You can check your last orders or have a look to your wishlist. Or maybe you can start to shop our latest offers?"
+        "show_addresses": true
       }
     }
   },
