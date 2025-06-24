@@ -140,14 +140,30 @@
                                         </p>
                                         <div class="info-detail">
                                             <div class="box-infor">
+                                                {% if address.first_name or address.last_name %}
                                                 <p class="text-md">{{ address.first_name }} {{ address.last_name }}</p>
+                                                {% endif %}
+                                                {% if customer.email %}
                                                 <p class="text-md">{{ customer.email }}</p>
+                                                {% endif %}
+                                                {% if address.company %}
                                                 <p class="text-md">{{ address.company }}</p>
+                                                {% endif %}
+                                                {% if address.address1 %}
                                                 <p class="text-md">{{ address.address1 }}</p>
+                                                {% endif %}
+                                                {% if address.city %}
                                                 <p class="text-md">{{ address.city }}</p>
+                                                {% endif %}
+                                                {% if address.country %}
                                                 <p class="text-md">{{ address.country }}</p>
+                                                {% endif %}
+                                                {% if address.zip %}
                                                 <p class="text-md">{{ address.zip }}</p>
+                                                {% endif %}
+                                                {% if address.phone %}
                                                 <p class="text-md">{{ address.phone }}</p>
+                                                {% endif %}
                                             </div>
                                             <div class="box-btn">
                                                 <button class="tf-btn btn-out-line-dark btn-edit-address" data-form="form-edit-{{ address.id }}">
