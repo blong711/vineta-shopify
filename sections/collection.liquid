@@ -304,6 +304,25 @@
     {%- endif -%}
 
     <div class="wrapper-control-shop" data-pagination-type="{{ section.settings.pagination_type }}">
+      <div class="meta-filter-shop" style="display: {% if current_tags.size > 0 or request.search != blank %}block{% else %}none{% endif %};">
+          <div id="product-count-grid" class="count-text"><span class="count">{{ collection.products.size }}</span> Products found</div>
+          <div id="product-count-list" class="count-text"><span class="count">{{ collection.products.size }}</span> Products found</div>
+          <div id="applied-filters">
+            {% if current_tags.size > 0 %}
+              {% for tag in current_tags %}
+                <span class="filter-tag">
+                  {{ tag }}
+                  <i class="icon icon-close" data-filter-tag="{{ tag | escape }}"></i>
+                </span>
+              {% endfor %}
+            {% endif %}
+          </div>
+          {% if current_tags.size > 0 %}
+            <button id="remove-all" class="remove-all-filters">
+              <i class="icon icon-close"></i> Clear all filter
+            </button>
+          {% endif %}
+      </div>
 
       <!-- List View Layout -->
       <div class="tf-list-layout wrapper-shop" id="listLayout" style="display: none;">
@@ -623,6 +642,7 @@
     const appliedFiltersContainer = document.getElementById('applied-filters');
     const productCountGrid = document.getElementById('product-count-grid');
     const productCountList = document.getElementById('product-count-list');
+    const metaFilterShop = document.querySelector('.meta-filter-shop');
 
     // Initialize filter state from URL parameters
     function initializeFilterState() {
@@ -798,6 +818,11 @@
       if (clearAllBtn) {
         clearAllBtn.style.display = appliedFilters.length > 0 ? 'block' : 'none';
       }
+      
+      // Show/hide meta-filter-shop container
+      if (metaFilterShop) {
+        metaFilterShop.style.display = appliedFilters.length > 0 ? 'flex' : 'none';
+      }
     }
 
     // Main function to update products with filters and sort
@@ -971,8 +996,37 @@
         // Update product counts
         const newCountGrid = doc.getElementById('product-count-grid');
         const newCountList = doc.getElementById('product-count-list');
-        if (newCountGrid && productCountGrid) productCountGrid.innerHTML = newCountGrid.innerHTML;
-        if (newCountList && productCountList) productCountList.innerHTML = newCountList.innerHTML;
+        
+        // Calculate actual product counts from the new content
+        const newGridProducts = newGrid ? newGrid.querySelectorAll('.loadItem') : [];
+        const newListProducts = newList ? newList.querySelectorAll('.loadItem') : [];
+        
+        // Update product count displays based on current layout
+        if (productCountGrid) {
+          const countSpan = productCountGrid.querySelector('.count');
+          if (countSpan) {
+            countSpan.textContent = newGridProducts.length;
+          }
+          // Show/hide based on current layout
+          const isGridActive = !productList || productList.style.display === 'none';
+          productCountGrid.style.display = isGridActive ? 'block' : 'none';
+        }
+        
+        if (productCountList) {
+          const countSpan = productCountList.querySelector('.count');
+          if (countSpan) {
+            countSpan.textContent = newListProducts.length;
+          }
+          // Show/hide based on current layout
+          const isListActive = productList && productList.style.display === 'block';
+          productCountList.style.display = isListActive ? 'block' : 'none';
+        }
+
+        // Show/hide meta-filter-shop based on whether there are applied filters
+        if (metaFilterShop) {
+          const hasFilters = Object.keys(filters || {}).length > 0 || url.searchParams.toString().length > 0;
+          metaFilterShop.style.display = hasFilters ? 'flex' : 'none';
+        }
 
         // Update URL without reload
         window.history.pushState({}, '', url.toString());
@@ -1081,6 +1135,14 @@
             }
             gridLayout.classList.add(layout);
           }
+          
+          // Update product count visibility based on layout
+          if (productCountGrid) {
+            productCountGrid.style.display = layout === 'list' ? 'none' : 'block';
+          }
+          if (productCountList) {
+            productCountList.style.display = layout === 'list' ? 'block' : 'none';
+          }
         }
       });
     });
@@ -1146,51 +1208,62 @@
       });
     }
 
-    // Handle filter tag removal
+    // Handle individual filter tag removal
     document.addEventListener('click', function(e) {
-      if (e.target.closest('.filter-tag .icon-close')) {
-        const icon = e.target.closest('.icon-close');
-        const filterType = icon.dataset.filterType;
-        const param = icon.dataset.param;
-        const value = icon.dataset.value;
+      if (e.target.classList.contains('icon-close') || e.target.closest('.icon-close')) {
+        const closeIcon = e.target.classList.contains('icon-close') ? e.target : e.target.closest('.icon-close');
+        const filterTag = closeIcon.closest('.filter-tag');
         
-        // Remove specific filter
-        if (filterType === 'price') {
-          // Reset price range
-          const priceRange = document.getElementById('price-value-range');
-          if (priceRange && priceRange.noUiSlider) {
-            const minPrice = parseInt(priceRange.dataset.rangeMin);
-            const maxPrice = parseInt(priceRange.dataset.rangeMax);
-            priceRange.noUiSlider.set([minPrice, maxPrice]);
+        if (filterTag) {
+          const filterType = closeIcon.dataset.filterType;
+          const filterParam = closeIcon.dataset.param;
+          const filterValue = closeIcon.dataset.value;
+          
+          // Remove specific filter
+          if (filterType === 'availability') {
+            const availabilityCheckboxes = document.querySelectorAll('input[name="filter.v.availability"]');
+            availabilityCheckboxes.forEach(cb => {
+              cb.checked = false;
+            });
+          } else if (filterType === 'price') {
+            // Reset price range
+            const priceRange = document.getElementById('price-value-range');
+            if (priceRange && priceRange.noUiSlider) {
+              const minPrice = parseInt(priceRange.dataset.rangeMin);
+              const maxPrice = parseInt(priceRange.dataset.rangeMax);
+              priceRange.noUiSlider.set([minPrice, maxPrice]);
+            }
+          } else {
+            // Remove specific checkbox filter
+            const checkbox = document.querySelector(`input[name="${filterParam}"][value="${filterValue}"]`);
+            if (checkbox) {
+              checkbox.checked = false;
+            }
           }
-        } else {
-          // Uncheck corresponding checkbox
-          const checkbox = document.querySelector(`input[name="${param}"][value="${value}"]`);
-          if (checkbox) {
-            checkbox.checked = false;
-          }
-        }
-        
-        // Update products
-        const filters = {};
-        const checkboxes = document.querySelectorAll('.filter-checkbox');
-        checkboxes.forEach(cb => {
-          if (cb.checked) {
-            filters[cb.name] = cb.value;
-          }
-        });
-        
-        // Add price if not being reset
-        if (filterType !== 'price') {
+          
+          // Collect remaining filters and update products
+          const filters = {};
+          const checkboxes = document.querySelectorAll('.filter-checkbox');
+          checkboxes.forEach(cb => {
+            if (cb.checked) {
+              filters[cb.name] = cb.value;
+            }
+          });
+          
+          // Add price filters if they exist
           const minPrice = document.getElementById('price-min-input')?.value;
           const maxPrice = document.getElementById('price-max-input')?.value;
           if (minPrice && maxPrice) {
-            filters['filter.v.price.gte'] = minPrice;
-            filters['filter.v.price.lte'] = maxPrice;
+            const rangeMin = parseInt(document.getElementById('price-value-range')?.dataset.rangeMin);
+            const rangeMax = parseInt(document.getElementById('price-value-range')?.dataset.rangeMax);
+            if (parseInt(minPrice) > rangeMin || parseInt(maxPrice) < rangeMax) {
+              filters['filter.v.price.gte'] = minPrice;
+              filters['filter.v.price.lte'] = maxPrice;
+            }
           }
+          
+          updateProducts(filters, currentSort);
         }
-        
-        updateProducts(filters, currentSort);
       }
     });
 
@@ -1309,6 +1382,15 @@
       
       // Initialize infinite scroll
       initializeInfiniteScroll();
+      
+      // Initialize product count visibility based on default layout
+      const defaultView = '{{ section.settings.default_view | default: "grid" }}';
+      if (productCountGrid) {
+        productCountGrid.style.display = defaultView === 'list' ? 'none' : 'block';
+      }
+      if (productCountList) {
+        productCountList.style.display = defaultView === 'list' ? 'block' : 'none';
+      }
     }
 
     // Wait for DOM and dependencies to be ready
