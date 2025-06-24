@@ -2469,6 +2469,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const cartResponse = await fetch('/cart.js');
         const cartData = await cartResponse.json();
 
+        // Show success message briefly
+        button.textContent = 'Added!';
+        setTimeout(() => {
+          button.textContent = form.querySelector('.btn-special-deal').dataset.originalText || 'Grab this deal';
+        }, 1000);
+
         // Optionally update cart drawer, similar to FBT logic
         const cartDrawer = document.getElementById('shoppingCart');
         if (cartDrawer) {
@@ -2598,9 +2604,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       } catch (error) {
         alert('Failed to add items to cart. Please try again.');
+        // Reset button text on error
+        button.textContent = form.querySelector('.btn-special-deal').dataset.originalText || 'Add to Cart';
       } finally {
         button.classList.remove('loading');
-        button.textContent = form.querySelector('.btn-special-deal').dataset.originalText || button.textContent;
       }
     });
   });
