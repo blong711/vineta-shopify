@@ -1261,7 +1261,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const options = {{ product.options | json }};
     
     // Get current size selection
-    const activeSizeBtn = document.querySelector('.size-btn.active, .select-item.active');
+    const activeSizeBtn = document.querySelector('.size-btn.active, .select-item[data-option="size"].active');
     const selectedSize = activeSizeBtn ? activeSizeBtn.getAttribute('data-value') : null;
     
     // Find variant that matches both color and size
@@ -1273,6 +1273,18 @@ document.addEventListener('DOMContentLoaded', function() {
         return variant;
       }
     }
+    
+    // If no size is selected, return the first available variant for the selected color
+    if (!selectedSize) {
+      for (const variant of variants) {
+        const matchesColor = variant.option1 && variant.option1.toLowerCase() === color.toLowerCase();
+        if (matchesColor && variant.available) {
+          console.log('No size selected, returning first available variant for color:', variant.title);
+          return variant;
+        }
+      }
+    }
+    
     return null;
   }
 
@@ -1283,10 +1295,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const options = {{ product.options | json }};
     
     // Get current selections
-    const activeColorBtn = document.querySelector('.color-btn.active');
-    const activeSizeBtn = document.querySelector('.size-btn.active, .select-item.active');
-    const selectedColor = activeColorBtn ? activeColorBtn.getAttribute('data-scroll') : null;
+    const activeColorBtn = document.querySelector('.color-btn.active, .select-item[data-option="color"].active');
+    const activeSizeBtn = document.querySelector('.size-btn.active, .select-item[data-option="size"].active');
+    
+    // For color, we need to get the display value, not the handle
+    let selectedColor = null;
+    if (activeColorBtn) {
+      if (activeColorBtn.classList.contains('color-btn')) {
+        // For color swatches, use data-scroll
+        selectedColor = activeColorBtn.getAttribute('data-scroll');
+      } else {
+        // For color dropdown, use the text content (display value)
+        const textElement = activeColorBtn.querySelector('.text-value-item');
+        selectedColor = textElement ? textElement.textContent : activeColorBtn.getAttribute('data-value');
+      }
+    }
+    
     const selectedSize = activeSizeBtn ? activeSizeBtn.getAttribute('data-value') : null;
+    
+    console.log('findVariantId - selectedColor:', selectedColor, 'selectedSize:', selectedSize, 'activeColorBtn:', activeColorBtn, 'activeSizeBtn:', activeSizeBtn);
     
     // Find variant that matches all selected options
     const matchingVariant = variants.find(variant => {
@@ -1402,8 +1429,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set the active color swatch based on the selected color
     if (variant && variant.option1) {
       const color = variant.option1.toLowerCase();
-      document.querySelectorAll('.color-btn').forEach(btn => {
-        if (btn.getAttribute('data-scroll') && btn.getAttribute('data-scroll').toLowerCase() === color) {
+      document.querySelectorAll('.color-btn, .select-item[data-option="color"]').forEach(btn => {
+        let matches = false;
+        
+        if (btn.classList.contains('color-btn')) {
+          // For color swatches, check data-scroll
+          if (btn.getAttribute('data-scroll') && btn.getAttribute('data-scroll').toLowerCase() === color) {
+            matches = true;
+          }
+        } else {
+          // For color dropdown, check the text content
+          const textElement = btn.querySelector('.text-value-item');
+          if (textElement && textElement.textContent.toLowerCase() === color) {
+            matches = true;
+          }
+        }
+        
+        if (matches) {
           btn.classList.add('active');
         } else {
           btn.classList.remove('active');
@@ -1414,7 +1456,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set the active size button based on the selected size
     if (variant && variant.option2) {
       const size = variant.option2.toLowerCase();
-      document.querySelectorAll('.size-btn, .select-item').forEach(btn => {
+      document.querySelectorAll('.size-btn, .select-item[data-option="size"]').forEach(btn => {
         if (btn.getAttribute('data-value') && btn.getAttribute('data-value').toLowerCase() === size) {
           btn.classList.add('active');
         } else {
@@ -1439,21 +1481,46 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Handle size variant selection
-  document.querySelectorAll('.size-btn, .select-item').forEach(button => {
+  document.querySelectorAll('.size-btn, .select-item[data-option="size"]').forEach(button => {
     button.addEventListener('click', function() {
       const size = this.getAttribute('data-value');
-      document.querySelectorAll('.size-btn, .select-item').forEach(btn => btn.classList.remove('active'));
+      // Only remove active class from size-related elements
+      document.querySelectorAll('.size-btn, .select-item[data-option="size"]').forEach(btn => btn.classList.remove('active'));
       this.classList.add('active');
-      
+
       // Update selected options
       selectedOptions['size'] = size;
-      
-      // Find and update variant ID
-      const variantId = findVariantId();
-      if (variantId) {
-        const variants = {{ product.variants | json }};
-        const variant = variants.find(v => v.id === variantId);
-        updateMainAddToCartButton(variant);
+
+      // --- NEW: Get the currently selected color ---
+      let color = null;
+      const activeColorBtn = document.querySelector('.color-btn.active, .select-item[data-option="color"].active');
+      if (activeColorBtn) {
+        if (activeColorBtn.classList.contains('color-btn')) {
+          color = activeColorBtn.getAttribute('data-scroll');
+        } else {
+          const textElement = activeColorBtn.querySelector('.text-value-item');
+          color = textElement ? textElement.textContent : activeColorBtn.getAttribute('data-value');
+        }
+      }
+
+      // Find and update variant
+      const variants = {{ product.variants | json }};
+      let variant = null;
+      if (color) {
+        variant = variants.find(v =>
+          v.option1 && v.option1.toLowerCase() === color.toLowerCase() &&
+          v.option2 && v.option2.toLowerCase() === size.toLowerCase()
+        );
+        console.log('Size selection - looking for color:', color, 'size:', size, 'found variant:', variant);
+      } else {
+        variant = variants.find(v =>
+          v.option2 && v.option2.toLowerCase() === size.toLowerCase()
+        );
+        console.log('Size selection - no color selected, looking for size:', size, 'found variant:', variant);
+      }
+      if (variant) {
+        console.log('Size selection - updating with variant:', variant.title, 'color:', variant.option1, 'size:', variant.option2);
+        updateVariantSelection(variant);
       }
     });
   });
@@ -1501,9 +1568,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set initial color button active state
     const initialColor = initialVariant.option1;
     if (initialColor) {
-      const colorBtn = Array.from(document.querySelectorAll('.color-btn')).find(
-        btn => btn.getAttribute('data-scroll') && btn.getAttribute('data-scroll').toLowerCase() === initialColor.toLowerCase()
-      );
+      const colorBtn = Array.from(document.querySelectorAll('.color-btn, .select-item[data-option="color"]')).find(btn => {
+        if (btn.classList.contains('color-btn')) {
+          // For color swatches, check data-scroll
+          return btn.getAttribute('data-scroll') && btn.getAttribute('data-scroll').toLowerCase() === initialColor.toLowerCase();
+        } else {
+          // For color dropdown, check the text content
+          const textElement = btn.querySelector('.text-value-item');
+          return textElement && textElement.textContent.toLowerCase() === initialColor.toLowerCase();
+        }
+      });
       if (colorBtn) {
         colorBtn.classList.add('active');
       }
@@ -2059,12 +2133,38 @@ document.addEventListener('DOMContentLoaded', function() {
       if (pickerItem) {
         const optionName = pickerItem.className.match(/variant-([\w-]+)/);
         if (optionName && optionName[1]) {
-          selectedOptions[optionName[1]] = value;
+          // Only update the specific option, don't override other options
+          if (optionName[1] === 'color') {
+            selectedOptions['color'] = label; // Use display value, not handle
+          } else if (optionName[1] === 'size') {
+            selectedOptions['size'] = label; // Use display value, not handle
+          }
+        }
+        // Also directly update color option if this is a color dropdown
+        if (btn.getAttribute('data-option') === 'color') {
+          selectedOptions['color'] = label; // Use display value, not handle
         }
       }
       // Trigger variant selection logic
       if (typeof findVariantByColor === 'function') {
-        const variant = findVariantByColor(value);
+        // --- NEW: Get the currently selected size ---
+        let size = null;
+        const activeSizeBtn = document.querySelector('.size-btn.active, .select-item[data-option="size"].active');
+        if (activeSizeBtn) {
+          size = activeSizeBtn.getAttribute('data-value');
+        }
+
+        // Find and update variant
+        const variants = {{ product.variants | json }};
+        let variant = null;
+        if (size) {
+          variant = variants.find(v =>
+            v.option1 && v.option1.toLowerCase() === label.toLowerCase() &&
+            v.option2 && v.option2.toLowerCase() === size.toLowerCase()
+          );
+        } else {
+          variant = findVariantByColor(label);
+        }
         if (variant) {
           updateVariantSelection(variant);
         }
@@ -2082,7 +2182,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (currentValue > 1) {
         input.value = currentValue - 1;
         await window.cart.updateQuantity(variantId, currentValue - 1, 'update');
-      } else {
+        } else {
         input.value = 1;
         await window.cart.removeItem(variantId);
       }
