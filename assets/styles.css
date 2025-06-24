@@ -16963,8 +16963,6 @@ button.animate-btn::after,
 }
 
 .tf-product-info-wrap .tf-product-info-heading {
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 24px;
   display: grid;
   gap: 24px;
 }
@@ -27996,5 +27994,15 @@ prev.swiper-button-disabled {
   .body-text {
       font-size: 14px;
       line-height: 22.6px;
+  }
+}
+@media (max-width: 767px) {
+  .flat-single-product {
+      padding-bottom: 60px !important;
+  }
+}
+@media (max-width: 991px) {
+  .flat-single-product {
+      padding-bottom: 80px;
   }
 }
