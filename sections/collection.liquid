@@ -311,8 +311,8 @@
             {% if current_tags.size > 0 %}
               {% for tag in current_tags %}
                 <span class="filter-tag">
-                  {{ tag }}
                   <i class="icon icon-close" data-filter-tag="{{ tag | escape }}"></i>
+                  {{ tag }}
                 </span>
               {% endfor %}
             {% endif %}
@@ -807,8 +807,8 @@
         const filterTag = document.createElement('span');
         filterTag.className = 'filter-tag';
         filterTag.innerHTML = `
-          ${filter.label}
           <i class="icon icon-close" data-filter-type="${filter.type}" data-param="${filter.param}" data-value="${filter.value}"></i>
+          ${filter.label}
         `;
         appliedFiltersContainer.appendChild(filterTag);
       });
