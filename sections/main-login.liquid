@@ -74,7 +74,10 @@
             <div class="login-content">
               {%- if block.settings.title != blank -%}<h2 class="form-heading">{{ block.settings.title }}</h2>{%- endif -%} 
               {%- if block.settings.description != blank -%}<p class="form-description">{{ block.settings.description }}</p>{%- endif -%} 
-              <a href="{{ routes.account_register_url }}" class="register-link">Register</a>
+              <a href="{{ routes.account_register_url }}" class="register-link">
+                Register
+                <svg class="hdt-icon hdt-icon-2 hdt-inline-block" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><path d="M0.861539 8L0 7.13846L5.90769 1.23077H0.615385V0H8V7.38462H6.76923V2.09231L0.861539 8Z"></path></svg>
+              </a>
             </div>
         {%- endcase -%}
       {%- endfor -%}
