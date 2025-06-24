@@ -17284,7 +17284,6 @@ button.animate-btn::after,
   align-items: center;
   gap: 30px;
   flex-wrap: wrap;
-  margin-bottom: 24px;
 }
 .tf-product-info-wrap .tf-product-info-extra-link .product-extra-icon {
   display: flex;
@@ -27996,13 +27995,11 @@ prev.swiper-button-disabled {
       line-height: 22.6px;
   }
 }
-@media (max-width: 767px) {
-  .flat-single-product {
-      padding-bottom: 60px !important;
+@media (min-width: 768px) {
+  .wrapper-shop {
+      row-gap: 40px;
   }
 }
-@media (max-width: 991px) {
-  .flat-single-product {
-      padding-bottom: 80px;
-  }
+.canvas-filter .sb-banner .banner-content {
+  bottom: 24px;
 }

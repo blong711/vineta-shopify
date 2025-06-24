@@ -30,10 +30,10 @@
 
 <div class="flat-spacing-2 pt-0"> 
   <div class="container">
-    <div class="row">
-      <div class="col-xl-8">
-        <div class="tf-page-cart-main">
-          {% if cart.item_count > 0 %}
+    {% if cart.item_count > 0 %}
+      <div class="row" id="cart-items-row">
+        <div class="col-xl-8">
+          <div class="tf-page-cart-main">
             <form action="/cart" method="post" id="cart-form" class="form-cart">
               {% for block in section.blocks %}
                 {% if block.type == 'cart_items' %}
@@ -198,169 +198,113 @@
             </div>
               {% endif %}
             {% endfor %}
-          {% else %}
-            {% for block in section.blocks %}
-              {% if block.type == 'empty_cart' %}
-                <div class="empty-cart text-center" {{ block.shopify_attributes }}>
-                  <p class="text-lg">{{ block.settings.empty_cart_message }}</p>
-                  <a href="{{ block.settings.continue_shopping_url }}" class="tf-btn btn-dark2 animate-btn">{{ block.settings.continue_shopping_text }}</a>
-            </div>
-              {% endif %}
-            {% endfor %}
-          {% endif %}
+          </div>
         </div>
-      </div>
 
-      <div class="col-xl-4">
-        <div class="tf-page-cart-sidebar">
-          {% for block in section.blocks %}
-            {% if block.type == 'shipping_estimates' %}
-              <div class="cart-box shipping-cart-box" {{ block.shopify_attributes }}>
-                <div class="text-lg title fw-medium">{{ 'cart.shipping_estimates.title' | t }}</div>
-                <fieldset class="field">
-                  <label for="country" class="text-sm">{{ 'cart.shipping_estimates.country_label' | t }}</label>
-                  <input type="text" id="country" placeholder="{{ 'cart.shipping_estimates.country_placeholder' | t }}">
-                </fieldset>
-                <fieldset class="field">
-                  <label for="state" class="text-sm">{{ 'cart.shipping_estimates.state_label' | t }}</label>
-                  <input type="text" id="state" placeholder="{{ 'cart.shipping_estimates.state_placeholder' | t }}">
-                </fieldset>
-                <fieldset class="field">
-                  <label for="code" class="text-sm">{{ 'cart.shipping_estimates.zipcode_label' | t }}</label>
-                  <input type="text" id="code" placeholder="{{ 'cart.shipping_estimates.zipcode_placeholder' | t }}">
-                </fieldset>
-                <button type="button" class="tf-btn btn-dark2 animate-btn w-100">{{ 'cart.shipping_estimates.button_text' | t }}</button>
-                
-                <!-- Add shipping rates display container -->
-                <div class="shipping-rates-container" style="display: none; margin-top: 20px;">
-                  <div class="shipping-rates-header text-md fw-medium">{{ 'cart.shipping_estimates.available_rates' | t }}</div>
-                  <div class="shipping-rates-list"></div>
-                  <div class="shipping-rates-error text-sm text-danger" style="display: none;"></div>
-                </div>
-              </div>
-            {% endif %}
-          {% endfor %}
-
-          <form action="/checkout" method="post" class="cart-box checkout-cart-box" id="checkout-form">
+        <div class="col-xl-4">
+          <div class="tf-page-cart-sidebar">
             {% for block in section.blocks %}
-              {% if block.type == 'checkout' %}
-                <div class="cart-head" {{ block.shopify_attributes }}>
-              <div class="total-discount text-xl fw-medium">
-                    <span>{{ 'cart.checkout.total_label' | t }}:</span>
-                <span class="total">{{ cart.total_price | money }}</span>
-              </div>
-                  <p class="text-sm text-dark-4">{{ 'cart.checkout.tax_message' | t }}</p>
-            </div>
-
-            <div class="check-agree">
-              <input type="checkbox" class="tf-check" id="check-agree" required>
-              <label for="check-agree" class="label text-dark-4">{{ 'cart.checkout.terms_text' | t }} <a href="{{block.settings.terms_url}}" class="text-dark-4 fw-medium text-underline link">{{ 'cart.checkout.terms_link' | t }}</a></label>
-            </div>
-
-            <div class="checkout-btn">
-                  <button type="submit" class="tf-btn btn-dark2 animate-btn w-100" id="checkout-button" disabled>{{ 'cart.checkout.checkout_button' | t }}</button>
-            </div>
+              {% if block.type == 'shipping_estimates' %}
+                <div class="cart-box shipping-cart-box" {{ block.shopify_attributes }}>
+                  <div class="text-lg title fw-medium">{{ 'cart.shipping_estimates.title' | t }}</div>
+                  <fieldset class="field">
+                    <label for="country" class="text-sm">{{ 'cart.shipping_estimates.country_label' | t }}</label>
+                    <input type="text" id="country" placeholder="{{ 'cart.shipping_estimates.country_placeholder' | t }}">
+                  </fieldset>
+                  <fieldset class="field">
+                    <label for="state" class="text-sm">{{ 'cart.shipping_estimates.state_label' | t }}</label>
+                    <input type="text" id="state" placeholder="{{ 'cart.shipping_estimates.state_placeholder' | t }}">
+                  </fieldset>
+                  <fieldset class="field">
+                    <label for="code" class="text-sm">{{ 'cart.shipping_estimates.zipcode_label' | t }}</label>
+                    <input type="text" id="code" placeholder="{{ 'cart.shipping_estimates.zipcode_placeholder' | t }}">
+                  </fieldset>
+                  <button type="button" class="tf-btn btn-dark2 animate-btn w-100">{{ 'cart.shipping_estimates.button_text' | t }}</button>
+                  
+                  <!-- Add shipping rates display container -->
+                  <div class="shipping-rates-container" style="display: none; margin-top: 20px;">
+                    <div class="shipping-rates-header text-md fw-medium">{{ 'cart.shipping_estimates.available_rates' | t }}</div>
+                    <div class="shipping-rates-list"></div>
+                    <div class="shipping-rates-error text-sm text-danger" style="display: none;"></div>
+                  </div>
+                </div>
               {% endif %}
             {% endfor %}
 
-            {% for block in section.blocks %}
-              {% if block.type == 'payment_methods' %}
-                <div class="cart-imgtrust" {{ block.shopify_attributes }}>
-                  <p class="text-center text-sm text-dark-1">{{ block.settings.title }}</p>
-              <div class="cart-list-social">
-                    {% assign payment_icons = block.settings.payment_icons | split: ',' %}
-                    {% if block.settings.payment_icons == blank %}
-                      {% for icon in shop.enabled_payment_types %}
-                <div class="payment-card">
-                          <img src="{{ icon | payment_type_img_url }}"
-                               alt="{{ icon | capitalize }}"
-                               width="{{ block.settings.payment_icons_size }}"
-                               height="{{ block.settings.payment_icons_size }}"
-                               class="icon">
+            <form action="/checkout" method="post" class="cart-box checkout-cart-box" id="checkout-form">
+              {% for block in section.blocks %}
+                {% if block.type == 'checkout' %}
+                  <div class="cart-head" {{ block.shopify_attributes }}>
+                <div class="total-discount text-xl fw-medium">
+                      <span>{{ 'cart.checkout.total_label' | t }}:</span>
+                  <span class="total">{{ cart.total_price | money }}</span>
                 </div>
-                      {% endfor %}
-                    {% else %}
-                      {% for icon in payment_icons %}
-                        {% assign icon_name = icon | strip %}
-                        {% if icon_name != blank %}
-                <div class="payment-card">
-                            <img src="{{ icon_name | payment_type_img_url }}"
-                                 alt="{{ icon_name | capitalize }}"
+                    <p class="text-sm text-dark-4">{{ 'cart.checkout.tax_message' | t }}</p>
+              </div>
+
+              <div class="check-agree">
+                <input type="checkbox" class="tf-check" id="check-agree" required>
+                <label for="check-agree" class="label text-dark-4">{{ 'cart.checkout.terms_text' | t }} <a href="{{block.settings.terms_url}}" class="text-dark-4 fw-medium text-underline link">{{ 'cart.checkout.terms_link' | t }}</a></label>
+              </div>
+
+              <div class="checkout-btn">
+                    <button type="submit" class="tf-btn btn-dark2 animate-btn w-100" id="checkout-button" disabled>{{ 'cart.checkout.checkout_button' | t }}</button>
+              </div>
+                {% endif %}
+              {% endfor %}
+
+              {% for block in section.blocks %}
+                {% if block.type == 'payment_methods' %}
+                  <div class="cart-imgtrust" {{ block.shopify_attributes }}>
+                    <p class="text-center text-sm text-dark-1">{{ block.settings.title }}</p>
+                <div class="cart-list-social">
+                      {% assign payment_icons = block.settings.payment_icons | split: ',' %}
+                      {% if block.settings.payment_icons == blank %}
+                        {% for icon in shop.enabled_payment_types %}
+                  <div class="payment-card">
+                            <img src="{{ icon | payment_type_img_url }}"
+                                 alt="{{ icon | capitalize }}"
                                  width="{{ block.settings.payment_icons_size }}"
                                  height="{{ block.settings.payment_icons_size }}"
                                  class="icon">
-                </div>
-                        {% endif %}
-                      {% endfor %}
-                    {% endif %}
-                </div>
-                </div>
-              {% endif %}
-            {% endfor %}
-          </form>
+                  </div>
+                        {% endfor %}
+                      {% else %}
+                        {% for icon in payment_icons %}
+                          {% assign icon_name = icon | strip %}
+                          {% if icon_name != blank %}
+                  <div class="payment-card">
+                              <img src="{{ icon_name | payment_type_img_url }}"
+                                   alt="{{ icon_name | capitalize }}"
+                                   width="{{ block.settings.payment_icons_size }}"
+                                   height="{{ block.settings.payment_icons_size }}"
+                                   class="icon">
+                  </div>
+                          {% endif %}
+                        {% endfor %}
+                      {% endif %}
+                  </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </form>
 
-          {% for block in section.blocks %}
-            {% if block.type == 'testimonial' %}
-              <div class="cart-box testimonial-cart-box" {{ block.shopify_attributes }} style="background-color: {{ block.settings.background_color }}; color: {{ block.settings.text_color }}; padding: {{ block.settings.padding }}px; border-radius: {{ block.settings.border_radius }}px;">
-            <div dir="ltr" class="swiper tf-swiper" data-swiper='{
-              "slidesPerView": 1,
-              "spaceBetween": 12,
-              "speed": 800,
-              "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
-              "navigation": {
-                "clickable": true,
-                "nextEl": ".nav-next-tes",
-                "prevEl": ".nav-prev-tes"
-              }
-            }'>
-              <div class="swiper-wrapper">
-                    {% if block.settings.testimonial1_review != blank %}
-                    <div class="swiper-slide">
-                      <div class="box-testimonial-main">
-                        <span class="quote {{ block.settings.quote_style }}" style="color: {{ block.settings.quote_color }};"></span>
-                        <div class="content">
-                          <div class="list-star-default">
-                            {% for i in (1..5) %}
-                              <i class="icon-star"></i>
-                            {% endfor %}
-                          </div>
-                            <div class="text-review text-md text-main">{{ block.settings.testimonial1_review }}</div>
-                          <div class="box-author">
-                              {% if block.settings.testimonial1_author_image %}
-                            <div class="img">
-                                  <img src="{{ block.settings.testimonial1_author_image | img_url: '100x' }}" alt="{{ block.settings.testimonial1_author_name }}" width="100" height="100">
-                            </div>
-                              {% endif %}
-                              <span class="name text-sm fw-medium">{{ block.settings.testimonial1_author_name }}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  {% endif %}
-                    {% if block.settings.testimonial2_review != blank %}
-                      <div class="swiper-slide">
-                        <div class="box-testimonial-main">
-                          <span class="quote {{ block.settings.quote_style }}" style="color: {{ block.settings.quote_color }};"></span>
-                          <div class="content">
-                            <div class="list-star-default">
-                              {% for i in (1..5) %}
-                                <i class="icon-star"></i>
-                {% endfor %}
-                            </div>
-                            <div class="text-review text-md text-main">{{ block.settings.testimonial2_review }}</div>
-                            <div class="box-author">
-                              {% if block.settings.testimonial2_author_image %}
-                                <div class="img">
-                                  <img src="{{ block.settings.testimonial2_author_image | img_url: '100x' }}" alt="{{ block.settings.testimonial2_author_name }}" width="100" height="100">
-                                </div>
-                              {% endif %}
-                              <span class="name text-sm fw-medium">{{ block.settings.testimonial2_author_name }}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    {% endif %}
-                    {% if block.settings.testimonial3_review != blank %}
+            {% for block in section.blocks %}
+              {% if block.type == 'testimonial' %}
+                <div class="cart-box testimonial-cart-box" {{ block.shopify_attributes }} style="background-color: {{ block.settings.background_color }}; color: {{ block.settings.text_color }}; padding: {{ block.settings.padding }}px; border-radius: {{ block.settings.border_radius }}px;">
+              <div dir="ltr" class="swiper tf-swiper" data-swiper='{
+                "slidesPerView": 1,
+                "spaceBetween": 12,
+                "speed": 800,
+                "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+                "navigation": {
+                  "clickable": true,
+                  "nextEl": ".nav-next-tes",
+                  "prevEl": ".nav-prev-tes"
+                }
+              }'>
+                <div class="swiper-wrapper">
+                      {% if block.settings.testimonial1_review != blank %}
                       <div class="swiper-slide">
                         <div class="box-testimonial-main">
                           <span class="quote {{ block.settings.quote_style }}" style="color: {{ block.settings.quote_color }};"></span>
@@ -370,29 +314,90 @@
                                 <i class="icon-star"></i>
                               {% endfor %}
                             </div>
-                            <div class="text-review text-md text-main">{{ block.settings.testimonial3_review }}</div>
+                              <div class="text-review text-md text-main">{{ block.settings.testimonial1_review }}</div>
                             <div class="box-author">
-                              {% if block.settings.testimonial3_author_image %}
-                                <div class="img">
-                                  <img src="{{ block.settings.testimonial3_author_image | img_url: '100x' }}" alt="{{ block.settings.testimonial3_author_name }}" width="100" height="100">
-                                </div>
-                              {% endif %}
-                              <span class="name text-sm fw-medium">{{ block.settings.testimonial3_author_name }}</span>
+                                {% if block.settings.testimonial1_author_image %}
+                              <div class="img">
+                                    <img src="{{ block.settings.testimonial1_author_image | img_url: '100x' }}" alt="{{ block.settings.testimonial1_author_name }}" width="100" height="100">
+                              </div>
+                                {% endif %}
+                                <span class="name text-sm fw-medium">{{ block.settings.testimonial1_author_name }}</span>
                             </div>
                           </div>
                         </div>
                       </div>
                     {% endif %}
-              </div>
-              <div class="box-nav-swiper">
-                <div class="swiper-button-prev nav-swiper nav-prev-tes"></div>
-                <div class="swiper-button-next nav-swiper nav-next-tes"></div>
+                      {% if block.settings.testimonial2_review != blank %}
+                        <div class="swiper-slide">
+                          <div class="box-testimonial-main">
+                            <span class="quote {{ block.settings.quote_style }}" style="color: {{ block.settings.quote_color }};"></span>
+                            <div class="content">
+                              <div class="list-star-default">
+                                {% for i in (1..5) %}
+                                  <i class="icon-star"></i>
+                {% endfor %}
+                              </div>
+                              <div class="text-review text-md text-main">{{ block.settings.testimonial2_review }}</div>
+                              <div class="box-author">
+                                {% if block.settings.testimonial2_author_image %}
+                                  <div class="img">
+                                    <img src="{{ block.settings.testimonial2_author_image | img_url: '100x' }}" alt="{{ block.settings.testimonial2_author_name }}" width="100" height="100">
+                                  </div>
+                                {% endif %}
+                                <span class="name text-sm fw-medium">{{ block.settings.testimonial2_author_name }}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      {% endif %}
+                      {% if block.settings.testimonial3_review != blank %}
+                        <div class="swiper-slide">
+                          <div class="box-testimonial-main">
+                            <span class="quote {{ block.settings.quote_style }}" style="color: {{ block.settings.quote_color }};"></span>
+                            <div class="content">
+                              <div class="list-star-default">
+                                {% for i in (1..5) %}
+                                  <i class="icon-star"></i>
+                                {% endfor %}
+                              </div>
+                              <div class="text-review text-md text-main">{{ block.settings.testimonial3_review }}</div>
+                              <div class="box-author">
+                                {% if block.settings.testimonial3_author_image %}
+                                  <div class="img">
+                                    <img src="{{ block.settings.testimonial3_author_image | img_url: '100x' }}" alt="{{ block.settings.testimonial3_author_name }}" width="100" height="100">
+                                  </div>
+                                {% endif %}
+                                <span class="name text-sm fw-medium">{{ block.settings.testimonial3_author_name }}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      {% endif %}
+                </div>
+                <div class="box-nav-swiper">
+                  <div class="swiper-button-prev nav-swiper nav-prev-tes"></div>
+                  <div class="swiper-button-next nav-swiper nav-next-tes"></div>
+                </div>
               </div>
             </div>
+              {% endif %}
+            {% endfor %}
           </div>
-            {% endif %}
-          {% endfor %}
         </div>
+      </div>
+    {% endif %}
+    
+    <!-- Empty cart message - always rendered but conditionally shown -->
+    <div class="row justify-content-center" id="empty-cart-container" style="{% if cart.item_count > 0 %}display: none;{% endif %}">
+      <div class="col-lg-8 col-md-10">
+        {% for block in section.blocks %}
+          {% if block.type == 'empty_cart' %}
+            <div class="empty-cart text-center" {{ block.shopify_attributes }}>
+              <p class="text-lg">{{ block.settings.empty_cart_message }}</p>
+              <a href="{{ block.settings.continue_shopping_url }}" class="tf-btn btn-dark2 animate-btn">{{ block.settings.continue_shopping_text }}</a>
+            </div>
+          {% endif %}
+        {% endfor %}
       </div>
     </div>
   </div>

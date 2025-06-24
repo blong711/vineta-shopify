@@ -27,7 +27,7 @@
         {% endif %}
       </div>
       {% if template contains 'collection' and collection.description != blank %}
-        <p style="font-size: 14px;" class="desc text-md text-main">
+        <p style="font-size: 16px;" class="desc text-md text-main">
           <span class="description-short">{{ collection.description | strip_html | truncate: 120 }}</span>
           <span class="description-full" style="display: none;">{{ collection.description | strip_html }}</span>
           {% if collection.description.size > 120 %}

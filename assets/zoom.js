@@ -1,4 +1,3 @@
-
 import PhotoSwipeLightbox from './photoswipe-lightbox.esm.min.js';
 import PhotoSwipe from './photoswipe.esm.min.js';
 
@@ -286,7 +285,7 @@ if ($(".thumbs-slider").length > 0) {
     section_zoom();
     cus_zoom();
     image_zoom_magnifier();
-    image_zoom_inner();
+    // image_zoom_inner();
     lightboxswiper();
     lightbox();
     model_viewer();
