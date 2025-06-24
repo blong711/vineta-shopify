@@ -301,13 +301,30 @@
         "description": "Check your wishlist"
       },
       "free_shipping": {
-        "title": "You are eligible for free shipping when your cart value is over ${{ amount }}.",
+        "title": "Free Shipping",
         "description": "Start shopping to enjoy this offer."
       },
       "promo_banner": {
         "discount_html": "<strong>{{ discount }}</strong> on your next purchase",
         "code": "Promo Code"
-      }
+      },
+      "hello": "Hello {{ name }}",
+      "not": "not",
+      "dashboard_welcome": "Today is a great day to check your account page. You can check",
+      "your_last_orders": "your last orders",
+      "your_wishlist": "your wishlist",
+      "latest_offers": "our latest offers",
+      "for_orders_over": "for all orders over ${{ amount }}",
+      "shop_now": "Shop Now",
+      "with_promo_code": "WITH PROMO CODE: {{ code }}",
+      "recent_orders": "Recent Orders",
+      "no_orders_yet": "You haven't placed any orders yet.",
+      "loading_wishlist": "Loading your wishlist...",
+      "wishlist_empty": "Your wishlist is empty.",
+      "orders": "Orders",
+      "check_order_history": "Check the history of all your orders",
+      "wishlist": "Wishlist",
+      "check_wishlist": "Check your wishlist"
     },
     "reset_password": {
       "title": "Reset your password",
@@ -318,6 +335,9 @@
       "password_confirm": "Confirm password",
       "submit": "Activate account",
       "cancel": "Decline invitation"
+    },
+    "order": {
+      "order_number": "Order {{ number }}"
     }
   },
   "templates": {
@@ -399,7 +419,8 @@
         "track_shipment": "Track shipment",
         "tracking_company": "Company: {{ company }}",
         "tracking_number": "Tracking Number: {{ number }}",
-        "subtotal": "Subtotal"
+        "subtotal": "Subtotal",
+        "order_number": "Order {{ number }}"
       },
       "recover_password": {
         "title": "Reset your password",
