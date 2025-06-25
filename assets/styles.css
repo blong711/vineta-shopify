@@ -27704,7 +27704,7 @@ prev.swiper-button-disabled {
 .tf-product-info-wrap .tf-product-info-list {
   display: grid
 ;
-  gap: 24px;
+  gap: 32px;
 }
 .tf-product-info-wrap .product-stock .out-of-stock {
   background-color: rgba(37, 37, 37, 0.1);
@@ -27777,7 +27777,7 @@ prev.swiper-button-disabled {
 .tf-product-info-wrap .tf-product-info-list {
   display: grid
 ;
-  gap: 24px;
+  gap: 32px;
 }
 @media (min-width: 768px) {
   .tf-page-title .box-title {
@@ -28086,4 +28086,14 @@ prev.swiper-button-disabled {
 }
 .list-recent li:not(:last-child) {
   margin-bottom: 20px;
+}
+@media (min-width: 1200px) {
+  .tf-product-info-wrap .tf-product-info-list {
+      gap: 42px;
+  }
+}
+.tf-product-payment-shipping {
+  display: grid
+;
+  gap: 24px;
 }
