@@ -94,7 +94,12 @@
             </div>
         </div>
     </div>
-    
+    <script>
+      window.cartProductVariants = {};
+      {% for item in cart.items %}
+        window.cartProductVariants["{{ item.handle }}"] = {{ all_products[item.handle].variants | json }};
+      {% endfor %}
+    </script>
     <script>
     let quickviewSwiper = null;
     document.addEventListener('DOMContentLoaded', function() {

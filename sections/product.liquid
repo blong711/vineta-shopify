@@ -1649,6 +1649,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 itemElement.className = 'tf-mini-cart-item';
                 itemElement.style.border = 'none';
                 itemElement.style.borderBottom = 'none';
+                const variantOptions = item.variants ? item.variants.map(variant => ({
+                  id: variant.id,
+                  title: variant.title || 'Default',
+                  selected: variant.id === item.variant_id
+                })) : [{
+                  id: item.variant_id,
+                  title: item.variant_title || 'Default',
+                  selected: true
+                }];
                 itemElement.innerHTML = `
                   <div class="tf-mini-cart-image">
                     <a href="${item.url}">
@@ -1660,9 +1669,13 @@ document.addEventListener('DOMContentLoaded', function() {
                       <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
                       <i class="icon icon-close remove" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
                     </div>
-                    <div class="d-flex gap-10">
-                      <div class="text-xs">${item.variant_title || ''}</div>
-                      <a href="#" class="link edit"><i class="icon-pen"></i></a>
+                    <div class="info-variant">
+                      <select class="text-xs" data-variant-id="${item.variant_id}">
+                        ${variantOptions.map(option => 
+                          `<option value="${option.id}" ${option.selected ? 'selected' : ''}>${option.title}</option>`
+                        ).join('')}
+                      </select>
+                      <i class="icon-pen edit"></i>
                     </div>
                     <div class="tf-mini-cart-item_price">
                       <p class="price-wrap text-sm fw-medium">
@@ -1977,6 +1990,15 @@ document.addEventListener('DOMContentLoaded', function() {
               itemElement.className = 'tf-mini-cart-item';
               itemElement.style.border = 'none';
               itemElement.style.borderBottom = 'none';
+              const variantOptions = item.variants ? item.variants.map(variant => ({
+                id: variant.id,
+                title: variant.title || 'Default',
+                selected: variant.id === item.variant_id
+              })) : [{
+                id: item.variant_id,
+                title: item.variant_title || 'Default',
+                selected: true
+              }];
               itemElement.innerHTML = `
                 <div class="tf-mini-cart-image">
                   <a href="${item.url}">
@@ -1986,11 +2008,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="tf-mini-cart-info">
                   <div class="d-flex justify-content-between">
                     <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
-                    <i class="icon icon-close remove" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
+                    <i class="icon icon-close remove fs-12" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
                   </div>
-                  <div class="d-flex gap-10">
-                    <div class="text-xs">${item.variant_title || ''}</div>
-                    <a href="#" class="link edit"><i class="icon-pen"></i></a>
+                  <div class="info-variant">
+                    <select class="text-xs" data-variant-id="${item.variant_id}">
+                      ${variantOptions.map(option => 
+                        `<option value="${option.id}" ${option.selected ? 'selected' : ''}>${option.title}</option>`
+                      ).join('')}
+                    </select>
+                    <i class="icon-pen edit"></i>
                   </div>
                   <div class="tf-mini-cart-item_price">
                     <p class="price-wrap text-sm fw-medium">
