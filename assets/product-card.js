@@ -688,78 +688,19 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// --- Cart Drawer Open/Close Logic ---
+// --- Cart Drawer Event Listeners ---
 (function() {
-  function getCartDrawer() {
-    return document.getElementById('shoppingCart');
-  }
-
-  // Create backdrop only when needed
-  function ensureBackdrop() {
-    let backdrop = document.querySelector('.offcanvas-backdrop');
-    if (!backdrop) {
-      backdrop = document.createElement('div');
-      backdrop.className = 'offcanvas-backdrop fade';
-      // Add click event listener to close drawer when clicking backdrop
-      backdrop.addEventListener('click', function(e) {
-        if (e.target === backdrop) {
-          window.closeCartDrawer();
-        }
-      });
-      document.body.appendChild(backdrop);
-    }
-    return backdrop;
-  }
-
-  window.openCartDrawer = function() {
-    const cartDrawer = getCartDrawer();
-    if (!cartDrawer) return;
-    // Close other offcanvas
-    document.querySelectorAll('.offcanvas.show').forEach(offcanvas => {
-      if (offcanvas.id !== 'shoppingCart') {
-        offcanvas.classList.remove('show');
-        const offcanvasBackdrop = document.querySelector('.offcanvas-backdrop');
-        if (offcanvasBackdrop) offcanvasBackdrop.classList.remove('show');
-      }
-    });
-    // Close modals
-    document.querySelectorAll('.modal.show').forEach(modal => {
-      modal.classList.remove('show', 'modal');
-      const modalBackdrop = document.querySelector('.modal-backdrop');
-      if (modalBackdrop) modalBackdrop.remove();
-    });
-    // Show backdrop
-    const cartBackdrop = ensureBackdrop();
-    if (cartBackdrop) cartBackdrop.classList.add('show');
-    cartDrawer.classList.add('show');
-    document.body.style.overflow = 'hidden';
-  };
-
-  window.closeCartDrawer = function() {
-    const cartDrawer = getCartDrawer();
-    const backdrop = document.querySelector('.offcanvas-backdrop');
-    if (cartDrawer) cartDrawer.classList.remove('show');
-    if (backdrop) {
-      backdrop.classList.remove('show');
-      // Remove the backdrop element when closing
-      backdrop.remove();
-    }
-    document.body.style.overflow = '';
-    // Remove modal-open class from body
-    document.body.classList.remove('modal-open');
-    // Remove padding-right style from body
-    document.body.style.paddingRight = '';
-  };
-
   // Set up event listeners after DOM is ready
   document.addEventListener('DOMContentLoaded', function() {
-    const cartDrawer = getCartDrawer();
+    const cartDrawer = document.getElementById('shoppingCart');
     if (!cartDrawer) return;
 
     // Close on ESC key
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && cartDrawer.classList.contains('show')) {
-        window.closeCartDrawer();
+        if (typeof window.closeCartDrawer === 'function') {
+          window.closeCartDrawer();
+        }
       }
     });
 
@@ -768,7 +709,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (closeBtn) {
       closeBtn.addEventListener('click', function(e) {
         e.stopPropagation();
-        window.closeCartDrawer();
+        if (typeof window.closeCartDrawer === 'function') {
+          window.closeCartDrawer();
+        }
       });
     }
 

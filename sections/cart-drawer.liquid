@@ -3,7 +3,7 @@
   <div class="canvas-wrapper">
     <div class="popup-header">
       <span class="title">{{ 'cart.drawer.title' | t }}</span>
-      <span class="icon-close icon-close-popup" data-bs-dismiss="offcanvas"></span>
+      <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="wrap">
         <div class="tf-mini-cart-threshold">
@@ -555,5 +555,20 @@
   opacity: 0.6;
   cursor: not-allowed;
   pointer-events: none;
+}
+
+/* Prevent body padding shift when cart drawer opens */
+body {
+  padding-right: 0 !important;
+}
+
+/* Ensure smooth transitions without body movement */
+.offcanvas {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Override Bootstrap's modal-open class to prevent padding */
+body.modal-open {
+  padding-right: 0 !important;
 }
 </style>

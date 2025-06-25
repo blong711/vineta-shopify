@@ -1227,27 +1227,17 @@ class Cart {
    * Handles backdrop and body styles
    */
   showCartDrawer() {
-    if (window.openCartDrawer) {
-      // Use our custom function that prevents full-screen backdrop
-      window.openCartDrawer();
-    } else {
-      // Fallback to the old method
-      const cartDrawer = document.getElementById('shoppingCart');
-      if (cartDrawer) {
-        // Log cart contents before showing drawer
-        const cartItems = cartDrawer.querySelectorAll('.tf-mini-cart-item');
-        
-        cartDrawer.classList.add('show');
-        
-        // Remove any offcanvas-backdrop elements that might be created by Bootstrap
-        const backdrop = document.querySelector('.offcanvas-backdrop');
-        if (backdrop) {
-          backdrop.remove();
-        }
-      } else {
-        console.error('Cart drawer element not found');
-      }
-    }
+    const cartDrawer = document.getElementById('shoppingCart');
+    if (!cartDrawer) return;
+    
+    // Use Bootstrap's offcanvas API with scroll disabled to prevent body padding
+    const offcanvas = new bootstrap.Offcanvas(cartDrawer, {
+      scroll: false // This prevents Bootstrap from adding padding-right to body
+    });
+    offcanvas.show();
+    
+    // Manually handle body overflow without padding
+    document.body.style.overflow = 'hidden';
   }
 
   /**
@@ -1605,44 +1595,42 @@ class Cart {
 // Initialize cart when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   window.cart = new Cart();
+  
+  // Initialize Bootstrap offcanvas for cart drawer
+  const cartDrawer = document.getElementById('shoppingCart');
+  if (cartDrawer) {
+    // Ensure Bootstrap offcanvas is properly initialized
+    if (typeof bootstrap !== 'undefined' && bootstrap.Offcanvas) {
+      new bootstrap.Offcanvas(cartDrawer);
+    }
+  }
 });
 
 window.openCartDrawer = function() {
-  const cartDrawer = getCartDrawer();
+  const cartDrawer = document.getElementById('shoppingCart');
   if (!cartDrawer) return;
-  // Close other offcanvas
-  document.querySelectorAll('.offcanvas.show').forEach(offcanvas => {
-    if (offcanvas.id !== 'shoppingCart') {
-      offcanvas.classList.remove('show');
-      const offcanvasBackdrop = document.querySelector('.offcanvas-backdrop');
-      if (offcanvasBackdrop) offcanvasBackdrop.classList.remove('show');
-    }
+  
+  // Use Bootstrap's offcanvas API with scroll disabled to prevent body padding
+  const offcanvas = new bootstrap.Offcanvas(cartDrawer, {
+    scroll: false // This prevents Bootstrap from adding padding-right to body
   });
-  // Close modals
-  document.querySelectorAll('.modal.show').forEach(modal => {
-    modal.classList.remove('show', 'modal');
-    const modalBackdrop = document.querySelector('.modal-backdrop');
-    if (modalBackdrop) modalBackdrop.remove();
-  });
-  // Show backdrop
-  const cartBackdrop = ensureBackdrop();
-  if (cartBackdrop) cartBackdrop.classList.add('show');
-  cartDrawer.classList.add('show');
-  // Add class to body to prevent scrollbar from disappearing
-  document.body.classList.add('cart-drawer-open');
+  offcanvas.show();
+  
+  // Manually handle body overflow without padding
   document.body.style.overflow = 'hidden';
 };
 
 window.closeCartDrawer = function() {
-  const cartDrawer = getCartDrawer();
-  const backdrop = document.querySelector('.offcanvas-backdrop');
-  if (cartDrawer) cartDrawer.classList.remove('show');
-  if (backdrop) {
-    backdrop.classList.remove('show');
-    // Remove the backdrop element when closing
-    backdrop.remove();
+  const cartDrawer = document.getElementById('shoppingCart');
+  if (!cartDrawer) return;
+  
+  // Use Bootstrap's offcanvas API
+  const offcanvas = bootstrap.Offcanvas.getInstance(cartDrawer);
+  if (offcanvas) {
+    offcanvas.hide();
   }
-  // Remove class from body
-  document.body.classList.remove('cart-drawer-open');
+  
+  // Restore body overflow and remove any padding
   document.body.style.overflow = '';
+  document.body.style.paddingRight = '';
 }; 
