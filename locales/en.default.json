@@ -147,7 +147,13 @@
       "zipcode_label": "Zipcode",
       "zipcode_placeholder": "41000",
       "button_text": "Estimate",
-      "available_rates": "Available Shipping Rates"
+      "available_rates": "Available Shipping Rates",
+      "error_missing_fields": "Please fill in all shipping fields (Country, State/Province, and Zipcode)",
+      "error_invalid_zipcode": "Please enter a valid US zipcode (e.g., 12345 or 12345-6789)",
+      "error_no_rates": "No shipping rates available for this location",
+      "error_verify_address": "Please verify your address information is correct",
+      "error_calculation_failed": "Failed to calculate shipping rates. Please verify your address and try again.",
+      "note_verify_zipcode": "Note: Shipping rates are calculated based on the provided address. Please verify your zipcode is correct for accurate delivery estimates."
     },
     "cart_items": {
       "product_column": "Product",
@@ -258,20 +264,6 @@
       "sort_by": "Sort by",
       "in_stock": "In stock",
       "out_of_stock": "Out of stock"
-    },
-    "header": {
-      "search": "Search",
-      "cart": "Cart",
-      "menu": "Menu",
-      "close": "Close"
-    },
-    "slideshow": {
-      "title": "Slideshow",
-      "slide": "Slide",
-      "next_slide": "Next slide",
-      "previous_slide": "Previous slide",
-      "pause_slideshow": "Pause slideshow",
-      "play_slideshow": "Play slideshow"
     }
   },
   "recipient": {

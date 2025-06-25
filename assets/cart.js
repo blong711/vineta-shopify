@@ -366,21 +366,32 @@ document.addEventListener('DOMContentLoaded', function() {
   
   if (estimateButton) {
     estimateButton.addEventListener('click', async function() {
-      const country = document.getElementById('country').value;
-      const state = document.getElementById('state').value;
-      const zipcode = document.getElementById('code').value;
+      const country = document.getElementById('country').value.trim();
+      const state = document.getElementById('state').value.trim();
+      const zipcode = document.getElementById('code').value.trim();
       
       // Reset previous results
       shippingRatesList.innerHTML = '';
       shippingRatesError.style.display = 'none';
       shippingRatesContainer.style.display = 'none';
       
-      // Validate inputs
+      // Enhanced validation
       if (!country || !state || !zipcode) {
-        shippingRatesError.textContent = 'Please fill in all shipping fields';
+        shippingRatesError.textContent = 'Please fill in all shipping fields (Country, State/Province, and Zipcode)';
         shippingRatesError.style.display = 'block';
         shippingRatesContainer.style.display = 'block';
         return;
+      }
+
+      // Basic zipcode format validation (US format as example)
+      if (country.toLowerCase() === 'united states' || country.toLowerCase() === 'us') {
+        const usZipcodeRegex = /^\d{5}(-\d{4})?$/;
+        if (!usZipcodeRegex.test(zipcode)) {
+          shippingRatesError.textContent = 'Please enter a valid US zipcode (e.g., 12345 or 12345-6789)';
+          shippingRatesError.style.display = 'block';
+          shippingRatesContainer.style.display = 'block';
+          return;
+        }
       }
 
       // Show loading state
@@ -404,6 +415,10 @@ document.addEventListener('DOMContentLoaded', function() {
           })
         });
 
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
         
         if (data.shipping_rates && data.shipping_rates.length > 0) {
@@ -419,12 +434,27 @@ document.addEventListener('DOMContentLoaded', function() {
               ${rate.delivery_time ? `<div class="shipping-rate-delivery text-sm text-dark-4">Estimated delivery: ${rate.delivery_time}</div>` : ''}
             </div>
           `).join('');
+          
+          // Add a note about zipcode validation
+          if (data.shipping_rates.length > 0) {
+            shippingRatesList.innerHTML += `
+              <div class="text-sm text-dark-4 mt-2" style="padding: 10px; background-color: #f8f9fa; border-radius: 4px;">
+                <i class="icon icon-info"></i> Note: Shipping rates are calculated based on the provided address. 
+                Please verify your zipcode is correct for accurate delivery estimates.
+              </div>
+            `;
+          }
         } else {
-          shippingRatesList.innerHTML = '<div class="text-center text-dark-4">No shipping rates available for this location</div>';
+          shippingRatesList.innerHTML = `
+            <div class="text-center text-dark-4">
+              <div>No shipping rates available for this location</div>
+              <div class="text-sm mt-1">Please verify your address information is correct</div>
+            </div>
+          `;
         }
       } catch (error) {
         console.error('Error fetching shipping rates:', error);
-        shippingRatesError.textContent = 'Failed to calculate shipping rates. Please try again.';
+        shippingRatesError.textContent = 'Failed to calculate shipping rates. Please verify your address and try again.';
         shippingRatesError.style.display = 'block';
       } finally {
         // Restore the original button text
