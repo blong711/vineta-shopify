@@ -34,7 +34,6 @@
 @media (max-width: 768px) {
   .register-title {
     font-size: 24px;
-    text-align: center;
   }
 }
 
@@ -130,7 +129,7 @@
     <div class="register-title">Register</div>
     <div class="register-desc">Sign up for early Sale access plus tailored new arrivals, trends and promotions. To opt out, click unsubscribe in our emails</div>
     {%- form 'create_customer', novalidate: 'novalidate' -%}
-      {%- if form.errors -%}
+      {% comment %} {%- if form.errors -%}
         <div class="error-message">
           <svg class="error-icon" viewBox="0 0 13 13">
             <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
@@ -153,7 +152,7 @@
           </li>
           {%- endfor -%}
         </ul>
-      {%- endif -%}
+      {%- endif -%} {% endcomment %}
       <div class="form-field">
         <input class="form-input" type="text" name="customer[first_name]" id="RegisterForm-FirstName-{{ section.id }}" {% if form.first_name %}value="{{ form.first_name }}" {% endif %} autocomplete="given-name" placeholder="First name">
         <label class="form-label" for="RegisterForm-FirstName-{{ section.id }}">First name</label>
