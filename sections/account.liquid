@@ -149,12 +149,12 @@
                                 <a href="{{ routes.account_url }}"
                                     class="text-sm link fw-medium my-account-nav-item active">{{ 'customer.account.dashboard' | t }}</a>
                             </li>
-                            {% comment %} {% if section.settings.show_orders %}
+                            {% if section.settings.show_orders %}
                             <li>
-                                <a href="{{ routes.account_url }}/orders"
+                                <a href="/pages/orders"
                                     class="text-sm link fw-medium my-account-nav-item">{{ 'customer.account.my_orders' | t }}</a>
                             </li>
-                            {% endif %} {% endcomment %}
+                            {% endif %}
                             {% if section.settings.show_wishlist %}
                             <li>
                                 <a href="/pages/wishlist"
