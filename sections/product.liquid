@@ -1644,20 +1644,35 @@ document.addEventListener('DOMContentLoaded', function() {
               itemsContainer.innerHTML = '';
               
               // Add all items from cart
-              cartData.items.forEach(item => {
+              cartData.items.forEach(async item => {
                 const itemElement = document.createElement('div');
                 itemElement.className = 'tf-mini-cart-item';
                 itemElement.style.border = 'none';
                 itemElement.style.borderBottom = 'none';
-                const variantOptions = item.variants ? item.variants.map(variant => ({
-                  id: variant.id,
-                  title: variant.title || 'Default',
-                  selected: variant.id === item.variant_id
-                })) : [{
+                
+                // Fetch product data to get all variants
+                let variantOptions = [{
                   id: item.variant_id,
                   title: item.variant_title || 'Default',
                   selected: true
                 }];
+                
+                try {
+                  const productResponse = await fetch(`/products/${item.handle}.js`);
+                  if (productResponse.ok) {
+                    const productData = await productResponse.json();
+                    if (productData.variants && productData.variants.length > 1) {
+                      variantOptions = productData.variants.map(variant => ({
+                        id: variant.id,
+                        title: variant.title || 'Default',
+                        selected: variant.id === item.variant_id
+                      }));
+                    }
+                  }
+                } catch (error) {
+                  console.warn('Failed to fetch product variants for cart item:', error);
+                }
+                
                 itemElement.innerHTML = `
                   <div class="tf-mini-cart-image">
                     <a href="${item.url}">
@@ -1677,18 +1692,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         ).join('')}
                       </select>
                       <i class="icon-pen edit"></i>
-                      ` : ''}  
                     </div>
+                    ` : ''}  
                     <div class="tf-mini-cart-item_price">
                       <p class="price-wrap text-sm fw-medium">
                         <span class="new-price text-primary">${formatMoney(item.final_price)}</span>
                       </p>
                     </div>
                     <div class="tf-mini-cart-item_quantity">
-                      <div class="wg-quantity small">
+                      <div class="wg-quantity small"></div>
                         <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
                         <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
-                        <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
+                        <button class="btn-quantity btn-increase" data-variant_id="${item.variant_id}">+</button>
                       </div>
                     </div>
                   </div>
@@ -1987,20 +2002,35 @@ document.addEventListener('DOMContentLoaded', function() {
             itemsContainer.innerHTML = '';
             
             // Add all items from cart
-            cartData.items.forEach(item => {
+            cartData.items.forEach(async item => {
               const itemElement = document.createElement('div');
               itemElement.className = 'tf-mini-cart-item';
               itemElement.style.border = 'none';
               itemElement.style.borderBottom = 'none';
-              const variantOptions = item.variants ? item.variants.map(variant => ({
-                id: variant.id,
-                title: variant.title || 'Default',
-                selected: variant.id === item.variant_id
-              })) : [{
+              
+              // Fetch product data to get all variants
+              let variantOptions = [{
                 id: item.variant_id,
                 title: item.variant_title || 'Default',
                 selected: true
               }];
+              
+              try {
+                const productResponse = await fetch(`/products/${item.handle}.js`);
+                if (productResponse.ok) {
+                  const productData = await productResponse.json();
+                  if (productData.variants && productData.variants.length > 1) {
+                    variantOptions = productData.variants.map(variant => ({
+                      id: variant.id,
+                      title: variant.title || 'Default',
+                      selected: variant.id === item.variant_id
+                    }));
+                  }
+                }
+              } catch (error) {
+                console.warn('Failed to fetch product variants for cart item:', error);
+              }
+              
               itemElement.innerHTML = `
                 <div class="tf-mini-cart-image">
                   <a href="${item.url}">
@@ -2031,7 +2061,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="wg-quantity small">
                       <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
                       <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
-                      <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
+                      <button class="btn-quantity btn-increase" data-variant_id="${item.variant_id}">+</button>
                     </div>
                   </div>
                 </div>
@@ -2381,11 +2411,35 @@ document.addEventListener('DOMContentLoaded', function() {
               itemsContainer.innerHTML = '';
               
               // Add all items from cart
-              cartData.items.forEach(item => {
+              cartData.items.forEach(async item => {
                 const itemElement = document.createElement('div');
                 itemElement.className = 'tf-mini-cart-item';
                 itemElement.style.border = 'none';
                 itemElement.style.borderBottom = 'none';
+                
+                // Fetch product data to get all variants
+                let variantOptions = [{
+                  id: item.variant_id,
+                  title: item.variant_title || 'Default',
+                  selected: true
+                }];
+                
+                try {
+                  const productResponse = await fetch(`/products/${item.handle}.js`);
+                  if (productResponse.ok) {
+                    const productData = await productResponse.json();
+                    if (productData.variants && productData.variants.length > 1) {
+                      variantOptions = productData.variants.map(variant => ({
+                        id: variant.id,
+                        title: variant.title || 'Default',
+                        selected: variant.id === item.variant_id
+                      }));
+                    }
+                  }
+                } catch (error) {
+                  console.warn('Failed to fetch product variants for cart item:', error);
+                }
+                
                 itemElement.innerHTML = `
                   <div class="tf-mini-cart-image">
                     <a href="${item.url}">
@@ -2397,10 +2451,16 @@ document.addEventListener('DOMContentLoaded', function() {
                       <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
                       <i class="icon icon-close remove" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
                     </div>
-                    <div class="d-flex gap-10">
-                      <div class="text-xs">${item.variant_title || ''}</div>
-                      <a href="#" class="link edit"><i class="icon-pen"></i></a>
+                    ${variantOptions.length > 1 ? `
+                    <div class="info-variant">
+                      <select class="text-xs" data-variant-id="${item.variant_id}">
+                        ${variantOptions.map(option => 
+                          `<option value="${option.id}" ${option.selected ? 'selected' : ''}>${option.title}</option>`
+                        ).join('')}
+                      </select>
+                      <i class="icon-pen edit"></i>
                     </div>
+                    ` : ''}  
                     <div class="tf-mini-cart-item_price">
                       <p class="price-wrap text-sm fw-medium">
                         <span class="new-price text-primary">${formatMoney(item.final_price)}</span>
@@ -2410,7 +2470,7 @@ document.addEventListener('DOMContentLoaded', function() {
                       <div class="wg-quantity small">
                         <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
                         <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
-                        <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
+                        <button class="btn-quantity btn-increase" data-variant_id="${item.variant_id}">+</button>
                       </div>
                     </div>
                   </div>
