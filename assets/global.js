@@ -1283,6 +1283,8 @@ class Cart {
       console.error('Cart items container not found');
       return;
     }
+    const emptyCartMsg = cartItemsContainer.querySelector('.empty-cart');
+    if (emptyCartMsg) emptyCartMsg.remove();
     
     // Remove placeholder if it exists
     const placeholder = cartItemsContainer.querySelector('#cart-items-placeholder');
@@ -1293,7 +1295,6 @@ class Cart {
     // Remember scroll position
     const scrollPosition = cartItemsContainer.scrollTop;
     
-    // Clear existing items (exclude placeholder)
     const existingItems = cartItemsContainer.querySelectorAll('.tf-mini-cart-item');
     existingItems.forEach(item => item.remove());
 
@@ -1362,11 +1363,10 @@ class Cart {
       });
 
       // Add empty cart placeholder if needed
-      if (cartItemsContainer.children.length === 0) {
-        console.warn('No items were added to cart drawer despite having items in cart data');
+      if (!cartData.items || cartData.items.length === 0) {
         cartItemsContainer.innerHTML = `
           <div class="empty-cart">
-            <p>Your cart appears to be empty. Please try refreshing the page.</p>
+            <p>Your cart is currently empty.</p>
             <a href="/collections/all" class="tf-btn animate-btn d-inline-flex bg-dark-2">Continue shopping</a>
           </div>
         `;
