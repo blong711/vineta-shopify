@@ -129,79 +129,7 @@
   <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js" defer></script>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
-    /* :root {
-      /* Primary Colors */
-      --color-background: {{ settings.color_schemes.background }};
-      --color-text: {{ settings.color_schemes.text }};
-      --color-text2: {{ settings.color_schemes.text2 }};
-      --color-primary-button: {{ settings.color_schemes.button }};
-      --color-primary-button-text: {{ settings.color_schemes.button_label }};
-      --color-primary-button-border: {{ settings.color_schemes.button_border }};
-      --color-secondary-button: {{ settings.color_schemes.background }};
-      --color-secondary-button-text: {{ settings.color_schemes.secondary_button_label }};
-      --color-secondary-button-border: {{ settings.color_schemes.secondary_button_label }};
-      --color-links: {{ settings.color_schemes.secondary_button_label }};
-      --color-icons: {{ settings.color_schemes.text }};
-      --color-line-border: {{ settings.color_schemes.line_border }};
-      --color-overlay: {{ settings.color_schemes.overlay }};
-      --color-product-text: {{ settings.color_schemes.pr_text }};
-      --color-product-price: {{ settings.color_schemes.price }};
-      --color-product-sale-price: {{ settings.color_schemes.sale_price }};
-      --color-input-primary: {{ settings.color_schemes.input_primary }};
-      --color-input-secondary: {{ settings.color_schemes.input_secondary }};
-
-      /* Additional Colors */
-      --primary: {{ settings.color_schemes.button }};
-      --primary-2: {{ settings.color_schemes.button | color_modify: 'alpha', 0.75 }};
-      --primary-3: {{ settings.color_schemes.button | color_modify: 'alpha', 0.5 }};
-      --primary-4: {{ settings.color_schemes.button | color_modify: 'alpha', 0.1 }};
-      --primary-green: {{ settings.color_schemes.success }};
-      --secondary: {{ settings.color_schemes.secondary_button_label }};
-      --secondary-2: {{ settings.color_schemes.secondary_button_label | color_modify: 'alpha', 0.75 }};
-      --secondary-3: {{ settings.color_schemes.secondary_button_label | color_modify: 'alpha', 0.5 }};
-      --secondary-4: {{ settings.color_schemes.secondary_button_label | color_modify: 'alpha', 0.1 }};
-      --dark: #000000;
-      --dark-2: #101828;
-      --dark-3: #282828;
-      --dark-4: #1c1c1c;
-      --white: {{ settings.color_schemes.background }};
-      --white-2: {{ settings.color_schemes.background | color_modify: 'alpha', 0.9 }};
-      --text: {{ settings.color_schemes.text }};
-      --text-2: {{ settings.color_schemes.text2 }};
-      --text-3: {{ settings.color_schemes.input_secondary }};
-      --text-4: {{ settings.color_schemes.text | color_modify: 'alpha', 0.7 }};
-      --line: {{ settings.color_schemes.line_border }};
-      --line-2: {{ settings.color_schemes.line_border | color_modify: 'alpha', 0.8 }};
-      --line-3: {{ settings.color_schemes.line_border | color_modify: 'alpha', 0.6 }};
-      --line-4: {{ settings.color_schemes.line_border | color_modify: 'alpha', 0.4 }};
-      --line-5: {{ settings.color_schemes.line_border | color_modify: 'alpha', 0.2 }};
-      --surface: {{ settings.color_schemes.background }};
-      --surface-2: {{ settings.color_schemes.background | color_modify: 'alpha', 0.95 }};
-      --surface-3: {{ settings.color_schemes.background | color_modify: 'alpha', 0.9 }};
-      --shadow-1: 0px 4px 20px 0px {{ settings.color_schemes.overlay | color_modify: 'alpha', 0.1 }};
-      --gradient-1: linear-gradient(180deg, {{ settings.color_schemes.background | color_modify: 'alpha', 0 }} 0%, {{ settings.color_schemes.background }} 100%);
-      --gradient-2: linear-gradient(180deg, {{ settings.color_schemes.background | color_modify: 'alpha', 0 }} 0%, {{ settings.color_schemes.background | color_modify: 'alpha', 0.8 }} 100%);
-      --backdrop: {{ settings.color_schemes.overlay }};
-      --bg-scrollbar-track: {{ settings.color_schemes.background | color_modify: 'alpha', 0.9 }};
-      --bg-scrollbar-thumb: {{ settings.color_schemes.text | color_modify: 'alpha', 0.3 }};
-      --rgba-white: {{ settings.color_schemes.background | color_modify: 'alpha', 0.8 }};
-      --rgba-dark: {{ settings.color_schemes.overlay | color_modify: 'alpha', 0.6 }};
-      --rgba-dark-2: {{ settings.color_schemes.overlay | color_modify: 'alpha', 0.8 }};
-      --rgba-dark-3: {{ settings.color_schemes.overlay | color_modify: 'alpha', 0.2 }};
-      --success: {{ settings.color_schemes.success }};
-      --success-2: {{ settings.color_schemes.success | color_modify: 'alpha', 0.75 }};
-      --success-3: {{ settings.color_schemes.success | color_modify: 'alpha', 0.5 }};
-      --success-4: {{ settings.color_schemes.success | color_modify: 'alpha', 0.1 }};
-      --light-green: {{ settings.color_schemes.success }};
-      --yellow: {{ settings.color_schemes.warning }};
-      --yellow-2: {{ settings.color_schemes.warning | color_modify: 'alpha', 0.75 }};
-      --brown: {{ settings.color_schemes.text }};
-      --red: {{ settings.color_schemes.error }};
-    } */
-
     body {
-      background: var(--color-background);
-      color: var(--color-text);
       font-family: 
         {% if settings.font_library == 'google' and settings.body_font_family != blank %}
           {{ settings.body_font_family }}
@@ -268,26 +196,6 @@
         opacity: 1 !important;
       }
     {% endif %}
-
-    a, .link {
-      color: var(--color-links);
-    }
-
-    .icon {
-      color: var(--color-icons);
-    }
-
-    .button, .btn, .primary-btn {
-      background: var(--color-primary-button);
-      color: var(--color-primary-button-text);
-      border-color: var(--color-primary-button-border);
-    }
-
-    .button.secondary, .btn-secondary, .secondary-btn {
-      background: var(--color-secondary-button);
-      color: var(--color-secondary-button-text);
-      border-color: var(--color-secondary-button-border);
-    }
   </style>
 </head>
 
