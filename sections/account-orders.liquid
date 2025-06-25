@@ -60,34 +60,6 @@
 {% endschema %}
 
 <div class="main-content-account">
-    <!-- Breadcrumb -->
-    <div class="tf-breadcrumb">
-        <div class="{{ section.settings.container_width }}">
-            <ul class="breadcrumb-list">
-                <li class="item-breadcrumb">
-                    <a href="{{ routes.root_url }}" class="text">Home</a>
-                </li>
-                <li class="item-breadcrumb dot">
-                    <span></span>
-                </li>
-                <li class="item-breadcrumb">
-                    <span class="text">Account</span>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- /Breadcrumb -->
-
-    <!-- Title Page -->
-    <section class="s-title-page">
-        <div class="{{ section.settings.container_width }}">
-            <h4 class="s-title letter-0 text-center">
-                My Account
-            </h4>
-        </div>
-    </section>
-    <!-- /Title Page -->
-
     <!-- sidebar-account -->
     <div class="btn-sidebar-mb d-lg-none">
         <button data-bs-toggle="offcanvas" data-bs-target="#mbAccount">
@@ -108,13 +80,13 @@
                                     <a href="{{ routes.account_url }}" class="text-sm link fw-medium my-account-nav-item">Dashboard</a>
                                 </li>
                                 <li>
-                                    <a href="{{ routes.account_url }}/orders" class="text-sm link fw-medium my-account-nav-item active">My Orders</a>
+                                    <a href="/pages/orders" class="text-sm link fw-medium my-account-nav-item active">My Orders</a>
                                 </li>
                                 <li>
-                                    <a href="{{ routes.account_url }}/wishlist" class="text-sm link fw-medium my-account-nav-item">My Wishlist</a>
+                                    <a href="/pages/wishlist" class="text-sm link fw-medium my-account-nav-item">My Wishlist</a>
                                 </li>
                                 <li>
-                                    <a href="{{ routes.account_addresses_url }}" class="text-sm link fw-medium my-account-nav-item">Addresses</a>
+                                    <a href="/account/addresses" class="text-sm link fw-medium my-account-nav-item">Addresses</a>
                                 </li>
                                 <li>
                                     <a href="{{ routes.account_logout_url }}" class="text-sm link fw-medium my-account-nav-item">Log Out</a>
