@@ -1111,7 +1111,7 @@ class Cart {
             }));
           }
           
-          this.updateCartDisplay(cartData);
+          // this.updateCartDisplay(cartData);
           this.updateHeaderCartCount(cartData.item_count);
         } catch (error) {
           console.error('Error changing variant:', error);
