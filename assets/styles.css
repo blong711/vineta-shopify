@@ -21235,7 +21235,11 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   cursor: pointer;
 }
 .tf-mini-cart-tool-openable .tf-btn {
-  height: 47px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  height: 52px;
+  text-transform: none;
 }
 .tf-mini-cart-tool-openable .tf-mini-cart-tool-content {
   position: relative;
@@ -21281,6 +21285,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 }
 .tf-mini-cart-tool-openable.add-gift .tf-mini-cart-tool-text1 {
   margin-bottom: 127px;
+  color: rgb(71, 84, 103);
 }
 .tf-mini-cart-tool-openable.estimate-shipping select {
   height: 49px;
