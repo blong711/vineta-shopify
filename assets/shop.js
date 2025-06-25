@@ -4,12 +4,25 @@
   /* Range Two Price
   -------------------------------------------------------------------------------------*/
   var rangeTwoPrice = function () {
-    if ($("#price-value-range").length > 0) {
-      var skipSlider = document.getElementById("price-value-range");
+    $(".price-val-range").each(function() {
+      var skipSlider = this;
+      
+      // Skip if already initialized
+      if (skipSlider.noUiSlider) {
+        return;
+      }
+      
+      // Find min/max value elements within the same container
+      var container = $(skipSlider).closest('.widget-price, .collapse-body');
       var skipValues = [
-        document.getElementById("price-min-value"),
-        document.getElementById("price-max-value"),
+        container.find("#price-min-value")[0],
+        container.find("#price-max-value")[0],
       ];
+
+      // Skip if min/max value elements are not found
+      if (!skipValues[0] || !skipValues[1]) {
+        return;
+      }
 
       var min = parseInt(skipSlider.getAttribute("data-min"), 10) || 0;
       var max = parseInt(skipSlider.getAttribute("data-max"), 10) || 500;
@@ -35,7 +48,7 @@
       skipSlider.noUiSlider.on("update", function (val, e) {
         skipValues[e].innerText = val[e];
       });
-    }
+    });
   };
 
   /* Filter Products
@@ -711,5 +724,14 @@
     filterSort();
     swLayoutShop();
     loadProduct();
+    
+    // Reinitialize price slider when dropdowns are shown
+    $(document).on('shown.bs.dropdown', function (e) {
+      const dropdown = $(e.target);
+      const priceSlider = dropdown.find('#price-value-range');
+      if (priceSlider.length > 0 && !priceSlider[0].noUiSlider) {
+        rangeTwoPrice();
+      }
+    });
   });
 })(jQuery);

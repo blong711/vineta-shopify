@@ -224,7 +224,7 @@
   {% endif %}
 </form> 
 
-<script>
+{% comment %} <script>
   // Initialize price range slider if it exists and hasn't been initialized
   document.addEventListener('DOMContentLoaded', function() {
     const priceRange = document.getElementById('price-value-range');
@@ -288,4 +288,4 @@
       }
     }
   });
-</script> 
+</script>  {% endcomment %}

@@ -271,7 +271,7 @@
                           {%- endfor -%}
                         </ul>
                       {%- when 'price_range' -%}
-                        <div class="widget-price filter-price">
+                        <div class="collapse-body widget-price filter-price">
                           <span class="reset-price">Reset</span>
                           <div class="price-val-range" id="price-value-range" 
                             data-min="{{ filter.min_value.value | default: 0 | money_without_currency | round }}"
