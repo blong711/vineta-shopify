@@ -12,7 +12,10 @@
     "page-title": {
       "type": "page-title",
       "settings": {
-        "background_image": "shopify://shop_images/page-title_1.jpg"
+        "background_image": "shopify://shop_images/page-title_1.jpg",
+        "show_description": true,
+        "custom_description": "",
+        "description_truncate_length": 120
       }
     },
     "cart": {
@@ -39,11 +42,6 @@
         "features_GRdzha": {
           "type": "features",
           "settings": {
-            "slides_per_view_mobile": 1,
-            "slides_per_view_tablet": 2,
-            "slides_per_view_desktop": 3,
-            "space_between_mobile": 10,
-            "space_between_desktop": 20,
             "transition_speed": 800,
             "show_pagination": true,
             "autoplay": false,
@@ -106,6 +104,14 @@
             "testimonial3_author_name": "Henry P.",
             "testimonial3_author_image": "shopify://shop_images/blog-author-2_1.jpg"
           }
+        },
+        "payment_methods_U69VTL": {
+          "type": "payment_methods",
+          "settings": {
+            "title": "We accept",
+            "payment_icons": "visa, mastercard, paypal, stripe",
+            "payment_icons_size": 40
+          }
         }
       },
       "block_order": [
@@ -118,7 +124,8 @@
         "gift_wrap_jVEEHk",
         "cart_items_M4byaW",
         "shipping_progress_gDbiQH",
-        "testimonial_LB6mVf"
+        "testimonial_LB6mVf",
+        "payment_methods_U69VTL"
       ],
       "settings": {}
     },
