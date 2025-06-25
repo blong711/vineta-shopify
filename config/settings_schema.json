@@ -33,14 +33,14 @@
         "type": "text",
         "id": "progress_message",
         "label": "Progress Message",
-        "default": "Spend [amount] more to get Free Shipping",
+        "default": "Spend <span class=\"fw-medium\">[amount]</span> more to get <span class=\"fw-medium\">Free Shipping</span>",
         "info": "Use [amount] to show the remaining amount needed"
       },
       {
         "type": "text",
         "id": "free_shipping_message",
         "label": "Free Shipping Message",
-        "default": "Congratulations! You've unlocked Free Shipping"
+        "default": "Congratulations! You've unlocked  <span class=\"fw-medium\">Free Shipping</span>"
       }
     ]
   },
