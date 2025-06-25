@@ -207,65 +207,29 @@ const ProductCard = {
   // Initialize quantity controls
   initializeQuantityControls() {
     document.querySelectorAll('.tf-mini-cart-items').forEach(container => {
-      // Add variant change handler
-      container.querySelectorAll('select[data-variant-id]').forEach(select => {
-        select.addEventListener('change', async (e) => {
-          try {
-            const oldVariantId = select.dataset.variantId;
-            const newVariantId = e.target.value;
-            const input = select.closest('.tf-mini-cart-item').querySelector('.quantity-product');
-            const quantity = parseInt(input.value);
-
-            // Update cart with new variant
-            const response = await fetch('/cart/change.js', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                id: oldVariantId,
-                quantity: 0
-              })
-            });
-            if (!response.ok) throw new Error('Failed to remove old variant');
-
-            const addResponse = await fetch('/cart/add.js', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                id: newVariantId,
-                quantity: quantity
-              })
-            });
-            if (!addResponse.ok) throw new Error('Failed to add new variant');
-
-            // Update the data-variant-id attribute
-            select.dataset.variantId = newVariantId;
-            select.closest('.tf-mini-cart-item').querySelectorAll('[data-variant-id]').forEach(el => {
-              el.dataset.variantId = newVariantId;
-            });
-
-            // Fetch updated cart data and update UI
-            const cartResponse = await fetch('/cart.js');
-            if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
-            const cartData = await cartResponse.json();
-            await this.updateCartDrawer(cartData);
-          } catch (error) {
-            console.error('Error changing variant:', error);
-            alert('Failed to change variant. Please try again.');
-          }
-        });
-      });
-
       // Decrease button
       container.querySelectorAll('.btn-decrease').forEach(button => {
         button.addEventListener('click', async () => {
           try {
             const variantId = button.dataset.variantId;
+            if (!variantId) {
+              console.error('No variant ID found on decrease button');
+              return;
+            }
+            
             const input = button.nextElementSibling;
+            if (!input || !input.classList.contains('quantity-product')) {
+              console.error('Quantity input not found next to decrease button');
+              return;
+            }
+            
             const currentValue = parseInt(input.value);
+            if (isNaN(currentValue)) {
+              console.error('Invalid quantity value:', input.value);
+              return;
+            }
+            
+            console.log('Decreasing quantity for variant:', variantId, 'from', currentValue, 'to', currentValue - 1);
             
             if (currentValue > 1) {
               const response = await fetch('/cart/change.js', {
@@ -278,7 +242,12 @@ const ProductCard = {
                   quantity: currentValue - 1
                 })
               });
-              if (!response.ok) throw new Error('Failed to update quantity');
+              
+              if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Cart change response not ok:', response.status, errorText);
+                throw new Error(`Failed to update quantity: ${response.status} ${errorText}`);
+              }
             } else {
               const response = await fetch('/cart/change.js', {
                 method: 'POST',
@@ -290,7 +259,12 @@ const ProductCard = {
                   quantity: 0
                 })
               });
-              if (!response.ok) throw new Error('Failed to remove item');
+              
+              if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Cart remove response not ok:', response.status, errorText);
+                throw new Error(`Failed to remove item: ${response.status} ${errorText}`);
+              }
             }
 
             // Fetch updated cart data and update UI
@@ -300,6 +274,7 @@ const ProductCard = {
             await this.updateCartDrawer(cartData);
           } catch (error) {
             console.error('Error updating cart:', error);
+            alert('Failed to update cart. Please try again.');
           }
         });
       });
@@ -309,8 +284,24 @@ const ProductCard = {
         button.addEventListener('click', async () => {
           try {
             const variantId = button.dataset.variantId;
+            if (!variantId) {
+              console.error('No variant ID found on increase button');
+              return;
+            }
+            
             const input = button.previousElementSibling;
+            if (!input || !input.classList.contains('quantity-product')) {
+              console.error('Quantity input not found next to increase button');
+              return;
+            }
+            
             const currentValue = parseInt(input.value);
+            if (isNaN(currentValue)) {
+              console.error('Invalid quantity value:', input.value);
+              return;
+            }
+            
+            console.log('Increasing quantity for variant:', variantId, 'from', currentValue, 'to', currentValue + 1);
             
             const response = await fetch('/cart/change.js', {
               method: 'POST',
@@ -322,7 +313,12 @@ const ProductCard = {
                 quantity: currentValue + 1
               })
             });
-            if (!response.ok) throw new Error('Failed to update quantity');
+            
+            if (!response.ok) {
+              const errorText = await response.text();
+              console.error('Cart change response not ok:', response.status, errorText);
+              throw new Error(`Failed to update quantity: ${response.status} ${errorText}`);
+            }
 
             // Fetch updated cart data and update UI
             const cartResponse = await fetch('/cart.js');
@@ -331,6 +327,7 @@ const ProductCard = {
             await this.updateCartDrawer(cartData);
           } catch (error) {
             console.error('Error updating cart:', error);
+            alert('Failed to update cart. Please try again.');
           }
         });
       });
@@ -340,7 +337,13 @@ const ProductCard = {
         input.addEventListener('change', async () => {
           try {
             const variantId = input.dataset.variantId;
+            if (!variantId) {
+              console.error('No variant ID found on quantity input');
+              return;
+            }
+            
             const newValue = parseInt(input.value);
+            console.log('Changing quantity for variant:', variantId, 'to', newValue);
             
             if (isNaN(newValue) || newValue < 1) {
               if (newValue <= 0) {
@@ -354,7 +357,11 @@ const ProductCard = {
                     quantity: 0
                   })
                 });
-                if (!response.ok) throw new Error('Failed to remove item');
+                if (!response.ok) {
+                  const errorText = await response.text();
+                  console.error('Cart remove response not ok:', response.status, errorText);
+                  throw new Error(`Failed to remove item: ${response.status} ${errorText}`);
+                }
               } else {
                 input.value = 1;
                 const response = await fetch('/cart/change.js', {
@@ -367,7 +374,11 @@ const ProductCard = {
                     quantity: 1
                   })
                 });
-                if (!response.ok) throw new Error('Failed to update quantity');
+                if (!response.ok) {
+                  const errorText = await response.text();
+                  console.error('Cart change response not ok:', response.status, errorText);
+                  throw new Error(`Failed to update quantity: ${response.status} ${errorText}`);
+                }
               }
             } else {
               const response = await fetch('/cart/change.js', {
@@ -380,7 +391,11 @@ const ProductCard = {
                   quantity: newValue
                 })
               });
-              if (!response.ok) throw new Error('Failed to update quantity');
+              if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Cart change response not ok:', response.status, errorText);
+                throw new Error(`Failed to update quantity: ${response.status} ${errorText}`);
+              }
             }
 
             // Fetch updated cart data and update UI
@@ -390,6 +405,7 @@ const ProductCard = {
             await this.updateCartDrawer(cartData);
           } catch (error) {
             console.error('Error updating cart:', error);
+            alert('Failed to update cart. Please try again.');
           }
         });
       });
@@ -399,6 +415,12 @@ const ProductCard = {
         button.addEventListener('click', async () => {
           try {
             const variantId = button.dataset.variantId;
+            if (!variantId) {
+              console.error('No variant ID found on remove button');
+              return;
+            }
+            
+            console.log('Removing variant from cart:', variantId);
             
             const response = await fetch('/cart/change.js', {
               method: 'POST',
@@ -410,7 +432,12 @@ const ProductCard = {
                 quantity: 0
               })
             });
-            if (!response.ok) throw new Error('Failed to remove item');
+            
+            if (!response.ok) {
+              const errorText = await response.text();
+              console.error('Cart remove response not ok:', response.status, errorText);
+              throw new Error(`Failed to remove item: ${response.status} ${errorText}`);
+            }
 
             // Fetch updated cart data and update UI
             const cartResponse = await fetch('/cart.js');
@@ -419,6 +446,7 @@ const ProductCard = {
             await this.updateCartDrawer(cartData);
           } catch (error) {
             console.error('Error updating cart:', error);
+            alert('Failed to update cart. Please try again.');
           }
         });
       });
