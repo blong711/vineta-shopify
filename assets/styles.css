@@ -21140,7 +21140,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   overflow: auto;
 }
 .tf-mini-cart-sroll::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
 }
 .tf-mini-cart-sroll::-webkit-scrollbar-thumb {
   background: var(--primary);
@@ -21153,6 +21153,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   display: flex;
   gap: 12px;
   flex-direction: column;
+  padding-bottom: 12px;
 }
 
 .tf-mini-cart-item {
