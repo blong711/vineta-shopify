@@ -775,13 +775,6 @@ class Cart {
       return;
     }
     
-    // Make sure the scroll container has the correct style
-    if (cartItemsContainer) {
-      // Force proper styling for scrolling
-      cartItemsContainer.style.overflowY = 'auto';
-      cartItemsContainer.style.maxHeight = 'calc(100vh - 280px)';
-    }
-    
     const closeBtn = cartDrawer.querySelector('.icon-close-popup');
     if (closeBtn) {
       closeBtn.addEventListener('click', () => {
@@ -1230,9 +1223,8 @@ class Cart {
     const cartDrawer = document.getElementById('shoppingCart');
     if (!cartDrawer) return;
     
-    // Use Bootstrap's offcanvas API with scroll disabled to prevent body padding
     const offcanvas = new bootstrap.Offcanvas(cartDrawer, {
-      scroll: false // This prevents Bootstrap from adding padding-right to body
+      scroll: false
     });
     offcanvas.show();
     
@@ -1336,6 +1328,7 @@ class Cart {
               <i class="icon icon-close remove fs-12" data-variant-id="${item.variant_id}"></i>
             </div>
             <div class="d-flex gap-10">
+              ${variantOptions.length > 1 ? `
               <div class="info-variant">
                 <select class="text-xs" data-variant-id="${item.variant_id}">
                   ${variantOptions.map(option => 
@@ -1344,6 +1337,7 @@ class Cart {
                 </select>
                 <i class="icon-pen edit"></i>
               </div>
+              ` : ''}
             </div>
             <p class="price-wrap text-sm fw-medium">
               <span class="new-price text-primary">${formattedPrice}</span>
@@ -1610,9 +1604,8 @@ window.openCartDrawer = function() {
   const cartDrawer = document.getElementById('shoppingCart');
   if (!cartDrawer) return;
   
-  // Use Bootstrap's offcanvas API with scroll disabled to prevent body padding
   const offcanvas = new bootstrap.Offcanvas(cartDrawer, {
-    scroll: false // This prevents Bootstrap from adding padding-right to body
+    scroll: false
   });
   offcanvas.show();
   

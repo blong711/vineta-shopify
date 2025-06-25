@@ -100,6 +100,7 @@ const ProductCard = {
             <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
             <i class="icon icon-close remove fs-12" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
           </div>
+          ${variantOptions.length > 1 ? `
           <div class="info-variant">
             <select class="text-xs" data-variant-id="${item.variant_id}">
               ${variantOptions.map(option => 
@@ -108,6 +109,7 @@ const ProductCard = {
             </select>
             <i class="icon-pen edit"></i>
           </div>
+          ` : ''}  
           <div class="tf-mini-cart-item_price">
             <p class="price-wrap text-sm fw-medium">
               <span class="new-price text-primary">${this.formatMoney(item.final_price)}</span>

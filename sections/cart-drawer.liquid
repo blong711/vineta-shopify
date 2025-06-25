@@ -24,7 +24,7 @@
         <div class="tf-mini-cart-wrap">
           <div class="tf-mini-cart-main">
             <div class="tf-mini-cart-sroll">
-              <div class="tf-mini-cart-items" style="overflow-y: auto; max-height: calc(100vh - 300px);">
+              <div class="tf-mini-cart-items">
                 <div id="cart-items-placeholder"></div>
               </div>
             </div>
@@ -574,5 +574,9 @@ body {
 /* Override Bootstrap's modal-open class to prevent padding */
 body.modal-open {
   padding-right: 0 !important;
+}
+.offcanvas-body {
+  overflow: visible !important;
+  padding: 0 !important;
 }
 </style>

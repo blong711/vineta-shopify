@@ -392,6 +392,7 @@
                             <i class="icon icon-close remove fs-12" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
                           </div>
                           <div class="d-flex gap-10">
+                            ${currentProduct.variants.length > 1 ? `
                             <div class="info-variant">
                               <select class="text-xs" data-variant-id="${item.variant_id}">
                                 ${currentProduct.variants.map(variant => 
@@ -402,6 +403,7 @@
                               </select>
                               <i class="icon-pen edit"></i>
                             </div>
+                            ` : ''}  
                           </div>
                           <div class="tf-mini-cart-item_price">
                             <p class="price-wrap text-sm fw-medium">
