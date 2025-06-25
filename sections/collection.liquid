@@ -203,6 +203,7 @@
           </li>
         </ul>
         </div>
+        <form id="collection-filters-form" method="GET" action="{{ collection.url }}" class="filter-form">
         <div class="tf-filter-dropdown">
           <span class="title-filter">Filter:</span>
           <div class="meta-dropdown-filter">
@@ -213,7 +214,7 @@
                 <span class="icon icon-arr-down"></span>
               </div>
               <div class="dropdown-menu" aria-labelledby="availability">
-                <ul class="filter-group-check">
+                <ul class="collapse-body filter-group-check current-scrollbar">
                   <li class="list-item">
                     <input type="checkbox"
                       name="filter.v.availability"
@@ -300,6 +301,7 @@
             {%- endfor -%}
           </div>
         </div>
+        </form>
       {% endif %}
     {%- endif -%}
 
