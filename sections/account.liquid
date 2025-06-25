@@ -183,12 +183,14 @@
                             <p class="notice text-sm">
                                 {{ 'customer.account.dashboard_welcome' | t }}
                                 {% if customer.orders.size > 0 %}
+                                check
                                 <a href="{{ routes.account_url }}/orders" class="text-primary text-decoration-underline">{{ 'customer.account.your_last_orders' | t }}</a>
                                 {% endif %}
                                 {% if section.settings.show_wishlist %}
                                 <a href="/pages/wishlist" class="text-primary text-decoration-underline">{{ 'customer.account.your_wishlist' | t }}</a>
                                 {% endif %}
-                                <a href="{{ routes.all_products_collection_url }}" class="text-primary text-decoration-underline">{{ 'customer.account.latest_offers' | t }}</a>
+                                . Or maybe you can start to shop
+                                <a href="{{ routes.all_products_collection_url }}" class="text-primary text-decoration-underline">{{ 'customer.account.latest_offers' | t }}</a>?
                             </p>
                         </div>
                         <div class="content-account">
