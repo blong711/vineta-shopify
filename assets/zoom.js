@@ -282,9 +282,9 @@ if ($(".thumbs-slider").length > 0) {
 
   // Dom Ready
   $(function () {
-    section_zoom();
-    cus_zoom();
-    image_zoom_magnifier();
+    // section_zoom();
+    // cus_zoom();
+    // image_zoom_magnifier();
     // image_zoom_inner();
     lightboxswiper();
     lightbox();
