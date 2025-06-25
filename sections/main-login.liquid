@@ -44,6 +44,32 @@
                 <h2 class="form-heading">Reset your password</h2>
                 <p class="form-description">We will send you an email to reset your password.</p>
                 {%- form 'recover_customer_password' -%}
+                  {%- if form.errors -%}
+                    <div class="form-message error">
+                      <ul class="error-list">
+                        {%- for field in form.errors -%}
+                          <li>
+                            {%- if field == 'form' -%}
+                              {{ form.errors.messages[field] }}
+                            {%- else -%}
+                              <a href="#{{ field }}">
+                                {{ form.errors.translated_fields[field] | capitalize }}
+                                {{ form.errors.messages[field] }}
+                              </a>
+                            {%- endif -%}
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  {%- endif -%}
+                  {%- if form.posted_successfully? -%}
+                    <div class="form-message success">
+                      <svg class="success-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                      </svg>
+                      <span>We've sent you an email with a link to update your password.</span>
+                    </div>
+                  {%- endif -%}
                   <div class="form-field">
                     <input class="form-input" type="email" name="email" id="RecoverEmail-{{ section.id }}" autocomplete="email" autocorrect="off" autocapitalize="off" placeholder="Email *">
                   </div>
