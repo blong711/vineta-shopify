@@ -9,6 +9,8 @@
           Compare Products
         {% elsif template contains 'account' %}
           My Account
+        {% elsif template contains 'login' %}
+          Login
         {% else %}
           {{ page_title | default: settings.title }}
         {% endif %}
