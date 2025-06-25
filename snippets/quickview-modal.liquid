@@ -106,6 +106,32 @@
       let selectedVariant = null;
       let currentProduct = null;
       let productCache = new Map(); // Cache for product data
+      let isUpdatingVariant = false; // Flag to prevent slideChange interference
+    
+      // Function to update product image
+      function updateProductImage(imageSrc) {
+        const modal = document.getElementById('quickView');
+        if (!modal) return;
+        
+        const swiperWrapper = modal.querySelector('.swiper-wrapper');
+        if (swiperWrapper) {
+          // Find the slide with this image and make it active
+          const slides = swiperWrapper.querySelectorAll('.swiper-slide');
+          slides.forEach((slide, index) => {
+            const img = slide.querySelector('img');
+            if (img && (img.src === imageSrc || img.getAttribute('data-src') === imageSrc)) {
+              if (quickviewSwiper) {
+                isUpdatingVariant = true; // Set flag to prevent slideChange interference
+                quickviewSwiper.slideTo(index);
+                // Reset flag after a short delay
+                setTimeout(() => {
+                  isUpdatingVariant = false;
+                }, 100);
+              }
+            }
+          });
+        }
+      }
     
       // Initialize quickview functionality
       function initQuickview() {
@@ -230,6 +256,9 @@
           }
         });
         quickviewSwiper.on('slideChange', function () {
+          // Skip if we're programmatically updating the variant
+          if (isUpdatingVariant) return;
+          
           const modal = document.getElementById('quickView');
           const activeSlide = modal.querySelector('.swiper-slide.swiper-slide-active');
           if (!activeSlide) return;
@@ -563,7 +592,7 @@
       function initVariantSelection(modal) {
         const variantContainer = modal.querySelector('.tf-product-info-variant');
         if (!variantContainer) return;
-            
+        
         // Handle select element changes
         const variantSelect = modal.querySelector('select[data-variant-id]');
         if (variantSelect) {
@@ -633,6 +662,11 @@
                         btn.classList.remove('active');
                       }
                     });
+                    
+                    // Update product image if variant has an image
+                    if (selectedVariant.featured_image) {
+                      updateProductImage(selectedVariant.featured_image.src);
+                    }
                   }
                   
                   // Update size buttons if it's a size option
@@ -740,6 +774,11 @@
               priceContainer.innerHTML = `
                 <h6 class="price-new">${formatMoney(selectedVariant.price)}</h6>
               `;
+            }
+            
+            // Update product image if variant has an image
+            if (selectedVariant.featured_image) {
+              updateProductImage(selectedVariant.featured_image.src);
             }
           }
         });
