@@ -62,7 +62,6 @@
         "mobile_image_height_mode": "fixed",
         "mobile_fixed_height": 400,
         "autoplay": true,
-        "loop": true,
         "speed": 800,
         "show_navigation": false,
         "show_dots": true,
@@ -210,7 +209,6 @@
         "show_pagination": true,
         "autoplay": false,
         "autoplay_speed": 3000,
-        "loop": true,
         "products_per_collection": 6
       }
     },
@@ -249,7 +247,6 @@
         "enable_autoplay": false,
         "autoplay_speed": 3000,
         "pause_on_hover": true,
-        "enable_loop": false,
         "enable_observer": true
       }
     },
@@ -298,7 +295,6 @@
         "enable_autoplay": false,
         "autoplay_speed": 3000,
         "pause_on_hover": true,
-        "enable_loop": true,
         "enable_observer": true
       }
     },
@@ -368,9 +364,6 @@
         "slides_per_view_mobile": 1,
         "slides_per_view_tablet": 2,
         "slides_per_view_desktop": 3,
-        "slides_per_group_mobile": 1,
-        "slides_per_group_tablet": 2,
-        "slides_per_group_desktop": 3,
         "space_between_mobile": 12,
         "space_between_desktop": 24,
         "transition_speed": 800,
@@ -379,7 +372,6 @@
         "enable_autoplay": false,
         "autoplay_speed": 3000,
         "pause_on_hover": true,
-        "enable_loop": true,
         "enable_observer": true
       }
     },
@@ -449,6 +441,38 @@
     },
     "latest_tips_HkyXtE": {
       "type": "blog-carousel",
+      "blocks": {
+        "article_QLNwM7": {
+          "type": "article",
+          "settings": {
+            "article": "design/monochrome-style-made-easy"
+          }
+        },
+        "article_cM7mWQ": {
+          "type": "article",
+          "settings": {
+            "article": "lifestyle/5-timeless-wardrobe-essentials-every-woman-should-own"
+          }
+        },
+        "article_L8pULd": {
+          "type": "article",
+          "settings": {
+            "article": "design/chic-looks-with-one-timeless-color"
+          }
+        },
+        "article_pdhGjM": {
+          "type": "article",
+          "settings": {
+            "article": "lifestyle/5-style-staples-every-woman-needs"
+          }
+        }
+      },
+      "block_order": [
+        "article_QLNwM7",
+        "article_cM7mWQ",
+        "article_L8pULd",
+        "article_pdhGjM"
+      ],
       "settings": {
         "width": "boxed",
         "layout": "layout3",
