@@ -47,6 +47,7 @@
       </div>
     {%- endif -%}
 
+    {%- if product.available -%}
     <ul class="list-product-btn">
       <li>
         <a href="javascript:void(0);" 
@@ -92,6 +93,7 @@
         </a>
       </li>
     </ul>
+    {%- endif -%}
   </div>
 
   <div class="card-product-info {{ product-info }}">
@@ -177,6 +179,7 @@
       </div>
     {%- endif -%}
 
+    {%- if product.available -%}
     <ul class="list-product-btn">
       <li>
         <a href="javascript:void(0);" 
@@ -222,6 +225,7 @@
         </a>
       </li>
     </ul>
+    {%- endif -%}
 
     {%- if product.tags contains 'countdown' -%}
       <div class="countdown-box style-2">
@@ -322,6 +326,7 @@
         {%- endif -%}
       </div>
     {%- endif -%}
+    {%- if product.available -%}
     <ul class="list-product-btn">
       <li>
         <a href="javascript:void(0);" 
@@ -367,6 +372,7 @@
         </a>
       </li>
     </ul>
+    {%- endif -%}
   </div>
   <div class="card-product-info text-center">
     <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
@@ -443,6 +449,7 @@
       {%- endif -%}
     </a>
 
+    {%- if product.available -%}
     <ul class="list-product-btn">
       <li>
         <a href="javascript:void(0);" 
@@ -488,6 +495,7 @@
         </a>
       </li>
     </ul>
+    {%- endif -%}
     <div class="product-btn-main">
       <a class="btn-main-product add-to-cart" 
               data-variant-id="{{ product.variants.first.id }}"
@@ -575,6 +583,7 @@
       </div>
     {%- endif -%}
 
+    {%- if product.available -%}
     <ul class="list-product-btn">
       <li>
         <a href="javascript:void(0);" 
@@ -620,6 +629,7 @@
         </a>
       </li>
     </ul>
+    {%- endif -%}
 
     {%- if product.variants.size > 1 and product.options contains 'Size' -%}
       <ul class="size-box">
