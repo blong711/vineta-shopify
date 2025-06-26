@@ -387,6 +387,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!country || !state || !zipcode) {
         shippingRatesError.textContent = 'Please fill in all shipping fields (Country, State/Province, and Zipcode)';
         shippingRatesError.style.display = 'block';
+        shippingRatesError.className = 'shipping-rates-error text-sm text-danger text-center';
         shippingRatesContainer.style.display = 'block';
         return;
       }
@@ -397,6 +398,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!usZipcodeRegex.test(zipcode)) {
           shippingRatesError.textContent = 'Please enter a valid US zipcode (e.g., 12345 or 12345-6789)';
           shippingRatesError.style.display = 'block';
+          shippingRatesError.className = 'shipping-rates-error text-sm text-danger text-center';
           shippingRatesContainer.style.display = 'block';
           return;
         }
@@ -476,6 +478,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Error fetching shipping rates:', error);
         shippingRatesError.textContent = 'Failed to calculate shipping rates. Please verify your address and try again.';
         shippingRatesError.style.display = 'block';
+        shippingRatesError.className = 'shipping-rates-error text-sm text-danger text-center';
       } finally {
         // Restore the original button text
         estimateButton.disabled = false;
