@@ -671,7 +671,7 @@ class WishlistCompare {
       if (modal) {
         modal.hide();
       }
-    }
+  }
     
     // Show only the clear notification
     this.showNotification('Compare list cleared');
@@ -679,11 +679,15 @@ class WishlistCompare {
 
   updateWishlistCount() {
     const count = this.wishlistList.length;
-    const countElement = document.querySelector('.wishlist-count');
-    if (countElement) {
-      countElement.textContent = count;
-      countElement.style.display = count > 0;
-    }
+    // Target both standalone wishlist-count and toolbar-count.wishlist-count elements
+    const countElements = document.querySelectorAll('.wishlist-count, .toolbar-count.wishlist-count');
+    countElements.forEach(element => {
+      element.textContent = count;
+      // Only hide/show if it's a toolbar count element (mobile toolbar)
+      if (element.classList.contains('toolbar-count')) {
+        element.style.display = count > 0 ? '' : 'none';
+      }
+    });
   }
 }
 
