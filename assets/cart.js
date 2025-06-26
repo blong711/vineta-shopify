@@ -364,6 +364,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const shippingRatesList = shippingForm?.querySelector('.shipping-rates-list');
   const shippingRatesError = shippingForm?.querySelector('.shipping-rates-error');
   
+  // Initialize shipping rates header as hidden by default
+  if (shippingForm) {
+    const shippingRatesHeader = shippingForm.querySelector('.shipping-rates-header');
+    if (shippingRatesHeader) {
+      shippingRatesHeader.style.display = 'none';
+    }
+  }
+  
   if (estimateButton) {
     estimateButton.addEventListener('click', async function() {
       const country = document.getElementById('country').value.trim();
@@ -444,6 +452,12 @@ document.addEventListener('DOMContentLoaded', function() {
               </div>
             `;
           }
+          
+          // Show the header when rates are available
+          const shippingRatesHeader = shippingForm.querySelector('.shipping-rates-header');
+          if (shippingRatesHeader) {
+            shippingRatesHeader.style.display = 'block';
+          }
         } else {
           shippingRatesList.innerHTML = `
             <div class="text-center text-dark-4">
@@ -451,6 +465,12 @@ document.addEventListener('DOMContentLoaded', function() {
               <div class="text-sm mt-1">Please verify your address information is correct</div>
             </div>
           `;
+          
+          // Hide the header when no rates are available
+          const shippingRatesHeader = shippingForm.querySelector('.shipping-rates-header');
+          if (shippingRatesHeader) {
+            shippingRatesHeader.style.display = 'none';
+          }
         }
       } catch (error) {
         console.error('Error fetching shipping rates:', error);
