@@ -495,7 +495,7 @@
             $(window).scrollLeft() >= targetScroll - offsetTolerance &&
             $(window).scrollLeft() <= targetScroll + target.outerWidth()
           ) {
-            $(".btn-scroll-target").removeClass("active");
+            // $(".btn-scroll-target").removeClass("active");
             $(
               ".btn-scroll-target[data-scroll='" + target.data("scroll") + "']"
             ).addClass("active");
@@ -505,7 +505,7 @@
             $(window).scrollTop() >= targetScroll - offsetTolerance &&
             $(window).scrollTop() <= targetScroll + target.outerHeight()
           ) {
-            $(".btn-scroll-target").removeClass("active");
+            // $(".btn-scroll-target").removeClass("active");
             $(
               ".btn-scroll-target[data-scroll='" + target.data("scroll") + "']"
             ).addClass("active");

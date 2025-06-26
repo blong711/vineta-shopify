@@ -255,6 +255,7 @@
                   <a href="{{ media | image_url: width: 800 }}" 
                      target="_blank" 
                      class="item item-scroll-target" 
+                     data-media-id="{{ media.id }}"
                      data-pswp-width="{{ media.width }}px" 
                      data-pswp-height="{{ media.height }}px">
                     {% case media.media_type %}
@@ -298,6 +299,7 @@
                   <a href="{{ media | image_url: width: 800 }}" 
                      target="_blank" 
                      class="item item-scroll-target" 
+                     data-media-id="{{ media.id }}"
                      data-pswp-width="{{ media.width }}px" 
                      data-pswp-height="{{ media.height }}px">
                     {% case media.media_type %}
@@ -1140,7 +1142,7 @@ document.addEventListener('DOMContentLoaded', function() {
           // Update color swatch active state
           if (matchedVariant && matchedVariant.option1) {
             const color = matchedVariant.option1.toLowerCase();
-            document.querySelectorAll('.color-btn').forEach(btn => {
+            document.querySelectorAll('.color-btn, .btn-scroll-target').forEach(btn => {
               if (btn.getAttribute('data-scroll') && btn.getAttribute('data-scroll').toLowerCase() === color) {
                 btn.classList.add('active');
               } else {
@@ -1225,23 +1227,32 @@ document.addEventListener('DOMContentLoaded', function() {
     {% endif %}
   {% else %}
     // Grid and Stacked layout functionality
-    const galleryItems = document.querySelectorAll('.item-scroll-target');
-    const colorButtons = document.querySelectorAll('.btn-scroll-target');
-    
-    colorButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        const color = this.getAttribute('data-scroll');
-        document.querySelectorAll('.btn-scroll-target').forEach(btn => btn.classList.remove('active'));
-        this.classList.add('active');
-        
-        galleryItems.forEach(item => {
-          if (item.getAttribute('data-scroll') === color) {
-            item.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-        });
-      });
-    });
+    // Note: Color button clicks are handled by the main event delegation handler below
+    // This section is kept for any future grid/stacked specific functionality
   {% endif %}
+
+  // Debug: Track when active classes are removed
+  const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+        const target = mutation.target;
+        if (target.classList.contains('color-btn') || target.classList.contains('btn-scroll-target')) {
+          if (!target.classList.contains('active') && mutation.oldValue && mutation.oldValue.includes('active')) {
+
+          }
+        }
+      }
+    });
+  });
+
+  // Observe all color buttons
+  document.querySelectorAll('.color-btn, .btn-scroll-target').forEach(btn => {
+    observer.observe(btn, {
+      attributes: true,
+      attributeOldValue: true,
+      attributeFilter: ['class']
+    });
+  });
 
   // Store selected options
   let selectedOptions = {
@@ -1294,13 +1305,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const options = {{ product.options | json }};
     
     // Get current selections
-    const activeColorBtn = document.querySelector('.color-btn.active, .select-item[data-option="color"].active');
+    const activeColorBtn = document.querySelector('.color-btn.active, .btn-scroll-target.active, .select-item[data-option="color"].active');
     const activeSizeBtn = document.querySelector('.size-btn.active, .select-item[data-option="size"].active');
     
     // For color, we need to get the display value, not the handle
     let selectedColor = null;
     if (activeColorBtn) {
-      if (activeColorBtn.classList.contains('color-btn')) {
+      if (activeColorBtn.classList.contains('color-btn') || activeColorBtn.classList.contains('btn-scroll-target')) {
         // For color swatches, use data-scroll
         selectedColor = activeColorBtn.getAttribute('data-scroll');
       } else {
@@ -1329,6 +1340,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Function to update variant selection
   function updateVariantSelection(variant) {
+    console.log('updateVariantSelection called with variant:', variant?.title, 'at:', new Date().toISOString());
     if (!variant) {
       return;
     }
@@ -1376,49 +1388,94 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
 
-    // Update main image gallery
-    const mainSwiper = document.querySelector('.tf-product-media-main')?.swiper;
+    // Check if we're in grid or stacked layout
+    const isGridOrStacked = document.querySelector('.flat-single-grid') !== null;
     
-    if (mainSwiper) {
-      const slides = mainSwiper.slides;
-      let foundMatchingSlide = false;
+    if (isGridOrStacked) {
+      // For grid and stacked layouts, scroll to the matching image
+      const productMedia = {{ product.media | json }};
+      let targetImage = null;
       
-      // First try to find a slide that matches the variant's featured image
+      // First try to find the variant's featured image
       if (variant.featured_image) {
-        for (let i = 0; i < slides.length; i++) {
-          const mediaId = parseInt(slides[i].getAttribute('data-media-id'));
-          
-          if (mediaId === variant.featured_image.id) {
-            mainSwiper.slideTo(i);
-            foundMatchingSlide = true;
+        targetImage = productMedia.find(m => m.id === variant.featured_image.id);
+      }
+      
+      // If no featured image found, try to find any image associated with this variant
+      if (!targetImage) {
+        targetImage = productMedia.find(m => 
+          m.variant_ids && m.variant_ids.includes(variant.id)
+        );
+      }
+      
+      // If still no image found, try to match by src
+      if (!targetImage && variant.featured_image && variant.featured_image.src) {
+        targetImage = productMedia.find(m => m.src === variant.featured_image.src);
+      }
+      
+      // Scroll to the target image if found
+      if (targetImage) {
+        console.log('Scrolling to target image:', targetImage.id);
+        // Find the gallery item with the matching media ID
+        const galleryItems = document.querySelectorAll('.item-scroll-target');
+        for (let item of galleryItems) {
+          const mediaId = parseInt(item.getAttribute('data-media-id'));
+          if (mediaId === targetImage.id) {
+            console.log('Found matching gallery item, scrolling...');
+            item.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'center',
+              inline: 'center'
+            });
             break;
           }
         }
       }
-
-      // If no exact match found, try to find the first image for this variant
-      if (!foundMatchingSlide) {
-        const productMedia = {{ product.media | json }};
+    } else {
+      // Default layout with Swiper - existing logic
+      const mainSwiper = document.querySelector('.tf-product-media-main')?.swiper;
+      
+      if (mainSwiper) {
+        const slides = mainSwiper.slides;
+        let foundMatchingSlide = false;
         
-        for (let i = 0; i < slides.length; i++) {
-          const mediaId = parseInt(slides[i].getAttribute('data-media-id'));
-          const media = productMedia.find(m => m.id === mediaId);
-          
-          if (media && media.variant_ids && media.variant_ids.includes(variant.id)) {
-            mainSwiper.slideTo(i);
-            foundMatchingSlide = true;
-            break;
-          }
-        }
-        // Fallback: try matching by src if variant.featured_image.src exists
-        if (!foundMatchingSlide && variant.featured_image && variant.featured_image.src) {
+        // First try to find a slide that matches the variant's featured image
+        if (variant.featured_image) {
           for (let i = 0; i < slides.length; i++) {
             const mediaId = parseInt(slides[i].getAttribute('data-media-id'));
-            const media = productMedia.find(m => m.id === mediaId);
-            if (media && media.src === variant.featured_image.src) {
+            
+            if (mediaId === variant.featured_image.id) {
               mainSwiper.slideTo(i);
               foundMatchingSlide = true;
               break;
+            }
+          }
+        }
+
+        // If no exact match found, try to find the first image for this variant
+        if (!foundMatchingSlide) {
+          const productMedia = {{ product.media | json }};
+          
+          for (let i = 0; i < slides.length; i++) {
+            const mediaId = parseInt(slides[i].getAttribute('data-media-id'));
+            const media = productMedia.find(m => m.id === mediaId);
+            
+            if (media && media.variant_ids && media.variant_ids.includes(variant.id)) {
+              mainSwiper.slideTo(i);
+              foundMatchingSlide = true;
+              break;
+            }
+          }
+          // Fallback: try matching by src if variant.featured_image.src exists
+          if (!foundMatchingSlide && variant.featured_image && variant.featured_image.src) {
+            for (let i = 0; i < slides.length; i++) {
+              const mediaId = parseInt(slides[i].getAttribute('data-media-id'));
+              const media = productMedia.find(m => m.id === mediaId);
+              if (media && media.src === variant.featured_image.src) {
+                mainSwiper.slideTo(i);
+                foundMatchingSlide = true;
+                break;
+              }
             }
           }
         }
@@ -1428,10 +1485,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set the active color swatch based on the selected color
     if (variant && variant.option1) {
       const color = variant.option1.toLowerCase();
-      document.querySelectorAll('.color-btn, .select-item[data-option="color"]').forEach(btn => {
+      document.querySelectorAll('.color-btn, .btn-scroll-target, .select-item[data-option="color"]').forEach(btn => {
         let matches = false;
         
-        if (btn.classList.contains('color-btn')) {
+        if (btn.classList.contains('color-btn') || btn.classList.contains('btn-scroll-target')) {
           // For color swatches, check data-scroll
           if (btn.getAttribute('data-scroll') && btn.getAttribute('data-scroll').toLowerCase() === color) {
             matches = true;
@@ -1446,6 +1503,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (matches) {
           btn.classList.add('active');
+          
+          // Add a small delay to ensure the active class persists
+          setTimeout(() => {
+            if (!btn.classList.contains('active')) {
+              console.log('Active class was removed, re-adding it');
+              btn.classList.add('active');
+            }
+          }, 50);
         } else {
           btn.classList.remove('active');
         }
@@ -1466,16 +1531,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update main add to cart button only
     updateMainAddToCartButton(variant);
+    // Also update buy it now buttons if needed
+    if (typeof updateBuyItNowButtons === 'function') {
+      updateBuyItNowButtons(variant);
+    }
   }
 
   // Use event delegation for color swatch clicks
   document.addEventListener('click', function(e) {
-    const btn = e.target.closest('.color-btn');
+    const btn = e.target.closest('.color-btn, .btn-scroll-target');
     if (!btn) return;
     const color = btn.getAttribute('data-scroll');
     const variant = findVariantByColor(color);
     if (variant) {
+      console.log('Found variant for color:', color, 'variant:', variant.title);
       updateVariantSelection(variant);
+    } else {
+      console.log('No variant found for color:', color);
     }
   });
 
@@ -1492,9 +1564,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // --- NEW: Get the currently selected color ---
       let color = null;
-      const activeColorBtn = document.querySelector('.color-btn.active, .select-item[data-option="color"].active');
+      const activeColorBtn = document.querySelector('.color-btn.active, .btn-scroll-target.active, .select-item[data-option="color"].active');
       if (activeColorBtn) {
-        if (activeColorBtn.classList.contains('color-btn')) {
+        if (activeColorBtn.classList.contains('color-btn') || activeColorBtn.classList.contains('btn-scroll-target')) {
           color = activeColorBtn.getAttribute('data-scroll');
         } else {
           const textElement = activeColorBtn.querySelector('.text-value-item');
@@ -1510,15 +1582,12 @@ document.addEventListener('DOMContentLoaded', function() {
           v.option1 && v.option1.toLowerCase() === color.toLowerCase() &&
           v.option2 && v.option2.toLowerCase() === size.toLowerCase()
         );
-        console.log('Size selection - looking for color:', color, 'size:', size, 'found variant:', variant);
       } else {
         variant = variants.find(v =>
           v.option2 && v.option2.toLowerCase() === size.toLowerCase()
         );
-        console.log('Size selection - no color selected, looking for size:', size, 'found variant:', variant);
       }
       if (variant) {
-        console.log('Size selection - updating with variant:', variant.title, 'color:', variant.option1, 'size:', variant.option2);
         updateVariantSelection(variant);
       }
     });
@@ -1567,8 +1636,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set initial color button active state
     const initialColor = initialVariant.option1;
     if (initialColor) {
-      const colorBtn = Array.from(document.querySelectorAll('.color-btn, .select-item[data-option="color"]')).find(btn => {
-        if (btn.classList.contains('color-btn')) {
+      const colorBtn = Array.from(document.querySelectorAll('.color-btn, .btn-scroll-target, .select-item[data-option="color"]')).find(btn => {
+        if (btn.classList.contains('color-btn') || btn.classList.contains('btn-scroll-target')) {
           // For color swatches, check data-scroll
           return btn.getAttribute('data-scroll') && btn.getAttribute('data-scroll').toLowerCase() === initialColor.toLowerCase();
         } else {
@@ -2926,6 +2995,18 @@ function updateMainAddToCartButton(variant) {
       mainAddToCartBtn.dataset.quantity = quantity;
     }
   }
+}
+
+// Set the active size button based on the selected size
+if (variant && variant.option2) {
+  const size = variant.option2.toLowerCase();
+  document.querySelectorAll('.size-btn, .select-item[data-option="size"]').forEach(btn => {
+    if (btn.getAttribute('data-value') && btn.getAttribute('data-value').toLowerCase() === size) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
 }
 </script>
 
