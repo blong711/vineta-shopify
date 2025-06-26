@@ -19,6 +19,317 @@ const ProductCard = {
     img.classList.remove('lazyload');
   },
 
+  // Check if we're on the cart page
+  isCartPage() {
+    return window.location.pathname === '/cart';
+  },
+
+  // Add product row to cart table (similar to gift wrap functionality)
+  addProductToCartTable(cartData, addedItem) {
+    if (!this.isCartPage()) return;
+
+    const cartTableBody = document.querySelector('.table-page-cart tbody');
+    if (!cartTableBody) return;
+
+    // Check if item already exists in table
+    const existingRow = cartTableBody.querySelector(`[data-variant-id="${addedItem.variant_id}"]`);
+    if (existingRow) {
+      // Update quantity of existing row
+      const quantityInput = existingRow.querySelector('.quantity-product');
+      if (quantityInput) {
+        const currentQuantity = parseInt(quantityInput.value) || 0;
+        const newQuantity = currentQuantity + (addedItem.quantity || 1);
+        quantityInput.value = newQuantity;
+        
+        // Update the item's total price
+        const itemTotal = existingRow.querySelector('.cart-total');
+        if (itemTotal) {
+          const linePrice = (addedItem.final_price * newQuantity);
+          itemTotal.textContent = this.formatMoney(linePrice);
+        }
+      }
+      return;
+    }
+
+    // Create new row for the added item
+    const newRow = document.createElement('tr');
+    newRow.className = 'tf-cart-item';
+    newRow.setAttribute('data-item-id', addedItem.key);
+    newRow.setAttribute('data-variant-id', addedItem.variant_id);
+    
+    newRow.innerHTML = `
+      <td class="tf-cart-item_product">
+        <a href="${addedItem.url}" class="img-box">
+          <img src="${addedItem.image}" alt="${addedItem.title}" width="150" height="150">
+        </a>
+        <div class="cart-info">
+          <a href="${addedItem.url}" class="name text-md link fw-medium">${addedItem.product_title}</a>
+          ${addedItem.variant_title ? `<div class="variants">${addedItem.variant_title}</div>` : ''}
+          <div></div>
+          <span class="remove-cart link remove" data-item-id="${addedItem.key}" data-variant-id="${addedItem.variant_id}">Remove</span>
+        </div>
+      </td>
+      <td class="tf-cart-item_price text-center" data-cart-title="Price">
+        <span class="cart-price price-on-sale text-md fw-medium">${this.formatMoney(addedItem.final_price)}</span>
+      </td>
+      <td class="tf-cart-item_quantity" data-cart-title="Quantity">
+        <div class="wg-quantity">
+          <button type="button" class="btn-quantity minus" data-variant-id="${addedItem.variant_id}" data-item-id="${addedItem.key}">-</button>
+          <input class="quantity-product" type="text" name="updates[]" value="${addedItem.quantity || 1}" min="0" data-variant-id="${addedItem.variant_id}" data-item-id="${addedItem.key}">
+          <button type="button" class="btn-quantity plus" data-variant-id="${addedItem.variant_id}" data-item-id="${addedItem.key}">+</button>
+        </div>
+      </td>
+      <td class="tf-cart-item_total text-center" data-cart-title="Total">
+        <div class="cart-total total-price text-md fw-medium">${this.formatMoney(addedItem.final_line_price)}</div>
+      </td>
+    `;
+    
+    // Add the new row to the table
+    cartTableBody.appendChild(newRow);
+    
+    // Re-bind event listeners for the new item
+    this.bindCartItemEventListeners(newRow);
+  },
+
+  // Bind event listeners for cart item row
+  bindCartItemEventListeners(itemRow) {
+    // Remove button
+    const removeButton = itemRow.querySelector('.remove-cart');
+    if (removeButton) {
+      removeButton.addEventListener('click', async function(e) {
+        e.preventDefault();
+        const variantId = this.dataset.variantId;
+        if (!variantId) return;
+
+        try {
+          const response = await fetch('/cart/change.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: variantId,
+              quantity: 0
+            })
+          });
+
+          if (!response.ok) throw new Error('Failed to remove item');
+
+          // Remove the item row from the table
+          const itemRow = this.closest('.tf-cart-item');
+          if (itemRow) {
+            itemRow.remove();
+          }
+
+          // Fetch updated cart data
+          const cartResponse = await fetch('/cart.js');
+          if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+          const cartData = await cartResponse.json();
+
+          // Update cart total and count
+          const cartTotal = document.querySelector('.total');
+          if (cartTotal) {
+            cartTotal.textContent = ProductCard.formatMoney(cartData.total_price);
+          }
+          document.querySelectorAll('.cart-count').forEach(element => {
+            element.textContent = cartData.item_count || '0';
+          });
+
+          // Update shipping progress
+          if (typeof updateShippingProgress === 'function') {
+            updateShippingProgress();
+          }
+
+          // Check if cart is now empty
+          if (cartData.item_count === 0) {
+            if (typeof handleEmptyCart === 'function') {
+              handleEmptyCart();
+            }
+          }
+        } catch (error) {
+          console.error('Error removing item:', error);
+          alert('Failed to remove item. Please try again.');
+        }
+      });
+    }
+
+    // Quantity buttons
+    const quantityButtons = itemRow.querySelectorAll('.btn-quantity');
+    quantityButtons.forEach(button => {
+      button.addEventListener('click', async function() {
+        const variantId = this.dataset.variantId;
+        const input = this.parentElement.querySelector('.quantity-product');
+        const currentValue = parseInt(input.value);
+        
+        if (!variantId) return;
+
+        try {
+          let newQuantity;
+          if (this.classList.contains('minus')) {
+            newQuantity = currentValue > 1 ? currentValue - 1 : 0;
+          } else if (this.classList.contains('plus')) {
+            newQuantity = currentValue + 1;
+          }
+
+          // Update input value immediately
+          input.value = newQuantity;
+
+          // Update cart via API
+          const response = await fetch('/cart/change.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: variantId,
+              quantity: newQuantity
+            })
+          });
+
+          if (!response.ok) {
+            // Revert input value if API call fails
+            input.value = currentValue;
+            throw new Error('Failed to update quantity');
+          }
+
+          const cartData = await response.json();
+
+          // Update the item's total price
+          const itemRow = this.closest('.tf-cart-item');
+          if (itemRow) {
+            const itemTotal = itemRow.querySelector('.cart-total');
+            if (itemTotal) {
+              const updatedItem = cartData.items.find(item => item.variant_id == variantId);
+              if (updatedItem) {
+                itemTotal.textContent = ProductCard.formatMoney(updatedItem.final_line_price);
+              }
+            }
+          }
+
+          // Update cart total
+          const cartTotal = document.querySelector('.total');
+          if (cartTotal) {
+            cartTotal.textContent = ProductCard.formatMoney(cartData.total_price);
+          }
+
+          // Update cart count
+          document.querySelectorAll('.cart-count').forEach(element => {
+            element.textContent = cartData.item_count;
+          });
+
+          // Update shipping progress
+          if (typeof updateShippingProgress === 'function') {
+            updateShippingProgress();
+          }
+
+          // If quantity is 0, remove the item row
+          if (newQuantity === 0) {
+            const itemRow = this.closest('.tf-cart-item');
+            if (itemRow) {
+              itemRow.remove();
+            }
+
+            // Check if cart is now empty
+            if (cartData.item_count === 0) {
+              if (typeof handleEmptyCart === 'function') {
+                handleEmptyCart();
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error updating quantity:', error);
+          alert('Failed to update quantity. Please try again.');
+        }
+      });
+    });
+
+    // Quantity input
+    const quantityInput = itemRow.querySelector('.quantity-product');
+    if (quantityInput) {
+      quantityInput.addEventListener('change', async function() {
+        const variantId = this.dataset.variantId;
+        if (!variantId) return;
+        
+        const newValue = parseInt(this.value);
+        
+        if (isNaN(newValue) || newValue < 1) {
+          if (newValue <= 0) {
+            const response = await fetch('/cart/change.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                id: variantId,
+                quantity: 0
+              })
+            });
+            if (!response.ok) {
+              throw new Error('Failed to remove item');
+            }
+          } else {
+            this.value = 1;
+            const response = await fetch('/cart/change.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                id: variantId,
+                quantity: 1
+              })
+            });
+            if (!response.ok) {
+              throw new Error('Failed to update quantity');
+            }
+          }
+        } else {
+          const response = await fetch('/cart/change.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: variantId,
+              quantity: newValue
+            })
+          });
+          if (!response.ok) {
+            throw new Error('Failed to update quantity');
+          }
+        }
+
+        // Fetch updated cart data and update UI
+        const cartResponse = await fetch('/cart.js');
+        if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+        const cartData = await cartResponse.json();
+        
+        // Update cart total
+        const cartTotal = document.querySelector('.total');
+        if (cartTotal) {
+          cartTotal.textContent = ProductCard.formatMoney(cartData.total_price);
+        }
+
+        // Update cart count
+        document.querySelectorAll('.cart-count').forEach(element => {
+          element.textContent = cartData.item_count;
+        });
+
+        // Update shipping progress
+        if (typeof updateShippingProgress === 'function') {
+          updateShippingProgress();
+        }
+
+        // Check if cart is now empty
+        if (cartData.item_count === 0) {
+          if (typeof handleEmptyCart === 'function') {
+            handleEmptyCart();
+          }
+        }
+      });
+    }
+  },
+
   // Initialize variant image switching
   initializeVariantImageSwitching() {
     document.querySelectorAll('.card-product').forEach(card => {
@@ -188,11 +499,39 @@ const ProductCard = {
         try {
           newButton.classList.add('loading');
           
-          if (window.cart) {
-            await window.cart.updateQuantity(variantId, quantity, 'add');
-            const response = await fetch('/cart.js');
-            const cartData = await response.json();
-            await this.updateCartDrawer(cartData);
+          // Add item to cart
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              items: [{
+                id: variantId,
+                quantity: quantity
+              }]
+            })
+          });
+
+          if (!response.ok) throw new Error('Failed to add item to cart');
+          
+          const cartData = await response.json();
+          
+          // If we're on the cart page, add the item to the cart table
+          if (this.isCartPage()) {
+            // Find the added item in the cart data
+            const addedItem = cartData.items.find(item => item.variant_id == variantId);
+            if (addedItem) {
+              this.handleRelatedProductAddition(cartData, addedItem);
+            }
+          } else {
+            // Regular cart drawer update for non-cart pages
+            if (window.cart) {
+              await window.cart.updateQuantity(variantId, quantity, 'add');
+              const response = await fetch('/cart.js');
+              const cartData = await response.json();
+              await this.updateCartDrawer(cartData);
+            }
           }
         } catch (error) {
           console.error('Error adding item to cart:', error);
@@ -598,6 +937,23 @@ const ProductCard = {
     if (window.wishlistCompare) {
       window.wishlistCompare.updateButtonsState();
     }
+
+    // If on cart page, initialize cart table event listeners for existing items
+    if (this.isCartPage()) {
+      this.initializeCartTableEventListeners();
+    }
+  },
+
+  // Initialize cart table event listeners for existing items
+  initializeCartTableEventListeners() {
+    const cartTableBody = document.querySelector('.table-page-cart tbody');
+    if (!cartTableBody) return;
+
+    // Bind event listeners to existing cart items
+    const existingItems = cartTableBody.querySelectorAll('.tf-cart-item');
+    existingItems.forEach(item => {
+      this.bindCartItemEventListeners(item);
+    });
   },
 
   // Initialize cart count
@@ -618,7 +974,36 @@ const ProductCard = {
         element.textContent = '0';
       });
     }
-  }
+  },
+
+  // Handle product addition from related products section
+  handleRelatedProductAddition(cartData, addedItem) {
+    if (!this.isCartPage()) return;
+
+    // Add the item to the cart table
+    this.addProductToCartTable(cartData, addedItem);
+    
+    // Update cart total
+    const cartTotal = document.querySelector('.total');
+    if (cartTotal) {
+      cartTotal.textContent = this.formatMoney(cartData.total_price);
+    }
+    
+    // Update cart count
+    document.querySelectorAll('.cart-count').forEach(element => {
+      element.textContent = cartData.item_count || '0';
+    });
+
+    // Update shipping progress
+    if (typeof updateShippingProgress === 'function') {
+      updateShippingProgress();
+    }
+
+    // Show cart with items if it was empty
+    if (typeof handleCartWithItems === 'function') {
+      handleCartWithItems();
+    }
+  },
 };
 
 // Initialize when DOM is ready
@@ -652,13 +1037,44 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!response.ok) throw new Error('Network response was not ok');
         
-        // Fetch the updated cart to get the correct item count
-        const cartRes = await fetch('/cart.js');
-        const cartData = await cartRes.json();
-        const cartCountElements = document.querySelectorAll('.cart-count');
-        cartCountElements.forEach(element => {
-          element.textContent = cartData.item_count;
-        });
+        const cartData = await response.json();
+        
+        // If we're on the cart page, add the item to the cart table
+        if (ProductCard.isCartPage()) {
+          // Find the added item in the cart data
+          const addedItem = cartData.items.find(item => item.variant_id == variantId);
+          if (addedItem) {
+            ProductCard.handleRelatedProductAddition(cartData, addedItem);
+          }
+          
+          // Update cart total
+          const cartTotal = document.querySelector('.total');
+          if (cartTotal) {
+            cartTotal.textContent = ProductCard.formatMoney(cartData.total_price);
+          }
+          
+          // Update cart count
+          const cartCountElements = document.querySelectorAll('.cart-count');
+          cartCountElements.forEach(element => {
+            element.textContent = cartData.item_count;
+          });
+
+          // Update shipping progress
+          if (typeof updateShippingProgress === 'function') {
+            updateShippingProgress();
+          }
+
+          // Show cart with items if it was empty
+          if (typeof handleCartWithItems === 'function') {
+            handleCartWithItems();
+          }
+        } else {
+          // Regular cart count update for non-cart pages
+          const cartCountElements = document.querySelectorAll('.cart-count');
+          cartCountElements.forEach(element => {
+            element.textContent = cartData.item_count;
+          });
+        }
 
         // Optional: Show success message
         // You can add your own success notification here

@@ -387,6 +387,91 @@
       </div>
     {% endif %}
     
+    <!-- Related Products Section -->
+    {% for block in section.blocks %}
+      {% if block.type == 'related_products' %}
+        <div class="flat-spacing-2" {{ block.shopify_attributes }}>
+          <div class="container">
+            <div class="row">
+              <div class="col-12">
+                <div class="tf-section-head text-center">
+                  <h2 class="title text-xl-2 fw-medium">{{ block.settings.title | default: 'You might also like' }}</h2>
+                  {% if block.settings.subtitle != blank %}
+                    <p class="subtitle text-md">{{ block.settings.subtitle }}</p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="tf-product-grid">
+                  {% if block.settings.collection != blank %}
+                    {% for product in block.settings.collection.products limit: block.settings.products_to_show %}
+                      <div class="card-product style-1" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
+                        <div class="card-product-wrapper asp-ratio-1">
+                          <a href="{{ product.url }}" class="product-img">
+                            {% if product.featured_image != blank %}
+                              {{ product.featured_image | image_url: width: 400 | image_tag:
+                                loading: 'lazy',
+                                class: 'img-product lazyloaded',
+                                alt: product.title
+                              }}
+                              {% if product.images[1] != blank %}
+                                {{ product.images[1] | image_url: width: 400 | image_tag:
+                                  loading: 'lazy',
+                                  class: 'img-hover lazyloaded',
+                                  alt: product.title
+                                }}
+                              {% endif %}
+                            {% else %}
+                              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                            {% endif %}
+                          </a>
+
+                          {% if product.compare_at_price > product.price or product.tags contains 'trending' %}
+                            <div class="on-sale-wrap {% if product.compare_at_price > product.price and product.tags contains 'trending' %}flex-column type-2{% endif %}">
+                              {% if product.compare_at_price > product.price %}
+                                {% assign discount_percentage = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round %}
+                                <span class="on-sale-item">{{ discount_percentage }}% Off</span>
+                              {% endif %}
+                              {% if product.tags contains 'trending' %}
+                                <span class="on-sale-item trending">{{ 'products.card.trending' | t }}</span>
+                              {% endif %}
+                            </div>
+                          {% endif %}
+
+                          {% if product.available %}
+                            <div class="product-btn-main">
+                              <a class="btn-main-product add-to-cart" 
+                                 data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                                 data-quantity="1"
+                                 aria-label="{{ 'products.card.add_to_cart' | t }}">
+                                <span class="icon icon-cart2"></span>
+                                <span class="text-md fw-medium">{{ 'products.card.add_to_cart' | t }}</span>
+                              </a>
+                            </div>
+                          {% endif %}
+                        </div>
+                        <div class="card-product-info">
+                          <a href="{{ product.url }}" class="name-product link fw-medium text-md">{{ product.title }}</a>
+                          <p class="price-wrap fw-medium">
+                            <span class="price-new text-primary">{{ product.price | money }}</span>
+                            {% if product.compare_at_price > product.price %}
+                              <span class="price-old">{{ product.compare_at_price | money }}</span>
+                            {% endif %}
+                          </p>
+                        </div>
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+    
     <!-- Empty cart message - always rendered but conditionally shown -->
     <div class="row justify-content-center" id="empty-cart-container" style="{% if cart.item_count > 0 %}display: none;{% endif %}">
       <div class="col-lg-8 col-md-10">
@@ -951,6 +1036,38 @@
           "type": "image_picker",
           "id": "testimonial3_author_image",
           "label": "Author Image"
+        }
+      ]
+    },
+    {
+      "type": "related_products",
+      "name": "Related Products",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "You might also like"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "range",
+          "id": "products_to_show",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "label": "Products to show",
+          "default": 5
         }
       ]
     }

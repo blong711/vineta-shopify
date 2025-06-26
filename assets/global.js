@@ -1212,8 +1212,10 @@ class Cart {
       if (action === this.actions.add) {
         // First make sure cart display is updated
         this.updateCartDisplay(cartData);
-        // Then show the drawer
-        this.showCartDrawer();
+        // Then show the drawer only if not on cart page
+        if (window.location.pathname !== '/cart') {
+          this.showCartDrawer();
+        }
       }
 
       // Update header cart count without requiring page reload
