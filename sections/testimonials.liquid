@@ -440,19 +440,19 @@
                                         </div>
                                         <div class="image img-style">
                                             {% if block.settings.testimonial_image != blank %}
-                                                <img class="lazyload" 
+                                                <img class="lazyload testimonial-image-mobile" 
                                                      data-src="{{ block.settings.testimonial_image | image_url: width: 400, height: 400 }}" 
                                                      src="{{ block.settings.testimonial_image | image_url: width: 400, height: 400 }}" 
                                                      alt="{{ block.settings.name }}"
-                                                     width="auto"
-                                                     height="auto">
+                                                     width="300"
+                                                     height="300">
                                             {% else %}
-                                                <img class="lazyload" 
+                                                <img class="lazyload testimonial-image-mobile" 
                                                      data-src="{{ 'tes-fs1.jpg' | asset_url }}" 
                                                      src="{{ 'tes-fs1.jpg' | asset_url }}" 
                                                      alt="{{ block.settings.name }}"
-                                                     width="244"
-                                                     height="310">
+                                                     width="300"
+                                                     height="300">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -560,3 +560,15 @@
         </div>
     </section>
     <!-- End Testimonial Section --> 
+    
+    <style>
+        /* Mobile 1:1 aspect ratio for home-fashion-02 layout */
+        @media (max-width: 767px) {
+            .tf-testimonial .wg-testimonial.style-row .image img.testimonial-image-mobile {
+                width: 100% !important;
+                height: auto !important;
+                aspect-ratio: 1/1;
+                object-fit: cover;
+            }
+        }
+    </style> 
