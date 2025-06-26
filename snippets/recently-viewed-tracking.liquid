@@ -1,0 +1,216 @@
+{%- comment -%}
+  Recently Viewed Products Tracking
+  This snippet tracks product views in localStorage and provides functions to manage the recently viewed list
+{%- endcomment -%}
+
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  const STORAGE_KEY = 'shopify_recently_viewed_products';
+  const MAX_PRODUCTS = 20; // Maximum number of products to store
+  
+  // Recently Viewed Products Manager
+  const RecentlyViewedManager = {
+    /**
+     * Add a product to recently viewed list
+     * @param {Object} product - Product object with id, title, handle, etc.
+     */
+    addProduct: function(product) {
+      if (!product || !product.id) return;
+      
+      try {
+        // Get current list
+        let recentlyViewed = this.getProducts();
+        
+        // Remove product if it already exists (to move it to the top)
+        recentlyViewed = recentlyViewed.filter(p => p.id !== product.id);
+        
+        // Ensure we have the image field for compare compatibility
+        const productImage = product.featured_image || product.image || '';
+        
+        // Add product to the beginning of the list
+        recentlyViewed.unshift({
+          id: product.id,
+          title: product.title,
+          handle: product.handle,
+          url: product.url,
+          price: product.price,
+          compare_at_price: product.compare_at_price,
+          featured_image: productImage,
+          image: productImage, // Add image field for compare compatibility
+          available: product.available,
+          vendor: product.vendor
+        });
+        
+        // Limit the list size
+        if (recentlyViewed.length > MAX_PRODUCTS) {
+          recentlyViewed = recentlyViewed.slice(0, MAX_PRODUCTS);
+        }
+        
+        // Save to localStorage
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(recentlyViewed));
+        
+        // Trigger custom event for other scripts
+        window.dispatchEvent(new CustomEvent('recentlyViewedUpdated', {
+          detail: { products: recentlyViewed }
+        }));
+        
+      } catch (error) {
+        console.error('Error saving recently viewed product:', error);
+      }
+    },
+    
+    /**
+     * Get recently viewed products
+     * @returns {Array} Array of recently viewed products
+     */
+    getProducts: function() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? JSON.parse(stored) : [];
+      } catch (error) {
+        console.error('Error reading recently viewed products:', error);
+        return [];
+      }
+    },
+    
+    /**
+     * Clear recently viewed products
+     */
+    clearProducts: function() {
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+        window.dispatchEvent(new CustomEvent('recentlyViewedUpdated', {
+          detail: { products: [] }
+        }));
+      } catch (error) {
+        console.error('Error clearing recently viewed products:', error);
+      }
+    },
+    
+    /**
+     * Get recently viewed products excluding current product
+     * @param {number} currentProductId - ID of current product to exclude
+     * @param {number} limit - Maximum number of products to return
+     * @returns {Array} Array of recently viewed products
+     */
+    getProductsExcludingCurrent: function(currentProductId, limit = 8) {
+      const products = this.getProducts();
+      const filtered = products.filter(p => p.id !== currentProductId);
+      return filtered.slice(0, limit);
+    }
+  };
+  
+  // Make it globally available
+  window.RecentlyViewedManager = RecentlyViewedManager;
+  
+  // Migration function to add image field to existing products
+  function migrateRecentlyViewedProducts() {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const products = JSON.parse(stored);
+        let needsUpdate = false;
+        
+        products.forEach(product => {
+          if (!product.image && product.featured_image) {
+            product.image = product.featured_image;
+            needsUpdate = true;
+          }
+        });
+        
+        if (needsUpdate) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+          console.log('Migrated recently viewed products to include image field');
+        }
+      }
+    } catch (error) {
+      console.error('Error migrating recently viewed products:', error);
+    }
+  }
+  
+  // Run migration on load
+  migrateRecentlyViewedProducts();
+  
+  // Add utility functions for debugging
+  window.RecentlyViewedDebug = {
+    // Clear all recently viewed products
+    clear: function() {
+      RecentlyViewedManager.clearProducts();
+      console.log('Recently viewed products cleared');
+    },
+    
+    // Show current recently viewed products
+    show: function() {
+      const products = RecentlyViewedManager.getProducts();
+      console.log('Recently viewed products:', products);
+      return products;
+    },
+    
+    // Add a test product
+    addTest: function() {
+      const testProduct = {
+        id: 123456789,
+        title: 'Test Product',
+        handle: 'test-product',
+        url: '/products/test-product',
+        price: 2999,
+        compare_at_price: 3999,
+        featured_image: 'https://via.placeholder.com/400x400',
+        available: true,
+        vendor: 'Test Vendor'
+      };
+      RecentlyViewedManager.addProduct(testProduct);
+      console.log('Test product added');
+    },
+    
+    // Test compare functionality with recently viewed products
+    testCompare: function() {
+      const products = RecentlyViewedManager.getProducts();
+      if (products.length === 0) {
+        console.log('No recently viewed products to test with');
+        return;
+      }
+      
+      const testProduct = products[0];
+      console.log('Testing compare with product:', testProduct);
+      
+      if (typeof window.WishlistCompare !== 'undefined') {
+        window.WishlistCompare.addToCompare(testProduct.id);
+        console.log('Added to compare list');
+      } else {
+        console.log('WishlistCompare not available');
+      }
+    }
+  };
+  
+  // Auto-track current product if we're on a product page
+  document.addEventListener('DOMContentLoaded', function() {
+    // Check if we're on a product page and have product data
+    if (typeof window.productData !== 'undefined' && window.productData) {
+      console.log('Adding product to recently viewed:', window.productData);
+      RecentlyViewedManager.addProduct(window.productData);
+    }
+    
+    // Alternative: Extract product data from page if not available globally
+    if (!window.productData) {
+      const productJson = document.querySelector('script[type="application/json"][data-product-json]');
+      if (productJson) {
+        try {
+          const productData = JSON.parse(productJson.textContent);
+          console.log('Adding product to recently viewed (from JSON):', productData);
+          RecentlyViewedManager.addProduct(productData);
+        } catch (error) {
+          console.error('Error parsing product data:', error);
+        }
+      }
+    }
+    
+    // Debug: Log current recently viewed products
+    console.log('Current recently viewed products:', RecentlyViewedManager.getProducts());
+  });
+  
+})();
+</script> 

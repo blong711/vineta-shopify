@@ -1,16 +1,7 @@
 {%- comment -%}Recently Viewed Section{%- endcomment -%}
-{%- assign all_products = collections.all.products | where: "available" -%}
-{%- assign products_to_show = section.settings.products_to_show -%}
-{%- assign all_products_count = all_products.size -%}
-{%- if all_products_count > products_to_show -%}
-  {%- assign max_offset = all_products_count | minus: products_to_show -%}
-  {%- assign random_offset = 'now' | date: '%s' | modulo: max_offset -%}
-  {%- assign random_products = all_products | slice: random_offset, products_to_show -%}
-{%- else -%}
-  {%- assign random_products = all_products -%}
-{%- endif -%}
-{%- if random_products.size > 0 -%}
-<section class="flat-spacing">
+
+{%- comment -%}Get recently viewed products from localStorage via JavaScript{%- endcomment -%}
+<section class="flat-spacing" id="recently-viewed-section" style="display: none;">
 {% if section.settings.width == 'boxed' %}
   <div class="container">
 {% endif %}
@@ -44,12 +35,8 @@
           }
         }
       }'>
-        <div class="swiper-wrapper">
-          {%- for product in random_products -%}
-            <div class="swiper-slide">
-              {% render 'card-product', product: product %}
-            </div>
-          {%- endfor -%}
+        <div class="swiper-wrapper" id="recently-viewed-products">
+          <!-- Products will be populated by JavaScript -->
         </div>
         <div class="d-flex d-xl-none sw-dot-default sw-pagination-viewed justify-content-center"></div>
       </div>
@@ -60,7 +47,207 @@
   </div>
 {% endif %}
 </section>
-  {%- endif -%}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const section = document.getElementById('recently-viewed-section');
+  const productsContainer = document.getElementById('recently-viewed-products');
+  
+  if (!section || !productsContainer) return;
+  
+  // Function to render recently viewed products
+  async function renderRecentlyViewedProducts() {
+    if (typeof window.RecentlyViewedManager === 'undefined') {
+      console.warn('RecentlyViewedManager not available');
+      return;
+    }
+    
+    // Get current product ID to exclude it from the list
+    const currentProductId = {{ product.id | default: 'null' }};
+    
+    // Get recently viewed products (excluding current product)
+    const recentlyViewed = window.RecentlyViewedManager.getProductsExcludingCurrent(
+      currentProductId, 
+      {{ section.settings.products_to_show }}
+    );
+    
+    if (recentlyViewed.length === 0) {
+      section.style.display = 'none';
+      return;
+    }
+    
+    // Show the section
+    section.style.display = 'block';
+    
+    // Clear existing products
+    productsContainer.innerHTML = '';
+    
+    // Fetch full product data for each recently viewed product
+    const productPromises = recentlyViewed.map(async (product) => {
+      try {
+        const response = await fetch(`/products/${product.handle}.js`);
+        if (!response.ok) throw new Error('Failed to fetch product data');
+        const fullProduct = await response.json();
+        
+        // Ensure we have the image field for compare compatibility
+        if (!fullProduct.image && fullProduct.featured_image) {
+          fullProduct.image = fullProduct.featured_image;
+        }
+        
+        return fullProduct;
+      } catch (error) {
+        console.error('Error fetching product data for', product.handle, error);
+        // Return the basic product data if fetch fails, ensuring image field exists
+        if (!product.image && product.featured_image) {
+          product.image = product.featured_image;
+        }
+        return product;
+      }
+    });
+    
+    const fullProductData = await Promise.all(productPromises);
+    
+    // Render each product using the card-product snippet structure
+    fullProductData.forEach(function(product) {
+      const slide = document.createElement('div');
+      slide.className = 'swiper-slide';
+      
+      // Create product card HTML that matches the card-product snippet structure
+      slide.innerHTML = `
+        <div class="card-product style-1" data-availability="${product.available ? 'In stock' : 'Out of stock'}" data-brand="${product.vendor || ''}">
+          <div class="card-product-wrapper asp-ratio-1">
+            <a href="${product.url}" class="product-img">
+              ${product.featured_image ? 
+                `<img class="img-product lazyloaded" src="${product.featured_image}" alt="${product.title}" loading="lazy">` :
+                `<div class="placeholder-svg">${product.title}</div>`
+              }
+              ${product.images && product.images[1] ? 
+                `<img class="img-hover lazyloaded" src="${product.images[1]}" alt="${product.title}" loading="lazy">` : ''
+              }
+            </a>
+            
+            ${product.compare_at_price && product.compare_at_price > product.price ? 
+              `<div class="on-sale-wrap">
+                <span class="on-sale-item">${Math.round((product.compare_at_price - product.price) / product.compare_at_price * 100)}% Off</span>
+              </div>` : ''
+            }
+            
+            ${product.available ? `
+            <ul class="list-product-btn">
+              <li>
+                <a href="javascript:void(0);" 
+                   class="box-icon hover-tooltip tooltip-left add-to-cart" 
+                   data-variant-id="${product.variants ? product.variants[0].id : product.id}"
+                   data-quantity="1"
+                   aria-label="Add to cart">
+                  <i class="icon icon-cart"></i>
+                  <span class="tooltip">Add to cart</span>
+                </a>
+              </li>
+              <li class="wishlist">
+                <a href="javascript:void(0);" 
+                   class="box-icon hover-tooltip tooltip-left" 
+                   data-wishlist 
+                   data-id="${product.id}" 
+                   data-action="add"
+                   aria-label="Add to wishlist">
+                  <span class="icon icon-heart2"></span>
+                  <span class="tooltip">Add to wishlist</span>
+                </a>
+              </li>
+              <li>
+                <a href="javascript:void(0);" 
+                   class="box-icon hover-tooltip tooltip-left quickview" 
+                   data-product-handle="${product.handle}"
+                   data-product-id="${product.id}"
+                   data-bs-toggle="modal" 
+                   data-bs-target="#quickView">
+                  <span class="icon icon-view"></span>
+                  <span class="tooltip">Quick view</span>
+                </a>
+              </li>
+              <li class="compare">
+                <a href="javascript:void(0);" 
+                   class="box-icon hover-tooltip tooltip-left" 
+                   data-compare 
+                   data-id="${product.id}" 
+                   data-action="add"
+                   aria-label="Add to compare">
+                  <span class="icon icon-compare"></span>
+                  <span class="tooltip">Add to compare</span>
+                </a>
+              </li>
+            </ul>
+            ` : ''}
+          </div>
+          
+          <div class="card-product-info">
+            <a href="${product.url}" class="name-product link fw-medium text-md">${product.title}</a>
+            <p class="price-wrap fw-medium">
+              ${product.compare_at_price && product.compare_at_price > product.price ? 
+                `<span class="price-new text-primary">${formatMoney(product.price)}</span>
+                 <span class="price-old">${formatMoney(product.compare_at_price)}</span>` :
+                `<span class="price-new">${formatMoney(product.price)}</span>`
+              }
+            </p>
+          </div>
+        </div>
+      `;
+      
+      productsContainer.appendChild(slide);
+    });
+    
+    // Initialize product card functionality for the newly added products
+    if (typeof ProductCard !== 'undefined') {
+      try {
+        ProductCard.initializeForDynamicProducts(productsContainer);
+      } catch (error) {
+        console.warn('Error initializing product card functionality for recently viewed products:', error);
+      }
+    } else {
+      console.warn('ProductCard module not available for recently viewed products');
+    }
+    
+    // Reinitialize Swiper if it exists
+    if (window.recentlyViewedSwiper) {
+      window.recentlyViewedSwiper.update();
+    }
+  }
+  
+  // Helper function to format money using Shopify's money format
+  function formatMoney(cents) {
+    if (typeof cents !== 'number') return '';
+    
+    // Try to use Shopify's money format if available
+    if (typeof window.Shopify !== 'undefined' && window.Shopify.formatMoney) {
+      return window.Shopify.formatMoney(cents);
+    }
+    
+    // Fallback to basic formatting
+    const dollars = cents / 100;
+    return '$' + dollars.toFixed(2);
+  }
+  
+  // Initial render
+  renderRecentlyViewedProducts();
+  
+  // Listen for updates to recently viewed products
+  window.addEventListener('recentlyViewedUpdated', function() {
+    renderRecentlyViewedProducts();
+  });
+  
+  // Re-render when section becomes visible (for lazy loading)
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        renderRecentlyViewedProducts();
+      }
+    });
+  });
+  
+  observer.observe(section);
+});
+</script>
 
 {% schema %}
 {

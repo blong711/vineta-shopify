@@ -465,6 +465,29 @@ class WishlistCompare {
 
     console.log(`Looking for product data for ID: ${productId}`);
 
+    // First, check if this product is in the recently viewed list
+    if (typeof window.RecentlyViewedManager !== 'undefined') {
+      const recentlyViewed = window.RecentlyViewedManager.getProducts();
+      const recentlyViewedProduct = recentlyViewed.find(p => p.id == productId);
+      
+      if (recentlyViewedProduct) {
+        console.log('Found product in recently viewed list:', recentlyViewedProduct);
+        
+        // Ensure we have the image field for compare compatibility
+        const productData = {
+          id: recentlyViewedProduct.id,
+          title: recentlyViewedProduct.title,
+          url: recentlyViewedProduct.url,
+          image: recentlyViewedProduct.image || recentlyViewedProduct.featured_image || '',
+          price: recentlyViewedProduct.price,
+          comparePrice: recentlyViewedProduct.compare_at_price || ''
+        };
+        
+        console.log('Returning product data from recently viewed:', productData);
+        return productData;
+      }
+    }
+
     // First try to get data from product section if we're on a product page
     const productSection = document.querySelector('.tf-product-info-wrap');
     let currentProductId = null;

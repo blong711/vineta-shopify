@@ -189,6 +189,53 @@
   {% endif %}
 </div>
 
+{%- comment -%}Recently Viewed Section for Search Page{%- endcomment -%}
+{%- comment -%}Include the recently viewed tracking script{%- endcomment -%}
+{% render 'recently-viewed-tracking' %}
+
+<section class="flat-spacing" id="search-recently-viewed-section" style="display: none;">
+  <div class="container">
+    <div class="flat-title wow fadeInUp">
+      <h4 class="title">Recently Viewed Products</h4>
+    </div>
+    <div class="hover-sw-nav hover-sw-2 wow wrap-pos-nav sw-over-product fadeInUp">
+      <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
+        "slidesPerView": 2,
+        "spaceBetween": 12,
+        "speed": 800,
+        "observer": true,
+        "observeParents": true,
+        "slidesPerGroup": 2,
+        "navigation": {
+          "clickable": true,
+          "nextEl": ".nav-next-search-viewed",
+          "prevEl": ".nav-prev-search-viewed"
+        },
+        "pagination": { "el": ".sw-pagination-search-viewed", "clickable": true },
+        "breakpoints": {
+          "768": { 
+            "slidesPerView": 3, 
+            "spaceBetween": 12, 
+            "slidesPerGroup": 3
+          },
+          "1200": { 
+            "slidesPerView": 4, 
+            "spaceBetween": 12, 
+            "slidesPerGroup": 4
+          }
+        }
+      }'>
+        <div class="swiper-wrapper" id="search-recently-viewed-products">
+          <!-- Products will be populated by JavaScript -->
+        </div>
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-search-viewed justify-content-center"></div>
+      </div>
+      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-search-viewed"></div>
+      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-search-viewed"></div>
+    </div>
+  </div>
+</section>
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     // Set default sort if none is specified
@@ -471,6 +518,182 @@
 
     // Initialize product events
     initializeProductEvents();
+
+    const searchSection = document.getElementById('search-recently-viewed-section');
+    const searchProductsContainer = document.getElementById('search-recently-viewed-products');
+    
+    if (!searchSection || !searchProductsContainer) return;
+    
+    // Function to render recently viewed products for search page
+    async function renderSearchRecentlyViewedProducts() {
+      if (typeof window.RecentlyViewedManager === 'undefined') {
+        console.warn('RecentlyViewedManager not available');
+        return;
+      }
+      
+      // Get recently viewed products (no current product to exclude on search page)
+      const recentlyViewed = window.RecentlyViewedManager.getProducts().slice(0, 8);
+      
+      if (recentlyViewed.length === 0) {
+        searchSection.style.display = 'none';
+        return;
+      }
+      
+      // Show the section
+      searchSection.style.display = 'block';
+      
+      // Clear existing products
+      searchProductsContainer.innerHTML = '';
+      
+      // Fetch full product data for each recently viewed product
+      const productPromises = recentlyViewed.map(async (product) => {
+        try {
+          const response = await fetch(`/products/${product.handle}.js`);
+          if (!response.ok) throw new Error('Failed to fetch product data');
+          return await response.json();
+        } catch (error) {
+          console.error('Error fetching product data for', product.handle, error);
+          // Return the basic product data if fetch fails
+          return product;
+        }
+      });
+      
+      const fullProductData = await Promise.all(productPromises);
+      
+      // Render each product using the card-product snippet structure
+      fullProductData.forEach(function(product) {
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide';
+        
+        // Create product card HTML that matches the card-product snippet structure
+        slide.innerHTML = `
+          <div class="card-product style-1" data-availability="${product.available ? 'In stock' : 'Out of stock'}" data-brand="${product.vendor || ''}">
+            <div class="card-product-wrapper asp-ratio-1">
+              <a href="${product.url}" class="product-img">
+                ${product.featured_image ? 
+                  `<img class="img-product lazyloaded" src="${product.featured_image}" alt="${product.title}" loading="lazy">` :
+                  `<div class="placeholder-svg">${product.title}</div>`
+                }
+                ${product.images && product.images[1] ? 
+                  `<img class="img-hover lazyloaded" src="${product.images[1]}" alt="${product.title}" loading="lazy">` : ''
+                }
+              </a>
+              
+              ${product.compare_at_price && product.compare_at_price > product.price ? 
+                `<div class="on-sale-wrap">
+                  <span class="on-sale-item">${Math.round((product.compare_at_price - product.price) / product.compare_at_price * 100)}% Off</span>
+                </div>` : ''
+              }
+              
+              ${product.available ? `
+              <ul class="list-product-btn">
+                <li>
+                  <a href="javascript:void(0);" 
+                     class="box-icon hover-tooltip tooltip-left add-to-cart" 
+                     data-variant-id="${product.variants ? product.variants[0].id : product.id}"
+                     data-quantity="1"
+                     aria-label="Add to cart">
+                    <i class="icon icon-cart"></i>
+                    <span class="tooltip">Add to cart</span>
+                  </a>
+                </li>
+                <li class="wishlist">
+                  <a href="javascript:void(0);" 
+                     class="box-icon hover-tooltip tooltip-left" 
+                     data-wishlist 
+                     data-id="${product.id}" 
+                     data-action="add"
+                     aria-label="Add to wishlist">
+                    <span class="icon icon-heart2"></span>
+                    <span class="tooltip">Add to wishlist</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="javascript:void(0);" 
+                     class="box-icon hover-tooltip tooltip-left quickview" 
+                     data-product-handle="${product.handle}"
+                     data-product-id="${product.id}"
+                     data-bs-toggle="modal" 
+                     data-bs-target="#quickView">
+                    <span class="icon icon-view"></span>
+                    <span class="tooltip">Quick view</span>
+                  </a>
+                </li>
+                <li class="compare">
+                  <a href="javascript:void(0);" 
+                     class="box-icon hover-tooltip tooltip-left" 
+                     data-compare 
+                     data-id="${product.id}" 
+                     data-action="add"
+                     aria-label="Add to compare">
+                    <span class="icon icon-compare"></span>
+                    <span class="tooltip">Add to compare</span>
+                  </a>
+                </li>
+              </ul>
+              ` : ''}
+            </div>
+            
+            <div class="card-product-info">
+              <a href="${product.url}" class="name-product link fw-medium text-md">${product.title}</a>
+              <p class="price-wrap fw-medium">
+                ${product.compare_at_price && product.compare_at_price > product.price ? 
+                  `<span class="price-new text-primary">${formatMoney(product.price)}</span>
+                   <span class="price-old">${formatMoney(product.compare_at_price)}</span>` :
+                  `<span class="price-new">${formatMoney(product.price)}</span>`
+                }
+              </p>
+            </div>
+          </div>
+        `;
+        
+        searchProductsContainer.appendChild(slide);
+      });
+      
+      // Initialize product card functionality for the newly added products
+      if (typeof ProductCard !== 'undefined') {
+        try {
+          ProductCard.initializeForDynamicProducts(searchProductsContainer);
+        } catch (error) {
+          console.warn('Error initializing product card functionality for search recently viewed products:', error);
+        }
+      } else {
+        console.warn('ProductCard module not available for search recently viewed products');
+      }
+    }
+    
+    // Helper function to format money (basic implementation)
+    function formatMoney(cents) {
+      if (typeof cents !== 'number') return '';
+      
+      // Try to use Shopify's money format if available
+      if (typeof window.Shopify !== 'undefined' && window.Shopify.formatMoney) {
+        return window.Shopify.formatMoney(cents);
+      }
+      
+      // Fallback to basic formatting
+      const dollars = cents / 100;
+      return '$' + dollars.toFixed(2);
+    }
+    
+    // Initial render
+    renderSearchRecentlyViewedProducts();
+    
+    // Listen for updates to recently viewed products
+    window.addEventListener('recentlyViewedUpdated', function() {
+      renderSearchRecentlyViewedProducts();
+    });
+    
+    // Re-render when section becomes visible (for lazy loading)
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          renderSearchRecentlyViewedProducts();
+        }
+      });
+    });
+    
+    observer.observe(searchSection);
   });
 </script>
 

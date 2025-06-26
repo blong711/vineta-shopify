@@ -516,6 +516,25 @@ const ProductCard = {
     });
   },
 
+  // Initialize product card functionality for dynamically added products
+  initializeForDynamicProducts(container) {
+    if (!container) return;
+    
+    // Initialize variant image switching for new products
+    this.initializeVariantImageSwitching();
+    
+    // Initialize cart events for new products
+    this.initializeCartEvents();
+    
+    // Initialize variant selection for new products
+    this.initializeVariantSelection();
+    
+    // Initialize wishlist and compare buttons state
+    if (window.wishlistCompare) {
+      window.wishlistCompare.updateButtonsState();
+    }
+  },
+
   // Initialize all product card functionality
   init() {
     // Add countdown hover styles
