@@ -208,6 +208,86 @@ document.addEventListener('DOMContentLoaded', function() {
       console.warn('ProductCard module not available for recently viewed products');
     }
     
+    // Initialize quickview functionality for the newly added products
+    if (typeof window.initQuickview === 'function') {
+      try {
+        window.initQuickview();
+      } catch (error) {
+        console.warn('Error initializing quickview functionality for recently viewed products:', error);
+      }
+    } else {
+      // Fallback: manually initialize quickview for the new products
+      const quickviewButtons = productsContainer.querySelectorAll('.quickview');
+      quickviewButtons.forEach(button => {
+        // Remove existing listeners to prevent duplicates
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        // Add click event listener
+        newButton.addEventListener('click', async function(e) {
+          e.preventDefault();
+          
+          const productHandle = this.dataset.productHandle;
+          const productId = this.dataset.productId;
+          
+          if (!productHandle) {
+            console.error('No product handle found for quickview');
+            return;
+          }
+          
+          // Show modal immediately
+          const modal = document.getElementById('quickView');
+          if (!modal) {
+            console.error('Quickview modal not found');
+            return;
+          }
+          
+          try {
+            // Fetch product data
+            const response = await fetch(`/products/${productHandle}.js`);
+            if (!response.ok) throw new Error('Failed to fetch product data');
+            const productData = await response.json();
+            
+            // Update modal content with the fetched product data
+            updateQuickviewModal(modal, productData);
+            
+            // Show the modal using Bootstrap
+            if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+              const bootstrapModal = new bootstrap.Modal(modal);
+              bootstrapModal.show();
+            } else {
+              // Fallback: show modal manually
+              modal.style.display = 'block';
+              modal.classList.add('show');
+              document.body.classList.add('modal-open');
+              
+              // Add backdrop
+              const backdrop = document.createElement('div');
+              backdrop.className = 'modal-backdrop fade show';
+              document.body.appendChild(backdrop);
+              
+              // Handle close
+              const closeModal = () => {
+                modal.style.display = 'none';
+                modal.classList.remove('show');
+                document.body.classList.remove('modal-open');
+                if (backdrop.parentNode) {
+                  backdrop.parentNode.removeChild(backdrop);
+                }
+              };
+              
+              // Add close event listeners
+              modal.querySelector('.icon-close').addEventListener('click', closeModal);
+              backdrop.addEventListener('click', closeModal);
+            }
+            
+          } catch (error) {
+            console.error('Error loading product data for quickview:', error);
+          }
+        });
+      });
+    }
+    
     // Reinitialize Swiper if it exists
     if (window.recentlyViewedSwiper) {
       window.recentlyViewedSwiper.update();
@@ -226,6 +306,90 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fallback to basic formatting
     const dollars = cents / 100;
     return '$' + dollars.toFixed(2);
+  }
+  
+  // Helper function to update quickview modal content
+  function updateQuickviewModal(modal, product) {
+    // Update product title
+    const titleElement = modal.querySelector('.product-info-name');
+    if (titleElement) titleElement.textContent = product.title;
+    
+    // Update price
+    const priceContainer = modal.querySelector('.product-info-price');
+    if (priceContainer) {
+      if (product.compare_at_price > product.price) {
+        const discountPercentage = Math.round(((product.compare_at_price - product.price) / product.compare_at_price) * 100);
+        priceContainer.innerHTML = `
+          <h6 class="price-new price-on-sale">${formatMoney(product.price)}</h6>
+          <h6 class="price-old">${formatMoney(product.compare_at_price)}</h6>
+          <span class="badge-sale">${discountPercentage}% Off</span>
+        `;
+      } else {
+        priceContainer.innerHTML = `
+          <h6 class="price-new">${formatMoney(product.price)}</h6>
+        `;
+      }
+    }
+    
+    // Update description
+    const textElement = modal.querySelector('.text');
+    if (textElement) {
+      textElement.textContent = product.description.replace(/<[^>]*>/g, '').split(' ').slice(0, 30).join(' ') + '...';
+    }
+    
+    // Update media gallery
+    const swiperWrapper = modal.querySelector('.swiper-wrapper');
+    if (swiperWrapper && product.media) {
+      swiperWrapper.innerHTML = product.media.map(media => `
+        <div class="swiper-slide" data-media-id="${media.id}">
+          <div class="item">
+            ${media.media_type === 'image' 
+              ? `<img class="lazyload" data-src="${media.src}" src="${media.src}" alt="${media.alt || product.title}">`
+              : `<video controls class="w-100"><source src="${media.sources[0].url}" type="video/mp4"></video>`
+            }
+          </div>
+        </div>
+      `).join('');
+      
+      // Reinitialize Swiper for the quickview modal
+      if (window.quickviewSwiper) {
+        window.quickviewSwiper.destroy(true, true);
+      }
+      window.quickviewSwiper = new Swiper('.tf-single-slide', {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        loop: false,
+        navigation: {
+          nextEl: '.single-slide-next',
+          prevEl: '.single-slide-prev',
+        }
+      });
+    }
+    
+    // Update variant selection if available
+    if (product.variants && product.variants.length > 0) {
+      const variantSelect = modal.querySelector('select[data-variant-id]');
+      if (variantSelect) {
+        variantSelect.innerHTML = product.variants.map(variant => 
+          `<option value="${variant.id}">${variant.title}</option>`
+        ).join('');
+        variantSelect.value = product.variants[0].id;
+        variantSelect.dataset.variantId = product.variants[0].id;
+      }
+      
+      // Update add to cart button
+      const addToCartBtn = modal.querySelector('.add-to-cart');
+      if (addToCartBtn) {
+        addToCartBtn.dataset.variantId = product.variants[0].id;
+        addToCartBtn.dataset.productId = product.id;
+      }
+      
+      // Update buy now button
+      const buyNowBtn = modal.querySelector('.buy-now-btn');
+      if (buyNowBtn) {
+        buyNowBtn.dataset.productId = product.id;
+      }
+    }
   }
   
   // Initial render

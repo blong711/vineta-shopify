@@ -149,6 +149,9 @@
           button.addEventListener('click', handleQuickviewClick);
         });
       }
+      
+      // Make initQuickview globally available
+      window.initQuickview = initQuickview;
     
       // Preload product data
       async function preloadProductData(productHandle) {

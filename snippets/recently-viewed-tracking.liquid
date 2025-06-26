@@ -183,6 +183,27 @@
       } else {
         console.log('WishlistCompare not available');
       }
+    },
+    
+    // Test quickview functionality with recently viewed products
+    testQuickview: function() {
+      const products = RecentlyViewedManager.getProducts();
+      if (products.length === 0) {
+        console.log('No recently viewed products to test with');
+        return;
+      }
+      
+      const testProduct = products[0];
+      console.log('Testing quickview with product:', testProduct);
+      
+      // Find the quickview button for this product
+      const quickviewButton = document.querySelector(`[data-product-handle="${testProduct.handle}"]`);
+      if (quickviewButton) {
+        console.log('Found quickview button, triggering click');
+        quickviewButton.click();
+      } else {
+        console.log('Quickview button not found for product:', testProduct.handle);
+      }
     }
   };
   
