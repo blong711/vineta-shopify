@@ -40,4 +40,111 @@
 
 .saving-indicator.error {
   color: #dc3545;
+}
+
+/* Cart Drawer Styles */
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  max-width: 400px;
+  height: 100vh;
+  background: white;
+  z-index: 1000;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.cart-drawer.open {
+  transform: translateX(0);
+}
+
+/* Loading Spinner Styles for Add to Cart Buttons */
+.add-to-cart.loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.loading-spinner .spinner-border {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+  color: currentColor;
+}
+
+.success-feedback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  animation: fadeInScale 0.3s ease-in-out;
+}
+
+.success-feedback .icon-check {
+  font-size: 16px;
+  color: #28a745;
+}
+
+.error-feedback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  animation: fadeInScale 0.3s ease-in-out;
+}
+
+.error-feedback .icon-close {
+  font-size: 16px;
+  color: #dc3545;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Ensure proper button sizing during loading states */
+.add-to-cart.loading,
+.add-to-cart .loading-spinner,
+.add-to-cart .success-feedback,
+.add-to-cart .error-feedback {
+  min-width: 40px;
+  min-height: 40px;
+}
+
+/* Disable hover effects during loading */
+.add-to-cart.loading:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 767px) {
+  .loading-spinner .spinner-border {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .success-feedback .icon-check,
+  .error-feedback .icon-close {
+    font-size: 14px;
+  }
 } 

@@ -497,7 +497,25 @@ const ProductCard = {
         const quantity = parseInt(newButton.dataset.quantity || 1);
         
         try {
+          // Add loading state with spinner
           newButton.classList.add('loading');
+          
+          // Store original content
+          const originalContent = newButton.innerHTML;
+          newButton.dataset.originalContent = originalContent;
+          
+          // Add spinner to button
+          newButton.innerHTML = `
+            <div class="loading-spinner">
+              <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          `;
+          
+          // Disable button during loading
+          newButton.style.pointerEvents = 'none';
+          newButton.setAttribute('aria-disabled', 'true');
           
           // Add item to cart
           const response = await fetch('/cart/add.js', {
@@ -524,20 +542,91 @@ const ProductCard = {
             if (addedItem) {
               this.handleRelatedProductAddition(cartData, addedItem);
             }
+            
+            // Update cart total
+            const cartTotal = document.querySelector('.total');
+            if (cartTotal) {
+              cartTotal.textContent = this.formatMoney(cartData.total_price);
+            }
+            
+            // Update cart count
+            const cartCountElements = document.querySelectorAll('.cart-count');
+            cartCountElements.forEach(element => {
+              element.textContent = cartData.item_count;
+            });
+
+            // Update shipping progress
+            if (typeof updateShippingProgress === 'function') {
+              updateShippingProgress();
+            }
+
+            // Show cart with items if it was empty
+            if (typeof handleCartWithItems === 'function') {
+              handleCartWithItems();
+            }
           } else {
             // Regular cart drawer update for non-cart pages
             if (window.cart) {
-              await window.cart.updateQuantity(variantId, quantity, 'add');
+              // The item has already been added via the POST request above
+              // Just fetch the updated cart data and update the drawer
               const response = await fetch('/cart.js');
               const cartData = await response.json();
               await this.updateCartDrawer(cartData);
+              
+              // Show the cart drawer after adding item
+              if (window.cart.showCartDrawer) {
+                window.cart.showCartDrawer();
+              } else if (typeof window.openCartDrawer === 'function') {
+                window.openCartDrawer();
+              }
+            } else {
+              // Fallback: just update cart count
+              const cartCountElements = document.querySelectorAll('.cart-count');
+              cartCountElements.forEach(element => {
+                element.textContent = cartData.item_count;
+              });
+              
+              // Try to show cart drawer with fallback method
+              if (typeof window.openCartDrawer === 'function') {
+                window.openCartDrawer();
+              }
             }
           }
+
+          // Show success feedback briefly
+          newButton.innerHTML = `
+            <div class="success-feedback">
+              <i class="icon icon-check text-success"></i>
+            </div>
+          `;
+          
+          // Optional: Show success message
+          // You can add your own success notification here
+          
         } catch (error) {
           console.error('Error adding item to cart:', error);
+          
+          // Show error feedback
+          newButton.innerHTML = `
+            <div class="error-feedback">
+              <i class="icon icon-close text-danger"></i>
+            </div>
+          `;
+          
           alert('Failed to add item to cart. Please try again.');
         } finally {
-          newButton.classList.remove('loading');
+          // Restore button state after a brief delay
+          setTimeout(() => {
+            newButton.classList.remove('loading');
+            newButton.style.pointerEvents = '';
+            newButton.removeAttribute('aria-disabled');
+            
+            // Restore original content
+            const originalContent = newButton.dataset.originalContent;
+            if (originalContent) {
+              newButton.innerHTML = originalContent;
+            }
+          }, 1000); // Show feedback for 1 second
         }
       });
     });
@@ -1010,83 +1099,6 @@ const ProductCard = {
 document.addEventListener('DOMContentLoaded', () => ProductCard.init());
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Handle add to cart buttons
-  const addToCartButtons = document.querySelectorAll('.add-to-cart');
-  
-  addToCartButtons.forEach(button => {
-    button.addEventListener('click', async function(e) {
-      e.preventDefault();
-      
-      const variantId = this.dataset.variantId;
-      const quantity = this.dataset.quantity || 1;
-      
-      try {
-        // Add item to cart
-        const response = await fetch('/cart/add.js', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            items: [{
-              id: variantId,
-              quantity: parseInt(quantity)
-            }]
-          })
-        });
-
-        if (!response.ok) throw new Error('Network response was not ok');
-        
-        const cartData = await response.json();
-        
-        // If we're on the cart page, add the item to the cart table
-        if (ProductCard.isCartPage()) {
-          // Find the added item in the cart data
-          const addedItem = cartData.items.find(item => item.variant_id == variantId);
-          if (addedItem) {
-            ProductCard.handleRelatedProductAddition(cartData, addedItem);
-          }
-          
-          // Update cart total
-          const cartTotal = document.querySelector('.total');
-          if (cartTotal) {
-            cartTotal.textContent = ProductCard.formatMoney(cartData.total_price);
-          }
-          
-          // Update cart count
-          const cartCountElements = document.querySelectorAll('.cart-count');
-          cartCountElements.forEach(element => {
-            element.textContent = cartData.item_count;
-          });
-
-          // Update shipping progress
-          if (typeof updateShippingProgress === 'function') {
-            updateShippingProgress();
-          }
-
-          // Show cart with items if it was empty
-          if (typeof handleCartWithItems === 'function') {
-            handleCartWithItems();
-          }
-        } else {
-          // Regular cart count update for non-cart pages
-          const cartCountElements = document.querySelectorAll('.cart-count');
-          cartCountElements.forEach(element => {
-            element.textContent = cartData.item_count;
-          });
-        }
-
-        // Optional: Show success message
-        // You can add your own success notification here
-        
-      } catch (error) {
-        console.error('Error adding item to cart:', error);
-        // Optional: Show error message
-        // You can add your own error notification here
-      }
-    });
-  });
-
   // Handle wishlist buttons
   const wishlistButtons = document.querySelectorAll('[data-wishlist]');
   wishlistButtons.forEach(button => {
