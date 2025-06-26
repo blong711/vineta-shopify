@@ -1,7 +1,7 @@
 {%- comment -%}Footer Section{%- endcomment -%}
 <footer
   id="footer"
-  class="footer-default xl-pb-70
+  class="footer-default {% if template == 'product' %}footer-pb-2{% else %}xl-pb-70{% endif %}
     {% if section.settings.text_size == 'small' %} text-sm{% elsif section.settings.text_size == 'large' %} text-lg{% else %} text-md{% endif %}
     {% if section.settings.border == 'top' %} footer-border-top{% elsif section.settings.border == 'bottom' %} footer-border-bottom{% endif %}
     {% if section.settings.border_main_position == 'full_width' %} footer-border-full{% else %} footer-border-container{% endif %}"
