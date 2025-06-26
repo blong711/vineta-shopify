@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateShippingProgress() {
     const cartTotal = parseFloat(document.querySelector('.total').textContent.replace(/[^0-9.-]+/g, ''));
     const threshold = 100; // $100 threshold
-    const progress = Math.min(96, (cartTotal / threshold) * 96);
+    const progress = Math.min(98, (cartTotal / threshold) * 98);
     const progressBar = document.querySelector('.tf-progress-ship .value');
     const progressText = document.querySelector('.tf-cart-head .title');
     
