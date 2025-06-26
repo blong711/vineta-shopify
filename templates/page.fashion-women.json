@@ -62,7 +62,6 @@
         "mobile_image_height_mode": "adapt",
         "mobile_fixed_height": 400,
         "autoplay": true,
-        "loop": true,
         "speed": 800,
         "show_navigation": false,
         "show_dots": true,
@@ -129,7 +128,6 @@
         "enable_autoplay": false,
         "autoplay_speed": 5000,
         "pause_on_hover": true,
-        "enable_loop": true,
         "enable_observer": true
       }
     },
@@ -170,7 +168,8 @@
         "tab_88tiNi"
       ],
       "settings": {
-        "default_tab": "seller"
+        "default_tab": "seller",
+        "width": "boxed"
       }
     },
     "banner_text_nDkprB": {
@@ -188,6 +187,7 @@
       ],
       "settings": {
         "layout": "default",
+        "width": "boxed",
         "banner_product": "",
         "banner_image": "shopify://shop_images/fashion-woman_1.jpg",
         "banner_link": "",
@@ -207,7 +207,7 @@
             "image": "shopify://shop_images/women_fashion_3.webp",
             "testimonial_image": "shopify://shop_images/women_fashion_3.webp",
             "product": "Loose Fit Tee",
-            "product_url": "",
+            "product_url": "shopify://products/loose-fit-tee",
             "price": "$150.00",
             "review": "I recently bought a dress from this store, and it has quickly become my favorite piece. The fabric is high-quality, the fit is perfect, and the design is both stylish and elegant. Highly recommend!",
             "title": "Elegance and Comfort Combined"
@@ -220,7 +220,7 @@
             "image": "shopify://shop_images/product_10.webp",
             "testimonial_image": "shopify://shop_images/product_10.webp",
             "product": "Round Neck Boxy T-shirt",
-            "product_url": "",
+            "product_url": "shopify://products/round-neck-boxy-t-shirt",
             "price": "$150.00",
             "review": "I recently purchased a handbag from this store, and I couldn’t be happier! The design is elegant, the quality is exceptional, and it complements every outfit perfectly. Definitely a great buy!",
             "title": "Elegance and Comfort Combined"
@@ -238,9 +238,6 @@
         "slides_per_view_mobile": 3,
         "slides_per_view_tablet": 2,
         "slides_per_view_desktop": 3,
-        "slides_per_group_mobile": 1,
-        "slides_per_group_tablet": 2,
-        "slides_per_group_desktop": 3,
         "space_between_mobile": 12,
         "space_between_desktop": 24,
         "transition_speed": 800,
@@ -249,7 +246,6 @@
         "enable_autoplay": false,
         "autoplay_speed": 3000,
         "pause_on_hover": true,
-        "enable_loop": true,
         "enable_observer": true
       }
     },
