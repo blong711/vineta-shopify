@@ -210,39 +210,18 @@
     
             {% if section.settings.layout == 'home-phonecase' %}
                 <div dir="ltr" class="swiper tf-swiper" data-swiper='{
-                    "slidesPerView": {{ section.settings.slides_per_view_mobile }},
-                    "spaceBetween": {{ section.settings.space_between_mobile }},
-                    "speed": {{ section.settings.transition_speed }},
-                    "observer": {{ section.settings.enable_observer }},
-                    "observeParents": {{ section.settings.enable_observer }},
-                    "slidesPerGroup": 1,
-                    "navigation": {% if section.settings.show_navigation %}{
-                        "clickable": true,
-                        "nextEl": ".nav-next-tes",
-                        "prevEl": ".nav-prev-tes"
-                    }{% else %}false{% endif %},
-                    "pagination": {% if section.settings.show_pagination %}{
-                        "el": ".sw-pagination-tes",
-                        "clickable": true
-                    }{% else %}false{% endif %},
-                    "autoplay": {% if section.settings.enable_autoplay %}{
-                        "delay": {{ section.settings.autoplay_speed }},
-                        "pauseOnMouseEnter": {{ section.settings.pause_on_hover }},
-                        "disableOnInteraction": false
-                    }{% else %}false{% endif %},
-                    "breakpoints": {
-                        "768": {
-                            "slidesPerView": {{ section.settings.slides_per_view_tablet }},
-                            "spaceBetween": {{ section.settings.space_between_mobile }},
-                            "slidesPerGroup": 2
-                        },
-                        "1200": {
-                            "slidesPerView": {{ section.settings.slides_per_view_desktop }},
-                            "spaceBetween": {{ section.settings.space_between_desktop }},
-                            "slidesPerGroup": 3}
+                        "slidesPerView": 1,
+                        "spaceBetween": 12,
+                        "speed": 800,
+                        "observer": true,
+                        "observeParents": true,
+                        "slidesPerGroup": 1,
+                        "pagination": { "el": ".sw-pagination-tes", "clickable": true },
+                        "breakpoints": {
+                        "768": { "slidesPerView": 2, "spaceBetween": 24, "slidesPerGroup": 2 },
+                        "1200": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3}
                         }
-                    }
-                }'>
+                    }'>
                     <div class="swiper-wrapper wow fadeInUp">
                         {% for block in section.blocks %}
                             <div class="swiper-slide" {{ block.shopify_attributes }}>
