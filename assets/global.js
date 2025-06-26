@@ -100,7 +100,7 @@ class WishlistCompare {
 
   /**
    * Get compare items from localStorage
-   * @returns {Array} Array of product IDs in compare list
+   * @returns {Array} Array of product objects in compare list
    */
   getCompareList() {
     const stored = localStorage.getItem(this.compareKey);
@@ -109,17 +109,27 @@ class WishlistCompare {
     try {
       // Try to parse as JSON (new format with product objects)
       const parsed = JSON.parse(stored);
-      if (Array.isArray(parsed) && parsed.length > 0 && typeof parsed[0] === 'object') {
-        return parsed;
+      
+      // Check if it's a valid array of objects
+      if (Array.isArray(parsed)) {
+        // Filter out any invalid items and ensure all items are objects
+        const validItems = parsed.filter(item => 
+          item && typeof item === 'object' && item.id && item.title
+        );
+        
+        // If we have valid items, return them
+        if (validItems.length > 0) {
+          return validItems;
+        }
       }
     } catch (e) {
-      // If JSON parsing fails, it's the old format (comma-separated IDs)
-      console.log('Migrating from old compare format to new format');
+      console.log('Error parsing compare data, clearing corrupted data');
+      // Clear corrupted data
+      localStorage.removeItem(this.compareKey);
     }
     
-    // Old format: comma-separated IDs
-    const oldFormat = stored.split(',').filter(id => id.trim());
-    return oldFormat;
+    // If we get here, the data is corrupted or in old format, return empty array
+    return [];
   }
 
   /**
@@ -397,36 +407,21 @@ class WishlistCompare {
     const compareList = drawer.querySelector('.tf-compare-list');
     if (!compareList) return;
 
-
     // Clear existing items
     compareList.innerHTML = '';
 
     // Add current compare items using stored data
-    this.compareList.forEach((item, index) => {
-      let productData = item;
-      
-      // Handle migration from old format (string IDs) to new format (product objects)
-      if (typeof item === 'string' && item.trim()) {
-        productData = this.getProductData(item);
-        if (productData) {
-          // Update the item in the array to the new format
-          this.compareList[index] = productData;
-        } else {
-          console.error(`Could not get product data for old format ID: ${item}`);
-          return;
-        }
+    this.compareList.forEach((item) => {
+      // Only process valid product objects
+      if (!item || typeof item !== 'object' || !item.id || !item.title) {
+        console.warn('Skipping invalid compare item:', item);
+        return;
       }
       
-      if (!productData || !productData.id) return; // Skip invalid product data
-      
-      
       // Use the stored product data directly
-      const itemElement = this.createCompareItem(productData);
+      const itemElement = this.createCompareItem(item);
       compareList.appendChild(itemElement);
     });
-
-    // Save the updated list if we migrated any items
-    this.saveCompareList();
 
     // Hide modal if no items
     if (this.compareList.length === 0) {
