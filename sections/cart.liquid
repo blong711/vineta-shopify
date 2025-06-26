@@ -51,10 +51,10 @@
                     <tr class="tf-cart-item file-delete" data-item-id="{{ item.key }}" data-variant-id="{{ item.variant.id }}">
                       <td class="tf-cart-item_product">
                         <a href="{{ item.url }}" class="img-box">
-                          <img src="{{ item.image | img_url: '150x' }}" 
-                               srcset="{{ item.image | img_url: '100x' }} 100w,
-                                       {{ item.image | img_url: '150x' }} 150w,
-                                       {{ item.image | img_url: '200x' }} 200w"
+                          <img src="{{ item.image | image_url: width: 150 }}" 
+                               srcset="{{ item.image | image_url: width: 100 }} 100w,
+                                       {{ item.image | image_url: width: 150 }} 150w,
+                                       {{ item.image | image_url: width: 200 }} 200w"
                                sizes="(max-width: 768px) 100px, 150px"
                                alt="{{ item.title | escape }}" 
                                loading="lazy" 
@@ -318,7 +318,7 @@
                             <div class="box-author">
                                 {% if block.settings.testimonial1_author_image %}
                               <div class="img">
-                                    <img src="{{ block.settings.testimonial1_author_image | img_url: '100x' }}" alt="{{ block.settings.testimonial1_author_name }}" width="100" height="100">
+                                    <img src="{{ block.settings.testimonial1_author_image | image_url: width: 100 }}" alt="{{ block.settings.testimonial1_author_name }}" width="100" height="100">
                               </div>
                                 {% endif %}
                                 <span class="name text-sm fw-medium">{{ block.settings.testimonial1_author_name }}</span>
@@ -341,7 +341,7 @@
                               <div class="box-author">
                                 {% if block.settings.testimonial2_author_image %}
                                   <div class="img">
-                                    <img src="{{ block.settings.testimonial2_author_image | img_url: '100x' }}" alt="{{ block.settings.testimonial2_author_name }}" width="100" height="100">
+                                    <img src="{{ block.settings.testimonial2_author_image | image_url: width: 100 }}" alt="{{ block.settings.testimonial2_author_name }}" width="100" height="100">
                                   </div>
                                 {% endif %}
                                 <span class="name text-sm fw-medium">{{ block.settings.testimonial2_author_name }}</span>
@@ -364,7 +364,7 @@
                               <div class="box-author">
                                 {% if block.settings.testimonial3_author_image %}
                                   <div class="img">
-                                    <img src="{{ block.settings.testimonial3_author_image | img_url: '100x' }}" alt="{{ block.settings.testimonial3_author_name }}" width="100" height="100">
+                                    <img src="{{ block.settings.testimonial3_author_image | image_url: width: 100 }}" alt="{{ block.settings.testimonial3_author_name }}" width="100" height="100">
                                   </div>
                                 {% endif %}
                                 <span class="name text-sm fw-medium">{{ block.settings.testimonial3_author_name }}</span>

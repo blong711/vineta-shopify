@@ -8,7 +8,7 @@
     {% section 'filter' with position: 'horizontal' %}
 {%- endcomment -%}
 
-{%- assign position = position | default: 'drawer' -%}
+{%- assign position = section.settings.position | default: 'drawer' -%}
 
 {%- if position == 'drawer' -%}
   <div class="filter-drawer">

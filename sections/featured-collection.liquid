@@ -44,8 +44,8 @@
                     <div class="fs-cls lg hover-img">
                         {% if collection.featured_image != blank or block.settings.custom_image != blank %}
                             <div class="img-style image">
-                                <img src="{{ block.settings.custom_image | default: collection.featured_image | img_url: 'master' }}"
-                                    data-src="{{ block.settings.custom_image | default: collection.featured_image | img_url: 'master' }}" 
+                                <img src="{{ block.settings.custom_image | default: collection.featured_image | image_url }}"
+                                    data-src="{{ block.settings.custom_image | default: collection.featured_image | image_url }}" 
                                     alt="{{ collection.title | escape }}" 
                                     class="lazyload"
                                     width="{{ block.settings.custom_image.width | default: collection.featured_image.width }}"
@@ -118,8 +118,8 @@
                             <div class="banner-shop hover-img style-left-center">
                                 {% if collection.featured_image != blank or block.settings.custom_image != blank %}
                                     <a href="{{ collection.url }}" class="img-style d-block">
-                                        <img src="{{ block.settings.custom_image | default: collection.featured_image | img_url: 'master' }}"
-                                            data-src="{{ block.settings.custom_image | default: collection.featured_image | img_url: 'master' }}" 
+                                        <img src="{{ block.settings.custom_image | default: collection.featured_image | image_url }}"
+                                            data-src="{{ block.settings.custom_image | default: collection.featured_image | image_url }}" 
                                             alt="{{ collection.title | escape }}" 
                                             class="lazyload"
                                             width="{{ block.settings.custom_image.width | default: collection.featured_image.width }}"
@@ -210,8 +210,8 @@
                             <div class="fs-cls hover-img">
                                 {% if collection.featured_image != blank or block.settings.custom_image != blank %}
                                     <div class="img-style image">
-                                        <img src="{{ block.settings.custom_image | default: collection.featured_image | img_url: 'master' }}"
-                                            data-src="{{ block.settings.custom_image | default: collection.featured_image | img_url: 'master' }}" 
+                                        <img src="{{ block.settings.custom_image | default: collection.featured_image | image_url }}"
+                                            data-src="{{ block.settings.custom_image | default: collection.featured_image | image_url }}" 
                                             alt="{{ collection.title | escape }}" 
                                             class="lazyload"
                                             width="{{ block.settings.custom_image.width | default: collection.featured_image.width }}"
@@ -286,8 +286,8 @@
                                 <div class="wg-cls style-abs asp-1 hover-img">
                                     {% if collection.featured_image != blank or block.settings.custom_image != blank %}
                                         <a href="{{ collection.url }}" class="image img-style d-block">
-                                            <img src="{{ block.settings.custom_image | default: collection.featured_image | img_url: 'master' }}"
-                                                data-src="{{ block.settings.custom_image | default: collection.featured_image | img_url: 'master' }}" 
+                                            <img src="{{ block.settings.custom_image | default: collection.featured_image | image_url }}"
+                                                data-src="{{ block.settings.custom_image | default: collection.featured_image | image_url }}" 
                                                 alt="{{ collection.title | escape }}" 
                                                 class="lazyload"
                                                 width="{{ block.settings.custom_image.width | default: collection.featured_image.width }}"

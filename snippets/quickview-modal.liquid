@@ -24,8 +24,8 @@
                                     <div class="item">
                                         {%- if media.media_type == 'image' -%}
                                             <img class="lazyload" 
-                                                data-src="{{ media | img_url: 'master' }}"
-                                                src="{{ media | img_url: '400x' }}" 
+                                                data-src="{{ media | image_url }}"
+                                                src="{{ media | image_url: width: 400 }}" 
                                                 width="{{ media.width }}"
                                                 height="{{ media.height }}"
                                                 alt="{{ media.alt | escape }}">

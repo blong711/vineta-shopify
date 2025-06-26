@@ -289,22 +289,22 @@
     <a href="{{ product.url }}" class="product-img">
       {%- if product.featured_image -%}
         <img class="img-product lazyload"
-          data-src="{{ product.featured_image | img_url: 'master' }}"
-          src="{{ product.featured_image | img_url: 'master' }}" 
+          data-src="{{ product.featured_image | image_url }}"
+          src="{{ product.featured_image | image_url }}" 
           alt="{{ product.featured_image.alt | escape }}"
           width="400"
           height="400">
         {%- if product.images.size > 1 -%}
           <img class="img-hover lazyload"
-            data-src="{{ product.images[1] | img_url: 'master' }}"
-            src="{{ product.images[1] | img_url: 'master' }}" 
+            data-src="{{ product.images[1] | image_url }}"
+            src="{{ product.images[1] | image_url }}" 
             alt="{{ product.images[1].alt | escape }}"
             width="400"
             height="400">
         {%- else -%}
           <img class="img-hover lazyload"
-            data-src="{{ product.featured_image | img_url: 'master' }}"
-            src="{{ product.featured_image | img_url: 'master' }}" 
+            data-src="{{ product.featured_image | image_url }}"
+            src="{{ product.featured_image | image_url }}" 
             alt="{{ product.featured_image.alt | escape }}"
             width="400"
             height="400">
@@ -387,8 +387,8 @@
                 <li class="list-color-item color-swatch">
                   <span class="text-quantity font-2">{{ value }}</span>
                   <img class="lazyload" 
-                    data-src="{{ product.featured_image | img_url: 'master' }}"
-                    src="{{ product.featured_image | img_url: 'master' }}" 
+                    data-src="{{ product.featured_image | image_url }}"
+                    src="{{ product.featured_image | image_url }}" 
                     alt="{{ value }}"
                     width="50"
                     height="50">
@@ -403,8 +403,8 @@
                 <li class="list-color-item color-swatch">
                   <span class="text-quantity font-2">{{ value }}</span>
                   <img class="lazyload" 
-                    data-src="{{ product.featured_image | img_url: 'master' }}"
-                    src="{{ product.featured_image | img_url: 'master' }}" 
+                    data-src="{{ product.featured_image | image_url }}"
+                    src="{{ product.featured_image | image_url }}" 
                     alt="{{ value }}"
                     width="50"
                     height="50">
@@ -522,7 +522,7 @@
             <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if variant.option2 == 'White' %}line{% endif %} {% if forloop.first %}active{% endif %}">
               <span class="tooltip color-filter">{{ variant.option2 }}</span>
               <span class="swatch-value bg-{{ variant.option2 | handle }}"></span>
-              <img class="lazyload" data-src="{{ variant.image | img_url: '300x' }}" src="{{ variant.image | img_url: '300x' }}" alt="{{ variant.title | escape }}" width="300" height="300">
+              <img class="lazyload" data-src="{{ variant.image | image_url: width: 300, height: 300 }}" src="{{ variant.image | image_url: width: 300, height: 300 }}" alt="{{ variant.title | escape }}" width="300" height="300">
             </li>
           {%- endif -%}
         {%- endfor -%}

@@ -34,8 +34,8 @@
       </div>
       <div class="image">
         {%- if section.settings.banner_image != blank -%}
-          <img src="{{ section.settings.banner_image | img_url: 'master' }}"
-            data-src="{{ section.settings.banner_image | img_url: 'master' }}"
+          <img src="{{ section.settings.banner_image | image_url }}"
+            data-src="{{ section.settings.banner_image | image_url }}"
             alt="{{ section.settings.heading | escape }}"
             width="{{ section.settings.banner_image.width }}"
             height="{{ section.settings.banner_image.height }}"
@@ -52,8 +52,8 @@
       <div class="s-banner-countdown banner-cd-fashion">
         <div class="image">
           {%- if section.settings.banner_image != blank -%}
-            <img src="{{ section.settings.banner_image | img_url: 'master' }}"
-              data-src="{{ section.settings.banner_image | img_url: 'master' }}"
+            <img src="{{ section.settings.banner_image | image_url }}"
+              data-src="{{ section.settings.banner_image | image_url }}"
               alt="{{ section.settings.heading | escape }}"
               width="{{ section.settings.banner_image.width }}"
               height="{{ section.settings.banner_image.height }}"

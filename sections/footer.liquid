@@ -13,7 +13,7 @@
         <div class="footer-logo">
           <a href="{{ routes.root_url }}">
             {%- if section.settings.logo != blank -%}
-              <img src="{{ section.settings.logo | img_url: 'master' }}" 
+              <img src="{{ section.settings.logo | image_url }}" 
                 class="logo" 
                 alt="{{ section.settings.logo.alt | default: shop.name }}"
                 width="150"
@@ -188,6 +188,7 @@
                 </div>
               </div>
             {%- when 'menu' -%}
+              {%- assign previous_type = block.type -%}
               {%- if forloop.first or previous_type != 'menu' -%}
                 <div class="footer-inner-wrap s3">
               {%- endif -%}
@@ -216,7 +217,6 @@
               {%- if forloop.last or section.blocks[forloop.index].type != 'menu' -%}
                 </div>
               {%- endif -%}
-              {%- assign previous_type = block.type -%}
           {%- endcase -%}
         {%- endfor -%}
       </div>

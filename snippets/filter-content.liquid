@@ -164,7 +164,7 @@
             <li>
               <div class="recent-blog-item">
                 <a href="{{ prod.url }}" class="img-product">
-                  <img src="{{ prod.featured_image | img_url: 'small' }}" alt="{{ prod.title | escape }}" width="100" height="100">
+                  <img src="{{ prod.featured_image | image_url: width: 100, height: 100 }}" alt="{{ prod.title | escape }}" width="100" height="100">
                 </a>
                 <div class="content">
                   <a href="{{ prod.url }}" class="title text-md link fw-medium">{{ prod.title }}</a>
@@ -183,7 +183,7 @@
             <li>
               <div class="recent-blog-item">
                 <a href="{{ product.url }}" class="img-product">
-                  <img src="{{ product.featured_image | img_url: 'small' }}" alt="{{ product.title | escape }}" width="100" height="100">
+                  <img src="{{ product.featured_image | image_url: width: 100, height: 100 }}" alt="{{ product.title | escape }}" width="100" height="100">
                 </a>
                 <div class="content">
                   <a href="{{ product.url }}" class="title text-md link fw-medium">{{ product.title }}</a>
@@ -206,8 +206,8 @@
   <div class="widget-facet">
     <div class="sb-banner hover-img">
       <div class="image img-style">
-        <img src="{{ section.settings.filter_banner | img_url: 'master' }}" 
-             data-src="{{ section.settings.filter_banner | img_url: 'master' }}" 
+        <img src="{{ section.settings.filter_banner | image_url }}" 
+             data-src="{{ section.settings.filter_banner | image_url }}" 
              alt="{{ section.settings.filter_banner.alt | escape }}" 
              class="lazyload"
              width="{{ section.settings.filter_banner.width }}"

@@ -24,7 +24,7 @@
         <div class="image shine-item">
           {%- if section.settings.image != blank -%}
             <img 
-              src="{{ section.settings.image | img_url: 'master' }}" 
+              src="{{ section.settings.image | image_url }}" 
               alt="{{ section.settings.image.alt | escape }}" 
               class="lazyload"
               width="{{ section.settings.image.width }}"
@@ -39,7 +39,7 @@
           <div class="image {% if section.settings.layout == 'fashion-02' %}img-hv-overlay{% endif %}">
             {%- if section.settings.image != blank -%}
               <img 
-                src="{{ section.settings.image | img_url: 'master' }}" 
+                src="{{ section.settings.image | image_url }}" 
                 alt="{{ section.settings.image.alt | escape }}" 
                 class="lazyload"
                 width="{{ section.settings.image.width }}"
@@ -58,10 +58,15 @@
               playsinline 
               preload="auto"
               class="banner-video"
-              poster="{{ section.settings.bicycle_fallback_image | img_url: 'master' }}"
+              poster="{{ section.settings.bicycle_fallback_image | image_url }}"
             >
-              <source src="{{ section.settings.video }}" type="video/mp4">
-              <source src="{{ section.settings.video }}" type="video/webm">
+              {% if section.settings.video contains 'http' %}
+                <source src="{{ section.settings.video }}" type="video/mp4">
+                <source src="{{ section.settings.video }}" type="video/webm">
+              {% else %}
+                <source src="{{ section.settings.video | asset_url }}" type="video/mp4">
+                <source src="{{ section.settings.video | asset_url }}" type="video/webm">
+              {% endif %}
               {% if section.settings.bicycle_fallback_image != blank %}
                 {{ section.settings.bicycle_fallback_image | image_url: width: 1920 | image_tag:
                   loading: 'lazy',
@@ -72,7 +77,7 @@
             </video>
           {% elsif section.settings.image != blank %}
             <img 
-              src="{{ section.settings.image | img_url: 'master' }}" 
+              src="{{ section.settings.image | image_url }}" 
               alt="{{ section.settings.image.alt | escape }}" 
               class="lazyload banner-image"
               width="{{ section.settings.image.width }}"

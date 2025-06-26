@@ -269,8 +269,10 @@
                                         <div class="box-avt">
                                             <div class="avatar">
                                                 {% if block.settings.image != blank %}
-                                                    <img src="{{ block.settings.image | img_url: '120x120' }}" 
-                                                         alt="{{ block.settings.name }}" 
+                                                    <img class="lazyload" 
+                                                         data-src="{{ block.settings.image | image_url: width: 400, height: 400 }}" 
+                                                         src="{{ block.settings.image | image_url: width: 400, height: 400 }}" 
+                                                         alt="{{ block.settings.name }}"
                                                          width="60" 
                                                          height="60">
                                                 {% else %}
@@ -320,8 +322,10 @@
                                                 <div class="box-author">
                                                     <div class="img d-md-none">
                                                         {% if block.settings.image != blank %}
-                                                            <img src="{{ block.settings.image | img_url: '120x120' }}" 
-                                                                 alt="{{ block.settings.name }}" 
+                                                            <img class="lazyload" 
+                                                                 data-src="{{ block.settings.image | image_url: width: 400, height: 400 }}" 
+                                                                 src="{{ block.settings.image | image_url: width: 400, height: 400 }}" 
+                                                                 alt="{{ block.settings.name }}"
                                                                  width="60" 
                                                                  height="60">
                                                         {% else %}
@@ -355,8 +359,8 @@
                                         <div class="img-sw-thumb img-style">
                                             {% if block.settings.image != blank %}
                                                 <img class="lazyload" 
-                                                     data-src="{{ block.settings.image | img_url: '400x' }}" 
-                                                     src="{{ block.settings.image | img_url: '400x' }}" 
+                                                     data-src="{{ block.settings.image | image_url: width: 400, height: 400 }}" 
+                                                     src="{{ block.settings.image | image_url: width: 400, height: 400 }}" 
                                                      alt="{{ block.settings.name }}"
                                                      width="400"
                                                      height="400">
@@ -430,8 +434,10 @@
                                             <div class="box-avt">
                                                 <div class="avatar">
                                                     {% if block.settings.image != blank %}
-                                                        <img src="{{ block.settings.image | img_url: '120x120' }}" 
-                                                             alt="{{ block.settings.name }}" 
+                                                        <img class="lazyload" 
+                                                             data-src="{{ block.settings.image | image_url: width: 400, height: 400 }}" 
+                                                             src="{{ block.settings.image | image_url: width: 400, height: 400 }}" 
+                                                             alt="{{ block.settings.name }}"
                                                              width="60" 
                                                              height="60">
                                                     {% else %}
@@ -456,8 +462,8 @@
                                         <div class="image img-style">
                                             {% if block.settings.testimonial_image != blank %}
                                                 <img class="lazyload" 
-                                                     data-src="{{ block.settings.testimonial_image | img_url: '400x' }}" 
-                                                     src="{{ block.settings.testimonial_image | img_url: '400x' }}" 
+                                                     data-src="{{ block.settings.testimonial_image | image_url: width: 400, height: 400 }}" 
+                                                     src="{{ block.settings.testimonial_image | image_url: width: 400, height: 400 }}" 
                                                      alt="{{ block.settings.name }}"
                                                      width="auto"
                                                      height="auto">
@@ -540,8 +546,10 @@
                                         <div class="box-avt">
                                             <div class="avatar">
                                                 {% if block.settings.image != blank %}
-                                                    <img src="{{ block.settings.image | img_url: '120x120' }}" 
-                                                         alt="{{ block.settings.name }}" 
+                                                    <img class="lazyload" 
+                                                         data-src="{{ block.settings.image | image_url: width: 400, height: 400 }}" 
+                                                         src="{{ block.settings.image | image_url: width: 400, height: 400 }}" 
+                                                         alt="{{ block.settings.name }}"
                                                          width="60" 
                                                          height="60">
                                                 {% else %}

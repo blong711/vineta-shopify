@@ -234,7 +234,6 @@
             <div class="wrapper-gallery-scroll flat-single-grid" id="gallery-started">
                 {% for media in product.media %}
                   <a href="{{ media | image_url: width: 800 }}" 
-                     data-scroll="{{ color | handle }}" 
                      target="_blank" 
                      class="item item-scroll-target" 
                      data-pswp-width="{{ media.width }}px" 
@@ -278,7 +277,6 @@
             <div class="wrapper-gallery-scroll flat-single-grid flat-single-stacked" id="gallery-started">
                 {% for media in product.media %}
                   <a href="{{ media | image_url: width: 800 }}" 
-                     data-scroll="{{ color | handle }}" 
                      target="_blank" 
                      class="item item-scroll-target" 
                      data-pswp-width="{{ media.width }}px" 
@@ -705,7 +703,7 @@
                           <ul class="list-card">
                             {% for svg in svg_list %}
                               <li class="card-item">
-                                <img src="{{ svg | payment_type_img_url}}" alt="{{ svg | capitalize }}" width="60" height="40">
+                                <img src="{{ svg | asset_url }}" alt="{{ svg | capitalize }}" width="60" height="40">
                               </li>
                             {% endfor %}
                           </ul>

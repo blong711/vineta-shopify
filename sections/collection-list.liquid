@@ -10,8 +10,8 @@
             <a href="{{ collection.url }}" class="image-wrap relative">
               <div class="image img-style collection-list-img-style">
                 {%- if collection.image -%}
-                  <img src="{{ collection.image | img_url: '400x400', crop: 'center' }}"
-                  data-src="{{ collection.image | img_url: '400x400', crop: 'center' }}"
+                  <img src="{{ collection.image | image_url: width: 400, height: 400, crop: 'center' }}"
+                  data-src="{{ collection.image | image_url: width: 400, height: 400, crop: 'center' }}"
                   alt="{{ collection.title | escape }}"
                   class="lazyload"
                   width="400"
