@@ -67,8 +67,6 @@
                                 }'>
                                 <div class="swiper-wrapper">
                                     {% for product in collections[block.settings.collection].products limit: block.settings.products_to_show %}
-                                        {% assign discount_amount = product.compare_at_price | minus: product.price %}
-                                        {% assign discount_percentage = discount_amount | times: 100.0 | divided_by: product.compare_at_price | round %}
                                         <div class="swiper-slide">
                                             {% render 'card-product',
                                                 product: product,

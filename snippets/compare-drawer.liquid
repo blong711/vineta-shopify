@@ -22,7 +22,7 @@
                                                          {{ product.featured_image | image_url: width: 200, height: 200 }} 200w,
                                                          {{ product.featured_image | image_url: width: 300, height: 300 }} 300w"
                                             data-sizes="(max-width: 768px) 150px, 200px"
-                                            src="{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}"
+                                            src="{{ 'placeholder-image.jpg' | asset_url }}"
                                             alt="{{ product.title | escape }}"
                                             width="200"
                                             height="200"

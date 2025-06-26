@@ -155,7 +155,7 @@
                                   {% if section.settings.enable_video_loop %}loop{% endif %}
                                   {% if section.settings.enable_video_autoplay %}autoplay{% endif %}>
                                   {% for source in media.sources %}
-                                    <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                                    <source src="{{ source.url | asset_url }}" type="{{ source.mime_type }}">
                                   {% endfor %}
                                   Your browser does not support the video tag.
                                 </video>
@@ -703,7 +703,7 @@
                           <ul class="list-card">
                             {% for svg in svg_list %}
                               <li class="card-item">
-                                <img src="{{ svg | asset_url }}" alt="{{ svg | capitalize }}" width="60" height="40">
+                                <img src="{{ svg | payment_type_img_url}}" alt="{{ svg | capitalize }}" width="60" height="40">
                               </li>
                             {% endfor %}
                           </ul>
