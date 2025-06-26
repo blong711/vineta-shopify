@@ -338,7 +338,13 @@
         }
     
         if (currentProduct.variants.length > 1) {
-          variantContainer.innerHTML = currentProduct.options.map(option => `
+          variantContainer.innerHTML = currentProduct.options.map(option => {
+            // Hide variant picker for Case type options
+            if (option.name.toLowerCase() === 'case type') {
+              return '';
+            }
+            
+            return `
             <div class="variant-picker-item variant-${option.name.toLowerCase()}">
               <div class="variant-picker-label">
                 <div>
@@ -357,7 +363,8 @@
                 }).join('')}
               </div>
             </div>
-          `).join('');
+          `;
+          }).join('');
         } else {
           variantContainer.innerHTML = '';
         }
