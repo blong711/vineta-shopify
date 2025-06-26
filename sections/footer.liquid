@@ -188,8 +188,23 @@
                 </div>
               </div>
             {%- when 'menu' -%}
-              {%- assign previous_type = block.type -%}
-              {%- if forloop.first or previous_type != 'menu' -%}
+              {%- assign menu_blocks = section.blocks | where: "type", "menu" -%}
+              {%- assign is_first_menu = false -%}
+              {%- assign is_last_menu = false -%}
+              
+              {%- for menu_block in menu_blocks -%}
+                {%- if menu_block.id == block.id -%}
+                  {%- if forloop.first -%}
+                    {%- assign is_first_menu = true -%}
+                  {%- endif -%}
+                  {%- if forloop.last -%}
+                    {%- assign is_last_menu = true -%}
+                  {%- endif -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+              
+              {%- if is_first_menu -%}
                 <div class="footer-inner-wrap s3">
               {%- endif -%}
                   <div class="footer-col-block inner-col" {{ block.shopify_attributes }}>
@@ -214,7 +229,7 @@
                       </ul>
                     </div>
                   </div>
-              {%- if forloop.last or section.blocks[forloop.index].type != 'menu' -%}
+              {%- if is_last_menu -%}
                 </div>
               {%- endif -%}
           {%- endcase -%}

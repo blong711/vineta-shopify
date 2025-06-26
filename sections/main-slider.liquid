@@ -30,10 +30,10 @@
                             {% if block.settings.image != blank or block.settings.image_mobile != blank %}
                                 <picture>
                                     {% if block.settings.image_mobile != blank %}
-                                        <source srcset="{{ block.settings.image_mobile | img_url: 'master' }}" media="(max-width: 767px)">
+                                        <source srcset="{{ block.settings.image_mobile | image_url }}" media="(max-width: 767px)">
                                     {% endif %}
-                                    <img src="{{ block.settings.image | img_url: 'master' }}"
-                                        data-src="{{ block.settings.image | img_url: 'master' }}"
+                                    <img src="{{ block.settings.image | image_url }}"
+                                        data-src="{{ block.settings.image | image_url }}"
                                         alt="{{ block.settings.image.alt | escape }}"
                                         class="lazyload"
                                         width="{{ block.settings.image.width }}"
