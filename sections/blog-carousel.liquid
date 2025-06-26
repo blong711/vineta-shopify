@@ -154,9 +154,9 @@
                     <a href="{{ article.settings.article.url }}" class="title fw-medium link text-xl text-line-clamp-2">
                       {{ article.settings.article.title }}
                     </a>
-                    {% if article.settings.article.excerpt != blank %}
+                    {% if article.settings.article.excerpt_or_content  != blank %}
                       <p class="desc text-main text-sm text-line-clamp-2">
-                        {{ article.settings.article.excerpt | strip_html | truncatewords: 30 }}
+                        {{ article.settings.article.excerpt_or_content  | strip_html | truncatewords: 30 }}
                       </p>
                     {% endif %}
                   </div>
@@ -251,9 +251,9 @@
                     <a href="{{ article.settings.article.url }}" class="title fw-medium link text-xl text-line-clamp-2">
                       {{ article.settings.article.title }}
                     </a>
-                    {% if article.settings.article.excerpt != blank %}
+                    {% if article.settings.article.excerpt_or_content != blank %}
                       <p class="desc text-main text-sm text-line-clamp-2">
-                        {{ article.settings.article.excerpt | strip_html | truncatewords: 30 }}
+                        {{ article.settings.article.excerpt_or_content  | strip_html | truncatewords: 30 }}
                       </p>
                     {% endif %}
                   </div>
