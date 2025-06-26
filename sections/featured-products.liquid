@@ -14,7 +14,7 @@
     {% else %}
       <div class="flat-title-v2 justify-items-center text-center wow fadeInUp">
         <a href="{{ section.settings.button_url }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.button_text }}</a>
-        <h4 class="text-capitalize">{{ section.settings.heading | replace: '[br]', '<br class="d-none d-xl-block">' }}</h4>
+        <h4 style="max-width: 500px;" class="text-capitalize">{{ section.settings.heading | replace: '[br]', '<br class="d-none d-xl-block">' }}</h4>
       </div>
     {% endif %}
     <div class="fl-control-sw{% if section.settings.layout == 'feature' %}2{% endif %} pos2 wow fadeInUp">
