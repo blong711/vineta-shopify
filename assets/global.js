@@ -1069,6 +1069,7 @@ class Cart {
         const oldVariantId = event.target.dataset.variantId;
         const newVariantId = event.target.value;
         const quantity = parseInt(event.target.closest('.tf-mini-cart-item').querySelector('.quantity-product').value);
+        const cartItemElement = event.target.closest('.tf-mini-cart-item');
 
         try {
           // First remove the old variant
@@ -1097,41 +1098,34 @@ class Cart {
           });
           if (!addResponse.ok) throw new Error('Failed to add new variant');
 
-          // Fetch updated cart data and update UI
+          // Fetch updated cart data
           const cartResponse = await fetch('/cart.js');
           if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
           const cartData = await cartResponse.json();
           
-          // Ensure we have complete product data for all items
-          if (cartData.items && cartData.items.length > 0) {
-            await Promise.all(cartData.items.map(async (item) => {
-              try {
-                const productResponse = await fetch(`/products/${item.handle}.js`);
-                if (productResponse.ok) {
-                  const productData = await productResponse.json();
-                  // Add variants data to the cart item
-                  item.variants = productData.variants;
-                }
-              } catch (error) {
-                console.error(`Error fetching product data for ${item.handle}:`, error);
-              }
-              // Make sure images are available
-              if (!item.image) {
-                item.image = item.featured_image?.url || item.product_featured_image || '/no-image.jpg';
-              }
-              // Normalize URL format
-              if (!item.url) {
-                item.url = `/products/${item.handle}`;
-              }
-            }));
+          // Find the new item in the cart data
+          const newItem = cartData.items.find(item => item.variant_id == newVariantId);
+          if (newItem && cartItemElement) {
+            // Update the specific cart item element in place
+            await this.updateCartItemInPlace(cartItemElement, newItem);
           }
           
-          // this.updateCartDisplay(cartData);
+          // Update cart total and shipping threshold
+          const cartDrawer = document.getElementById('shoppingCart');
+          if (cartDrawer) {
+            const totalPrice = cartDrawer.querySelector('.tf-totals-total-value');
+            if (totalPrice) {
+              totalPrice.textContent = this.formatMoney(cartData.total_price);
+            }
+            this.updateShippingThreshold(cartData.total_price);
+          }
+          
           this.updateHeaderCartCount(cartData.item_count);
         } catch (error) {
           console.error('Error changing variant:', error);
           // Revert the select to the old value
           event.target.value = oldVariantId;
+          event.target.dataset.variantId = oldVariantId;
         }
       }
     });
@@ -1607,6 +1601,100 @@ class Cart {
     document.dispatchEvent(new CustomEvent('cart:countUpdated', {
       detail: { count: count || 0 }
     }));
+  }
+
+  async updateCartItemInPlace(cartItemElement, newItem) {
+    try {
+      // Fetch product data to get all variants
+      const productResponse = await fetch(`/products/${newItem.handle}.js`);
+      let variantOptions = [{
+        id: newItem.variant_id,
+        title: newItem.variant_title || 'Default',
+        selected: true
+      }];
+      
+      if (productResponse.ok) {
+        const productData = await productResponse.json();
+        if (productData.variants && productData.variants.length > 1) {
+          variantOptions = productData.variants.map(variant => ({
+            id: variant.id,
+            title: variant.title || 'Default',
+            selected: variant.id === newItem.variant_id
+          }));
+        }
+      }
+
+      // Update the cart item element's data attributes
+      cartItemElement.dataset.variantId = newItem.variant_id;
+      
+      // Update the image
+      const imageElement = cartItemElement.querySelector('.tf-mini-cart-image img');
+      if (imageElement) {
+        const itemImage = newItem.image || newItem.featured_image?.url || '/no-image.jpg';
+        imageElement.src = itemImage;
+        imageElement.setAttribute('data-src', itemImage);
+        imageElement.alt = newItem.title;
+      }
+
+      // Update the title link
+      const titleLink = cartItemElement.querySelector('.tf-mini-cart-info .title');
+      if (titleLink) {
+        titleLink.textContent = newItem.title;
+        titleLink.href = newItem.url || `/products/${newItem.handle}`;
+      }
+
+      // Update the remove button
+      const removeButton = cartItemElement.querySelector('.remove');
+      if (removeButton) {
+        removeButton.dataset.variantId = newItem.variant_id;
+      }
+
+      // Update the select element
+      const selectElement = cartItemElement.querySelector('select[data-variant-id]');
+      if (selectElement && variantOptions.length > 1) {
+        selectElement.dataset.variantId = newItem.variant_id;
+        selectElement.innerHTML = variantOptions.map(option => 
+          `<option value="${option.id}" ${option.selected ? 'selected' : ''}>${option.title}</option>`
+        ).join('');
+      }
+
+      // Update quantity controls
+      const quantityInput = cartItemElement.querySelector('.quantity-product');
+      if (quantityInput) {
+        quantityInput.dataset.variantId = newItem.variant_id;
+        quantityInput.value = newItem.quantity;
+      }
+
+      const decreaseBtn = cartItemElement.querySelector('.btn-decrease');
+      if (decreaseBtn) {
+        decreaseBtn.dataset.variantId = newItem.variant_id;
+      }
+
+      const increaseBtn = cartItemElement.querySelector('.btn-increase');
+      if (increaseBtn) {
+        increaseBtn.dataset.variantId = newItem.variant_id;
+      }
+
+      // Update price
+      const priceElement = cartItemElement.querySelector('.new-price');
+      if (priceElement) {
+        priceElement.textContent = this.formatMoney(newItem.final_price || newItem.price);
+      }
+
+      // Update original price if it exists
+      const oldPriceElement = cartItemElement.querySelector('.old-price');
+      if (oldPriceElement) {
+        if (newItem.original_price !== newItem.final_price) {
+          oldPriceElement.textContent = this.formatMoney(newItem.original_price);
+          oldPriceElement.style.display = 'inline';
+        } else {
+          oldPriceElement.style.display = 'none';
+        }
+      }
+
+    } catch (error) {
+      console.error('Error updating cart item in place:', error);
+    }
   }
 }
 
