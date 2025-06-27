@@ -532,8 +532,8 @@ const ProductCard = {
           });
 
           if (!response.ok) throw new Error('Failed to add item to cart');
-          
-          const cartData = await response.json();
+          const cartResponse = await fetch('/cart.js');
+          const cartData = await cartResponse.json();
           
           // If we're on the cart page, add the item to the cart table
           if (this.isCartPage()) {
@@ -1229,4 +1229,25 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
   });
-})(); 
+})();
+function updateShippingProgress() {
+  const cartTotal = parseFloat(document.querySelector('.total').textContent.replace(/[^0-9.-]+/g, ''));
+  const threshold = 100; // $100 threshold
+  const progress = Math.min(98, (cartTotal / threshold) * 98);
+  const progressBar = document.querySelector('.tf-progress-ship .value');
+  const progressText = document.querySelector('.tf-cart-head .title');
+  
+  if (progressBar) {
+    progressBar.style.width = progress + '%';
+    progressBar.setAttribute('data-progress', progress);
+  }
+  
+  if (progressText) {
+    if (cartTotal >= threshold) {
+      progressText.innerHTML = 'Congratulations! You\'ve unlocked <span class="fw-medium">Free Shipping</span>';
+    } else {
+      const remaining = threshold - cartTotal;
+      progressText.innerHTML = `Spend <span class="fw-medium">$${remaining.toFixed(2)}</span> more to get <span class="fw-medium">Free Shipping</span>`;
+    }
+  }
+}
