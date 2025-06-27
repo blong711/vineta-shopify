@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!response.ok) {
           // Revert input value if API call fails
           input.value = currentValue;
-          throw new Error('Failed to update quantity');
+          throw new Error('Failed to update quantity. Product out of stock.');
         }
 
         const cartData = await response.json();
@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       } catch (error) {
         console.error('Error updating quantity:', error);
-        alert('Failed to update quantity. Please try again.');
+        alert('Failed to update quantity. Product out of stock.');
       }
     });
   });
@@ -671,7 +671,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (!response.ok) {
                       // Revert input value if API call fails
                       input.value = currentValue;
-                      throw new Error('Failed to update quantity');
+                      throw new Error('Failed to update quantity. Product out of stock.');
                     }
 
                     const cartData = await response.json();
@@ -718,7 +718,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                   } catch (error) {
                     console.error('Error updating quantity:', error);
-                    alert('Failed to update quantity. Please try again.');
+                    alert('Failed to update quantity. Product out of stock.');
                   }
                 });
               });
@@ -768,7 +768,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       } catch (error) {
         console.error('Error updating gift wrap:', error);
-        alert('Failed to update gift wrap. Please try again.');
+        alert('Failed to update gift wrap. Product out of stock.');
       }
     });
   }

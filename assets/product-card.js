@@ -238,7 +238,7 @@ const ProductCard = {
           }
         } catch (error) {
           console.error('Error updating quantity:', error);
-          alert('Failed to update quantity. Please try again.');
+          alert('Failed to update quantity. Product out of stock.');
         }
       });
     });
@@ -702,7 +702,7 @@ const ProductCard = {
             await this.updateCartDrawer(cartData);
           } catch (error) {
             console.error('Error updating cart:', error);
-            alert('Failed to update cart. Please try again.');
+            alert('Failed to update cart. Product out of stock.');
           }
         });
       });
@@ -755,7 +755,7 @@ const ProductCard = {
             await this.updateCartDrawer(cartData);
           } catch (error) {
             console.error('Error updating cart:', error);
-            alert('Failed to update cart. Please try again.');
+            alert('Failed to update cart. Product out of stock.');
           }
         });
       });
@@ -833,7 +833,7 @@ const ProductCard = {
             await this.updateCartDrawer(cartData);
           } catch (error) {
             console.error('Error updating cart:', error);
-            alert('Failed to update cart. Please try again.');
+            alert('Failed to update cart. Product out of stock.');
           }
         });
       });
@@ -874,7 +874,7 @@ const ProductCard = {
             await this.updateCartDrawer(cartData);
           } catch (error) {
             console.error('Error updating cart:', error);
-            alert('Failed to update cart. Please try again.');
+            alert('Failed to update cart. Product out of stock.');
           }
         });
       });
