@@ -769,7 +769,7 @@ class WishlistCompare {
     
     div.innerHTML = `
       <button type="button" class="icon-close remove" data-compare data-id="${product.id}" data-action="remove" aria-label="Remove from compare"></button>
-      <a href="${product.url}" class="image">
+      <a href="${product.url}" style="aspect-ratio: 4/5;" class="image">
         <img class="lazyload" data-src="${product.image}" src="${product.image}" alt="${product.title}">
       </a>
       <div class="content">
