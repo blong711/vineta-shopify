@@ -12,7 +12,7 @@
         <div class="wrapper-compare tf-col-2 lg-col-3 xl-col-4" id="compareEmpty" style="padding-bottom: 80px; display: none;">
             <div class="tf-compare-empty text-center">
                 <p class="text-md text-noti" style="margin-bottom: 32px;">{{ 'compare.empty.no_products' | t }}</p>
-                <a href="{{ routes.all_products_collection_url }}" class="tf-btn animate-btn btn-back-shop">{{ 'compare.empty.back_to_shop' | t }}</a>
+                <a href="/collections" class="tf-btn animate-btn btn-back-shop">{{ 'compare.empty.back_to_shop' | t }}</a>
             </div>
         </div>
     </div>
@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     // 1. Image/Title/Price row
     const imageRowValues = compareProducts.map(product => `
       <div class="tf-compare-item">
-        <a class="tf-compare-image" style="aspect-ratio: 4/5;" href="${product.url}">
+        <a class="tf-compare-image" s href="${product.url}">
           <img class="lazyload" src="${product.image}" alt="${product.title}" width="200" height="200">
         </a>
         <div class="content">
