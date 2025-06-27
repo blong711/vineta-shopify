@@ -80,10 +80,12 @@ class WishlistCompare {
           wishlistBtn.dataset.id = variantId;
         }
 
-        // Update the compare button's variant ID if it exists
-        const compareBtn = this.closest('.card-product').querySelector('[data-compare]');
-        if (compareBtn) {
-          compareBtn.dataset.id = variantId;
+        // Note: Compare button should keep the product ID, not change to variant ID
+        // This ensures compare functionality works with products, not individual variants
+        
+        // Update button states after variant change
+        if (window.wishlistCompare) {
+          window.wishlistCompare.updateButtonsState();
         }
       });
     });
@@ -628,9 +630,10 @@ class WishlistCompare {
       if (!productId) return; // Skip buttons without product ID (like Clear All)
       
       // Handle both old format (IDs only) and new format (product objects)
+      // Use loose equality to handle both string and number IDs
       const isInCompare = this.compareList.some(item => 
-        (typeof item === 'string' && item === productId) || 
-        (typeof item === 'object' && item.id === productId)
+        (typeof item === 'string' && item == productId) || 
+        (typeof item === 'object' && item.id == productId)
       );
       
       button.setAttribute('data-action', isInCompare ? 'remove' : 'add');
@@ -736,6 +739,34 @@ class WishlistCompare {
     div.className = 'tf-compare-item file-delete';
     div.setAttribute('data-product-id', product.id);
     
+    // Format price properly
+    const formatMoney = (price) => {
+      // If price is already formatted (contains currency symbol), return as is
+      if (typeof price === 'string' && (price.includes('$') || price.includes('€') || price.includes('£'))) {
+        return price;
+      }
+      
+      // If price is a number (in cents), format it
+      if (typeof price === 'number') {
+        return new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: window.Shopify?.currency?.active || 'USD'
+        }).format(price / 100);
+      }
+      
+      // If price is a string number, convert and format
+      if (typeof price === 'string' && !isNaN(parseFloat(price))) {
+        const numPrice = parseFloat(price);
+        return new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: window.Shopify?.currency?.active || 'USD'
+        }).format(numPrice);
+      }
+      
+      // Return as is if can't format
+      return price;
+    };
+    
     div.innerHTML = `
       <button type="button" class="icon-close remove" data-compare data-id="${product.id}" data-action="remove" aria-label="Remove from compare"></button>
       <a href="${product.url}" class="image">
@@ -746,11 +777,24 @@ class WishlistCompare {
           <a class="link text-line-clamp-2" href="${product.url}">${product.title}</a>
         </div>
         <p class="price-wrap text-left">
-          <span class="new-price text-primary">${product.price}</span>
-          ${product.comparePrice ? `<span class="old-price text-decoration-line-through text-dark-1">${product.comparePrice}</span>` : ''}
+          <span class="new-price text-primary">${formatMoney(product.price)}</span>
+          ${product.comparePrice ? `<span class="old-price text-decoration-line-through text-dark-1">${formatMoney(product.comparePrice)}</span>` : ''}
         </p>
       </div>
     `;
+    
+    // Add event listener for the remove button
+    const removeButton = div.querySelector('.remove');
+    if (removeButton) {
+      removeButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const productId = removeButton.getAttribute('data-id');
+        if (productId) {
+          this.removeFromCompare(productId);
+        }
+      });
+    }
     
     return div;
   }
@@ -762,15 +806,28 @@ class WishlistCompare {
       return null;
     }
 
-    console.log(`Looking for product data for ID: ${productId}`);
-
     // First, check if this product is in the recently viewed list
     if (typeof window.RecentlyViewedManager !== 'undefined') {
       const recentlyViewed = window.RecentlyViewedManager.getProducts();
       const recentlyViewedProduct = recentlyViewed.find(p => p.id == productId);
       
       if (recentlyViewedProduct) {
-        console.log('Found product in recently viewed list:', recentlyViewedProduct);
+        // Format price if it's a raw number
+        let formattedPrice = recentlyViewedProduct.price;
+        if (typeof formattedPrice === 'number') {
+          formattedPrice = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: window.Shopify?.currency?.active || 'USD'
+          }).format(formattedPrice / 100);
+        }
+        
+        let formattedComparePrice = recentlyViewedProduct.compare_at_price || '';
+        if (typeof formattedComparePrice === 'number') {
+          formattedComparePrice = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: window.Shopify?.currency?.active || 'USD'
+          }).format(formattedComparePrice / 100);
+        }
         
         // Ensure we have the image field for compare compatibility
         const productData = {
@@ -778,11 +835,10 @@ class WishlistCompare {
           title: recentlyViewedProduct.title,
           url: recentlyViewedProduct.url,
           image: recentlyViewedProduct.image || recentlyViewedProduct.featured_image || '',
-          price: recentlyViewedProduct.price,
-          comparePrice: recentlyViewedProduct.compare_at_price || ''
+          price: formattedPrice,
+          comparePrice: formattedComparePrice
         };
         
-        console.log('Returning product data from recently viewed:', productData);
         return productData;
       }
     }
@@ -795,9 +851,6 @@ class WishlistCompare {
       currentProductId = productSection.querySelector('[data-product-id]')?.getAttribute('data-product-id') ||
                         productSection.querySelector('[data-id]')?.getAttribute('data-id');
     }
-
-    console.log('Current page product ID:', currentProductId);
-    console.log('Is this the current product?', productId === currentProductId);
 
     if (productSection && productId === currentProductId) {
       // Try multiple selectors for product name
@@ -839,14 +892,12 @@ class WishlistCompare {
           price: productPrice || '',
           comparePrice: productSection.querySelector('.price-old')?.textContent?.trim() || ''
         };
-        console.log('Found product data from current page:', productData);
         return productData;
       }
     }
 
     // Try to find the product in card-product elements
     const allProducts = document.querySelectorAll('.card-product');
-    console.log(`Found ${allProducts.length} product cards on page`);
     
     for (const card of allProducts) {
       // Check for product ID in various locations
@@ -854,8 +905,6 @@ class WishlistCompare {
                     card.querySelector('[data-id]')?.getAttribute('data-id') ||
                     card.querySelector('.quickview')?.getAttribute('data-product-id');
                     
-      console.log(`Card ID: ${cardId}, Looking for: ${productId}`);
-      
       if (cardId === productId) {
         // Get image URL with validation
         let cardImage = card.querySelector('.product-img img')?.getAttribute('data-src') ||
@@ -1154,12 +1203,14 @@ class WishlistCompare {
 
     // Check if product is already in compare list (handle both old and new formats)
     const isAlreadyInList = this.compareList.some(item => 
-      (typeof item === 'string' && item === productId) || 
-      (typeof item === 'object' && item.id === productId)
+      (typeof item === 'string' && item == productId) || 
+      (typeof item === 'object' && item.id == productId)
     );
     
     if (isAlreadyInList) {
-      console.log('Product already in compare list');
+      // If product is already in list, remove it (toggle behavior)
+      console.log('Product already in compare list, removing it');
+      this.removeFromCompare(productId);
       return;
     }
 
@@ -1195,7 +1246,12 @@ class WishlistCompare {
    * @param {string} productId - Product ID to remove
    */
   removeFromCompare(productId) {
-    const index = this.compareList.findIndex(product => product.id === productId);
+    // Handle both old and new formats, and both string/number ID comparisons
+    const index = this.compareList.findIndex(product => 
+      (typeof product === 'string' && product === productId) || 
+      (typeof product === 'object' && (product.id == productId || product.id === productId))
+    );
+    
     if (index === -1) return;
     
     this.compareList.splice(index, 1);
