@@ -436,6 +436,19 @@
                   <!-- End Countdown Timer Block -->
                 </div>
                 {% if product.available %}
+                {% assign show_variant_section = false %}
+                {% if product.metafields.affiliate.url %}
+                  {% assign show_variant_section = true %}
+                {% elsif product.has_only_default_variant == false %}
+                  {% for block in section.blocks %}
+                    {% if block.type == 'variant_picker' %}
+                      {% assign show_variant_section = true %}
+                      {% break %}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+                
+                {% if show_variant_section %}
                 <div class="tf-product-info-variant">
                   {% if product.metafields.affiliate.url %}
                     <a href="{{ product.metafields.affiliate.url }}" class="tf-btn w-100 animate-btn">{{ product.metafields.affiliate.button_text | default: 'Buy on Amazon' }}</a>
@@ -517,6 +530,7 @@
                     {% endunless %}
                   {% endif %}
                 </div>
+                {% endif %}
                 {% endif %}
               {% unless product.metafields.affiliate.url %}
                 <div class="tf-product-total-quantity">
