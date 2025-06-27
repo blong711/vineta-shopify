@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
       return false;
     };
 
-    // Remove cart drawer trigger buttons
+    // Remove cart drawer trigger buttons (header cart buttons)
     document.querySelectorAll('.nav-cart .nav-icon-item').forEach(trigger => {
       trigger.onclick = function(e) {
         e.preventDefault();
@@ -15,11 +15,40 @@ document.addEventListener('DOMContentLoaded', function() {
       };
     });
 
+    // Remove mobile toolbar cart button functionality
+    document.querySelectorAll('.tf-toolbar-bottom .toolbar-item a[href="#shoppingCart"]').forEach(trigger => {
+      // Remove the data-bs-toggle attribute to prevent Bootstrap offcanvas
+      trigger.removeAttribute('data-bs-toggle');
+      
+      // Override the onclick handler
+      trigger.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      };
+      
+      // Also prevent any Bootstrap offcanvas events
+      trigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }, true);
+    });
+
     // Remove cart drawer element if it exists
     const cartDrawer = document.querySelector('.cart-drawer, #cart-drawer, [data-cart-drawer]');
     if (cartDrawer) {
       cartDrawer.remove();
     }
+    
+    // Also prevent any Bootstrap offcanvas events for shoppingCart
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('a[href="#shoppingCart"]')) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    }, true);
   }
 
   // Function to handle empty cart state

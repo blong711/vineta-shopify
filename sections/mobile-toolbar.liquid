@@ -64,7 +64,9 @@
   </div>
   
   <div class="toolbar-item">
-    <a href="#shoppingCart" data-bs-toggle="offcanvas">
+    <a href="#shoppingCart" 
+       {% unless request.page_type == 'cart' %}data-bs-toggle="offcanvas" onclick="event.preventDefault(); window.openCartDrawer();"{% endunless %}
+       {% if request.page_type == 'cart' %}style="pointer-events: none"{% endif %}>
       <div class="toolbar-icon">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M4.70906 7.42985L4.0424 16.699H15.8641L15.1974 7.42985H4.70906ZM16.7491 5.76318H3.15823L2.38073 16.5798C2.36436 16.8082 2.39521 17.0374 2.47134 17.2533C2.54748 17.4692 2.66727 17.6671 2.82325 17.8347C2.97923 18.0022 3.16805 18.1358 3.37795 18.2272C3.58785 18.3186 3.81431 18.3657 4.04323 18.3657H15.8641C16.0931 18.3657 16.3196 18.3185 16.5296 18.2271C16.7395 18.1357 16.9284 18.002 17.0844 17.8344C17.2404 17.6667 17.3601 17.4687 17.4362 17.2527C17.5123 17.0368 17.5431 16.8074 17.5266 16.579L16.7491 5.76318Z" fill="black"/>
