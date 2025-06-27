@@ -131,9 +131,9 @@ const ProductCard = {
           if (cartTotal) {
             cartTotal.textContent = ProductCard.formatMoney(cartData.total_price);
           }
-          document.querySelectorAll('.cart-count').forEach(element => {
-            element.textContent = cartData.item_count || '0';
-          });
+          // document.querySelectorAll('.cart-count').forEach(element => {
+          //   element.textContent = cartData.item_count || '0';
+          // });
 
           // Update shipping progress
           if (typeof updateShippingProgress === 'function') {
