@@ -506,11 +506,9 @@ const ProductCard = {
           
           // Add spinner to button
           newButton.innerHTML = `
-            <div class="loading-spinner">
               <div class="spinner-border spinner-border-sm" role="status">
                 <span class="visually-hidden">Loading...</span>
               </div>
-            </div>
           `;
           
           // Disable button during loading
