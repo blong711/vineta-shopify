@@ -1385,7 +1385,7 @@ class Cart {
         cartItemsContainer.innerHTML = `
           <div class="empty-cart">
             <p>Your cart is currently empty.</p>
-            <a href="/collections/all" class="tf-btn animate-btn d-inline-flex bg-dark-2">Continue shopping</a>
+            <a href="/collections" class="tf-btn animate-btn d-inline-flex bg-dark-2">Continue shopping</a>
           </div>
         `;
       }
@@ -1399,7 +1399,7 @@ class Cart {
       cartItemsContainer.innerHTML = `
         <div class="empty-cart">
           <p>Your cart is currently empty.</p>
-          <a href="/collections/all" class="tf-btn animate-btn d-inline-flex bg-dark-2">Continue shopping</a>
+          <a href="/collections" class="tf-btn animate-btn d-inline-flex bg-dark-2">Continue shopping</a>
         </div>
       `;
     }
