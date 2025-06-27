@@ -12,50 +12,59 @@
   </div>
 </section>
 
-<div class="container my-5">
+<section class="flat-spacing-24">
+  <div class="container">
   {% if search.results_count > 0 %}
     <div class="tf-shop-control">
-      <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
-        <div class="btn-select">
-          {%- assign sort_by = search.sort_by | default: 'best-selling' -%}
-          <span class="text-sort-value">
-            {%- case sort_by -%}
-              {%- when 'best-selling' -%}
-                {{ 'collections.sorting.best_selling' | t }}
-              {%- when 'title-ascending' -%}
-                {{ 'collections.sorting.az' | t }}
-              {%- when 'title-descending' -%}
-                {{ 'collections.sorting.za' | t }}
-              {%- when 'price-ascending' -%}
-                {{ 'collections.sorting.price_ascending' | t }}
-              {%- when 'price-descending' -%}
-                {{ 'collections.sorting.price_descending' | t }}
-              {%- else -%}
-                {{ sort_by | replace: '-', ' ' | capitalize }}
-            {%- endcase -%}
-          </span>
-          <span class="icon icon-arr-down"></span>
-        </div>
-        <div class="dropdown-menu">
-          <div class="select-item{% if search.sort_by == 'best-selling' or search.sort_by == nil %} active{% endif %}" data-sort-value="best-selling">
-            <span class="text-value-item">{{ 'collections.sorting.best_selling' | t }}</span>
+      <div class="tf-group-filter">
+        <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
+          <div class="btn-select">
+            {%- assign sort_by = search.sort_by | default: 'best-selling' -%}
+            <span class="text-sort-value">
+              {%- case sort_by -%}
+                {%- when 'best-selling' -%}
+                  {{ 'collections.sorting.best_selling' | t }}
+                {%- when 'title-ascending' -%}
+                  {{ 'collections.sorting.az' | t }}
+                {%- when 'title-descending' -%}
+                  {{ 'collections.sorting.za' | t }}
+                {%- when 'price-ascending' -%}
+                  {{ 'collections.sorting.price_ascending' | t }}
+                {%- when 'price-descending' -%}
+                  {{ 'collections.sorting.price_descending' | t }}
+                {%- else -%}
+                  {{ sort_by | replace: '-', ' ' | capitalize }}
+              {%- endcase -%}
+            </span>
+            <span class="icon icon-arr-down"></span>
           </div>
-          <div class="select-item{% if search.sort_by == 'title-ascending' %} active{% endif %}" data-sort-value="title-ascending">
-            <span class="text-value-item">{{ 'collections.sorting.az' | t }}</span>
-          </div>
-          <div class="select-item{% if search.sort_by == 'title-descending' %} active{% endif %}" data-sort-value="title-descending">
-            <span class="text-value-item">{{ 'collections.sorting.za' | t }}</span>
-          </div>
-          <div class="select-item{% if search.sort_by == 'price-ascending' %} active{% endif %}" data-sort-value="price-ascending">
-            <span class="text-value-item">{{ 'collections.sorting.price_ascending' | t }}</span>
-          </div>
-          <div class="select-item{% if search.sort_by == 'price-descending' %} active{% endif %}" data-sort-value="price-descending">
-            <span class="text-value-item">{{ 'collections.sorting.price_descending' | t }}</span>
+          <div class="dropdown-menu">
+            <div class="select-item{% if search.sort_by == 'best-selling' or search.sort_by == nil %} active{% endif %}" data-sort-value="best-selling">
+              <span class="text-value-item">{{ 'collections.sorting.best_selling' | t }}</span>
+            </div>
+            <div class="select-item{% if search.sort_by == 'title-ascending' %} active{% endif %}" data-sort-value="title-ascending">
+              <span class="text-value-item">{{ 'collections.sorting.az' | t }}</span>
+            </div>
+            <div class="select-item{% if search.sort_by == 'title-descending' %} active{% endif %}" data-sort-value="title-descending">
+              <span class="text-value-item">{{ 'collections.sorting.za' | t }}</span>
+            </div>
+            <div class="select-item{% if search.sort_by == 'price-ascending' %} active{% endif %}" data-sort-value="price-ascending">
+              <span class="text-value-item">{{ 'collections.sorting.price_ascending' | t }}</span>
+            </div>
+            <div class="select-item{% if search.sort_by == 'price-descending' %} active{% endif %}" data-sort-value="price-descending">
+              <span class="text-value-item">{{ 'collections.sorting.price_descending' | t }}</span>
+            </div>
           </div>
         </div>
       </div>
 
       <ul class="tf-control-layout">
+        <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
+          <div class="item icon-list">
+            <span></span>
+            <span></span>
+          </div>
+        </li>
         <li class="tf-view-layout-switch sw-layout-2" data-value-layout="tf-col-2">
           <div class="item icon-grid-2">
             <span></span>
@@ -160,7 +169,9 @@
 
     {% paginate search.results by section.settings.products_per_page %}
       <div class="wrapper-control-shop">
-        <div class="meta-filter-shop">
+        <div class="meta-filter-shop" style="display: {% if current_tags.size > 0 or request.search != blank %}flex{% else %}none{% endif %};">
+          <div id="product-count-grid" class="count-text"><span class="count">{{ search.results_count }}</span> Products found</div>
+          <div id="product-count-list" class="count-text"><span class="count">{{ search.results_count }}</span> Products found</div>
           <div id="applied-filters">
             {% if current_tags.size > 0 %}
               {% for tag in current_tags %}
@@ -173,7 +184,54 @@
           {% endif %}
         </div>
 
-        <div class="wrapper-shop tf-grid-layout tf-col-4" id="search-product-grid">
+        <!-- List View Layout -->
+        <div class="tf-list-layout wrapper-shop" id="listLayout" style="display: none;">
+          {% for item in search.results %}
+            {% if item.object_type == 'product' %}
+              <div class="loadItem card-product style-list" data-availability="{{ item.available | default: 'In stock' }}" data-brand="{{ item.vendor }}">
+                {% render 'card-product', product: item, show_color_swatches: true, show_size_swatches: true, show_case_type: true, size_swatches: true %}
+              </div>
+            {% endif %}
+          {% endfor %}
+
+          <!-- Pagination for List View -->
+          {% if paginate.pages > 1 %}
+            <div class="pagination-wrapper text-center mt-5">
+              <ul class="wg-pagination">
+                {% if paginate.previous %}
+                  <li>
+                    <a href="{{ paginate.previous.url }}{% if request.query_string != blank %}&{{ request.query_string | replace: 'page=', '' | replace: '&page=', '' }}{% endif %}" class="pagination-item">
+                      <i class="icon-arr-left"></i>
+                    </a>
+                  </li>
+                {% endif %}
+                
+                {% for part in paginate.parts %}
+                  {% if part.is_link %}
+                    <li>
+                      <a href="{{ part.url }}{% if request.query_string != blank %}&{{ request.query_string | replace: 'page=', '' | replace: '&page=', '' }}{% endif %}" class="pagination-item">{{ part.title }}</a>
+                    </li>
+                  {% else %}
+                    <li class="{% if part.title == paginate.current_page %}active{% endif %}">
+                      <div class="pagination-item">{{ part.title }}</div>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+
+                {% if paginate.next %}
+                  <li>
+                    <a href="{{ paginate.next.url }}{% if request.query_string != blank %}&{{ request.query_string | replace: 'page=', '' | replace: '&page=', '' }}{% endif %}" class="pagination-item">
+                      <i class="icon-arr-right2"></i>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Grid View Layout -->
+        <div class="wrapper-shop tf-grid-layout tf-col-4" id="gridLayout">
           {% for item in search.results %}
             {% if item.object_type == 'product' %}
               <div class="loadItem card-product grid style-1{% if item.options contains 'Size' %} card-product-size{% endif %}" 
@@ -183,48 +241,49 @@
               </div>
             {% endif %}
           {% endfor %}
-        </div>
 
-        <!-- Pagination -->
-        {% if paginate.pages > 1 %}
-          <div class="pagination-wrapper text-center mt-5">
-            <ul class="wg-pagination">
-              {% if paginate.previous %}
-                <li>
-                  <a href="{{ paginate.previous.url }}" class="pagination-item">
-                    <i class="icon-arr-left"></i>
-                  </a>
-                </li>
-              {% endif %}
-              
-              {% for part in paginate.parts %}
-                {% if part.is_link %}
+          <!-- Pagination for Grid View -->
+          {% if paginate.pages > 1 %}
+            <div class="pagination-wrapper text-center mt-5">
+              <ul class="wg-pagination">
+                {% if paginate.previous %}
                   <li>
-                    <a href="{{ part.url }}" class="pagination-item">{{ part.title }}</a>
-                  </li>
-                {% else %}
-                  <li class="{% if part.title == paginate.current_page %}active{% endif %}">
-                    <div class="pagination-item">{{ part.title }}</div>
+                    <a href="{{ paginate.previous.url }}{% if request.query_string != blank %}&{{ request.query_string | replace: 'page=', '' | replace: '&page=', '' }}{% endif %}" class="pagination-item">
+                      <i class="icon-arr-left"></i>
+                    </a>
                   </li>
                 {% endif %}
-              {% endfor %}
+                
+                {% for part in paginate.parts %}
+                  {% if part.is_link %}
+                    <li>
+                      <a href="{{ part.url }}{% if request.query_string != blank %}&{{ request.query_string | replace: 'page=', '' | replace: '&page=', '' }}{% endif %}" class="pagination-item">{{ part.title }}</a>
+                    </li>
+                  {% else %}
+                    <li class="{% if part.title == paginate.current_page %}active{% endif %}">
+                      <div class="pagination-item">{{ part.title }}</div>
+                    </li>
+                  {% endif %}
+                {% endfor %}
 
-              {% if paginate.next %}
-                <li>
-                  <a href="{{ paginate.next.url }}" class="pagination-item">
-                    <i class="icon-arr-right2"></i>
-                  </a>
-                </li>
-              {% endif %}
-            </ul>
-          </div>
-        {% endif %}
+                {% if paginate.next %}
+                  <li>
+                    <a href="{{ paginate.next.url }}{% if request.query_string != blank %}&{{ request.query_string | replace: 'page=', '' | replace: '&page=', '' }}{% endif %}" class="pagination-item">
+                      <i class="icon-arr-right2"></i>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </div>
+          {% endif %}
+        </div>
       </div>
     {% endpaginate %}
   {% else %}
     <p>{{ 'general.search.no_results_html' | t: terms: search.terms }}</p>
   {% endif %}
 </div>
+</section>
 
 {%- comment -%}Recently Viewed Section for Search Page{%- endcomment -%}
 {%- comment -%}Include the recently viewed tracking script{%- endcomment -%}
@@ -274,6 +333,8 @@
 </section>
 
 <script>
+  
+  // Inject styles into head
   document.addEventListener('DOMContentLoaded', function() {
     // Set default sort if none is specified
     const url = new URL(window.location.href);
@@ -288,11 +349,17 @@
     const sortDropdown = document.querySelector('.tf-dropdown-sort');
     const sortValueDisplay = document.querySelector('.text-sort-value');
     const productGrid = document.querySelector('.tf-grid-layout');
+    const productList = document.querySelector('.tf-list-layout');
+    const productCountGrid = document.getElementById('product-count-grid');
+    const productCountList = document.getElementById('product-count-list');
 
     // Function to update products with new sort
     async function updateProductsWithSort(sortValue) {
       const url = new URL(window.location.href);
       const existingParams = new URLSearchParams(url.search);
+      
+      // Reset to page 1 when applying filters or changing sort
+      existingParams.delete('page');
       
       // Handle alphabetical sorting on client side
       if (sortValue === 'title-ascending' || sortValue === 'title-descending') {
@@ -308,6 +375,8 @@
 
           // Update product grid
           const newGrid = doc.querySelector('.tf-grid-layout');
+          const newList = doc.querySelector('.tf-list-layout');
+          
           if (newGrid && productGrid) {
             const currentLayoutClass = productGrid.className;
             
@@ -316,7 +385,6 @@
             
             // Separate product elements from other nodes (like whitespace)
             const products = allNodes.filter(node => node.nodeType === 1 && node.classList.contains('card-product'));
-            const otherNodes = allNodes.filter(node => node.nodeType !== 1 || !node.classList.contains('card-product'));
             
             products.sort((a, b) => {
               const titleA = a.querySelector('.name-product')?.textContent?.trim() || '';
@@ -330,11 +398,27 @@
             });
             
             // Re-render the live grid once with the sorted products
-            // Important: We only re-add the sorted product elements. The other nodes (whitespace)
-            // from the original fetch are discarded to prevent issues, but the sort is now
-            // performed on a clean list derived from the original structure.
             productGrid.innerHTML = products.map(p => p.outerHTML).join('\n');
             productGrid.className = currentLayoutClass;
+          }
+
+          // Update product list
+          if (newList && productList) {
+            const allNodes = Array.from(newList.childNodes);
+            const products = allNodes.filter(node => node.nodeType === 1 && node.classList.contains('card-product'));
+            
+            products.sort((a, b) => {
+              const titleA = a.querySelector('.name-product')?.textContent?.trim() || '';
+              const titleB = b.querySelector('.name-product')?.textContent?.trim() || '';
+              
+              if (sortValue === 'title-ascending') {
+                return titleA.localeCompare(titleB);
+              } else {
+                return titleB.localeCompare(titleA);
+              }
+            });
+            
+            productList.innerHTML = products.map(p => p.outerHTML).join('\n');
           }
 
           // Update sort value display
@@ -374,7 +458,17 @@
 
           // Update product grid
           const newGrid = doc.querySelector('.tf-grid-layout');
-          if (newGrid && productGrid) productGrid.innerHTML = newGrid.innerHTML;
+          const newList = doc.querySelector('.tf-list-layout');
+          
+          if (newGrid && productGrid) {
+            const currentLayoutClass = productGrid.className;
+            productGrid.innerHTML = newGrid.innerHTML;
+            productGrid.className = currentLayoutClass;
+          }
+          
+          if (newList && productList) {
+            productList.innerHTML = newList.innerHTML;
+          }
 
           // Update sort value display
           if (sortValueDisplay) {
@@ -421,7 +515,8 @@
 
     // Handle layout switching
     const layoutSwitches = document.querySelectorAll('.tf-view-layout-switch');
-    const gridLayout = document.querySelector('.tf-grid-layout');
+    const listLayout = document.getElementById('listLayout');
+    const gridLayout = document.getElementById('gridLayout');
 
     layoutSwitches.forEach(switchEl => {
       switchEl.addEventListener('click', function() {
@@ -431,9 +526,28 @@
         layoutSwitches.forEach(s => s.classList.remove('active'));
         this.classList.add('active');
 
-        // Update grid layout
-        if (gridLayout) {
-          gridLayout.className = `wrapper-shop tf-grid-layout ${layout}`;
+        // Show/hide layouts
+        if (listLayout && gridLayout) {
+          const hasProducts = gridLayout.querySelector('.card-product');
+
+          listLayout.style.display = layout === 'list' ? 'block' : 'none';
+          gridLayout.style.display = layout === 'list' ? 'none' : '';
+          
+          if (layout !== 'list' && hasProducts) {
+            gridLayout.classList.remove('tf-col-2', 'tf-col-3', 'tf-col-4');
+            if (!gridLayout.classList.contains('tf-grid-layout')) {
+              gridLayout.classList.add('tf-grid-layout');
+            }
+            gridLayout.classList.add(layout);
+          }
+          
+          // Update product count visibility based on layout
+          if (productCountGrid) {
+            productCountGrid.style.display = layout === 'list' ? 'none' : 'block';
+          }
+          if (productCountList) {
+            productCountList.style.display = layout === 'list' ? 'block' : 'none';
+          }
         }
       });
     });
@@ -453,6 +567,9 @@
           url.searchParams.delete('filter.v.tag');
         }
         
+        // Reset to page 1 when applying filters
+        url.searchParams.delete('page');
+        
         updateProductsWithSort(url.searchParams.get('sort_by') || 'best-selling');
       });
     });
@@ -468,6 +585,10 @@
             url.searchParams.delete(param);
           }
         }
+        
+        // Reset to page 1 when applying filters
+        url.searchParams.delete('page');
+        
         updateProductsWithSort(url.searchParams.get('sort_by') || 'best-selling');
       });
     }
@@ -483,6 +604,9 @@
         } else {
           url.searchParams.delete('filter.v.availability');
         }
+
+        // Reset to page 1 when applying filters
+        url.searchParams.delete('page');
 
         // Update URL first
         window.history.pushState({}, '', url.toString());
@@ -503,6 +627,9 @@
         } else {
           url.searchParams.delete('filter.v.option.brand');
         }
+
+        // Reset to page 1 when applying filters
+        url.searchParams.delete('page');
 
         // Update URL first
         window.history.pushState({}, '', url.toString());
@@ -543,6 +670,9 @@
         url.searchParams.set('filter.v.price.gte', Math.round(values[0]));
         url.searchParams.set('filter.v.price.lte', Math.round(values[1]));
         
+        // Reset to page 1 when applying filters
+        url.searchParams.delete('page');
+        
         updateProductsWithSort(url.searchParams.get('sort_by') || 'best-selling');
       });
     }
@@ -555,6 +685,47 @@
 
     // Initialize product events
     initializeProductEvents();
+
+    // Initialize layout state
+    function initializeLayoutState() {
+      // Set default layout to grid view
+      const defaultLayout = 'tf-col-4';
+      const listLayout = document.getElementById('listLayout');
+      const gridLayout = document.getElementById('gridLayout');
+      
+      if (listLayout && gridLayout) {
+        // Show grid layout by default, hide list layout
+        listLayout.style.display = 'none';
+        gridLayout.style.display = '';
+        
+        // Ensure grid layout has proper classes
+        if (!gridLayout.classList.contains('tf-grid-layout')) {
+          gridLayout.classList.add('tf-grid-layout');
+        }
+        gridLayout.classList.remove('tf-col-2', 'tf-col-3', 'tf-col-4');
+        gridLayout.classList.add(defaultLayout);
+        
+        // Set active state for layout switches
+        const layoutSwitches = document.querySelectorAll('.tf-view-layout-switch');
+        layoutSwitches.forEach(switchEl => {
+          switchEl.classList.remove('active');
+          if (switchEl.dataset.valueLayout === defaultLayout) {
+            switchEl.classList.add('active');
+          }
+        });
+        
+        // Show/hide product counts based on default layout
+        if (productCountGrid) {
+          productCountGrid.style.display = 'block';
+        }
+        if (productCountList) {
+          productCountList.style.display = 'none';
+        }
+      }
+    }
+
+    // Initialize layout state
+    initializeLayoutState();
 
     const searchSection = document.getElementById('search-recently-viewed-section');
     const searchProductsContainer = document.getElementById('search-recently-viewed-products');
