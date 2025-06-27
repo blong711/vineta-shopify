@@ -135,7 +135,7 @@
                 "speed": {{ block.settings.transition_speed }},
                 "observer": true,
                 "observeParents": true,
-                "pagination": {% if block.settings.show_pagination %}{ "el": ".sw-pagination-iconbox", "clickable": true }{% else %}false{% endif %},
+                "pagination": {% if block.settings.show_pagination %}{ "el": ".sw-pagination-features", "clickable": true }{% else %}false{% endif %},
                 "autoplay": {% if block.settings.autoplay %}{ "delay": {{ block.settings.autoplay_speed }} }{% else %}false{% endif %},
                 "breakpoints": {
                   "575": { "slidesPerView": 2, "spaceBetween": 12, "slidesPerGroup": 2}, 
@@ -194,7 +194,7 @@
                       {% endif %}
                 </div>
               </div>
-              <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
+              <div class="d-flex d-xl-none sw-dot-default sw-pagination-features justify-content-center"></div>
             </div>
               {% endif %}
             {% endfor %}
