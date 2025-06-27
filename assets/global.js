@@ -463,7 +463,7 @@ class WishlistCompare {
             if (gridLayout) {
               gridLayout.classList.remove('tf-grid-layout');
               gridLayout.innerHTML = `
-                <div class="wrapper-wishlist tf-col-2 lg-col-3 xl-col-4" style="padding-bottom: 80px;">
+                <div class="wrapper-wishlist tf-col-2 lg-col-3 xl-col-4">
                   <div class="tf-wishlist-empty text-center">
                     <p class="text-md text-noti">No product were added to the wishlist.</p>
                     <a href="/" class="tf-btn animate-btn btn-back-shop">Back to Shopping</a>
