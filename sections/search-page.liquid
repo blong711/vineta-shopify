@@ -158,32 +158,69 @@
       </div>
     </div>
 
-    <div class="wrapper-control-shop">
-      <div class="meta-filter-shop">
-        <div id="applied-filters">
+    {% paginate search.results by section.settings.products_per_page %}
+      <div class="wrapper-control-shop">
+        <div class="meta-filter-shop">
+          <div id="applied-filters">
+            {% if current_tags.size > 0 %}
+              {% for tag in current_tags %}
+                <span class="filter-tag">{{ tag }} <i class="icon icon-close"></i></span>
+              {% endfor %}
+            {% endif %}
+          </div>
           {% if current_tags.size > 0 %}
-            {% for tag in current_tags %}
-              <span class="filter-tag">{{ tag }} <i class="icon icon-close"></i></span>
-            {% endfor %}
+            <button id="remove-all" class="remove-all-filters"><i class="icon icon-close"></i> {{ 'products.facets.clear_all' | t }}</button>
           {% endif %}
         </div>
-        {% if current_tags.size > 0 %}
-          <button id="remove-all" class="remove-all-filters"><i class="icon icon-close"></i> {{ 'products.facets.clear_all' | t }}</button>
+
+        <div class="wrapper-shop tf-grid-layout tf-col-4" id="search-product-grid">
+          {% for item in search.results %}
+            {% if item.object_type == 'product' %}
+              <div class="loadItem card-product grid style-1{% if item.options contains 'Size' %} card-product-size{% endif %}" 
+                   data-availability="{{ item.available | default: 'In stock' }}" 
+                   data-brand="{{ item.vendor }}">
+                {% render 'card-product', product: item %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if paginate.pages > 1 %}
+          <div class="pagination-wrapper text-center mt-5">
+            <ul class="wg-pagination">
+              {% if paginate.previous %}
+                <li>
+                  <a href="{{ paginate.previous.url }}" class="pagination-item">
+                    <i class="icon-arr-left"></i>
+                  </a>
+                </li>
+              {% endif %}
+              
+              {% for part in paginate.parts %}
+                {% if part.is_link %}
+                  <li>
+                    <a href="{{ part.url }}" class="pagination-item">{{ part.title }}</a>
+                  </li>
+                {% else %}
+                  <li class="{% if part.title == paginate.current_page %}active{% endif %}">
+                    <div class="pagination-item">{{ part.title }}</div>
+                  </li>
+                {% endif %}
+              {% endfor %}
+
+              {% if paginate.next %}
+                <li>
+                  <a href="{{ paginate.next.url }}" class="pagination-item">
+                    <i class="icon-arr-right2"></i>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
         {% endif %}
       </div>
-
-      <div class="wrapper-shop tf-grid-layout tf-col-4">
-        {% for item in search.results %}
-          {% if item.object_type == 'product' %}
-            <div class="loadItem card-product grid style-1{% if item.options contains 'Size' %} card-product-size{% endif %}" 
-                 data-availability="{{ item.available | default: 'In stock' }}" 
-                 data-brand="{{ item.vendor }}">
-              {% render 'card-product', product: item %}
-            </div>
-          {% endif %}
-        {% endfor %}
-      </div>
-    </div>
+    {% endpaginate %}
   {% else %}
     <p>{{ 'general.search.no_results_html' | t: terms: search.terms }}</p>
   {% endif %}
@@ -706,6 +743,14 @@
       "id": "background_image",
       "label": "Background Image",
       "info": "Background image for the search page banner"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 1,
+      "max": 24,
+      "default": 12
     }
   ]
 }

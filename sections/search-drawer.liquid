@@ -11,6 +11,7 @@
             <div class="looking-for-wrap">
               <div class="heading">{{ section.settings.title }}</div>
               <form action="{{ routes.search_url }}" method="get" class="form-search">
+                <input type="hidden" name="type" value="product">
                 <fieldset class="text">
                   <input type="search" name="q" placeholder="Search" class="search-input" tabindex="0" value="{{ search.terms | escape }}" aria-required="true" required>
                 </fieldset>
