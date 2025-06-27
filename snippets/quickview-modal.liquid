@@ -299,7 +299,7 @@
                     btn.dataset.optionValue.toLowerCase().trim() === String(colorValue).toLowerCase().trim()
                   ) {
                     btn.classList.add('active');
-                    const label = variantContainer.querySelector(`.value-current${colorOption.name.toLowerCase()}`);
+                    const label = variantContainer.querySelector(`.value-current${colorOption.name.toLowerCase().replace(/\s+/g, '-')}`);
                     if (label) label.textContent = colorValue;
                   } else {
                     btn.classList.remove('active');
@@ -339,19 +339,16 @@
     
         if (currentProduct.variants.length > 1) {
           variantContainer.innerHTML = currentProduct.options.map(option => {
-            // Hide variant picker for Case type options
-            if (option.name.toLowerCase() === 'case type') {
-              return '';
-            }
-            
+            const isCaseType = option.name.toLowerCase() === 'case type';
             return `
             <div class="variant-picker-item variant-${option.name.toLowerCase()}">
               <div class="variant-picker-label">
                 <div>
-                  ${option.name}:<span class="variant-picker-label-value value-current${option.name.toLowerCase()}">${selectedVariant ? selectedVariant[`option${currentProduct.options.findIndex(o => o.name === option.name) + 1}`] : option.values[0]}</span>
+                  ${option.name}:<span class="variant-picker-label-value value-current${option.name.toLowerCase().replace(/\s+/g, '-')}">${selectedVariant ? selectedVariant[`option${currentProduct.options.findIndex(o => o.name === option.name) + 1}`] : option.values[0]}</span>
                 </div>
               </div>
               <div class="variant-picker-values">
+                ${isCaseType ? '<div class="type-btn-container">' : ''}
                 ${option.values.map(value => {
                   const isSelected = selectedVariant ? selectedVariant[`option${currentProduct.options.findIndex(o => o.name === option.name) + 1}`] === value : value === option.values[0];
                   return option.name.toLowerCase() === 'color' || option.name.toLowerCase() === 'colour'
@@ -359,8 +356,14 @@
                         <span class="check-color bg-${value.toLowerCase()}"></span>
                         <span class="tooltip">${value}</span>
                       </div>`
+                    : option.name.toLowerCase() === 'case type'
+                    ? `<div class="hover-tooltip type-btn${isSelected ? ' active' : ''}" data-option-name="${option.name}" data-option-value="${value}">
+                          <span class="type-btn-text font-2">${value}</span>
+                          <span class="tooltip">${value}</span>
+                    </div>`
                     : `<span class="size-btn${isSelected ? ' active' : ''}" data-option-name="${option.name}" data-option-value="${value}">${value}</span>`;
                 }).join('')}
+                ${isCaseType ? '</div>' : ''}
               </div>
             </div>
           `;
@@ -688,8 +691,20 @@
                     });
                   }
 
+                  // Update case type buttons if it's a case type option
+                  if (optionName === 'case type') {
+                    const typeBtns = modal.querySelectorAll('.type-btn');
+                    typeBtns.forEach(btn => {
+                      if (btn.dataset.optionValue === optionValue) {
+                        btn.classList.add('active');
+                      } else {
+                        btn.classList.remove('active');
+                      }
+                    });
+                  }
+
                   // Update option value display
-                  const valueDisplay = modal.querySelector(`.value-current${optionName}`);
+                  const valueDisplay = modal.querySelector(`.value-current${optionName.toLowerCase().replace(/\s+/g, '-')}`);
                   if (valueDisplay) {
                     valueDisplay.textContent = optionValue;
                   }
@@ -714,7 +729,7 @@
         
         // Use event delegation for variant selection
         variantContainer.addEventListener('click', function(e) {
-          const button = e.target.closest('.color-btn, .size-btn');
+          const button = e.target.closest('.color-btn, .size-btn, .type-btn');
           if (!button) return;
           
           e.preventDefault();
@@ -723,7 +738,7 @@
           const optionValue = button.dataset.optionValue;
           
           // Update selected value display
-          const valueDisplay = variantContainer.querySelector(`.value-current${optionName.toLowerCase()}`);
+          const valueDisplay = variantContainer.querySelector(`.value-current${optionName.toLowerCase().replace(/\s+/g, '-')}`);
           if (valueDisplay) {
             valueDisplay.textContent = optionValue;
           }
@@ -824,4 +839,27 @@
         currency: '{{ shop.currency }}'
       }).format(cents / 100);
     }
-    </script> 
+    </script>
+    <style>
+      .type-btn.active, .type-btn:hover {
+        border-color: var(--dark) !important;
+      }
+      .type-btn {
+        width: unset;
+        height: unset;
+        border-radius: 35px;
+        border: 1px solid rgba(142, 142, 142, 0.2);
+      }
+      .type-btn-text {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 26px;
+        padding: 2px 12px;
+      }
+      .type-btn-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3px;
+        align-items: center;
+      }
+    </style>
