@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Handling empty cart state');
     const mainRow = document.getElementById('cart-items-row');
     const emptyCartContainer = document.getElementById('empty-cart-container');
+    const shippingProgressSection = document.querySelector('.flat-spacing-24');
     
     console.log('Main row found:', mainRow);
     console.log('Empty cart container found:', emptyCartContainer);
@@ -35,6 +36,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (mainRow) {
       mainRow.style.display = 'none';
       console.log('Hidden main row');
+    }
+    
+    // Hide shipping progress section
+    if (shippingProgressSection) {
+      shippingProgressSection.style.display = 'none';
+      console.log('Hidden shipping progress section');
     }
     
     // Show empty cart message container
@@ -51,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Handling cart with items state');
     const mainRow = document.getElementById('cart-items-row');
     const emptyCartContainer = document.getElementById('empty-cart-container');
+    const shippingProgressSection = document.querySelector('.flat-spacing-24');
     
     console.log('Main row found:', mainRow);
     console.log('Empty cart container found:', emptyCartContainer);
@@ -59,6 +67,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (mainRow) {
       mainRow.style.display = 'flex';
       console.log('Showed main row');
+    }
+    
+    // Show shipping progress section
+    if (shippingProgressSection) {
+      shippingProgressSection.style.display = 'block';
+      console.log('Showed shipping progress section');
     }
     
     // Hide empty cart message container
@@ -231,9 +245,9 @@ document.addEventListener('DOMContentLoaded', function() {
       try {
         let newQuantity;
         if (this.classList.contains('minus')) {
-          newQuantity = currentValue > 1 ? currentValue - 1 : 0;
+          newQuantity = currentValue > 1 ? currentValue : 0;
         } else if (this.classList.contains('plus')) {
-          newQuantity = currentValue + 1;
+          newQuantity = currentValue;
         }
 
         // Update input value immediately

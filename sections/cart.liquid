@@ -6,7 +6,7 @@
     <div class="row justify-content-center">
       <div class="col-xl-4 col-sm-8">
         {% for block in section.blocks %}
-          {% if block.type == 'shipping_progress' %}
+          {% if block.type == 'shipping_progress' and cart.item_count > 0 %}
             <div class="tf-cart-head text-center" {{ block.shopify_attributes }}>
               <p class="text-xl-3 title text-dark-4">
                 {% if cart.total_price >= settings.free_shipping_threshold %}
