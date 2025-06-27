@@ -214,7 +214,7 @@ class WishlistCompare {
    * Add product to wishlist
    * @param {string} productId - Product ID to add
    */
-  addToWishlist(productId) {
+  async addToWishlist(productId) {
     if (this.wishlistList.includes(productId)) return;
     
     this.wishlistList.unshift(productId);
@@ -225,7 +225,14 @@ class WishlistCompare {
     this.saveWishlistList();
     this.updateButtonsState();
     this.updateWishlistCount();
-    this.showNotification('Added to wishlist');
+    
+    // Dispatch event to update wishlist page immediately
+    document.dispatchEvent(new CustomEvent('wishlist:updated'));
+    
+    // If we're on the wishlist page, fetch and add the product immediately
+    if (window.location.pathname.includes('/pages/wishlist') || window.location.pathname.includes('/wishlist')) {
+      await this.addProductToWishlistPage(productId);
+    }
   }
 
   /**
@@ -240,74 +247,366 @@ class WishlistCompare {
     this.saveWishlistList();
     this.updateButtonsState();
     this.updateWishlistCount();
-    this.showNotification('Removed from wishlist');
+    
+    // Dispatch event to update wishlist page immediately
+    document.dispatchEvent(new CustomEvent('wishlist:updated'));
   }
 
   /**
-   * Add product to compare list
+   * Add product to wishlist page immediately via AJAX
    * @param {string} productId - Product ID to add
    */
-  addToCompare(productId) {
-    if (!productId) {
-      console.error('No product ID provided for compare');
-      return;
+  async addProductToWishlistPage(productId) {
+    try {
+      // Fetch product data via AJAX
+      const response = await fetch(`/products.json?ids=${productId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch product data');
+      }
+      
+      const data = await response.json();
+      const product = data.products[0];
+      
+      if (!product) {
+        console.error('Product not found:', productId);
+        return;
+      }
+      
+      // Get the grid layout container
+      const gridLayout = document.getElementById('gridLayout');
+      if (!gridLayout) {
+        console.error('Grid layout container not found');
+        return;
+      }
+      
+      // Remove empty state if it exists
+      const emptyState = gridLayout.querySelector('.tf-wishlist-empty');
+      if (emptyState) {
+        emptyState.remove();
+      }
+      
+      // Add the tf-grid-layout class back if it was removed
+      gridLayout.classList.add('tf-grid-layout');
+      
+      // Create product card HTML
+      const productCardHTML = this.createWishlistProductCard(product);
+      
+      // Insert the new product card at the beginning
+      gridLayout.insertAdjacentHTML('afterbegin', productCardHTML);
+      
+      // Get the newly added product card and add animation class
+      const newProductCard = gridLayout.querySelector(`[data-product-id="${product.id}"]`);
+      if (newProductCard) {
+        // Add animation class
+        newProductCard.classList.add('adding');
+        
+        // Initialize event listeners for the new product card
+        this.initializeWishlistProductCardEvents(newProductCard);
+        
+        // Remove animation class after animation completes
+        setTimeout(() => {
+          newProductCard.classList.remove('adding');
+        }, 500);
+      }
+      
+      // Update pagination if needed
+      this.updateWishlistPagination();
+      
+      // Initialize lazy loading for new images
+      if (typeof LazyLoad !== 'undefined') {
+        new LazyLoad();
+      }
+      
+      // Update buttons state
+      this.updateButtonsState();
+      
+      // Show success notification
+      
+    } catch (error) {
+      console.error('Error adding product to wishlist page:', error);
     }
-
-    // Check if product is already in compare list (handle both old and new formats)
-    const isAlreadyInList = this.compareList.some(item => 
-      (typeof item === 'string' && item === productId) || 
-      (typeof item === 'object' && item.id === productId)
-    );
-    
-    if (isAlreadyInList) {
-      console.log('Product already in compare list');
-      return;
-    }
-
-    // Get product data before adding to list
-    const productData = this.getProductData(productId);
-    if (!productData) {
-      console.error('Could not get product data for compare');
-      return;
-    }
-
-    // Store complete product data, not just ID
-    this.compareList.push(productData);
-    
-    // Limit the number of items
-    if (this.compareList.length > this.compareLimit) {
-      this.compareList.shift(); // Remove oldest item
-    }
-    
-    this.saveCompareList();
-    
-    // Update UI
-    this.updateButtonsState();
-    this.updateCompareDrawer();
-    
-    // Show the compare drawer
-    this.showCompareDrawer();
-    
-    // Show notification
-    this.showNotification('Product added to compare');
   }
 
   /**
-   * Remove product from compare list
-   * @param {string} productId - Product ID to remove
+   * Create wishlist product card HTML
+   * @param {Object} product - Product data
+   * @returns {string} HTML string for the product card
    */
-  removeFromCompare(productId) {
-    const index = this.compareList.findIndex(product => product.id === productId);
-    if (index === -1) return;
+  createWishlistProductCard(product) {
+    const formatMoney = (cents) => {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: window.Shopify?.currency?.active || 'USD'
+      }).format(cents / 100);
+    };
+
+    return `
+      <div class="card-product grid file-delete style-wishlist style-3 ${!product.variants[0].available ? 'out-of-stock' : ''}" data-product-id="${product.id}">
+        <i class="icon icon-close remove" data-wishlist data-id="${product.id}" data-action="remove"></i>
+        <div class="card-product-wrapper">
+          <a href="/products/${product.handle}" class="product-img">
+            <img class="img-product lazyload"
+              data-src="${product.featured_image ? product.featured_image.src : product.images[0].src}"
+              src="${product.featured_image ? product.featured_image.src : product.images[0].src}"
+              alt="${product.title}">
+            ${product.images[1] ? `
+              <img class="img-hover lazyload"
+                data-src="${product.images[1].src}"
+                src="${product.images[1].src}"
+                alt="${product.title}">
+            ` : ''}
+          </a>
+          <ul class="list-product-btn">
+            <li>
+              <a href="javascript:void(0);" 
+                 class="box-icon hover-tooltip add-to-cart" 
+                 data-variant-id="${product.variants[0].id}"
+                 data-quantity="1"
+                 aria-label="Add to cart">
+                <span class="icon icon-cart2"></span>
+                <span class="tooltip">Add to Cart</span>
+              </a>
+            </li>
+            <li>
+              <a href="javascript:void(0);" 
+                 class="box-icon hover-tooltip quickview" 
+                 data-product-handle="${product.handle}"
+                 data-product-id="${product.id}"
+                 data-bs-toggle="modal" 
+                 data-bs-target="#quickView">
+                <span class="icon icon-view"></span>
+                <span class="tooltip">Quick View</span>
+              </a>
+            </li>
+            <li class="compare">
+              <a href="javascript:void(0);" 
+                 class="box-icon hover-tooltip tooltip-left" 
+                 data-compare 
+                 data-id="${product.id}" 
+                 data-action="add"
+                 aria-label="Add to compare">
+                <span class="icon icon-compare"></span>
+                <span class="tooltip">Add to Compare</span>
+              </a>
+            </li>
+          </ul>
+          ${!product.variants[0].available ? '<div class="sold-out-badge">Sold Out</div>' : ''}
+        </div>
+        <div class="card-product-info">
+          <a href="/products/${product.handle}" class="name-product link fw-medium text-md">${product.title}</a>
+          <p class="price-wrap fw-medium">
+            <span class="price-new text-primary">${formatMoney(product.variants[0].price * 100)}</span>
+            ${product.variants[0].compare_at_price > product.variants[0].price ? 
+              `<span class="price-old">${formatMoney(product.variants[0].compare_at_price * 100)}</span>` : ''}
+          </p>
+          ${product.variants.length > 1 ? `
+            <ul class="list-color-product">
+              ${product.options.map(option => {
+                if (option.name.toLowerCase() === 'color' || option.name.toLowerCase() === 'colour') {
+                  return option.values.map(value => {
+                    const variant = product.variants.find(v => v.option1 === value);
+                    return `
+                      <li class="list-color-item color-swatch hover-tooltip tooltip-bot ${value === option.values[0] ? 'active' : ''}"
+                          data-variant-id="${variant.id}"
+                          data-option-name="${option.name}"
+                          data-option-value="${value}">
+                        <span class="tooltip color-filter">${value}</span>
+                        <span class="swatch-value bg-${value.toLowerCase().replace(/\s+/g, '-')}"></span>
+                        ${variant.featured_image ? `
+                          <img class="lazyload" 
+                            data-src="${variant.featured_image.src}" 
+                            src="${variant.featured_image.src}" 
+                            alt="${value}"
+                            loading="lazy">
+                        ` : ''}
+                      </li>
+                    `;
+                  }).join('');
+                }
+                return '';
+              }).join('')}
+            </ul>
+          ` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  /**
+   * Initialize event listeners for a wishlist product card
+   * @param {HTMLElement} productCard - The product card element
+   */
+  initializeWishlistProductCardEvents(productCard) {
+    // Remove button
+    const removeButton = productCard.querySelector('[data-wishlist][data-action="remove"]');
+    if (removeButton) {
+      removeButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        const productId = removeButton.getAttribute('data-id');
+        
+        // Remove from localStorage
+        const wishlistIds = localStorage.getItem('theme4:wishlist:id') ? localStorage.getItem('theme4:wishlist:id').split(',') : [];
+        const updatedIds = wishlistIds.filter(id => id !== productId);
+        localStorage.setItem('theme4:wishlist:id', updatedIds.join(','));
+        
+        // Add removal animation class
+        productCard.classList.add('removing');
+        
+        // Remove the product card from UI after animation
+        setTimeout(() => {
+          productCard.remove();
+          
+          // Check if no products left
+          const remainingCards = document.querySelectorAll('.card-product[data-product-id]');
+          if (remainingCards.length === 0) {
+            const gridLayout = document.getElementById('gridLayout');
+            if (gridLayout) {
+              gridLayout.classList.remove('tf-grid-layout');
+              gridLayout.innerHTML = `
+                <div class="wrapper-wishlist tf-col-2 lg-col-3 xl-col-4" style="padding-bottom: 80px;">
+                  <div class="tf-wishlist-empty text-center">
+                    <p class="text-md text-noti">No product were added to the wishlist.</p>
+                    <a href="/" class="tf-btn animate-btn btn-back-shop">Back to Shopping</a>
+                  </div>
+                </div>  
+              `;
+            }
+            
+            const paginationContainer = document.getElementById('paginationContainer');
+            if (paginationContainer) {
+              paginationContainer.style.display = 'none';
+            }
+          }
+          
+          // Update wishlist count
+          this.updateWishlistCount();
+          
+          // Update pagination
+          this.updateWishlistPagination();
+          
+          // Show notification
+        }, 300);
+      });
+    }
     
-    this.compareList.splice(index, 1);
-    this.saveCompareList();
-    this.updateButtonsState();
-    this.updateCompareDrawer();
-    this.showNotification('Removed from compare');
+    // Add to cart button
+    const addToCartButton = productCard.querySelector('.add-to-cart');
+    if (addToCartButton) {
+      addToCartButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (addToCartButton.classList.contains('loading')) return;
+        
+        const variantId = addToCartButton.dataset.variantId;
+        const quantity = parseInt(addToCartButton.dataset.quantity || 1);
+        
+        try {
+          addToCartButton.classList.add('loading');
+          
+          // Add item to cart
+          if (window.cart) {
+            await window.cart.updateQuantity(variantId, quantity, 'add');
+            
+            // Show success feedback
+            addToCartButton.innerHTML = `
+              <div class="success-feedback">
+                <i class="icon icon-check text-success"></i>
+              </div>
+            `;
+            
+            setTimeout(() => {
+              addToCartButton.innerHTML = `
+                <span class="icon icon-cart2"></span>
+                <span class="tooltip">Add to Cart</span>
+              `;
+              addToCartButton.classList.remove('loading');
+            }, 1000);
+          }
+        } catch (error) {
+          console.error('Error adding item to cart:', error);
+          addToCartButton.classList.remove('loading');
+          alert('Failed to add item to cart. Please try again.');
+        }
+      });
+    }
     
-    // Dispatch event to update the compare page
-    document.dispatchEvent(new CustomEvent('compare:updated'));
+    // Quickview button
+    const quickviewButton = productCard.querySelector('.quickview');
+    if (quickviewButton) {
+      quickviewButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Quickview functionality is handled by the existing code in wishlist.liquid
+      });
+    }
+    
+    // Compare button
+    const compareButton = productCard.querySelector('[data-compare]');
+    if (compareButton) {
+      compareButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Compare functionality is handled by the existing code
+      });
+    }
+    
+    // Color swatches
+    const colorSwatches = productCard.querySelectorAll('.list-color-item');
+    colorSwatches.forEach(swatch => {
+      swatch.addEventListener('click', function() {
+        const variantId = this.dataset.variantId;
+        
+        // Update active state
+        productCard.querySelectorAll('.list-color-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        this.classList.add('active');
+        
+        // Update add to cart button variant ID
+        const addToCartBtn = productCard.querySelector('.add-to-cart');
+        if (addToCartBtn) {
+          addToCartBtn.dataset.variantId = variantId;
+        }
+      });
+    });
+  }
+
+  /**
+   * Update wishlist pagination
+   */
+  updateWishlistPagination() {
+    const paginationContainer = document.getElementById('paginationContainer');
+    if (!paginationContainer) return;
+    
+    const gridLayout = document.getElementById('gridLayout');
+    if (!gridLayout) return;
+    
+    const productCards = gridLayout.querySelectorAll('.card-product[data-product-id]');
+    const productsPerPage = parseInt(gridLayout.dataset.productsPerPage) || 12;
+    
+    if (productCards.length === 0) {
+      paginationContainer.style.display = 'none';
+      return;
+    }
+    
+    const totalPages = Math.ceil(productCards.length / productsPerPage);
+    
+    if (totalPages <= 1) {
+      paginationContainer.style.display = 'none';
+      return;
+    }
+    
+    paginationContainer.style.display = 'block';
+    
+    // Update pagination HTML (this is a simplified version - you may want to implement full pagination logic)
+    const pagination = document.getElementById('pagination');
+    if (pagination) {
+      // Simple pagination display
+      pagination.innerHTML = `
+        <li class="active">
+          <div class="pagination-item">1</div>
+        </li>
+      `;
+    }
   }
 
   /**
@@ -627,12 +926,48 @@ class WishlistCompare {
     return productData;
   }
 
-  showNotification(message) {
-    // Implement your notification system here
+  /**
+   * Show notification message
+   * @param {string} message - Message to display
+   * @param {string} type - Type of notification ('success', 'error', 'info')
+   */
+  showNotification(message, type = 'success') {
+    // Remove existing notifications
+    const existingNotifications = document.querySelectorAll('.wishlist-notification');
+    existingNotifications.forEach(notification => notification.remove());
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `wishlist-notification ${type}`;
+    notification.textContent = message;
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Show notification
+    setTimeout(() => {
+      notification.classList.add('show');
+    }, 100);
+    
+    // Hide notification after 3 seconds
+    setTimeout(() => {
+      notification.classList.remove('show');
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.remove();
+        }
+      }, 300);
+    }, 3000);
   }
 
+  /**
+   * Add styles for wishlist animations and notifications
+   */
   addStyles() {
+    if (document.getElementById('wishlist-compare-styles')) return;
+    
     const style = document.createElement('style');
+    style.id = 'wishlist-compare-styles';
     style.textContent = `
       .modal-compare .icon-close.remove {
         position: absolute;
@@ -656,7 +991,7 @@ class WishlistCompare {
       .modal-compare .icon-close.remove:hover {
         color: #ff0000;
       }
-
+      
       /* Prevent scrollbar from causing layout shifts */
       html {
         scrollbar-gutter: stable;
@@ -664,6 +999,108 @@ class WishlistCompare {
       
       body.cart-drawer-open {
         padding-right: var(--scrollbar-width, 0px);
+      }
+      
+      /* Wishlist animations */
+      .card-product[data-product-id] {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+      
+      .card-product[data-product-id].adding {
+        animation: wishlistAdd 0.5s ease-out;
+      }
+      
+      .card-product[data-product-id].removing {
+        animation: wishlistRemove 0.3s ease-in;
+      }
+      
+      @keyframes wishlistAdd {
+        0% {
+          opacity: 0;
+          transform: scale(0.8) translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+      
+      @keyframes wishlistRemove {
+        0% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+      }
+      
+      /* Notification styles */
+      .wishlist-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #28a745;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 4px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 9999;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        max-width: 300px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      
+      .wishlist-notification.show {
+        transform: translateX(0);
+      }
+      
+      .wishlist-notification.error {
+        background: #dc3545;
+      }
+      
+      .wishlist-notification.info {
+        background: #17a2b8;
+      }
+      
+      /* Loading state for add to cart buttons */
+      .add-to-cart.loading {
+        pointer-events: none;
+        opacity: 0.7;
+      }
+      
+      .add-to-cart.loading .spinner-border {
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        border: 0.125em solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        animation: spinner-border 0.75s linear infinite;
+      }
+      
+      @keyframes spinner-border {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      
+      /* Success feedback */
+      .success-feedback {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #28a745;
+      }
+      
+      .error-feedback {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #dc3545;
       }
     `;
     document.head.appendChild(style);
@@ -690,9 +1127,6 @@ class WishlistCompare {
         modal.hide();
       }
   }
-    
-    // Show only the clear notification
-    this.showNotification('Compare list cleared');
   }
 
   updateWishlistCount() {
@@ -706,6 +1140,71 @@ class WishlistCompare {
         element.style.display = count > 0 ? '' : 'none';
       }
     });
+  }
+
+  /**
+   * Add product to compare list
+   * @param {string} productId - Product ID to add
+   */
+  addToCompare(productId) {
+    if (!productId) {
+      console.error('No product ID provided for compare');
+      return;
+    }
+
+    // Check if product is already in compare list (handle both old and new formats)
+    const isAlreadyInList = this.compareList.some(item => 
+      (typeof item === 'string' && item === productId) || 
+      (typeof item === 'object' && item.id === productId)
+    );
+    
+    if (isAlreadyInList) {
+      console.log('Product already in compare list');
+      return;
+    }
+
+    // Get product data before adding to list
+    const productData = this.getProductData(productId);
+    if (!productData) {
+      console.error('Could not get product data for compare');
+      return;
+    }
+
+    // Store complete product data, not just ID
+    this.compareList.push(productData);
+    
+    // Limit the number of items
+    if (this.compareList.length > this.compareLimit) {
+      this.compareList.shift(); // Remove oldest item
+    }
+    
+    this.saveCompareList();
+    
+    // Update UI
+    this.updateButtonsState();
+    this.updateCompareDrawer();
+    
+    // Show the compare drawer
+    this.showCompareDrawer();
+    
+    // Show notification
+  }
+
+  /**
+   * Remove product from compare list
+   * @param {string} productId - Product ID to remove
+   */
+  removeFromCompare(productId) {
+    const index = this.compareList.findIndex(product => product.id === productId);
+    if (index === -1) return;
+    
+    this.compareList.splice(index, 1);
+    this.saveCompareList();
+    this.updateButtonsState();
+    this.updateCompareDrawer();
+    
+    // Dispatch event to update the compare page
+    document.dispatchEvent(new CustomEvent('compare:updated'));
   }
 }
 

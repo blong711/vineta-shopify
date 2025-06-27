@@ -1102,7 +1102,39 @@ document.addEventListener('DOMContentLoaded', function() {
   wishlistButtons.forEach(button => {
     button.addEventListener('click', function(e) {
       e.preventDefault();
-      // Add your wishlist functionality here
+      
+      // Get product ID and current action
+      const productId = this.getAttribute('data-id');
+      const action = this.getAttribute('data-action');
+      
+      if (!productId) return;
+      
+      // Update localStorage
+      const wishlistIds = localStorage.getItem('theme4:wishlist:id') ? localStorage.getItem('theme4:wishlist:id').split(',') : [];
+      
+      if (action === 'add') {
+        // Add to wishlist
+        if (!wishlistIds.includes(productId)) {
+          wishlistIds.unshift(productId);
+          localStorage.setItem('theme4:wishlist:id', wishlistIds.join(','));
+          
+          // Update button state
+          this.setAttribute('data-action', 'remove');
+          
+          // Dispatch event to update wishlist page immediately
+          document.dispatchEvent(new CustomEvent('wishlist:updated'));
+        }
+      } else if (action === 'remove') {
+        // Remove from wishlist
+        const updatedIds = wishlistIds.filter(id => id !== productId);
+        localStorage.setItem('theme4:wishlist:id', updatedIds.join(','));
+        
+        // Update button state
+        this.setAttribute('data-action', 'add');
+        
+        // Dispatch event to update wishlist page immediately
+        document.dispatchEvent(new CustomEvent('wishlist:updated'));
+      }
     });
   });
 
