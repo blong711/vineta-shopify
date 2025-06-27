@@ -683,10 +683,10 @@ class WishlistCompare {
     // Add event listener to remove backdrop and fix body styles when modal is hidden
     drawer.addEventListener('hidden.bs.modal', () => {
       // Remove backdrop
-      const backdrop = document.querySelector('.modal-backdrop');
-      if (backdrop) {
-        backdrop.remove();
-      }
+      // const backdrop = document.querySelector('.modal-backdrop');
+      // if (backdrop) {
+      //   backdrop.remove();
+      // }
       
       // Fix body styles
       document.body.style.overflow = '';
