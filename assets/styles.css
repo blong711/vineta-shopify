@@ -25819,7 +25819,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 }
 @media (max-width: 1440px) {
   .box-nav-menu .sub-menu-style-2 {
-    left: -100px;
+    left: -300px;
   }
   .slider-fashion-1 .slider-wrap {
     height: 700px;
@@ -28108,4 +28108,8 @@ prev.swiper-button-disabled {
       padding-top: 73px;
       padding-bottom: 88px;
   }
+}
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
 }
