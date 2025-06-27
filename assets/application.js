@@ -118,11 +118,21 @@ window.addEventListener('load', () => {
   }
 
   // Initialize Shopify language selector
-  const languageSelector = document.querySelector('language-selector');
-  if (languageSelector) {
+  const languageSelectors = document.querySelectorAll('.type-languages');
+  console.log('Found language selectors:', languageSelectors.length);
+  
+  languageSelectors.forEach((languageSelector, index) => {
+    console.log(`Initializing language selector ${index + 1}:`, languageSelector);
+    
     languageSelector.addEventListener('change', (event) => {
       const language = event.target.value;
-      window.location.href = `/localization?locale=${language}`;
+      console.log('Language changed to:', language);
+      
+      try {
+        window.location.href = `/localization?locale=${language}`;
+      } catch (error) {
+        console.error('Error changing language:', error);
+      }
     });
-  }
+  });
 }); 
