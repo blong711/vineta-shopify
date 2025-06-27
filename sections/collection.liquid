@@ -204,103 +204,206 @@
         </ul>
         </div>
         <form id="collection-filters-form" method="GET" action="{{ collection.url }}" class="filter-form">
-        <div class="tf-filter-dropdown">
-          <span class="title-filter">Filter:</span>
-          <div class="meta-dropdown-filter">
-            <!-- Availability Filter -->
-            <div class="dropdown dropdown-filter">
-              <div class="dropdown-toggle" id="availability" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-                <span class="text-value">Availability</span>
-                <span class="icon icon-arr-down"></span>
+          <div class="tf-filter-dropdown">
+            <span class="title-filter">Filter:</span>
+            <div class="meta-dropdown-filter">
+              <!-- Availability Filter -->
+              <div class="dropdown dropdown-filter">
+                <div class="dropdown-toggle" id="availability" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                  <span class="text-value">Availability</span>
+                  <span class="icon icon-arr-down"></span>
+                </div>
+                <div class="dropdown-menu" aria-labelledby="availability">
+                  <ul class="collapse-body filter-group-check current-scrollbar">
+                    <li class="list-item">
+                      <input type="checkbox"
+                        name="filter.v.availability"
+                        value="1"
+                        id="Filter-availability-1"
+                        {% if current_tags contains 'filter.v.availability:1' %}checked{% endif %}
+                        class="filter-checkbox tf-check">
+                      <label for="Filter-availability-1" class="label">
+                        <span>In stock</span>
+                        <span class="count">({{ collection.products | where: "available", true | size }})</span>
+                      </label>
+                    </li>
+                    <li class="list-item">
+                      <input type="checkbox"
+                        name="filter.v.availability"
+                        value="0"
+                        id="Filter-availability-2"
+                        {% if current_tags contains 'filter.v.availability:0' %}checked{% endif %}
+                        class="filter-checkbox tf-check">
+                      <label for="Filter-availability-2" class="label">
+                        <span>Out of stock</span>
+                        <span class="count">({{ collection.products | where: "available", false | size }})</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div class="dropdown-menu" aria-labelledby="availability">
-                <ul class="collapse-body filter-group-check current-scrollbar">
-                  <li class="list-item">
-                    <input type="checkbox"
-                      name="filter.v.availability"
-                      value="1"
-                      id="Filter-availability-1"
-                      {% if current_tags contains 'filter.v.availability:1' %}checked{% endif %}
-                      class="filter-checkbox tf-check">
-                    <label for="Filter-availability-1" class="label">
-                      <span>In stock</span>
-                      <span class="count">({{ collection.products | where: "available", true | size }})</span>
-                    </label>
-                  </li>
-                  <li class="list-item">
-                    <input type="checkbox"
-                      name="filter.v.availability"
-                      value="0"
-                      id="Filter-availability-2"
-                      {% if current_tags contains 'filter.v.availability:0' %}checked{% endif %}
-                      class="filter-checkbox tf-check">
-                    <label for="Filter-availability-2" class="label">
-                      <span>Out of stock</span>
-                      <span class="count">({{ collection.products | where: "available", false | size }})</span>
-                    </label>
-                  </li>
-                </ul>
-              </div>
-            </div>
 
-            <!-- Dynamic Shopify Filters -->
-            {%- for filter in collection.filters -%}
-              {%- if filter.label != 'Availability' -%}
-                <div class="dropdown dropdown-filter">
-                  <div class="dropdown-toggle" id="filter-{{ filter.label | handle }}" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-                    <span class="text-value">{{ filter.label }}</span>
-                    <span class="icon icon-arr-down"></span>
-                  </div>
-                  <div class="dropdown-menu" aria-labelledby="filter-{{ filter.label | handle }}">
-                    {%- case filter.type -%}
-                      {%- when 'boolean' or 'list' -%}
-                        <ul class="filter-group-check">
-                          {%- for filter_value in filter.values -%}
-                            <li class="list-item">
-                              <input type="checkbox"
-                                name="{{ filter_value.param_name }}"
-                                value="{{ filter_value.value }}"
-                                id="Filter-{{ filter.label | escape }}-{{ forloop.index }}"
-                                {% if filter_value.active -%}checked{%- endif %}
-                                {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
-                                class="filter-checkbox tf-check">
-                              <label for="Filter-{{ filter.label | escape }}-{{ forloop.index }}" class="label">
-                                <span>{{ filter_value.label }}</span>
-                                <span class="count">({{ filter_value.count }})</span>
-                              </label>
-                            </li>
-                          {%- endfor -%}
-                        </ul>
-                      {%- when 'price_range' -%}
-                        <div class="collapse-body widget-price filter-price">
-                          <span class="reset-price">Reset</span>
-                          <div class="price-val-range" id="price-value-range" 
-                            data-min="{{ filter.min_value.value | default: 0 | money_without_currency | round }}"
-                            data-max="{{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}"
-                            data-range-min="{{ filter.range_min | money_without_currency | round }}"
-                            data-range-max="{{ filter.range_max | money_without_currency | round }}"></div>
-                          <div class="box-value-price">
-                            <span class="text-sm">Price:</span>
-                            <div class="price-box">
-                              <div class="price-val" id="price-min-value" data-currency="{{ shop.currency.symbol }}">
-                                {{ filter.min_value.value | default: 0 | money_without_currency | round }}
-                              </div>
-                              <span>-</span>
-                              <div class="price-val" id="price-max-value" data-currency="{{ shop.currency.symbol }}">
-                                {{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}
+              <!-- Dynamic Shopify Filters -->
+              {%- for filter in collection.filters -%}
+                {%- if filter.label != 'Availability' -%}
+                  <div class="dropdown dropdown-filter">
+                    <div class="dropdown-toggle" id="filter-{{ filter.label | handle }}" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                      <span class="text-value">{{ filter.label }}</span>
+                      <span class="icon icon-arr-down"></span>
+                    </div>
+                    <div class="dropdown-menu" aria-labelledby="filter-{{ filter.label | handle }}">
+                      {%- case filter.type -%}
+                        {%- when 'boolean' or 'list' -%}
+                          <ul class="filter-group-check">
+                            {%- for filter_value in filter.values -%}
+                              <li class="list-item">
+                                <input type="checkbox"
+                                  name="{{ filter_value.param_name }}"
+                                  value="{{ filter_value.value }}"
+                                  id="Filter-{{ filter.label | escape }}-{{ forloop.index }}"
+                                  {% if filter_value.active -%}checked{%- endif %}
+                                  {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
+                                  class="filter-checkbox tf-check">
+                                <label for="Filter-{{ filter.label | escape }}-{{ forloop.index }}" class="label">
+                                  <span>{{ filter_value.label }}</span>
+                                  <span class="count">({{ filter_value.count }})</span>
+                                </label>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- when 'price_range' -%}
+                          <div class="collapse-body widget-price filter-price">
+                            <span class="reset-price">Reset</span>
+                            <div class="price-val-range" id="price-value-range-horizontal" 
+                              data-min="{{ filter.min_value.value | default: 0 | money_without_currency | round }}"
+                              data-max="{{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}"
+                              data-range-min="{{ filter.range_min | money_without_currency | round }}"
+                              data-range-max="{{ filter.range_max | money_without_currency | round }}"></div>
+                            <div class="box-value-price">
+                              <span class="text-sm">Price:</span>
+                              <div class="price-box">
+                                <div class="price-val" id="price-min-value-horizontal" data-currency="{{ shop.currency.symbol }}">
+                                  {{ filter.min_value.value | default: 0 | money_without_currency | round }}
+                                </div>
+                                <span>-</span>
+                                <div class="price-val" id="price-max-value-horizontal" data-currency="{{ shop.currency.symbol }}">
+                                  {{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}
+                                </div>
                               </div>
                             </div>
+                            <input type="hidden" name="filter.v.price.gte" id="price-min-input-horizontal" value="{{ filter.min_value.value | default: 0 | money_without_currency | round }}">
+                            <input type="hidden" name="filter.v.price.lte" id="price-max-input-horizontal" value="{{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}">
                           </div>
-                          <input type="hidden" name="filter.v.price.gte" id="price-min-input" value="{{ filter.min_value.value | default: 0 | money_without_currency | round }}">
-                          <input type="hidden" name="filter.v.price.lte" id="price-max-input" value="{{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}">
+                      {%- endcase -%}
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+
+              <!-- Color Filter -->
+              {%- assign unique_colors = '' | split: '' -%}
+              {%- for product in collection.products -%}
+                {%- for option in product.options_with_values -%}
+                  {%- if option.name == 'Color' or option.name == 'Colour' -%}
+                    {%- for value in option.values -%}
+                      {%- unless unique_colors contains value -%}
+                        {%- assign unique_colors = unique_colors | push: value -%}
+                      {%- endunless -%}
+                    {%- endfor -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endfor -%}
+              
+              {%- if unique_colors.size > 0 -%}
+                <div class="dropdown dropdown-filter">
+                  <div class="dropdown-toggle" id="color-filter" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                    <span class="text-value">Color</span>
+                    <span class="icon icon-arr-down"></span>
+                  </div>
+                  <div class="dropdown-menu" aria-labelledby="color-filter">
+                    <div class="filter-color-box">
+                      {%- for color in unique_colors -%}
+                        {%- assign color_count = 0 -%}
+                        {%- for product in collection.products -%}
+                          {%- for option in product.options_with_values -%}
+                            {%- if option.name == 'Color' or option.name == 'Colour' -%}
+                              {%- if option.values contains color -%}
+                                {%- assign color_count = color_count | plus: 1 -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+                        {%- endfor -%}
+                        <div class="color-item color-check" data-color="{{ color | escape }}">
+                          <span class="color bg-{{ color | handleize }}"></span>
+                          <span class="color-text">{{ color }}</span>
+                          <input type="checkbox"
+                            name="filter.v.option.color"
+                            value="{{ color | escape }}"
+                            id="Filter-color-{{ forloop.index }}"
+                            {% if current_tags contains color %}checked{% endif %}
+                            class="filter-checkbox tf-check"
+                            style="display: none;">
+                          <span class="count">({{ color_count }})</span>
                         </div>
-                    {%- endcase -%}
+                      {%- endfor -%}
+                    </div>
                   </div>
                 </div>
               {%- endif -%}
-            {%- endfor -%}
+
+              <!-- Size Filter -->
+              {%- assign unique_sizes = '' | split: '' -%}
+              {%- for product in collection.products -%}
+                {%- for option in product.options_with_values -%}
+                  {%- if option.name == 'Size' -%}
+                    {%- for value in option.values -%}
+                      {%- unless unique_sizes contains value -%}
+                        {%- assign unique_sizes = unique_sizes | push: value -%}
+                      {%- endunless -%}
+                    {%- endfor -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endfor -%}
+              
+              {%- if unique_sizes.size > 0 -%}
+                <div class="dropdown dropdown-filter">
+                  <div class="dropdown-toggle" id="size-filter" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                    <span class="text-value">Size</span>
+                    <span class="icon icon-arr-down"></span>
+                  </div>
+                  <div class="dropdown-menu" aria-labelledby="size-filter">
+                    <div class="filter-size-box">
+                      {%- for size in unique_sizes -%}
+                        {%- assign size_count = 0 -%}
+                        {%- for product in collection.products -%}
+                          {%- for option in product.options_with_values -%}
+                            {%- if option.name == 'Size' -%}
+                              {%- if option.values contains size -%}
+                                {%- assign size_count = size_count | plus: 1 -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+                        {%- endfor -%}
+                        <div class="size-item size-check" data-size="{{ size | escape }}">
+                          <span class="size">{{ size }}</span>
+                          <input type="checkbox"
+                            name="filter.v.option.size"
+                            value="{{ size | escape }}"
+                            id="Filter-size-{{ forloop.index }}"
+                            {% if current_tags contains size %}checked{% endif %}
+                            class="filter-checkbox tf-check"
+                            style="display: none;">
+                          <span class="count">({{ size_count }})</span>
+                        </div>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
           </div>
-        </div>
         </form>
       {% endif %}
     {%- endif -%}
@@ -664,19 +767,60 @@
         }
       });
 
-      // Set price range if exists - wait for noUiSlider to be available
-      const priceRange = document.getElementById('price-value-range');
-      if (priceRange) {
-        const minPrice = urlParams.get('filter.v.price.gte');
-        const maxPrice = urlParams.get('filter.v.price.lte');
-        
-        if (minPrice && maxPrice && priceRange.noUiSlider) {
-          priceRange.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
-        } else if (minPrice && maxPrice) {
+      // Set color and size filter states
+      const colorFilters = urlParams.getAll('filter.v.option.color');
+      const sizeFilters = urlParams.getAll('filter.v.option.size');
+      
+      colorFilters.forEach(color => {
+        const colorItem = document.querySelector(`[data-color="${color}"]`);
+        if (colorItem) {
+          const checkbox = colorItem.querySelector('.filter-checkbox');
+          if (checkbox) {
+            checkbox.checked = true;
+            colorItem.classList.add('active');
+          }
+        }
+      });
+      
+      sizeFilters.forEach(size => {
+        const sizeItem = document.querySelector(`[data-size="${size}"]`);
+        if (sizeItem) {
+          const checkbox = sizeItem.querySelector('.filter-checkbox');
+          if (checkbox) {
+            checkbox.checked = true;
+            sizeItem.classList.add('active');
+          }
+        }
+      });
+
+      // Set price range if exists - check both sidebar and horizontal filters
+      const priceRangeSidebar = document.getElementById('price-value-range');
+      const priceRangeHorizontal = document.getElementById('price-value-range-horizontal');
+      const minPrice = urlParams.get('filter.v.price.gte');
+      const maxPrice = urlParams.get('filter.v.price.lte');
+      
+      if (minPrice && maxPrice) {
+        // Update sidebar price range
+        if (priceRangeSidebar && priceRangeSidebar.noUiSlider) {
+          priceRangeSidebar.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
+        } else if (priceRangeSidebar) {
           // Wait for noUiSlider to be initialized
           const checkSlider = setInterval(() => {
-            if (priceRange.noUiSlider) {
-              priceRange.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
+            if (priceRangeSidebar.noUiSlider) {
+              priceRangeSidebar.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
+              clearInterval(checkSlider);
+            }
+          }, 100);
+        }
+        
+        // Update horizontal price range
+        if (priceRangeHorizontal && priceRangeHorizontal.noUiSlider) {
+          priceRangeHorizontal.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
+        } else if (priceRangeHorizontal) {
+          // Wait for noUiSlider to be initialized
+          const checkSlider = setInterval(() => {
+            if (priceRangeHorizontal.noUiSlider) {
+              priceRangeHorizontal.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
               clearInterval(checkSlider);
             }
           }, 100);
@@ -689,20 +833,34 @@
 
     // Initialize price range slider
     function initializePriceRangeSlider() {
-      const priceRange = document.getElementById('price-value-range');
-      if (!priceRange || priceRange.noUiSlider) return;
+      // Check for both sidebar and horizontal price range sliders
+      const priceRangeSidebar = document.getElementById('price-value-range');
+      const priceRangeHorizontal = document.getElementById('price-value-range-horizontal');
+      
+      // Initialize sidebar price range slider
+      if (priceRangeSidebar && !priceRangeSidebar.noUiSlider) {
+        initializeSinglePriceSlider(priceRangeSidebar, 'price-min-value', 'price-max-value', 'price-min-input', 'price-max-input');
+      }
+      
+      // Initialize horizontal price range slider
+      if (priceRangeHorizontal && !priceRangeHorizontal.noUiSlider) {
+        initializeSinglePriceSlider(priceRangeHorizontal, 'price-min-value-horizontal', 'price-max-value-horizontal', 'price-min-input-horizontal', 'price-max-input-horizontal');
+      }
+    }
 
+    // Helper function to initialize a single price slider
+    function initializeSinglePriceSlider(priceRange, minValueId, maxValueId, minInputId, maxInputId) {
       // Check if noUiSlider is available
       if (typeof noUiSlider === 'undefined') {
         console.warn('noUiSlider not available, retrying in 500ms...');
-        setTimeout(initializePriceRangeSlider, 500);
+        setTimeout(() => initializePriceRangeSlider(), 500);
         return;
       }
 
-      const minValue = document.getElementById('price-min-value');
-      const maxValue = document.getElementById('price-max-value');
-      const minInput = document.getElementById('price-min-input');
-      const maxInput = document.getElementById('price-max-input');
+      const minValue = document.getElementById(minValueId);
+      const maxValue = document.getElementById(maxValueId);
+      const minInput = document.getElementById(minInputId);
+      const maxInput = document.getElementById(maxInputId);
       
       if (!minValue || !maxValue) return;
 
@@ -733,20 +891,15 @@
 
         // Handle change event
         priceRange.noUiSlider.on('change', function(values) {
-          const filters = {
-            'filter.v.price.gte': Math.round(values[0]),
-            'filter.v.price.lte': Math.round(values[1])
-          };
+          // Update the hidden inputs
+          if (minInput) minInput.value = Math.round(values[0]);
+          if (maxInput) maxInput.value = Math.round(values[1]);
           
-          // Add other active filters
-          const checkboxes = document.querySelectorAll('.filter-checkbox');
-          checkboxes.forEach(cb => {
-            if (cb.checked) {
-              filters[cb.name] = cb.value;
-            }
-          });
-          
-          updateProducts(filters, currentSort);
+          // Submit the form instead of using JavaScript URL manipulation
+          const form = document.getElementById('collection-filters-form');
+          if (form) {
+            form.submit();
+          }
         });
 
       } catch (error) {
@@ -791,11 +944,43 @@
         }
       }
 
+      // Check color and size filters specifically
+      const colorFilters = urlParams.getAll('filter.v.option.color');
+      const sizeFilters = urlParams.getAll('filter.v.option.size');
+      
+      colorFilters.forEach(color => {
+        const colorItem = document.querySelector(`[data-color="${color}"]`);
+        if (colorItem) {
+          const colorText = colorItem.querySelector('.color-text')?.textContent || color;
+          appliedFilters.push({
+            type: 'filter.v.option.color',
+            label: `Color: ${colorText}`,
+            param: 'filter.v.option.color',
+            value: color
+          });
+        }
+      });
+      
+      sizeFilters.forEach(size => {
+        const sizeItem = document.querySelector(`[data-size="${size}"]`);
+        if (sizeItem) {
+          const sizeText = sizeItem.querySelector('.size')?.textContent || size;
+          appliedFilters.push({
+            type: 'filter.v.option.size',
+            label: `Size: ${sizeText}`,
+            param: 'filter.v.option.size',
+            value: size
+          });
+        }
+      });
+
       // Check price range
       const minPrice = urlParams.get('filter.v.price.gte');
       const maxPrice = urlParams.get('filter.v.price.lte');
       if (minPrice && maxPrice) {
-        const currency = document.querySelector('#price-min-value')?.dataset.currency || '$';
+        const currencySidebar = document.querySelector('#price-min-value')?.dataset.currency;
+        const currencyHorizontal = document.querySelector('#price-min-value-horizontal')?.dataset.currency;
+        const currency = currencyHorizontal || currencySidebar || '$';
         appliedFilters.push({
           type: 'price',
           label: `Price: ${currency}${minPrice} - ${currency}${maxPrice}`,
@@ -1163,52 +1348,77 @@
           });
         }
         
-        const filters = {};
-        
-        // Collect all checked filter values
-        const checkboxes = document.querySelectorAll('.filter-checkbox');
-        checkboxes.forEach(cb => {
-          if (cb.checked) {
-            filters[cb.name] = cb.value;
-          }
-        });
-        
-        // Add price filters if they exist
-        const minPrice = document.getElementById('price-min-input')?.value;
-        const maxPrice = document.getElementById('price-max-input')?.value;
-        if (minPrice && maxPrice) {
-          filters['filter.v.price.gte'] = minPrice;
-          filters['filter.v.price.lte'] = maxPrice;
+        // Submit the form instead of using JavaScript URL manipulation
+        const form = document.getElementById('collection-filters-form');
+        if (form) {
+          form.submit();
         }
-        
-        // Update products with new filters
-        updateProducts(filters, currentSort);
       });
     });
 
+    // Handle color filter clicks in horizontal filter
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('.color-check')) {
+        const colorItem = e.target.closest('.color-check');
+        const checkbox = colorItem.querySelector('.filter-checkbox');
+        const colorValue = colorItem.dataset.color;
+        
+        // Toggle the checkbox
+        checkbox.checked = !checkbox.checked;
+        
+        // Toggle active class
+        colorItem.classList.toggle('active', checkbox.checked);
+        
+        // Submit the form instead of using JavaScript URL manipulation
+        const form = document.getElementById('collection-filters-form');
+        if (form) {
+          form.submit();
+        }
+      }
+      
+      if (e.target.closest('.size-check')) {
+        const sizeItem = e.target.closest('.size-check');
+        const checkbox = sizeItem.querySelector('.filter-checkbox');
+        const sizeValue = sizeItem.dataset.size;
+        
+        // Toggle the checkbox
+        checkbox.checked = !checkbox.checked;
+        
+        // Toggle active class
+        sizeItem.classList.toggle('active', checkbox.checked);
+        
+        // Submit the form instead of using JavaScript URL manipulation
+        const form = document.getElementById('collection-filters-form');
+        if (form) {
+          form.submit();
+        }
+      }
+    });
+
     // Handle reset price button
-    const resetPriceBtn = document.querySelector('.reset-price');
-    if (resetPriceBtn) {
+    document.querySelectorAll('.reset-price').forEach(resetPriceBtn => {
       resetPriceBtn.addEventListener('click', function() {
-        const priceRange = document.getElementById('price-value-range');
-        if (priceRange && priceRange.noUiSlider) {
-          const minPrice = parseInt(priceRange.dataset.rangeMin);
-          const maxPrice = parseInt(priceRange.dataset.rangeMax);
-          priceRange.noUiSlider.set([minPrice, maxPrice]);
-          
-          const filters = {};
-          // Add other active filters (excluding price)
-          const checkboxes = document.querySelectorAll('.filter-checkbox');
-          checkboxes.forEach(cb => {
-            if (cb.checked) {
-              filters[cb.name] = cb.value;
-            }
-          });
-          
-          updateProducts(filters, currentSort);
+        // Reset sidebar price range
+        const priceRangeSidebar = document.getElementById('price-value-range');
+        if (priceRangeSidebar && priceRangeSidebar.noUiSlider) {
+          const minPrice = parseInt(priceRangeSidebar.dataset.rangeMin);
+          const maxPrice = parseInt(priceRangeSidebar.dataset.rangeMax);
+          priceRangeSidebar.noUiSlider.set([minPrice, maxPrice]);
+        }
+        // Reset horizontal price range
+        const priceRangeHorizontal = document.getElementById('price-value-range-horizontal');
+        if (priceRangeHorizontal && priceRangeHorizontal.noUiSlider) {
+          const minPrice = parseInt(priceRangeHorizontal.dataset.rangeMin);
+          const maxPrice = parseInt(priceRangeHorizontal.dataset.rangeMax);
+          priceRangeHorizontal.noUiSlider.set([minPrice, maxPrice]);
+        }
+        // Submit the form
+        const form = document.getElementById('collection-filters-form');
+        if (form) {
+          form.submit();
         }
       });
-    }
+    });
 
     // Handle individual filter tag removal
     document.addEventListener('click', function(e) {
@@ -1228,12 +1438,19 @@
               cb.checked = false;
             });
           } else if (filterType === 'price') {
-            // Reset price range
-            const priceRange = document.getElementById('price-value-range');
-            if (priceRange && priceRange.noUiSlider) {
-              const minPrice = parseInt(priceRange.dataset.rangeMin);
-              const maxPrice = parseInt(priceRange.dataset.rangeMax);
-              priceRange.noUiSlider.set([minPrice, maxPrice]);
+            // Reset price range - both sidebar and horizontal
+            const priceRangeSidebar = document.getElementById('price-value-range');
+            if (priceRangeSidebar && priceRangeSidebar.noUiSlider) {
+              const minPrice = parseInt(priceRangeSidebar.dataset.rangeMin);
+              const maxPrice = parseInt(priceRangeSidebar.dataset.rangeMax);
+              priceRangeSidebar.noUiSlider.set([minPrice, maxPrice]);
+            }
+            
+            const priceRangeHorizontal = document.getElementById('price-value-range-horizontal');
+            if (priceRangeHorizontal && priceRangeHorizontal.noUiSlider) {
+              const minPrice = parseInt(priceRangeHorizontal.dataset.rangeMin);
+              const maxPrice = parseInt(priceRangeHorizontal.dataset.rangeMax);
+              priceRangeHorizontal.noUiSlider.set([minPrice, maxPrice]);
             }
           } else {
             // Remove specific checkbox filter
@@ -1253,11 +1470,24 @@
           });
           
           // Add price filters if they exist
-          const minPrice = document.getElementById('price-min-input')?.value;
-          const maxPrice = document.getElementById('price-max-input')?.value;
+          const minPriceSidebar = document.getElementById('price-min-input')?.value;
+          const maxPriceSidebar = document.getElementById('price-max-input')?.value;
+          const minPriceHorizontal = document.getElementById('price-min-input-horizontal')?.value;
+          const maxPriceHorizontal = document.getElementById('price-max-input-horizontal')?.value;
+          
+          // Use whichever price range is available
+          const minPrice = minPriceHorizontal || minPriceSidebar;
+          const maxPrice = maxPriceHorizontal || maxPriceSidebar;
+          
           if (minPrice && maxPrice) {
-            const rangeMin = parseInt(document.getElementById('price-value-range')?.dataset.rangeMin);
-            const rangeMax = parseInt(document.getElementById('price-value-range')?.dataset.rangeMax);
+            const rangeMinSidebar = parseInt(document.getElementById('price-value-range')?.dataset.rangeMin);
+            const rangeMaxSidebar = parseInt(document.getElementById('price-value-range')?.dataset.rangeMax);
+            const rangeMinHorizontal = parseInt(document.getElementById('price-value-range-horizontal')?.dataset.rangeMin);
+            const rangeMaxHorizontal = parseInt(document.getElementById('price-value-range-horizontal')?.dataset.rangeMax);
+            
+            const rangeMin = rangeMinHorizontal || rangeMinSidebar;
+            const rangeMax = rangeMaxHorizontal || rangeMaxSidebar;
+            
             if (parseInt(minPrice) > rangeMin || parseInt(maxPrice) < rangeMax) {
               filters['filter.v.price.gte'] = minPrice;
               filters['filter.v.price.lte'] = maxPrice;
@@ -1279,16 +1509,26 @@
           cb.checked = false;
         });
         
-        // Reset price range
-        const priceRange = document.getElementById('price-value-range');
-        if (priceRange && priceRange.noUiSlider) {
-          const minPrice = parseInt(priceRange.dataset.rangeMin);
-          const maxPrice = parseInt(priceRange.dataset.rangeMax);
-          priceRange.noUiSlider.set([minPrice, maxPrice]);
+        // Reset price range - both sidebar and horizontal
+        const priceRangeSidebar = document.getElementById('price-value-range');
+        if (priceRangeSidebar && priceRangeSidebar.noUiSlider) {
+          const minPrice = parseInt(priceRangeSidebar.dataset.rangeMin);
+          const maxPrice = parseInt(priceRangeSidebar.dataset.rangeMax);
+          priceRangeSidebar.noUiSlider.set([minPrice, maxPrice]);
         }
         
-        // Update products with no filters
-        updateProducts({}, currentSort);
+        const priceRangeHorizontal = document.getElementById('price-value-range-horizontal');
+        if (priceRangeHorizontal && priceRangeHorizontal.noUiSlider) {
+          const minPrice = parseInt(priceRangeHorizontal.dataset.rangeMin);
+          const maxPrice = parseInt(priceRangeHorizontal.dataset.rangeMax);
+          priceRangeHorizontal.noUiSlider.set([minPrice, maxPrice]);
+        }
+        
+        // Submit the form instead of using JavaScript URL manipulation
+        const form = document.getElementById('collection-filters-form');
+        if (form) {
+          form.submit();
+        }
       });
     }
 
@@ -1309,9 +1549,16 @@
         }
       });
       
-      // Add price filters
-      const minPrice = document.getElementById('price-min-input')?.value;
-      const maxPrice = document.getElementById('price-max-input')?.value;
+      // Add price filters - check both sidebar and horizontal
+      const minPriceSidebar = document.getElementById('price-min-input')?.value;
+      const maxPriceSidebar = document.getElementById('price-max-input')?.value;
+      const minPriceHorizontal = document.getElementById('price-min-input-horizontal')?.value;
+      const maxPriceHorizontal = document.getElementById('price-max-input-horizontal')?.value;
+      
+      // Use whichever price range is available
+      const minPrice = minPriceHorizontal || minPriceSidebar;
+      const maxPrice = maxPriceHorizontal || maxPriceSidebar;
+      
       if (minPrice && maxPrice) {
         filters['filter.v.price.gte'] = minPrice;
         filters['filter.v.price.lte'] = maxPrice;
