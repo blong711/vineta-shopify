@@ -193,113 +193,159 @@ function createSimpleRow(label, values) {
   return row;
 }
 
-document.addEventListener('DOMContentLoaded', async function() {
-  const compareContent = document.getElementById('compareContent');
-
-  async function renderCompareTable() {
-    // Parse the JSON array from localStorage
-    let compareProducts = [];
-    try {
-      const compareData = localStorage.getItem('theme4:compare:id');
-      if (compareData) {
-        const parsed = JSON.parse(compareData);
-        // Handle the new clean array format: [{product1}, {product2}, ...]
-        if (Array.isArray(parsed)) {
-          compareProducts = parsed;
-        }
+// Function to remove product from compare
+function removeProductFromCompare(productId) {
+  try {
+    const compareData = localStorage.getItem('theme4:compare:id');
+    if (compareData) {
+      const parsed = JSON.parse(compareData);
+      if (Array.isArray(parsed)) {
+        // Remove the product with matching ID (convert to string for comparison)
+        const updatedProducts = parsed.filter(product => product.id.toString() !== productId.toString());
+        localStorage.setItem('theme4:compare:id', JSON.stringify(updatedProducts));
+        
+        // Re-render the table immediately
+        renderCompareTable();
+        
+        // Show success message or animation if needed
+        console.log(`Product ${productId} removed from compare`);
       }
-    } catch (e) {
-      console.error('Error parsing compare data:', e);
-      compareProducts = [];
     }
+  } catch (e) {
+    console.error('Error updating compare data:', e);
+  }
+}
 
-    if (compareProducts.length === 0) {
-      compareContent.innerHTML = '';
-      document.getElementById('compareTable').style.display = 'none';
-      document.getElementById('compareEmpty').style.display = 'block';
-      return;
+// Function to render compare table
+async function renderCompareTable() {
+  const compareContent = document.getElementById('compareContent');
+  const compareTable = document.getElementById('compareTable');
+  const compareEmpty = document.getElementById('compareEmpty');
+
+  // Parse the JSON array from localStorage
+  let compareProducts = [];
+  try {
+    const compareData = localStorage.getItem('theme4:compare:id');
+    if (compareData) {
+      const parsed = JSON.parse(compareData);
+      // Handle the array format: [{"id":..., "title":..., "url":..., "image":..., "price":..., "comparePrice":...}]
+      if (Array.isArray(parsed)) {
+        compareProducts = parsed;
+      }
     }
-
-    compareContent.innerHTML = '';
-    document.getElementById('compareTable').style.display = 'block';
-    document.getElementById('compareEmpty').style.display = 'none';
-
-    // 1. Image/Title/Price row
-    const imageRowValues = compareProducts.map(product => `
-      <div class="tf-compare-item">
-        <a class="tf-compare-image" s href="${product.url}">
-          <img class="lazyload" src="${product.image}" alt="${product.title}" width="200" height="200">
-        </a>
-        <div class="content">
-          <a class="tf-compare-title link text-md fw-medium" href="${product.url}">${product.title}</a>
-          <p class="price-wrap fw-medium text-md">
-            <span class="price-new text-primary">${product.price}</span>
-            ${product.comparePrice ? `<span class="price-old text-dark">${product.comparePrice}</span>` : ''}
-          </p>
-          <div class="tf-compare-btn">
-            <a href="#shoppingCart" data-bs-toggle="offcanvas"
-               class="tf-btn animate-btn w-100">
-              Add to Cart
-            </a>
-          </div>
-        </div>
-        <div class="tf-compare-remove">
-          <span class="tf-btn-icon line d-inline-flex" data-compare data-id="${product.id}" data-action="remove">
-            <i class="icon-close"></i>
-          </span>
-        </div>
-      </div>
-    `);
-    compareContent.appendChild(createRow('', imageRowValues));
-
-    // 2. Availability row - Since we don't have availability in stored data, we'll show "In Stock" as default
-    const availabilityRowValues = compareProducts.map(product => {
-      return `
-        <div style="font-size: 14px;" class="tf-compare-col tf-compare-field tf-compare-stock">
-          <div class="icon">
-            <i class="icon-fill-check-circle"></i>
-          </div>
-          <span>In Stock</span>
-        </div>
-      `;
-    });
-    compareContent.appendChild(createSimpleRow('Availability', availabilityRowValues));
-
-    // 3. Vendor row - Since we don't have vendor in stored data, we'll show "N/A"
-    const vendorRowValues = compareProducts.map(product =>
-      `<div class="tf-compare-col tf-compare-field text-center"><p class="text-sm">N/A</p></div>`
-    );
-    compareContent.appendChild(createRow('Vendor', vendorRowValues));
-
-    // 4. Color row - Since we don't have color in stored data, we'll show "N/A"
-    const colorRowValues = compareProducts.map(product =>
-      `<div class="tf-compare-col tf-compare-field text-center"><p class="text-sm">N/A</p></div>`
-    );
-    compareContent.appendChild(createRow('Color', colorRowValues));
+  } catch (e) {
+    console.error('Error parsing compare data:', e);
+    compareProducts = [];
   }
 
+  // Check if we have products to compare
+  if (compareProducts.length === 0) {
+    compareContent.innerHTML = '';
+    compareTable.style.display = 'none';
+    compareEmpty.style.display = 'block';
+    return;
+  }
+
+  // Clear content and show table
+  compareContent.innerHTML = '';
+  compareTable.style.display = 'block';
+  compareEmpty.style.display = 'none';
+
+  // 1. Image/Title/Price row
+  const imageRowValues = compareProducts.map(product => `
+    <div class="tf-compare-item">
+      <a class="tf-compare-image" href="${product.url}">
+        <img class="lazyload" src="${product.image}" alt="${product.title}" width="200" height="200">
+      </a>
+      <div class="content">
+        <a class="tf-compare-title link text-md fw-medium" href="${product.url}">${product.title}</a>
+        <p class="price-wrap fw-medium text-md">
+          <span class="price-new text-primary">${product.price}</span>
+          ${product.comparePrice && product.comparePrice !== '' ? `<span class="price-old text-dark">${product.comparePrice}</span>` : ''}
+        </p>
+        <div class="tf-compare-btn">
+          <a href="#shoppingCart" data-bs-toggle="offcanvas"
+             class="tf-btn animate-btn w-100">
+            Add to Cart
+          </a>
+        </div>
+      </div>
+      <div class="tf-compare-remove">
+        <span class="tf-btn-icon line d-inline-flex" data-compare data-id="${product.id}" data-action="remove">
+          <i class="icon-close"></i>
+        </span>
+      </div>
+    </div>
+  `);
+  compareContent.appendChild(createRow('', imageRowValues));
+
+  // 2. Availability row - Since we don't have availability in stored data, we'll show "In Stock" as default
+  const availabilityRowValues = compareProducts.map(product => {
+    return `
+      <div style="font-size: 14px;" class="tf-compare-col tf-compare-field tf-compare-stock">
+        <div class="icon">
+          <i class="icon-fill-check-circle"></i>
+        </div>
+        <span>In Stock</span>
+      </div>
+    `;
+  });
+  compareContent.appendChild(createSimpleRow('Availability', availabilityRowValues));
+
+  // 3. Vendor row - Since we don't have vendor in stored data, we'll show "N/A"
+  const vendorRowValues = compareProducts.map(product =>
+    `<div class="tf-compare-col tf-compare-field text-center"><p class="text-sm">N/A</p></div>`
+  );
+  compareContent.appendChild(createRow('Vendor', vendorRowValues));
+
+  // 4. Color row - Since we don't have color in stored data, we'll show "N/A"
+  const colorRowValues = compareProducts.map(product =>
+    `<div class="tf-compare-col tf-compare-field text-center"><p class="text-sm">N/A</p></div>`
+  );
+  compareContent.appendChild(createRow('Color', colorRowValues));
+
+  // Re-attach event listeners after re-rendering
+  attachCompareEventListeners();
+}
+
+// Function to attach event listeners
+function attachCompareEventListeners() {
+  const compareContent = document.getElementById('compareContent');
+  
+  // Remove event listeners to prevent duplicates
+  compareContent.removeEventListener('click', handleCompareClick);
+  
+  // Add new event listener
+  compareContent.addEventListener('click', handleCompareClick);
+}
+
+// Event handler for compare actions
+function handleCompareClick(e) {
+  const removeBtn = e.target.closest('[data-compare][data-action="remove"]');
+  if (removeBtn) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const productId = removeBtn.getAttribute('data-id');
+    if (productId) {
+      // Add visual feedback
+      removeBtn.style.opacity = '0.5';
+      removeBtn.style.pointerEvents = 'none';
+      
+      // Remove the product
+      removeProductFromCompare(productId);
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
   // Initial render
   renderCompareTable();
-
-  // Remove product on click without reload
-  compareContent.addEventListener('click', function(e) {
-    const removeBtn = e.target.closest('[data-compare][data-action="remove"]');
-    if (removeBtn) {
-      const productId = removeBtn.getAttribute('data-id');
-      try {
-        const compareData = localStorage.getItem('theme4:compare:id');
-        if (compareData) {
-          const parsed = JSON.parse(compareData);
-          if (Array.isArray(parsed)) {
-            // Remove the product with matching ID
-            const updatedProducts = parsed.filter(product => product.id !== productId);
-            localStorage.setItem('theme4:compare:id', JSON.stringify(updatedProducts));
-            renderCompareTable();
-          }
-        }
-      } catch (e) {
-        console.error('Error updating compare data:', e);
-      }
+  
+  // Listen for storage changes (in case compare is updated from other pages)
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'theme4:compare:id') {
+      renderCompareTable();
     }
   });
 });
