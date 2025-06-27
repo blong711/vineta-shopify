@@ -117,6 +117,32 @@ window.addEventListener('load', () => {
     });
   }
 
+  // RTL languages array
+  const rtlLanguages = ['ar', 'he', 'fa', 'ur', 'ps', 'sd', 'ku', 'yi'];
+
+  // Function to set RTL direction using theme settings
+  function setRTLDirection(isRTL) {
+    const htmlElement = document.documentElement;
+    if (isRTL) {
+      htmlElement.setAttribute('dir', 'rtl');
+      // Store RTL preference
+      localStorage.setItem('theme-rtl-direction', 'rtl');
+    } else {
+      htmlElement.setAttribute('dir', 'ltr');
+      localStorage.setItem('theme-rtl-direction', 'ltr');
+    }
+  }
+
+  // Check current language and set RTL on page load
+  function checkCurrentLanguage() {
+    const currentLang = document.documentElement.lang || window.Shopify?.locale || 'en';
+    const isRTL = rtlLanguages.includes(currentLang);
+    setRTLDirection(isRTL);
+  }
+
+  // Check on page load
+  checkCurrentLanguage();
+
   // Initialize Shopify language selector
   const languageSelectors = document.querySelectorAll('.type-languages');
   console.log('Found language selectors:', languageSelectors.length);
@@ -127,6 +153,10 @@ window.addEventListener('load', () => {
     languageSelector.addEventListener('change', (event) => {
       const language = event.target.value;
       console.log('Language changed to:', language);
+      
+      // Set RTL direction based on selected language
+      const isRTL = rtlLanguages.includes(language);
+      setRTLDirection(isRTL);
       
       // Remove any existing language prefix from the path
       const pathParts = window.location.pathname.split('/').filter(Boolean);
