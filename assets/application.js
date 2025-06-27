@@ -128,11 +128,16 @@ window.addEventListener('load', () => {
       const language = event.target.value;
       console.log('Language changed to:', language);
       
-      try {
-        window.location.href = `/localization?locale=${language}`;
-      } catch (error) {
-        console.error('Error changing language:', error);
+      // Remove any existing language prefix from the path
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      const supportedLocales = Array.from(languageSelector.options).map(opt => opt.value);
+      if (supportedLocales.includes(pathParts[0])) {
+        pathParts[0] = language;
+      } else {
+        pathParts.unshift(language);
       }
+      const newPath = '/' + pathParts.join('/');
+      window.location.href = `${newPath}${window.location.search}`;
     });
   });
 }); 
