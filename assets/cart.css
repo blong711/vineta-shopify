@@ -76,9 +76,9 @@
 }
 
 .loading-spinner .spinner-border {
-  width: 16px;
-  height: 16px;
-  border-width: 2px;
+  width: 12px;
+  height: 12px;
+  border-width: 1px;
   color: currentColor;
 }
 
@@ -92,8 +92,9 @@
 }
 
 .success-feedback .icon-check {
-  font-size: 16px;
+  font-size: 12px;
   color: #28a745;
+  font-weight: 100;
 }
 
 .error-feedback {
@@ -106,8 +107,9 @@
 }
 
 .error-feedback .icon-close {
-  font-size: 16px;
+  font-size: 12px;
   color: #dc3545;
+  font-weight: 300;
 }
 
 @keyframes fadeInScale {
@@ -139,12 +141,14 @@
 /* Responsive adjustments for mobile */
 @media (max-width: 767px) {
   .loading-spinner .spinner-border {
-    width: 14px;
-    height: 14px;
+    width: 10px;
+    height: 10px;
+    border-width: 1px;
   }
   
   .success-feedback .icon-check,
   .error-feedback .icon-close {
-    font-size: 14px;
+    font-size: 10px;
+    font-weight: 200;
   }
 } 
