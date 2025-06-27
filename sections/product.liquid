@@ -1607,38 +1607,38 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // --- Quantity Controls (Cleaned Up) ---
-  document.querySelectorAll('.tf-product-info-list .minus-btn').forEach(button => {
-    button.addEventListener('click', function(e) {
-      e.preventDefault();
-      const input = this.nextElementSibling;
-      let value = parseInt(input.value) || 1;
-      if (value > 1) value--;
-      input.value = value + 1;
-      input.dispatchEvent(new Event('change'));
-    });
-  });
-  document.querySelectorAll('.tf-product-info-list .plus-btn').forEach(button => {
-    button.addEventListener('click', function(e) {
-      e.preventDefault();
-      const input = this.previousElementSibling;
-      let value = parseInt(input.value) || 1;
-      value++;
-      input.value = value - 1;
-      input.dispatchEvent(new Event('change'));
-    });
-  });
-  document.querySelectorAll('.tf-product-info-list .quantity-product').forEach(input => {
-    input.addEventListener('change', function() {
-      let value = parseInt(this.value) || 1;
-      this.value = Math.max(1, value);
-      // Update add-to-cart button's data-quantity
-      const mainAddToCartBtn = document.querySelector('.tf-product-info-list .add-to-cart');
-      if (mainAddToCartBtn) {
-        mainAddToCartBtn.dataset.quantity = this.value;
-      }
-    });
-  });
+  // // --- Quantity Controls (Cleaned Up) ---
+  // document.querySelectorAll('.tf-product-info-list .minus-btn').forEach(button => {
+  //   button.addEventListener('click', function(e) {
+  //     e.preventDefault();
+  //     const input = this.nextElementSibling;
+  //     let value = parseInt(input.value) || 1;
+  //     if (value > 1) value--;
+  //     input.value = value + 1;
+  //     input.dispatchEvent(new Event('change'));
+  //   });
+  // });
+  // document.querySelectorAll('.tf-product-info-list .plus-btn').forEach(button => {
+  //   button.addEventListener('click', function(e) {
+  //     e.preventDefault();
+  //     const input = this.previousElementSibling;
+  //     let value = parseInt(input.value) || 1;
+  //     value++;
+  //     input.value = value - 1;
+  //     input.dispatchEvent(new Event('change'));
+  //   });
+  // });
+  // document.querySelectorAll('.tf-product-info-list .quantity-product').forEach(input => {
+  //   input.addEventListener('change', function() {
+  //     let value = parseInt(this.value) || 1;
+  //     this.value = Math.max(1, value);
+  //     // Update add-to-cart button's data-quantity
+  //     const mainAddToCartBtn = document.querySelector('.tf-product-info-list .add-to-cart');
+  //     if (mainAddToCartBtn) {
+  //       mainAddToCartBtn.dataset.quantity = this.value;
+  //     }
+  //   });
+  // });
   // ... existing code ...
   // Remove any other direct or delegated event listeners for quantity controls that call window.cart.updateQuantity except in the Add to Cart click handler.
 
@@ -2366,7 +2366,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Function to update add to cart button quantity
   function updateAddToCartQuantity(quantity) {
-    const addToCartBtn = document.querySelector('.add-to-cart');
+    const addToCartBtn = document.querySelector('.tf-product-info-list .add-to-cart');
     if (addToCartBtn) {
       addToCartBtn.dataset.quantity = quantity;
     }
