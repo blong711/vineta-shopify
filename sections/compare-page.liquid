@@ -24,7 +24,7 @@
         {% for product in collections.all.products %}
             <div class="tf-compare-col" data-product-id="{{ product.id }}">
                 <div class="tf-compare-item">
-                    <a class="tf-compare-image" href="{{ product.url }}">
+                    <a class="tf-compare-image" style="aspect-ratio: 4/5;" href="{{ product.url }}">
                         <img class="lazyload" 
                             data-src="{{ product.featured_image | image_url: width: 400 }}"
                             src="{{ product.featured_image | image_url: width: 400 }}" 
@@ -133,7 +133,7 @@
 <template id="compareProductColTemplate">
   <div class="tf-compare-col" data-product-id="">
     <div class="tf-compare-item">
-      <a class="tf-compare-image" href="">
+      <a class="tf-compare-image" style="aspect-ratio: 4/5;" href="">
         <img class="lazyload" data-src="" src="" alt="" width="200" height="200">
       </a>
       <div class="content">
@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     // 1. Image/Title/Price row
     const imageRowValues = compareProducts.map(product => `
       <div class="tf-compare-item">
-        <a class="tf-compare-image" href="${product.url}">
+        <a class="tf-compare-image" style="aspect-ratio: 4/5;" href="${product.url}">
           <img class="lazyload" src="${product.image}" alt="${product.title}" width="200" height="200">
         </a>
         <div class="content">
