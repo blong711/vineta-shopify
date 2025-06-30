@@ -167,14 +167,14 @@
                                 height="auto">
                             {% when 'video' %}
                               <div class="item position-relative">
-                                <video controls muted
+                                <video controls muted playsinline preload="metadata"
                                   width="400"
                                   height="600"
                                   poster="{{ media.preview_image | image_url: width: 800 }}"
                                   {% if section.settings.enable_video_loop %}loop{% endif %}
                                   {% if section.settings.enable_video_autoplay %}autoplay{% endif %}>
                                   {% for source in media.sources %}
-                                    <source src="{{ source.url | asset_url }}" type="{{ source.mime_type }}">
+                                    <source src="{{ source.url }}" type="{{ source.mime_type }}">
                                   {% endfor %}
                                   Your browser does not support the video tag.
                                 </video>
@@ -1124,11 +1124,25 @@ document.addEventListener('DOMContentLoaded', function() {
       },
       on: {
         init: function() {
-          // Pause all videos initially
+          // Initialize all videos
           this.slides.forEach(slide => {
             const video = slide.querySelector('video');
             if (video) {
+              // Pause video initially
               video.pause();
+              
+              // Ensure video is loaded and ready
+              video.load();
+              
+              // Add error handling
+              video.addEventListener('error', function(e) {
+                console.log('Video error:', e);
+              });
+              
+              // Add load event to ensure video is ready
+              video.addEventListener('loadedmetadata', function() {
+                console.log('Video loaded:', video.src);
+              });
             }
           });
         },
@@ -1176,7 +1190,14 @@ document.addEventListener('DOMContentLoaded', function() {
           // Play video in active slide if it exists
           const activeVideo = activeSlide.querySelector('video');
           if (activeVideo) {
+            // Reset video to beginning
+            activeVideo.currentTime = 0;
+            
+            // Try to play the video
             activeVideo.play().catch(error => {
+              console.log('Video playback failed:', error);
+              // If autoplay fails, ensure video is ready for manual play
+              activeVideo.load();
             });
           }
         }
