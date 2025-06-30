@@ -144,21 +144,23 @@
                 </div>
                 <div class="entry-content">
                   <div class="info-box">
-                    <ul class="meta-list">
-                      <li class="item">
-                        <span class="d-none d-lg-inline">by {{ article.settings.article.author }}</span>
-                        <span class="d-none d-md-inline d-lg-none">by {{ article.settings.article.author | truncate: 8, '...' }}</span>
-                        <span class="d-inline d-md-none">by {{ article.settings.article.author | truncate: 6, '...' }}</span>
-                      </li>
-                      <li class="item">{{ article.settings.article.published_at | date: "%b %d, %Y" }}</li>
-                      {% if article.settings.article.comments_enabled? %}
-                        <li class="item">{{ article.settings.article.comments_count }} Comments</li>
-                      {% endif %}
-                    </ul>
+                    {% if section.settings.show_meta_list %}
+                      <ul class="meta-list">
+                        <li class="item">
+                          <span class="d-none d-lg-inline">by {{ article.settings.article.author }}</span>
+                          <span class="d-none d-md-inline d-lg-none">by {{ article.settings.article.author | truncate: 8, '...' }}</span>
+                          <span class="d-inline d-md-none">by {{ article.settings.article.author | truncate: 6, '...' }}</span>
+                        </li>
+                        <li class="item">{{ article.settings.article.published_at | date: "%b %d, %Y" }}</li>
+                        {% if article.settings.article.comments_enabled? %}
+                          <li class="item">{{ article.settings.article.comments_count }} Comments</li>
+                        {% endif %}
+                      </ul>
+                    {% endif %}
                     <a href="{{ article.settings.article.url }}" class="title fw-medium link text-xl text-line-clamp-2">
                       {{ article.settings.article.title }}
                     </a>
-                    {% if article.settings.article.excerpt_or_content  != blank %}
+                    {% if section.settings.show_description and article.settings.article.excerpt_or_content  != blank %}
                       <p class="desc text-main text-sm text-line-clamp-2">
                         {{ article.settings.article.excerpt_or_content  | strip_html | truncatewords: 30 }}
                       </p>
@@ -245,21 +247,23 @@
                 </div>
                 <div class="entry-content">
                   <div class="info-box">
-                    <ul class="meta-list">
-                      <li class="item">
-                        <span class="d-none d-lg-inline">by {{ article.settings.article.author }}</span>
-                        <span class="d-none d-md-inline d-lg-none">by {{ article.settings.article.author | truncate: 8, '...' }}</span>
-                        <span class="d-inline d-md-none">by {{ article.settings.article.author | truncate: 6, '...' }}</span>
-                      </li>
-                      <li class="item">{{ article.settings.article.published_at | date: "%b %d, %Y" }}</li>
-                      {% if article.settings.article.comments_enabled? %}
-                        <li class="item">{{ article.settings.article.comments_count }} Comments</li>
-                      {% endif %}
-                    </ul>
+                    {% if section.settings.show_meta_list %}
+                      <ul class="meta-list">
+                        <li class="item">
+                          <span class="d-none d-lg-inline">by {{ article.settings.article.author }}</span>
+                          <span class="d-none d-md-inline d-lg-none">by {{ article.settings.article.author | truncate: 8, '...' }}</span>
+                          <span class="d-inline d-md-none">by {{ article.settings.article.author | truncate: 6, '...' }}</span>
+                        </li>
+                        <li class="item">{{ article.settings.article.published_at | date: "%b %d, %Y" }}</li>
+                        {% if article.settings.article.comments_enabled? %}
+                          <li class="item">{{ article.settings.article.comments_count }} Comments</li>
+                        {% endif %}
+                      </ul>
+                    {% endif %}
                     <a href="{{ article.settings.article.url }}" class="title fw-medium link text-xl text-line-clamp-2">
                       {{ article.settings.article.title }}
                     </a>
-                    {% if article.settings.article.excerpt_or_content != blank %}
+                    {% if section.settings.show_description and article.settings.article.excerpt_or_content != blank %}
                       <p class="desc text-main text-sm text-line-clamp-2">
                         {{ article.settings.article.excerpt_or_content  | strip_html | truncatewords: 30 }}
                       </p>
@@ -340,6 +344,20 @@
       "id": "read_more_text",
       "label": "Read more text",
       "default": "Read more"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_meta_list",
+      "label": "Show meta information",
+      "default": true,
+      "info": "Shows author, date, and comments count"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show article description",
+      "default": true,
+      "info": "Shows article excerpt/content"
     },
     {
       "type": "checkbox",
