@@ -7,10 +7,16 @@
 
 <section class="{% if layout == 'home-fashion-02' %}flat-spacing-3{% elsif layout == 'home-phonecase' %}flat-spacing-2 bg-white mx_40 radius-16{% else %}{{ section_spacing }} {{ section_bg }}{% endif %}">
     <div class="{% if layout == 'home-phonecase' %}container-3{% else %}container{% endif %}">
-        <div class="flat-title {% if layout == 'default' %}style-between align-items-end{% elsif layout == 'home-phonecase' %}style-2{% endif %} wow fadeInUp">
+        <div class="flat-title {% if layout == 'default' %}style-between align-items-end{% elsif layout == 'home-phonecase' %}style-2{% elsif layout == 'home-electronic' %}text-center{% endif %} wow fadeInUp">
             {% if layout == 'home-phonecase' %}
                 <p class="text-md fw-medium text-uppercase text-primary">{{ section.settings.subtitle }}</p>
                 <h4 class="title">{{ section.settings.title }}</h4>
+            {% elsif layout == 'home-electronic' %}
+                <div class="box-title">
+                    <p class="text-md fw-medium text-uppercase text-primary mb-2">{{ section.settings.subtitle }}</p>
+                    <h4 class="title">{{ section.settings.title }}</h4>
+                    <p class="desc text-main text-md mt-3">{{ section.settings.description }}</p>
+                </div>
             {% else %}
                 <div class="box-title">
                     <h4 class="title">{{ section.settings.title }}</h4>
@@ -85,6 +91,14 @@
                                         show_size_swatches: true,
                                         show_case_type: true
                                     %}
+                                {% elsif layout == 'home-electronic' %}
+                                    {% render 'card-product',
+                                        product: product,
+                                        style: 'style-center',
+                                        show_sale_badge: true,
+                                        show_color_swatches: true,
+                                        show_size_swatches: true
+                                    %}
                                 {% else %}
                                     {% render 'card-product',
                                         product: product,
@@ -113,6 +127,14 @@
                                         show_color_swatches: true,
                                         show_size_swatches: true,
                                         show_case_type: true
+                                    %}
+                                {% elsif layout == 'home-electronic' %}
+                                    {% render 'card-product',
+                                        product: product,
+                                        style: 'style-center',
+                                        show_sale_badge: true,
+                                        show_color_swatches: true,
+                                        show_size_swatches: true
                                     %}
                                 {% else %}
                                     {% render 'card-product',
@@ -159,6 +181,10 @@
                 {
                     "value": "home-phonecase",
                     "label": "Home Phonecase"
+                },
+                {
+                    "value": "home-electronic",
+                    "label": "Home Electronic"
                 }
             ],
             "default": "default"
