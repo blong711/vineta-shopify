@@ -1,0 +1,50 @@
+{
+  "sections": {
+    "blog_single": {
+      "type": "blog-single",
+      "settings": {
+        "width": "boxed",
+        "show_tags": true,
+        "show_author": true,
+        "show_date": true,
+        "show_comments": true,
+        "show_social_sharing": true,
+        "show_related_posts": true,
+        "show_comment_form": true
+      }
+    },
+    "blog_latest_tip": {
+      "type": "blog-latest-tip",
+      "settings": {
+        "width": "boxed",
+        "title": "Latest Tips & Trends",
+        "article_1": "",
+        "article_2": "",
+        "article_3": "",
+        "article_4": "",
+        "show_tags": true,
+        "show_author": true,
+        "show_date": true,
+        "show_comments": true,
+        "slides_per_view_mobile": 1,
+        "slides_per_view_tablet": 2,
+        "slides_per_view_desktop": 3,
+        "slides_per_group_mobile": 1,
+        "slides_per_group_tablet": 2,
+        "slides_per_group_desktop": 3,
+        "space_between_mobile": 12,
+        "space_between_desktop": 24,
+        "transition_speed": 800,
+        "show_navigation": true,
+        "show_pagination": true,
+        "autoplay": false,
+        "autoplay_speed": 3000,
+        "pause_on_hover": true
+      }
+    }
+  },
+  "order": [
+    "blog_single",
+    "blog_latest_tip"
+  ]
+} 
