@@ -124,27 +124,38 @@
                 {%- endfor -%}
               </ul>
             {%- when 'price_range' -%}
+              {%- assign current_min = filter.min_value.value | default: 0 | money_without_currency | round -%}
+              {%- assign current_max = filter.max_value.value | default: filter.range_max | money_without_currency | round -%}
+              {%- assign range_min = filter.range_min | money_without_currency | round -%}
+              {%- assign range_max = filter.range_max | money_without_currency | round -%}
+              {%- assign is_price_filtered = false -%}
+              {%- if current_min != range_min or current_max != range_max -%}
+                {%- assign is_price_filtered = true -%}
+              {%- endif -%}
+              
               <div class="collapse-body widget-price filter-price">
                 <span class="reset-price">Reset</span>
                 <div class="price-val-range" id="price-value-range" 
-                  data-min="{{ filter.min_value.value | default: 0 | money_without_currency | round }}"
-                  data-max="{{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}"
-                  data-range-min="{{ filter.range_min | money_without_currency | round }}"
-                  data-range-max="{{ filter.range_max | money_without_currency | round }}"></div>
+                  data-min="{{ current_min }}"
+                  data-max="{{ current_max }}"
+                  data-range-min="{{ range_min }}"
+                  data-range-max="{{ range_max }}"></div>
                 <div class="box-value-price">
                   <span class="text-sm">Price:</span>
                   <div class="price-box">
                     <div class="price-val" id="price-min-value" data-currency="{{ shop.currency.symbol }}">
-                      {{ filter.min_value.value | default: 0 | money_without_currency | round }}
+                      {{ current_min }}
                     </div>
                     <span>-</span>
                     <div class="price-val" id="price-max-value" data-currency="{{ shop.currency.symbol }}">
-                      {{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}
+                      {{ current_max }}
                     </div>
                   </div>
                 </div>
-                <input type="hidden" name="filter.v.price.gte" id="price-min-input" value="{{ filter.min_value.value | default: 0 | money_without_currency | round }}">
-                <input type="hidden" name="filter.v.price.lte" id="price-max-input" value="{{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}">
+                {%- if is_price_filtered -%}
+                  <input type="hidden" name="filter.v.price.gte" id="price-min-input" value="{{ current_min }}">
+                  <input type="hidden" name="filter.v.price.lte" id="price-max-input" value="{{ current_max }}">
+                {%- endif -%}
               </div>
           {%- endcase -%}
         </div>
@@ -224,7 +235,7 @@
   {% endif %}
 </form> 
 
-{% comment %} <script>
+<script>
   // Initialize price range slider if it exists and hasn't been initialized
   document.addEventListener('DOMContentLoaded', function() {
     const priceRange = document.getElementById('price-value-range');
@@ -265,9 +276,31 @@
           priceRange.noUiSlider.on('change', function(values) {
             const form = document.getElementById('collection-filters-form');
             if (form) {
-              // Update the hidden inputs
-              if (minInput) minInput.value = Math.round(values[0]);
-              if (maxInput) maxInput.value = Math.round(values[1]);
+              // Remove existing price inputs if they exist
+              const existingMinInput = form.querySelector('input[name="filter.v.price.gte"]');
+              const existingMaxInput = form.querySelector('input[name="filter.v.price.lte"]');
+              
+              if (existingMinInput) existingMinInput.remove();
+              if (existingMaxInput) existingMaxInput.remove();
+              
+              // Only add price inputs if the range is not at default
+              const rangeMin = parseInt(priceRange.dataset.rangeMin) || 0;
+              const rangeMax = parseInt(priceRange.dataset.rangeMax) || 1000;
+              
+              if (Math.round(values[0]) !== rangeMin || Math.round(values[1]) !== rangeMax) {
+                // Create new hidden inputs
+                const newMinInput = document.createElement('input');
+                newMinInput.type = 'hidden';
+                newMinInput.name = 'filter.v.price.gte';
+                newMinInput.value = Math.round(values[0]);
+                form.appendChild(newMinInput);
+                
+                const newMaxInput = document.createElement('input');
+                newMaxInput.type = 'hidden';
+                newMaxInput.name = 'filter.v.price.lte';
+                newMaxInput.value = Math.round(values[1]);
+                form.appendChild(newMaxInput);
+              }
               
               // Submit the form to update URL parameters
               form.submit();
@@ -288,4 +321,4 @@
       }
     }
   });
-</script>  {% endcomment %}
+</script>

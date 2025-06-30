@@ -413,6 +413,7 @@
           <div id="product-count-grid" class="count-text"><span class="count">{{ collection.products.size }}</span> Products found</div>
           <div id="product-count-list" class="count-text"><span class="count">{{ collection.products.size }}</span> Products found</div>
           <div id="applied-filters">
+            {% comment %} Show current tags as applied filters {% endcomment %}
             {% if current_tags.size > 0 %}
               {% for tag in current_tags %}
                 <span class="filter-tag">
@@ -421,8 +422,83 @@
                 </span>
               {% endfor %}
             {% endif %}
+            
+            {% comment %} Show URL parameters as applied filters {% endcomment %}
+            {% assign url_params = request.search | remove: '?' | split: '&' %}
+            {% for param in url_params %}
+              {% assign key_value = param | split: '=' %}
+              {% assign param_key = key_value[0] %}
+              {% assign param_value = key_value[1] %}
+              
+              {% if param_key == 'filter.v.availability' %}
+                {% assign availability_label = 'Out of stock' %}
+                {% if param_value == '1' %}
+                  {% assign availability_label = 'In stock' %}
+                {% endif %}
+                <span class="filter-tag">
+                  <i class="icon icon-close" data-filter-type="availability" data-param="filter.v.availability" data-value="{{ param_value }}"></i>
+                  Availability: {{ availability_label }}
+                </span>
+              {% elsif param_key == 'filter.v.price.gte' %}
+                {% assign min_price = param_value %}
+                {% assign max_price = '' %}
+                {% for param2 in url_params %}
+                  {% assign key_value2 = param2 | split: '=' %}
+                  {% if key_value2[0] == 'filter.v.price.lte' %}
+                    {% assign max_price = key_value2[1] %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+                {% if max_price != '' %}
+                  <span class="filter-tag">
+                    <i class="icon icon-close" data-filter-type="price" data-param="price" data-value="{{ min_price }}-{{ max_price }}"></i>
+                    Price: {{ shop.currency.symbol }}{{ min_price }} - {{ shop.currency.symbol }}{{ max_price }}
+                  </span>
+                {% endif %}
+              {% elsif param_key == 'filter.v.option.color' %}
+                <span class="filter-tag">
+                  <i class="icon icon-close" data-filter-type="filter.v.option.color" data-param="filter.v.option.color" data-value="{{ param_value }}"></i>
+                  Color: {{ param_value }}
+                </span>
+              {% elsif param_key == 'filter.v.option.size' %}
+                <span class="filter-tag">
+                  <i class="icon icon-close" data-filter-type="filter.v.option.size" data-param="filter.v.option.size" data-value="{{ param_value }}"></i>
+                  Size: {{ param_value }}
+                </span>
+              {% elsif param_key contains 'filter.v.' and param_key != 'filter.v.price.lte' %}
+                {% comment %} Handle other filter parameters by finding the checkbox label {% endcomment %}
+                {% assign checkbox_found = false %}
+                {% assign param_key_clean = param_key | remove: 'filter.v.' %}
+                {% assign param_key_capitalized = param_key_clean | capitalize %}
+                {% for product in collection.products %}
+                  {% for option in product.options_with_values %}
+                    {% if option.name == param_key_capitalized %}
+                      {% for value in option.values %}
+                        {% if value == param_value %}
+                          <span class="filter-tag">
+                            <i class="icon icon-close" data-filter-type="{{ param_key }}" data-param="{{ param_key }}" data-value="{{ param_value }}"></i>
+                            {{ option.name }}: {{ value }}
+                          </span>
+                          {% assign checkbox_found = true %}
+                          {% break %}
+                        {% endif %}
+                      {% endfor %}
+                      {% if checkbox_found %}{% break %}{% endif %}
+                    {% endif %}
+                  {% endfor %}
+                  {% if checkbox_found %}{% break %}{% endif %}
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
           </div>
+          {% assign has_filters = false %}
           {% if current_tags.size > 0 %}
+            {% assign has_filters = true %}
+          {% endif %}
+          {% if request.search contains 'filter.v.' %}
+            {% assign has_filters = true %}
+          {% endif %}
+          {% if has_filters %}
             <button id="remove-all" class="remove-all-filters">
               <i class="icon icon-close"></i> Clear all filter
             </button>
@@ -753,6 +829,9 @@
     function initializeFilterState() {
       const urlParams = new URLSearchParams(window.location.search);
       
+      // Debug: Log URL parameters
+      console.log('Initializing filter state with URL params:', urlParams.toString());
+      
       // Set checkboxes based on URL parameters
       const checkboxes = document.querySelectorAll('.filter-checkbox');
       checkboxes.forEach(checkbox => {
@@ -763,6 +842,7 @@
           const urlValue = urlParams.get(paramName);
           if (urlValue === paramValue || urlValue.includes(paramValue)) {
             checkbox.checked = true;
+            console.log('Checked checkbox:', paramName, paramValue);
           }
         }
       });
@@ -778,6 +858,7 @@
           if (checkbox) {
             checkbox.checked = true;
             colorItem.classList.add('active');
+            console.log('Activated color filter:', color);
           }
         }
       });
@@ -789,6 +870,7 @@
           if (checkbox) {
             checkbox.checked = true;
             sizeItem.classList.add('active');
+            console.log('Activated size filter:', size);
           }
         }
       });
@@ -800,6 +882,7 @@
       const maxPrice = urlParams.get('filter.v.price.lte');
       
       if (minPrice && maxPrice) {
+        console.log('Setting price range:', minPrice, '-', maxPrice);
         // Update sidebar price range
         if (priceRangeSidebar && priceRangeSidebar.noUiSlider) {
           priceRangeSidebar.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
@@ -829,6 +912,17 @@
 
       // Update applied filters display
       updateAppliedFiltersDisplay();
+      
+      // Fallback: Ensure meta-filter-shop is visible if there are URL parameters
+      const hasUrlParams = urlParams.toString().length > 0;
+      if (hasUrlParams && metaFilterShop) {
+        metaFilterShop.style.display = 'flex';
+        console.log('Ensured meta-filter-shop is visible due to URL parameters');
+      }
+      
+      // Debug: Log final state
+      const appliedFilters = document.querySelectorAll('.filter-tag');
+      console.log('Applied filters count:', appliedFilters.length);
     }
 
     // Initialize price range slider
@@ -911,105 +1005,153 @@
     function updateAppliedFiltersDisplay() {
       if (!appliedFiltersContainer) return;
       
-      appliedFiltersContainer.innerHTML = '';
-      const urlParams = new URLSearchParams(window.location.search);
-      const appliedFilters = [];
+      // Check if applied filters were already rendered by Liquid
+      const existingFilters = appliedFiltersContainer.querySelectorAll('.filter-tag');
+      const hasLiquidRenderedFilters = existingFilters.length > 0;
+      
+      console.log('updateAppliedFiltersDisplay - existing filters:', existingFilters.length, 'hasLiquidRendered:', hasLiquidRenderedFilters);
+      
+      // Only clear and rebuild if no filters were rendered by Liquid
+      if (!hasLiquidRenderedFilters) {
+        console.log('No Liquid-rendered filters found, building from JavaScript');
+        appliedFiltersContainer.innerHTML = '';
+        const urlParams = new URLSearchParams(window.location.search);
+        const appliedFilters = [];
 
-      // Check availability filters
-      const availability = urlParams.get('filter.v.availability');
-      if (availability) {
-        const label = availability === '1' ? 'In stock' : 'Out of stock';
-        appliedFilters.push({
-          type: 'availability',
-          label: `Availability: ${label}`,
-          param: 'filter.v.availability',
-          value: availability
-        });
-      }
+        // Check availability filters
+        const availability = urlParams.get('filter.v.availability');
+        if (availability) {
+          const label = availability === '1' ? 'In stock' : 'Out of stock';
+          appliedFilters.push({
+            type: 'availability',
+            label: `Availability: ${label}`,
+            param: 'filter.v.availability',
+            value: availability
+          });
+        }
 
-      // Check other filters
-      for (const [param, value] of urlParams.entries()) {
-        if (param.startsWith('filter.v.') && param !== 'filter.v.availability' && param !== 'filter.v.price.gte' && param !== 'filter.v.price.lte') {
-          const checkbox = document.querySelector(`input[name="${param}"][value="${value}"]`);
-          if (checkbox) {
-            const labelElement = checkbox.closest('label');
-            const labelText = labelElement ? labelElement.querySelector('span').textContent : value;
-            appliedFilters.push({
-              type: param,
-              label: labelText,
-              param: param,
-              value: value
-            });
+        // Check other filters
+        for (const [param, value] of urlParams.entries()) {
+          if (param.startsWith('filter.v.') && param !== 'filter.v.availability' && param !== 'filter.v.price.gte' && param !== 'filter.v.price.lte') {
+            const checkbox = document.querySelector(`input[name="${param}"][value="${value}"]`);
+            if (checkbox) {
+              const labelElement = checkbox.closest('label');
+              const labelText = labelElement ? labelElement.querySelector('span').textContent : value;
+              appliedFilters.push({
+                type: param,
+                label: labelText,
+                param: param,
+                value: value
+              });
+            }
           }
         }
-      }
 
-      // Check color and size filters specifically
-      const colorFilters = urlParams.getAll('filter.v.option.color');
-      const sizeFilters = urlParams.getAll('filter.v.option.size');
-      
-      colorFilters.forEach(color => {
-        const colorItem = document.querySelector(`[data-color="${color}"]`);
-        if (colorItem) {
-          const colorText = colorItem.querySelector('.color-text')?.textContent || color;
+        // Check color and size filters specifically
+        const colorFilters = urlParams.getAll('filter.v.option.color');
+        const sizeFilters = urlParams.getAll('filter.v.option.size');
+        
+        colorFilters.forEach(color => {
+          const colorItem = document.querySelector(`[data-color="${color}"]`);
+          if (colorItem) {
+            const colorText = colorItem.querySelector('.color-text')?.textContent || color;
+            appliedFilters.push({
+              type: 'filter.v.option.color',
+              label: `Color: ${colorText}`,
+              param: 'filter.v.option.color',
+              value: color
+            });
+          }
+        });
+        
+        sizeFilters.forEach(size => {
+          const sizeItem = document.querySelector(`[data-size="${size}"]`);
+          if (sizeItem) {
+            const sizeText = sizeItem.querySelector('.size')?.textContent || size;
+            appliedFilters.push({
+              type: 'filter.v.option.size',
+              label: `Size: ${sizeText}`,
+              param: 'filter.v.option.size',
+              value: size
+            });
+          }
+        });
+
+        // Check price range
+        const minPrice = urlParams.get('filter.v.price.gte');
+        const maxPrice = urlParams.get('filter.v.price.lte');
+        if (minPrice && maxPrice) {
+          const currencySidebar = document.querySelector('#price-min-value')?.dataset.currency;
+          const currencyHorizontal = document.querySelector('#price-min-value-horizontal')?.dataset.currency;
+          const currency = currencyHorizontal || currencySidebar || '$';
           appliedFilters.push({
-            type: 'filter.v.option.color',
-            label: `Color: ${colorText}`,
-            param: 'filter.v.option.color',
-            value: color
+            type: 'price',
+            label: `Price: ${currency}${minPrice} - ${currency}${maxPrice}`,
+            param: 'price',
+            value: `${minPrice}-${maxPrice}`
           });
         }
-      });
-      
-      sizeFilters.forEach(size => {
-        const sizeItem = document.querySelector(`[data-size="${size}"]`);
-        if (sizeItem) {
-          const sizeText = sizeItem.querySelector('.size')?.textContent || size;
-          appliedFilters.push({
-            type: 'filter.v.option.size',
-            label: `Size: ${sizeText}`,
-            param: 'filter.v.option.size',
-            value: size
-          });
-        }
-      });
 
-      // Check price range
-      const minPrice = urlParams.get('filter.v.price.gte');
-      const maxPrice = urlParams.get('filter.v.price.lte');
-      if (minPrice && maxPrice) {
-        const currencySidebar = document.querySelector('#price-min-value')?.dataset.currency;
-        const currencyHorizontal = document.querySelector('#price-min-value-horizontal')?.dataset.currency;
-        const currency = currencyHorizontal || currencySidebar || '$';
-        appliedFilters.push({
-          type: 'price',
-          label: `Price: ${currency}${minPrice} - ${currency}${maxPrice}`,
-          param: 'price',
-          value: `${minPrice}-${maxPrice}`
+        // Render applied filters
+        appliedFilters.forEach(filter => {
+          const filterTag = document.createElement('span');
+          filterTag.className = 'filter-tag';
+          filterTag.innerHTML = `
+            <i class="icon icon-close" data-filter-type="${filter.type}" data-param="${filter.param}" data-value="${filter.value}"></i>
+            ${filter.label}
+          `;
+          appliedFiltersContainer.appendChild(filterTag);
+        });
+      } else {
+        // Ensure existing Liquid-rendered filters have proper data attributes for JavaScript functionality
+        existingFilters.forEach(filterTag => {
+          const closeIcon = filterTag.querySelector('.icon-close');
+          if (closeIcon && !closeIcon.dataset.filterType) {
+            // Add missing data attributes if they don't exist
+            const filterText = filterTag.textContent.trim();
+            if (filterText.includes('Availability:')) {
+              const isInStock = filterText.includes('In stock');
+              closeIcon.dataset.filterType = 'availability';
+              closeIcon.dataset.param = 'filter.v.availability';
+              closeIcon.dataset.value = isInStock ? '1' : '0';
+            } else if (filterText.includes('Price:')) {
+              closeIcon.dataset.filterType = 'price';
+              closeIcon.dataset.param = 'price';
+              // Extract price range from text
+              const priceMatch = filterText.match(/\$(\d+)\s*-\s*\$(\d+)/);
+              if (priceMatch) {
+                closeIcon.dataset.value = `${priceMatch[1]}-${priceMatch[2]}`;
+              }
+            } else if (filterText.includes('Color:')) {
+              const colorValue = filterText.replace('Color:', '').trim();
+              closeIcon.dataset.filterType = 'filter.v.option.color';
+              closeIcon.dataset.param = 'filter.v.option.color';
+              closeIcon.dataset.value = colorValue;
+            } else if (filterText.includes('Size:')) {
+              const sizeValue = filterText.replace('Size:', '').trim();
+              closeIcon.dataset.filterType = 'filter.v.option.size';
+              closeIcon.dataset.param = 'filter.v.option.size';
+              closeIcon.dataset.value = sizeValue;
+            }
+          }
         });
       }
 
-      // Render applied filters
-      appliedFilters.forEach(filter => {
-        const filterTag = document.createElement('span');
-        filterTag.className = 'filter-tag';
-        filterTag.innerHTML = `
-          <i class="icon icon-close" data-filter-type="${filter.type}" data-param="${filter.param}" data-value="${filter.value}"></i>
-          ${filter.label}
-        `;
-        appliedFiltersContainer.appendChild(filterTag);
-      });
+      // Count total applied filters (both Liquid-rendered and JavaScript-rendered)
+      const totalFilters = appliedFiltersContainer.querySelectorAll('.filter-tag').length;
 
       // Show/hide clear all button
       const clearAllBtn = document.getElementById('remove-all');
       if (clearAllBtn) {
-        clearAllBtn.style.display = appliedFilters.length > 0 ? 'block' : 'none';
+        clearAllBtn.style.display = totalFilters > 0 ? 'block' : 'none';
       }
       
       // Show/hide meta-filter-shop container
       if (metaFilterShop) {
-        metaFilterShop.style.display = appliedFilters.length > 0 ? 'flex' : 'none';
+        metaFilterShop.style.display = totalFilters > 0 ? 'flex' : 'none';
       }
+      
+      console.log('updateAppliedFiltersDisplay - final total filters:', totalFilters, 'meta-filter-shop display:', metaFilterShop ? metaFilterShop.style.display : 'N/A');
     }
 
     // Main function to update products with filters and sort
@@ -1696,8 +1838,10 @@
       // Initialize price range slider first
       initializePriceRangeSlider();
       
-      // Initialize filter state
-      initializeFilterState();
+      // Initialize filter state with a small delay to ensure Liquid-rendered filters are present
+      setTimeout(() => {
+        initializeFilterState();
+      }, 50);
       
       // Initialize product events
       initializeProductEvents();
