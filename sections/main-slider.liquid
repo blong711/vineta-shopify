@@ -68,7 +68,7 @@
                                                     <p class="sub text-md fw-medium fade-item fade-item-1">
                                                         {{ block.settings.subtitle }}
                                                     </p>
-                                                    <h2 class="heading fw-medium fade-item fade-item-2">
+                                                    <h2 class="heading fw-medium fade-item fade-item-2 max-heading">
                                                         {{ block.settings.heading }}
                                                     </h2>
                                                 {% elsif section.settings.layout == 'layout2' %}
@@ -362,3 +362,13 @@
     ]
 }
 {% endschema %} 
+<style>
+    .max-heading {
+        max-width: 370px;
+    }
+    @media (max-width: 767px) {
+        .max-heading {
+            max-width: 200px;
+        }
+    }
+</style>
