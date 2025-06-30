@@ -434,7 +434,7 @@
         {% if collection.products.size > 0 %}
           {% for product in collection.products %}
             <div class="loadItem card-product style-list" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
-              {% render 'card-product', product: product, show_color_swatches: true, show_size_swatches: true, show_case_type: true, size_swatches: true %}
+              {% render 'card-product', product: product, show_color_swatches: true, size_swatches: true %}
             </div>
           {% endfor %}
         {% else %}
@@ -515,7 +515,7 @@
             <div class="loadItem card-product grid style-1{% if product.options contains 'Size' %} card-product-size{% endif %}" 
                  data-availability="{{ product.available | default: 'In stock' }}" 
                  data-brand="{{ product.vendor }}">
-              {% render 'card-product', product: product, show_color_swatches: true, show_size_swatches: true, show_case_type: true, size_swatches: true %}
+              {% render 'card-product', product: product, show_color_swatches: true, show_size_swatches: true, size_swatches: true %}
             </div>
           {% endfor %}
         {% else %}
