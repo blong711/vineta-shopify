@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Create product card HTML that matches the card-product snippet structure
       slide.innerHTML = `
-        <div class="card-product style-1" data-availability="${product.available ? 'In stock' : 'Out of stock'}" data-brand="${product.vendor || ''}">
+        <div class="card-product style-1" {% unless product.available %}out-of-stock{% endunless %} data-availability="${product.available ? 'In stock' : 'Out of stock'}" data-brand="${product.vendor || ''}">
           <div class="card-product-wrapper asp-ratio-1">
             <a href="${product.url}" class="product-img">
               ${product.featured_image ? 
