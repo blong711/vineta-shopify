@@ -7,11 +7,11 @@
 
 <section class="{% if layout == 'home-fashion-02' %}flat-spacing-3{% elsif layout == 'home-phonecase' %}flat-spacing-2 bg-white mx_40 radius-16{% else %}{{ section_spacing }} {{ section_bg }}{% endif %}">
     <div class="{% if layout == 'home-phonecase' %}container-3{% else %}container{% endif %}">
-        <div class="flat-title {% if layout == 'default' %}style-between align-items-end{% elsif layout == 'home-phonecase' %}style-2{% elsif layout == 'home-electronic' %}text-center{% endif %} wow fadeInUp">
+        <div class="flat-title {% if layout == 'default' or layout == 'home-electronic'%}style-between align-items-end{% elsif layout == 'home-phonecase' %}style-2{% endif %} wow fadeInUp">
             {% if layout == 'home-phonecase' %}
                 <p class="text-md fw-medium text-uppercase text-primary">{{ section.settings.subtitle }}</p>
                 <h4 class="title">{{ section.settings.title }}</h4>
-            {% elsif layout == 'home-electronic' %}
+            {% elsif layout == 'default' %}
                 <div class="box-title">
                     <p class="text-md fw-medium text-uppercase text-primary mb-2">{{ section.settings.subtitle }}</p>
                     <h4 class="title">{{ section.settings.title }}</h4>
@@ -22,7 +22,7 @@
                     <h4 class="title">{{ section.settings.title }}</h4>
                     <p class="desc text-main text-md">{{ section.settings.description }}</p>
                 </div>
-                {% if section.settings.show_view_all and layout == 'default' %}
+                {% if section.settings.show_view_all and layout == 'default' or layout == 'home-electronic' %}
                     <a href="{{ section.settings.view_all_link }}" class="btn-underline">{{ section.settings.view_all_text }}</a>
                 {% endif %}
             {% endif %}
