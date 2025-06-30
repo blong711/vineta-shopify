@@ -11,11 +11,20 @@
                 <p class="display-xs fw-medium">{{ block.settings.text }}</p>
               {%- endif -%}
             </div>
-            {%- unless forloop.last -%}
-              <div class="marquee-child-item">
-                <i class="icon-flash-star"></i>
-              </div>
-            {%- endunless -%}
+            <div class="marquee-child-item">
+              <i class="icon-flash-star"></i>
+            </div>
+          {%- endfor -%}
+          {%- comment -%} Duplicate content for seamless loop {%- endcomment -%}
+          {%- for block in section.blocks -%}
+            <div class="marquee-child-item" {{ block.shopify_attributes }}>
+              {%- if block.settings.text != blank -%}
+                <p class="display-xs fw-medium">{{ block.settings.text }}</p>
+              {%- endif -%}
+            </div>
+            <div class="marquee-child-item">
+              <i class="icon-flash-star"></i>
+            </div>
           {%- endfor -%}
         </div>
       </div>
