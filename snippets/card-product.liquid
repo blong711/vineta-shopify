@@ -540,7 +540,7 @@
 </div>
 {%- else -%}
 {%- comment -%}Default Layout{%- endcomment -%}
-<div class="card-product {{ class }} {% if style == 'list' %}style-list{% elsif style == 'style-center' %}style-center{% else %}style-{{ style | default: 1 }}{% endif %} {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
+<div class="card-product {{ class }} {% if style == 'list' %}style-list{% elsif style == 'style-center' %}style-center{% elsif style contains 'style-' %}{{ style }}{% else %}style-{{ style | default: 1 }}{% endif %} {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
   <div class="card-product-wrapper asp-ratio-1 {% if style == 'line-2' %}line-2{% endif %}">
     <a href="{{ product.url }}" class="product-img">
       {%- if product.featured_image != blank -%}
