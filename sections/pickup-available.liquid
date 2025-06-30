@@ -11,19 +11,6 @@
 {%- endstyle -%}
 
 <div class="pickup-available-section">
-  {% if section.settings.show_pickup_info %}
-    <div class="tf-product-pickup-available">
-      <span class="icon icon-fill-check-circle"></span>
-      <div class="content">
-        <div class="text-sm d-flex">
-          <p class="fw-medium" style="margin-right: 8px;">Pickup available at {{ section.settings.default_store_name }}.</p>
-          <p>Usually ready in {{ section.settings.default_ready_time }}.</p>
-        </div>
-        <a href="#pickUp" data-bs-toggle="offcanvas" class="check-availability link">{{ section.settings.check_availability_text }}</a>
-      </div>
-    </div>
-  {% endif %}
-
   <!-- Pickup Available Popup -->
   <div class="offcanvas offcanvas-end popup-style-1 popup-pickup-available" id="pickUp">
     <div class="canvas-wrapper">
@@ -81,12 +68,6 @@
     {
       "type": "header",
       "content": "General Settings"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_pickup_info",
-      "label": "Show pickup information",
-      "default": true
     },
     {
       "type": "text",
