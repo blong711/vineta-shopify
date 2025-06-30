@@ -840,65 +840,8 @@
   /* Wish List 
   ------------------------------------------------------------------------------------- */
   var wishList = function () {
-    // Function to update wishlist UI
-    function updateWishlistUI(element, isWishlisted) {
-      let icon = element.find(".icon");
-      let tooltip = element.find(".tooltip");
-      
-      if (isWishlisted) {
-        element.addClass("addwishlist");
-        icon.removeClass("icon-heart2").addClass("icon-trash");
-        tooltip.text("Remove from Wishlist");
-      } else {
-        element.removeClass("addwishlist");
-        icon.removeClass("icon-trash").addClass("icon-heart2");
-        tooltip.text("Add to Wishlist");
-      }
-    }
-
-    // Initialize wishlist state from localStorage
-    $(".card-product .wishlist").each(function() {
-      const productId = $(this).find("[data-wishlist]").data("id");
-      if (productId) {
-        const wishlistIds = localStorage.getItem('theme4:wishlist:id') ? localStorage.getItem('theme4:wishlist:id').split(',') : [];
-        const isWishlisted = wishlistIds.includes(productId.toString());
-        updateWishlistUI($(this), isWishlisted);
-      }
-    });
-
-    // Handle wishlist button clicks
-    $(".btn-add-wishlist").on("click", function () {
-      $(this).toggleClass("added-wishlist");
-    });
-
-    $(".card-product .wishlist").on("click", function () {
-      const $this = $(this);
-      const productId = $this.find("[data-wishlist]").data("id");
-      const isCurrentlyWishlisted = $this.hasClass("addwishlist");
-      
-      // Toggle wishlist state
-      const newWishlistState = !isCurrentlyWishlisted;
-      
-      // Update localStorage using the correct format
-      if (productId) {
-        const wishlistIds = localStorage.getItem('theme4:wishlist:id') ? localStorage.getItem('theme4:wishlist:id').split(',') : [];
-        
-        if (newWishlistState) {
-          // Add to wishlist
-          if (!wishlistIds.includes(productId.toString())) {
-            wishlistIds.unshift(productId.toString());
-            localStorage.setItem('theme4:wishlist:id', wishlistIds.join(','));
-          }
-        } else {
-          // Remove from wishlist
-          const updatedIds = wishlistIds.filter(id => id !== productId.toString());
-          localStorage.setItem('theme4:wishlist:id', updatedIds.join(','));
-        }
-      }
-      
-      // Update UI
-      updateWishlistUI($this, newWishlistState);
-    });
+    // This functionality is now handled by the WishlistCompare class in global.js
+    // to avoid conflicts and ensure proper header count updates
   };
 
   /* Bottom Sticky
