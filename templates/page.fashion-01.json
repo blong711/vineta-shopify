@@ -1,0 +1,601 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+ {
+    "sections": {
+      "main_slider_qhjehb": {
+        "type": "main-slider",
+        "blocks": {
+          "slide_MXmD4Q": {
+            "type": "slide",
+            "settings": {
+              "image": "shopify://shop_images/slide1_home01.webp",
+              "content_alignment": "left",
+              "subtitle": "SUMMER COLLECTION",
+              "heading": "Style<br>Redefined",
+              "subheading": "Discover the latest trends in fashion that speak your style.",
+              "button_text": "Shop Collection",
+              "button_link": "/collections"
+            }
+          },
+          "slide_JxNqNB": {
+            "type": "slide",
+            "settings": {
+              "image": "shopify://shop_images/slide2_home01.webp",
+              "content_alignment": "left",
+              "subtitle": "SUMMER COLLECTION",
+              "heading": "Elegance<br>Redefined",
+              "subheading": "Discover timeless styles for every occasion.",
+              "button_text": "Shop Collection",
+              "button_link": "shopify://collections"
+            }
+          },
+          "slide_PrAeGV": {
+            "type": "slide",
+            "settings": {
+              "image": "shopify://shop_images/slide3_home01.webp",
+              "content_alignment": "right",
+              "subtitle": "SUMMER COLLECTION",
+              "heading": "Elevate Your <br>Wardrobe",
+              "subheading": "Timeless pieces to refresh your look for every season.",
+              "button_text": "Shop Collection",
+              "button_link": "shopify://collections"
+            }
+          }
+        },
+        "block_order": [
+          "slide_MXmD4Q",
+          "slide_JxNqNB",
+          "slide_PrAeGV"
+        ],
+        "settings": {
+          "layout": "default",
+          "width": "full",
+          "image_height_mode": "adapt",
+          "fixed_height": 600,
+          "mobile_image_height_mode": "fixed",
+          "mobile_fixed_height": 400,
+          "autoplay": true,
+          "speed": 700,
+          "show_navigation": false,
+          "show_dots": true,
+          "padding": 0,
+          "pause_on_hover": true,
+          "effect": "fade",
+          "direction": "horizontal",
+          "draggable": false
+        }
+      },
+      "featured_collection": {
+        "type": "featured-collection",
+        "blocks": {
+          "collection_zqHqzi": {
+            "type": "collection",
+            "settings": {
+              "collection": "top",
+              "tag": "",
+              "price_new": "",
+              "price_old": "",
+              "button_text": "See Details"
+            }
+          },
+          "collection_r3xYAp": {
+            "type": "collection",
+            "settings": {
+              "collection": "accessories",
+              "tag": "",
+              "price_new": "",
+              "price_old": "",
+              "button_text": "See Details"
+            }
+          },
+          "collection_mDQCq6": {
+            "type": "collection",
+            "settings": {
+              "collection": "sportwear",
+              "tag": "",
+              "price_new": "",
+              "price_old": "",
+              "button_text": "See Details"
+            }
+          },
+          "collection_hjHrj7": {
+            "type": "collection",
+            "settings": {
+              "collection": "men",
+              "tag": "",
+              "price_new": "",
+              "price_old": "",
+              "button_text": "See Details"
+            }
+          },
+          "collection_wAqDeN": {
+            "type": "collection",
+            "settings": {
+              "collection": "women",
+              "tag": "",
+              "price_new": "",
+              "price_old": "",
+              "button_text": "See Details"
+            }
+          }
+        },
+        "block_order": [
+          "collection_zqHqzi",
+          "collection_r3xYAp",
+          "collection_mDQCq6",
+          "collection_hjHrj7",
+          "collection_wAqDeN"
+        ],
+        "settings": {
+          "width": "boxed",
+          "layout": "layout1",
+          "slides_per_view_mobile": 1,
+          "slides_per_view_tablet": 2,
+          "slides_per_view": 3,
+          "slides_per_group_mobile": 1,
+          "slides_per_group_tablet": 2,
+          "slides_per_group_desktop": 3,
+          "space_between_mobile": 12,
+          "space_between_desktop": 24,
+          "speed": 800,
+          "enable_navigation": true,
+          "show_pagination": true,
+          "enable_autoplay": false,
+          "autoplay_speed": 5000,
+          "pause_on_hover": true,
+          "enable_observer": true
+        }
+      },
+      "best_sellers": {
+        "type": "featured-products",
+        "settings": {
+          "width": "boxed",
+          "layout": "default",
+          "title": "Best Sellers",
+          "button_text": "Featured Products",
+          "button_url": "",
+          "heading": "Discover our top picks for [br] every ride",
+          "remove_top_padding": false,
+          "product_source": "product_list",
+          "collection": "",
+          "product_list": [
+            "turtleneck-t-shirt",
+            "loose-fit-tee",
+            "crop-t-shirt",
+            "short-sleeve-sweat",
+            "polo-neck-t-shirt",
+            "round-neck-cotton-t-shirt",
+            "drymove-medium-support",
+            "flutter-sleeve-top",
+            "graphic-printed-pure"
+          ],
+          "slides_per_view_mobile": 2,
+          "slides_per_view_tablet": 3,
+          "slides_per_view_desktop": 4,
+          "slides_per_group_mobile": 2,
+          "slides_per_group_tablet": 3,
+          "slides_per_group_desktop": 4,
+          "space_between_mobile": 12,
+          "space_between_desktop": 24,
+          "transition_speed": 800,
+          "show_navigation": true,
+          "show_pagination": true,
+          "enable_autoplay": false,
+          "autoplay_speed": 3000,
+          "pause_on_hover": true,
+          "enable_observer": true
+        }
+      },
+      "banner_countdown": {
+        "type": "banner-countdown",
+        "settings": {
+          "width": "boxed",
+          "layout": "default",
+          "show_section": true,
+          "product": "crop-t-shirt",
+          "banner_image": "shopify://shop_images/fashion-1_6e2c83fc-51bf-462f-9840-167a8f78dfbf.jpg",
+          "heading": "50% OFF",
+          "subheading": "Get your favorite cases at a discount",
+          "season_text": "SUMMER SALE",
+          "promo_code": "12D34E",
+          "show_countdown": true,
+          "button_label": "Shop Now",
+          "button_link": "shopify://collections/women"
+        }
+      },
+      "categories": {
+        "type": "categories",
+        "blocks": {
+          "tab_AW7RiB": {
+            "type": "tab",
+            "settings": {
+              "tab_title": "Women",
+              "collections": [
+                "dress",
+                "partywear",
+                "jewelry",
+                "tops",
+                "bottoms",
+                "sportwear-2"
+              ]
+            }
+          },
+          "tab_zNmkNC": {
+            "type": "tab",
+            "settings": {
+              "tab_title": "Men",
+              "collections": [
+                "sportwear-2",
+                "bottoms",
+                "tops",
+                "jewelry",
+                "partywear",
+                "dress"
+              ]
+            }
+          }
+        },
+        "block_order": [
+          "tab_AW7RiB",
+          "tab_zNmkNC"
+        ],
+        "settings": {
+          "width": "boxed",
+          "layout": "layout1",
+          "title": "Categories",
+          "button_text": "Categories",
+          "slides_per_view_mobile": 2,
+          "slides_per_view_tablet": 3,
+          "slides_per_view_desktop": 6,
+          "space_between_mobile": 12,
+          "space_between_desktop": 24,
+          "transition_speed": 800,
+          "show_navigation": true,
+          "show_pagination": true,
+          "autoplay": false,
+          "autoplay_speed": 3000,
+          "products_per_collection": 6
+        }
+      },
+      "todays_picks": {
+        "type": "featured-products",
+        "settings": {
+          "width": "boxed",
+          "layout": "default",
+          "title": "Today's Picks",
+          "button_text": "Featured Products",
+          "button_url": "",
+          "heading": "Discover our top picks for [br] every ride",
+          "remove_top_padding": true,
+          "product_source": "product_list",
+          "collection": "",
+          "product_list": [
+            "polo-neck-t-shirt",
+            "loose-fit-tee",
+            "crop-t-shirt",
+            "round-neck-boxy-t-shirt",
+            "round-neck-cotton-t-shirt",
+            "flutter-sleeve-top",
+            "lightly-padded-sports-bra",
+            "linen-blend-pants-1"
+          ],
+          "slides_per_view_mobile": 2,
+          "slides_per_view_tablet": 3,
+          "slides_per_view_desktop": 4,
+          "slides_per_group_mobile": 2,
+          "slides_per_group_tablet": 3,
+          "slides_per_group_desktop": 4,
+          "space_between_mobile": 12,
+          "space_between_desktop": 24,
+          "transition_speed": 800,
+          "show_navigation": true,
+          "show_pagination": true,
+          "enable_autoplay": false,
+          "autoplay_speed": 3000,
+          "pause_on_hover": true,
+          "enable_observer": true
+        }
+      },
+      "testimonials": {
+        "type": "testimonials",
+        "blocks": {
+          "testimonial_E9TjUd": {
+            "type": "testimonial",
+            "settings": {
+              "name": "Emily T.",
+              "image": "shopify://shop_images/Turtleneck-T-shirt.webp",
+              "product": "Turtleneck T-shirt",
+              "product_url": "shopify://products/turtleneck-t-shirt",
+              "price": "$75",
+              "review": "The quality of the clothes exceeded my expectations. Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!",
+              "title": "Elegance and Comfort Combined"
+            }
+          },
+          "testimonial_YpirLf": {
+            "type": "testimonial",
+            "settings": {
+              "name": "Jessica M.",
+              "image": "shopify://shop_images/Crop-T-shirt.webp",
+              "product": "Crop T-shirt",
+              "product_url": "shopify://products/crop-t-shirt",
+              "price": "$99.00",
+              "review": "I love the dress I purchased! The fabric is so soft, and the fit is perfect. I've gotten so many compliments on it. Will definitely shop here again!",
+              "title": "Elegance and Comfort Combined"
+            }
+          },
+          "testimonial_cqcA37": {
+            "type": "testimonial",
+            "settings": {
+              "name": "Lisa P.",
+              "image": "shopify://shop_images/Lightly-Padded-Sports-Bra.webp",
+              "product": "Lightly Padded Sports Bra",
+              "product_url": "shopify://products/lightly-padded-sports-bra",
+              "price": "$99.00",
+              "review": "I was pleasantly surprised by how fast my order arrived. The customer service team was helpful and responsive. Great shopping experience!",
+              "title": "Elegance and Comfort Combined"
+            }
+          },
+          "testimonial_DJyhG9": {
+            "type": "testimonial",
+            "settings": {
+              "name": "Helen F.",
+              "image": "shopify://shop_images/Round-Neck-Boxy-T-shirt.webp",
+              "testimonial_image": "shopify://shop_images/Round-Neck-Boxy-T-shirt.webp",
+              "product": "Round Neck Boxy T-shirt",
+              "product_url": "shopify://products/round-neck-boxy-t-shirt",
+              "price": "$69.00",
+              "review": "The clothes is amazing with great fabric. So happy happy to have shopping experience here!",
+              "title": "Elegance and Comfort Combined"
+            }
+          },
+          "testimonial_itiw9W": {
+            "type": "testimonial",
+            "settings": {
+              "name": "Emily T.",
+              "image": "shopify://shop_images/product_05_1.webp",
+              "testimonial_image": "shopify://shop_images/product_05_1.webp",
+              "product": "Textured Jersey Top",
+              "product_url": "shopify://products/textured-jersey-top-1",
+              "price": "$150.00",
+              "review": "Every piece feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!",
+              "title": "Elegance and Comfort Combined"
+            }
+          },
+          "testimonial_jCB3NM": {
+            "type": "testimonial",
+            "settings": {
+              "name": "Emily T.",
+              "image": "shopify://shop_images/fashion-woman_1.jpg",
+              "product": "DryMove Medium Support",
+              "product_url": "shopify://products/drymove-medium-support",
+              "price": "$89.00",
+              "review": "The clothes feels premium, and the designs are so trendy. I'm obsessed with my new wardrobe additions!",
+              "title": "Elegance and Comfort Combined"
+            }
+          }
+        },
+        "block_order": [
+          "testimonial_E9TjUd",
+          "testimonial_YpirLf",
+          "testimonial_cqcA37",
+          "testimonial_DJyhG9",
+          "testimonial_itiw9W",
+          "testimonial_jCB3NM"
+        ],
+        "settings": {
+          "layout": "default",
+          "title": "Happy Customers",
+          "subtitle": "Experience with our products",
+          "slides_per_view_mobile": 1,
+          "slides_per_view_tablet": 2,
+          "slides_per_view_desktop": 3,
+          "slides_per_group_mobile": 1,
+          "slides_per_group_tablet": 2,
+          "slides_per_group_desktop": 3,
+          "space_between_mobile": 12,
+          "space_between_desktop": 24,
+          "transition_speed": 800,
+          "show_navigation": true,
+          "show_pagination": true,
+          "enable_autoplay": false,
+          "autoplay_speed": 3000,
+          "pause_on_hover": true,
+          "enable_observer": true
+        }
+      },
+      "brands": {
+        "type": "brands",
+        "blocks": {
+          "brand_THgM68": {
+            "type": "brand",
+            "settings": {
+              "brand_image": "shopify://shop_images/zara_232eddf9-8ce4-4911-a177-8efe9c47dd47.png",
+              "brand_link": ""
+            }
+          },
+          "brand_6gcnTQ": {
+            "type": "brand",
+            "settings": {
+              "brand_image": "shopify://shop_images/bear_fde932fe-e47e-434f-89b6-662f0ca27862.png",
+              "brand_link": ""
+            }
+          },
+          "brand_j4HkJY": {
+            "type": "brand",
+            "settings": {
+              "brand_image": "shopify://shop_images/logo04.png",
+              "brand_link": ""
+            }
+          },
+          "brand_YYhiKG": {
+            "type": "brand",
+            "settings": {
+              "brand_image": "shopify://shop_images/logo03.png",
+              "brand_link": ""
+            }
+          },
+          "brand_f9DGhH": {
+            "type": "brand",
+            "settings": {
+              "brand_image": "shopify://shop_images/logo05.png",
+              "brand_link": ""
+            }
+          },
+          "brand_trgKmc": {
+            "type": "brand",
+            "settings": {
+              "brand_image": "shopify://shop_images/logo06.png",
+              "brand_link": ""
+            }
+          }
+        },
+        "block_order": [
+          "brand_THgM68",
+          "brand_6gcnTQ",
+          "brand_j4HkJY",
+          "brand_YYhiKG",
+          "brand_f9DGhH",
+          "brand_trgKmc"
+        ],
+        "settings": {
+          "padding_top": 80,
+          "padding_bottom": 80,
+          "width": "boxed",
+          "layout": "layout1",
+          "speed": 80,
+          "style": "left",
+          "clone": 4
+        }
+      },
+      "shop_gram": {
+        "type": "shop-gram",
+        "blocks": {
+          "image_awfbTh": {
+            "type": "image",
+            "settings": {
+              "image": "shopify://shop_images/instagram01.webp",
+              "link": "shopify://products/polo-neck-t-shirt",
+              "tooltip_text": "View Product"
+            }
+          },
+          "image_TMtVTw": {
+            "type": "image",
+            "settings": {
+              "image": "shopify://shop_images/instagram02.webp",
+              "link": "shopify://products/crop-t-shirt",
+              "tooltip_text": "View Product"
+            }
+          },
+          "image_UPXCBR": {
+            "type": "image",
+            "settings": {
+              "image": "shopify://shop_images/instagram03.webp",
+              "link": "shopify://products/drymove-medium-support",
+              "tooltip_text": "View Product"
+            }
+          },
+          "image_DDJc3h": {
+            "type": "image",
+            "settings": {
+              "image": "shopify://shop_images/instagram04.webp",
+              "link": "shopify://products/flutter-sleeve-top",
+              "tooltip_text": "View Product"
+            }
+          },
+          "image_irpAhd": {
+            "type": "image",
+            "settings": {
+              "image": "shopify://shop_images/instagram05.webp",
+              "link": "shopify://products/graphic-printed-pure",
+              "tooltip_text": "View Product"
+            }
+          }
+        },
+        "block_order": [
+          "image_awfbTh",
+          "image_TMtVTw",
+          "image_UPXCBR",
+          "image_DDJc3h",
+          "image_irpAhd"
+        ],
+        "settings": {
+          "width": "boxed",
+          "title": "Shop by @Gram",
+          "instagram_user_id": "",
+          "instagram_access_token": ""
+        }
+      },
+      "icon_boxes_6PFzU6": {
+        "type": "icon-boxes",
+        "blocks": {
+          "icon_box_aieJRm": {
+            "type": "icon_box",
+            "settings": {
+              "icon": "icon-shipping",
+              "title": "Free Shipping",
+              "description": "Enjoy free shipping on all orders"
+            }
+          },
+          "icon_box_MdQMtD": {
+            "type": "icon_box",
+            "settings": {
+              "icon": "icon-gift",
+              "title": "Gift Package",
+              "description": "Perfectly packaged for gifting"
+            }
+          },
+          "icon_box_mDgFET": {
+            "type": "icon_box",
+            "settings": {
+              "icon": "icon-return",
+              "title": "Free Returns",
+              "description": "Within 14 days for a return"
+            }
+          },
+          "icon_box_p6rwcF": {
+            "type": "icon_box",
+            "settings": {
+              "icon": "icon-support",
+              "title": "Support Online",
+              "description": "We support customers 24/7"
+            }
+          }
+        },
+        "block_order": [
+          "icon_box_aieJRm",
+          "icon_box_MdQMtD",
+          "icon_box_mDgFET",
+          "icon_box_p6rwcF"
+        ],
+        "name": "Icon Box",
+        "settings": {
+          "layout": "default",
+          "slides_per_view_mobile": 1,
+          "slides_per_view_tablet": 3,
+          "slides_per_view_desktop": 4,
+          "space_between": 10,
+          "show_pagination": true
+        }
+      }
+    },
+    "order": [
+      "main_slider_qhjehb",
+      "featured_collection",
+      "best_sellers",
+      "banner_countdown",
+      "categories",
+      "todays_picks",
+      "testimonials",
+      "brands",
+      "shop_gram",
+      "icon_boxes_6PFzU6"
+    ]
+  }
+  
