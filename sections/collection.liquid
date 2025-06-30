@@ -307,7 +307,7 @@
                   {%- if option.name == 'Color' or option.name == 'Colour' -%}
                     {%- for value in option.values -%}
                       {%- unless unique_colors contains value -%}
-                        {%- assign unique_colors = unique_colors | push: value -%}
+                        {%- assign unique_colors = unique_colors | concat: value | uniq -%}
                       {%- endunless -%}
                     {%- endfor -%}
                   {%- endif -%}
@@ -359,7 +359,7 @@
                   {%- if option.name == 'Size' -%}
                     {%- for value in option.values -%}
                       {%- unless unique_sizes contains value -%}
-                        {%- assign unique_sizes = unique_sizes | push: value -%}
+                        {%- assign unique_sizes = unique_sizes | concat: value | uniq -%}
                       {%- endunless -%}
                     {%- endfor -%}
                   {%- endif -%}
@@ -515,7 +515,7 @@
             <div class="loadItem card-product grid style-1{% if product.options contains 'Size' %} card-product-size{% endif %}" 
                  data-availability="{{ product.available | default: 'In stock' }}" 
                  data-brand="{{ product.vendor }}">
-              {% render 'card-product', product: product, show_color_swatches: true, show_size_swatches: true, size_swatches: true %}
+              {% render 'card-product', product: product, show_color_swatches: true, show_size_swatches: true,  size_swatches: true %}
             </div>
           {% endfor %}
         {% else %}
@@ -1232,12 +1232,55 @@
         // Reinitialize event listeners
         initializeProductEvents();
         
-        // Check if there are more pages
+        // Ensure pagination is visible
+        ensurePaginationVisibility();
+        
+        // Check if there are more pages and update pagination/load more buttons
         const hasNextPage = doc.querySelector('.wd-load');
-        if (!hasNextPage && page > 1) {
+        const newPagination = doc.querySelector('.wg-pagination');
+        
+        if (page > 1) {
+          // For pagination, update the pagination element if it exists
+          if (newPagination) {
+            const currentPagination = productGrid ? productGrid.querySelector('.wg-pagination') : null;
+            if (currentPagination) {
+              currentPagination.innerHTML = newPagination.innerHTML;
+            }
+          }
+          
           // Remove load more buttons if no more products
-          const loadMoreBtns = document.querySelectorAll('.wd-load');
-          loadMoreBtns.forEach(btn => btn.remove());
+          if (!hasNextPage) {
+            const loadMoreBtns = document.querySelectorAll('.wd-load');
+            loadMoreBtns.forEach(btn => btn.remove());
+          }
+        } else {
+          // For first page, replace pagination/load more elements
+          if (newPagination) {
+            const currentPagination = productGrid ? productGrid.querySelector('.wg-pagination') : null;
+            if (currentPagination) {
+              currentPagination.innerHTML = newPagination.innerHTML;
+            } else {
+              // Create new pagination if it doesn't exist
+              if (productGrid) {
+                productGrid.appendChild(newPagination.cloneNode(true));
+              }
+            }
+          }
+          
+          // Update load more buttons
+          const newLoadMore = doc.querySelector('.wd-load');
+          const currentLoadMore = productGrid ? productGrid.querySelector('.wd-load') : null;
+          if (newLoadMore && currentLoadMore) {
+            currentLoadMore.innerHTML = newLoadMore.innerHTML;
+          } else if (newLoadMore && !currentLoadMore) {
+            // Add new load more button if it doesn't exist
+            if (productGrid) {
+              productGrid.appendChild(newLoadMore);
+            }
+          } else if (!newLoadMore && currentLoadMore) {
+            // Remove load more button if no more pages
+            currentLoadMore.remove();
+          }
         }
 
       } catch (error) {
@@ -1612,9 +1655,39 @@
       // Add any product-specific event listeners here
       // For example, quick view, add to cart, etc.
       
+      // Handle pagination links - ensure they work correctly
+      const paginationLinks = document.querySelectorAll('.wg-pagination a');
+      paginationLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          // Allow normal navigation for pagination links
+          // The href will handle the page change
+          // No need to prevent default or use AJAX for pagination
+        });
+      });
+      
       // Re-observe for infinite scroll
       if (document.querySelector('[data-pagination-type="infinite_scroll"]')) {
         initializeInfiniteScroll();
+      }
+    }
+
+    // Function to ensure pagination is visible
+    function ensurePaginationVisibility() {
+      const pagination = document.querySelector('.wg-pagination');
+      if (pagination) {
+        // Ensure pagination is visible
+        if (window.getComputedStyle(pagination).display === 'none') {
+          pagination.style.display = 'flex';
+          console.log('Pagination was hidden, made visible');
+        }
+        
+        // Ensure pagination links are clickable
+        const paginationLinks = pagination.querySelectorAll('a');
+        paginationLinks.forEach(link => {
+          if (window.getComputedStyle(link).pointerEvents === 'none') {
+            link.style.pointerEvents = 'auto';
+          }
+        });
       }
     }
 
@@ -1640,6 +1713,39 @@
       if (productCountList) {
         productCountList.style.display = defaultView === 'list' ? 'block' : 'none';
       }
+      
+      // Debug: Check if pagination exists and is visible
+      const pagination = document.querySelector('.wg-pagination');
+      if (pagination) {
+        // Ensure pagination is visible
+        if (window.getComputedStyle(pagination).display === 'none') {
+          pagination.style.display = 'flex';
+        }
+      }
+      
+      // Check current page from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const currentPageParam = urlParams.get('page');
+      if (currentPageParam) {
+        currentPage = parseInt(currentPageParam);
+        
+        // If we're on page 2 or higher, ensure pagination is visible
+        if (currentPage > 1) {
+          setTimeout(() => {
+            ensurePaginationVisibility();
+          }, 200);
+        }
+      }
+      
+      // Ensure pagination is not hidden by any CSS or JavaScript
+      setTimeout(() => {
+        const paginationAfterDelay = document.querySelector('.wg-pagination');
+        if (paginationAfterDelay && window.getComputedStyle(paginationAfterDelay).display === 'none') {
+          paginationAfterDelay.style.display = 'flex';
+          console.log('Pagination was hidden after delay, made visible');
+        }
+        ensurePaginationVisibility();
+      }, 100);
     }
 
     // Wait for DOM and dependencies to be ready

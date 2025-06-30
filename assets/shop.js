@@ -306,11 +306,11 @@
         `<span class="count">${visibleProductCountList}</span>Products found`
       );
       updateLastVisibleItem();
-      if (visibleProductCountGrid >= 12 || visibleProductCountList >= 12) {
-        $(".wrapper-shop .wg-pagination,.wrapper-shop .tf-loading").show();
-      } else {
-        $(".wrapper-shop .wg-pagination,.wrapper-shop .tf-loading").hide();
-      }
+      // if (visibleProductCountGrid >= 12 || visibleProductCountList >= 12) {
+      //   $(".wrapper-shop .wg-pagination,.wrapper-shop .tf-loading").show();
+      // } else {
+      //   $(".wrapper-shop .wg-pagination,.wrapper-shop .tf-loading").hide();
+      // }
     }
 
     function updateLastVisibleItem() {
