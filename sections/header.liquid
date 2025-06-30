@@ -1178,8 +1178,8 @@ document.addEventListener('DOMContentLoaded', function() {
 {% endif %}
 
 /* Add bottom border to header */
-#header,
-#header.header-visible {
+#header:not(.header-absolute),
+#header.header-visible:not(.header-absolute) {
   border-bottom: 1px solid #ebebeb !important;
   box-shadow: none !important;
 }
