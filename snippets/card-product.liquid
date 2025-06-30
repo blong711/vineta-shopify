@@ -6,6 +6,8 @@
 {%- assign global_style = settings.card_product_style -%}
 {%- assign style = style | default: global_style -%}
 
+<!-- Debug: global_style = {{ global_style }}, style = {{ style }} -->
+
 {%- if style == 'style-2' -%}
 {%- comment -%}Feature Section Layout{%- endcomment -%}
 <div class="card-product {{ class }} style-2 {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
@@ -288,6 +290,7 @@
   </div>
 </div>
 {%- elsif style == 'style-phonecase' -%}
+<!-- Debug: Checking style-phonecase condition, current style = {{ style }} -->
 <div class="card-product style-4">
   <div class="card-product-wrapper radius-16 line-2 asp-ratio-1">
     <a href="{{ product.url }}" class="product-img">
@@ -540,6 +543,7 @@
 </div>
 {%- else -%}
 {%- comment -%}Default Layout{%- endcomment -%}
+<!-- Debug: Using default layout, style = {{ style }} -->
 <div class="card-product {{ class }} {% if style == 'list' %}style-list{% elsif style == 'style-center' %}style-center{% elsif style contains 'style-' %}{{ style }}{% else %}style-{{ style | default: 1 }}{% endif %} {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
   <div class="card-product-wrapper asp-ratio-1 {% if style == 'line-2' %}line-2{% endif %}">
     <a href="{{ product.url }}" class="product-img">
