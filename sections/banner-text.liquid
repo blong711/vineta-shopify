@@ -66,15 +66,27 @@
             {% endif %}
           </a>
         {% else %}
-          <a href="{{ section.settings.banner_link }}" class="image img-style d-block">
+          {% if section.settings.banner_link != blank %}
+            <a href="{{ section.settings.banner_link }}" class="image img-style d-block">
+              {% if section.settings.banner_image != blank %}
+                {{ section.settings.banner_image | image_url: width: 2000 | image_tag:
+                  loading: 'lazy',
+                  class: 'lazyload',
+                  alt: section.settings.banner_image.alt
+                }}
+              {% endif %}
+            </a>
+          {% else %}
             {% if section.settings.banner_image != blank %}
-              {{ section.settings.banner_image | image_url: width: 2000 | image_tag:
-                loading: 'lazy',
-                class: 'lazyload',
-                alt: section.settings.banner_image.alt
-              }}
+              <div class="image img-style d-block">
+                {{ section.settings.banner_image | image_url: width: 2000 | image_tag:
+                  loading: 'lazy',
+                  class: 'lazyload',
+                  alt: section.settings.banner_image.alt
+                }}
+              </div>
             {% endif %}
-          </a>
+          {% endif %}
         {% endif %}
         {% for block in section.blocks limit:1 %}
           {% if block.type == 'lookbook' %}
@@ -124,10 +136,12 @@
             </p>
           </div>
           <div class="box-btn">
-            <a href="{{ section.settings.button_link }}" class="tf-btn animate-btn btn-dark2">
-              {{ section.settings.button_text }}
-              <i class="icon-arr-right"></i>
-            </a>
+            {% if section.settings.button_link != blank %}
+              <a href="{{ section.settings.button_link }}" class="tf-btn animate-btn btn-dark2">
+                {{ section.settings.button_text }}
+                <i class="icon-arr-right"></i>
+              </a>
+            {% endif %}
           </div>
         </div>
       </div>
