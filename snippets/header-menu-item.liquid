@@ -22,23 +22,26 @@
           {% if link.links != blank %}
             <div class="row-demo" id="row-demo-container">
               {% assign block = section.blocks | where: "type", "mega_menu_html" | first %}
-              {% if block.settings.demo_metaobjects != blank %}
-                <div class="row-demo" id="row-demo-container">
-                  {% for demo in block.settings.demo_metaobjects %}
-                    <div class="demo-item">
-                      <a href="{{ demo.url }}" class="demo-image">
-                        {% if demo.image != blank %}
-                          <img src="{{ demo.image | image_url: width: 200 }}" alt="{{ demo.title }}" width="200" height="120">
-                        {% endif %}
-                        {% if demo.label != blank %}
-                          <div class="demo-label"><span>{{ demo.label }}</span></div>
-                        {% endif %}
-                      </a>
-                      <a href="{{ demo.url }}" class="demo-name link">{{ demo.title }}</a>
-                    </div>
-                  {% endfor %}
+              {% assign demo_entries = shop.metaobjects.item_menu_demo.values %}
+              {% for child in link.links %}
+                {% assign demo_entry = demo_entries | where: "name", child.title | first %}
+                <div class="demo-item" 
+                     data-title="{{ child.title | downcase }}" 
+                     data-category="{{ child.title | handleize }}"
+                     data-search="{{ child.title | downcase }} {{ child.title | handleize }}">
+                  <a href="{{ demo_entry.url | default: child.url }}" class="demo-image">
+                    {% if demo_entry.image != blank %}
+                      <img src="{{ demo_entry.image | image_url: width: 200 }}" alt="{{ child.title }}" width="200" height="120">
+                    {% else %}
+                      <img src="{{ 'placeholder-image.jpg' | asset_url }}" alt="{{ child.title }}" width="200" height="120">
+                    {% endif %}
+                    {% if demo_entry.label != blank %}
+                      <div class="demo-label"><span>{{ demo_entry.label }}</span></div>
+                    {% endif %}
+                  </a>
+                  <a href="{{ demo_entry.url | default: child.url }}" class="demo-name link">{{ demo_entry.name | default: child.title }}</a>
                 </div>
-              {% endif %}
+              {% endfor %}
             </div>
             <script>
               document.addEventListener('DOMContentLoaded', function() {

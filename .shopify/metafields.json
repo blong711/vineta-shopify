@@ -7,7 +7,18 @@
   "location": [],
   "market": [],
   "order": [],
-  "page": [],
+  "page": [
+    {
+      "key": "menu",
+      "namespace": "home",
+      "name": "Menu Home",
+      "description": "",
+      "type": {
+        "name": "list.metaobject_reference",
+        "category": "REFERENCE"
+      }
+    }
+  ],
   "product": [
     {
       "key": "queries",
@@ -311,5 +322,16 @@
     }
   ],
   "variant": [],
-  "shop": []
+  "shop": [
+    {
+      "key": "menu",
+      "namespace": "home",
+      "name": "Home Menu",
+      "description": "",
+      "type": {
+        "name": "list.metaobject_reference",
+        "category": "REFERENCE"
+      }
+    }
+  ]
 }
