@@ -36,7 +36,9 @@
                       <img src="{{ 'placeholder-image.jpg' | asset_url }}" alt="{{ child.title }}" width="200" height="120">
                     {% endif %}
                     {% if demo_entry.label != blank %}
-                      <div class="demo-label"><span>{{ demo_entry.label }}</span></div>
+                      {% for label in demo_entry.label %}
+                        <div class="demo-label"><span>{{ label }}</span></div>
+                      {% endfor %}
                     {% endif %}
                   </a>
                   <a href="{{ demo_entry.url | default: child.url }}" class="demo-name link">{{ demo_entry.name | default: child.title }}</a>
