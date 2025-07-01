@@ -920,7 +920,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (window.Shopify && Shopify.formatMoney) {
       return Shopify.formatMoney(cents, window.theme && window.theme.moneyFormat ? window.theme.moneyFormat : "${{amount}}");
     } else {
-      return (cents / 100).toLocaleString(undefined, { style: 'currency', currency: 'USD' });
+      return (cents / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
     }
   }
 }); 
