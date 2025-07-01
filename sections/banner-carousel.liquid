@@ -19,7 +19,8 @@
         "clickable": true
       }{% else %}false{% endif %},
       "autoplay": {% if section.settings.autoplay %}{
-        "delay": {{ section.settings.autoplay_speed }}
+        "delay": {{ section.settings.autoplay_speed }},
+        "pauseOnMouseEnter": {% if section.settings.pause_on_hover %}true{% else %}false{% endif %}
       }{% else %}false{% endif %},
       "breakpoints": {
         "768": {
@@ -173,6 +174,12 @@
       "step": 500,
       "label": "Autoplay speed (ms)",
       "default": 3000
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause autoplay on hover",
+      "default": false
     }
   ],
   "blocks": [
