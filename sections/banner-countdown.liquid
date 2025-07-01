@@ -23,7 +23,7 @@
             </div>
           {%- endif -%}
         {%- endif -%}
-        {%- if section.settings.button_label != blank -%}
+        {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
           <div class="box-btn">
             <a href="{{ section.settings.button_link }}" class="tf-btn fw-normal animate-btn">
               {{ section.settings.button_label }}
@@ -95,7 +95,7 @@
             {%- endif -%}
           {%- endif -%}
           
-          {%- if section.settings.button_label != blank -%}
+          {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
             <div class="box-btn wow fadeInUp">
               <a href="{{ section.settings.button_link }}" class="tf-btn btn-white hover-primary">
                 {{ section.settings.button_label }}
@@ -148,6 +148,12 @@
     "content": "Content Settings"
   },
   {
+    "type": "checkbox",
+    "id": "show_countdown",
+    "label": "Show countdown timer",
+    "default": true
+  },
+  {
     "type": "product",
     "id": "product",
     "label": "Product with countdown",
@@ -183,12 +189,6 @@
     "id": "promo_code",
     "label": "Promo Code",
     "default": "12D34E"
-  },
-  {
-    "type": "checkbox",
-    "id": "show_countdown",
-    "label": "Show countdown timer",
-    "default": true
   },
   {
     "type": "text",
