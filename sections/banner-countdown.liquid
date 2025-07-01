@@ -138,8 +138,8 @@
     "id": "layout",
     "label": "Section Layout",
     "options": [
-      { "value": "default", "label": "Default" },
-      { "value": "home-phonecase", "label": "Home Phonecase" }
+      { "value": "default", "label": "Layout 1" },
+      { "value": "home-phonecase", "label": "Layout 2" }
     ],
     "default": "default"
   },
@@ -168,7 +168,11 @@
     "type": "text",
     "id": "subheading",
     "label": "Subheading",
-    "default": "Get your favorite cases at a discount"
+    "default": "Get your favorite cases at a discount",
+    "info": "Only visible when 'Layout 2' is selected",
+    "show_if": {
+      "layout": "home-phonecase"
+    }
   },
   {
     "type": "text",
