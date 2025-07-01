@@ -332,13 +332,6 @@
         ],
         "default": "ltr"
       },
-      // {
-      //   "type": "checkbox",
-      //   "id": "enable_rtl_switcher",
-      //   "label": "Enable RTL Switcher",
-      //   "info": "Adds a button to switch between RTL and LTR modes",
-      //   "default": false
-      // },
       {
         "type": "header",
         "content": "Spacing"
@@ -397,45 +390,6 @@
         "type": "checkbox",
         "id": "show_popular_searches",
         "label": "Show Popular Searches",
-        "default": true
-      }
-    ]
-  },
-  {
-    "name": "Feature Settings",
-    "settings": [
-      {
-        "type": "header",
-        "content": "Feature Toggles"
-      },
-      {
-        "type": "checkbox",
-        "id": "enable_quickview",
-        "label": "Enable Quick View",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "enable_compare",
-        "label": "Enable Product Comparison",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "enable_wishlist",
-        "label": "Enable Wishlist",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "enable_zoom",
-        "label": "Enable Product Image Zoom",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "enable_parallax",
-        "label": "Enable Parallax Effects",
         "default": true
       }
     ]
