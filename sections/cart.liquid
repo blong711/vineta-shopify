@@ -6,8 +6,8 @@
     <div class="row justify-content-center">
       <div class="col-xl-4 col-sm-8">
         {% for block in section.blocks %}
-          {% if block.type == 'shipping_progress' and cart.item_count > 0 %}
-            <div class="tf-cart-head text-center" {{ block.shopify_attributes }}>
+          {% if block.type == 'shipping_progress' %}
+            <div class="tf-cart-head text-center" {{ block.shopify_attributes }} style="{% if cart.item_count == 0 %}display: none;{% endif %}">
               <p class="text-xl-3 title text-dark-4">
                 {% if cart.total_price >= settings.free_shipping_threshold %}
                   {{ settings.free_shipping_message }}
@@ -30,8 +30,7 @@
 
 <div class="flat-spacing-2 pt-0"> 
   <div class="container">
-    {% if cart.item_count > 0 %}
-      <div class="row" id="cart-items-row">
+    <div class="row" id="cart-items-row" style="{% if cart.item_count == 0 %}display: none;{% endif %}">
         <div class="col-xl-8">
           <div class="tf-page-cart-main">
             <form action="/cart" method="post" id="cart-form" class="form-cart">
@@ -385,7 +384,6 @@
           </div>
         </div>
       </div>
-    {% endif %}
     
     <!-- Related Products Section -->
     {% for block in section.blocks %}

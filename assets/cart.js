@@ -60,17 +60,22 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('Main row found:', mainRow);
     console.log('Empty cart container found:', emptyCartContainer);
+    console.log('Shipping progress section found:', shippingProgressSection);
     
     // Hide the entire cart layout (both columns)
     if (mainRow) {
       mainRow.style.display = 'none';
       console.log('Hidden main row');
+    } else {
+      console.log('Main row not found - this should not happen after template update');
     }
     
     // Hide shipping progress section
     if (shippingProgressSection) {
       shippingProgressSection.style.display = 'none';
       console.log('Hidden shipping progress section');
+    } else {
+      console.log('Shipping progress section not found - this should not happen after template update');
     }
     
     // Show empty cart message container
@@ -82,6 +87,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // Make function globally available
+  window.handleEmptyCart = handleEmptyCart;
+
   // Function to handle cart with items state
   function handleCartWithItems() {
     console.log('Handling cart with items state');
@@ -91,17 +99,22 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('Main row found:', mainRow);
     console.log('Empty cart container found:', emptyCartContainer);
+    console.log('Shipping progress section found:', shippingProgressSection);
     
     // Show the entire cart layout (both columns)
     if (mainRow) {
       mainRow.style.display = 'flex';
       console.log('Showed main row');
+    } else {
+      console.log('Main row not found - this should not happen after template update');
     }
     
     // Show shipping progress section
     if (shippingProgressSection) {
       shippingProgressSection.style.display = 'block';
       console.log('Showed shipping progress section');
+    } else {
+      console.log('Shipping progress section not found - this should not happen after template update');
     }
     
     // Hide empty cart message container
@@ -113,9 +126,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // Make function globally available
+  window.handleCartWithItems = handleCartWithItems;
+
   // Function to update shipping progress
   function updateShippingProgress() {
-    const cartTotal = parseFloat(document.querySelector('.total').textContent.replace(/[^0-9.-]+/g, ''));
+    const totalElement = document.querySelector('.total');
+    if (!totalElement) {
+      console.log('Total element not found, skipping shipping progress update');
+      return;
+    }
+    
+    const cartTotal = parseFloat(totalElement.textContent.replace(/[^0-9.-]+/g, ''));
+    if (isNaN(cartTotal)) {
+      console.log('Invalid cart total, skipping shipping progress update');
+      return;
+    }
+    
     const threshold = 100; // $100 threshold
     const progress = Math.min(98, (cartTotal / threshold) * 98);
     const progressBar = document.querySelector('.tf-progress-ship .value');
@@ -136,12 +163,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // Make function globally available
+  window.updateShippingProgress = updateShippingProgress;
+
   // Update progress on page load
   updateShippingProgress();
 
   // Update progress when cart changes
   document.addEventListener('cart:change', function(e) {
-    if (e.detail && e.detail.cart) {
+    if (e.detail && e.detail.cart && e.detail.cart.item_count > 0) {
       updateShippingProgress();
     }
   });
@@ -176,8 +206,10 @@ document.addEventListener('DOMContentLoaded', function() {
         cartCount.textContent = cartData.item_count;
       }
 
-      // Update shipping progress immediately
-      updateShippingProgress();
+      // Update shipping progress immediately only if cart has items
+      if (cartData.item_count > 0) {
+        updateShippingProgress();
+      }
     } catch (error) {
       console.error('Error fetching cart data:', error);
     }
@@ -247,8 +279,10 @@ document.addEventListener('DOMContentLoaded', function() {
           cartCount.textContent = cartData.item_count;
         }
 
-        // Update shipping progress
-        updateShippingProgress();
+        // Update shipping progress only if cart still has items
+        if (cartData.item_count > 0) {
+          updateShippingProgress();
+        }
 
         // Check if cart is now empty
         if (cartData.item_count === 0) {
@@ -326,8 +360,10 @@ document.addEventListener('DOMContentLoaded', function() {
           cartCount.textContent = cartData.item_count;
         }
 
-        // Update shipping progress
-        updateShippingProgress();
+        // Update shipping progress only if cart still has items
+        if (cartData.item_count > 0) {
+          updateShippingProgress();
+        }
 
         // If quantity is 0, remove the item row
         if (newQuantity === 0) {
@@ -647,8 +683,10 @@ document.addEventListener('DOMContentLoaded', function() {
                       cartCount.textContent = cartData.item_count;
                     }
 
-                    // Update shipping progress
-                    updateShippingProgress();
+                    // Update shipping progress only if cart still has items
+                    if (cartData.item_count > 0) {
+                      updateShippingProgress();
+                    }
 
                     // Uncheck the gift wrap checkbox
                     giftWrapCheckbox.checked = false;
@@ -729,8 +767,10 @@ document.addEventListener('DOMContentLoaded', function() {
                       cartCount.textContent = cartData.item_count;
                     }
 
-                    // Update shipping progress
-                    updateShippingProgress();
+                    // Update shipping progress only if cart still has items
+                    if (cartData.item_count > 0) {
+                      updateShippingProgress();
+                    }
 
                     // If quantity is 0, remove the item row and uncheck the checkbox
                     if (newQuantity === 0) {
@@ -788,8 +828,10 @@ document.addEventListener('DOMContentLoaded', function() {
           cartCount.textContent = cartData.item_count;
         }
 
-        // Update shipping progress
-        updateShippingProgress();
+        // Update shipping progress only if cart still has items
+        if (cartData.item_count > 0) {
+          updateShippingProgress();
+        }
 
         // Check if cart is now empty
         if (cartData.item_count === 0) {
@@ -835,8 +877,10 @@ document.addEventListener('DOMContentLoaded', function() {
           if (cartTotal) {
             cartTotal.textContent = formatMoney(data.total_price);
           }
-          // Update shipping progress
-          updateShippingProgress();
+          // Update shipping progress only if cart has items
+          if (data.item_count > 0) {
+            updateShippingProgress();
+          }
         } else {
           alert('Invalid discount code');
         }

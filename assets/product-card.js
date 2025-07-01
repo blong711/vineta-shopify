@@ -135,8 +135,8 @@ const ProductCard = {
           //   element.textContent = cartData.item_count || '0';
           // });
 
-          // Update shipping progress
-          if (typeof updateShippingProgress === 'function') {
+          // Update shipping progress only if cart still has items
+          if (cartData.item_count > 0 && typeof updateShippingProgress === 'function') {
             updateShippingProgress();
           }
 
@@ -217,8 +217,8 @@ const ProductCard = {
             element.textContent = cartData.item_count;
           });
 
-          // Update shipping progress
-          if (typeof updateShippingProgress === 'function') {
+          // Update shipping progress only if cart still has items
+          if (cartData.item_count > 0 && typeof updateShippingProgress === 'function') {
             updateShippingProgress();
           }
 
@@ -315,8 +315,8 @@ const ProductCard = {
           element.textContent = cartData.item_count;
         });
 
-        // Update shipping progress
-        if (typeof updateShippingProgress === 'function') {
+        // Update shipping progress only if cart still has items
+        if (cartData.item_count > 0 && typeof updateShippingProgress === 'function') {
           updateShippingProgress();
         }
 
@@ -553,8 +553,8 @@ const ProductCard = {
               element.textContent = cartData.item_count;
             });
 
-            // Update shipping progress
-            if (typeof updateShippingProgress === 'function') {
+            // Update shipping progress only if cart has items
+            if (cartData.item_count > 0 && typeof updateShippingProgress === 'function') {
               updateShippingProgress();
             }
 
@@ -1081,8 +1081,8 @@ const ProductCard = {
       element.textContent = cartData.item_count || '0';
     });
 
-    // Update shipping progress
-    if (typeof updateShippingProgress === 'function') {
+    // Update shipping progress only if cart has items
+    if (cartData.item_count > 0 && typeof updateShippingProgress === 'function') {
       updateShippingProgress();
     }
 
@@ -1219,24 +1219,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 })();
-function updateShippingProgress() {
-  const cartTotal = parseFloat(document.querySelector('.total').textContent.replace(/[^0-9.-]+/g, ''));
-  const threshold = 100; // $100 threshold
-  const progress = Math.min(98, (cartTotal / threshold) * 98);
-  const progressBar = document.querySelector('.tf-progress-ship .value');
-  const progressText = document.querySelector('.tf-cart-head .title');
-  
-  if (progressBar) {
-    progressBar.style.width = progress + '%';
-    progressBar.setAttribute('data-progress', progress);
-  }
-  
-  if (progressText) {
-    if (cartTotal >= threshold) {
-      progressText.innerHTML = 'Congratulations! You\'ve unlocked <span class="fw-medium">Free Shipping</span>';
-    } else {
-      const remaining = threshold - cartTotal;
-      progressText.innerHTML = `Spend <span class="fw-medium">$${remaining.toFixed(2)}</span> more to get <span class="fw-medium">Free Shipping</span>`;
-    }
-  }
-}

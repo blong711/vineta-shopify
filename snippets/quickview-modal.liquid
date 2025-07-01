@@ -218,8 +218,14 @@
                 cartTotal.textContent = formatMoney(cartData.total_price);
               }
 
-              // Update shipping progress
-              if (typeof updateShippingProgress === 'function') {
+              // Update cart count
+              const cartCountElements = document.querySelectorAll('.cart-count');
+              cartCountElements.forEach(element => {
+                element.textContent = cartData.item_count;
+              });
+
+              // Update shipping progress only if cart still has items
+              if (cartData.item_count > 0 && typeof updateShippingProgress === 'function') {
                 updateShippingProgress();
               }
 
@@ -232,6 +238,184 @@
             } catch (error) {
               console.error('Error removing item:', error);
               alert('Failed to remove item. Please try again.');
+            }
+          });
+        }
+
+        // Quantity buttons
+        const quantityButtons = itemRow.querySelectorAll('.btn-quantity');
+        quantityButtons.forEach(button => {
+          button.addEventListener('click', async function() {
+            const variantId = this.dataset.variantId;
+            const input = this.parentElement.querySelector('.quantity-product');
+            const currentValue = parseInt(input.value);
+            
+            if (!variantId) return;
+
+            try {
+              let newQuantity;
+              if (this.classList.contains('minus')) {
+                newQuantity = currentValue > 1 ? currentValue - 1 : 0;
+              } else if (this.classList.contains('plus')) {
+                newQuantity = currentValue + 1;
+              }
+
+              // Update input value immediately
+              input.value = newQuantity;
+
+              // Update cart via API
+              const response = await fetch('/cart/change.js', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  id: variantId,
+                  quantity: newQuantity
+                })
+              });
+
+              if (!response.ok) {
+                // Revert input value if API call fails
+                input.value = currentValue;
+                throw new Error('Failed to update quantity. Product out of stock.');
+              }
+
+              const cartData = await response.json();
+
+              // Update the item's total price
+              const itemRow = this.closest('.tf-cart-item');
+              if (itemRow) {
+                const itemTotal = itemRow.querySelector('.cart-total');
+                if (itemTotal) {
+                  const updatedItem = cartData.items.find(item => item.variant_id == variantId);
+                  if (updatedItem) {
+                    itemTotal.textContent = formatMoney(updatedItem.final_line_price);
+                  }
+                }
+              }
+
+              // Update cart total
+              const cartTotal = document.querySelector('.total');
+              if (cartTotal) {
+                cartTotal.textContent = formatMoney(cartData.total_price);
+              }
+
+              // Update cart count
+              const cartCountElements = document.querySelectorAll('.cart-count');
+              cartCountElements.forEach(element => {
+                element.textContent = cartData.item_count;
+              });
+
+              // Update shipping progress only if cart still has items
+              if (cartData.item_count > 0 && typeof updateShippingProgress === 'function') {
+                updateShippingProgress();
+              }
+
+              // If quantity is 0, remove the item row
+              if (newQuantity === 0) {
+                const itemRow = this.closest('.tf-cart-item');
+                if (itemRow) {
+                  itemRow.remove();
+                }
+
+                // Check if cart is now empty
+                if (cartData.item_count === 0) {
+                  if (typeof handleEmptyCart === 'function') {
+                    handleEmptyCart();
+                  }
+                }
+              }
+            } catch (error) {
+              console.error('Error updating quantity:', error);
+              alert('Failed to update quantity. Product out of stock.');
+            }
+          });
+        });
+
+        // Quantity input
+        const quantityInput = itemRow.querySelector('.quantity-product');
+        if (quantityInput) {
+          quantityInput.addEventListener('change', async function() {
+            const variantId = this.dataset.variantId;
+            if (!variantId) return;
+            
+            const newValue = parseInt(this.value);
+            
+            if (isNaN(newValue) || newValue < 1) {
+              if (newValue <= 0) {
+                const response = await fetch('/cart/change.js', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    id: variantId,
+                    quantity: 0
+                  })
+                });
+                if (!response.ok) {
+                  throw new Error('Failed to remove item');
+                }
+              } else {
+                this.value = 1;
+                const response = await fetch('/cart/change.js', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    id: variantId,
+                    quantity: 1
+                  })
+                });
+                if (!response.ok) {
+                  throw new Error('Failed to update quantity');
+                }
+              }
+            } else {
+              const response = await fetch('/cart/change.js', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  id: variantId,
+                  quantity: newValue
+                })
+              });
+              if (!response.ok) {
+                throw new Error('Failed to update quantity');
+              }
+            }
+
+            // Fetch updated cart data and update UI
+            const cartResponse = await fetch('/cart.js');
+            if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
+            const cartData = await cartResponse.json();
+            
+            // Update cart total
+            const cartTotal = document.querySelector('.total');
+            if (cartTotal) {
+              cartTotal.textContent = formatMoney(cartData.total_price);
+            }
+
+            // Update cart count
+            const cartCountElements = document.querySelectorAll('.cart-count');
+            cartCountElements.forEach(element => {
+              element.textContent = cartData.item_count;
+            });
+
+            // Update shipping progress only if cart still has items
+            if (cartData.item_count > 0 && typeof updateShippingProgress === 'function') {
+              updateShippingProgress();
+            }
+
+            // Check if cart is now empty
+            if (cartData.item_count === 0) {
+              if (typeof handleEmptyCart === 'function') {
+                handleEmptyCart();
+              }
             }
           });
         }
@@ -555,9 +739,20 @@
                     cartTotal.textContent = formatMoney(cartData.total_price);
                   }
                   
-                  // Update shipping progress if function exists
-                  if (typeof updateShippingProgress === 'function') {
+                  // Update cart count
+                  const cartCountElements = document.querySelectorAll('.cart-count');
+                  cartCountElements.forEach(element => {
+                    element.textContent = cartData.item_count;
+                  });
+                  
+                  // Update shipping progress only if cart has items
+                  if (cartData.item_count > 0 && typeof updateShippingProgress === 'function') {
                     updateShippingProgress();
+                  }
+
+                  // Show cart with items if it was empty
+                  if (typeof handleCartWithItems === 'function') {
+                    handleCartWithItems();
                   }
                 }
                 // Update cart drawer with all items
