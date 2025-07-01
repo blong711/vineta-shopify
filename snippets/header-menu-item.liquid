@@ -22,9 +22,21 @@
           {% if link.links != blank %}
             <div class="row-demo" id="row-demo-container">
               {% assign block = section.blocks | where: "type", "mega_menu_html" | first %}
-              {% if block.settings.content_page != blank %}
-                <div class="mega-menu-page-content">
-                  {{ pages[block.settings.content_page].content }}
+              {% if block.settings.demo_metaobjects != blank %}
+                <div class="row-demo" id="row-demo-container">
+                  {% for demo in block.settings.demo_metaobjects %}
+                    <div class="demo-item">
+                      <a href="{{ demo.url }}" class="demo-image">
+                        {% if demo.image != blank %}
+                          <img src="{{ demo.image | image_url: width: 200 }}" alt="{{ demo.title }}" width="200" height="120">
+                        {% endif %}
+                        {% if demo.label != blank %}
+                          <div class="demo-label"><span>{{ demo.label }}</span></div>
+                        {% endif %}
+                      </a>
+                      <a href="{{ demo.url }}" class="demo-name link">{{ demo.title }}</a>
+                    </div>
+                  {% endfor %}
                 </div>
               {% endif %}
             </div>
