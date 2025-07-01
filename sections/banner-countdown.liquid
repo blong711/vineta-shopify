@@ -1,4 +1,3 @@
-{%- if section.settings.show_section -%}
 <section class="s-banner-countdown {% if section.settings.layout == 'home-phonecase' %}banner-cd-phonecase{% else %}banner-cd-fashion{% endif %}">
   {%- if section.settings.layout == 'home-phonecase' -%}
     <div class="banner-wrap">
@@ -110,8 +109,6 @@
     {% endif %}
   {%- endif -%}
 </section>
-{%- endif -%}
-
 {% schema %}
 {
 "name": "Banner Countdown",
@@ -145,12 +142,6 @@
       { "value": "home-phonecase", "label": "Home Phonecase" }
     ],
     "default": "default"
-  },
-  {
-    "type": "checkbox",
-    "id": "show_section",
-    "label": "Show section",
-    "default": true
   },
   {
     "type": "header",
@@ -214,7 +205,6 @@
     "name": "Banner Countdown",
     "category": "Banner",
     "settings": {
-      "show_section": true,
       "layout": "default",
       "season_text": "SUMMER SALE",
       "heading": "50% OFF",
