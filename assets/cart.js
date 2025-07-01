@@ -391,6 +391,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const checkoutForm = document.getElementById('checkout-form');
   
   if (termsCheckbox && checkoutButton && checkoutForm) {
+    // Reset checkbox state on page load to ensure it's unchecked
+    termsCheckbox.checked = false;
+    
     // Function to update checkout button state
     function updateCheckoutButtonState() {
       // Get cart item count
@@ -967,4 +970,21 @@ document.addEventListener('DOMContentLoaded', function() {
       return (cents / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
     }
   }
+
+  // Ensure terms checkbox and button are reset when returning via browser back/forward
+  window.addEventListener('pageshow', function(event) {
+    const termsCheckbox = document.getElementById('check-agree');
+    const checkoutButton = document.getElementById('checkout-button');
+    if (termsCheckbox && checkoutButton) {
+      termsCheckbox.checked = false;
+      // Try to call the updateCheckoutButtonState function if available
+      if (typeof updateCheckoutButtonState === 'function') {
+        updateCheckoutButtonState();
+      } else {
+        // Fallback: manually update button
+        checkoutButton.disabled = true;
+        checkoutButton.textContent = 'Please agree to terms';
+      }
+    }
+  });
 }); 
