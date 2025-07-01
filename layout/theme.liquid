@@ -240,7 +240,7 @@
       {% render 'quickview-modal' %}
       {% render 'compare-drawer' %}
     </div>
-
+    {%- if request.design_mode -%}{%- render 'var_adm' -%}{% endif -%}
     <script>
       window.theme = {
         settings: {
