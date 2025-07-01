@@ -170,9 +170,7 @@
     "label": "Subheading",
     "default": "Get your favorite cases at a discount",
     "info": "Only visible when 'Layout 2' is selected",
-    "show_if": {
-      "layout": "home-phonecase"
-    }
+      "visible_if": "{{ section.settings.layout == 'home-phonecase' }}"
   },
   {
     "type": "text",
