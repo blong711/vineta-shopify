@@ -88,14 +88,14 @@ if(Shopify.designMode){
         sessionStorage.setItem(CookieName, 'true')
 
         if (isActived === 'true') {
-          $4(atob('I3B1cmNoYXNlX2NvZGV0NA==')).remove(); // #purchase_codet4
-          // $4(atob('I2x1ZmZ5YWJjMTk0'))?.remove(); //#luffyabc194
+          document.querySelector(atob('I3B1cmNoYXNlX2NvZGV0NA==')).remove(); // #purchase_codet4
+          // document.querySelector(atob('I2x1ZmZ5YWJjMTk0'))?.remove(); //#luffyabc194
         }
         else {
           localStorage.setItem(CookieName, "true");
           setTimeout(function(){
-            $4(atob('I3B1cmNoYXNlX2NvZGV0NA==')).remove(); // #purchase_codet4
-            // $4(atob('I2x1ZmZ5YWJjMTk0'))?.remove(); //#luffyabc194
+            document.querySelector(atob('I3B1cmNoYXNlX2NvZGV0NA==')).remove(); // #purchase_codet4
+            // document.querySelector(atob('I2x1ZmZ5YWJjMTk0'))?.remove(); //#luffyabc194
           }, 1000);
         }
 
