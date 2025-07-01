@@ -38,7 +38,7 @@ const ProductCard = {
       const quantityInput = existingRow.querySelector('.quantity-product');
       if (quantityInput) {
         const currentQuantity = parseInt(quantityInput.value) || 0;
-        const newQuantity = currentQuantity + (addedItem.quantity || 1);
+        const newQuantity = currentQuantity + 1;
         quantityInput.value = newQuantity;
         
         // Update the item's total price
