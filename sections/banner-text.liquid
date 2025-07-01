@@ -76,7 +76,7 @@
             {% endif %}
           </a>
         {% endif %}
-        {% for block in section.blocks %}
+        {% for block in section.blocks limit:1 %}
           {% if block.type == 'lookbook' %}
             {% assign product = block.settings.product %}
             {% if product != blank %}
