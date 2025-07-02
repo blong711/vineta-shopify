@@ -165,7 +165,7 @@
               }
           }{% else %}{
               "slidesPerView": {% if section.settings.layout == 'bicycle' %}1{% else %}{{ section.settings.slides_per_view_mobile }}{% endif %},
-              "spaceBetween": {% if section.settings.layout == 'bicycle' %}12{% else %}{{ section.settings.space_between }}{% endif %},
+              "spaceBetween": {% if section.settings.layout == 'bicycle' %}12{% else %}12{% endif %},
               "speed": {% if section.settings.layout == 'bicycle' %}1000{% else %}800{% endif %},
               "observer": true,
               "observeParents": true,
