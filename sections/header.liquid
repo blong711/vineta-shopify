@@ -1038,6 +1038,8 @@ document.addEventListener('DOMContentLoaded', function() {
       // Scrolling up
       header.classList.remove('header-hidden');
       header.classList.add('header-visible');
+      // Remove header-absolute class when sticky
+      header.classList.remove('header-absolute');
     }
     
     lastScrollTop = scrollTop;
