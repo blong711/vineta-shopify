@@ -250,27 +250,31 @@
         }
       };
 
-      // Global Swiper reinitialization for theme editor
+      // Global Swiper and Countdown reinitialization for theme editor
       document.addEventListener('DOMContentLoaded', function() {
         initializeAllSwipers();
+        initializeAllCountdowns();
       });
 
-      // Reinitialize all swipers when sections are updated in theme editor
+      // Reinitialize all swipers and countdowns when sections are updated in theme editor
       document.addEventListener('shopify:section:load', function(event) {
         setTimeout(function() {
           initializeAllSwipers();
+          initializeAllCountdowns();
         }, 100);
       });
 
       document.addEventListener('shopify:section:reorder', function(event) {
         setTimeout(function() {
           initializeAllSwipers();
+          initializeAllCountdowns();
         }, 100);
       });
 
       document.addEventListener('shopify:block:select', function(event) {
         setTimeout(function() {
           initializeAllSwipers();
+          initializeAllCountdowns();
         }, 100);
       });
 
@@ -287,6 +291,25 @@
           
           // Initialize new swiper instance
           new Swiper(element, options);
+        });
+      }
+
+      function initializeAllCountdowns() {
+        const countdownElements = document.querySelectorAll('.js-countdown');
+        countdownElements.forEach(function(element) {
+          // Clear any existing interval
+          if (element.intervalId) {
+            clearInterval(element.intervalId);
+          }
+          
+          // Remove existing countdown HTML
+          const existingTimer = element.querySelector('.countdown__timer');
+          if (existingTimer) {
+            existingTimer.remove();
+          }
+          
+          // Initialize new countdown
+          new CountDown(element);
         });
       }
     </script>

@@ -182,13 +182,15 @@
     "type": "text",
     "id": "season_text",
     "label": "Season Text",
-    "default": "SUMMER SALE"
+    "default": "SUMMER SALE",
+    "visible_if": "{{ section.settings.layout == 'default' }}"
   },
   {
     "type": "text",
     "id": "promo_code",
     "label": "Promo Code",
-    "default": "12D34E"
+    "default": "12D34E",
+    "visible_if": "{{ section.settings.layout == 'default' }}"
   },
   {
     "type": "text",
