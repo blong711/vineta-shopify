@@ -260,22 +260,27 @@
       document.addEventListener('shopify:section:load', function(event) {
         setTimeout(function() {
           initializeAllSwipers();
-          initializeAllCountdowns();
         }, 100);
+        reinitializeCountdownsWithDelay();
       });
 
       document.addEventListener('shopify:section:reorder', function(event) {
         setTimeout(function() {
           initializeAllSwipers();
-          initializeAllCountdowns();
         }, 100);
+        reinitializeCountdownsWithDelay();
       });
 
       document.addEventListener('shopify:block:select', function(event) {
         setTimeout(function() {
           initializeAllSwipers();
-          initializeAllCountdowns();
         }, 100);
+        reinitializeCountdownsWithDelay();
+      });
+
+      // Additional event listeners for product changes
+      document.addEventListener('shopify:section:select', function(event) {
+        reinitializeCountdownsWithDelay();
       });
 
       function initializeAllSwipers() {
@@ -311,6 +316,13 @@
           // Initialize new countdown
           new CountDown(element);
         });
+      }
+
+      function reinitializeCountdownsWithDelay() {
+        // Add a longer delay for countdowns to ensure product data is loaded
+        setTimeout(function() {
+          initializeAllCountdowns();
+        }, 300);
       }
     </script>
   </body>
