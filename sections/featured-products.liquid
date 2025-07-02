@@ -110,36 +110,7 @@
   {% endif %}
 </section>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  initializeFeaturedProductsSwiper();
-});
 
-// Reinitialize swiper when section is updated in theme editor
-if (typeof Shopify !== 'undefined' && Shopify.designMode) {
-  document.addEventListener('shopify:section:load', function(event) {
-    if (event.target.id === 'featured-products-{{ section.id }}') {
-      initializeFeaturedProductsSwiper();
-    }
-  });
-}
-
-function initializeFeaturedProductsSwiper() {
-  const swiperElement = document.querySelector('#featured-products-{{ section.id }} .tf-swiper');
-  if (!swiperElement) return;
-  
-  // Destroy existing swiper instance if it exists
-  if (swiperElement.swiper) {
-    swiperElement.swiper.destroy(true, true);
-  }
-  
-  // Parse the swiper options from data attribute
-  const options = JSON.parse(swiperElement.dataset.swiper || '{}');
-  
-  // Initialize new swiper instance
-  new Swiper(swiperElement, options);
-}
-</script>
 
 {% schema %}
 {
