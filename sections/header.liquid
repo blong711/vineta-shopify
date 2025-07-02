@@ -323,12 +323,6 @@
     },
     {
       "type": "color",
-      "id": "sticky_background_color",
-      "label": "Sticky header background color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
       "id": "text_color",
       "label": "Text color",
       "default": "#333333"
@@ -988,7 +982,6 @@
       "settings": {
         "layout": "layout-1",
         "background_color": "#ffffff",
-        "sticky_background_color": "#ffffff",
         "text_color": "#333333",
         "link_color": "#333333",
         "link_hover_color": "#666666",
@@ -1030,6 +1023,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (scrollTop < 87) {
       header.classList.remove('header-hidden');
       header.classList.remove('header-visible');
+      // Restore header-absolute class when back to top (if it was originally there)
+      if ({{ section.settings.enable_transparent | json }}) {
+        header.classList.add('header-absolute');
+      }
+      // Restore inline styles for main header
+      header.style.backgroundColor = '{{ section.settings.background_color }}';
+      header.style.color = '{{ section.settings.text_color }}';
     } else if (scrollTop > lastScrollTop) {
       // Scrolling down
       header.classList.add('header-hidden');
@@ -1040,6 +1040,9 @@ document.addEventListener('DOMContentLoaded', function() {
       header.classList.add('header-visible');
       // Remove header-absolute class when sticky
       header.classList.remove('header-absolute');
+      // Remove inline styles to use CSS styles for sticky header
+      header.style.backgroundColor = '';
+      header.style.color = '';
     }
     
     lastScrollTop = scrollTop;
@@ -1068,7 +1071,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 #header.header-visible {
   height: {{ section.settings.sticky_header_height }}px;
-  background-color: {{ section.settings.sticky_background_color }};
+  background-color: #ffffff;
 }
 
 /* Responsive Header Height */

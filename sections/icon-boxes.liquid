@@ -44,15 +44,6 @@
         "default": 2
       },
       {
-        "type": "range",
-        "id": "space_between",
-        "min": 0,
-        "max": 60,
-        "step": 5,
-        "label": "Space between slides",
-        "default": 10
-      },
-      {
         "type": "checkbox",
         "id": "show_pagination",
         "label": "Show pagination on mobile",
@@ -183,7 +174,7 @@
               "breakpoints": {
                   "575": { 
                       "slidesPerView": {% if section.settings.layout == 'bicycle' %}2{% elsif section.settings.layout == 'home-electronic' %}2{% else %}{{ section.settings.slides_per_view_mobile }}{% endif %},
-                      "spaceBetween": {% if section.settings.layout == 'bicycle' %}12{% elsif section.settings.layout == 'home-electronic' %}12{% else %}{{ section.settings.space_between }}{% endif %},
+                      "spaceBetween": {% if section.settings.layout == 'bicycle' %}12{% elsif section.settings.layout == 'home-electronic' %}12{% else %}12{% endif %},
                       "slidesPerGroup": {% if section.settings.layout == 'bicycle' %}1{% else %}2{% endif %}
                   },
                   "768": { 
