@@ -323,6 +323,12 @@
     },
     {
       "type": "color",
+      "id": "sticky_background_color",
+      "label": "Sticky header background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
       "id": "text_color",
       "label": "Text color",
       "default": "#333333"
@@ -982,6 +988,7 @@
       "settings": {
         "layout": "layout-1",
         "background_color": "#ffffff",
+        "sticky_background_color": "#ffffff",
         "text_color": "#333333",
         "link_color": "#333333",
         "link_hover_color": "#666666",
@@ -1059,6 +1066,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 #header.header-visible {
   height: {{ section.settings.sticky_header_height }}px;
+  background-color: {{ section.settings.sticky_background_color }};
 }
 
 /* Responsive Header Height */
