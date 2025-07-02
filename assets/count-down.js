@@ -170,3 +170,5 @@ Util.setAttributes = function (el, attrs) {
         /*      }, 1000);*/
     });
 })();
+
+window.CountDown = CountDown;
