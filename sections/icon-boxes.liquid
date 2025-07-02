@@ -248,7 +248,11 @@
                   {% endfor %}
               </div>
               {% if section.settings.show_pagination %}
-                  <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
+                  {% if section.settings.layout == 'phonecase' %}
+                      <div class="d-flex sw-dot-default sw-pagination-iconbox justify-content-center"></div>
+                  {% else %}
+                      <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
+                  {% endif %}
               {% endif %}
           </div>
           {% if section.settings.layout == 'default' or section.settings.layout == 'home-fashion-02' %}
