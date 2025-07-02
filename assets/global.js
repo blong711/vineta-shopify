@@ -621,6 +621,22 @@ class WishlistCompare {
       const productId = button.getAttribute('data-id');
       const isInWishlist = this.wishlistList.includes(productId);
       button.setAttribute('data-action', isInWishlist ? 'remove' : 'add');
+      
+      // Store original icon if not already stored
+      if (!button.hasAttribute('data-original-icon')) {
+        const iconElement = button.querySelector('.icon');
+        if (iconElement) {
+          // Determine the original icon class
+          let originalIcon = 'icon-heart2'; // default
+          if (iconElement.classList.contains('icon-heart')) {
+            originalIcon = 'icon-heart';
+          } else if (iconElement.classList.contains('icon-heart2')) {
+            originalIcon = 'icon-heart2';
+          }
+          button.setAttribute('data-original-icon', originalIcon);
+        }
+      }
+      
       this.updateButtonText(button, isInWishlist, 'wishlist');
     });
 
@@ -661,6 +677,24 @@ class WishlistCompare {
         textElement.textContent = isActive ? 'Remove from compare' : 'Compare';
       } else if (type === 'wishlist') {
         textElement.textContent = isActive ? 'Remove from wishlist' : 'Add to wishlist';
+      }
+    }
+    
+    // Update icon for wishlist buttons
+    if (type === 'wishlist') {
+      const iconElement = button.querySelector('.icon');
+      if (iconElement) {
+        // Remove existing heart/trash classes
+        iconElement.classList.remove('icon-heart', 'icon-heart2', 'icon-trash');
+        
+        // Add appropriate icon class
+        if (isActive) {
+          iconElement.classList.add('icon-trash');
+        } else {
+          // Check if it was originally icon-heart2 or icon-heart
+          const originalIcon = button.getAttribute('data-original-icon') || 'icon-heart2';
+          iconElement.classList.add(originalIcon);
+        }
       }
     }
     
