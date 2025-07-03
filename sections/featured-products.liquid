@@ -160,18 +160,21 @@
       "type": "text",
       "id": "button_text",
       "label": "Button Text",
-      "default": "Featured Products"
+      "default": "Featured Products",
+      "visible_if": "{{ section.settings.layout == 'feature' }}"
     },
     {
       "type": "url",
       "id": "button_url",
-      "label": "Button URL"
+      "label": "Button URL",
+      "visible_if": "{{ section.settings.layout == 'feature' }}"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Discover our top picks for [br] every ride"
+      "default": "Discover our top picks for [br] every ride",
+      "visible_if": "{{ section.settings.layout == 'feature' }}"
     },
     {
       "type": "checkbox",
