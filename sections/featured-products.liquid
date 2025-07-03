@@ -104,8 +104,10 @@
         </div>
         <div class="d-flex d-xl-none sw-dot-default sw-pagination-featured-{{ section.id }} justify-content-center"></div>
       </div>
-      <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-featured-{{ section.id }}"></div>
-      <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-featured-{{ section.id }}"></div>
+      {% if section.settings.show_navigation %}
+        <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-featured-{{ section.id }}"></div>
+        <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-featured-{{ section.id }}"></div>
+      {% endif %}
     </div>
   {% if section.settings.width == 'boxed' %}
     </div>
