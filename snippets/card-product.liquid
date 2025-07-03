@@ -454,7 +454,7 @@
 
     {%- if product.available -%}
     <ul class="list-product-btn">
-      <li>
+      {% comment %} <li>
         <a href="javascript:void(0);" 
            class="box-icon hover-tooltip add-to-cart" 
            data-variant-id="{{ product.variants.first.id }}"
@@ -463,7 +463,7 @@
           <i class="icon icon-cart"></i>
           <span class="tooltip">{{ 'products.card.add_to_cart' | t }}</span>
         </a>
-      </li>
+      </li> {% endcomment %}
       <li class="wishlist">
         <a href="javascript:void(0);" 
            class="box-icon hover-tooltip" 
