@@ -1,50 +1,8 @@
-{% schema %}
-    {
-      "name": "Order Detail Modal",
-      "settings": [
-        {
-          "type": "header",
-          "content": "Modal Settings"
-        },
-        {
-          "type": "text",
-          "id": "modal_title",
-          "label": "Modal Title",
-          "default": "Order Detail"
-        },
-        {
-          "type": "text",
-          "id": "return_text",
-          "label": "Return Policy Text",
-          "default": "Not happy with the order? You can"
-        },
-        {
-          "type": "text",
-          "id": "return_link_text",
-          "label": "Return Link Text",
-          "default": "Request a free return"
-        },
-        {
-          "type": "text",
-          "id": "return_days",
-          "label": "Return Days",
-          "default": "14 days"
-        }
-      ],
-      "presets": [
-        {
-          "name": "Order Detail Modal",
-          "category": "Account"
-        }
-      ]
-    }
-    {% endschema %}
-    
     <div class="modal fade modalCentered modal-order-detail" id="order_detail" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="header">
-                    <div class="heading">{{ section.settings.modal_title }}</div>
+                    <div class="heading">{{ 'orders.modal.title' | t }}</div>
                     <span class="icon-close icon-close-popup" data-bs-dismiss="modal" aria-label="Close"></span>
                 </div>
                 
@@ -52,15 +10,15 @@
                     <ul class="list-infor">
                         <li>#{{ order.name | remove: '#' }}</li>
                         <li>{{ order.created_at | date: "%d %B %Y" }}</li>
-                        <li>{{ order.line_items.size }} items</li>
+                        <li>{{ order.line_items.size }} {{ 'orders.modal.items' | t }}</li>
                         <li class="text-{{ order.fulfillment_status | handle }}">
                             {% case order.fulfillment_status %}
                                 {% when 'fulfilled' %}
-                                    Delivered
+                                    {{ 'orders.modal.status.delivered' | t }}
                                 {% when 'partial' %}
-                                    Partially Delivered
+                                    {{ 'orders.modal.status.partially_delivered' | t }}
                                 {% when 'unfulfilled' %}
-                                    Processing
+                                    {{ 'orders.modal.status.processing' | t }}
                                 {% else %}
                                     {{ order.fulfillment_status | capitalize }}
                             {% endcase %}
@@ -69,10 +27,10 @@
                     
                     <div class="tb-order-detail">
                         <div class="top">
-                            <div class="title item">Product</div>
-                            <div class="title item d-md-block d-none">Quantity</div>
-                            <div class="title item d-md-block d-none">Price</div>
-                            <div class="title item d-md-block d-none">Total</div>
+                            <div class="title item">{{ 'orders.modal.product' | t }}</div>
+                            <div class="title item d-md-block d-none">{{ 'orders.modal.quantity' | t }}</div>
+                            <div class="title item d-md-block d-none">{{ 'orders.modal.price' | t }}</div>
+                            <div class="title item d-md-block d-none">{{ 'orders.modal.total' | t }}</div>
                         </div>
                         <div class="tb-content">
                             {% for line_item in order.line_items %}
@@ -98,13 +56,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="item" data-title="Quantity">
+                                    <div class="item" data-title="{{ 'orders.modal.quantity' | t }}">
                                         {{ line_item.quantity }}
                                     </div>
-                                    <div class="item" data-title="Price">
+                                    <div class="item" data-title="{{ 'orders.modal.price' | t }}">
                                         {{ line_item.final_price | money }}
                                     </div>
-                                    <div class="item" data-title="Total">
+                                    <div class="item" data-title="{{ 'orders.modal.total' | t }}">
                                         {{ line_item.final_line_price | money }}
                                     </div>
                                 </div>
@@ -114,7 +72,7 @@
                                 <div class="item d-md-block d-none"></div>
                                 <div class="item d-md-block d-none"></div>
                                 <div class="item subtotal-text">
-                                    Subtotal:
+                                    {{ 'orders.modal.subtotal' | t }}:
                                 </div>
                                 <div class="item subtotal-price">
                                     {{ order.subtotal_price | money }} {{ shop.currency }}
@@ -126,7 +84,7 @@
                                     <div class="item d-md-block d-none"></div>
                                     <div class="item d-md-block d-none"></div>
                                     <div class="item tax-text">
-                                        Tax:
+                                        {{ 'orders.modal.tax' | t }}:
                                     </div>
                                     <div class="item tax-price">
                                         {{ order.total_tax | money }} {{ shop.currency }}
@@ -139,7 +97,7 @@
                                     <div class="item d-md-block d-none"></div>
                                     <div class="item d-md-block d-none"></div>
                                     <div class="item shipping-text">
-                                        Shipping:
+                                        {{ 'orders.modal.shipping' | t }}:
                                     </div>
                                     <div class="item shipping-price">
                                         {{ order.total_shipping_price_set.shop_money | money }} {{ shop.currency }}
@@ -151,7 +109,7 @@
                                 <div class="item d-md-block d-none"></div>
                                 <div class="item d-md-block d-none"></div>
                                 <div class="item total-text">
-                                    Total:
+                                    {{ 'orders.modal.total' | t }}:
                                 </div>
                                 <div class="item total-price">
                                     {{ order.total_price | money }} {{ shop.currency }}
@@ -162,11 +120,11 @@
                 {% endif %}
                 
                 <div class="bottom text-center">
-                    {{ section.settings.return_text }} 
+                    {{ 'orders.modal.return_policy.text' | t }} 
                     <a href="/pages/return-and-refund" class="fw-medium btn-underline">
-                        {{ section.settings.return_link_text }}
+                        {{ 'orders.modal.return_policy.link_text' | t }}
                     </a> 
-                    in <span class="fw-medium">{{ section.settings.return_days }}</span>
+                    {{ 'orders.modal.return_policy.in' | t }} <span class="fw-medium">{{ 'orders.modal.return_policy.days' | t }}</span>
                 </div>
             </div>
         </div>
