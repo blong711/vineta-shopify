@@ -18020,7 +18020,7 @@ button.animate-btn::after,
 .card-product.out-of-stock .card-product-wrapper > * {
   opacity: 0.6;
 }
-.card-product:not(.style-list) .size-box {
+.card-product:not(.style-list):not(.style-3) .size-box {
   position: absolute;
   bottom: 0;
   z-index: 3;
@@ -25142,7 +25142,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   .card-product .product-progress-sale {
     gap: 8px;
   }
-  .card-product:not(.style-list) .size-box {
+  .card-product:not(.style-list):not(.style-3) .size-box {
     transform: translateY(100%);
     padding: 10px 6px;
   }
