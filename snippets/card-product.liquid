@@ -508,11 +508,13 @@
         <span class="text-md fw-medium">{{ 'products.card.add_to_cart' | t }}</span>
       </a>
     </div>
-    {%- if product.variants.size > 1 -%}
+    {%- if product.variants.size > 1 and product.options contains 'Size' -%}
       <ul class="size-box">
-        {%- for variant in product.variants -%}
-          {%- if variant.option1 != blank -%}
-            <li class="size-item text-xs text-white">{{ variant.option1 }}</li>
+        {%- for option in product.options_with_values -%}
+          {%- if option.name == 'Size' -%}
+            {%- for value in option.values -%}
+              <li class="size-item text-xs text-white">{{ value }}</li>
+            {%- endfor -%}
           {%- endif -%}
         {%- endfor -%}
       </ul>
@@ -526,15 +528,24 @@
         <span class="price-old">{{ product.compare_at_price | money }}</span>
       {%- endif -%}
     </p>
-    {%- if product.variants.size > 1 -%}
+    {%- if product.variants.size > 1 and product.options contains 'Color' -%}
       <ul class="list-color-product {% if product-info == 'text-center' %}justify-content-center{% else %}{{ text_alignment | default: 'text-left' | replace: 'text-', 'justify-content-' }}{% endif %}">
-        {%- for variant in product.variants -%}
-          {%- if variant.option2 != blank -%}
-            <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if variant.option2 == 'White' %}line{% endif %} {% if forloop.first %}active{% endif %}">
-              <span class="tooltip color-filter">{{ variant.option2 }}</span>
-              <span class="swatch-value bg-{{ variant.option2 | handle }}"></span>
-              <img class="lazyload" data-src="{{ variant.image | image_url: width: 300, height: 300 }}" src="{{ variant.image | image_url: width: 300, height: 300 }}" alt="{{ variant.title | escape }}" width="300" height="300">
-            </li>
+        {%- for option in product.options_with_values -%}
+          {%- if option.name == 'Color' -%}
+            {%- for value in option.values -%}
+              {%- assign variant = product.variants | where: 'option1', value | first -%}
+              <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if value == 'White' %}line{% endif %} {% if forloop.first %}active{% endif %}">
+                <span class="tooltip color-filter">{{ value }}</span>
+                <span class="swatch-value bg-{{ value | handleize }}"></span>
+                {%- if variant.featured_image != blank -%}
+                  {{ variant.featured_image | image_url: width: 100 | image_tag:
+                    loading: 'lazy',
+                    class: 'lazyload',
+                    alt: value
+                  }}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
           {%- endif -%}
         {%- endfor -%}
       </ul>
