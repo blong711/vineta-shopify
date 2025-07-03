@@ -185,6 +185,7 @@
                                 {% if customer.orders.size > 0 %}
                                 check
                                 <a href="{{ routes.account_url }}/orders" class="text-primary text-decoration-underline">{{ 'customer.account.your_last_orders' | t }}</a>
+                                or have a look to
                                 {% endif %}
                                 {% if section.settings.show_wishlist %}
                                 <a href="/pages/wishlist" class="text-primary text-decoration-underline">{{ 'customer.account.your_wishlist' | t }}</a>
