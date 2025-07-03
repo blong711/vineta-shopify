@@ -575,6 +575,41 @@
         "slides_per_view_mobile": 1,
         "show_pagination": true
       }
+    },
+    "banner_rbJ7HQ": {
+      "type": "banner",
+      "blocks": {
+        "banner_AHmc9y": {
+          "type": "banner",
+          "settings": {
+            "banner_image": "shopify://shop_images/blog-eletric3_e761d21e-40af-4f07-8ccd-8b5b4f4fdb2c.jpg",
+            "heading": "Unveiling the latest gear",
+            "subtext": "Check out our newest arrivals",
+            "button_text": "Buy Now",
+            "button_url": ""
+          }
+        },
+        "banner_MiEMW4": {
+          "type": "banner",
+          "settings": {
+            "banner_image": "shopify://shop_images/blog-eletric1_3071eb9a-96e1-4efc-9004-09a853bfafe4.jpg",
+            "heading": "Deals you can't miss",
+            "subtext": "Save big on our best-selling bikes",
+            "button_text": "Buy Now",
+            "button_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "banner_AHmc9y",
+        "banner_MiEMW4"
+      ],
+      "name": "Banner Slider",
+      "settings": {
+        "width": "boxed",
+        "show_navigation": true,
+        "show_pagination": true
+      }
     }
   },
   "order": [
@@ -587,6 +622,7 @@
     "testimonials",
     "brands",
     "shop_gram",
-    "icon_boxes_6PFzU6"
+    "icon_boxes_6PFzU6",
+    "banner_rbJ7HQ"
   ]
 }
