@@ -1,3 +1,9 @@
+<style>
+  .nav-button-top {
+    top: calc(50% - 20px) !important;
+  }
+</style>
+
 {%- if section.blocks.size > 0 -%}
   {%- case section.settings.layout -%}
     {%- when 'layout1' -%}
@@ -77,8 +83,8 @@
                       </div>
                       <span class="d-flex d-xl-none sw-dot-default sw-pagination-categories justify-content-center"></span>
                       {% if section.settings.show_navigation %}
-                        <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-categories"></div>
-                        <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-categories"></div>
+                        <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-categories nav-button-top"></div>
+                        <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-categories nav-button-top"></div>
                       {% endif %}
                     </div>
                   </div>
