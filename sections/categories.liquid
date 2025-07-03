@@ -47,7 +47,7 @@
                       "breakpoints": {
                         "575": {
                           "slidesPerView": {{ section.settings.slides_per_view_tablet }},
-                          "spaceBetween": {{ section.settings.space_between_mobile }}
+                          "spaceBetween": {{ section.settings.space_between_tablet }}
                         },
                         "768": {
                           "slidesPerView": {{ section.settings.slides_per_view_desktop }},
@@ -117,7 +117,7 @@
                 "breakpoints": {
                   "575": {
                     "slidesPerView": {{ section.settings.slides_per_view_tablet }},
-                    "spaceBetween": {{ section.settings.space_between_mobile }}
+                    "spaceBetween": {{ section.settings.space_between_tablet }}
                   },
                   "768": {
                     "slidesPerView": {{ section.settings.slides_per_view_desktop }},
@@ -196,9 +196,9 @@
               "delay": {{ section.settings.autoplay_speed }}
             }{% else %}false{% endif %},
             "breakpoints": {
-              "768": { "slidesPerView": 2.7, "spaceBetween": 12, "slidesPerGroup": 2 },
-              "992": { "slidesPerView": 3.7, "spaceBetween": 24, "slidesPerGroup": 3 },
-              "1200": { "slidesPerView": 4.7, "spaceBetween": 24, "slidesPerGroup": 3}
+              "768": { "slidesPerView": 2.7, "spaceBetween": {{ section.settings.space_between_tablet }}, "slidesPerGroup": 2 },
+              "992": { "slidesPerView": 3.7, "spaceBetween": {{ section.settings.space_between_desktop }}, "slidesPerGroup": 3 },
+              "1200": { "slidesPerView": 4.7, "spaceBetween": {{ section.settings.space_between_desktop }}, "slidesPerGroup": 3}
             }
           }'>
             <div class="swiper-wrapper">
@@ -255,9 +255,9 @@
               "delay": {{ section.settings.autoplay_speed }}
             }{% else %}false{% endif %},
             "breakpoints": {
-              "575": { "slidesPerView": 3, "spaceBetween": 12 ,"slidesPerGroup": 2 },    
-              "768": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 3 },
-              "1200": { "slidesPerView": 6, "spaceBetween": 64, "slidesPerGroup": 3}
+              "575": { "slidesPerView": 3, "spaceBetween": {{ section.settings.space_between_tablet }} ,"slidesPerGroup": 2 },    
+              "768": { "slidesPerView": 4, "spaceBetween": {{ section.settings.space_between_desktop }}, "slidesPerGroup": 3 },
+              "1200": { "slidesPerView": 6, "spaceBetween": {{ section.settings.space_between_desktop }}, "slidesPerGroup": 3}
             }
           }'>
             <div class="swiper-wrapper">
@@ -400,12 +400,21 @@
     },
     {
       "type": "range",
+      "id": "space_between_tablet",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "label": "Space between slides (Tablet)",
+      "default": 24
+    },
+    {
+      "type": "range",
       "id": "space_between_desktop",
       "min": 0,
       "max": 64,
       "step": 4,
       "label": "Space between slides (Desktop)",
-      "default": 24
+      "default": 64
     },
     {
       "type": "range",
