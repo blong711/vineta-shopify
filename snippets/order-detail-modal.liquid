@@ -1,0 +1,211 @@
+{% schema %}
+    {
+      "name": "Order Detail Modal",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Modal Settings"
+        },
+        {
+          "type": "text",
+          "id": "modal_title",
+          "label": "Modal Title",
+          "default": "Order Detail"
+        },
+        {
+          "type": "text",
+          "id": "return_text",
+          "label": "Return Policy Text",
+          "default": "Not happy with the order? You can"
+        },
+        {
+          "type": "text",
+          "id": "return_link_text",
+          "label": "Return Link Text",
+          "default": "Request a free return"
+        },
+        {
+          "type": "text",
+          "id": "return_days",
+          "label": "Return Days",
+          "default": "14 days"
+        }
+      ],
+      "presets": [
+        {
+          "name": "Order Detail Modal",
+          "category": "Account"
+        }
+      ]
+    }
+    {% endschema %}
+    
+    <div class="modal fade modalCentered modal-order-detail" id="order_detail" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="header">
+                    <div class="heading">{{ section.settings.modal_title }}</div>
+                    <span class="icon-close icon-close-popup" data-bs-dismiss="modal" aria-label="Close"></span>
+                </div>
+                
+                {% if order %}
+                    <ul class="list-infor">
+                        <li>#{{ order.name | remove: '#' }}</li>
+                        <li>{{ order.created_at | date: "%d %B %Y" }}</li>
+                        <li>{{ order.line_items.size }} items</li>
+                        <li class="text-{{ order.fulfillment_status | handle }}">
+                            {% case order.fulfillment_status %}
+                                {% when 'fulfilled' %}
+                                    Delivered
+                                {% when 'partial' %}
+                                    Partially Delivered
+                                {% when 'unfulfilled' %}
+                                    Processing
+                                {% else %}
+                                    {{ order.fulfillment_status | capitalize }}
+                            {% endcase %}
+                        </li>
+                    </ul>
+                    
+                    <div class="tb-order-detail">
+                        <div class="top">
+                            <div class="title item">Product</div>
+                            <div class="title item d-md-block d-none">Quantity</div>
+                            <div class="title item d-md-block d-none">Price</div>
+                            <div class="title item d-md-block d-none">Total</div>
+                        </div>
+                        <div class="tb-content">
+                            {% for line_item in order.line_items %}
+                                <div class="order-detail-item">
+                                    <div class="item">
+                                        <div class="infor-content">
+                                            <div class="image">
+                                                <a href="{{ line_item.product.url }}">
+                                                    {% if line_item.image %}
+                                                        <img class="lazyload" 
+                                                             data-src="{{ line_item.image | image_url: width: 100 }}" 
+                                                             src="{{ line_item.image | image_url: width: 100 }}" 
+                                                             alt="{{ line_item.product.title | escape }}"
+                                                             width="60" height="60">
+                                                    {% endif %}
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <a class="link" href="{{ line_item.product.url }}">{{ line_item.product.title }}</a>
+                                                {% if line_item.variant.title != 'Default Title' %}
+                                                    <div class="size">{{ line_item.variant.title }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item" data-title="Quantity">
+                                        {{ line_item.quantity }}
+                                    </div>
+                                    <div class="item" data-title="Price">
+                                        {{ line_item.final_price | money }}
+                                    </div>
+                                    <div class="item" data-title="Total">
+                                        {{ line_item.final_line_price | money }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            
+                            <div class="order-detail-item subtotal">
+                                <div class="item d-md-block d-none"></div>
+                                <div class="item d-md-block d-none"></div>
+                                <div class="item subtotal-text">
+                                    Subtotal:
+                                </div>
+                                <div class="item subtotal-price">
+                                    {{ order.subtotal_price | money }} {{ shop.currency }}
+                                </div>
+                            </div>
+                            
+                            {% if order.total_tax > 0 %}
+                                <div class="order-detail-item tax">
+                                    <div class="item d-md-block d-none"></div>
+                                    <div class="item d-md-block d-none"></div>
+                                    <div class="item tax-text">
+                                        Tax:
+                                    </div>
+                                    <div class="item tax-price">
+                                        {{ order.total_tax | money }} {{ shop.currency }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            
+                            {% if order.total_shipping_price_set.shop_money.amount > 0 %}
+                                <div class="order-detail-item shipping">
+                                    <div class="item d-md-block d-none"></div>
+                                    <div class="item d-md-block d-none"></div>
+                                    <div class="item shipping-text">
+                                        Shipping:
+                                    </div>
+                                    <div class="item shipping-price">
+                                        {{ order.total_shipping_price_set.shop_money | money }} {{ shop.currency }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            
+                            <div class="order-detail-item total">
+                                <div class="item d-md-block d-none"></div>
+                                <div class="item d-md-block d-none"></div>
+                                <div class="item total-text">
+                                    Total:
+                                </div>
+                                <div class="item total-price">
+                                    {{ order.total_price | money }} {{ shop.currency }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <div class="bottom text-center">
+                    {{ section.settings.return_text }} 
+                    <a href="/pages/return-and-refund" class="fw-medium btn-underline">
+                        {{ section.settings.return_link_text }}
+                    </a> 
+                    in <span class="fw-medium">{{ section.settings.return_days }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize order detail modal functionality
+        const orderDetailModal = document.getElementById('order_detail');
+        
+        if (orderDetailModal) {
+            // Close modal when clicking outside
+            orderDetailModal.addEventListener('click', function(e) {
+                if (e.target === orderDetailModal) {
+                    const modal = bootstrap.Modal.getInstance(orderDetailModal);
+                    if (modal) {
+                        modal.hide();
+                    }
+                }
+            });
+            
+            // Close modal when clicking close button
+            const closeButtons = orderDetailModal.querySelectorAll('[data-bs-dismiss="modal"]');
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const modal = bootstrap.Modal.getInstance(orderDetailModal);
+                    if (modal) {
+                        modal.hide();
+                    }
+                });
+            });
+        }
+    });
+    
+    // Function to open order detail modal with order data
+    function openOrderDetailModal(orderData) {
+        // This function can be called from order list items
+        // You would need to populate the modal with order data
+        // and then show the modal
+        const modal = new bootstrap.Modal(document.getElementById('order_detail'));
+        modal.show();
+    }
+    </script> 

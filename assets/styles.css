@@ -22092,6 +22092,8 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .account-orders .wrap-account-order {
   overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
 }
 .account-orders .wrap-account-order::-webkit-scrollbar {
   height: 3px;
