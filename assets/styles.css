@@ -18166,6 +18166,12 @@ button.animate-btn::after,
   position: absolute;
   inset: 0;
   opacity: 0;
+  display: block;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition-duration: 700ms;
 }
 .card-product .list-product-btn {
   position: absolute;
