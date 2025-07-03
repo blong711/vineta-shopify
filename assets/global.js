@@ -730,6 +730,46 @@ class WishlistCompare {
     
     modal.show();
     this.updateCompareDrawer();
+    this.enableCompareDrawerDragScroll(); // <-- Add this line
+  }
+
+  /**
+   * Enable drag-to-scroll for the compare drawer list
+   */
+  enableCompareDrawerDragScroll() {
+    const drawer = document.getElementById('compare');
+    if (!drawer) return;
+    const compareInner = drawer.querySelector('.tf-compare-inner');
+    if (!compareInner) return;
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    // Remove previous listeners if any
+    if (this._compareDragMouseUp) {
+      window.removeEventListener('mouseup', this._compareDragMouseUp);
+    }
+    compareInner.addEventListener('mousedown', (e) => {
+      isDown = true;
+      compareInner.classList.add('dragging');
+      startX = e.pageX - compareInner.offsetLeft;
+      scrollLeft = compareInner.scrollLeft;
+    });
+    this._compareDragMouseUp = () => {
+      isDown = false;
+      compareInner.classList.remove('dragging');
+    };
+    window.addEventListener('mouseup', this._compareDragMouseUp);
+    compareInner.addEventListener('mouseleave', () => {
+      isDown = false;
+      compareInner.classList.remove('dragging');
+    });
+    compareInner.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - compareInner.offsetLeft;
+      const walk = (x - startX) * 1; // slower scroll
+      compareInner.scrollLeft = scrollLeft - walk;
+    });
   }
 
   /**
