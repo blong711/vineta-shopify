@@ -193,41 +193,6 @@
               </div>
             {% endif %}
           {% endfor %}
-
-          <!-- Pagination for List View -->
-          {% if paginate.pages > 1 %}
-            <div class="pagination-wrapper text-center mt-5">
-              <ul class="wg-pagination">
-                {% if paginate.previous %}
-                  <li>
-                    <a href="{{ paginate.previous.url }}{% if request.query_string != blank %}&{{ request.query_string | replace: 'page=', '' | replace: '&page=', '' }}{% endif %}" class="pagination-item">
-                      <i class="icon-arr-left"></i>
-                    </a>
-                  </li>
-                {% endif %}
-                
-                {% for part in paginate.parts %}
-                  {% if part.is_link %}
-                    <li>
-                      <a href="{{ part.url }}{% if request.query_string != blank %}&{{ request.query_string | replace: 'page=', '' | replace: '&page=', '' }}{% endif %}" class="pagination-item">{{ part.title }}</a>
-                    </li>
-                  {% else %}
-                    <li class="{% if part.title == paginate.current_page %}active{% endif %}">
-                      <div class="pagination-item">{{ part.title }}</div>
-                    </li>
-                  {% endif %}
-                {% endfor %}
-
-                {% if paginate.next %}
-                  <li>
-                    <a href="{{ paginate.next.url }}{% if request.query_string != blank %}&{{ request.query_string | replace: 'page=', '' | replace: '&page=', '' }}{% endif %}" class="pagination-item">
-                      <i class="icon-arr-right2"></i>
-                    </a>
-                  </li>
-                {% endif %}
-              </ul>
-            </div>
-          {% endif %}
         </div>
 
         <!-- Grid View Layout -->
@@ -241,43 +206,43 @@
               </div>
             {% endif %}
           {% endfor %}
-
-          <!-- Pagination for Grid View -->
-          {% if paginate.pages > 1 %}
-            <div class="pagination-wrapper text-center mt-5">
-              <ul class="wg-pagination">
-                {% if paginate.previous %}
-                  <li>
-                    <a href="{{ paginate.previous.url }}{% if request.query_string != blank %}&{{ request.query_string | replace: 'page=', '' | replace: '&page=', '' }}{% endif %}" class="pagination-item">
-                      <i class="icon-arr-left"></i>
-                    </a>
-                  </li>
-                {% endif %}
-                
-                {% for part in paginate.parts %}
-                  {% if part.is_link %}
-                    <li>
-                      <a href="{{ part.url }}{% if request.query_string != blank %}&{{ request.query_string | replace: 'page=', '' | replace: '&page=', '' }}{% endif %}" class="pagination-item">{{ part.title }}</a>
-                    </li>
-                  {% else %}
-                    <li class="{% if part.title == paginate.current_page %}active{% endif %}">
-                      <div class="pagination-item">{{ part.title }}</div>
-                    </li>
-                  {% endif %}
-                {% endfor %}
-
-                {% if paginate.next %}
-                  <li>
-                    <a href="{{ paginate.next.url }}{% if request.query_string != blank %}&{{ request.query_string | replace: 'page=', '' | replace: '&page=', '' }}{% endif %}" class="pagination-item">
-                      <i class="icon-arr-right2"></i>
-                    </a>
-                  </li>
-                {% endif %}
-              </ul>
-            </div>
-          {% endif %}
         </div>
       </div>
+
+      <!-- Pagination - Centered at bottom of page -->
+      {% if paginate.pages > 1 %}
+        <div class="pagination-wrapper text-center mt-5" style="display: flex; justify-content: center; width: 100%; margin-top: 40px;">
+          <ul class="wg-pagination">
+            {% if paginate.previous %}
+              <li>
+                <a href="{{ paginate.previous.url }}{% if request.query_string != blank %}&{{ request.query_string | replace: 'page=', '' | replace: '&page=', '' }}{% endif %}" class="pagination-item">
+                  <i class="icon-arr-left"></i>
+                </a>
+              </li>
+            {% endif %}
+            
+            {% for part in paginate.parts %}
+              {% if part.is_link %}
+                <li>
+                  <a href="{{ part.url }}{% if request.query_string != blank %}&{{ request.query_string | replace: 'page=', '' | replace: '&page=', '' }}{% endif %}" class="pagination-item">{{ part.title }}</a>
+                </li>
+              {% else %}
+                <li class="{% if part.title == paginate.current_page %}active{% endif %}">
+                  <div class="pagination-item">{{ part.title }}</div>
+                </li>
+              {% endif %}
+            {% endfor %}
+
+            {% if paginate.next %}
+              <li>
+                <a href="{{ paginate.next.url }}{% if request.query_string != blank %}&{{ request.query_string | replace: 'page=', '' | replace: '&page=', '' }}{% endif %}" class="pagination-item">
+                  <i class="icon-arr-right2"></i>
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      {% endif %}
     {% endpaginate %}
   {% else %}
     <p>{{ 'general.search.no_results_html' | t: terms: search.terms }}</p>
