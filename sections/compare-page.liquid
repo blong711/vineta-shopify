@@ -24,7 +24,7 @@
         {% for product in collections.all.products %}
             <div class="tf-compare-col" data-product-id="{{ product.id }}">
                 <div class="tf-compare-item">
-                    <a class="tf-compare-image" style="aspect-ratio: 4/5;" href="{{ product.url }}">
+                    <a class="tf-compare-image" style="aspect-ratio: 4/5; min-width: 319px;" href="{{ product.url }}">
                         <img class="lazyload" 
                             data-src="{{ product.featured_image | image_url: width: 400 }}"
                             src="{{ product.featured_image | image_url: width: 400 }}" 
@@ -133,7 +133,7 @@
 <template id="compareProductColTemplate">
   <div class="tf-compare-col" data-product-id="">
     <div class="tf-compare-item">
-      <a class="tf-compare-image" style="aspect-ratio: 4/5;" href="">
+      <a class="tf-compare-image" style="aspect-ratio: 4/5; min-width: 319px;" href="">
         <img class="lazyload" data-src="" src="" alt="" width="200" height="200">
       </a>
       <div class="content">
@@ -194,7 +194,7 @@ function createSimpleRow(label, values) {
 }
 
 // Function to remove product from compare
-function removeProductFromCompare(productId) {
+async function removeProductFromCompare(productId) {
   try {
     const compareData = localStorage.getItem('theme4:compare:id');
     if (compareData) {
@@ -205,7 +205,7 @@ function removeProductFromCompare(productId) {
         localStorage.setItem('theme4:compare:id', JSON.stringify(updatedProducts));
         
         // Re-render the table immediately
-        renderCompareTable();
+        await renderCompareTable();
         
         // Show success message or animation if needed
         console.log(`Product ${productId} removed from compare`);
@@ -251,32 +251,58 @@ async function renderCompareTable() {
   compareTable.style.display = 'block';
   compareEmpty.style.display = 'none';
 
-  // 1. Image/Title/Price row
-  const imageRowValues = compareProducts.map(product => `
-    <div class="tf-compare-item">
-      <a class="tf-compare-image" href="${product.url}">
-        <img class="lazyload" src="${product.image}" alt="${product.title}" width="200" height="200">
-      </a>
-      <div class="content">
-        <a class="tf-compare-title link text-md fw-medium" href="${product.url}">${product.title}</a>
-        <p class="price-wrap fw-medium text-md">
-          <span class="price-new text-primary">${product.price}</span>
-          ${product.comparePrice && product.comparePrice !== '' ? `<span class="price-old text-dark">${product.comparePrice}</span>` : ''}
-        </p>
-        <div class="tf-compare-btn">
-          <a href="#shoppingCart" data-bs-toggle="offcanvas"
-             class="tf-btn animate-btn w-100">
-            Add to Cart
-          </a>
+  // 1. Image/Title/Price row - Fetch variant IDs for each product
+  const imageRowValues = await Promise.all(compareProducts.map(async (product) => {
+    let variantId = product.id; // fallback to product ID
+    
+    try {
+      // Extract product handle from URL
+      const urlParts = product.url.split('/');
+      const productHandle = urlParts[urlParts.length - 1];
+      
+      if (productHandle) {
+        // Fetch product data to get the first variant ID
+        const response = await fetch(`/products/${productHandle}.js`);
+        if (response.ok) {
+          const productData = await response.json();
+          if (productData.variants && productData.variants.length > 0) {
+            variantId = productData.variants[0].id;
+          }
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to fetch variant ID for product:', product.id, error);
+    }
+    
+    return `
+      <div class="tf-compare-item">
+        <a class="tf-compare-image" style="aspect-ratio: 4/5; min-width: 319px;" href="${product.url}">
+          <img class="lazyload" src="${product.image}" alt="${product.title}" width="200" height="200">
+        </a>
+        <div class="content">
+          <a class="tf-compare-title link text-md fw-medium" href="${product.url}">${product.title}</a>
+          <p class="price-wrap fw-medium text-md">
+            <span class="price-new text-primary">${product.price}</span>
+            ${product.comparePrice && product.comparePrice !== '' ? `<span class="price-old text-dark">${product.comparePrice}</span>` : ''}
+          </p>
+          <div class="tf-compare-btn">
+            <a href="javascript:void(0);"
+               class="tf-btn animate-btn w-100 add-to-cart"
+               data-variant-id="${variantId}"
+               data-quantity="1"
+               aria-label="Add to cart">
+              Add to Cart
+            </a>
+          </div>
+        </div>
+        <div class="tf-compare-remove">
+          <span class="tf-btn-icon line d-inline-flex" data-compare data-id="${product.id}" data-action="remove">
+            <i class="icon-close"></i>
+          </span>
         </div>
       </div>
-      <div class="tf-compare-remove">
-        <span class="tf-btn-icon line d-inline-flex" data-compare data-id="${product.id}" data-action="remove">
-          <i class="icon-close"></i>
-        </span>
-      </div>
-    </div>
-  `);
+    `;
+  }));
   compareContent.appendChild(createRow('', imageRowValues));
 
   // 2. Availability row - Since we don't have availability in stored data, we'll show "In Stock" as default
@@ -306,6 +332,11 @@ async function renderCompareTable() {
 
   // Re-attach event listeners after re-rendering
   attachCompareEventListeners();
+  
+  // Initialize cart events for the new add-to-cart buttons
+  if (window.ProductCard && typeof window.ProductCard.initializeCartEvents === 'function') {
+    window.ProductCard.initializeCartEvents();
+  }
 }
 
 // Function to attach event listeners
@@ -320,7 +351,7 @@ function attachCompareEventListeners() {
 }
 
 // Event handler for compare actions
-function handleCompareClick(e) {
+async function handleCompareClick(e) {
   const removeBtn = e.target.closest('[data-compare][data-action="remove"]');
   if (removeBtn) {
     e.preventDefault();
@@ -333,19 +364,24 @@ function handleCompareClick(e) {
       removeBtn.style.pointerEvents = 'none';
       
       // Remove the product
-      removeProductFromCompare(productId);
+      await removeProductFromCompare(productId);
     }
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
   // Initial render
-  renderCompareTable();
+  await renderCompareTable();
+  
+  // Initialize cart events for the initial render
+  if (window.ProductCard && typeof window.ProductCard.initializeCartEvents === 'function') {
+    window.ProductCard.initializeCartEvents();
+  }
   
   // Listen for storage changes (in case compare is updated from other pages)
-  window.addEventListener('storage', function(e) {
+  window.addEventListener('storage', async function(e) {
     if (e.key === 'theme4:compare:id') {
-      renderCompareTable();
+      await renderCompareTable();
     }
   });
 });

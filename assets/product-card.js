@@ -1175,6 +1175,9 @@ const ProductCard = {
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => ProductCard.init());
 
+// Expose ProductCard globally
+window.ProductCard = ProductCard;
+
 document.addEventListener('DOMContentLoaded', function() {
   // Handle compare buttons
   const compareButtons = document.querySelectorAll('[data-compare]');
