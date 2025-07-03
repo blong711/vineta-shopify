@@ -153,7 +153,7 @@
                         </li>
                         <li class="item">{{ article.settings.article.published_at | date: "%b %d, %Y" }}</li>
                         {% if article.settings.article.comments_enabled? %}
-                          <li class="item">{{ article.settings.article.comments_count }} Comments</li>
+                          <li class="item">{{ article.settings.article.comments_count }} {{ 'blog.comments' | t }}</li>
                         {% endif %}
                       </ul>
                     {% endif %}

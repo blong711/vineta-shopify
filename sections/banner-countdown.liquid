@@ -77,7 +77,7 @@
             
             {%- if section.settings.promo_code != blank -%}
               <p class="sub text-md fw-medium">
-                WITH PROMOTE CODE: {{ section.settings.promo_code }}
+                {{ 'banner.countdown_with_promo_code' | t }} {{ section.settings.promo_code }}
               </p>
             {%- endif -%}
           </div>

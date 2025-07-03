@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Disable submit button and show loading state
       submitButton.disabled = true;
       const originalText = submitButton.querySelector('span').textContent;
-      submitButton.querySelector('span').textContent = 'Sending...';
+      submitButton.querySelector('span').textContent = '{{ "sections.ask_question_drawer.sending" | t }}';
       
       // Show success message immediately
       setTimeout(() => {

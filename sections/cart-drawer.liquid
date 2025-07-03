@@ -197,7 +197,7 @@
         
         // Show loading state
         submitButton.disabled = true;
-        submitButton.textContent = 'Saving...';
+        submitButton.textContent = '{{ 'cart_drawer_saving' | t }}';
         
         try {
           // Update cart note via AJAX
@@ -219,7 +219,7 @@
           const cartData = await response.json();
           
           // Show success message briefly
-          submitButton.textContent = 'Saved!';
+          submitButton.textContent = '{{ 'cart_drawer_saved' | t }}';
           setTimeout(() => {
             submitButton.textContent = originalButtonText;
             submitButton.disabled = false;
@@ -233,7 +233,7 @@
           
         } catch (error) {
           console.error('Error updating cart note:', error);
-          submitButton.textContent = 'Error - Try Again';
+          submitButton.textContent = '{{ 'cart_drawer_error_try_again' | t }}';
           setTimeout(() => {
             submitButton.textContent = originalButtonText;
             submitButton.disabled = false;
@@ -395,7 +395,7 @@
         const submitButton = shippingForm.querySelector('button[type="submit"]');
         const originalButtonText = submitButton.textContent;
         submitButton.disabled = true;
-        submitButton.textContent = 'Calculating...';
+        submitButton.textContent = '{{ 'cart_drawer_calculating' | t }}';
         
         try {
           // Prepare shipping address

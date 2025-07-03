@@ -3,13 +3,13 @@
   <div class="container">
     <ul class="breadcrumb-list">
       <li class="item-breadcrumb">
-        <a href="/" class="text" style="font-size: 14px;">Home</a>
+        <a href="/" class="text" style="font-size: 14px;">{{ 'breadcrumb_home' | t }}</a>
       </li>
       <li class="item-breadcrumb dot">
         <span style="font-size: 14px;"></span>
       </li>
       <li class="item-breadcrumb">
-        <span class="text" style="font-size: 14px;">{% if template == 'list-collections' %}Collections{% else %}{{ page_title }}{% endif %}</span>
+        <span class="text" style="font-size: 14px;">{% if template == 'list-collections' %}{{ 'breadcrumb_collections' | t }}{% else %}{{ page_title }}{% endif %}</span>
       </li>
     </ul>
   </div>

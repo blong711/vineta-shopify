@@ -190,7 +190,7 @@
                     {{ block.settings.brand_image | image_url: width: 360 }} 360w
                   "
                   sizes="(max-width: 768px) 180px, 360px"
-                  alt="{{ block.settings.brand_image.alt | escape | default: 'Brand logo' }}"
+                  alt="{{ block.settings.brand_image.alt | escape | default: 'brands_brand_logo' | t }}"
                   width="{{ block.settings.brand_image.width | default: 240 }}"
                   height="{{ block.settings.brand_image.height | default: 114 }}"
                   loading="lazy"
@@ -198,7 +198,7 @@
                 >
               {% else %}
                 {{ 'image' | placeholder_svg_tag: 'placeholder-svg brand-logo' }}
-                <div class="placeholder-text">Brand Image</div>
+                <div class="placeholder-text">{{ 'brands_brand_image' | t }}</div>
               {% endif %}
             {% if block.settings.brand_link != blank %}
               </a>
@@ -244,14 +244,14 @@
                         {{ block.settings.brand_image | image_url: width: 360 }} 360w
                       "
                       sizes="(max-width: 768px) 180px, 360px"
-                      alt="{{ block.settings.brand_image.alt | escape | default: 'Brand logo' }}"
+                      alt="{{ block.settings.brand_image.alt | escape | default: 'brands_brand_logo' | t }}"
                       width="{{ block.settings.brand_image.width | default: 240 }}"
                       height="{{ block.settings.brand_image.height | default: 114 }}"
                       loading="lazy"
                     >
                   {% else %}
                     {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                    <div class="placeholder-text">Brand Image</div>
+                    <div class="placeholder-text">{{ 'brands_brand_image' | t }}</div>
                   {% endif %}
                 {% if block.settings.brand_link != blank %}
                   </a>

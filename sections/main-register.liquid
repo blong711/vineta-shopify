@@ -126,8 +126,8 @@
 
 <div class="register-outer">
   <div class="register-card">
-    <div class="register-title">Register</div>
-    <div class="register-desc">Sign up for early Sale access plus tailored new arrivals, trends and promotions. To opt out, click unsubscribe in our emails</div>
+    <div class="register-title">{{ 'sections.main_register.register' | t }}</div>
+    <div class="register-desc">{{ 'sections.main_register.register_description' | t }}</div>
     {%- form 'create_customer', novalidate: 'novalidate' -%}
       {% comment %} {%- if form.errors -%}
         <div class="error-message">
@@ -155,15 +155,15 @@
       {%- endif -%} {% endcomment %}
       <div class="form-field">
         <input class="form-input" type="text" name="customer[first_name]" id="RegisterForm-FirstName-{{ section.id }}" {% if form.first_name %}value="{{ form.first_name }}" {% endif %} autocomplete="given-name" placeholder="First name">
-        <label class="form-label" for="RegisterForm-FirstName-{{ section.id }}">First name</label>
+        <label class="form-label" for="RegisterForm-FirstName-{{ section.id }}">{{ 'sections.main_register.first_name' | t }}</label>
       </div>
       <div class="form-field">
         <input class="form-input" type="text" name="customer[last_name]" id="RegisterForm-LastName-{{ section.id }}" {% if form.last_name %}value="{{ form.last_name }}" {% endif %} autocomplete="family-name" placeholder="Last name">
-        <label class="form-label" for="RegisterForm-LastName-{{ section.id }}">Last name</label>
+        <label class="form-label" for="RegisterForm-LastName-{{ section.id }}">{{ 'sections.main_register.last_name' | t }}</label>
       </div>
       <div class="form-field">
         <input class="form-input" type="email" name="customer[email]" id="CustomerEmail-{{ section.id }}" {% if form.email %} value="{{ form.email }}" {% endif %} spellcheck="false" autocapitalize="off" autocomplete="email" autocorrect="off" {% if form.errors contains 'email' %} aria-invalid="true" aria-describedby="RegisterForm-email-error"{% endif %} placeholder="Email *">
-        <label class="form-label" for="CustomerEmail-{{ section.id }}">Email<span class="required-mark">*</span></label>
+        <label class="form-label" for="CustomerEmail-{{ section.id }}">{{ 'sections.main_register.email' | t }}<span class="required-mark">*</span></label>
       </div>
       {%- if form.errors contains 'email' -%}
         <div class="error-message">
@@ -177,7 +177,7 @@
       {%- endif -%}
       <div class="form-field">
         <input class="form-input" type="password" value="" name="customer[password]" id="CustomerPassword-{{ section.id }}" {% if form.errors contains 'password' %} aria-invalid="true" aria-describedby="RegisterForm-password-error" {% endif %} autocomplete="current-password" placeholder="Password *">
-        <label class="form-label" for="CustomerPassword-{{ section.id }}">Password<span class="required-mark">*</span></label>
+        <label class="form-label" for="CustomerPassword-{{ section.id }}">{{ 'sections.main_register.password' | t }}<span class="required-mark">*</span></label>
       </div>
       {%- if form.errors contains 'password' -%}
         <div class="error-message">
@@ -190,9 +190,9 @@
           {{ form.errors.messages.password }}
         </div>
       {%- endif -%}
-      <button class="submit-button" type="submit">Register</button>
+      <button class="submit-button" type="submit">{{ 'sections.main_register.register' | t }}</button>
       <div class="login-link">
-        <a href="{{ routes.account_login_url }}">Already have an account? Log in here
+        <a href="{{ routes.account_login_url }}">{{ 'sections.main_register.already_have_account' | t }}
           <svg class="hdt-icon hdt-icon-2 hdt-inline-block" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><path d="M0.861539 8L0 7.13846L5.90769 1.23077H0.615385V0H8V7.38462H6.76923V2.09231L0.861539 8Z"></path></svg>
         </a>
       </div>

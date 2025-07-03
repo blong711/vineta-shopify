@@ -149,7 +149,7 @@
                         {% endif %}
                       </div>
                       <p class="entry_name">
-                        Post by <span class="fw-medium">{{ article.author | truncate: 10 }}</span>
+                        {{ 'blog.post_by' | t }} <span class="fw-medium">{{ article.author | truncate: 10 }}</span>
                       </p>
                     </li>
                     <li class="br-line"></li>
@@ -161,7 +161,7 @@
                     <li class="br-line"></li>
                     <li class="entry_comment">
                       <p class="text-md">
-                        {{ article.comments_count }} comments
+                        {{ article.comments_count }} {{ 'blog.comments' | t }}
                       </p>
                     </li>
                   </ul>
@@ -209,7 +209,7 @@
           <div class="sidebar-blog d-lg-grid d-none sidebar-content-wrap">
             {% if section.settings.show_categories %}
               <div class="sb-item">
-                <p class="sb-title text-xl fw-medium">Categories</p>
+                <p class="sb-title text-xl fw-medium">{{ 'blog.categories' | t }}</p>
                 <div class="sb-content">
                   <ul class="category-blog-list">
                     {% assign blog_handles = "news,design,Lifestyle,bags,accessories,dresses" | split: "," %}
@@ -230,7 +230,7 @@
             {% endif %}
             {% if section.settings.show_recent_posts %}
               <div class="sb-item">
-                <p class="sb-title text-xl fw-medium">Recent Posts</p>
+                <p class="sb-title text-xl fw-medium">{{ 'blog.recent_posts' | t }}</p>
                 <div class="sb-content">
                   <ul class="recent-blog-list">
                     {% for article in blog.articles limit: 3 %}
@@ -263,7 +263,7 @@
 
             {% if section.settings.show_tags %}
               <div class="sb-item">
-                <p class="sb-title text-xl fw-medium">Tags</p>
+                <p class="sb-title text-xl fw-medium">{{ 'blog.tags' | t }}</p>
                 <div class="sb-content entry-tag">
                   <ul class="tag-blog-list style-list">
                     {% for tag in blog.all_tags %}

@@ -290,7 +290,7 @@
                         {% endif %}
                       </div>
                       <p class="entry_name">
-                        Post by <span class="fw-medium">{{ section.settings.article_1.author | truncate: 12 }}</span>
+                        {{ 'blog.post_by' | t }} <span class="fw-medium">{{ section.settings.article_1.author | truncate: 12 }}</span>
                       </p>
                     </li>
                     <li class="br-line"></li>
@@ -306,7 +306,7 @@
                   {%- if section.settings.show_comments -%}
                     <li class="entry_comment">
                       <p class="text-md">
-                        {{ section.settings.article_1.comments_count }} comments
+                        {{ section.settings.article_1.comments_count }} {{ 'blog.comments' | t }}
                       </p>
                     </li>
                   {%- endif -%}
@@ -363,7 +363,7 @@
                         {% endif %}
                       </div>
                       <p class="entry_name">
-                        Post by <span class="fw-medium">{{ section.settings.article_2.author | truncate: 12 }}</span>
+                        {{ 'blog.post_by' | t }} <span class="fw-medium">{{ section.settings.article_2.author | truncate: 12 }}</span>
                       </p>
                     </li>
                     <li class="br-line"></li>
@@ -379,7 +379,7 @@
                   {%- if section.settings.show_comments -%}
                     <li class="entry_comment">
                       <p class="text-md">
-                        {{ section.settings.article_2.comments_count }} comments
+                        {{ section.settings.article_2.comments_count }} {{ 'blog.comments' | t }}
                       </p>
                     </li>
                   {%- endif -%}
@@ -436,7 +436,7 @@
                         {% endif %}
                       </div>
                       <p class="entry_name">
-                        Post by <span class="fw-medium">{{ section.settings.article_3.author | truncate: 12 }}</span>
+                        {{ 'blog.post_by' | t }} <span class="fw-medium">{{ section.settings.article_3.author | truncate: 12 }}</span>
                       </p>
                     </li>
                     <li class="br-line"></li>
@@ -452,7 +452,7 @@
                   {%- if section.settings.show_comments -%}
                     <li class="entry_comment">
                       <p class="text-md">
-                        {{ section.settings.article_3.comments_count }} comments
+                        {{ section.settings.article_3.comments_count }} {{ 'blog.comments' | t }}
                       </p>
                     </li>
                   {%- endif -%}
@@ -509,7 +509,7 @@
                         {% endif %}
                       </div>
                       <p class="entry_name">
-                        Post by <span class="fw-medium">{{ section.settings.article_4.author | truncate: 12 }}</span>
+                        {{ 'blog.post_by' | t }} <span class="fw-medium">{{ section.settings.article_4.author | truncate: 12 }}</span>
                       </p>
                     </li>
                     <li class="br-line"></li>
@@ -525,7 +525,7 @@
                   {%- if section.settings.show_comments -%}
                     <li class="entry_comment">
                       <p class="text-md">
-                        {{ section.settings.article_4.comments_count }} comments
+                        {{ section.settings.article_4.comments_count }} {{ 'blog.comments' | t }}
                       </p>
                     </li>
                   {%- endif -%}

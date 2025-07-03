@@ -74,10 +74,10 @@
                     <input class="form-input" type="email" name="email" id="RecoverEmail-{{ section.id }}" autocomplete="email" autocorrect="off" autocapitalize="off" placeholder="Email *" required>
                   </div>
                   <div class="form-field">
-                    <a href="#" class="forgot-link" id="back-to-login">Back to login</a>
+                    <a href="#" class="forgot-link" id="back-to-login">{{ 'sections.main_login.back_to_login' | t }}</a>
                   </div>
                   <div class="form-field">
-                    <button class="btn btn-primary" type="submit">Submit</button>
+                    <button class="btn btn-primary" type="submit">{{ 'sections.main_login.submit' | t }}</button>
                   </div>
                 {%- endform -%}
               </div>
@@ -87,7 +87,7 @@
               {%- if block.settings.title != blank -%}<h2 class="form-heading">{{ block.settings.title }}</h2>{%- endif -%} 
               {%- if block.settings.description != blank -%}<p class="form-description">{{ block.settings.description }}</p>{%- endif -%} 
               <a href="{{ routes.account_register_url }}" class="register-link">
-                Register
+                {{ 'sections.main_login.register' | t }}
                 <svg class="hdt-icon hdt-icon-2 hdt-inline-block" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><path d="M0.861539 8L0 7.13846L5.90769 1.23077H0.615385V0H8V7.38462H6.76923V2.09231L0.861539 8Z"></path></svg>
               </a>
             </div>
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Disable submit button and show loading state
       submitButton.disabled = true;
-      submitButton.textContent = 'Sending...';
+      submitButton.textContent = '{{ "sections.main_login.sending" | t }}';
       
       // Remove any existing messages
       var existingMessages = resetBlock.querySelectorAll('.form-message');
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
           // Generic success message if no specific message found
           var genericSuccess = document.createElement('div');
           genericSuccess.className = 'form-message success';
-          genericSuccess.innerHTML = '<svg class="success-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg><span>We\'ve sent you an email with a link to update your password.</span>';
+          genericSuccess.innerHTML = '<svg class="success-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg><span>{{ "sections.main_login.reset_success" | t }}</span>';
           resetForm.insertBefore(genericSuccess, resetForm.firstChild);
           
           // Clear the form
@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show error message for network issues
         var errorContainer = document.createElement('div');
         errorContainer.className = 'form-message error';
-        errorContainer.innerHTML = '<ul class="error-list"><li>An error occurred. Please try again.</li></ul>';
+        errorContainer.innerHTML = '<ul class="error-list"><li>{{ "sections.main_login.error_message" | t }}</li></ul>';
         resetForm.insertBefore(errorContainer, resetForm.firstChild);
       })
       .finally(function() {

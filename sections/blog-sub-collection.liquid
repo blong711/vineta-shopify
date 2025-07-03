@@ -187,7 +187,7 @@
                     {% endif %}
                   </div>
                   <div class="cls-btn text-center">
-                    <button class="tf-btn btn-white hover-dark">View all</button>
+                    <button class="tf-btn btn-white hover-dark">{{ 'blog_sub_collection_view_all' | t }}</button>
                   </div>
                   <span class="tf-overlay"></span>
                 </a>
@@ -196,7 +196,7 @@
                     {{ block.settings.category_title | default: blog.title }}
                   </a>
                   <span class="count-item text-sm text-main">
-                    {{ block.settings.post_count | default: blog.articles_count | append: ' posts' }}
+                    {{ block.settings.post_count | default: blog.articles_count | append: ' ' | append: 'blog_sub_collection_posts' | t }}
                   </span>
                 </div>
               </div>

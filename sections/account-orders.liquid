@@ -77,19 +77,19 @@
                         <div class="sidebar-account-wrap sidebar-content-wrap sticky-top d-lg-block d-none">
                             <ul class="my-account-nav">
                                 <li>
-                                    <a href="{{ routes.account_url }}" class="text-sm link fw-medium my-account-nav-item">Dashboard</a>
+                                    <a href="{{ routes.account_url }}" class="text-sm link fw-medium my-account-nav-item">{{ 'sections.account.dashboard' | t }}</a>
                                 </li>
                                 <li>
-                                    <a href="/pages/orders" class="text-sm link fw-medium my-account-nav-item active">My Orders</a>
+                                    <a href="/pages/orders" class="text-sm link fw-medium my-account-nav-item active">{{ 'sections.account.my_orders' | t }}</a>
                                 </li>
                                 <li>
-                                    <a href="/pages/wishlist" class="text-sm link fw-medium my-account-nav-item">My Wishlist</a>
+                                    <a href="/pages/wishlist" class="text-sm link fw-medium my-account-nav-item">{{ 'sections.account.my_wishlist' | t }}</a>
                                 </li>
                                 <li>
-                                    <a href="/account/addresses" class="text-sm link fw-medium my-account-nav-item">Addresses</a>
+                                    <a href="/account/addresses" class="text-sm link fw-medium my-account-nav-item">{{ 'sections.account.addresses' | t }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ routes.account_logout_url }}" class="text-sm link fw-medium my-account-nav-item">Log Out</a>
+                                    <a href="{{ routes.account_logout_url }}" class="text-sm link fw-medium my-account-nav-item">{{ 'sections.account.log_out' | t }}</a>
                                 </li>
                             </ul>
                         </div>
@@ -108,17 +108,17 @@
                             {% else %}
                                 <div class="account-orders-wrap">
                                     <h5 class="title">
-                                        Order History
+                                        {{ 'sections.account.order_history' | t }}
                                     </h5>
                                     <div class="wrap-account-order">
                                         <table>
                                             <thead>
                                                 <tr>
-                                                    <th class="text-md fw-medium">Order ID</th>
-                                                    <th class="text-md fw-medium">Date</th>
-                                                    <th class="text-md fw-medium">Status</th>
-                                                    <th class="text-md fw-medium">Total</th>
-                                                    <th class="text-md fw-medium">Action</th>
+                                                    <th class="text-md fw-medium">{{ 'sections.account.order_id' | t }}</th>
+                                                    <th class="text-md fw-medium">{{ 'sections.account.date' | t }}</th>
+                                                    <th class="text-md fw-medium">{{ 'sections.account.status' | t }}</th>
+                                                    <th class="text-md fw-medium">{{ 'sections.account.total' | t }}</th>
+                                                    <th class="text-md fw-medium">{{ 'sections.account.action' | t }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -137,7 +137,7 @@
                                                             {{ order.total_price | money }} / {{ order.line_items.size }} items
                                                         </td>
                                                                                                         <td>
-                                                    <button type="button" class="view-detail" data-bs-toggle="modal" data-bs-target="#order_detail_{{ order.id }}" onclick="loadOrderDetails({{ order.id }})">Detail</button>
+                                                    <button type="button" class="view-detail" data-bs-toggle="modal" data-bs-target="#order_detail_{{ order.id }}" onclick="loadOrderDetails({{ order.id }})">{{ 'sections.account.detail' | t }}</button>
                                                 </td>
                                                     </tr>
                                                 {% endfor %}

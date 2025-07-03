@@ -110,7 +110,7 @@
               {% endif %}
             </div>
             <p class="entry_name">
-              Post by <span class="fw-medium">{{ article.author }}</span>
+              {{ 'blog.post_by' | t }} <span class="fw-medium">{{ article.author }}</span>
             </p>
           </li>
           <li class="br-line"></li>
@@ -126,7 +126,7 @@
         {%- if section.settings.show_comments -%}
           <li class="entry_comment">
             <p class="text-md">
-              {{ article.comments_count }} comments
+              {{ article.comments_count }} {{ 'blog.comments' | t }}
             </p>
           </li>
         {%- endif -%}
@@ -138,7 +138,7 @@
       <div class="bot">
         {%- if section.settings.show_tags -%}
           <div class="entry-tag">
-            <p>Tag:</p>
+            <p>{{ 'blog.tag_label' | t }}:</p>
             <ul class="style-list">
               {% for tag in article.tags %}
                 <li>
@@ -150,7 +150,7 @@
         {%- endif -%}
         {%- if section.settings.show_social_sharing -%}
           <div class="entry-social">
-            <p>Share:</p>
+            <p>{{ 'blog.share_label' | t }}:</p>
             <ul class="tf-social-icon style-large">
               <li>
                 <a href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url | append: article.url }}" class="social-item social-facebook">
@@ -186,7 +186,7 @@
                 <i class="icon-arr-left"></i>
               </div>
               <div class="text-wrap-left">
-                <p>PREVIOUS POST</p>
+                <p>{{ 'blog.previous_post' | t }}</p>
                 <p class="name-post">{{ blog.previous_article.title }}</p>
               </div>
             {% endif %}
@@ -194,7 +194,7 @@
             <a href="{{ blog.next_article.url }}" class="post next">
               {% if blog.next_article %}
               <div class="text-wrap-right">
-                <p>NEXT POST</p>
+                <p>{{ 'blog.next_post' | t }}</p>
                 <p class="name-post">{{ blog.next_article.title }}</p>
               </div>
               <div class="icon">
@@ -208,18 +208,18 @@
 
     {%- if section.settings.show_comment_form -%}
       <div class="leave-comment-wrap">
-        <p class="title">Leave a comment</p>
+        <p class="title">{{ 'blog.leave_comment' | t }}</p>
         
         {%- if article.comments_enabled? -%}
           {%- if comment and comment.created_at -%}
             <div class="comment-success" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-              <p>Thank you! Your comment has been submitted and is awaiting moderation.</p>
+              <p>{{ 'blog.comment_success_moderated' | t }}</p>
             </div>
           {%- endif -%}
 
           {%- if comment.errors -%}
             <div class="comment-errors" style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-              <p>There was an error submitting your comment:</p>
+              <p>{{ 'blog.comment_error_message' | t }}</p>
               <ul>
                 {%- for error in comment.errors -%}
                   <li>{{ error }}</li>
@@ -232,29 +232,29 @@
             <div class="wrap">
               <div class="cols">
                 <fieldset>
-                  <label for="CommentAuthor">Your name*</label>
+                  <label for="CommentAuthor">{{ 'blog.comment_name' | t }}*</label>
                   <input id="CommentAuthor" type="text" name="comment[author]" value="{{ form.author }}" required>
                 </fieldset>
                 <fieldset>
-                  <label for="CommentEmail">Your email*</label>
+                  <label for="CommentEmail">{{ 'blog.comment_email' | t }}*</label>
                   <input id="CommentEmail" type="email" name="comment[email]" value="{{ form.email }}" required>
                 </fieldset>
               </div>
               <div class="cols">
                 <fieldset class="textarea">
-                  <label for="CommentBody">Your comment*</label>
+                  <label for="CommentBody">{{ 'blog.comment_message' | t }}*</label>
                   <textarea id="CommentBody" name="comment[body]" required>{{ form.body }}</textarea>
                 </fieldset>
               </div>
-              <p style="font-size: 14px;" class="notice">Please note, your email won't be published.</p>
+              <p style="font-size: 14px;" class="notice">{{ 'blog.comment_email_notice' | t }}</p>
               <div class="button-submit">
-                <button class="tf-btn text-sm animate-btn" type="submit">Post comment</button>
+                                  <button class="tf-btn text-sm animate-btn" type="submit">{{ 'blog.comment_post' | t }}</button>
               </div>
             </div>
           {% endform %}
         {%- else -%}
           <div class="comments-disabled" style="background: #e2e3e5; color: #383d41; padding: 15px; border-radius: 5px;">
-            <p>Comments are disabled for this article.</p>
+            <p>{{ 'blog.comments_disabled' | t }}</p>
           </div>
         {%- endif -%}
       </div>

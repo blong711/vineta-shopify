@@ -566,27 +566,27 @@
                 {% unless product.available %}
                   <form class="form-out-stock" id="notify-stock-form" action="#">
                     <div class="box-title-out-stock">
-                      <div class="text-xl fw-medium">Notify me when it back in stock</div>
-                      <p class="text-md text-main">Enter your email address to be notified if the product becomes available again.</p>
+                                              <div class="text-xl fw-medium">{{ 'sections.product.notify_when_available' | t }}</div>
+                      <p class="text-md text-main">{{ 'sections.product.notification_description' | t }}</p>
                     </div>
                     <div class="group-form-field">
                       <div class="tf-field style-2 style-3">
                         <input class="tf-field-input tf-input" id="name" placeholder=" " type="text" name="name" required>
-                        <label class="tf-field-label" for="name">Name</label>
+                        <label class="tf-field-label" for="name">{{ 'sections.product.name' | t }}</label>
                       </div>
                       <div class="tf-field style-2 style-3">
                         <input class="tf-field-input tf-input" id="email" placeholder=" " type="email" name="email" required>
-                        <label class="tf-field-label" for="email">Email</label>
+                        <label class="tf-field-label" for="email">{{ 'sections.product.email' | t }}</label>
                       </div>
                     </div>
-                    <button type="submit" class="tf-btn animate-btn">Submit</button>
+                    <button type="submit" class="tf-btn animate-btn">{{ 'sections.product.submit' | t }}</button>
                   </form>
                   <div id="notify-success-message" class="notify-success-message" style="display: none;">
                     <div class="success-content">
                       <i class="icon icon-fill-check-circle" style="color: #28a745; font-size: 24px;"></i>
                       <div class="success-text">
-                        <div class="text-xl fw-medium" style="color: #28a745;">Thank you!</div>
-                        <p class="text-md text-main">You've been successfully added to our notification list. We'll notify you when this product is back in stock.</p>
+                        <div class="text-xl fw-medium" style="color: #28a745;">{{ 'sections.product.thank_you' | t }}</div>
+                        <p class="text-md text-main">{{ 'sections.product.notification_success' | t }}</p>
                       </div>
                     </div>
                   </div>
@@ -599,8 +599,8 @@
                           <span class="icon icon-fill-check-circle"></span>
                           <div class="content">
                               <div class="text-sm d-flex">
-                                  <p class="fw-medium" style="margin-right: 8px;">Pickup available at {{ block.settings.store_name }}.</p>
-                                  <p>Usually ready in {{ block.settings.ready_time }}.</p>
+                                  <p class="fw-medium" style="margin-right: 8px;">{{ 'sections.product.pickup_available' | t }} {{ block.settings.store_name }}.</p>
+                                  <p>{{ 'sections.product.usually_ready' | t }} {{ block.settings.ready_time }}.</p>
                               </div>
                               <a href="#pickUp" data-bs-toggle="offcanvas"
                                   class="check-availability link">{{ block.settings.check_availability_text }}</a>
@@ -618,11 +618,11 @@
                                  aria-label="Add to wishlist">
                                 <span class="wishlist-content add">
                                   <i class="icon icon-heart"></i>
-                                  <span style="font-size: 14px" class="text">Add to wishlist</span>
+                                  <span style="font-size: 14px" class="text">{{ 'sections.product.add_to_wishlist' | t }}</span>
                                 </span>
                                 <span class="wishlist-content remove">
                                   <i class="icon icon-trash"></i>
-                                  <span style="font-size: 14px" class="text">Remove from wishlist</span>
+                                  <span style="font-size: 14px" class="text">{{ 'sections.product.remove_from_wishlist' | t }}</span>
                                 </span>
                               </a>
                             {% endif %}
@@ -634,17 +634,17 @@
                                  data-action="add"
                                  aria-label="Add to compare">
                                 <i class="icon icon-compare2"></i>                              
-                                <span style="font-size: 14px" class="text">Compare</span>
+                                <span style="font-size: 14px" class="text">{{ 'sections.product.compare' | t }}</span>
                               </a>
                             {% endif %}
                             {% if block.settings.show_ask_question %}
                               <a href="#askQuestion" data-bs-toggle="modal" class="product-extra-icon link"><i class="icon icon-ask"></i>
-                              <span style="font-size: 14px" class="text">Ask a question</span>
+                              <span style="font-size: 14px" class="text">{{ 'sections.product.ask_question' | t }}</span>
                               </a>
                             {% endif %}
                             {% if block.settings.show_share %}
                               <a href="#shareSocial" data-bs-toggle="modal" class="product-extra-icon link"><i class="icon icon-share"></i>
-                              <span style="font-size: 14px" class="text">Share</span>
+                              <span style="font-size: 14px" class="text">{{ 'sections.product.share' | t }}</span>
                               </a>
                             {% endif %}
                           </div>
@@ -654,7 +654,7 @@
                           <h6 class="title-buyX-getY">{{ block.settings.title }}</h6>
                           <div class="group-item-product">
                             <div class="item-product">
-                              <div class="ribbon effect-flash text-md">Buy {{ block.settings.buy_quantity }}</div>
+                              <div class="ribbon effect-flash text-md">{{ 'sections.product.buy' | t }} {{ block.settings.buy_quantity }}</div>
                               <div class="img-product">
                                 {% if block.settings.buy_product != blank %}
                                   {{ block.settings.buy_product.featured_image | image_url: width: 200 | image_tag:
@@ -682,7 +682,7 @@
                             </div>
                             <img class="arrow" src="{{ 'arr.png' | asset_url }}" alt="" width="24" height="24">
                             <div class="item-product">
-                              <div class="ribbon effect-flash text-md">Get {{ block.settings.get_quantity }} Off {{ block.settings.discount_percent }}%</div>
+                              <div class="ribbon effect-flash text-md">{{ 'sections.product.get' | t }} {{ block.settings.get_quantity }} {{ 'sections.product.off' | t }} {{ block.settings.discount_percent }}%</div>
                               <div class="img-product">
                                 {% if block.settings.get_product != blank %}
                                   {{ block.settings.get_product.featured_image | image_url: width: 200 | image_tag:
@@ -719,13 +719,13 @@
                           <ul class="tf-product-cate-sku text-md">
                             {% if product.id %}
                             <li class="item-cate-sku">
-                              <span class="label">SKU:</span>
+                              <span class="label">{{ 'sections.product.sku' | t }}</span>
                               <span class="value">{{ product.id }}</span>
                             </li>
                             {% endif %}
                             {% if product.collections.first.title %}
                             <li class="item-cate-sku">
-                              <span class="label">Categories:</span>
+                              <span class="label">{{ 'sections.product.categories' | t }}</span>
                               <span class="value">{{ product.collections.first.title }}</span>
                             </li>
                             {% endif %}
