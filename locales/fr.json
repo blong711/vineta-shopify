@@ -166,8 +166,58 @@
       },
       "coupon": {
         "title": "Ajouter un coupon",
-        "message": "* La remise sera calculée et appliquée au moment du paiement"
+        "message": "* La remise sera calculée et appliquée au moment du paiement",
+        "placeholder": "Entrez le code promo",
+        "apply": "Sauvegarder",
+        "cancel": "Fermer"
+      },
+      "shipping": {
+        "title": "Estimations d'expédition",
+        "country": "Pays",
+        "province": "État/Province",
+        "zipcode": "Code postal",
+        "calculate": "Estimation",
+        "cancel": "Fermer",
+        "select_province": "Sélectionnez la province/l'état"
       }
+    },
+    "shipping_estimates": {
+      "title": "Estimations d'expédition",
+      "country_label": "Pays",
+      "country_placeholder": "États-Unis",
+      "state_label": "État/Province",
+      "state_placeholder": "État/Province",
+      "zipcode_label": "Code postal",
+      "button_text": "Estimation",
+      "available_rates": "Tarifs d'expédition disponibles",
+      "error_missing_fields": "Veuillez remplir tous les champs d'expédition (pays, état/province et code postal)",
+      "error_invalid_zipcode": "Veuillez saisir un code postal américain valide (par exemple, 12345 ou 12345-6789)",
+      "error_no_rates": "Aucun tarif d'expédition disponible pour cet emplacement",
+      "error_verify_address": "Veuillez vérifier que vos informations d'adresse sont correctes",
+      "error_calculation_failed": "Échec du calcul des frais de livraison. Veuillez vérifier votre adresse et réessayer.",
+      "note_verify_zipcode": "Remarque : Les frais de livraison sont calculés en fonction de l'adresse fournie. Veuillez vérifier l'exactitude de votre code postal pour obtenir des estimations de livraison précises."
+    },
+    "cart_items": {
+      "product_column": "Produit",
+      "price_column": "Prix",
+      "quantity_column": "Quantité",
+      "remove_text": "Retirer"
+    },
+    "discount_code": {
+      "placeholder": "Code de réduction",
+      "button_text": "Appliquer"
+    },
+    "cart_note": {
+      "label": "Instructions spéciales pour le vendeur"
+    },
+    "checkout": {
+      "tax_message": "Taxes et frais de port calculés au moment du paiement",
+      "terms_text": "Je suis d'accord avec",
+      "terms_link": "termes et conditions",
+      "checkout_button": "Vérifier"
+    },
+    "gift_wrap": {
+      "text": "Ajoutez un emballage cadeau à votre commande pour seulement [prix]."
     }
   },
   "templates": {
@@ -177,7 +227,8 @@
         "last_name": "Nom de famille",
         "email": "E-mail",
         "password": "Mot de passe",
-        "submit": "Créer"
+        "submit": "Créer",
+        "title": "Créer un compte"
       },
       "reset_password": {
         "title": "Réinitialiser le mot de passe du compte",
@@ -185,10 +236,95 @@
         "password": "Mot de passe",
         "password_confirm": "Confirmez le mot de passe",
         "submit": "Réinitialiser le mot de passe"
+      },
+      "account": {
+        "title": "Mon compte",
+        "details": "Détails du compte",
+        "view_addresses": "Voir les adresses",
+        "logout": "Se déconnecter"
+      },
+      "activate_account": {
+        "title": "Activer le compte",
+        "subtext": "Créez votre mot de passe pour activer votre compte.",
+        "password": "Mot de passe",
+        "password_confirm": "Confirmez le mot de passe",
+        "submit": "Activer le compte",
+        "cancel": "Refuser l'invitation"
+      },
+      "addresses": {
+        "title": "Vos adresses",
+        "add_new": "Ajouter une nouvelle adresse",
+        "edit_address": "Modifier l'adresse",
+        "first_name": "Prénom",
+        "last_name": "Nom de famille",
+        "company": "Entreprise",
+        "address1": "Adresse1",
+        "address2": "Adresse2",
+        "city": "Ville",
+        "country": "Pays",
+        "zip": "Code postal",
+        "phone": "Téléphone",
+        "set_default": "Définir comme adresse par défaut",
+        "add": "Ajouter une adresse",
+        "update": "Mettre à jour l'adresse",
+        "cancel": "Annuler",
+        "delete": "Supprimer",
+        "delete_confirm": "Êtes-vous sûr de vouloir supprimer cette adresse ?"
+      },
+      "login": {
+        "title": "Se connecter",
+        "email": "E-mail",
+        "password": "Mot de passe",
+        "forgot_password": "Mot de passe oublié?",
+        "sign_in": "Se connecter",
+        "guest_continue": "Continuer",
+        "guest_title": "Continuer en tant qu'invité",
+        "create_account": "Créer un compte"
+      },
+      "order": {
+        "title": "Commandez {{ name }}",
+        "date": "Publié le {{ date }}",
+        "cancelled": "Commande annulée le {{ date }}",
+        "cancelled_reason": "Raison : {{ reason }}",
+        "billing_address": "adresse de facturation",
+        "payment_status": "Statut de paiement",
+        "shipping_address": "adresse de livraison",
+        "fulfillment_status": "État d'exécution",
+        "discount": "Rabais",
+        "shipping": "Expédition",
+        "tax": "Impôt",
+        "product": "Produit",
+        "sku": "UGS",
+        "price": "Prix",
+        "quantity": "Quantité",
+        "fulfilled_at": "Exécuté {{ date }}",
+        "track_shipment": "Suivre l'expédition",
+        "tracking_company": "Société : {{ company }}",
+        "tracking_number": "Numéro de suivi : {{ number }}",
+        "subtotal": "Total",
+        "order_number": "Commande {{ number }}"
+      },
+      "recover_password": {
+        "title": "Réinitialiser votre mot de passe",
+        "subtext": "Nous vous enverrons un e-mail pour réinitialiser votre mot de passe.",
+        "email": "E-mail*",
+        "submit": "Soumettre",
+        "success": "Nous vous avons envoyé un e-mail avec un lien pour réinitialiser votre mot de passe.",
+        "error": "Un problème est survenu lors de votre soumission. Veuillez réessayer."
       }
     },
     "search": {
       "title": "Résultats de la recherche"
+    },
+    "contact": {
+      "form": {
+        "post_success": "Nous avons reçu votre soumission et nous vous répondrons bientôt !",
+        "name": "Nom",
+        "email": "E-mail *",
+        "phone": "Numéro de téléphone",
+        "submit": "Envoyer",
+        "error_heading": "Il y a eu un problème avec votre soumission"
+      }
     }
   },
   "collections": {
@@ -266,6 +402,134 @@
       "vendor": "Fournisseur",
       "color": "Couleur",
       "na": "N / A"
+    }
+  },
+  "customer": {
+    "account": {
+      "orders": "Ordres",
+      "check_order_history": "Consultez l'historique de toutes vos commandes",
+      "wishlist": "Liste de souhaits",
+      "check_wishlist": "Vérifiez votre liste de souhaits",
+      "title": "Mon compte",
+      "dashboard": "Tableau de bord",
+      "my_orders": "Mes commandes",
+      "my_wishlist": "Ma liste de souhaits",
+      "addresses": "Adresses",
+      "log_out": "Se déconnecter",
+      "welcome": "Bonjour {{ name }} !",
+      "not_you": "pas {{ name }}",
+      "log_in": "Se connecter",
+      "dashboard_notice": "C'est le moment idéal pour consulter votre compte. Vous pouvez consulter vos dernières commandes ou consulter votre liste de souhaits. Ou peut-être commencer à profiter de nos dernières offres ?",
+      "orders_box": {
+        "title": "Ordres",
+        "description": "Consultez l'historique de toutes vos commandes"
+      },
+      "wishlist_box": {
+        "title": "Liste de souhaits",
+        "description": "Vérifiez votre liste de souhaits"
+      },
+      "free_shipping": {
+        "title": "Livraison gratuite",
+        "description": "Commencez vos achats pour profiter de cette offre."
+      },
+      "promo_banner": {
+        "discount_html": "<strong>{{ discount }}</strong> sur votre prochain achat",
+        "code": "Code promotionnel"
+      },
+      "hello": "Bonjour {{ name }}",
+      "not": "pas",
+      "dashboard_welcome": "C'est le jour idéal pour consulter votre compte. Vous pouvez consulter",
+      "your_last_orders": "vos dernières commandes",
+      "your_wishlist": "votre liste de souhaits",
+      "latest_offers": "nos dernières offres",
+      "for_orders_over": "pour toutes les commandes supérieures à {{ amount }} $",
+      "shop_now": "Achetez maintenant",
+      "with_promo_code": "AVEC LE CODE PROMO : {{ code }}",
+      "recent_orders": "Commandes récentes",
+      "no_orders_yet": "Vous n'avez pas encore passé de commande.",
+      "loading_wishlist": "Chargement de votre liste de souhaits...",
+      "wishlist_empty": "Votre liste de souhaits est vide."
+    },
+    "reset_password": {
+      "title": "Réinitialiser votre mot de passe",
+      "subtext": "Entrez un nouveau mot de passe pour votre compte."
+    },
+    "activate_account": {
+      "password": "Mot de passe",
+      "password_confirm": "Confirmez le mot de passe",
+      "submit": "Activer le compte",
+      "cancel": "Refuser l'invitation"
+    },
+    "order": {
+      "order_number": "Commande {{ number }}"
+    }
+  },
+  "orders": {
+    "modal": {
+      "title": "Détails de la commande",
+      "items": "articles",
+      "status": {
+        "delivered": "Livré",
+        "partially_delivered": "Partiellement livré",
+        "processing": "Traitement"
+      },
+      "product": "Produit",
+      "quantity": "Quantité",
+      "price": "Prix",
+      "subtotal": "Total",
+      "tax": "Impôt",
+      "shipping": "Expédition",
+      "return_policy": {
+        "text": "Vous n'êtes pas satisfait de votre commande ? Vous pouvez",
+        "link_text": "Demander un retour gratuit",
+        "in": "dans",
+        "days": "14 jours"
+      }
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Ajouter au panier",
+      "sold_out": "Épuisé",
+      "unavailable": "Indisponible",
+      "quantity": "Quantité",
+      "regular_price": "Prix régulier",
+      "sale_price": "Prix de vente",
+      "unit_price": "Prix unitaire",
+      "vendor": "Fournisseur",
+      "sku": "UGS",
+      "tax_policy_html": "Taxes incluses. Frais de port calculés au moment du paiement.",
+      "share": "Partager",
+      "media": {
+        "image_available": "Image {index} de {count}"
+      }
+    },
+    "card": {
+      "sale": "Vente",
+      "trending": "Tendance",
+      "add_to_cart": "Ajouter au panier",
+      "add_to_wishlist": "Ajouter à la liste de souhaits",
+      "quick_view": "Aperçu rapide",
+      "add_to_compare": "Ajouter pour comparer",
+      "available": "Disponible",
+      "in_stock": "En stock",
+      "out_of_stock": "En rupture de stock",
+      "sale_percentage": "{{ percentage }} % de réduction"
+    },
+    "facets": {
+      "filter_button": "Filtre",
+      "availability": "Disponibilité",
+      "in_stock": "En stock",
+      "out_of_stock": "En rupture de stock",
+      "price_label": "Prix",
+      "brand_label": "Marque",
+      "clear_all": "Effacer tous les filtres"
+    }
+  },
+  "recipient": {
+    "form": {
+      "expanded": "Formulaire d'information sur le destinataire élargi",
+      "collapsed": "Formulaire d'information sur le destinataire réduit"
     }
   }
 }
