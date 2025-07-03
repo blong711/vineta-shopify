@@ -253,7 +253,6 @@
       // Global Swiper and Countdown reinitialization for theme editor
       document.addEventListener('DOMContentLoaded', function() {
         initializeAllSwipers();
-        initializeAllCountdowns();
       });
 
       // Reinitialize all swipers and countdowns when sections are updated in theme editor
@@ -261,26 +260,22 @@
         setTimeout(function() {
           initializeAllSwipers();
         }, 100);
-        reinitializeCountdownsWithDelay();
       });
 
       document.addEventListener('shopify:section:reorder', function(event) {
         setTimeout(function() {
           initializeAllSwipers();
         }, 100);
-        reinitializeCountdownsWithDelay();
       });
 
       document.addEventListener('shopify:block:select', function(event) {
         setTimeout(function() {
           initializeAllSwipers();
         }, 100);
-        reinitializeCountdownsWithDelay();
       });
 
       // Additional event listeners for product changes
       document.addEventListener('shopify:section:select', function(event) {
-        reinitializeCountdownsWithDelay();
       });
 
       function initializeAllSwipers() {
@@ -297,32 +292,6 @@
           // Initialize new swiper instance
           new Swiper(element, options);
         });
-      }
-
-      function initializeAllCountdowns() {
-        const countdownElements = document.querySelectorAll('.js-countdown');
-        countdownElements.forEach(function(element) {
-          // Clear any existing interval
-          if (element.intervalId) {
-            clearInterval(element.intervalId);
-          }
-          
-          // Remove existing countdown HTML
-          const existingTimer = element.querySelector('.countdown__timer');
-          if (existingTimer) {
-            existingTimer.remove();
-          }
-          
-          // Initialize new countdown
-          new CountDown(element);
-        });
-      }
-
-      function reinitializeCountdownsWithDelay() {
-        // Add a longer delay for countdowns to ensure product data is loaded
-        setTimeout(function() {
-          initializeAllCountdowns();
-        }, 300);
       }
     </script>
   </body>
