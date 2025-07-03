@@ -427,7 +427,7 @@
 </div>
 {%- elsif style == 'style-3' -%}
 {%- comment -%}Search Drawer Layout{%- endcomment -%}
-<div class="card-product {{ class }} style-3 {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
+<div class="card-product {{ class }} style-3 card-product-size{% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
   <div class="card-product-wrapper asp-ratio-1 {% if style == 'line-2' %}line-2{% endif %}">
     <a href="{{ product.url }}" class="product-img">
       {%- if product.featured_image != blank -%}
