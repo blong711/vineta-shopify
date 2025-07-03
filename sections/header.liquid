@@ -13,9 +13,10 @@
           <div class="col-xl-5 d-none d-xl-block">
             <div class="header-language">
               <div class="tf-languages">
+                {% assign current_language = request.locale.iso_code %}
                 <select class="image-select center style-default type-languages" name="language">
                   {% for locale in shop.published_locales %}
-                    <option value="{{ locale.iso_code }}" {% if locale.primary %}selected{% endif %}>
+                    <option value="{{ locale.iso_code }}" {% if locale.iso_code == current_language %}selected{% endif %} {% if locale.primary %}data-primary="true"{% endif %}>
                       {{ locale.name }}
                     </option>
                   {% endfor %}

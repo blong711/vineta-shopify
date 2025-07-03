@@ -117,32 +117,6 @@ window.addEventListener('load', () => {
     });
   }
 
-  // RTL languages array
-  const rtlLanguages = ['ar', 'he', 'fa', 'ur', 'ps', 'sd', 'ku', 'yi'];
-
-  // Function to set RTL direction using theme settings
-  function setRTLDirection(isRTL) {
-    const htmlElement = document.documentElement;
-    if (isRTL) {
-      htmlElement.setAttribute('dir', 'rtl');
-      // Store RTL preference
-      localStorage.setItem('theme-rtl-direction', 'rtl');
-    } else {
-      htmlElement.setAttribute('dir', 'ltr');
-      localStorage.setItem('theme-rtl-direction', 'ltr');
-    }
-  }
-
-  // Check current language and set RTL on page load
-  function checkCurrentLanguage() {
-    const currentLang = document.documentElement.lang || window.Shopify?.locale || 'en';
-    const isRTL = rtlLanguages.includes(currentLang);
-    setRTLDirection(isRTL);
-  }
-
-  // Check on page load
-  checkCurrentLanguage();
-
   // Initialize Shopify language selector
   const languageSelectors = document.querySelectorAll('.type-languages');
   console.log('Found language selectors:', languageSelectors.length);
@@ -154,19 +128,33 @@ window.addEventListener('load', () => {
       const language = event.target.value;
       console.log('Language changed to:', language);
       
-      // Set RTL direction based on selected language
-      const isRTL = rtlLanguages.includes(language);
-      setRTLDirection(isRTL);
+      // Get the primary language (first option in the selector)
+      const primaryLanguage = languageSelector.options[0].value;
       
       // Remove any existing language prefix from the path
       const pathParts = window.location.pathname.split('/').filter(Boolean);
       const supportedLocales = Array.from(languageSelector.options).map(opt => opt.value);
-      if (supportedLocales.includes(pathParts[0])) {
-        pathParts[0] = language;
+      
+      // Check if the first part of the path is a language code
+      const currentLanguageInPath = supportedLocales.includes(pathParts[0]) ? pathParts[0] : null;
+      
+      let newPath;
+      if (language === primaryLanguage) {
+        // For primary language, remove the language prefix if it exists
+        if (currentLanguageInPath) {
+          pathParts.shift(); // Remove the language code
+        }
+        newPath = '/' + pathParts.join('/');
       } else {
-        pathParts.unshift(language);
+        // For non-primary languages, ensure the language code is in the path
+        if (currentLanguageInPath) {
+          pathParts[0] = language; // Replace existing language code
+        } else {
+          pathParts.unshift(language); // Add language code at the beginning
+        }
+        newPath = '/' + pathParts.join('/');
       }
-      const newPath = '/' + pathParts.join('/');
+      
       window.location.href = `${newPath}${window.location.search}`;
     });
   });
