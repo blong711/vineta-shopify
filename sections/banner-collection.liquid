@@ -144,10 +144,10 @@
       "id": "layout",
       "label": "Section Layout",
       "options": [
-        { "value": "electric", "label": "Electric" },
-        { "value": "bicycle", "label": "Bicycle" },
-        { "value": "fashion-02", "label": "Fashion 02" },
-        { "value": "phonecase", "label": "Phonecase" }
+        { "value": "electric", "label": "Layout 1" },
+        { "value": "bicycle", "label": "Layout 2" },
+        { "value": "fashion-02", "label": "Layout 3" },
+        { "value": "phonecase", "label": "Layout 4" }
       ],
       "default": "electric"
     },
@@ -155,19 +155,21 @@
       "type": "text",
       "id": "video",
       "label": "Video URL",
-      "info": "Enter the complete video URL (Only used for Bicycle layout)"
+      "info": "Enter the complete video URL (Only used for Layout 2)",
+      "visible_if": "{{ section.settings.layout == 'bicycle' }}"
     },
     {
       "type": "image_picker",
       "id": "image",
       "label": "Image",
-      "info": "Used for all layouts except when video is selected for Bicycle layout"
+      "info": "Used for all layouts except when video is selected for Layout 2"
     },
     {
       "type": "image_picker",
       "id": "bicycle_fallback_image",
       "label": "Fallback Image",
-      "info": "Displayed if video is not available (Bicycle layout only)"
+      "info": "Displayed if video is not available (Layout 2 only)",
+      "visible_if": "{{ section.settings.layout == 'bicycle' }}"
     },
     {
       "type": "text",
