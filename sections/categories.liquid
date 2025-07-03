@@ -76,6 +76,10 @@
                         {% endfor %}
                       </div>
                       <span class="d-flex d-xl-none sw-dot-default sw-pagination-categories justify-content-center"></span>
+                      {% if section.settings.show_navigation %}
+                        <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-categories"></div>
+                        <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-categories"></div>
+                      {% endif %}
                     </div>
                   </div>
                 {% endif %}
@@ -225,6 +229,10 @@
               {%- endfor -%}
             </div>
             <div class="d-flex d-xl-none sw-dot-default sw-pagination-cls-2 justify-content-center"></div>
+            {% if section.settings.show_navigation %}
+              <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-categories"></div>
+              <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-categories"></div>
+            {% endif %}
           </div>
         </div>
       </section>
@@ -434,7 +442,7 @@
     {
       "type": "checkbox",
       "id": "show_pagination",
-      "label": "Show pagination dots",
+      "label": "Show pagination dots on mobile",
       "default": true
     },
     {
