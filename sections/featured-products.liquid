@@ -25,8 +25,8 @@
           "slidesPerView": {{ section.settings.slides_per_view_mobile }},
           "spaceBetween": {{ section.settings.space_between_mobile }},
           "speed": {{ section.settings.transition_speed }},
-          "observer": {{ section.settings.enable_observer }},
-          "observeParents": {{ section.settings.enable_observer }},
+          "observer": true,
+          "observeParents": true,
           "slidesPerGroup": {{ section.settings.slides_per_group_mobile }},
           "navigation": {% if section.settings.show_navigation %}{
             "clickable": true,
@@ -317,7 +317,7 @@
     {
       "type": "checkbox",
       "id": "show_pagination",
-      "label": "Show pagination dots",
+      "label": "Show pagination dots on mobile",
       "default": true
     },
     {
@@ -340,13 +340,6 @@
       "id": "pause_on_hover",
       "label": "Pause autoplay on hover",
       "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_observer",
-      "label": "Enable observer",
-      "default": true,
-      "info": "Update slider when DOM changes"
     }
   ],
   "presets": [
@@ -373,8 +366,7 @@
         "show_pagination": true,
         "enable_autoplay": false,
         "autoplay_speed": 3000,
-        "pause_on_hover": true,
-        "enable_observer": true
+        "pause_on_hover": true
       }
     }
   ]
