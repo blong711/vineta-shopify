@@ -260,8 +260,7 @@
         "show_navigation": false,
         "show_pagination": true,
         "autoplay": false,
-        "autoplay_speed": 3000,
-        "products_per_collection": 6
+        "autoplay_speed": 3000
       }
     },
     "todays_picks": {
@@ -575,6 +574,42 @@
         "slides_per_view_mobile": 1,
         "show_pagination": true
       }
+    },
+    "featured_products_3byhRL": {
+      "type": "featured-products",
+      "name": "Featured Products",
+      "settings": {
+        "width": "boxed",
+        "layout": "default",
+        "title": "Featured Products",
+        "button_text": "Featured Products",
+        "button_url": "",
+        "heading": "Discover our top picks for [br] every ride",
+        "remove_top_padding": false,
+        "product_source": "collection",
+        "collection": "",
+        "product_list": [
+          "aclla-cress",
+          "aloe-arborescens",
+          "analog-wall-clock",
+          "annurca-apples"
+        ],
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_view_desktop": 4,
+        "slides_per_group_mobile": 2,
+        "slides_per_group_tablet": 3,
+        "slides_per_group_desktop": 4,
+        "space_between_mobile": 12,
+        "space_between_tablet": 18,
+        "space_between_desktop": 24,
+        "transition_speed": 800,
+        "show_navigation": true,
+        "show_pagination": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 3000,
+        "pause_on_hover": true
+      }
     }
   },
   "order": [
@@ -587,6 +622,7 @@
     "testimonials",
     "brands",
     "shop_gram",
-    "icon_boxes_6PFzU6"
+    "icon_boxes_6PFzU6",
+    "featured_products_3byhRL"
   ]
 }
