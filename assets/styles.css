@@ -27358,6 +27358,10 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   .fl-control-sw2 .swiper-button-next, .fl-control-sw .swiper-button-next {
       right: -22px;
   }
+  /* Remove negative positioning for full width sections */
+  .section-full-width .fl-control-sw .swiper-button-next {
+      right: 0;
+  }
 }
 .fl-control-sw2 .nav-swiper {
   margin-top: 0;
