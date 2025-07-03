@@ -276,7 +276,7 @@
             if (data.resources.results.products.length > 0) {
               suggestionsWrapper.innerHTML = data.resources.results.products.map(product => `
                 <div class="loadItem card-product grid style-1">
-                  <div class="card-product-wrapper asp-ratio-0">
+                  <div class="card-product-wrapper" style="aspect-ratio: 4/5;">
                     <a href="${product.url}" class="product-img">
                       <img src="${product.featured_image.url}" alt="${product.title}" width="300" height="300">
                     </a>
