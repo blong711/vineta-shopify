@@ -169,5 +169,103 @@
         "message": "* La remise sera calculée et appliquée au moment du paiement"
       }
     }
+  },
+  "templates": {
+    "customers": {
+      "register": {
+        "first_name": "Prénom",
+        "last_name": "Nom de famille",
+        "email": "E-mail",
+        "password": "Mot de passe",
+        "submit": "Créer"
+      },
+      "reset_password": {
+        "title": "Réinitialiser le mot de passe du compte",
+        "subtext": "Entrez un nouveau mot de passe pour votre compte.",
+        "password": "Mot de passe",
+        "password_confirm": "Confirmez le mot de passe",
+        "submit": "Réinitialiser le mot de passe"
+      }
+    },
+    "search": {
+      "title": "Résultats de la recherche"
+    }
+  },
+  "collections": {
+    "sorting": {
+      "best_selling": "Meilleures ventes",
+      "az": "Par ordre alphabétique, AZ",
+      "za": "Alphabétiquement, ZA",
+      "price_ascending": "Prix, du plus bas au plus élevé",
+      "price_descending": "Prix, du plus élevé au plus bas"
+    }
+  },
+  "shopify": {
+    "checkout": {
+      "general": {
+        "errors": {
+          "could_not_process_checkout": "Impossible de traiter le paiement."
+        }
+      },
+      "contact_information": {
+        "title": "Coordonnées",
+        "email_label": "E-mail",
+        "phone_label": "Numéro de téléphone",
+        "keep_me_up_to_date": "Tenez-moi au courant des actualités et des offres exclusives",
+        "already_have_an_account": "Vous avez déjà un compte ? Connectez-vous"
+      }
+    }
+  },
+  "footer": {
+    "blocks": {
+      "contact": {
+        "address": "123 Main Street, Ville, État 12345",
+        "email": "info@exemple.com"
+      },
+      "newsletter": {
+        "title": "Bulletin",
+        "text": "Abonnez-vous à notre newsletter pour des mises à jour et des offres exclusives."
+      },
+      "menu": {
+        "title": "Liens rapides"
+      }
+    },
+    "contact": {
+      "get_direction": "Obtenir l'itinéraire"
+    },
+    "newsletter": {
+      "placeholder": "Votre adresse e-mail",
+      "success_message": "Merci de vous être abonné !",
+      "text": "Recevez les derniers produits et nouvelles de notre part.",
+      "title": "Bulletin"
+    },
+    "copyright_html": "Copyright © {{ year }} par <span class=\"fw-medium\">Vineta</span> . Tous droits réservés."
+  },
+  "cookie": {
+    "message": "Nous utilisons des cookies pour améliorer votre expérience de navigation et analyser notre trafic. En cliquant sur « Accepter », vous consentez à l'utilisation de cookies.",
+    "privacy_button": "politique de confidentialité",
+    "accept_button": "Accepter",
+    "decline_button": "Déclin"
+  },
+  "faq": {
+    "contact": {
+      "title": "Besoin d'aide?",
+      "text_1": "Vous ne trouvez pas la réponse que vous cherchez ?",
+      "text_2": "Nous sommes là pour vous aider et répondre à toutes vos questions.",
+      "contact_button": "Contactez-nous",
+      "chat_button": "Discutez avec nous"
+    }
+  },
+  "compare": {
+    "empty": {
+      "no_products": "Aucun produit à comparer",
+      "back_to_shop": "Retour à la boutique"
+    },
+    "fields": {
+      "availability": "Disponibilité",
+      "vendor": "Fournisseur",
+      "color": "Couleur",
+      "na": "N / A"
+    }
   }
 }
