@@ -45,7 +45,7 @@
           "breakpoints": {
             "768": {
               "slidesPerView": {{ section.settings.slides_per_view_tablet }},
-              "spaceBetween": {{ section.settings.space_between_mobile }},
+              "spaceBetween": {{ section.settings.space_between_tablet }},
               "slidesPerGroup": {{ section.settings.slides_per_group_tablet }}
             },
             "1200": {
@@ -281,6 +281,15 @@
     },
     {
       "type": "range",
+      "id": "space_between_tablet",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "label": "Space between slides (Tablet)",
+      "default": 12
+    },
+    {
+      "type": "range",
       "id": "space_between_desktop",
       "min": 0,
       "max": 50,
@@ -355,6 +364,7 @@
         "slides_per_group_tablet": 3,
         "slides_per_group_mobile": 2,
         "space_between_desktop": 24,
+        "space_between_tablet": 18,
         "space_between_mobile": 12,
         "transition_speed": 800,
         "show_navigation": true,
