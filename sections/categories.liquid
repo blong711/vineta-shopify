@@ -324,6 +324,7 @@
       "type": "select",
       "id": "layout",
       "label": "Layout",
+      "info": "Tab Layout uses 'Category Tab' blocks, other layouts use 'Category' blocks",
       "options": [
         {
           "value": "layout1",
@@ -331,15 +332,15 @@
         },
         {
           "value": "layout2",
-          "label": "Slider Layout"
+          "label": "Slider Layout 1"
         },
         {
           "value": "bicycle",
-          "label": "Bicycle Layout"
+          "label": "Slider Layout 2"
         },
         {
           "value": "phonecase",
-          "label": "Phonecase Layout"
+          "label": "Slider Layout 3"
         }
       ],  
       "default": "layout1"
@@ -354,7 +355,8 @@
       "type": "text",
       "id": "button_text",
       "label": "Button Text",
-      "default": "Categories"
+      "default": "Categories",
+      "visible_if": "{{ section.settings.layout == 'bicycle' }}"
     },
     {
       "type": "header",
@@ -454,7 +456,7 @@
   "blocks": [
     {
       "type": "tab",
-      "name": "Category Tab",
+      "name": "Category Tab (Tab Layout Only)",
       "limit": 6,
       "settings": [
         {
@@ -473,7 +475,7 @@
     },
     {
       "type": "category",
-      "name": "Category",
+      "name": "Category (Other Layouts)",
       "limit": 12,
       "settings": [
         {
