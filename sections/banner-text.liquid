@@ -1,8 +1,8 @@
 <style>
-/* Ensure lookbook product images have a consistent 4:5 aspect ratio and sizing */
-.loobook-product .img-style {
+/* Banner image styling to match lookbook ratio and style */
+.banner-img-style {
   aspect-ratio: 4 / 5;
-  width: 80px;
+  width: 100%;
   max-width: 100%;
   overflow: hidden;
   display: flex;
@@ -11,7 +11,7 @@
   background: #f7f7f7;
   border-radius: 12px;
 }
-.lookbook-img {
+.banner-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -80,32 +80,32 @@
       <div class="image-wrap hover-img">
         {% if section.settings.banner_product != blank %}
           {% assign banner_product = section.settings.banner_product %}
-          <a href="{{ banner_product.url }}" class="image img-style d-block">
+          <a href="{{ banner_product.url }}" class="image banner-img-style d-block">
             {% if banner_product.featured_image != blank %}
               {{ banner_product.featured_image | image_url: width: 2000 | image_tag:
                 loading: 'lazy',
-                class: 'lazyload',
+                class: 'lazyload banner-img',
                 alt: banner_product.featured_image.alt
               }}
             {% endif %}
           </a>
         {% else %}
           {% if section.settings.banner_link != blank %}
-            <a href="{{ section.settings.banner_link }}" class="image img-style d-block">
+            <a href="{{ section.settings.banner_link }}" class="image banner-img-style d-block">
               {% if section.settings.banner_image != blank %}
                 {{ section.settings.banner_image | image_url: width: 2000 | image_tag:
                   loading: 'lazy',
-                  class: 'lazyload',
+                  class: 'lazyload banner-img',
                   alt: section.settings.banner_image.alt
                 }}
               {% endif %}
             </a>
           {% else %}
             {% if section.settings.banner_image != blank %}
-              <div class="image img-style d-block">
+              <div class="image banner-img-style d-block">
                 {{ section.settings.banner_image | image_url: width: 2000 | image_tag:
                   loading: 'lazy',
-                  class: 'lazyload',
+                  class: 'lazyload banner-img',
                   alt: section.settings.banner_image.alt
                 }}
               </div>

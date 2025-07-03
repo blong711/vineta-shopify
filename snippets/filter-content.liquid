@@ -15,7 +15,7 @@
 {%- assign on_sale_source = section.settings.on_sale_source | default: "collection" -%}
 {%- assign on_sale_products = section.settings.on_sale_products -%}
 
-<form id="collection-filters-form" method="GET" action="{{ collection.url }}" class="filter-form">
+<form id="collection-filters-form" method="GET" action="{{ request.path }}" class="filter-form">
   <!-- Categories -->
 {%- if section.settings.collections_title != blank -%}
   <div class="widget-facet">
@@ -72,7 +72,7 @@
             name="filter.v.availability"
             value="1"
             id="Filter-availability-1"
-            {% if current_tags contains 'filter.v.availability:1' %}checked{% endif %}
+            {% if current_tags contains 'filter.v.availability:1' or request.query_string contains 'filter.v.availability=1' %}checked{% endif %}
             class="filter-checkbox tf-check">
           <label for="Filter-availability-1" class="label">
             <span>In stock</span>
@@ -84,7 +84,7 @@
             name="filter.v.availability"
             value="0"
             id="Filter-availability-2"
-            {% if current_tags contains 'filter.v.availability:0' %}checked{% endif %}
+            {% if current_tags contains 'filter.v.availability:0' or request.query_string contains 'filter.v.availability=0' %}checked{% endif %}
             class="filter-checkbox tf-check">
           <label for="Filter-availability-2" class="label">
             <span>Out of stock</span>
@@ -288,7 +288,7 @@
               const rangeMax = parseInt(priceRange.dataset.rangeMax) || 1000;
               
               if (Math.round(values[0]) !== rangeMin || Math.round(values[1]) !== rangeMax) {
-                // Create new hidden inputs
+                // Create new hidden inputs with correct Shopify filter parameter names
                 const newMinInput = document.createElement('input');
                 newMinInput.type = 'hidden';
                 newMinInput.name = 'filter.v.price.gte';
