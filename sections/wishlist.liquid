@@ -32,6 +32,34 @@
 }
 {% endschema %}
 
+<style>
+.tf-grid-layout.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.tf-grid-layout.loading .card-product {
+  pointer-events: none;
+}
+
+.icon-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.wishlist-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const gridLayout = document.getElementById('gridLayout');
@@ -44,10 +72,19 @@ document.addEventListener('DOMContentLoaded', function() {
   let allProducts = [];
   
   function updateWishlistDisplay() {
+    // Show global loading state
+    gridLayout.classList.add('loading');
+    gridLayout.innerHTML = `
+      <div class="wishlist-loading text-center" style="grid-column: 1 / -1; padding: 40px;">
+        <i class="icon icon-spinner fa-spin" style="font-size: 24px; color: #666;"></i>
+        <p class="text-md" style="margin-top: 10px; color: #666;">Loading wishlist...</p>
+      </div>
+    `;
+    
     const wishlistIds = localStorage.getItem('theme4:wishlist:id') ? localStorage.getItem('theme4:wishlist:id').split(',') : [];
     
     if (wishlistIds.length === 0) {
-      gridLayout.classList.remove('tf-grid-layout');
+      gridLayout.classList.remove('tf-grid-layout', 'loading');
       gridLayout.innerHTML = `
         <div class="wrapper-wishlist tf-col-2 lg-col-3 xl-col-4">
           <div class="tf-wishlist-empty text-center">
@@ -60,8 +97,9 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    // Add back the tf-grid-layout class when there are items
+    // Add back the tf-grid-layout class when there are items and remove loading state
     gridLayout.classList.add('tf-grid-layout');
+    gridLayout.classList.remove('loading');
 
     // Clean up the IDs and ensure they're numbers
     const cleanWishlistIds = wishlistIds.map(id => id.trim()).filter(id => id);
@@ -117,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
             allProducts = sortedProducts;
             currentPage = 1;
             displayProductsWithPagination();
+            gridLayout.classList.remove('loading');
           })
           .catch(error => {
             console.error('Error fetching missing products:', error);
@@ -128,6 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
             allProducts = sortedProducts;
             currentPage = 1;
             displayProductsWithPagination();
+            gridLayout.classList.remove('loading');
           });
         } else {
           // Sort products to match the order in wishlistIds
@@ -140,10 +180,12 @@ document.addEventListener('DOMContentLoaded', function() {
           allProducts = sortedProducts;
           currentPage = 1;
           displayProductsWithPagination();
+          gridLayout.classList.remove('loading');
         }
       })
       .catch(error => {
         console.error('Error fetching wishlist products:', error);
+        gridLayout.classList.remove('loading');
         gridLayout.innerHTML = '';
         paginationContainer.style.display = 'none';
       });
@@ -344,13 +386,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
     gridLayout.innerHTML = wishlistHTML.join('');
     
-    // Add click event listeners to remove buttons
-    const removeButtons = gridLayout.querySelectorAll('[data-wishlist][data-action="remove"]');
-    removeButtons.forEach(button => {
-      button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const productId = this.getAttribute('data-id');
-        const productCard = this.closest('.card-product');
+      // Add click event listeners to remove buttons
+  const removeButtons = gridLayout.querySelectorAll('[data-wishlist][data-action="remove"]');
+  removeButtons.forEach(button => {
+    button.addEventListener('click', async function(e) {
+      e.preventDefault();
+      
+      // Prevent multiple clicks while processing
+      if (this.classList.contains('loading')) {
+        return;
+      }
+      
+      const productId = this.getAttribute('data-id');
+      const productCard = this.closest('.card-product');
+      
+      try {
+        // Show loading state
+        this.classList.add('loading');
+        this.innerHTML = '<i class="icon icon-spinner fa-spin"></i>';
+        
+        // Add a small delay to prevent rapid clicking
+        await new Promise(resolve => setTimeout(resolve, 300));
         
         // Remove from localStorage
         const wishlistIds = localStorage.getItem('theme4:wishlist:id') ? localStorage.getItem('theme4:wishlist:id').split(',') : [];
@@ -392,8 +448,16 @@ document.addEventListener('DOMContentLoaded', function() {
           // Only dispatch event if there are still products
           document.dispatchEvent(new CustomEvent('wishlist:updated'));
         }
-      });
+      } catch (error) {
+        console.error('Error removing item from wishlist:', error);
+        // Restore original button state on error
+        this.innerHTML = '<i class="icon icon-close remove"></i>';
+      } finally {
+        // Remove loading state
+        this.classList.remove('loading');
+      }
     });
+  });
 
     // Clear any existing event listeners on add-to-cart buttons
     document.querySelectorAll('.add-to-cart').forEach(button => {
