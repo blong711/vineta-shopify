@@ -324,10 +324,12 @@
                                     </div>
                                 {% endfor %}
                             </div>
+                            {% if section.settings.show_navigation %}
                             <div class="box-nav-swiper">
                                 <div class="swiper-button-prev nav-swiper size-30 style-line nav-prev-tes"></div>
                                 <div class="swiper-button-next nav-swiper size-30 style-line nav-next-tes"></div>
                             </div>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="box-right">
