@@ -1185,6 +1185,52 @@ class WishlistCompare {
         justify-content: center;
         color: #dc3545;
       }
+      
+      /* Cart item loading state */
+      .tf-mini-cart-item.loading {
+        position: relative;
+        pointer-events: none;
+        opacity: 0.7;
+      }
+      
+      .tf-mini-cart-item.loading::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.8);
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .tf-mini-cart-item.loading::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #007bff;
+        border-radius: 50%;
+        animation: cart-spinner 1s linear infinite;
+        z-index: 11;
+      }
+      
+      @keyframes cart-spinner {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+      }
+      
+      /* Disable select during loading */
+      .tf-mini-cart-item.loading select {
+        opacity: 0.5;
+      }
     `;
     document.head.appendChild(style);
 
@@ -1400,6 +1446,10 @@ class Cart {
         const variantId = event.target.dataset.variantId;
         const input = event.target.nextElementSibling;
         const currentValue = parseInt(input.value);
+        const cartItemElement = event.target.closest('.tf-mini-cart-item');
+        
+        // Add loading state to the cart item
+        cartItemElement.classList.add('loading');
         
         try {
           if (currentValue > 1) {
@@ -1461,11 +1511,18 @@ class Cart {
           this.updateHeaderCartCount(cartData.item_count);
         } catch (error) {
           console.error('Error updating cart:', error);
+        } finally {
+          // Remove loading state
+          cartItemElement.classList.remove('loading');
         }
       } else if (event.target.classList.contains('btn-increase')) {
         const variantId = event.target.dataset.variantId;
         const input = event.target.previousElementSibling;
         const currentValue = parseInt(input.value);
+        const cartItemElement = event.target.closest('.tf-mini-cart-item');
+        
+        // Add loading state to the cart item
+        cartItemElement.classList.add('loading');
         
         try {
           const response = await fetch('/cart/change.js', {
@@ -1513,12 +1570,20 @@ class Cart {
           this.updateHeaderCartCount(cartData.item_count);
         } catch (error) {
           console.error('Error updating cart:', error);
+        } finally {
+          // Remove loading state
+          cartItemElement.classList.remove('loading');
         }
       } 
       // Handle remove button
       else if (event.target.classList.contains('remove')) {
         const variantId = event.target.dataset.variantId;
         if (variantId) {
+          const cartItemElement = event.target.closest('.tf-mini-cart-item');
+          
+          // Add loading state to the cart item
+          cartItemElement.classList.add('loading');
+          
           try {
             const response = await fetch('/cart/change.js', {
               method: 'POST',
@@ -1565,6 +1630,9 @@ class Cart {
             this.updateHeaderCartCount(cartData.item_count);
           } catch (error) {
             console.error('Error updating cart:', error);
+          } finally {
+            // Remove loading state
+            cartItemElement.classList.remove('loading');
           }
         }
       }
@@ -1575,6 +1643,10 @@ class Cart {
       if (event.target.classList.contains('quantity-product')) {
         const variantId = event.target.dataset.variantId;
         const newValue = parseInt(event.target.value);
+        const cartItemElement = event.target.closest('.tf-mini-cart-item');
+        
+        // Add loading state to the cart item
+        cartItemElement.classList.add('loading');
         
         try {
           if (isNaN(newValue) || newValue < 1) {
@@ -1651,6 +1723,9 @@ class Cart {
           this.updateHeaderCartCount(cartData.item_count);
         } catch (error) {
           console.error('Error updating cart:', error);
+        } finally {
+          // Remove loading state
+          cartItemElement.classList.remove('loading');
         }
       }
       // Handle variant selection changes
@@ -1659,6 +1734,14 @@ class Cart {
         const newVariantId = event.target.value;
         const quantity = parseInt(event.target.closest('.tf-mini-cart-item').querySelector('.quantity-product').value);
         const cartItemElement = event.target.closest('.tf-mini-cart-item');
+
+        // Add loading state to the cart item
+        cartItemElement.classList.add('loading');
+        const selectElement = event.target;
+        const originalValue = selectElement.value;
+        
+        // Disable the select during loading
+        selectElement.disabled = true;
 
         try {
           // First remove the old variant
@@ -1715,6 +1798,10 @@ class Cart {
           // Revert the select to the old value
           event.target.value = oldVariantId;
           event.target.dataset.variantId = oldVariantId;
+        } finally {
+          // Remove loading state
+          cartItemElement.classList.remove('loading');
+          selectElement.disabled = false;
         }
       }
     });

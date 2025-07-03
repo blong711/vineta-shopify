@@ -636,6 +636,11 @@ const ProductCard = {
       // Decrease button
       container.querySelectorAll('.btn-decrease').forEach(button => {
         button.addEventListener('click', async () => {
+          const cartItemElement = button.closest('.tf-mini-cart-item');
+          
+          // Add loading state to the cart item
+          cartItemElement.classList.add('loading');
+          
           try {
             const variantId = button.dataset.variantId;
             if (!variantId) {
@@ -701,6 +706,9 @@ const ProductCard = {
           } catch (error) {
             console.error('Error updating cart:', error);
             alert('Failed to update cart. Product out of stock.');
+          } finally {
+            // Remove loading state
+            cartItemElement.classList.remove('loading');
           }
         });
       });
@@ -708,6 +716,11 @@ const ProductCard = {
       // Increase button
       container.querySelectorAll('.btn-increase').forEach(button => {
         button.addEventListener('click', async () => {
+          const cartItemElement = button.closest('.tf-mini-cart-item');
+          
+          // Add loading state to the cart item
+          cartItemElement.classList.add('loading');
+          
           try {
             const variantId = button.dataset.variantId;
             if (!variantId) {
@@ -754,6 +767,9 @@ const ProductCard = {
           } catch (error) {
             console.error('Error updating cart:', error);
             alert('Failed to update cart. Product out of stock.');
+          } finally {
+            // Remove loading state
+            cartItemElement.classList.remove('loading');
           }
         });
       });
@@ -761,6 +777,11 @@ const ProductCard = {
       // Quantity input
       container.querySelectorAll('.quantity-product').forEach(input => {
         input.addEventListener('change', async () => {
+          const cartItemElement = input.closest('.tf-mini-cart-item');
+          
+          // Add loading state to the cart item
+          cartItemElement.classList.add('loading');
+          
           try {
             const variantId = input.dataset.variantId;
             if (!variantId) {
@@ -832,6 +853,9 @@ const ProductCard = {
           } catch (error) {
             console.error('Error updating cart:', error);
             alert('Failed to update cart. Product out of stock.');
+          } finally {
+            // Remove loading state
+            cartItemElement.classList.remove('loading');
           }
         });
       });
@@ -839,6 +863,11 @@ const ProductCard = {
       // Remove button
       container.querySelectorAll('.remove').forEach(button => {
         button.addEventListener('click', async () => {
+          const cartItemElement = button.closest('.tf-mini-cart-item');
+          
+          // Add loading state to the cart item
+          cartItemElement.classList.add('loading');
+          
           try {
             const variantId = button.dataset.variantId;
             if (!variantId) {
@@ -873,6 +902,9 @@ const ProductCard = {
           } catch (error) {
             console.error('Error updating cart:', error);
             alert('Failed to update cart. Product out of stock.');
+          } finally {
+            // Remove loading state
+            cartItemElement.classList.remove('loading');
           }
         });
       });
@@ -997,6 +1029,53 @@ const ProductCard = {
       }
       .tf-mini-cart-item .tf-mini-cart-info .info-variant .edit {
         position: absolute;
+      }
+      
+      /* Cart item loading state */
+      .tf-mini-cart-item.loading {
+        position: relative;
+        pointer-events: none;
+        opacity: 0.7;
+      }
+      
+      .tf-mini-cart-item.loading::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.8);
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .tf-mini-cart-item.loading::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #007bff;
+        border-radius: 50%;
+        animation: cart-spinner 1s linear infinite;
+        z-index: 11;
+      }
+      
+      @keyframes cart-spinner {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+      }
+      
+      /* Disable select during loading */
+      .tf-mini-cart-item.loading select {
+        opacity: 0.5;
+      }
         right: 0;
         top: 0;
         display: flex;
