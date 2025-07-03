@@ -76,10 +76,6 @@
                         {% endfor %}
                       </div>
                       <span class="d-flex d-xl-none sw-dot-default sw-pagination-categories justify-content-center"></span>
-                      {% if section.settings.show_navigation %}
-                        <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-categories"></div>
-                        <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-categories"></div>
-                      {% endif %}
                     </div>
                   </div>
                 {% endif %}
@@ -437,7 +433,8 @@
       "type": "checkbox",
       "id": "show_navigation",
       "label": "Show navigation buttons",
-      "default": true
+      "default": true,
+      "visible_if": "{{ section.settings.layout == 'layout2' or section.settings.layout == 'bicycle' or section.settings.layout == 'phonecase' }}"
     },
     {
       "type": "checkbox",
