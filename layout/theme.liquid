@@ -279,18 +279,72 @@
       });
 
       function initializeAllSwipers() {
-        const swiperElements = document.querySelectorAll('.tf-swiper');
+        const swiperElements = document.querySelectorAll('.tf-swiper, .tf-sw-slideshow');
         swiperElements.forEach(function(element) {
           // Destroy existing swiper instance if it exists
           if (element.swiper) {
             element.swiper.destroy(true, true);
           }
-          
-          // Parse the swiper options from data attribute
-          const options = JSON.parse(element.dataset.swiper || '{}');
-          
-          // Initialize new swiper instance
-          new Swiper(element, options);
+
+          // If data-swiper attribute exists, use it
+          if (element.dataset.swiper) {
+            const options = JSON.parse(element.dataset.swiper);
+            new Swiper(element, options);
+          } else if (element.classList.contains('tf-sw-slideshow')) {
+            // Build config for tf-sw-slideshow (like original carousel.js)
+            const getBool = v => v === 'true' || v === true;
+            const getNum = v => v === undefined ? undefined : Number(v);
+            const preview = getNum(element.dataset.preview) || 1;
+            const tablet = getNum(element.dataset.tablet) || 1;
+            const mobile = getNum(element.dataset.mobile) || 1;
+            const spacing = getNum(element.dataset.space) || 0;
+            const spacingMb = getNum(element.dataset.spaceMb) || 0;
+            const loop = getBool(element.dataset.loop);
+            const play = getBool(element.dataset.autoPlay);
+            const centered = getBool(element.dataset.centered);
+            const effect = element.dataset.effect || 'slide';
+            const speed = getNum(element.dataset.speed) || 1000;
+            const options = {
+              autoplay: play ? {
+                delay: 5000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              } : false,
+              slidesPerView: mobile,
+              loop: loop,
+              spaceBetween: spacingMb,
+              speed: speed,
+              observer: true,
+              observeParents: true,
+              pagination: {
+                el: '.sw-pagination-slider',
+                clickable: true,
+              },
+              navigation: {
+                clickable: true,
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+              },
+              centeredSlides: false,
+              breakpoints: {
+                768: {
+                  slidesPerView: tablet,
+                  spaceBetween: spacing,
+                  centeredSlides: false,
+                },
+                1200: {
+                  slidesPerView: preview,
+                  spaceBetween: spacing,
+                  centeredSlides: centered,
+                },
+              },
+            };
+            if (effect === 'fade') {
+              options.effect = 'fade';
+              options.fadeEffect = { crossFade: true };
+            }
+            new Swiper(element, options);
+          }
         });
       }
     </script>
