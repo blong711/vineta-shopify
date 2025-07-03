@@ -51,16 +51,16 @@
                   {% else %}
                     <ul>
                       {% if section.settings.featured_link_text != blank %}
-                        <li><a class="link popular-search-link" href="#" data-search-term="{{ section.settings.featured_link_text | escape }}">{{ section.settings.featured_link_text }}</a></li>
+                        <li><a class="link popular-search-link" data-search-term="{{ section.settings.featured_link_text | escape }}">{{ section.settings.featured_link_text }}</a></li>
                       {% endif %}
                       {% if section.settings.trendy_link_text != blank %}
-                        <li><a class="link popular-search-link" href="#" data-search-term="{{ section.settings.trendy_link_text | escape }}">{{ section.settings.trendy_link_text }}</a></li>
+                        <li><a class="link popular-search-link" data-search-term="{{ section.settings.trendy_link_text | escape }}">{{ section.settings.trendy_link_text }}</a></li>
                       {% endif %}
                       {% if section.settings.new_link_text != blank %}
-                        <li><a class="link popular-search-link" href="#" data-search-term="{{ section.settings.new_link_text | escape }}">{{ section.settings.new_link_text }}</a></li>
+                        <li><a class="link popular-search-link" data-search-term="{{ section.settings.new_link_text | escape }}">{{ section.settings.new_link_text }}</a></li>
                       {% endif %}
                       {% if section.settings.sale_link_text != blank %}
-                        <li><a class="link popular-search-link" href="#" data-search-term="{{ section.settings.sale_link_text | escape }}">{{ section.settings.sale_link_text }}</a></li>
+                        <li><a class="link popular-search-link" data-search-term="{{ section.settings.sale_link_text | escape }}">{{ section.settings.sale_link_text }}</a></li>
                       {% endif %}
                     </ul>
                   {% endif %}
