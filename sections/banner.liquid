@@ -33,9 +33,13 @@
                     </div>
                 {% endfor %}
             </div>
-            <div class="swiper-button-next nav-next-shop"></div>
-            <div class="swiper-button-prev nav-prev-shop"></div>
-            <div class="d-flex d-xl-none sw-dot-default sw-pagination-shop justify-content-center"></div>
+            {% if section.settings.show_navigation %}
+                <div class="swiper-button-next nav-next-shop d-none d-xl-flex nav-swiper nav-button-top"></div>
+                <div class="swiper-button-prev nav-prev-shop d-none d-xl-flex nav-swiper nav-button-top"></div>
+            {% endif %}
+            {% if section.settings.show_pagination %}
+                <div class="d-flex d-xl-none sw-dot-default sw-pagination-shop justify-content-center"></div>
+            {% endif %}
         </div>
     {% if section.settings.width == 'boxed' %}
         </div>
@@ -44,21 +48,15 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    new Swiper('.banner-swiper', {
+    const bannerSwiper = document.querySelector('.banner-swiper');
+    if (!bannerSwiper) return;
+    
+    const swiperConfig = {
         slidesPerView: 1,
         spaceBetween: 12,
         speed: 1000,
         observer: true,
         observeParents: true,
-        navigation: {
-            clickable: true,
-            nextEl: '.nav-next-shop',
-            prevEl: '.nav-prev-shop'
-        },
-        pagination: {
-            el: '.sw-pagination-shop',
-            clickable: true
-        },
         breakpoints: {
             768: {
                 slidesPerView: 2,
@@ -69,7 +67,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 spaceBetween: 24
             }
         }
-    });
+    };
+
+    // Add navigation if enabled
+    {% if section.settings.show_navigation %}
+    swiperConfig.navigation = {
+        clickable: true,
+        nextEl: '.nav-next-shop',
+        prevEl: '.nav-prev-shop'
+    };
+    {% endif %}
+
+    // Add pagination if enabled
+    {% if section.settings.show_pagination %}
+    swiperConfig.pagination = {
+        el: '.sw-pagination-shop',
+        clickable: true
+    };
+    {% endif %}
+
+    new Swiper('.banner-swiper', swiperConfig);
 });
 </script>
 
@@ -92,6 +109,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             ],
             "default": "boxed"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_navigation",
+            "label": "Show navigation arrows",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_pagination",
+            "label": "Show pagination dots on mobile",
+            "default": true
         }
     ],
     "blocks": [
@@ -138,6 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     "type": "banner",
                     "settings": {
+                        "banner_image": "",
                         "heading": "Unveiling the latest gear",
                         "subtext": "Check out our newest arrivals",
                         "button_text": "Buy Now"
@@ -146,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     "type": "banner",
                     "settings": {
+                        "banner_image": "",
                         "heading": "Deals you can't miss",
                         "subtext": "Save big on our best-selling bikes",
                         "button_text": "Buy Now"
