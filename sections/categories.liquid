@@ -171,7 +171,9 @@
           <div class="container">
         {% endif %}
           <div class="flat-title-v2 text-center justify-items-center wow fadeInUp">
-            <a href="{{ routes.collections_url }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.button_text }}</a>
+            {% if section.settings.button_url != blank %}
+              <a href="{{ section.settings.button_url }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.button_text }}</a>
+            {% endif %}
             <h4 style="max-width: 850px;">
               {{ section.settings.title | newline_to_br }}
             </h4>
@@ -364,6 +366,13 @@
       "id": "button_text",
       "label": "Button Text",
       "default": "Categories",
+      "visible_if": "{{ section.settings.layout == 'bicycle' }}"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL",
+      "default": "/collections",
       "visible_if": "{{ section.settings.layout == 'bicycle' }}"
     },
     {
