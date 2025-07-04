@@ -118,10 +118,7 @@
           "mega_menu_html_Cr3rLA": {
             "type": "mega_menu_html",
             "settings": {
-              "title": "Home",
-              "submenu_position": "center",
-              "mega_menu_width": "fullwidth",
-              "mega_menu_custom_width": 1200
+              "title": "Home"
             }
           },
           "mega_menu_shop_9xXyG7": {
@@ -131,15 +128,7 @@
               "collections": [
                 "men",
                 "women"
-              ],
-              "image_ratio": "asos",
-              "full_image": false,
-              "items_per_row": "default",
-              "enable_carousel": false,
-              "use_prev_next": false,
-              "submenu_position": "default",
-              "mega_menu_width": "fullwidth",
-              "mega_menu_custom_width": 1200
+              ]
             }
           },
           "mega_menu_product_NcRgpq": {
@@ -151,14 +140,7 @@
                 "crop-t-shirt",
                 "loose-fit-tee",
                 "polo-neck-t-shirt"
-              ],
-              "text_alignment": "text-left",
-              "image_ratio": "asos",
-              "full_image": false,
-              "use_prev_next": false,
-              "submenu_position": "default",
-              "mega_menu_width": "fullwidth",
-              "mega_menu_custom_width": 1200
+              ]
             }
           },
           "mega_menu_pages_GHHVpa": {
@@ -168,10 +150,7 @@
               "menu": "",
               "banner_image": "shopify://shop_images/banner-header_1.jpg",
               "banner_link": "shopify://blogs/design/effortless-style-with-one-color",
-              "banner_title": "Unveiling the latest gear",
-              "submenu_position": "default",
-              "mega_menu_width": "fullwidth",
-              "mega_menu_custom_width": 1200
+              "banner_title": "Unveiling the latest gear"
             }
           },
           "mega_menu_blog_cGEaBE": {
@@ -181,11 +160,7 @@
               "blog_categories": "",
               "recent_posts_title": "Recent Posts",
               "blog": "lifestyle",
-              "posts_limit": 3,
-              "image_ratio": "square",
-              "submenu_position": "default",
-              "mega_menu_width": "fullwidth",
-              "mega_menu_custom_width": 1200
+              "posts_limit": 3
             }
           }
         },
@@ -203,6 +178,7 @@
           "background_color": "#ffffff",
           "text_color": "#333333",
           "hover_color": "#ff6f61",
+          "enable_transparent": false,
           "logo": "shopify://shop_images/logo.svg",
           "logo_width": 130,
           "menu": "main-menu",
@@ -211,10 +187,7 @@
           "show_wishlist": true,
           "show_cart": true,
           "mobile_menu_background": "#ffffff",
-          "mobile_menu_text_color": "#333333",
-          "dropdown_animation": "fade",
-          "animation_duration": 200,
-          "enable_transparent": false
+          "mobile_menu_text_color": "#333333"
         }
       },
       "breadcrumb": {
@@ -378,8 +351,6 @@
           "padding_top_main": 0,
           "padding_bottom_main": 0,
           "text_size": "medium",
-          "border": "top",
-          "border_main_position": "container_width",
           "heading_size": "medium",
           "heading_font_weight": "medium",
           "heading_margin_bottom": 30
@@ -388,9 +359,6 @@
       "cart-drawer": {
         "type": "cart-drawer",
         "settings": {
-          "progress_message": "You are [amount] away from free shipping!",
-          "free_shipping_message": "You've got free shipping!",
-          "free_shipping_threshold": 100,
           "enable_gift_wrap": true,
           "gift_wrap_product": "gift-wrap",
           "enable_order_note": true,
