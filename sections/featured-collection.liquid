@@ -1,6 +1,6 @@
 <!-- Collection -->
 {% if section.settings.layout == 'layout2' %}
-    <section class="featured-collection{% if section.settings.width == 'full' %} section-full-width{% endif %}">
+    <section class="{% if section.settings.width == 'full' %} section-full-width{% endif %}">
     {% if section.settings.width == 'boxed' %}
         <div class="container">
     {% endif %}
@@ -48,7 +48,7 @@
                                 <img src="{{ block.settings.custom_image | default: collection.featured_image | image_url }}"
                                     data-src="{{ block.settings.custom_image | default: collection.featured_image | image_url }}" 
                                     alt="{{ collection.title | escape }}" 
-                                    class="lazyload min-width-599"
+                                    class="lazyload min-width-635"
                                     width="{{ block.settings.custom_image.width | default: collection.featured_image.width }}"
                                     height="{{ block.settings.custom_image.height | default: collection.featured_image.height }}">
                             </div>
@@ -164,7 +164,7 @@
     {% endif %}
     </section>
 {% elsif section.settings.layout == 'layout4' %}
-    <section class="featured-collection{% if section.settings.width == 'full' %} section-full-width{% endif %}">
+    <section class="{% if section.settings.width == 'full' %} section-full-width{% endif %}">
     {% if section.settings.width == 'boxed' %}
         <div class="container">
     {% endif %}
@@ -572,6 +572,10 @@
     .min-width-599 {
         min-width: 599px;
         aspect-ratio: 599/824.84;
+    }
+    .min-width-635 {
+        min-width: 635px;
+        aspect-ratio: 635/824.83;
     }
 }
 </style>
