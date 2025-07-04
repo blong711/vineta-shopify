@@ -1,28 +1,5 @@
 // Theme JavaScript
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize marquee speed control
-  const marqueeWrappers = document.querySelectorAll('.marquee-wrapper[data-speed]');
-  marqueeWrappers.forEach((wrapper) => {
-    const speed = wrapper.getAttribute('data-speed');
-    let duration = 20; // default duration in seconds
-    
-    // Convert speed setting to duration
-    switch (speed) {
-      case 'slow':
-        duration = 30;
-        break;
-      case 'normal':
-        duration = 20;
-        break;
-      case 'fast':
-        duration = 10;
-        break;
-    }
-    
-    // Apply the animation duration
-    wrapper.style.animationDuration = `${duration}s`;
-  });
-
   // Initialize quantity inputs
   document.querySelectorAll('quantity-input').forEach((input) => {
     input.addEventListener('change', (event) => {
