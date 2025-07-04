@@ -330,18 +330,6 @@
     },
     {
       "type": "color",
-      "id": "link_color",
-      "label": "Link color",
-      "default": "#333333"
-    },
-    {
-      "type": "color",
-      "id": "link_hover_color",
-      "label": "Link hover color",
-      "default": "#666666"
-    },
-    {
-      "type": "color",
       "id": "icon_color",
       "label": "Icon color",
       "default": "#333333"
@@ -351,42 +339,6 @@
       "id": "icon_hover_color",
       "label": "Icon hover color",
       "default": "#666666"
-    },
-    {
-      "type": "color",
-      "id": "dropdown_background",
-      "label": "Dropdown background",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "dropdown_text_color",
-      "label": "Dropdown text color",
-      "default": "#333333"
-    },
-    {
-      "type": "header",
-      "content": "Spacing"
-    },
-    {
-      "type": "range",
-      "id": "menu_item_spacing",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "label": "Menu item spacing",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "dropdown_padding",
-      "min": 10,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "label": "Dropdown padding",
-      "default": 20
     },
     {
       "type": "header",
@@ -517,17 +469,6 @@
         },
         {
           "type": "select",
-          "id": "color_scheme",
-          "label": "Color scheme",
-          "options": [
-            { "value": "scheme-1", "label": "Scheme 1" },
-            { "value": "scheme-2", "label": "Scheme 2" },
-            { "value": "scheme-3", "label": "Scheme 3" }
-          ],
-          "default": "scheme-1"
-        },
-        {
-          "type": "select",
           "id": "submenu_position",
           "label": "Submenu position",
           "options": [
@@ -622,17 +563,6 @@
           "label": "Use prev/next button",
           "default": false,
           "info": "Working with carousel layout"
-        },
-        {
-          "type": "select",
-          "id": "color_scheme",
-          "label": "Color scheme",
-          "options": [
-            { "value": "scheme-1", "label": "Scheme 1" },
-            { "value": "scheme-2", "label": "Scheme 2" },
-            { "value": "scheme-3", "label": "Scheme 3" }
-          ],
-          "default": "scheme-1"
         },
         {
           "type": "select",
@@ -733,17 +663,6 @@
         },
         {
           "type": "select",
-          "id": "color_scheme",
-          "label": "Color scheme",
-          "options": [
-            { "value": "scheme-1", "label": "Scheme 1" },
-            { "value": "scheme-2", "label": "Scheme 2" },
-            { "value": "scheme-3", "label": "Scheme 3" }
-          ],
-          "default": "scheme-1"
-        },
-        {
-          "type": "select",
           "id": "submenu_position",
           "label": "Submenu position",
           "options": [
@@ -812,17 +731,6 @@
           "id": "banner_title",
           "label": "Banner Title",
           "default": "Unveiling the latest gear"
-        },
-        {
-          "type": "select",
-          "id": "color_scheme",
-          "label": "Color scheme",
-          "options": [
-            { "value": "scheme-1", "label": "Scheme 1" },
-            { "value": "scheme-2", "label": "Scheme 2" },
-            { "value": "scheme-3", "label": "Scheme 3" }
-          ],
-          "default": "scheme-1"
         },
         {
           "type": "select",
@@ -916,17 +824,6 @@
         },
         {
           "type": "select",
-          "id": "color_scheme",
-          "label": "Color scheme",
-          "options": [
-            { "value": "scheme-1", "label": "Scheme 1" },
-            { "value": "scheme-2", "label": "Scheme 2" },
-            { "value": "scheme-3", "label": "Scheme 3" }
-          ],
-          "default": "scheme-1"
-        },
-        {
-          "type": "select",
           "id": "submenu_position",
           "label": "Submenu position",
           "options": [
@@ -984,14 +881,8 @@
         "layout": "layout-1",
         "background_color": "#ffffff",
         "text_color": "#333333",
-        "link_color": "#333333",
-        "link_hover_color": "#666666",
         "icon_color": "#333333",
         "icon_hover_color": "#666666",
-        "dropdown_background": "#ffffff",
-        "dropdown_text_color": "#333333",
-        "menu_item_spacing": 0,
-        "dropdown_padding": 20,
         "mobile_menu_background": "#ffffff",
         "mobile_menu_text_color": "#333333",
         "dropdown_animation": "fade",
@@ -1070,6 +961,21 @@ document.addEventListener('DOMContentLoaded', function() {
   color: {{ section.settings.text_color }};
 }
 
+/* Apply text color to all text elements in header */
+#header,
+#header * {
+  color: {{ section.settings.text_color }};
+}
+
+/* Specific text elements that should inherit the text color */
+#header .logo-header,
+#header .logo-header span,
+#header .tf-languages,
+#header .tf-currencies,
+#header .count-box {
+  color: {{ section.settings.text_color }};
+}
+
 #header.header-visible {
   height: {{ section.settings.sticky_header_height }}px;
   background-color: #ffffff;
@@ -1091,35 +997,27 @@ document.addEventListener('DOMContentLoaded', function() {
   margin: 0;
 }
 
-.box-nav-menu .menu-item > a {
-  color: {{ section.settings.link_color }};
-}
-
-.box-nav-menu .menu-item > a:hover {
-  color: {{ section.settings.link_hover_color }};
-}
-
 /* Submenu Styles */
-.sub-menu {
+/* .sub-menu {
   background-color: {{ section.settings.dropdown_background }};
   color: {{ section.settings.dropdown_text_color }};
   padding: {{ section.settings.dropdown_padding }}px;
-}
+} */
 
 /* Icon Styles */
 .nav-icon-item {
-  color: {{ section.settings.icon_color }};
+  color: {{ section.settings.icon_color }} !important;
 }
 
 .nav-icon-item:hover {
-  color: {{ section.settings.icon_hover_color }};
+  color: {{ section.settings.icon_hover_color }} !important;
 }
 
 /* Mobile Menu Styles */
 @media (max-width: 1199px) {
   .mobile-menu {
     background-color: {{ section.settings.mobile_menu_background }};
-    color: {{ section.settings.mobile_menu_text_color }};
+    color: {{ section.settings.mobile_menu_text_color }} !important;
   }
 }
 
