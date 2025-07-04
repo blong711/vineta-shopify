@@ -34,7 +34,7 @@
         "breakpoints": {
           "768": {
             "slidesPerView": {{ section.settings.slides_per_view_tablet }},
-            "spaceBetween": {{ section.settings.space_between_mobile }},
+            "spaceBetween": {{ section.settings.space_between_tablet }},
             "slidesPerGroup": {{ section.settings.slides_per_group_tablet }}
           },
           "1200": {
@@ -161,7 +161,7 @@
       "min": 1,
       "max": 3,
       "step": 1,
-      "label": "Slides per view (Mobile)",
+      "label": "Items per view (Mobile)",
       "default": 2
     },
     {
@@ -170,7 +170,7 @@
       "min": 1,
       "max": 3,
       "step": 1,
-      "label": "Slides per view (Tablet)",
+      "label": "Items per view (Tablet)",
       "default": 3
     },
     {
@@ -179,7 +179,7 @@
       "min": 3,
       "max": 6,
       "step": 1,
-      "label": "Slides per view (Desktop)",
+      "label": "Items per view (Desktop)",
       "default": 4
     },
     {
@@ -188,7 +188,7 @@
       "min": 1,
       "max": 3,
       "step": 1,
-      "label": "Slides per group (Mobile)",
+      "label": "Items per group (Mobile)",
       "default": 2
     },
     {
@@ -197,7 +197,7 @@
       "min": 1,
       "max": 3,
       "step": 1,
-      "label": "Slides per group (Tablet)",
+      "label": "Items per group (Tablet)",
       "default": 3
     },
     {
@@ -206,7 +206,7 @@
       "min": 1,
       "max": 4,
       "step": 1,
-      "label": "Slides per group (Desktop)",
+      "label": "Items per group (Desktop)",
       "default": 4
     },
     {
@@ -215,8 +215,19 @@
       "min": 0,
       "max": 30,
       "step": 2,
-      "label": "Space between slides (Mobile)",
-      "default": 12
+      "label": "Space between items (Mobile)",
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "space_between_tablet",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "label": "Space between items (Tablet)",
+      "default": 18,
+      "unit": "px"
     },
     {
       "type": "range",
@@ -224,8 +235,9 @@
       "min": 0,
       "max": 50,
       "step": 2,
-      "label": "Space between slides (Desktop)",
-      "default": 24
+      "label": "Space between items (Desktop)",
+      "default": 24,
+      "unit": "px"
     },
     {
       "type": "range",
@@ -233,8 +245,9 @@
       "min": 300,
       "max": 2000,
       "step": 100,
-      "label": "Transition speed (ms)",
-      "default": 1000
+      "label": "Transition speed",
+      "default": 1000,
+      "unit": "ms"
     },
     {
       "type": "checkbox",
@@ -293,6 +306,7 @@
         "slides_per_group_tablet": 3,
         "slides_per_group_mobile": 2,
         "space_between_desktop": 24,
+        "space_between_tablet": 18,
         "space_between_mobile": 12,
         "transition_speed": 1000,
         "show_navigation": true,
