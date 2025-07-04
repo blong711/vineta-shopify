@@ -361,62 +361,6 @@
                     thresholdText.innerHTML = `Spend <span class="fw-medium">$${remaining.toFixed(2)}</span> more to get <span class="fw-medium">Free Shipping</span>`;
                   }
                 }
-                // Re-initialize quantity controls (basic)
-                itemsContainer.querySelectorAll('.btn-decrease').forEach(button => {
-                  button.addEventListener('click', async function() {
-                    const variantId = this.dataset.variantId;
-                    const input = this.parentElement.querySelector('.quantity-product');
-                    let currentValue = parseInt(input.value);
-                    if (currentValue > 1) {
-                      currentValue--;
-                      input.value = currentValue;
-                      await fetch('/cart/change.js', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ id: variantId, quantity: currentValue })
-                      });
-                    }
-                  });
-                });
-                itemsContainer.querySelectorAll('.btn-increase').forEach(button => {
-                  button.addEventListener('click', async function() {
-                    const variantId = this.dataset.variantId;
-                    const input = this.parentElement.querySelector('.quantity-product');
-                    let currentValue = parseInt(input.value);
-                    currentValue++;
-                    input.value = currentValue;
-                    await fetch('/cart/change.js', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ id: variantId, quantity: currentValue })
-                    });
-                  });
-                });
-                itemsContainer.querySelectorAll('.quantity-product').forEach(input => {
-                  input.addEventListener('change', async function() {
-                    const variantId = this.dataset.variantId;
-                    let newValue = parseInt(this.value);
-                    if (isNaN(newValue) || newValue < 1) newValue = 1;
-                    this.value = newValue;
-                    await fetch('/cart/change.js', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ id: variantId, quantity: newValue })
-                    });
-                  });
-                });
-                itemsContainer.querySelectorAll('.remove').forEach(button => {
-                  button.addEventListener('click', async function() {
-                    const variantId = this.dataset.variantId;
-                    await fetch('/cart/change.js', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ id: variantId, quantity: 0 })
-                    });
-                    // Remove item from DOM
-                    this.closest('.tf-mini-cart-item').remove();
-                  });
-                });
               }
             } catch (err) {
               console.error('Failed to update cart drawer:', err);
