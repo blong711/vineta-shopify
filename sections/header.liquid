@@ -335,6 +335,13 @@
       "default": "#ff6f61"
     },
     {
+      "type": "checkbox",
+      "id": "enable_transparent",
+      "label": "Enable transparent header",
+      "default": false,
+      "info": "Make header transparent and absolute positioned"
+    },
+    {
       "type": "header",
       "content": "Logo"
     },
@@ -406,47 +413,6 @@
       "id": "mobile_menu_text_color",
       "label": "Mobile menu text color",
       "default": "#333333"
-    },
-    {
-      "type": "header",
-      "content": "Animation"
-    },
-    {
-      "type": "select",
-      "id": "dropdown_animation",
-      "label": "Dropdown animation",
-      "options": [
-        {
-          "value": "fade",
-          "label": "Fade"
-        },
-        {
-          "value": "slide",
-          "label": "Slide"
-        },
-        {
-          "value": "none",
-          "label": "None"
-        }
-      ],
-      "default": "fade"
-    },
-    {
-      "type": "range",
-      "id": "animation_duration",
-      "min": 100,
-      "max": 500,
-      "step": 50,
-      "unit": "ms",
-      "label": "Animation duration",
-      "default": 200
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_transparent",
-      "label": "Enable transparent header",
-      "default": false,
-      "info": "Make header transparent and absolute positioned"
     }
   ],
   "blocks": [
@@ -878,8 +844,6 @@
         "hover_color": "#666666",
         "mobile_menu_background": "#ffffff",
         "mobile_menu_text_color": "#333333",
-        "dropdown_animation": "fade",
-        "animation_duration": 200,
         "show_search": true,
         "show_account": true,
         "show_wishlist": true,
@@ -1019,33 +983,6 @@ document.addEventListener('DOMContentLoaded', function() {
     color: {{ section.settings.mobile_menu_text_color }} !important;
   }
 }
-
-/* Animation Styles */
-.sub-menu {
-  transition: all {{ section.settings.animation_duration }}ms ease;
-}
-
-{% if section.settings.dropdown_animation == 'fade' %}
-.sub-menu {
-  opacity: 0;
-  visibility: hidden;
-}
-.menu-item:hover .sub-menu {
-  opacity: 1;
-  visibility: visible;
-}
-{% elsif section.settings.dropdown_animation == 'slide' %}
-.sub-menu {
-  transform: translateY(-10px);
-  opacity: 0;
-  visibility: hidden;
-}
-.menu-item:hover .sub-menu {
-  transform: translateY(0);
-  opacity: 1;
-  visibility: visible;
-}
-{% endif %}
 
 /* Add bottom border to header */
 #header:not(.header-absolute),
