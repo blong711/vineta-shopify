@@ -300,20 +300,6 @@
       },
       {
         "type": "header",
-        "content": "Grid Settings"
-      },
-      {
-        "type": "range",
-        "id": "grid_gap",
-        "min": 10,
-        "max": 100,
-        "step": 5,
-        "unit": "px",
-        "label": "Space Between Columns",
-        "default": 30
-      },
-      {
-        "type": "header",
         "content": "Direction Settings"
       },
       {
@@ -331,30 +317,6 @@
           }
         ],
         "default": "ltr"
-      },
-      {
-        "type": "header",
-        "content": "Spacing"
-      },
-      {
-        "type": "range",
-        "id": "section_spacing",
-        "min": 20,
-        "max": 100,
-        "step": 5,
-        "unit": "px",
-        "label": "Section Spacing",
-        "default": 40
-      },
-      {
-        "type": "range",
-        "id": "element_spacing",
-        "min": 10,
-        "max": 50,
-        "step": 5,
-        "unit": "px",
-        "label": "Element Spacing",
-        "default": 20
       }
     ]
   },
