@@ -325,10 +325,8 @@
         e.preventDefault();
         const searchTerm = e.target.getAttribute('data-search-term');
         if (searchTerm) {
-          searchInput.value = searchTerm;
-          searchInput.focus();
-          // Trigger the search input event to show suggestions
-          searchInput.dispatchEvent(new Event('input'));
+          // Navigate directly to search results page
+          window.location.href = `/search?q=${encodeURIComponent(searchTerm)}&type=product`;
         }
       }
     });
