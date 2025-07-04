@@ -1,4 +1,5 @@
-{% assign active_tab = section.settings.default_tab %}
+{%- assign first_tab = section.blocks | where: 'type', 'tab' | first -%}
+{%- assign active_tab = 0 -%}
 
 <div class="flat-spacing-3">
   {% if section.settings.width == 'boxed' %}
@@ -10,8 +11,8 @@
           {% for tab in section.blocks %}
             {% if tab.type == 'tab' %}
               <li class="nav-tab-item" role="presentation">
-                <a href="#{{ tab.settings.tab_id }}" 
-                   class="font-2 tab-link {% if tab.settings.tab_id == active_tab %}active{% endif %}" 
+                <a href="#tab-{{ forloop.index0 }}" 
+                   class="font-2 tab-link {% if forloop.index0 == active_tab %}active{% endif %}" 
                    data-bs-toggle="tab">
                   {{ tab.settings.tab_title }}
                 </a>
@@ -24,8 +25,8 @@
       <div class="tab-content">
         {% for tab in section.blocks %}
           {% if tab.type == 'tab' %}
-            <div class="tab-pane {% if tab.settings.tab_id == active_tab %}active show{% endif %}" 
-                 id="{{ tab.settings.tab_id }}" 
+            <div class="tab-pane {% if forloop.index0 == active_tab %}active show{% endif %}" 
+                 id="tab-{{ forloop.index0 }}" 
                  role="tabpanel">
               <div class="tf-grid-layout tf-col-2 md-col-3 xl-col-4">
                 {%- assign collection = collections[tab.settings.collection] -%}
@@ -60,26 +61,6 @@
   "name": "Product Tabs",
   "settings": [
     {
-      "type": "select",
-      "id": "default_tab",
-      "label": "Default Active Tab",
-      "options": [
-        {
-          "value": "seller",
-          "label": "Top Sellers"
-        },
-        {
-          "value": "onSale",
-          "label": "On Sale"
-        },
-        {
-          "value": "trending",
-          "label": "Trending"
-        }
-      ],
-      "default": "seller"
-    },
-    {
         "type": "select",
         "id": "width",
         "label": "Section width",
@@ -108,12 +89,6 @@
           "default": "Top Sellers"
         },
         {
-          "type": "text",
-          "id": "tab_id",
-          "label": "Tab ID",
-          "default": "seller"
-        },
-        {
           "type": "collection",
           "id": "collection",
           "label": "Collection"
@@ -138,22 +113,19 @@
         {
           "type": "tab",
           "settings": {
-            "tab_title": "Top Sellers",
-            "tab_id": "seller"
+            "tab_title": "Top Sellers"
           }
         },
         {
           "type": "tab",
           "settings": {
-            "tab_title": "On Sale",
-            "tab_id": "onSale"
+            "tab_title": "On Sale"
           }
         },
         {
           "type": "tab",
           "settings": {
-            "tab_title": "Trending",
-            "tab_id": "trending"
+            "tab_title": "Trending"
           }
         }
       ]
