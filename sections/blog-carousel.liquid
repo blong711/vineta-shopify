@@ -1,5 +1,5 @@
 {% if section.settings.layout == 'layout1' %}
-<section class="flat-spacing-3 {% if section.settings.layout == 'home-bicycle' %}pb-0{% else %} pt-0{% endif %} section-{{ section.id }}-padding" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+<section class="flat-spacing-3 {% if section.settings.layout == 'home-bicycle' %}pb-0{% else %} pt-0{% endif %} section-{{ section.id }}-padding {% if section.settings.width == 'full' %} section-full-width{% endif %}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   {% if section.settings.width == 'boxed' %}
     <div class="container">
   {% endif %}
@@ -82,7 +82,9 @@
     <div class="container">
   {% endif %}
     <div class="flat-title-v2 text-center justify-items-center wow fadeInUp">
-      <a href="{{ section.settings.blog.url }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.blog_button_text }}</a>
+      {% if section.settings.blog_button_url != blank %}
+        <a href="{{ section.settings.blog_button_url }}" class="tf-btn btn-out-line-green btn-small text-uppercase">{{ section.settings.blog_button_text }}</a>
+      {% endif %}
       <h4 class="text-capitalize">{{ section.settings.title }}</h4>
     </div>
     <div class="fl-control-sw wow fadeInUp">
@@ -338,6 +340,12 @@
       "label": "Blog Button Text",
       "default": "OUR BLOG",
       "info": "Only used in Layout 2"
+    },
+    {
+      "type": "url",
+      "id": "blog_button_url",
+      "label": "Blog Button URL",
+      "default": "/blogs/news"
     },
     {
       "type": "text",
