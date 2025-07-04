@@ -49,6 +49,7 @@
                                     data-src="{{ block.settings.custom_image | default: collection.featured_image | image_url }}" 
                                     alt="{{ collection.title | escape }}" 
                                     class="lazyload"
+                                    style="min-width: 599px;"
                                     width="{{ block.settings.custom_image.width | default: collection.featured_image.width }}"
                                     height="{{ block.settings.custom_image.height | default: collection.featured_image.height }}">
                             </div>
