@@ -371,14 +371,16 @@
       "id": "show_meta_list",
       "label": "Show meta information",
       "default": true,
-      "info": "Shows author, date, and comments count"
+      "info": "Shows author, date, and comments count",
+      "visible_if": "{{ section.settings.layout == 'layout3' or section.settings.layout == 'layout2' }}"
     },
     {
       "type": "checkbox",
       "id": "show_description",
       "label": "Show article description",
       "default": true,
-      "info": "Shows article excerpt/content"
+      "info": "Shows article excerpt/content",
+      "visible_if": "{{ section.settings.layout == 'layout3' or section.settings.layout == 'layout2' }}"
     },
     {
       "type": "checkbox",
