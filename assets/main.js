@@ -43,6 +43,9 @@
     if ($(".image-select").length > 0) {
       const selectIMG = $(".image-select");
 
+      // Destroy existing selectpicker instances to avoid conflicts
+      selectIMG.selectpicker('destroy');
+
       selectIMG.find("option").each((idx, elem) => {
         const selectOption = $(elem);
         const imgURL = selectOption.attr("data-thumbnail");
@@ -959,9 +962,6 @@
     });
   };
 
-
-
-
   // Dom Ready
   $(function () {
     selectImages();
@@ -999,5 +999,29 @@
     goTop();
     new WOW().init();
     
+  });
+
+  // Shopify Section Rendering Event Handler
+  $(document).on('shopify:section:load', function(event) {
+    // Re-initialize image-select elements when any section is loaded
+    if ($(".image-select").length > 0) {
+      // Destroy existing selectpicker instances to avoid conflicts
+      $(".image-select").selectpicker('destroy');
+      // Re-initialize
+      selectImages();
+    }
+  });
+
+  // Specific handler for top-bar section updates
+  $(document).on('shopify:section:load', '#shopify-section-top-bar', function(event) {
+    // Small delay to ensure DOM is fully updated
+    setTimeout(function() {
+      if ($(".image-select").length > 0) {
+        // Destroy existing selectpicker instances
+        $(".image-select").selectpicker('destroy');
+        // Re-initialize
+        selectImages();
+      }
+    }, 100);
   });
 })(jQuery);
