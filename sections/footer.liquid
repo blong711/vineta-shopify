@@ -2,9 +2,7 @@
 <footer
   id="footer"
   class="footer-default {% if template == 'product' %}footer-pb-2{% else %}xl-pb-70{% endif %}
-    {% if section.settings.text_size == 'small' %} text-sm{% elsif section.settings.text_size == 'large' %} text-lg{% else %} text-md{% endif %}
-    {% if section.settings.border == 'top' %} footer-border-top{% elsif section.settings.border == 'bottom' %} footer-border-bottom{% endif %}
-    {% if section.settings.border_main_position == 'full_width' %} footer-border-full{% else %} footer-border-container{% endif %}"
+    {% if section.settings.text_size == 'small' %} text-sm{% elsif section.settings.text_size == 'large' %} text-lg{% else %} text-md{% endif %}"
   style="padding-top: {{ section.settings.padding_top_main }}px; padding-bottom: {{ section.settings.padding_bottom_main }}px;"
 >
   <div class="footer-top">
@@ -309,7 +307,7 @@
       "default": true
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "payment_icons",
       "label": "Payment Icons",
       "info": "Enter payment types separated by commas (e.g., visa, mastercard, paypal). Leave blank to show all enabled payment types.",
@@ -368,42 +366,6 @@
         }
       ],
       "default": "medium"
-    },
-    {
-      "type": "select",
-      "id": "border",
-      "label": "Border Position",
-      "options": [
-        {
-          "value": "none",
-          "label": "None"
-        },
-        {
-          "value": "top",
-          "label": "Top"
-        },
-        {
-          "value": "bottom",
-          "label": "Bottom"
-        }
-      ],
-      "default": "top"
-    },
-    {
-      "type": "select",
-      "id": "border_main_position",
-      "label": "Border Width",
-      "options": [
-        {
-          "value": "full_width",
-          "label": "Full Width"
-        },
-        {
-          "value": "container_width",
-          "label": "Container Width"
-        }
-      ],
-      "default": "container_width"
     },
     {
       "type": "header",
