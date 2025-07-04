@@ -1,5 +1,6 @@
 <!-- Collection -->
 {% if section.settings.layout == 'layout2' %}
+    <section class="{% if section.settings.width == 'full' %} section-full-width{% endif %}">
     {% if section.settings.width == 'boxed' %}
         <div class="container">
     {% endif %}
@@ -67,7 +68,9 @@
     {% if section.settings.width == 'boxed' %}
         </div>
     {% endif %}
+    </section>
 {% elsif section.settings.layout == 'layout3' %}
+    <section class="{% if section.settings.width == 'full' %} section-full-width{% endif %}">
     {% if section.settings.width == 'boxed' %}
         <div class="container">
     {% endif %}
@@ -159,7 +162,9 @@
     {% if section.settings.width == 'boxed' %}
         </div>
     {% endif %}
+    </section>
 {% elsif section.settings.layout == 'layout4' %}
+    <section class="{% if section.settings.width == 'full' %} section-full-width{% endif %}">
     {% if section.settings.width == 'boxed' %}
         <div class="container">
     {% endif %}
@@ -234,8 +239,9 @@
     {% if section.settings.width == 'boxed' %}
         </div>
     {% endif %}
+    </section>
 {% else %}
-    <div class="pt-24">
+    <section class="pt-24{% if section.settings.width == 'full' %} section-full-width{% endif %}">
         {% if section.settings.width == 'boxed' %}
             <div class="container">
         {% endif %}
@@ -313,7 +319,7 @@
         {% if section.settings.width == 'boxed' %}
             </div>
         {% endif %}
-    </div>
+    </section>
 {% endif %}
 <!-- /Collection -->
 
