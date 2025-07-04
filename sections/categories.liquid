@@ -141,7 +141,7 @@
                       {%- assign collection = collections[block.settings.collection] -%}
                       <div class="swiper-slide" {{ block.shopify_attributes }}>
                         <div class="wg-cls style-square hover-img">
-                          <a href="{{ collection.url }}" class="image img-style d-block">
+                          <a href="{{ collection.url }}" style="aspect-ratio: 1/1;" class="image img-style d-block">
                             {%- if collection.featured_image != blank -%}
                               {{ collection.featured_image | image_url: width: 300 | image_tag:
                                 loading: 'lazy',
@@ -219,7 +219,7 @@
                   {%- assign collection = collections[block.settings.collection] -%}
                   <div class="swiper-slide" {{ block.shopify_attributes }}>
                     <div class="wg-cls style-abs type-2 hover-img">
-                      <a href="{{ collection.url }}" class="image img-style d-block">
+                      <a href="{{ collection.url }}" style="aspect-ratio: 4/5;" class="image img-style d-block">
                         {%- if collection.featured_image != blank -%}
                           {{ collection.featured_image | image_url: width: 300 | image_tag:
                             loading: 'lazy',
@@ -391,8 +391,9 @@
       "min": 1,
       "max": 3,
       "step": 1,
-      "label": "Slides per view (Mobile)",
-      "default": 2
+      "label": "Items per view (Mobile)",
+      "default": 2,
+      "visible_if": "{{ section.settings.layout == 'layout1' or section.settings.layout == 'layout2' }}"
     },
     {
       "type": "range",
@@ -400,8 +401,9 @@
       "min": 2,
       "max": 4,
       "step": 1,
-      "label": "Slides per view (Tablet)",
-      "default": 3
+      "label": "Items per view (Tablet)",
+      "default": 3,
+      "visible_if": "{{ section.settings.layout == 'layout1' or section.settings.layout == 'layout2' }}"
     },
     {
       "type": "range",
@@ -409,8 +411,9 @@
       "min": 3,
       "max": 8,
       "step": 1,
-      "label": "Slides per view (Desktop)",
-      "default": 6
+      "label": "Items per view (Desktop)",
+      "default": 6,
+      "visible_if": "{{ section.settings.layout == 'layout1' or section.settings.layout == 'layout2' }}"
     },
     {
       "type": "range",
@@ -418,7 +421,7 @@
       "min": 0,
       "max": 30,
       "step": 2,
-      "label": "Space between slides (Mobile)",
+      "label": "Space between items (Mobile)",
       "default": 12,
       "unit": "px"
     },
@@ -428,7 +431,7 @@
       "min": 0,
       "max": 48,
       "step": 2,
-      "label": "Space between slides (Tablet)",
+      "label": "Space between items (Tablet)",
       "default": 24,
       "unit": "px"
     },
@@ -438,7 +441,7 @@
       "min": 0,
       "max": 64,
       "step": 4,
-      "label": "Space between slides (Desktop)",
+      "label": "Space between items (Desktop)",
       "default": 64,
       "unit": "px"
     },
