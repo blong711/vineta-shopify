@@ -339,13 +339,13 @@
       "id": "blog_button_text",
       "label": "Blog Button Text",
       "default": "OUR BLOG",
-      "info": "Only used in Layout 2"
+      "visible_if": "{{ section.settings.layout == 'layout2' }}"
     },
     {
       "type": "url",
       "id": "blog_button_url",
       "label": "Blog Button URL",
-      "default": "/blogs/news"
+      "visible_if": "{{ section.settings.layout == 'layout2' }}"
     },
     {
       "type": "text",
