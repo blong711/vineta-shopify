@@ -1,8 +1,5 @@
 {%- if section.blocks.size > 0 -%}
-  <div class="marquee-sale bg-light-green-2">
-    {% if section.settings.width == 'boxed' %}
-      <div class="container">
-    {% endif %}
+  <div class="marquee-sale" style="background-color: {{ section.settings.background_color }};">
       <div class="marquee-wrapper">
         <div class="initial-child-container">
           {%- for block in section.blocks -%}
@@ -28,9 +25,6 @@
           {%- endfor -%}
         </div>
       </div>
-    {% if section.settings.width == 'boxed' %}
-      </div>
-    {% endif %}
   </div>
 {%- endif -%}
 
@@ -39,26 +33,10 @@
   "name": "Marquee Text",
   "settings": [
     {
-      "type": "select",
-      "id": "width",
-      "label": "Section width",
-      "options": [
-        {
-          "value": "full",
-          "label": "Full width"
-        },
-        {
-          "value": "boxed",
-          "label": "Boxed"
-        }
-      ],
-      "default": "full"
-    },
-    {
       "type": "color",
       "id": "background_color",
       "label": "Background Color",
-      "default": "#E8F5E9"
+      "default": "#74da30"
     }
   ],
   "blocks": [
