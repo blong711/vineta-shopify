@@ -24,7 +24,8 @@
         {% if section.settings.autoplay %}
         "autoplay": {
           "delay": {{ section.settings.autoplay_speed }},
-          "disableOnInteraction": false
+          "disableOnInteraction": false,
+          "pauseOnMouseEnter": {{ section.settings.pause_on_hover | json }}
         },
         {% endif %}
         "breakpoints": {
@@ -106,7 +107,8 @@
         {% if section.settings.autoplay %}
         "autoplay": {
           "delay": {{ section.settings.autoplay_speed }},
-          "disableOnInteraction": false
+          "disableOnInteraction": false,
+          "pauseOnMouseEnter": {{ section.settings.pause_on_hover | json }}
         },
         {% endif %}
         "breakpoints": {
@@ -215,7 +217,8 @@
         {% if section.settings.autoplay %}
         "autoplay": {
           "delay": {{ section.settings.autoplay_speed }},
-          "disableOnInteraction": false
+          "disableOnInteraction": false,
+          "pauseOnMouseEnter": {{ section.settings.pause_on_hover | json }}
         },
         {% endif %}
         "breakpoints": {
@@ -394,6 +397,13 @@
       "default": 5000
     },
     {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause autoplay on hover",
+      "default": true,
+      "info": "Pauses autoplay when user hovers over the carousel"
+    },
+    {
       "type": "header",
       "content": "Mobile settings"
     },
@@ -403,7 +413,7 @@
       "min": 1,
       "max": 3,
       "step": 1,
-      "label": "Slides per view",
+      "label": "Items per view",
       "default": 1
     },
     {
@@ -413,7 +423,7 @@
       "max": 30,
       "step": 2,
       "unit": "px",
-      "label": "Space between slides",
+      "label": "Space between items",
       "default": 12
     },
     {
@@ -426,7 +436,7 @@
       "min": 1,
       "max": 4,
       "step": 1,
-      "label": "Slides per view",
+      "label": "Items per view",
       "default": 2
     },
     {
@@ -436,7 +446,7 @@
       "max": 30,
       "step": 2,
       "unit": "px",
-      "label": "Space between slides",
+      "label": "Space between items",
       "default": 12
     },
     {
@@ -449,7 +459,7 @@
       "min": 1,
       "max": 6,
       "step": 1,
-      "label": "Slides per view",
+      "label": "Items per view",
       "default": 3
     },
     {
@@ -459,7 +469,7 @@
       "max": 30,
       "step": 2,
       "unit": "px",
-      "label": "Space between slides",
+      "label": "Space between items",
       "default": 24
     },
     {
