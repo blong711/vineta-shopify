@@ -84,18 +84,17 @@
         {% if section.settings.enable_gift_wrap %}
         <div class="tf-mini-cart-tool-openable add-gift">
           <div class="overplay tf-mini-cart-tool-close"></div>
-          <form action="/cart" method="post" class="tf-mini-cart-tool-content">
+          <div class="tf-mini-cart-tool-content">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.gift_wrap.title' | t }}</div>
             {% assign gift_wrap_product = all_products[section.settings.gift_wrap_product] %}
             <div style="font-size: 14px;" class="tf-mini-cart-tool-text1">The product will be wrapped carefully. Fee is only 
               <span class="text fw-medium text-dark">{{ gift_wrap_product.price | money }}</span>. Do you want a gift wrap?
             </div>
-            <input type="hidden" name="attributes[gift_wrap]" value="true">
             <div class="tf-cart-tool-btns">
-              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">{{ 'cart.drawer.gift_wrap.save' | t }}</button>
+              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100 btn-add-gift-confirm">{{ 'cart.drawer.gift_wrap.save' | t }}</button>
               <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">{{ 'cart.drawer.gift_wrap.close' | t }}</div>
             </div>
-          </form>
+          </div>
         </div>
         {% endif %}
         {% if section.settings.enable_order_note %}
@@ -183,6 +182,257 @@
     const zipcodeMessage = document.getElementById('zipcode-message');
     const zipcodeSuccess = document.getElementById('zipcode-success');
     const shippingForm = document.getElementById('shipping-form');
+    
+    // Gift wrap functionality
+    const giftWrapBtn = document.querySelector('.btn-add-gift');
+    const giftWrapConfirmBtn = document.querySelector('.btn-add-gift-confirm');
+    
+    if (giftWrapBtn) {
+      giftWrapBtn.addEventListener('click', function() {
+        // Show the gift wrap confirmation dialog
+        const giftWrapDialog = document.querySelector('.add-gift');
+        if (giftWrapDialog) {
+          giftWrapDialog.classList.add('show');
+        }
+      });
+        }
+    
+    // Close gift wrap dialog functionality
+    const giftWrapCloseBtns = document.querySelectorAll('.add-gift .tf-mini-cart-tool-close, .add-gift .overplay');
+    giftWrapCloseBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const giftWrapDialog = document.querySelector('.add-gift');
+        if (giftWrapDialog) {
+          giftWrapDialog.classList.remove('show');
+        }
+      });
+    });
+    
+    if (giftWrapConfirmBtn) {
+        giftWrapConfirmBtn.addEventListener('click', async function() {
+          const originalButtonText = this.textContent;
+        
+        // Show loading state
+        this.disabled = true;
+        this.textContent = 'Adding...';
+        
+        try {
+          // Get gift wrap product ID
+          {% if section.settings.gift_wrap_product != blank %}
+            {% assign gift_wrap_product = all_products[section.settings.gift_wrap_product] %}
+            {% if gift_wrap_product.id != blank %}
+              const giftWrapProductId = {{ gift_wrap_product.variants[0].id }};
+            {% else %}
+              console.error('Gift wrap product not found');
+              this.textContent = 'Error: Gift wrap product not found';
+              this.disabled = false;
+              return;
+            {% endif %}
+          {% else %}
+            console.error('Gift wrap product not configured');
+            this.textContent = 'Error: Gift wrap not configured';
+            this.disabled = false;
+            return;
+          {% endif %}
+          
+          console.log('Adding gift wrap product with ID:', giftWrapProductId);
+          
+          // Add gift wrap product to cart via AJAX
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+              items: [{
+                id: giftWrapProductId,
+                quantity: 1,
+                properties: {
+                  '_gift_wrap': true
+                }
+              }]
+            })
+          });
+          
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Cart add response not ok:', response.status, errorText);
+            throw new Error(`Failed to add gift wrap to cart: ${response.status}`);
+          }
+          
+          const cartData = await response.json();
+          console.log('Gift wrap added successfully:', cartData);
+          
+          // Show success message briefly
+          this.textContent = 'Added!';
+
+          setTimeout(async () => {
+            this.textContent = originalButtonText;
+            this.disabled = false;
+            
+            // Close the gift wrap dialog
+            const giftWrapDialog = document.querySelector('.add-gift');
+            if (giftWrapDialog) {
+              giftWrapDialog.classList.remove('show');
+            }
+            
+            // Inline cart drawer update logic
+            try {
+              const cartResponse = await fetch('/cart.js');
+              const cartData = await cartResponse.json();
+
+              // Update cart items in drawer
+              const cartDrawer = document.getElementById('shoppingCart');
+              if (cartDrawer) {
+                const itemsContainer = cartDrawer.querySelector('.tf-mini-cart-items');
+                if (itemsContainer) {
+                  itemsContainer.innerHTML = '';
+                  for (const item of cartData.items) {
+                    // Fetch product data for variants
+                    let productData = null;
+                    try {
+                      const productResponse = await fetch(`/products/${item.handle}.js`);
+                      productData = await productResponse.json();
+                    } catch (e) {}
+                    let variantOptions = '';
+                    if (productData && productData.variants && productData.variants.length > 1) {
+                      variantOptions = `<div class="info-variant"><select class="text-xs" data-variant-id="${item.variant_id}">` +
+                        productData.variants.map(variant => {
+                          const options = variant.options.join(' / ');
+                          return `<option value="${variant.id}"${variant.id === item.variant_id ? ' selected' : ''}>${options}</option>`;
+                        }).join('') +
+                        `</select><i class="icon-pen edit"></i></div>`;
+                    }
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'tf-mini-cart-item';
+                    itemElement.innerHTML = `
+                      <div class="tf-mini-cart-image">
+                        <a href="${item.url}">
+                          <img class="lazyload" data-src="${item.image}" src="${item.image}" alt="${item.title}" loading="lazy">
+                        </a>
+                      </div>
+                      <div class="tf-mini-cart-info">
+                        <div class="d-flex justify-content-between">
+                          <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
+                          <i class="icon icon-close remove fs-12" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
+                        </div>
+                        ${variantOptions}
+                        <div class="tf-mini-cart-item_price">
+                          <p class="price-wrap text-sm fw-medium">
+                            <span class="new-price text-primary">$${(item.final_price/100).toFixed(2)}</span>
+                          </p>
+                        </div>
+                        <div class="tf-mini-cart-item_quantity">
+                          <div class="wg-quantity small">
+                            <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
+                            <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
+                            <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
+                          </div>
+                        </div>
+                      </div>
+                    `;
+                    itemsContainer.appendChild(itemElement);
+                  }
+                }
+                // Update cart total
+                const totalElement = cartDrawer.querySelector('.cart-total-price');
+                if (totalElement) {
+                  totalElement.textContent = `$${(cartData.total_price/100).toFixed(2)}`;
+                }
+                // Update cart count
+                document.querySelectorAll('.cart-count').forEach(element => {
+                  element.textContent = cartData.item_count || '0';
+                });
+                // Update shipping threshold
+                const threshold = 100 * 100;
+                const progress = Math.min(100, (cartData.total_price / threshold) * 100);
+                const remaining = Math.max(0, threshold - cartData.total_price) / 100;
+                const progressBar = cartDrawer.querySelector('.tf-progress-bar .value');
+                if (progressBar) {
+                  progressBar.style.width = `${progress}%`;
+                  progressBar.setAttribute('data-progress', progress);
+                }
+                const thresholdText = cartDrawer.querySelector('.tf-mini-cart-threshold .text');
+                if (thresholdText) {
+                  if (cartData.total_price >= threshold) {
+                    thresholdText.innerHTML = 'Congratulations! You\'ve unlocked <span class="fw-medium">Free Shipping</span>';
+                  } else {
+                    thresholdText.innerHTML = `Spend <span class="fw-medium">$${remaining.toFixed(2)}</span> more to get <span class="fw-medium">Free Shipping</span>`;
+                  }
+                }
+                // Re-initialize quantity controls (basic)
+                itemsContainer.querySelectorAll('.btn-decrease').forEach(button => {
+                  button.addEventListener('click', async function() {
+                    const variantId = this.dataset.variantId;
+                    const input = this.parentElement.querySelector('.quantity-product');
+                    let currentValue = parseInt(input.value);
+                    if (currentValue > 1) {
+                      currentValue--;
+                      input.value = currentValue;
+                      await fetch('/cart/change.js', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: variantId, quantity: currentValue })
+                      });
+                    }
+                  });
+                });
+                itemsContainer.querySelectorAll('.btn-increase').forEach(button => {
+                  button.addEventListener('click', async function() {
+                    const variantId = this.dataset.variantId;
+                    const input = this.parentElement.querySelector('.quantity-product');
+                    let currentValue = parseInt(input.value);
+                    currentValue++;
+                    input.value = currentValue;
+                    await fetch('/cart/change.js', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ id: variantId, quantity: currentValue })
+                    });
+                  });
+                });
+                itemsContainer.querySelectorAll('.quantity-product').forEach(input => {
+                  input.addEventListener('change', async function() {
+                    const variantId = this.dataset.variantId;
+                    let newValue = parseInt(this.value);
+                    if (isNaN(newValue) || newValue < 1) newValue = 1;
+                    this.value = newValue;
+                    await fetch('/cart/change.js', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ id: variantId, quantity: newValue })
+                    });
+                  });
+                });
+                itemsContainer.querySelectorAll('.remove').forEach(button => {
+                  button.addEventListener('click', async function() {
+                    const variantId = this.dataset.variantId;
+                    await fetch('/cart/change.js', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ id: variantId, quantity: 0 })
+                    });
+                    // Remove item from DOM
+                    this.closest('.tf-mini-cart-item').remove();
+                  });
+                });
+              }
+            } catch (err) {
+              console.error('Failed to update cart drawer:', err);
+            }
+          }, 1000);
+          
+        } catch (error) {
+          console.error('Error adding gift wrap to cart:', error);
+          this.textContent = '{{ 'cart_drawer_error_try_again' | t }}';
+          setTimeout(() => {
+            this.textContent = originalButtonText;
+            this.disabled = false;
+          }, 2000);
+        }
+      });
+    }
     
     // Cart note form handling
     const cartNoteForm = document.getElementById('cart-note-form');
