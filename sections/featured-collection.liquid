@@ -1,9 +1,10 @@
 <!-- Collection -->
 {% if section.settings.layout == 'layout2' %}
-    <section class="{% if section.settings.width == 'full' %} section-full-width{% endif %}">
+    <section class="{% if section.settings.width == 'full' %}section-full-width{% endif %}">
     {% if section.settings.width == 'boxed' %}
         <div class="container">
     {% endif %}
+    <div class="fl-control-sw2">
         <div dir="ltr" class="swiper tf-swiper" data-swiper='{
             "slidesPerView": {{ section.settings.slides_per_view_mobile }},
             "spaceBetween": {{ section.settings.space_between_mobile }},
@@ -74,6 +75,7 @@
         <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls"></div>
         <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls"></div>
     {% endif %}
+    </div>
     {% if section.settings.width == 'boxed' %}
         </div>
     {% endif %}
@@ -83,6 +85,7 @@
     {% if section.settings.width == 'boxed' %}
         <div class="container">
     {% endif %}
+    <div class="fl-control-sw2">
         <div class="mx_40 my_24">
             <div dir="ltr" class="swiper tf-swiper" data-swiper='{
                 "slidesPerView": {{ section.settings.slides_per_view_mobile }},
@@ -172,6 +175,7 @@
             <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls"></div>
             <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls"></div>
         {% endif %}
+    </div>
     {% if section.settings.width == 'boxed' %}
         </div>
     {% endif %}
@@ -181,6 +185,7 @@
     {% if section.settings.width == 'boxed' %}
         <div class="container">
     {% endif %}
+    <div class="fl-control-sw2">
         <div class="tf-slideshow slider-viewport slider-fashion-2">
             <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp" data-preview="3" data-tablet="2" data-mobile="1.5" data-space="15" data-space-mb="5" data-swiper='{
                 "slidesPerView": {{ section.settings.slides_per_view_mobile }},
@@ -253,6 +258,7 @@
             <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls"></div>
             <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls"></div>
         {% endif %}
+    </div>
     {% if section.settings.width == 'boxed' %}
         </div>
     {% endif %}
