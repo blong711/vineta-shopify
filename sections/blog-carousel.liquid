@@ -21,10 +21,12 @@
           "prevEl": ".nav-prev-new"
         },
         "pagination": { "el": ".sw-pagination-new", "clickable": true },
+        {% if section.settings.autoplay %}
         "autoplay": {
           "delay": {{ section.settings.autoplay_speed }},
           "disableOnInteraction": false
         },
+        {% endif %}
         "breakpoints": {
           "577": { 
             "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
@@ -101,10 +103,12 @@
           "prevEl": ".nav-prev-new"
         },
         "pagination": { "el": ".sw-pagination-new", "clickable": true },
+        {% if section.settings.autoplay %}
         "autoplay": {
           "delay": {{ section.settings.autoplay_speed }},
           "disableOnInteraction": false
         },
+        {% endif %}
         "breakpoints": {
           "577": { 
             "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
@@ -208,6 +212,12 @@
           "prevEl": ".nav-prev-new"
         },
         "pagination": { "el": ".sw-pagination-new", "clickable": true },
+        {% if section.settings.autoplay %}
+        "autoplay": {
+          "delay": {{ section.settings.autoplay_speed }},
+          "disableOnInteraction": false
+        },
+        {% endif %}
         "breakpoints": {
           "577": { 
             "slidesPerView": {{ section.settings.slides_per_view_tablet }}, 
