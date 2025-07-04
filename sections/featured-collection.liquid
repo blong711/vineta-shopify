@@ -1,4 +1,5 @@
 <!-- Collection -->
+<section class="{% if section.settings.width == 'full' %}section-full-width{% endif %}">
 {% if section.settings.layout == 'layout2' %}
     {% if section.settings.width == 'boxed' %}
         <div class="container">
@@ -315,6 +316,7 @@
         {% endif %}
     </div>
 {% endif %}
+</section>
 <!-- /Collection -->
 
 {% schema %}
