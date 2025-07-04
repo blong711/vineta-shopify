@@ -11,7 +11,7 @@
                     {% for block in section.blocks %}
                         {% if block.type == 'tab' %}
                             <li class="nav-tab-item" role="presentation" {{ block.shopify_attributes }}>
-                                <a href="#{{ block.settings.tab_id }}" 
+                                <a href="#{{ block.id }}" 
                                    class="tab-link {% if forloop.first %}active{% endif %}" 
                                    data-bs-toggle="tab">
                                     {{ block.settings.tab_title }}
@@ -25,7 +25,7 @@
                 {% for block in section.blocks %}
                     {% if block.type == 'tab' %}
                         <div class="tab-pane {% if forloop.first %}active show{% endif %}" 
-                             id="{{ block.settings.tab_id }}" 
+                             id="{{ block.id }}" 
                              role="tabpanel" 
                              {{ block.shopify_attributes }}>
                             <div dir="ltr" 
@@ -39,11 +39,11 @@
                                     "slidesPerGroup": {{ section.settings.slides_per_group_mobile }},
                                     "navigation": {% if section.settings.show_navigation %}{
                                         "clickable": true,
-                                        "nextEl": ".nav-next-{{ block.settings.tab_id }}",
-                                        "prevEl": ".nav-prev-{{ block.settings.tab_id }}"
+                                        "nextEl": ".nav-next-{{ block.id }}",
+                                        "prevEl": ".nav-prev-{{ block.id }}"
                                     }{% else %}false{% endif %},
                                     "pagination": {% if section.settings.show_pagination %}{
-                                        "el": ".sw-pagination-{{ block.settings.tab_id }}",
+                                        "el": ".sw-pagination-{{ block.id }}",
                                         "clickable": true,
                                         "type": "progressbar"
                                     }{% else %}false{% endif %},
@@ -80,7 +80,7 @@
                                         </div>
                                     {% endfor %}
                                 </div>
-                                <div class="sw-pagination-{{ block.settings.tab_id }} position-relative"></div>
+                                <div class="sw-pagination-{{ block.id }} position-relative"></div>
                             </div>
                         </div>
                     {% endif %}
@@ -117,7 +117,7 @@
             "min": 1,
             "max": 3,
             "step": 1,
-            "label": "Slides per view (Mobile)",
+            "label": "Items per view (Mobile)",
             "default": 2
         },
         {
@@ -126,7 +126,7 @@
             "min": 2,
             "max": 5,
             "step": 1,
-            "label": "Slides per view (Tablet)",
+            "label": "Items per view (Tablet)",
             "default": 3
         },
         {
@@ -135,7 +135,7 @@
             "min": 3,
             "max": 6,
             "step": 1,
-            "label": "Slides per view (Desktop)",
+            "label": "Items per view (Desktop)",
             "default": 4
         },
         {
@@ -144,7 +144,7 @@
             "min": 1,
             "max": 3,
             "step": 1,
-            "label": "Slides per group (Mobile)",
+            "label": "Items per group (Mobile)",
             "default": 2
         },
         {
@@ -153,7 +153,7 @@
             "min": 1,
             "max": 3,
             "step": 1,
-            "label": "Slides per group (Tablet)",
+            "label": "Items per group (Tablet)",
             "default": 3
         },
         {
@@ -162,7 +162,7 @@
             "min": 1,
             "max": 4,
             "step": 1,
-            "label": "Slides per group (Desktop)",
+            "label": "Items per group (Desktop)",
             "default": 4
         },
         {
@@ -171,8 +171,9 @@
             "min": 0,
             "max": 30,
             "step": 2,
-            "label": "Space between slides (Mobile)",
-            "default": 12
+            "label": "Space between items (Mobile)",
+            "default": 12,
+            "unit": "px"
         },
         {
             "type": "range",
@@ -180,8 +181,9 @@
             "min": 0,
             "max": 50,
             "step": 2,
-            "label": "Space between slides (Desktop)",
-            "default": 24
+            "label": "Space between items (Desktop)",
+            "default": 24,
+            "unit": "px"
         },
         {
             "type": "range",
@@ -189,14 +191,9 @@
             "min": 300,
             "max": 2000,
             "step": 100,
-            "label": "Transition speed (ms)",
-            "default": 800
-        },
-        {
-            "type": "checkbox",
-            "id": "show_navigation",
-            "label": "Show navigation buttons",
-            "default": true
+            "label": "Transition speed",
+            "default": 800,
+            "unit": "ms"
         },
         {
             "type": "checkbox",
@@ -216,8 +213,9 @@
             "min": 1000,
             "max": 9000,
             "step": 500,
-            "label": "Autoplay speed (ms)",
-            "default": 3000
+            "label": "Autoplay speed",
+            "default": 3000,
+            "unit": "ms"
         },
         {
             "type": "checkbox",
@@ -245,12 +243,6 @@
                     "default": "iPhone"
                 },
                 {
-                    "type": "text",
-                    "id": "tab_id",
-                    "label": "Tab ID",
-                    "default": "iphone"
-                },
-                {
                     "type": "collection",
                     "id": "collection",
                     "label": "Collection"
@@ -275,22 +267,19 @@
                 {
                     "type": "tab",
                     "settings": {
-                        "tab_title": "iPhone",
-                        "tab_id": "iphone"
+                        "tab_title": "iPhone"
                     }
                 },
                 {
                     "type": "tab",
                     "settings": {
-                        "tab_title": "Android",
-                        "tab_id": "android"
+                        "tab_title": "Android"
                     }
                 },
                 {
                     "type": "tab",
                     "settings": {
-                        "tab_title": "Personalized",
-                        "tab_id": "personalized"
+                        "tab_title": "Personalized"
                     }
                 }
             ]
