@@ -330,14 +330,8 @@
     },
     {
       "type": "color",
-      "id": "icon_color",
-      "label": "Icon color",
-      "default": "#333333"
-    },
-    {
-      "type": "color",
-      "id": "icon_hover_color",
-      "label": "Icon hover color",
+      "id": "hover_color",
+      "label": "Hover color",
       "default": "#666666"
     },
     {
@@ -881,8 +875,7 @@
         "layout": "layout-1",
         "background_color": "#ffffff",
         "text_color": "#333333",
-        "icon_color": "#333333",
-        "icon_hover_color": "#666666",
+        "hover_color": "#666666",
         "mobile_menu_background": "#ffffff",
         "mobile_menu_text_color": "#333333",
         "dropdown_animation": "fade",
@@ -997,21 +990,20 @@ document.addEventListener('DOMContentLoaded', function() {
   margin: 0;
 }
 
+/* Hover effects for all interactive elements */
+.box-nav-menu .menu-item > a:hover,
+.nav-icon-item:hover,
+.logo-header:hover,
+.mobile-menu:hover {
+  color: {{ section.settings.hover_color }} !important;
+}
+
 /* Submenu Styles */
 /* .sub-menu {
   background-color: {{ section.settings.dropdown_background }};
   color: {{ section.settings.dropdown_text_color }};
   padding: {{ section.settings.dropdown_padding }}px;
 } */
-
-/* Icon Styles */
-.nav-icon-item {
-  color: {{ section.settings.icon_color }} !important;
-}
-
-.nav-icon-item:hover {
-  color: {{ section.settings.icon_hover_color }} !important;
-}
 
 /* Mobile Menu Styles */
 @media (max-width: 1199px) {
