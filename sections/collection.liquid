@@ -664,7 +664,7 @@
           {% endif %}
         {% else %}
           {% if paginate.next %}
-            <div class="wd-load d-flex justify-content-center" id="infiniteScrollLoader" style="display: none;">
+            <div class="wd-load d-flex justify-content-center" id="infiniteScrollLoader" style="display: block;">
               <button class="tf-btn btn-dark2 tf-loading animate-btn animate-dark">
                 <div class="spinner-circle">
                   <span class="spinner-circle1 spinner-child"></span>
@@ -1156,7 +1156,11 @@
 
     // Main function to update products with filters and sort
     async function updateProducts(filters = null, sort = null, page = 1) {
-      if (isLoading) return;
+      console.log('updateProducts called with:', { filters, sort, page, isLoading });
+      if (isLoading) {
+        console.log('Already loading, returning early');
+        return;
+      }
       isLoading = true;
 
       try {
@@ -1192,9 +1196,11 @@
         document.body.appendChild(loadingIndicator);
 
         const url = new URL(window.location.href);
+        console.log('Original URL:', url.toString());
         
         // Update filters
         if (filters) {
+          console.log('Updating filters:', filters);
           // Clear existing filter parameters
           for (const param of url.searchParams.keys()) {
             if (param.startsWith('filter.v.')) {
@@ -1216,18 +1222,23 @@
           currentSort = sort;
         }
 
-        // Update page
+        // Update page - add page parameter for AJAX request but handle URL differently
         if (page > 1) {
           url.searchParams.set('page', page);
         } else {
           url.searchParams.delete('page');
         }
+        
+        console.log('Final URL for AJAX request:', url.toString());
 
         // Fetch updated content
+        console.log('Making fetch request to:', url.toString());
         const response = await fetch(url.toString());
+        console.log('Fetch response status:', response.status, response.ok);
         if (!response.ok) throw new Error('Network response was not ok');
         
         const html = await response.text();
+        console.log('Response HTML length:', html.length);
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
 
@@ -1235,17 +1246,30 @@
         const newGrid = doc.querySelector('.tf-grid-layout');
         const newList = doc.querySelector('.tf-list-layout');
         
+        console.log('Found new grid:', !!newGrid, 'Found new list:', !!newList);
+        console.log('New grid products count:', newGrid ? newGrid.querySelectorAll('.loadItem').length : 0);
+        console.log('New list products count:', newList ? newList.querySelectorAll('.loadItem').length : 0);
+        
         if (newGrid && productGrid) {
           if (page > 1) {
+            console.log('Appending products for page:', page);
             // Append for pagination
             const loadMoreContainer = productGrid.querySelector('.wd-load');
             if (loadMoreContainer) {
               const newProducts = newGrid.querySelectorAll('.loadItem');
+              console.log('Appending', newProducts.length, 'new products');
               newProducts.forEach(product => {
                 productGrid.insertBefore(product, loadMoreContainer);
               });
+            } else {
+              console.log('No load more container found, appending to end');
+              const newProducts = newGrid.querySelectorAll('.loadItem');
+              newProducts.forEach(product => {
+                productGrid.appendChild(product);
+              });
             }
           } else {
+            console.log('Replacing products for first page');
             // Replace for filtering/sorting
             productGrid.innerHTML = newGrid.innerHTML;
           }
@@ -1357,10 +1381,14 @@
           metaFilterShop.style.display = hasFilters ? 'flex' : 'none';
         }
 
-        // Update URL without reload
-        window.history.pushState({}, '', url.toString());
+        // Update URL without reload - but not for infinite scroll page changes
+        const currentPaginationType = document.querySelector('.wrapper-control-shop')?.dataset.paginationType;
+        if (currentPaginationType !== 'infinite_scroll' || page === 1) {
+          // Only update URL for non-infinite scroll or first page
+          window.history.pushState({}, '', url.toString());
+        }
         
-        // Update current filters
+        // Always update current filters
         currentFilters = new URLSearchParams(url.search);
         
         // Update applied filters display
@@ -1425,38 +1453,72 @@
           }
         }
 
-      } catch (error) {
-        console.error('Error updating products:', error);
-        // Show error message to user
-        const errorMessage = document.createElement('div');
-        errorMessage.className = 'alert alert-danger';
-        errorMessage.textContent = 'An error occurred while updating the products. Please try again.';
-        errorMessage.style.cssText = `
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          z-index: 9999;
-          max-width: 300px;
-        `;
-        document.body.appendChild(errorMessage);
-        setTimeout(() => errorMessage.remove(), 5000);
-      } finally {
-        isLoading = false;
-        // Restore opacity and pointer events
-        if (productGrid) {
-          productGrid.style.opacity = '1';
-          productGrid.style.pointerEvents = 'auto';
+        // Handle infinite scroll specific logic
+        const infiniteScrollType = document.querySelector('.wrapper-control-shop')?.dataset.paginationType;
+        if (infiniteScrollType === 'infinite_scroll') {
+          // For infinite scroll, we need to handle the sentinel element differently
+          if (page > 1) {
+            // Move the sentinel element to the end of the new products
+            const sentinelElement = document.getElementById('infiniteScrollLoader');
+            if (sentinelElement) {
+              const targetLayout = listLayout && listLayout.style.display === 'block' ? listLayout : gridLayout;
+              if (targetLayout) {
+                targetLayout.appendChild(sentinelElement);
+              }
+            }
+          }
+          
+          // If no more pages, remove the sentinel element and disconnect observer
+          if (!hasNextPage) {
+            const sentinelElement = document.getElementById('infiniteScrollLoader');
+            if (sentinelElement) {
+              sentinelElement.remove();
+            }
+            if (window.infiniteScrollObserver) {
+              window.infiniteScrollObserver.disconnect();
+              console.log('Infinite scroll observer disconnected - no more pages');
+            }
+          } else {
+            // Reinitialize infinite scroll observer for the new sentinel element
+            setTimeout(() => {
+              initializeInfiniteScroll();
+            }, 100);
+          }
         }
-        if (productList) {
-          productList.style.opacity = '1';
-          productList.style.pointerEvents = 'auto';
+
+              } catch (error) {
+          console.error('Error updating products:', error);
+          // Show error message to user
+          const errorMessage = document.createElement('div');
+          errorMessage.className = 'alert alert-danger';
+          errorMessage.textContent = 'An error occurred while updating the products. Please try again.';
+          errorMessage.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 300px;
+          `;
+          document.body.appendChild(errorMessage);
+          setTimeout(() => errorMessage.remove(), 5000);
+        } finally {
+          console.log('updateProducts finally block - setting isLoading to false');
+          isLoading = false;
+          // Restore opacity and pointer events
+          if (productGrid) {
+            productGrid.style.opacity = '1';
+            productGrid.style.pointerEvents = 'auto';
+          }
+          if (productList) {
+            productList.style.opacity = '1';
+            productList.style.pointerEvents = 'auto';
+          }
+          // Remove loading indicator
+          const loadingIndicator = document.querySelector('.loading-indicator');
+          if (loadingIndicator) {
+            loadingIndicator.remove();
+          }
         }
-        // Remove loading indicator
-        const loadingIndicator = document.querySelector('.loading-indicator');
-        if (loadingIndicator) {
-          loadingIndicator.remove();
-        }
-      }
     }
 
     // Handle sort selection
@@ -1722,9 +1784,14 @@
     const loadMoreGridBtn = document.getElementById('loadMoreGridBtn');
 
     async function loadMoreProducts(layout) {
-      if (isLoading) return;
+      console.log('loadMoreProducts called with layout:', layout, 'isLoading:', isLoading);
+      if (isLoading) {
+        console.log('Already loading, returning early from loadMoreProducts');
+        return;
+      }
       
       currentPage++;
+      console.log('Loading more products, page:', currentPage);
       
       const filters = {};
       const checkboxes = document.querySelectorAll('.filter-checkbox');
@@ -1733,6 +1800,8 @@
           filters[cb.name] = cb.value;
         }
       });
+      
+      console.log('Current filters:', filters);
       
       // Add price filters - check both sidebar and horizontal
       const minPriceSidebar = document.getElementById('price-min-input')?.value;
@@ -1749,6 +1818,7 @@
         filters['filter.v.price.lte'] = maxPrice;
       }
       
+      console.log('Final filters for loadMoreProducts:', filters);
       await updateProducts(filters, currentSort, currentPage);
     }
 
@@ -1762,34 +1832,70 @@
 
     // Initialize infinite scroll if enabled
     function initializeInfiniteScroll() {
-      const paginationType = document.querySelector('.wrapper-control-shop')?.dataset.paginationType;
-      if (paginationType !== 'infinite_scroll') return;
+      console.log('initializeInfiniteScroll called');
+      const scrollPaginationType = document.querySelector('.wrapper-control-shop')?.dataset.paginationType;
+      console.log('Pagination type:', scrollPaginationType);
+      if (scrollPaginationType !== 'infinite_scroll') {
+        console.log('Not infinite scroll, returning');
+        return;
+      }
+
+      // Remove existing observer if any
+      if (window.infiniteScrollObserver) {
+        window.infiniteScrollObserver.disconnect();
+      }
 
       const options = {
         root: null,
-        rootMargin: '100px',
+        rootMargin: '200px',
         threshold: 0.1
       };
 
-      const observer = new IntersectionObserver((entries) => {
+      window.infiniteScrollObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
+          console.log('Intersection observer triggered:', entry.isIntersecting, 'isLoading:', isLoading, 'target:', entry.target);
           if (entry.isIntersecting && !isLoading) {
-            const layout = listLayout.style.display === 'block' ? 'list' : 'grid';
+            const layout = listLayout && listLayout.style.display === 'block' ? 'list' : 'grid';
+            console.log('Loading more products via infinite scroll, layout:', layout);
             loadMoreProducts(layout);
+          } else {
+            console.log('Intersection observer triggered but not loading because:', {
+              isIntersecting: entry.isIntersecting,
+              isLoading: isLoading
+            });
           }
         });
       }, options);
 
-      // Observe the last product
-      function observeLastProduct() {
-        const layout = listLayout.style.display === 'block' ? listLayout : gridLayout;
-        const products = layout.querySelectorAll('.loadItem');
-        if (products.length > 0) {
-          observer.observe(products[products.length - 1]);
+      // Observe the infinite scroll loader or create a sentinel element
+      let sentinelElement = document.getElementById('infiniteScrollLoader');
+      
+      if (!sentinelElement) {
+        // Create a sentinel element if it doesn't exist
+        sentinelElement = document.createElement('div');
+        sentinelElement.id = 'infiniteScrollLoader';
+        sentinelElement.style.height = '20px';
+        sentinelElement.style.width = '100%';
+        sentinelElement.style.display = 'block';
+        
+        // Add to the appropriate layout
+        const targetLayout = listLayout && listLayout.style.display === 'block' ? listLayout : gridLayout;
+        if (targetLayout) {
+          targetLayout.appendChild(sentinelElement);
         }
+      } else {
+        // Ensure the existing loader is visible
+        sentinelElement.style.display = 'block';
       }
 
-      observeLastProduct();
+      if (sentinelElement) {
+        window.infiniteScrollObserver.observe(sentinelElement);
+        console.log('Infinite scroll observer initialized, observing:', sentinelElement);
+        console.log('Sentinel element display style:', window.getComputedStyle(sentinelElement).display);
+        console.log('Sentinel element visibility:', window.getComputedStyle(sentinelElement).visibility);
+      } else {
+        console.log('No sentinel element found!');
+      }
     }
 
     // Initialize product-specific event listeners
@@ -1846,8 +1952,10 @@
       // Initialize product events
       initializeProductEvents();
       
-      // Initialize infinite scroll
-      initializeInfiniteScroll();
+      // Initialize infinite scroll with a delay to ensure DOM is ready
+      setTimeout(() => {
+        initializeInfiniteScroll();
+      }, 200);
       
       // Initialize product count visibility based on default layout
       // const defaultView = '{{ section.settings.default_view | default: "grid" }}';
