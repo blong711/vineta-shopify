@@ -1850,13 +1850,13 @@
       initializeInfiniteScroll();
       
       // Initialize product count visibility based on default layout
-      const defaultView = '{{ section.settings.default_view | default: "grid" }}';
-      if (productCountGrid) {
-        productCountGrid.style.display = defaultView === 'list' ? 'none' : 'block';
-      }
-      if (productCountList) {
-        productCountList.style.display = defaultView === 'list' ? 'block' : 'none';
-      }
+      // const defaultView = '{{ section.settings.default_view | default: "grid" }}';
+      // if (productCountGrid) {
+      //   productCountGrid.style.display = defaultView === 'list' ? 'none' : 'block';
+      // }
+      // if (productCountList) {
+      //   productCountList.style.display = defaultView === 'list' ? 'block' : 'none';
+      // }
       
       // Debug: Check if pagination exists and is visible
       const pagination = document.querySelector('.wg-pagination');
@@ -1990,22 +1990,6 @@
       "max": 48,
       "step": 4,
       "default": 12
-    },
-    {
-      "type": "select",
-      "id": "default_view",
-      "label": "Default view",
-      "options": [
-        {
-          "value": "grid",
-          "label": "Grid view"
-        },
-        {
-          "value": "list",
-          "label": "List view"
-        }
-      ],
-      "default": "grid"
     },
     {
       "type": "select",
@@ -2193,7 +2177,6 @@
         "filter_type": "drawer",
         "default_grid_columns": "4",
         "products_per_page": 12,
-        "default_view": "grid",
         "default_sort": "best-selling",
         "pagination_type": "pagination",
         "collections_title": "Collections",
