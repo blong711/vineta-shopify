@@ -51,7 +51,6 @@
                   show_sale_badge: true,
                   show_color_swatches: true,
                   show_countdown: true,
-                  countdown_timer: section.settings.countdown_timer
                 %}
               </div>
             {%- endfor -%}
@@ -63,7 +62,6 @@
                   show_sale_badge: true,
                   show_color_swatches: true,
                   show_countdown: true,
-                  countdown_timer: section.settings.countdown_timer
                 %}
               </div>
             {%- endfor -%}
@@ -112,12 +110,6 @@
       "default": "Explore our most popular pieces that customers can't get enough of"
     },
     {
-      "type": "text",
-      "id": "countdown_timer",
-      "label": "Countdown Timer (seconds)",
-      "default": "1007500"
-    },
-    {
       "type": "select",
       "id": "product_source",
       "label": "Product Source",
@@ -157,7 +149,7 @@
       "max": 6,
       "step": 1,
       "default": 4,
-      "label": "Slides per view (Desktop)"
+      "label": "Items per view (Desktop)"
     },
     {
       "type": "range",
@@ -166,7 +158,7 @@
       "max": 4,
       "step": 1,
       "default": 3,
-      "label": "Slides per view (Tablet)"
+      "label": "Items per view (Tablet)"
     },
     {
       "type": "range",
@@ -175,7 +167,7 @@
       "max": 3,
       "step": 0.5,
       "default": 2,
-      "label": "Slides per view (Mobile)"
+      "label": "Items per view (Mobile)"
     },
     {
       "type": "range",
@@ -183,7 +175,7 @@
       "min": 1,
       "max": 4,
       "step": 1,
-      "label": "Slides per group (Desktop)",
+      "label": "Items per group (Desktop)",
       "default": 4
     },
     {
@@ -192,7 +184,7 @@
       "min": 1,
       "max": 3,
       "step": 1,
-      "label": "Slides per group (Tablet)",
+      "label": "Items per group (Tablet)",
       "default": 3
     },
     {
@@ -201,7 +193,7 @@
       "min": 1,
       "max": 3,
       "step": 1,
-      "label": "Slides per group (Mobile)",
+      "label": "Items per group (Mobile)",
       "default": 2
     },
     {
@@ -211,7 +203,8 @@
       "max": 50,
       "step": 1,
       "default": 24,
-      "label": "Space between slides (Desktop/Tablet)"
+      "label": "Space between items (Desktop/Tablet)",
+      "unit": "px"
     },
     {
       "type": "range",
@@ -220,7 +213,8 @@
       "max": 30,
       "step": 1,
       "default": 12,
-      "label": "Space between slides (Mobile)"
+      "label": "Space between items (Mobile)",
+      "unit": "px"
     },
     {
       "type": "range",
@@ -228,8 +222,9 @@
       "min": 300,
       "max": 2000,
       "step": 100,
-      "label": "Transition speed (ms)",
-      "default": 800
+      "label": "Transition speed",
+      "default": 800,
+      "unit": "ms"
     },
     {
       "type": "checkbox",
@@ -279,7 +274,6 @@
       "settings": {
         "title": "Limited Time Deals",
         "description": "Explore our most popular pieces that customers can't get enough of",
-        "countdown_timer": "1007500",
         "product_source": "collection",
         "collection": "all",
         "slides_per_view": 4,
