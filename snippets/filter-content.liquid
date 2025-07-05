@@ -174,25 +174,24 @@
     <div class="facet-title text-xl fw-medium"><span>{{ on_sale_title }}</span></div>
     <ul class="collapse-body list-recent">
       {%- if on_sale_source == "product_list" and on_sale_products != blank -%}
-        <!-- Debug: Using product list source, products: {{ on_sale_products | size }} -->
-        {%- for product_handle in on_sale_products -%}
-          {%- assign prod = all_products[product_handle] -%}
-          <!-- Debug: Product {{ product_handle }} - compare: {{ prod.compare_at_price }}, price: {{ prod.price }} -->
-          {%- if prod and prod.compare_at_price > prod.price -%}
-            <li>
-              <div class="recent-blog-item">
-                <a href="{{ prod.url }}" class="img-product">
-                  <img src="{{ prod.featured_image | image_url: width: 100, height: 100 }}" alt="{{ prod.title | escape }}" width="100" height="100">
-                </a>
-                <div class="content">
-                  <a href="{{ prod.url }}" class="title text-md link fw-medium">{{ prod.title }}</a>
-                  <div class="price text-md fw-medium">
-                    <span class="new-price">{{ prod.price | money }}</span>
-                    <span class="old-price">{{ prod.compare_at_price | money }}</span>
+        <!-- Debug: Using product list source, products: {{ on_sale_products | size }}, on_sale_products: {{ on_sale_products }} -->
+        {%- for product in on_sale_products -%}
+          <!-- Debug: Product {{ product.title }} - compare: {{ product.compare_at_price }}, price: {{ product.price }} -->
+          {%- if product.compare_at_price > product.price -%}
+                          <li>
+                <div class="recent-blog-item">
+                  <a href="{{ product.url }}" class="img-product">
+                    <img src="{{ product.featured_image | image_url: width: 100, height: 100 }}" alt="{{ product.title | escape }}" width="100" height="100">
+                  </a>
+                  <div class="content">
+                    <a href="{{ product.url }}" class="title text-md link fw-medium">{{ product.title }}</a>
+                    <div class="price text-md fw-medium">
+                      <span class="new-price">{{ product.price | money }}</span>
+                      <span class="old-price">{{ product.compare_at_price | money }}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </li>
+              </li>
           {%- endif -%}
         {%- endfor -%}
       {%- else -%}
