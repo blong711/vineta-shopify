@@ -277,7 +277,9 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="sw-dot-default sw-pagination-tes justify-content-center"></div>
+                    {% if section.settings.show_pagination %}
+                        <div class="sw-dot-default sw-pagination-tes justify-content-center"></div>
+                    {% endif %}
                 </div>
             {% elsif section.settings.layout == 'home-fashion-women' %}
                 <div class="wrapper-thumbs-tes-2 flat-thumbs-tes">
@@ -461,7 +463,9 @@
                                 </div>
                             {% endfor %}
                         </div>
-                        <div class="d-flex d-xl-none sw-dot-default sw-pagination-testimonial justify-content-center"></div>
+                        {% if section.settings.show_pagination %}
+                            <div class="d-flex d-xl-none sw-dot-default sw-pagination-testimonial justify-content-center"></div>
+                        {% endif %}
                     </div>
                 </div>
             {% else %}
@@ -556,7 +560,9 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="sw-dot-default sw-pagination-tes justify-content-center"></div>
+                    {% if section.settings.show_pagination %}
+                        <div class="sw-dot-default sw-pagination-tes justify-content-center"></div>
+                    {% endif %}
                 </div>
             {% endif %}
         </div>
