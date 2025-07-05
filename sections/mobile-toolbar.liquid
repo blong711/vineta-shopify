@@ -4,6 +4,7 @@
 {% endcomment %}
 
 <div class="tf-toolbar-bottom">
+  {% if section.settings.show_home %}
   <div class="toolbar-item">
     <a href="/">
       <div class="toolbar-icon">
@@ -17,7 +18,9 @@
       <div class="toolbar-label">Home</div>
     </a>
   </div>
+  {% endif %}
   
+  {% if section.settings.show_account %}
   <div class="toolbar-item">
     <a href="#login" data-bs-toggle="offcanvas">
       <div class="toolbar-icon">
@@ -28,7 +31,9 @@
       <div class="toolbar-label">Account</div>
     </a>
   </div>
+  {% endif %}
   
+  {% if section.settings.show_shop %}
   <div class="toolbar-item">
     <a href="/collections">
       <div class="toolbar-icon">
@@ -43,7 +48,9 @@
       <div class="toolbar-label">Shop</div>
     </a>
   </div>
+  {% endif %}
   
+  {% if section.settings.show_wishlist %}
   <div class="toolbar-item">
     <a href="/pages/wishlist">
       <div class="toolbar-icon">
@@ -62,6 +69,7 @@
       <div class="toolbar-label">Wishlist</div>
     </a>
   </div>
+  {% endif %}
   
   <div class="toolbar-item">
     <a href="#shoppingCart" 
