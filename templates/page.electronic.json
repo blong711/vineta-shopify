@@ -135,7 +135,6 @@
         "text_z9JGfP"
       ],
       "settings": {
-        "width": "full",
         "background_color": "#e8f5e9"
       }
     },
@@ -199,17 +198,18 @@
         "layout": "layout2",
         "title": "Categories",
         "button_text": "Categories",
+        "button_url": "shopify://collections",
         "slides_per_view_mobile": 2,
         "slides_per_view_tablet": 3,
         "slides_per_view_desktop": 6,
         "space_between_mobile": 12,
+        "space_between_tablet": 24,
         "space_between_desktop": 24,
         "transition_speed": 800,
         "show_navigation": true,
         "show_pagination": true,
         "autoplay": false,
-        "autoplay_speed": 3000,
-        "products_per_collection": 6
+        "autoplay_speed": 3000
       }
     },
     "top_picks_kkPz79": {
@@ -261,14 +261,14 @@
         "subtitle": "Upgrade your devices with cutting-edge technology.",
         "button_text": "Shop Now",
         "button_link": "shopify://collections/electronic",
-        "padding_top": 36
+        "padding_top": 120,
+        "padding_bottom": 120
       }
     },
     "hot_deals_g6DUgk": {
       "type": "hot-deals",
       "settings": {
         "width": "boxed",
-        "show_section": true,
         "title": "Hot Deals",
         "description": "Explore our most popular pieces that customers can't get enough of",
         "global_countdown": "46556",
@@ -288,6 +288,7 @@
         "slides_per_group_tablet": 3,
         "slides_per_group_desktop": 4,
         "space_between_mobile": 12,
+        "space_between_tablet": 12,
         "space_between_desktop": 24,
         "transition_speed": 800,
         "show_navigation": true,
@@ -479,11 +480,13 @@
         "title": "Latest Tips & Trends",
         "description": "Discover expert advice, style inspiration, and product updates on our blog.",
         "blog_button_text": "OUR BLOG",
+        "blog_button_url": "",
         "read_more_text": "Read more",
         "show_meta_list": false,
         "show_description": false,
         "autoplay": true,
         "autoplay_speed": 5000,
+        "pause_on_hover": true,
         "slides_per_view_mobile": 1,
         "space_between_mobile": 12,
         "slides_per_view_tablet": 2,
@@ -539,9 +542,6 @@
       "settings": {
         "layout": "home-electronic",
         "slides_per_view_mobile": 1,
-        "slides_per_view_tablet": 3,
-        "slides_per_view_desktop": 4,
-        "space_between": 10,
         "show_pagination": true
       }
     }
