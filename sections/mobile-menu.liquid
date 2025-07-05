@@ -36,7 +36,9 @@
         </div>
         
         <div class="mb-notice">
-          <a href="/pages/contact-us" class="text-need">Need Help?</a>
+          {% if section.settings.help_link != blank %}
+            <a href="{{ section.settings.help_link }}" class="text-need">{{ section.settings.help_text }}</a>
+          {% endif %}
         </div>
         
         <div class="mb-contact">
@@ -123,6 +125,17 @@
       "id": "show_language_selector",
       "label": "Show language selector",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "help_text",
+      "label": "Help Link Text",
+      "default": "Need Help?"
+    },
+    {
+      "type": "url",
+      "id": "help_link",
+      "label": "Help Link URL"
     }
   ]
 }
