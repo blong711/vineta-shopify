@@ -16,6 +16,9 @@
 {%- assign on_sale_source = on_sale_source | default: "collection" -%}
 {%- assign on_sale_products = on_sale_products -%}
 
+{%- comment -%} Debug: Log the variables {%- endcomment -%}
+<!-- Debug: show_on_sale={{ show_on_sale }}, on_sale_title={{ on_sale_title }}, on_sale_source={{ on_sale_source }} -->
+
 <form id="collection-filters-form" method="GET" action="{{ request.path }}" class="filter-form">
   <!-- Categories -->
 {%- if collections_title != blank -%}
@@ -165,13 +168,16 @@
   {%- endfor -%}
 
   <!-- On Sale -->
+  <!-- Debug: Checking on sale section - title: {{ on_sale_title }}, show: {{ show_on_sale }} -->
   {% if on_sale_title != blank and show_on_sale %}
   <div class="widget-facet">
     <div class="facet-title text-xl fw-medium"><span>{{ on_sale_title }}</span></div>
     <ul class="collapse-body list-recent">
       {%- if on_sale_source == "product_list" and on_sale_products != blank -%}
+        <!-- Debug: Using product list source, products: {{ on_sale_products | size }} -->
         {%- for product_handle in on_sale_products -%}
           {%- assign prod = all_products[product_handle] -%}
+          <!-- Debug: Product {{ product_handle }} - compare: {{ prod.compare_at_price }}, price: {{ prod.price }} -->
           {%- if prod and prod.compare_at_price > prod.price -%}
             <li>
               <div class="recent-blog-item">
@@ -190,7 +196,9 @@
           {%- endif -%}
         {%- endfor -%}
       {%- else -%}
+        <!-- Debug: Using collection source, checking {{ collection.products.size }} products -->
         {%- for product in collection.products -%}
+          <!-- Debug: Product {{ product.title }} - compare: {{ product.compare_at_price }}, price: {{ product.price }} -->
           {%- if product.compare_at_price > product.price -%}
             <li>
               <div class="recent-blog-item">

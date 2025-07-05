@@ -47,7 +47,21 @@
           <div class="col-lg-3 d-none d-lg-block">
             <div class="filter-sidebar filter-left">
               <div class="filter-content">
-                {% render 'filter-content' %}
+                {% render 'filter-content', 
+                  show_banner: section.settings.show_banner,
+                  banner_title: section.settings.banner_title,
+                  banner_button_text: section.settings.banner_button_text,
+                  banner_button_url: section.settings.banner_button_url,
+                  collections_title: section.settings.collections_title,
+                  categories_mode: section.settings.categories_mode,
+                  categories_link_list: section.settings.categories_link_list,
+                  categories_show_count: section.settings.categories_show_count,
+                  show_on_sale: section.settings.show_on_sale,
+                  on_sale_title: section.settings.on_sale_title,
+                  on_sale_source: section.settings.on_sale_source,
+                  on_sale_products: section.settings.on_sale_products,
+                  filter_banner: section.settings.filter_banner
+                %}
               </div>
             </div>
           </div>
