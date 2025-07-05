@@ -19,7 +19,21 @@
           <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="canvas-body">
-          {% render 'filter-content' %}
+          {% render 'filter-content', 
+            show_banner: section.settings.show_banner,
+            banner_title: section.settings.banner_title,
+            banner_button_text: section.settings.banner_button_text,
+            banner_button_url: section.settings.banner_button_url,
+            collections_title: section.settings.collections_title,
+            categories_mode: section.settings.categories_mode,
+            categories_link_list: section.settings.categories_link_list,
+            categories_show_count: section.settings.categories_show_count,
+            show_on_sale: section.settings.show_on_sale,
+            on_sale_title: section.settings.on_sale_title,
+            on_sale_source: section.settings.on_sale_source,
+            on_sale_products: section.settings.on_sale_products,
+            filter_banner: section.settings.filter_banner
+          %}
         </div>
       </div>
     </div>
@@ -690,7 +704,21 @@
         <div class="col-lg-3">
           <div class="filter-sidebar filter-right">
             <div class="filter-content">
-              {% render 'filter-content' %}
+              {% render 'filter-content', 
+                show_banner: section.settings.show_banner,
+                banner_title: section.settings.banner_title,
+                banner_button_text: section.settings.banner_button_text,
+                banner_button_url: section.settings.banner_button_url,
+                collections_title: section.settings.collections_title,
+                categories_mode: section.settings.categories_mode,
+                categories_link_list: section.settings.categories_link_list,
+                categories_show_count: section.settings.categories_show_count,
+                show_on_sale: section.settings.show_on_sale,
+                on_sale_title: section.settings.on_sale_title,
+                on_sale_source: section.settings.on_sale_source,
+                on_sale_products: section.settings.on_sale_products,
+                filter_banner: section.settings.filter_banner
+              %}
             </div>
           </div>
         </div>
@@ -2134,6 +2162,28 @@
       "id": "on_sale_title",
       "label": "On Sale Title",
       "default": "On sale"
+    },
+    {
+      "type": "select",
+      "id": "on_sale_source",
+      "label": "On Sale Products Source",
+      "options": [
+        {
+          "value": "collection",
+          "label": "Current Collection"
+        },
+        {
+          "value": "product_list",
+          "label": "Specific Products"
+        }
+      ],
+      "default": "collection"
+    },
+    {
+      "type": "product_list",
+      "id": "on_sale_products",
+      "label": "On Sale Products",
+      "info": "Select specific products to show in the on sale section"
     },
     {
       "type": "header",

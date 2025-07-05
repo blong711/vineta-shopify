@@ -4,23 +4,24 @@
 {%- endcomment -%}
 
 {%- comment -%} Configuration Options {%- endcomment -%}
-{%- assign show_banner = section.settings.show_banner | default: true -%}
-{%- assign banner_title = section.settings.banner_title | default: 'Elevate Your Style' -%}
-{%- assign banner_button_text = section.settings.banner_button_text | default: 'Shop Now' -%}
-{%- assign banner_button_url = section.settings.banner_button_url | default: collection.url -%}
-{%- assign categories_mode = section.settings.categories_mode -%}
-{%- assign categories_link_list = section.settings.categories_link_list -%}
-{%- assign categories_show_count = section.settings.categories_show_count -%}
-{%- assign on_sale_title = section.settings.on_sale_title -%}
-{%- assign on_sale_source = section.settings.on_sale_source | default: "collection" -%}
-{%- assign on_sale_products = section.settings.on_sale_products -%}
+{%- assign show_banner = show_banner | default: true -%}
+{%- assign banner_title = banner_title | default: 'Elevate Your Style' -%}
+{%- assign banner_button_text = banner_button_text | default: 'Shop Now' -%}
+{%- assign banner_button_url = banner_button_url | default: collection.url -%}
+{%- assign categories_mode = categories_mode -%}
+{%- assign categories_link_list = categories_link_list -%}
+{%- assign categories_show_count = categories_show_count -%}
+{%- assign show_on_sale = show_on_sale | default: true -%}
+{%- assign on_sale_title = on_sale_title -%}
+{%- assign on_sale_source = on_sale_source | default: "collection" -%}
+{%- assign on_sale_products = on_sale_products -%}
 
 <form id="collection-filters-form" method="GET" action="{{ request.path }}" class="filter-form">
   <!-- Categories -->
-{%- if section.settings.collections_title != blank -%}
+{%- if collections_title != blank -%}
   <div class="widget-facet">
     <div class="facet-title text-xl fw-medium" data-bs-target="#collections" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="collections">
-      <span>{{ section.settings.collections_title | default: 'Collections' }}</span>
+      <span>{{ collections_title | default: 'Collections' }}</span>
       <span class="icon icon-arrow-up"></span>
     </div>
     <div id="collections" class="collapse show">
@@ -164,7 +165,7 @@
   {%- endfor -%}
 
   <!-- On Sale -->
-  {% if on_sale_title != blank %}
+  {% if on_sale_title != blank and show_on_sale %}
   <div class="widget-facet">
     <div class="facet-title text-xl fw-medium"><span>{{ on_sale_title }}</span></div>
     <ul class="collapse-body list-recent">
@@ -213,16 +214,16 @@
   {% endif %}
 
   <!-- Banner -->
-  {% if show_banner and section.settings.filter_banner != blank %}
+  {% if show_banner and filter_banner != blank %}
   <div class="widget-facet">
     <div class="sb-banner hover-img">
       <div class="image img-style">
-        <img src="{{ section.settings.filter_banner | image_url }}" 
-             data-src="{{ section.settings.filter_banner | image_url }}" 
-             alt="{{ section.settings.filter_banner.alt | escape }}" 
+        <img src="{{ filter_banner | image_url }}" 
+             data-src="{{ filter_banner | image_url }}" 
+             alt="{{ filter_banner.alt | escape }}" 
              class="lazyload"
-             width="{{ section.settings.filter_banner.width }}"
-             height="{{ section.settings.filter_banner.height }}">
+             width="{{ filter_banner.width }}"
+             height="{{ filter_banner.height }}">
       </div>
       <div class="banner-content">
         <p class="title">
