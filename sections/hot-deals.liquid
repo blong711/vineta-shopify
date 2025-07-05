@@ -83,7 +83,7 @@
         {% elsif section.settings.product_source == 'product_list' and section.settings.product_list != blank and section.settings.product_list.size > 0 %}
           {% assign has_products = true %}
         {% endif %}
-        {% if has_products %}
+        {% if has_products and section.settings.show_navigation %}
           <div class="swiper-button-next d-none d-xl-flex nav-swiper nav-next-deal"></div>
           <div class="swiper-button-prev d-none d-xl-flex nav-swiper nav-prev-deal"></div>
         {% endif %}
