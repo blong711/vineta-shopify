@@ -125,17 +125,18 @@
         "layout": "phonecase",
         "title": "Categories",
         "button_text": "Categories",
+        "button_url": "shopify://collections",
         "slides_per_view_mobile": 2,
         "slides_per_view_tablet": 3,
         "slides_per_view_desktop": 6,
         "space_between_mobile": 12,
+        "space_between_tablet": 24,
         "space_between_desktop": 24,
         "transition_speed": 800,
         "show_navigation": false,
         "show_pagination": true,
         "autoplay": false,
-        "autoplay_speed": 3000,
-        "products_per_collection": 6
+        "autoplay_speed": 3000
       }
     },
     "top_picks_8J99Uh": {
@@ -217,6 +218,7 @@
         "slides_per_group_tablet": 2,
         "slides_per_group_desktop": 3,
         "space_between_mobile": 12,
+        "space_between_tablet": 12,
         "space_between_desktop": 24,
         "speed": 800,
         "enable_navigation": true,
@@ -232,14 +234,13 @@
       "settings": {
         "width": "boxed",
         "layout": "home-phonecase",
-        "show_section": true,
+        "show_countdown": true,
         "product": "crop-t-shirt",
         "banner_image": "shopify://shop_images/phonecase_03.webp",
         "heading": "Limited-Time Sale",
         "subheading": "Get your favorite cases at a discount",
         "season_text": "SUMMER SALE",
         "promo_code": "12D34E",
-        "show_countdown": true,
         "button_label": "Shop Now",
         "button_link": "/collections"
       }
@@ -299,7 +300,6 @@
           "type": "tab",
           "settings": {
             "tab_title": "iPhone",
-            "tab_id": "iphone",
             "collection": "iphone",
             "products_to_show": 8
           }
@@ -308,7 +308,6 @@
           "type": "tab",
           "settings": {
             "tab_title": "Android",
-            "tab_id": "android",
             "collection": "android",
             "products_to_show": 8
           }
@@ -317,7 +316,6 @@
           "type": "tab",
           "settings": {
             "tab_title": "Personalized",
-            "tab_id": "personalized",
             "collection": "android",
             "products_to_show": 8
           }
@@ -340,7 +338,6 @@
         "space_between_mobile": 12,
         "space_between_desktop": 24,
         "transition_speed": 800,
-        "show_navigation": true,
         "show_pagination": true,
         "enable_autoplay": false,
         "autoplay_speed": 3000,
@@ -355,11 +352,12 @@
         "layout": "phonecase",
         "video": "",
         "image": "shopify://shop_images/phonecase_05.webp",
-        "title": "See Our Cases<br>in Action",
+        "title": "See Our Casesin Action",
         "subtitle": "Discover the features that make our cases stand out",
         "button_text": "Shop Collection",
         "button_link": "shopify://collections/android-cases",
-        "padding_top": 36
+        "padding_top": 80,
+        "padding_bottom": 120
       }
     },
     "testimonials": {
@@ -474,9 +472,6 @@
       "settings": {
         "layout": "phonecase",
         "slides_per_view_mobile": 1,
-        "slides_per_view_tablet": 3,
-        "slides_per_view_desktop": 4,
-        "space_between": 10,
         "show_pagination": true
       }
     }
