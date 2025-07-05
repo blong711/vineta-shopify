@@ -4,16 +4,16 @@
 {%- endcomment -%}
 
 {%- comment -%} Configuration Options {%- endcomment -%}
-{%- assign show_banner = show_banner | default: true -%}
-{%- assign banner_title = banner_title | default: 'Elevate Your Style' -%}
-{%- assign banner_button_text = banner_button_text | default: 'Shop Now' -%}
-{%- assign banner_button_url = banner_button_url | default: collection.url -%}
+{%- assign show_banner = show_banner  -%}
+{%- assign banner_title = banner_title  -%}
+{%- assign banner_button_text = banner_button_text  -%}
+{%- assign banner_button_url = banner_button_url  -%}
 {%- assign categories_mode = categories_mode -%}
 {%- assign categories_link_list = categories_link_list -%}
 {%- assign categories_show_count = categories_show_count -%}
 {%- assign show_on_sale = show_on_sale -%}
 {%- assign on_sale_title = on_sale_title -%}
-{%- assign on_sale_source = on_sale_source | default: "collection" -%}
+{%- assign on_sale_source = on_sale_source -%}
 {%- assign on_sale_products = on_sale_products -%}
 
 {%- comment -%} Debug: Log the variables {%- endcomment -%}
@@ -237,7 +237,9 @@
         <p class="title">
           {{ banner_title | newline_to_br }}
         </p>
-        <a href="{{ banner_button_url }}" class="tf-btn btn-white hover-primary">{{ banner_button_text }}</a>
+        {% if banner_button_url != blank %}
+          <a href="{{ banner_button_url }}" class="tf-btn btn-white hover-primary">{{ banner_button_text }}</a>
+        {% endif %}
       </div>
     </div>
   </div>
