@@ -702,7 +702,7 @@
   {% endif %}
 </section>
 {% if section.settings.show_description %}
-  <div id="description" class="flat-spacing pt-0">
+  <div id="description" style="padding-top: {{ section.settings.description_padding_top }}px; padding-bottom: {{ section.settings.description_padding_bottom }}px;">
     <div class="container">
       <p class="text text-md text-center">
         {{ collection.description | strip_html }}
@@ -2164,6 +2164,26 @@
       "id": "show_description",
       "label": "Show Description Section",
       "default": true
+    },
+    {
+      "type": "range",
+      "id": "description_padding_top",
+      "label": "Description padding top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "description_padding_bottom",
+      "label": "Description padding bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 100
     },
     {
       "type": "text",
