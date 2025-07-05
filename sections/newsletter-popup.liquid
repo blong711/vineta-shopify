@@ -41,6 +41,12 @@
       "type": "url",
       "id": "privacy_link",
       "label": "Privacy Policy Link"
+    },
+    {
+      "type": "text",
+      "id": "dont_show_text",
+      "label": "Don't Show Again Text",
+      "default": "Don't show this popup again"
     }
   ],
   "presets": [
@@ -88,7 +94,7 @@
           <div class="mt-3">
             <label class="d-flex align-items-center justify-content-center">
               <input type="checkbox" id="dont-show-again" class="me-2">
-              <span class="text-sm">Don't show this popup again</span>
+              <span class="text-sm">{{ section.settings.dont_show_text }}</span>
             </label>
           </div>
         </form>
