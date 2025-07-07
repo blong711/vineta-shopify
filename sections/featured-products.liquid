@@ -3,7 +3,7 @@
   Usage: {% section 'featured-products' %}
 {%- endcomment -%}
 
-<section class="{% if section.settings.remove_top_padding %}pt-0{% else %}flat-spacing-3{% endif %} overflow-hidden{% if section.settings.width == 'full' %} section-full-width{% endif %}" id="featured-products-{{ section.id }}" {% if section.settings.remove_top_padding %}style="padding-bottom: 60px;"{% endif %}>
+<section class="{% if section.settings.remove_top_padding %}pt-0{% else %}flat-spacing-3{% endif %} overflow-hidden{% if section.settings.width == 'full' %} section-full-width{% endif %}" id="featured-products-{{ section.id }}" {% if section.settings.remove_top_padding %}style="padding-bottom: 90px;"{% endif %}>
   {% if section.settings.width == 'boxed' %}
     <div class="container">
   {% endif %}
@@ -102,7 +102,7 @@
             {%- endfor -%}
           {%- endif -%}
         </div>
-        <div class="d-flex d-xl-none sw-dot-default sw-pagination-featured-{{ section.id }} justify-content-center"></div>
+        <div class="mt_5 d-flex d-xl-none sw-dot-default sw-pagination-featured-{{ section.id }} justify-content-center"></div>
       </div>
       {% if section.settings.show_navigation %}
         <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-featured-{{ section.id }}"></div>
