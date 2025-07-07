@@ -6,7 +6,7 @@
 {% endschema %}
 
 {% comment %} Pagination variables {% endcomment %}
-{% assign addresses_per_page = 6 %}
+{% assign addresses_per_page = 2 %}
 {% assign total_addresses = customer.addresses_count %}
 {% assign total_pages = total_addresses | divided_by: addresses_per_page | ceil %}
 {% assign current_page = request.query_string | split: 'page=' | last | default: 1 %}
@@ -74,56 +74,109 @@
                                 {% form 'customer_address', customer.new_address %}
                                 <div class="wd-form-address form-default show-form-address" id="form-add-address" style="display: none;">
                                     <input type="hidden" name="return_to" value="/account/addresses">
+                                    
+                                    {% comment %} Display server-side errors {% endcomment %}
+                                    {% if form.errors %}
+                                    <div class="form-errors" style="background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 10px; margin-bottom: 20px; border-radius: 4px;">
+                                        <strong>Please correct the following errors:</strong>
+                                        <ul style="margin: 5px 0 0 20px;">
+                                            {% for field in form.errors %}
+                                                {% for error in field %}
+                                                    <li>{{ error }}</li>
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    {% comment %} General error message area {% endcomment %}
+                                    <div class="general-error" id="general-error" style="display: none; background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 10px; margin-bottom: 20px; border-radius: 4px;">
+                                        <strong>Error:</strong> <span id="general-error-text"></span>
+                                    </div>
                                     <div class="cols">
                                         <fieldset>
                                             <label for="AddressFirstNameNew">{{ 'sections.main_addresses.first_name' | t }}</label>
                                             <input type="text" id="AddressFirstNameNew" name="address[first_name]" value="{{ form.first_name }}" required>
+                                            <div class="error-message" id="error-firstname" style="display: none; color: #dc3545; font-size: 12px; margin-top: 5px;"></div>
                                         </fieldset>
                                         <fieldset>
                                             <label for="AddressLastNameNew">{{ 'sections.main_addresses.last_name' | t }}</label>
                                             <input type="text" id="AddressLastNameNew" name="address[last_name]" value="{{ form.last_name }}" required>
+                                            <div class="error-message" id="error-lastname" style="display: none; color: #dc3545; font-size: 12px; margin-top: 5px;"></div>
                                         </fieldset>
                                     </div>
                                     <div class="cols">
                                         <fieldset>
                                             <label for="AddressCompanyNew">{{ 'sections.main_addresses.company' | t }}</label>
                                             <input type="text" id="AddressCompanyNew" name="address[company]" value="{{ form.company }}">
+                                            <div class="error-message" id="error-company" style="display: none; color: #dc3545; font-size: 12px; margin-top: 5px;"></div>
                                         </fieldset>
                                     </div>
                                     <div class="cols">
                                         <fieldset>
                                             <label for="Address1New">{{ 'sections.main_addresses.address1' | t }}</label>
                                             <input type="text" id="Address1New" name="address[address1]" value="{{ form.address1 }}" required>
+                                            <div class="error-message" id="error-address1" style="display: none; color: #dc3545; font-size: 12px; margin-top: 5px;"></div>
                                         </fieldset>
                                     </div>
                                     <div class="cols">
                                         <fieldset>
                                             <label for="AddressCityNew">{{ 'sections.main_addresses.city' | t }}</label>
                                             <input type="text" id="AddressCityNew" name="address[city]" value="{{ form.city }}" required>
+                                            <div class="error-message" id="error-city" style="display: none; color: #dc3545; font-size: 12px; margin-top: 5px;"></div>
                                         </fieldset>
                                     </div>
                                     <div class="cols">
                                         <fieldset>
                                             <label for="AddressCountryNew">{{ 'sections.main_addresses.country_region' | t }}</label>
-                                            <input type="text" id="AddressCountryNew" name="address[country]" value="{{ form.country }}" required>                        
+                                            <div class="select">
+                                                <select
+                                                    id="AddressCountryNew"
+                                                    name="address[country]"
+                                                    data-default="{{ form.country }}"
+                                                    autocomplete="country"
+                                                    required
+                                                >
+                                                    {{ all_country_option_tags }}
+                                                </select>
+                                                <span class="svg-wrapper">
+                                                    {{- 'icon-caret.svg' | inline_asset_content -}}
+                                                </span>
+                                            </div>
+                                            <div class="error-message" id="error-country" style="display: none; color: #dc3545; font-size: 12px; margin-top: 5px;"></div>
                                         </fieldset>
                                     </div>
-                                    <div class="cols">
+                                    <div class="cols" id="AddressProvinceContainerNew" style="display: none">
                                         <fieldset>
                                             <label for="AddressProvinceNew">{{ 'sections.main_addresses.province' | t }}</label>
-                                            <input type="text" id="AddressProvinceNew" name="address[province]" value="{{ form.province }}" required>
+                                            <div class="select">
+                                                <select
+                                                    id="AddressProvinceNew"
+                                                    name="address[province]"
+                                                    data-default="{{ form.province }}"
+                                                    autocomplete="address-level1"
+                                                >
+                                                    <option value="">Select Province/State</option>
+                                                </select>
+                                                <span class="svg-wrapper">
+                                                    {{- 'icon-caret.svg' | inline_asset_content -}}
+                                                </span>
+                                            </div>
+                                            <div class="error-message" id="error-province" style="display: none; color: #dc3545; font-size: 12px; margin-top: 5px;"></div>
                                         </fieldset>
                                     </div>
                                     <div class="cols">
                                         <fieldset>
                                             <label for="AddressZipNew">{{ 'sections.main_addresses.postal_zip_code' | t }}</label>
                                             <input type="text" id="AddressZipNew" name="address[zip]" value="{{ form.zip }}" required>
+                                            <div class="error-message" id="error-zip" style="display: none; color: #dc3545; font-size: 12px; margin-top: 5px;"></div>
                                         </fieldset>
                                     </div>
                                     <div class="cols">
                                         <fieldset>
                                             <label for="AddressPhoneNew">{{ 'sections.main_addresses.phone' | t }}</label>
                                             <input type="tel" id="AddressPhoneNew" name="address[phone]" value="{{ form.phone }}">
+                                            <div class="error-message" id="error-phone" style="display: none; color: #dc3545; font-size: 12px; margin-top: 5px;"></div>
                                         </fieldset>
                                     </div>
                                     <div class="tf-cart-checkbox">
@@ -133,7 +186,7 @@
                                         </label>
                                     </div>
                                     <div class="box-btn">
-                                        <button class="tf-btn animate-btn" type="submit">
+                                        <button class="tf-btn animate-btn" type="submit" id="submit-add-address">
                                             {{ 'sections.main_addresses.add' | t }}
                                         </button>
                                         <a href="javascript:void(0);" class="tf-btn btn-out-line-dark btn-hide-address">
@@ -143,11 +196,9 @@
                                 </div>
                                 {% endform %}
 
-                                <ul class="list-account-address tf-grid-layout md-col-2">
+                                <ul class="list-account-address tf-grid-layout md-col-2" id="addressesList">
                                     {% for address in customer.addresses %}
-                                      {% assign address_index = forloop.index0 %}
-                                      {% if address_index >= start_index and address_index <= end_index %}
-                                    <li class="account-address-item">
+                                    <li class="account-address-item" data-address-index="{{ forloop.index0 }}">
                                         <p class="title text-md fw-medium">
                                             {{ address.address1 }}
                                         </p>
@@ -188,59 +239,14 @@
                                             </div>
                                         </div>
                                     </li>
-                                      {% endif %}
                                     {% endfor %}
                                 </ul>
 
                                 {% comment %} Pagination Controls {% endcomment %}
-                                {% if total_pages > 1 %}
-                                {% assign prev_page = current_page | minus: 1 %}
-                                {% assign next_page = current_page | plus: 1 %}
-                                {% assign ellipsis_prev = prev_page | minus: 1 %}
-                                {% assign ellipsis_next = next_page | plus: 1 %}
-                                <div class="pagination-wrapper" style="margin-top: 30px; text-align: center;">
-                                    <div class="pagination-info" style="margin-bottom: 15px; color: #666;">
-                                        {{ 'sections.main_addresses.showing_addresses' | t }} {{ start_index | plus: 1 }} {{ 'sections.main_addresses.to' | t }} {{ end_index | plus: 1 }} {{ 'sections.main_addresses.of' | t }} {{ total_addresses }} {{ 'sections.main_addresses.addresses' | t }}
-                                    </div>
-                                    <nav aria-label="Address pagination">
-                                        <ul class="pagination justify-content-center">
-                                            {% comment %} Previous button {% endcomment %}
-                                            <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
-                                                <a class="page-link" href="{% if current_page > 1 %}/account/addresses?page={{ prev_page }}{% else %}#{% endif %}" {% if current_page == 1 %}tabindex="-1" aria-disabled="true"{% endif %}>
-                                                    {{ 'sections.main_addresses.previous' | t }}
-                                                </a>
-                                            </li>
-                                            
-                                            {% comment %} Page numbers {% endcomment %}
-                                            {% for page in (1..total_pages) %}
-                                                {% assign show_page = false %}
-                                                {% if page == 1 or page == total_pages %}
-                                                    {% assign show_page = true %}
-                                                {% elsif page >= prev_page and page <= next_page %}
-                                                    {% assign show_page = true %}
-                                                {% endif %}
-                                                
-                                                {% if show_page %}
-                                                    <li class="page-item {% if page == current_page %}active{% endif %}">
-                                                        <a class="page-link" href="/account/addresses?page={{ page }}">{{ page }}</a>
-                                                    </li>
-                                                {% elsif page == ellipsis_prev or page == ellipsis_next %}
-                                                    <li class="page-item disabled">
-                                                        <span class="page-link">...</span>
-                                                    </li>
-                                                {% endif %}
-                                            {% endfor %}
-                                            
-                                            {% comment %} Next button {% endcomment %}
-                                            <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
-                                                <a class="page-link" href="{% if current_page < total_pages %}/account/addresses?page={{ next_page }}{% else %}#{% endif %}" {% if current_page == total_pages %}tabindex="-1" aria-disabled="true"{% endif %}>
-                                                    {{ 'sections.main_addresses.next' | t }}
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </nav>
+                                <div class="pagination-container" id="addressPaginationContainer" style="display: none; margin-top: 30px; text-align: center;">
+                                    <ul class="wg-pagination" id="addressPagination">
+                                    </ul>
                                 </div>
-                                {% endif %}
 
                                 {% for address in customer.addresses %}
                                 {% form 'customer_address', address %}
@@ -339,6 +345,128 @@
         <!-- End sidebar account -->
 <!-- /Main Content -->
 
+<style>
+  /* Enhanced Select Styling */
+  .wd-form-address .select {
+    position: relative;
+    display: block;
+    width: 100%;
+  }
+
+  .wd-form-address .select select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .wd-form-address .select select:hover {
+    border-color: #c1c7cd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .wd-form-address .select select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  }
+
+  .wd-form-address .select select:disabled {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .wd-form-address .select .svg-wrapper {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    transition: transform 0.3s ease;
+  }
+
+  .wd-form-address .select .svg-wrapper svg {
+    width: 12px;
+    height: 12px;
+    fill: #6c757d;
+    transition: fill 0.3s ease;
+  }
+
+  .wd-form-address .select:hover .svg-wrapper svg {
+    fill: #495057;
+  }
+
+  .wd-form-address .select select:focus + .svg-wrapper svg {
+    fill: #007bff;
+  }
+
+  /* Error state styling */
+  .wd-form-address .select.has-error select {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+  }
+
+  .wd-form-address .select.has-error .svg-wrapper svg {
+    fill: #dc3545;
+  }
+
+  /* Success state styling */
+  .wd-form-address .select.has-success select {
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+  }
+
+  .wd-form-address .select.has-success .svg-wrapper svg {
+    fill: #28a745;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .wd-form-address .select select {
+      padding: 14px 40px 14px 15px;
+      font-size: 16px; /* Prevents zoom on iOS */
+    }
+  }
+
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    .wd-form-address .select select {
+      background-color: #2d3748;
+      border-color: #4a5568;
+      color: #e2e8f0;
+    }
+
+    .wd-form-address .select select:hover {
+      border-color: #718096;
+    }
+
+    .wd-form-address .select select:focus {
+      border-color: #3182ce;
+      box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+    }
+
+    .wd-form-address .select .svg-wrapper svg {
+      fill: #a0aec0;
+    }
+
+    .wd-form-address .select:hover .svg-wrapper svg {
+      fill: #e2e8f0;
+    }
+  }
+</style>
+
 {% javascript %}
   // Initialize province/state selectors
   document.addEventListener('DOMContentLoaded', function() {
@@ -346,11 +474,19 @@
     const addAddressBtn = document.querySelector('.btn-add-address');
     const addAddressForm = document.getElementById('form-add-address');
     const hideAddressBtn = document.querySelector('.btn-hide-address');
+    const submitAddAddressBtn = document.getElementById('submit-add-address');
+
+    // Show form if there are server-side errors
+    if (addAddressForm && addAddressForm.querySelector('.form-errors')) {
+      addAddressForm.style.display = 'block';
+    }
 
     if (addAddressBtn && addAddressForm) {
       addAddressBtn.addEventListener('click', function(e) {
         e.preventDefault();
         addAddressForm.style.display = 'block';
+        // Clear any previous error messages
+        clearAllErrors();
       });
     }
 
@@ -358,7 +494,53 @@
       hideAddressBtn.addEventListener('click', function(e) {
         e.preventDefault();
         addAddressForm.style.display = 'none';
+        clearAllErrors();
       });
+    }
+
+    // Handle form submission with validation
+    if (addAddressForm) {
+      const actualForm = addAddressForm.querySelector('form');
+      const submitBtn = document.getElementById('submit-add-address');
+      
+      if (actualForm) {
+        actualForm.addEventListener('submit', function(e) {
+          console.log('Form submit event triggered');
+          // Clear previous errors
+          clearAllErrors();
+          
+          // Validate form
+          const isValid = validateAddAddressForm();
+          console.log('Form validation result:', isValid);
+          
+          if (!isValid) {
+            console.log('Preventing form submission due to validation errors');
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+          }
+        });
+      }
+      
+      // Also handle button click as backup
+      if (submitBtn) {
+        submitBtn.addEventListener('click', function(e) {
+          console.log('Submit button clicked');
+          // Clear previous errors
+          clearAllErrors();
+          
+          // Validate form
+          const isValid = validateAddAddressForm();
+          console.log('Button validation result:', isValid);
+          
+          if (!isValid) {
+            console.log('Preventing button submission due to validation errors');
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+          }
+        });
+      }
     }
 
     // Handle edit address forms
@@ -385,5 +567,301 @@
         }
       });
     });
+
+    // Validation functions
+    function validateAddAddressForm() {
+      let isValid = true;
+      let errorCount = 0;
+      
+      // Required fields validation
+      const requiredFields = [
+        { id: 'AddressFirstNameNew', errorId: 'error-firstname', name: 'First Name' },
+        { id: 'AddressLastNameNew', errorId: 'error-lastname', name: 'Last Name' },
+        { id: 'Address1New', errorId: 'error-address1', name: 'Address' },
+        { id: 'AddressCityNew', errorId: 'error-city', name: 'City' },
+        { id: 'AddressCountryNew', errorId: 'error-country', name: 'Country' }
+      ];
+
+      requiredFields.forEach(function(field) {
+        const input = document.getElementById(field.id);
+        const errorDiv = document.getElementById(field.errorId);
+        
+        if (!input.value.trim()) {
+          showError(field.errorId, field.name + ' is required');
+          isValid = false;
+          errorCount++;
+        } else {
+          hideError(field.errorId);
+        }
+      });
+
+      // Phone number validation (optional but if provided, validate format)
+      const phoneInput = document.getElementById('AddressPhoneNew');
+      const phoneErrorDiv = document.getElementById('error-phone');
+      
+      if (phoneInput.value.trim()) {
+        const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+        if (!phoneRegex.test(phoneInput.value.trim().replace(/[\s\-\(\)]/g, ''))) {
+          showError('error-phone', 'Please enter a valid phone number');
+          isValid = false;
+          errorCount++;
+        } else {
+          hideError('error-phone');
+        }
+      }
+
+      // Postal code validation (numbers only and required)
+      const zipInput = document.getElementById('AddressZipNew');
+      console.log('Postal code value:', zipInput.value);
+      console.log('Postal code trimmed:', zipInput.value.trim());
+      
+      if (!zipInput.value.trim()) {
+        console.log('Postal code is empty');
+        showError('error-zip', 'Postal code is required');
+        isValid = false;
+        errorCount++;
+      } else {
+        const zipRegex = /^\d+$/;
+        const zipValue = zipInput.value.trim();
+        const isZipValid = zipRegex.test(zipValue);
+        console.log('Postal code regex test result:', isZipValid);
+        
+        if (!isZipValid) {
+          console.log('Postal code contains non-numbers');
+          showError('error-zip', 'Postal code must contain only numbers');
+          isValid = false;
+          errorCount++;
+        } else {
+          console.log('Postal code is valid');
+          hideError('error-zip');
+        }
+      }
+
+      // Show general error message if there are multiple errors
+      if (!isValid && errorCount > 1) {
+        showGeneralError('Please correct the errors highlighted below before submitting.');
+      }
+
+      return isValid;
+    }
+
+    function showError(errorId, message) {
+      const errorDiv = document.getElementById(errorId);
+      if (errorDiv) {
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+        
+        // Add error styling to input
+        const inputId = errorId.replace('error-', 'Address');
+        const input = document.getElementById(inputId);
+        if (input) {
+          input.style.borderColor = '#dc3545';
+          
+          // Add error class to select container if it's a select
+          const selectContainer = input.closest('.select');
+          if (selectContainer) {
+            selectContainer.classList.add('has-error');
+            selectContainer.classList.remove('has-success');
+          }
+        }
+      }
+    }
+
+    function hideError(errorId) {
+      const errorDiv = document.getElementById(errorId);
+      if (errorDiv) {
+        errorDiv.style.display = 'none';
+        
+        // Remove error styling from input
+        const inputId = errorId.replace('error-', 'Address');
+        const input = document.getElementById(inputId);
+        if (input) {
+          input.style.borderColor = '';
+          
+          // Remove error class from select container if it's a select
+          const selectContainer = input.closest('.select');
+          if (selectContainer) {
+            selectContainer.classList.remove('has-error');
+            selectContainer.classList.remove('has-success');
+          }
+        }
+      }
+    }
+
+    function clearAllErrors() {
+      const errorDivs = document.querySelectorAll('.error-message');
+      errorDivs.forEach(function(errorDiv) {
+        errorDiv.style.display = 'none';
+      });
+      
+      // Clear general error
+      const generalError = document.getElementById('general-error');
+      if (generalError) {
+        generalError.style.display = 'none';
+      }
+      
+      // Clear error styling from all inputs
+      const inputs = addAddressForm.querySelectorAll('input');
+      inputs.forEach(function(input) {
+        input.style.borderColor = '';
+      });
+    }
+
+    function showGeneralError(message) {
+      const generalError = document.getElementById('general-error');
+      const generalErrorText = document.getElementById('general-error-text');
+      if (generalError && generalErrorText) {
+        generalErrorText.textContent = message;
+        generalError.style.display = 'block';
+      }
+    }
+
+    // Real-time validation on input change
+    const addAddressInputs = addAddressForm.querySelectorAll('input[required]');
+    addAddressInputs.forEach(function(input) {
+      input.addEventListener('blur', function() {
+        const fieldName = this.id.replace('Address', '').replace('New', '');
+        const errorId = 'error-' + fieldName.toLowerCase();
+        
+        if (!this.value.trim()) {
+          showError(errorId, this.previousElementSibling.textContent + ' is required');
+        } else {
+          hideError(errorId);
+        }
+      });
+    });
+
+    // Setup country/province selectors using Shopify's built-in CountryProvinceSelector
+    function setupCountries() {
+      if (Shopify && Shopify.CountryProvinceSelector) {
+        // Setup for new address form
+        new Shopify.CountryProvinceSelector('AddressCountryNew', 'AddressProvinceNew', {
+          hideElement: 'AddressProvinceContainerNew',
+        });
+      }
+    }
+
+    // Initialize country/province selectors
+    setupCountries();
+
+    // Address pagination variables
+    let currentAddressPage = 1;
+    const addressesPerPage = 2;
+    const addressesList = document.getElementById('addressesList');
+    const addressPaginationContainer = document.getElementById('addressPaginationContainer');
+    const addressPagination = document.getElementById('addressPagination');
+    const addressItems = addressesList ? addressesList.querySelectorAll('.account-address-item') : [];
+    const totalAddressPages = Math.ceil(addressItems.length / addressesPerPage);
+
+    // Initialize address pagination
+    if (addressItems.length > addressesPerPage) {
+      displayAddressesWithPagination();
+      updateAddressPagination();
+    }
+
+    // Handle validation for country and province selects
+    const countrySelect = document.getElementById('AddressCountryNew');
+    const provinceSelect = document.getElementById('AddressProvinceNew');
+    
+    if (countrySelect) {
+      countrySelect.addEventListener('change', function() {
+        const errorId = 'error-country';
+        if (!this.value) {
+          showError(errorId, 'Country is required');
+        } else {
+          hideError(errorId);
+        }
+      });
+    }
+
+    // Address pagination functions
+    function displayAddressesWithPagination() {
+      const startIndex = (currentAddressPage - 1) * addressesPerPage;
+      const endIndex = startIndex + addressesPerPage - 1;
+
+      addressItems.forEach((item, index) => {
+        if (index >= startIndex && index <= endIndex) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    function updateAddressPagination() {
+      if (totalAddressPages <= 1) {
+        addressPaginationContainer.style.display = 'none';
+        return;
+      }
+      
+      addressPaginationContainer.style.display = 'block';
+      
+      let paginationHTML = '';
+      
+      // Previous button
+      if (currentAddressPage > 1) {
+        paginationHTML += `
+          <li>
+            <a href="#" class="pagination-item" data-page="${currentAddressPage - 1}">
+              <i class="icon-arr-left"></i>
+            </a>
+          </li>
+        `;
+      }
+      
+      // Page numbers
+      const maxVisiblePages = 5;
+      let startPage = Math.max(1, currentAddressPage - Math.floor(maxVisiblePages / 2));
+      let endPage = Math.min(totalAddressPages, startPage + maxVisiblePages - 1);
+      
+      if (endPage - startPage + 1 < maxVisiblePages) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+      }
+      
+      for (let i = startPage; i <= endPage; i++) {
+        if (i === currentAddressPage) {
+          paginationHTML += `
+            <li class="active">
+              <div class="pagination-item">${i}</div>
+            </li>
+          `;
+        } else {
+          paginationHTML += `
+            <li>
+              <a href="#" class="pagination-item" data-page="${i}">${i}</a>
+            </li>
+          `;
+        }
+      }
+      
+      // Next button
+      if (currentAddressPage < totalAddressPages) {
+        paginationHTML += `
+          <li>
+            <a href="#" class="pagination-item" data-page="${currentAddressPage + 1}">
+              <i class="icon-arr-right2"></i>
+            </a>
+          </li>
+        `;
+      }
+      
+      addressPagination.innerHTML = paginationHTML;
+      
+      // Add click event listeners to pagination
+      addressPagination.querySelectorAll('[data-page]').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const page = parseInt(this.dataset.page);
+          if (page !== currentAddressPage) {
+            currentAddressPage = page;
+            displayAddressesWithPagination();
+            updateAddressPagination();
+            // Scroll to top of addresses list
+            addressesList.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+    }
+
   });
 {% endjavascript %}
