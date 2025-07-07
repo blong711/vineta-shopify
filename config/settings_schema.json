@@ -321,6 +321,76 @@
     ]
   },
   {
+    "name": "Section Spacing",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section Spacing Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_section_spacing",
+        "label": "Enable Section Spacing",
+        "default": false,
+        "info": "Add additional spacing between sections"
+      },
+      {
+        "type": "range",
+        "id": "section_spacing_mobile",
+        "label": "Section Spacing (Mobile)",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "default": 20,
+        "info": "Additional spacing between sections on mobile devices"
+      },
+      {
+        "type": "range",
+        "id": "section_spacing_tablet",
+        "label": "Section Spacing (Tablet)",
+        "min": 0,
+        "max": 120,
+        "step": 5,
+        "unit": "px",
+        "default": 30,
+        "info": "Additional spacing between sections on tablet devices"
+      },
+      {
+        "type": "range",
+        "id": "section_spacing_desktop",
+        "label": "Section Spacing (Desktop)",
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "default": 40,
+        "info": "Additional spacing between sections on desktop devices"
+      },
+      {
+        "type": "select",
+        "id": "section_spacing_position",
+        "label": "Spacing Position",
+        "options": [
+          {
+            "value": "top",
+            "label": "Add to Top Padding"
+          },
+          {
+            "value": "bottom",
+            "label": "Add to Bottom Padding"
+          },
+          {
+            "value": "both",
+            "label": "Add to Both Top and Bottom"
+          }
+        ],
+        "default": "bottom",
+        "info": "Choose where to apply the additional spacing"
+      }
+    ]
+  },
+  {
     "name": "Animations",
     "settings": [
       {
