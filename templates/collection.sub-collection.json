@@ -12,7 +12,10 @@
     "page-title": {
       "type": "page-title",
       "settings": {
-        "background_image": "shopify://shop_images/page-title_1.jpg"
+        "background_image": "shopify://shop_images/page-title_1.jpg",
+        "show_description": true,
+        "custom_description": "",
+        "description_truncate_length": 120
       }
     },
     "sub_collection_P3mtpz": {
@@ -58,25 +61,56 @@
       ],
       "name": "Sub Collection",
       "settings": {
+        "width": "boxed",
         "layout": "grid",
         "container_width": "normal",
         "spacing": "4",
         "items_per_row": "4",
-        "button_text": "View all"
+        "button_text": "View all",
+        "slides_per_view_mobile": 2,
+        "slides_per_view_tablet": 3,
+        "slides_per_group_mobile": 2,
+        "slides_per_group_tablet": 3,
+        "slides_per_group_desktop": 3,
+        "space_between_mobile": 12,
+        "space_between_desktop": 24,
+        "transition_speed": 800,
+        "show_navigation": true,
+        "show_pagination": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 3000,
+        "pause_on_hover": true,
+        "enable_observer": true
       }
     },
     "main": {
       "type": "collection",
       "settings": {
+        "width": "boxed",
         "padding_top": 0,
         "padding_bottom": 80,
         "filter_type": "drawer",
-        "card_style": "style-1",
         "default_grid_columns": "3",
         "products_per_page": 16,
-        "default_view": "grid",
-        "default_sort": "best-selling",
-        "pagination_type": "pagination"
+        "pagination_type": "pagination",
+        "show_on_sale": true,
+        "on_sale_title": "On sale",
+        "on_sale_source": "collection",
+        "on_sale_products": [],
+        "show_banner": true,
+        "banner_title": "ElevateYour Style",
+        "banner_button_text": "Shop Now",
+        "banner_button_url": "",
+        "collections_title": "Collections",
+        "categories_mode": "all",
+        "categories_link_list": "",
+        "categories_show_count": false,
+        "show_description": true,
+        "description_padding_top": 0,
+        "description_padding_bottom": 100,
+        "related_collections_text": "Looking for more? Don't miss out on our other exciting collections for",
+        "related_collection_1": "accessories-1",
+        "related_collection_2": "clothes"
       }
     }
   },
