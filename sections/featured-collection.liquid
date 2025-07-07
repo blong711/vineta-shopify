@@ -326,7 +326,7 @@
                                     <div class="cls-btn text-center">
                                         <a href="{{ collection.url }}"
                                             class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                            {{ collection.title }}
+                                            <span class="collection-title-truncate">{{ collection.title }}</span>
                                             <i class="icon icon-arrow-top-left"></i>
                                         </a>
                                     </div>
@@ -617,6 +617,23 @@
     }
     .min-width-905 {
         aspect-ratio: 900.5 / 575.2;
+    }
+}
+
+/* Mobile title truncation */
+@media (max-width: 767px) {
+    .collection-title-truncate {
+        max-width: 120px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+    }
+}
+
+@media (max-width: 575px) {
+    .collection-title-truncate {
+        max-width: 100px;
     }
 }
 </style>
