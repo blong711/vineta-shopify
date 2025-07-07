@@ -40,7 +40,9 @@
               {% if section.settings.button_link != blank %}
                 <a href="{{ section.settings.button_link }}" class="tf-btn animate-btn">
                   {{ section.settings.button_text }}
-                  <i class="icon-arr-right"></i>
+                  {% if section.settings.layout == 'default' %}
+                    <i class="icon-arr-right"></i>
+                  {% endif %}
                 </a>
               {% endif %}
             </div>
@@ -166,9 +168,7 @@
             {% if section.settings.button_link != blank %}
               <a href="{{ section.settings.button_link }}" class="tf-btn animate-btn btn-dark2">
                 {{ section.settings.button_text }}
-                {% if section.settings.layout == 'default' %}
                   <i class="{{ section.settings.button_icon }}"></i>
-                {% endif %}
               </a>
             {% endif %}
           </div>
