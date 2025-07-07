@@ -166,7 +166,9 @@
             {% if section.settings.button_link != blank %}
               <a href="{{ section.settings.button_link }}" class="tf-btn animate-btn btn-dark2">
                 {{ section.settings.button_text }}
-                <i class="icon-arr-right"></i>
+                {% if section.settings.layout == 'default' %}
+                  <i class="{{ section.settings.button_icon }}"></i>
+                {% endif %}
               </a>
             {% endif %}
           </div>
@@ -190,7 +192,7 @@
       "label": "Section Layout",
       "options": [
         { "value": "default", "label": "Default" },
-        { "value": "home-fashion-02", "label": "Home Fashion 02 (Banner Text)" }
+        { "value": "home-fashion-02", "label": "Banner Text Layout" }
       ],
       "default": "default"
     },
