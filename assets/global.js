@@ -74,12 +74,10 @@ class WishlistCompare {
           addToCartBtn.dataset.variantId = variantId;
         }
         
-        // Update the wishlist button's variant ID
-        const wishlistBtn = this.closest('.card-product').querySelector('[data-wishlist]');
-        if (wishlistBtn) {
-          wishlistBtn.dataset.id = variantId;
-        }
-
+        // DO NOT update the wishlist button's ID - it should always keep the product ID
+        // The wishlist functionality should work with products, not individual variants
+        // This was causing the wrong product to be added to wishlist
+        
         // Note: Compare button should keep the product ID, not change to variant ID
         // This ensures compare functionality works with products, not individual variants
         
@@ -162,6 +160,7 @@ class WishlistCompare {
     const action = target.getAttribute('data-action');
 
 
+
     if (isWishlist) {
       this.handleWishlist(productId, action);
     } else if (action === 'clear') {
@@ -217,9 +216,20 @@ class WishlistCompare {
    * @param {string} productId - Product ID to add
    */
   async addToWishlist(productId) {
-    if (this.wishlistList.includes(productId)) return;
+    // Validate productId
+    if (!productId || productId.toString().trim() === '') {
+      console.error('Invalid product ID provided to addToWishlist:', productId);
+      return;
+    }
     
-    this.wishlistList.unshift(productId);
+    // Convert to string for consistent comparison
+    const productIdStr = productId.toString();
+    
+    if (this.wishlistList.includes(productIdStr)) {
+      return;
+    }
+    
+    this.wishlistList.unshift(productIdStr);
     if (this.wishlistList.length > this.wishlistLimit) {
       this.wishlistList.pop();
     }
@@ -233,7 +243,7 @@ class WishlistCompare {
     
     // If we're on the wishlist page, fetch and add the product immediately
     if (window.location.pathname.includes('/pages/wishlist') || window.location.pathname.includes('/wishlist')) {
-      await this.addProductToWishlistPage(productId);
+      await this.addProductToWishlistPage(productIdStr);
     }
   }
 
@@ -260,6 +270,12 @@ class WishlistCompare {
    */
   async addProductToWishlistPage(productId) {
     try {
+      // Validate productId
+      if (!productId || productId.trim() === '') {
+        console.error('Invalid product ID provided:', productId);
+        return;
+      }
+      
       // Fetch product data via AJAX
       const response = await fetch(`/products.json?ids=${productId}`);
       if (!response.ok) {
@@ -274,10 +290,22 @@ class WishlistCompare {
         return;
       }
       
+      // Validate that the returned product matches the requested product ID
+      if (product.id.toString() !== productId.toString()) {
+        console.error('Product ID mismatch: requested', productId, 'but got', product.id);
+        return;
+      }
+      
       // Get the grid layout container
       const gridLayout = document.getElementById('gridLayout');
       if (!gridLayout) {
         console.error('Grid layout container not found');
+        return;
+      }
+      
+      // Check if product is already in the grid to prevent duplicates
+      const existingProduct = gridLayout.querySelector(`[data-product-id="${product.id}"]`);
+      if (existingProduct) {
         return;
       }
       
@@ -321,8 +349,6 @@ class WishlistCompare {
       
       // Update buttons state
       this.updateButtonsState();
-      
-      // Show success notification
       
     } catch (error) {
       console.error('Error adding product to wishlist page:', error);
