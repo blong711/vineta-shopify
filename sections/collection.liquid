@@ -37,22 +37,23 @@
           <span class="title">Filter</span>
           <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="canvas-body">
-          {% render 'filter-content', 
-            show_banner: section.settings.show_banner,
-            banner_title: section.settings.banner_title,
-            banner_button_text: section.settings.banner_button_text,
-            banner_button_url: section.settings.banner_button_url,
-            collections_title: section.settings.collections_title,
-            categories_mode: section.settings.categories_mode,
-            categories_link_list: section.settings.categories_link_list,
-            categories_show_count: section.settings.categories_show_count,
-            show_on_sale: section.settings.show_on_sale,
-            on_sale_title: section.settings.on_sale_title,
-            on_sale_source: section.settings.on_sale_source,
-            on_sale_products: section.settings.on_sale_products,
-            filter_banner: section.settings.filter_banner
-          %}
+                  <div class="canvas-body">
+            {% render 'filter-content', 
+              show_banner: section.settings.show_banner,
+              banner_title: section.settings.banner_title,
+              banner_button_text: section.settings.banner_button_text,
+              banner_button_url: section.settings.banner_button_url,
+              collections_title: section.settings.collections_title,
+              categories_mode: section.settings.categories_mode,
+              categories_link_list: section.settings.categories_link_list,
+              categories_show_count: section.settings.categories_show_count,
+              show_on_sale: section.settings.show_on_sale,
+              on_sale_title: section.settings.on_sale_title,
+              on_sale_source: section.settings.on_sale_source,
+              on_sale_products: section.settings.on_sale_products,
+              filter_banner: section.settings.filter_banner,
+              form_id: 'collection-filters-form-drawer'
+            %}
         </div>
       </div>
     </div>
@@ -79,7 +80,8 @@
                   on_sale_title: section.settings.on_sale_title,
                   on_sale_source: section.settings.on_sale_source,
                   on_sale_products: section.settings.on_sale_products,
-                  filter_banner: section.settings.filter_banner
+                  filter_banner: section.settings.filter_banner,
+                  form_id: 'collection-filters-form-sidebar'
                 %}
               </div>
             </div>
@@ -759,7 +761,8 @@
                 on_sale_title: section.settings.on_sale_title,
                 on_sale_source: section.settings.on_sale_source,
                 on_sale_products: section.settings.on_sale_products,
-                filter_banner: section.settings.filter_banner
+                filter_banner: section.settings.filter_banner,
+                form_id: 'collection-filters-form-sidebar'
               %}
             </div>
           </div>
@@ -1009,14 +1012,28 @@
         }
       });
 
-      // Set price range if exists - check both sidebar and horizontal filters
-      const priceRangeSidebar = document.getElementById('price-value-range');
+      // Set price range if exists - check all filter types
+      const priceRangeDrawer = document.getElementById('price-value-range-drawer');
+      const priceRangeSidebar = document.getElementById('price-value-range-sidebar');
       const priceRangeHorizontal = document.getElementById('price-value-range-horizontal');
       const minPrice = urlParams.get('filter.v.price.gte');
       const maxPrice = urlParams.get('filter.v.price.lte');
       
       if (minPrice && maxPrice) {
         console.log('Setting price range:', minPrice, '-', maxPrice);
+        // Update drawer price range
+        if (priceRangeDrawer && priceRangeDrawer.noUiSlider) {
+          priceRangeDrawer.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
+        } else if (priceRangeDrawer) {
+          // Wait for noUiSlider to be initialized
+          const checkSlider = setInterval(() => {
+            if (priceRangeDrawer.noUiSlider) {
+              priceRangeDrawer.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
+              clearInterval(checkSlider);
+            }
+          }, 100);
+        }
+        
         // Update sidebar price range
         if (priceRangeSidebar && priceRangeSidebar.noUiSlider) {
           priceRangeSidebar.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
@@ -1061,13 +1078,19 @@
 
     // Initialize price range slider
     function initializePriceRangeSlider() {
-      // Check for both sidebar and horizontal price range sliders
-      const priceRangeSidebar = document.getElementById('price-value-range');
+      // Check for all possible price range sliders
+      const priceRangeDrawer = document.getElementById('price-value-range-drawer');
+      const priceRangeSidebar = document.getElementById('price-value-range-sidebar');
       const priceRangeHorizontal = document.getElementById('price-value-range-horizontal');
+      
+      // Initialize drawer price range slider
+      if (priceRangeDrawer && !priceRangeDrawer.noUiSlider) {
+        initializeSinglePriceSlider(priceRangeDrawer, 'price-min-value-drawer', 'price-max-value-drawer', 'price-min-input', 'price-max-input');
+      }
       
       // Initialize sidebar price range slider
       if (priceRangeSidebar && !priceRangeSidebar.noUiSlider) {
-        initializeSinglePriceSlider(priceRangeSidebar, 'price-min-value', 'price-max-value', 'price-min-input', 'price-max-input');
+        initializeSinglePriceSlider(priceRangeSidebar, 'price-min-value-sidebar', 'price-max-value-sidebar', 'price-min-input', 'price-max-input');
       }
       
       // Initialize horizontal price range slider
@@ -1124,7 +1147,7 @@
           if (maxInput) maxInput.value = Math.round(values[1]);
           
           // Submit the form instead of using JavaScript URL manipulation
-          const form = document.getElementById('collection-filters-form');
+          const form = document.getElementById('collection-filters-form') || document.getElementById('collection-filters-form-sidebar') || document.getElementById('collection-filters-form-drawer');
           if (form) {
             form.submit();
           }
@@ -1747,7 +1770,7 @@
         }
         
         // Submit the form instead of using JavaScript URL manipulation
-        const form = document.getElementById('collection-filters-form');
+        const form = document.getElementById('collection-filters-form') || document.getElementById('collection-filters-form-sidebar') || document.getElementById('collection-filters-form-drawer');
         if (form) {
           form.submit();
         }
@@ -1768,7 +1791,7 @@
         colorItem.classList.toggle('active', checkbox.checked);
         
         // Submit the form instead of using JavaScript URL manipulation
-        const form = document.getElementById('collection-filters-form');
+        const form = document.getElementById('collection-filters-form') || document.getElementById('collection-filters-form-sidebar') || document.getElementById('collection-filters-form-drawer');
         if (form) {
           form.submit();
         }
@@ -1786,7 +1809,7 @@
         sizeItem.classList.toggle('active', checkbox.checked);
         
         // Submit the form instead of using JavaScript URL manipulation
-        const form = document.getElementById('collection-filters-form');
+        const form = document.getElementById('collection-filters-form') || document.getElementById('collection-filters-form-sidebar') || document.getElementById('collection-filters-form-drawer');
         if (form) {
           form.submit();
         }
@@ -1796,24 +1819,27 @@
     // Handle reset price button
     document.querySelectorAll('.reset-price').forEach(resetPriceBtn => {
       resetPriceBtn.addEventListener('click', function() {
-        // Reset sidebar price range
-        const priceRangeSidebar = document.getElementById('price-value-range');
-        if (priceRangeSidebar && priceRangeSidebar.noUiSlider) {
-          const minPrice = parseInt(priceRangeSidebar.dataset.rangeMin);
-          const maxPrice = parseInt(priceRangeSidebar.dataset.rangeMax);
-          priceRangeSidebar.noUiSlider.set([minPrice, maxPrice]);
-        }
-        // Reset horizontal price range
-        const priceRangeHorizontal = document.getElementById('price-value-range-horizontal');
-        if (priceRangeHorizontal && priceRangeHorizontal.noUiSlider) {
-          const minPrice = parseInt(priceRangeHorizontal.dataset.rangeMin);
-          const maxPrice = parseInt(priceRangeHorizontal.dataset.rangeMax);
-          priceRangeHorizontal.noUiSlider.set([minPrice, maxPrice]);
-        }
-        // Submit the form
-        const form = document.getElementById('collection-filters-form');
-        if (form) {
-          form.submit();
+        // Find the price range slider that belongs to this reset button
+        const priceRange = this.closest('.widget-price').querySelector('.price-val-range');
+        if (priceRange && priceRange.noUiSlider) {
+          const minPrice = parseInt(priceRange.dataset.rangeMin);
+          const maxPrice = parseInt(priceRange.dataset.rangeMax);
+          
+          // Reset the slider
+          priceRange.noUiSlider.set([minPrice, maxPrice]);
+          
+          // Remove the hidden form inputs since we're resetting to full range (no filter)
+          const minInput = this.closest('.widget-price').querySelector('input[name="filter.v.price.gte"]');
+          const maxInput = this.closest('.widget-price').querySelector('input[name="filter.v.price.lte"]');
+          
+          if (minInput) minInput.remove();
+          if (maxInput) maxInput.remove();
+          
+          // Submit the form
+          const form = document.getElementById('collection-filters-form') || document.getElementById('collection-filters-form-sidebar') || document.getElementById('collection-filters-form-drawer');
+          if (form) {
+            form.submit();
+          }
         }
       });
     });
@@ -1841,20 +1867,27 @@
               cb.checked = false;
             });
           } else if (filterType === 'price') {
-            // Reset price range - both sidebar and horizontal
-            const priceRangeSidebar = document.getElementById('price-value-range');
-            if (priceRangeSidebar && priceRangeSidebar.noUiSlider) {
-              const minPrice = parseInt(priceRangeSidebar.dataset.rangeMin);
-              const maxPrice = parseInt(priceRangeSidebar.dataset.rangeMax);
-              priceRangeSidebar.noUiSlider.set([minPrice, maxPrice]);
-            }
-            
-            const priceRangeHorizontal = document.getElementById('price-value-range-horizontal');
-            if (priceRangeHorizontal && priceRangeHorizontal.noUiSlider) {
-              const minPrice = parseInt(priceRangeHorizontal.dataset.rangeMin);
-              const maxPrice = parseInt(priceRangeHorizontal.dataset.rangeMax);
-              priceRangeHorizontal.noUiSlider.set([minPrice, maxPrice]);
-            }
+                    // Reset price range - all filter types
+        const priceRangeDrawer = document.getElementById('price-value-range-drawer');
+        if (priceRangeDrawer && priceRangeDrawer.noUiSlider) {
+          const minPrice = parseInt(priceRangeDrawer.dataset.rangeMin);
+          const maxPrice = parseInt(priceRangeDrawer.dataset.rangeMax);
+          priceRangeDrawer.noUiSlider.set([minPrice, maxPrice]);
+        }
+        
+        const priceRangeSidebar = document.getElementById('price-value-range-sidebar');
+        if (priceRangeSidebar && priceRangeSidebar.noUiSlider) {
+          const minPrice = parseInt(priceRangeSidebar.dataset.rangeMin);
+          const maxPrice = parseInt(priceRangeSidebar.dataset.rangeMax);
+          priceRangeSidebar.noUiSlider.set([minPrice, maxPrice]);
+        }
+        
+        const priceRangeHorizontal = document.getElementById('price-value-range-horizontal');
+        if (priceRangeHorizontal && priceRangeHorizontal.noUiSlider) {
+          const minPrice = parseInt(priceRangeHorizontal.dataset.rangeMin);
+          const maxPrice = parseInt(priceRangeHorizontal.dataset.rangeMax);
+          priceRangeHorizontal.noUiSlider.set([minPrice, maxPrice]);
+        }
           } else if (filterType === 'filter.v.option.color') {
             // Remove color filter
             console.log('Removing color filter:', filterValue);
@@ -2018,23 +2051,27 @@
           });
           
           // Add price filters if they exist
+          const minPriceDrawer = document.getElementById('price-min-input')?.value;
+          const maxPriceDrawer = document.getElementById('price-max-input')?.value;
           const minPriceSidebar = document.getElementById('price-min-input')?.value;
           const maxPriceSidebar = document.getElementById('price-max-input')?.value;
           const minPriceHorizontal = document.getElementById('price-min-input-horizontal')?.value;
           const maxPriceHorizontal = document.getElementById('price-max-input-horizontal')?.value;
           
           // Use whichever price range is available
-          const minPrice = minPriceHorizontal || minPriceSidebar;
-          const maxPrice = maxPriceHorizontal || maxPriceSidebar;
+          const minPrice = minPriceHorizontal || minPriceSidebar || minPriceDrawer;
+          const maxPrice = maxPriceHorizontal || maxPriceSidebar || maxPriceDrawer;
           
-          if (minPrice && maxPrice) {
-            const rangeMinSidebar = parseInt(document.getElementById('price-value-range')?.dataset.rangeMin);
-            const rangeMaxSidebar = parseInt(document.getElementById('price-value-range')?.dataset.rangeMax);
-            const rangeMinHorizontal = parseInt(document.getElementById('price-value-range-horizontal')?.dataset.rangeMin);
-            const rangeMaxHorizontal = parseInt(document.getElementById('price-value-range-horizontal')?.dataset.rangeMax);
+                      if (minPrice && maxPrice) {
+              const rangeMinDrawer = parseInt(document.getElementById('price-value-range-drawer')?.dataset.rangeMin);
+              const rangeMaxDrawer = parseInt(document.getElementById('price-value-range-drawer')?.dataset.rangeMax);
+              const rangeMinSidebar = parseInt(document.getElementById('price-value-range-sidebar')?.dataset.rangeMin);
+              const rangeMaxSidebar = parseInt(document.getElementById('price-value-range-sidebar')?.dataset.rangeMax);
+              const rangeMinHorizontal = parseInt(document.getElementById('price-value-range-horizontal')?.dataset.rangeMin);
+              const rangeMaxHorizontal = parseInt(document.getElementById('price-value-range-horizontal')?.dataset.rangeMax);
             
-            const rangeMin = rangeMinHorizontal || rangeMinSidebar;
-            const rangeMax = rangeMaxHorizontal || rangeMaxSidebar;
+                          const rangeMin = rangeMinHorizontal || rangeMinSidebar || rangeMinDrawer;
+              const rangeMax = rangeMaxHorizontal || rangeMaxSidebar || rangeMaxDrawer;
             
             if (parseInt(minPrice) > rangeMin || parseInt(maxPrice) < rangeMax) {
               filters['filter.v.price.gte'] = minPrice;
@@ -2136,8 +2173,15 @@
           }
         });
         
-        // Reset price range - both sidebar and horizontal
-        const priceRangeSidebar = document.getElementById('price-value-range');
+        // Reset price range - all filter types
+        const priceRangeDrawer = document.getElementById('price-value-range-drawer');
+        if (priceRangeDrawer && priceRangeDrawer.noUiSlider) {
+          const minPrice = parseInt(priceRangeDrawer.dataset.rangeMin);
+          const maxPrice = parseInt(priceRangeDrawer.dataset.rangeMax);
+          priceRangeDrawer.noUiSlider.set([minPrice, maxPrice]);
+        }
+        
+        const priceRangeSidebar = document.getElementById('price-value-range-sidebar');
         if (priceRangeSidebar && priceRangeSidebar.noUiSlider) {
           const minPrice = parseInt(priceRangeSidebar.dataset.rangeMin);
           const maxPrice = parseInt(priceRangeSidebar.dataset.rangeMax);

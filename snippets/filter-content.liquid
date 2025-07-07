@@ -15,11 +15,12 @@
 {%- assign on_sale_title = on_sale_title -%}
 {%- assign on_sale_source = on_sale_source -%}
 {%- assign on_sale_products = on_sale_products -%}
+{%- assign form_id = form_id | default: 'collection-filters-form-sidebar' -%}
 
 {%- comment -%} Debug: Log the variables {%- endcomment -%}
 <!-- Debug: show_on_sale={{ show_on_sale }}, on_sale_title={{ on_sale_title }}, on_sale_source={{ on_sale_source }} -->
 
-<form id="collection-filters-form" method="GET" action="{{ request.path }}" class="filter-form">
+<form id="{{ form_id }}" method="GET" action="{{ collection.url }}" class="filter-form">
   <!-- Categories -->
 {%- if collections_title != blank -%}
   <div class="widget-facet">
@@ -140,7 +141,7 @@
               
               <div class="collapse-body widget-price filter-price">
                 <span class="reset-price">Reset</span>
-                <div class="price-val-range" id="price-value-range" 
+                <div class="price-val-range" id="price-value-range-{{ form_id | replace: 'collection-filters-form-', '' }}" 
                   data-min="{{ current_min }}"
                   data-max="{{ current_max }}"
                   data-range-min="{{ range_min }}"
@@ -148,11 +149,11 @@
                 <div class="box-value-price">
                   <span class="text-sm">Price:</span>
                   <div class="price-box">
-                    <div class="price-val" id="price-min-value" data-currency="{{ shop.currency.symbol }}">
+                    <div class="price-val" id="price-min-value-{{ form_id | replace: 'collection-filters-form-', '' }}" data-currency="{{ shop.currency.symbol }}">
                       {{ current_min }}
                     </div>
                     <span>-</span>
-                    <div class="price-val" id="price-max-value" data-currency="{{ shop.currency.symbol }}">
+                    <div class="price-val" id="price-max-value-{{ form_id | replace: 'collection-filters-form-', '' }}" data-currency="{{ shop.currency.symbol }}">
                       {{ current_max }}
                     </div>
                   </div>
@@ -249,13 +250,15 @@
 <script>
   // Initialize price range slider if it exists and hasn't been initialized
   document.addEventListener('DOMContentLoaded', function() {
-    const priceRange = document.getElementById('price-value-range');
+    const formId = '{{ form_id }}';
+    const sliderSuffix = formId.replace('collection-filters-form-', '');
+    const priceRange = document.getElementById('price-value-range-' + sliderSuffix);
     if (priceRange && !priceRange.noUiSlider && typeof noUiSlider !== 'undefined') {
-      const minValue = document.getElementById('price-min-value');
-      const maxValue = document.getElementById('price-max-value');
+      const minValue = document.getElementById('price-min-value-' + sliderSuffix);
+      const maxValue = document.getElementById('price-max-value-' + sliderSuffix);
       const minInput = document.getElementById('price-min-input');
       const maxInput = document.getElementById('price-max-input');
-      const resetButton = document.querySelector('.reset-price');
+      const resetButton = priceRange.closest('.widget-price').querySelector('.reset-price');
       
       if (minValue && maxValue) {
         const currency = minValue.dataset.currency || '$';
@@ -285,7 +288,7 @@
 
           // Handle form submission when price range changes
           priceRange.noUiSlider.on('change', function(values) {
-            const form = document.getElementById('collection-filters-form');
+            const form = document.getElementById('collection-filters-form') || document.getElementById('collection-filters-form-sidebar') || document.getElementById('collection-filters-form-drawer');
             if (form) {
               // Remove existing price inputs if they exist
               const existingMinInput = form.querySelector('input[name="filter.v.price.gte"]');
@@ -323,6 +326,12 @@
             resetButton.addEventListener('click', function(e) {
               e.preventDefault();
               priceRange.noUiSlider.set([rangeMin, rangeMax]);
+              
+              // Submit the form after reset
+              const form = document.getElementById('collection-filters-form') || document.getElementById('collection-filters-form-sidebar') || document.getElementById('collection-filters-form-drawer');
+              if (form) {
+                form.submit();
+              }
             });
           }
 
