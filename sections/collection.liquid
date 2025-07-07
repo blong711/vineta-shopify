@@ -28,6 +28,8 @@
 <section class="flat-spacing-24" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   {% if section.settings.width == 'boxed' %}
     <div class="container">
+  {% elsif section.settings.width == 'full' %}
+    <div class="container-full">
   {% endif %}
     
     <!-- Filter Drawer - Always present for mobile/tablet responsive behavior -->
@@ -771,6 +773,8 @@
       </div>
     {%- endif -%}
   {% if section.settings.width == 'boxed' %}
+    </div>
+  {% elsif section.settings.width == 'full' %}
     </div>
   {% endif %}
 </section>
