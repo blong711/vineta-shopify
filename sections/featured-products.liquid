@@ -3,7 +3,7 @@
   Usage: {% section 'featured-products' %}
 {%- endcomment -%}
 
-<section class="flat-spacing-3 overflow-hidden {% if section.settings.remove_top_padding %}pt-0{% endif %}{% if section.settings.width == 'full' %} section-full-width{% endif %}" id="featured-products-{{ section.id }}">
+<section class="{% if section.settings.remove_top_padding %}pt-0{% else %}flat-spacing-3{% endif %} overflow-hidden{% if section.settings.width == 'full' %} section-full-width{% endif %}" id="featured-products-{{ section.id }}" {% if section.settings.remove_top_padding %}style="padding-bottom: 60px;"{% endif %}>
   {% if section.settings.width == 'boxed' %}
     <div class="container">
   {% endif %}
