@@ -12,7 +12,10 @@
     "page-title": {
       "type": "page-title",
       "settings": {
-        "background_image": "shopify://shop_images/page-title_1.jpg"
+        "background_image": "shopify://shop_images/page-title_1.jpg",
+        "show_description": true,
+        "custom_description": "",
+        "description_truncate_length": 120
       }
     },
     "main": {
@@ -22,14 +25,13 @@
         "padding_top": 64,
         "padding_bottom": 80,
         "filter_type": "drawer",
-        "card_style": "1",
         "default_grid_columns": "4",
         "products_per_page": 16,
-        "default_view": "grid",
-        "default_sort": "best-selling",
         "pagination_type": "load_more",
         "show_on_sale": true,
         "on_sale_title": "On sale",
+        "on_sale_source": "collection",
+        "on_sale_products": [],
         "show_banner": true,
         "banner_title": "ElevateYour Style",
         "banner_button_text": "Shop Now",
@@ -37,7 +39,13 @@
         "collections_title": "Collections",
         "categories_mode": "all",
         "categories_link_list": "",
-        "categories_show_count": false
+        "categories_show_count": false,
+        "show_description": true,
+        "description_padding_top": 0,
+        "description_padding_bottom": 100,
+        "related_collections_text": "Looking for more? Don't miss out on our other exciting collections for",
+        "related_collection_1": "apparels",
+        "related_collection_2": "jewelry"
       }
     }
   },
