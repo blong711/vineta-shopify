@@ -382,14 +382,14 @@
                             {%- endif -%}
                           {%- endfor -%}
                         {%- endfor -%}
-                        <div class="color-item color-check" data-color="{{ color | escape }}">
+                        <div class="color-item color-check{% if current_tags contains color or request.search contains color %} active{% endif %}" data-color="{{ color | escape }}">
                           <span class="color bg-{{ color | handleize }}"></span>
                           <span class="color-text">{{ color }}</span>
                           <input type="checkbox"
                             name="filter.v.option.color"
                             value="{{ color | escape }}"
                             id="Filter-color-{{ forloop.index }}"
-                            {% if current_tags contains color %}checked{% endif %}
+                            {% if current_tags contains color or request.search contains color %}checked{% endif %}
                             class="filter-checkbox tf-check"
                             style="display: none;">
                           <span class="count">({{ color_count }})</span>
@@ -434,13 +434,13 @@
                             {%- endif -%}
                           {%- endfor -%}
                         {%- endfor -%}
-                        <div class="size-item size-check" data-size="{{ size | escape }}">
+                        <div class="size-item size-check{% if current_tags contains size or request.search contains size %} active{% endif %}" data-size="{{ size | escape }}">
                           <span class="size">{{ size }}</span>
                           <input type="checkbox"
                             name="filter.v.option.size"
                             value="{{ size | escape }}"
                             id="Filter-size-{{ forloop.index }}"
-                            {% if current_tags contains size %}checked{% endif %}
+                            {% if current_tags contains size or request.search contains size %}checked{% endif %}
                             class="filter-checkbox tf-check"
                             style="display: none;">
                           <span class="count">({{ size_count }})</span>
@@ -922,26 +922,90 @@
       const sizeFilters = urlParams.getAll('filter.v.option.size');
       
       colorFilters.forEach(color => {
-        const colorItem = document.querySelector(`[data-color="${color}"]`);
+        // Decode the color value in case it's URL encoded
+        const decodedColor = decodeURIComponent(color);
+        console.log('Processing color filter:', color, 'decoded:', decodedColor);
+        
+        // Try to find the color item by data-color attribute (try both encoded and decoded)
+        let colorItem = document.querySelector(`[data-color="${color}"]`) || 
+                       document.querySelector(`[data-color="${decodedColor}"]`);
+        
+        // If not found, try to find by the checkbox directly
+        if (!colorItem) {
+          const checkbox = document.querySelector(`input[name="filter.v.option.color"][value="${color}"]`) ||
+                          document.querySelector(`input[name="filter.v.option.color"][value="${decodedColor}"]`);
+          if (checkbox) {
+            colorItem = checkbox.closest('.color-check');
+          }
+        }
+        
+        // If still not found, try to find by color text content
+        if (!colorItem) {
+          const colorItems = document.querySelectorAll('.color-check');
+          colorItems.forEach(item => {
+            const colorText = item.querySelector('.color-text');
+            if (colorText) {
+              const textContent = colorText.textContent.trim();
+              if (textContent === color || textContent === decodedColor) {
+                colorItem = item;
+              }
+            }
+          });
+        }
+        
         if (colorItem) {
           const checkbox = colorItem.querySelector('.filter-checkbox');
           if (checkbox) {
             checkbox.checked = true;
             colorItem.classList.add('active');
-            console.log('Activated color filter:', color);
+            console.log('Activated color filter:', color, 'decoded:', decodedColor);
           }
+        } else {
+          console.warn('Color item not found for initialization:', color, 'decoded:', decodedColor);
         }
       });
       
       sizeFilters.forEach(size => {
-        const sizeItem = document.querySelector(`[data-size="${size}"]`);
+        // Decode the size value in case it's URL encoded
+        const decodedSize = decodeURIComponent(size);
+        console.log('Processing size filter:', size, 'decoded:', decodedSize);
+        
+        // Try to find the size item by data-size attribute (try both encoded and decoded)
+        let sizeItem = document.querySelector(`[data-size="${size}"]`) || 
+                      document.querySelector(`[data-size="${decodedSize}"]`);
+        
+        // If not found, try to find by the checkbox directly
+        if (!sizeItem) {
+          const checkbox = document.querySelector(`input[name="filter.v.option.size"][value="${size}"]`) ||
+                          document.querySelector(`input[name="filter.v.option.size"][value="${decodedSize}"]`);
+          if (checkbox) {
+            sizeItem = checkbox.closest('.size-check');
+          }
+        }
+        
+        // If still not found, try to find by size text content
+        if (!sizeItem) {
+          const sizeItems = document.querySelectorAll('.size-check');
+          sizeItems.forEach(item => {
+            const sizeText = item.querySelector('.size');
+            if (sizeText) {
+              const textContent = sizeText.textContent.trim();
+              if (textContent === size || textContent === decodedSize) {
+                sizeItem = item;
+              }
+            }
+          });
+        }
+        
         if (sizeItem) {
           const checkbox = sizeItem.querySelector('.filter-checkbox');
           if (checkbox) {
             checkbox.checked = true;
             sizeItem.classList.add('active');
-            console.log('Activated size filter:', size);
+            console.log('Activated size filter:', size, 'decoded:', decodedSize);
           }
+        } else {
+          console.warn('Size item not found for initialization:', size, 'decoded:', decodedSize);
         }
       });
 
@@ -1765,7 +1829,10 @@
           const filterParam = closeIcon.dataset.param;
           const filterValue = closeIcon.dataset.value;
           
+          console.log('=== FILTER REMOVAL START ===');
           console.log('Removing filter:', { filterType, filterParam, filterValue });
+          console.log('Current URL:', window.location.href);
+          console.log('Current URL search params:', window.location.search);
           
           // Remove specific filter
           if (filterType === 'availability') {
@@ -1790,24 +1857,134 @@
             }
           } else if (filterType === 'filter.v.option.color') {
             // Remove color filter
-            const colorItem = document.querySelector(`[data-color="${filterValue}"]`);
+            console.log('Removing color filter:', filterValue);
+            
+            // Decode the filter value in case it's URL encoded
+            const decodedFilterValue = decodeURIComponent(filterValue);
+            console.log('Decoded filter value:', decodedFilterValue);
+            
+            // Try to find the color item by data-color attribute (try both encoded and decoded)
+            let colorItem = document.querySelector(`[data-color="${filterValue}"]`) || 
+                           document.querySelector(`[data-color="${decodedFilterValue}"]`);
+            
+            // If not found, try to find by the checkbox directly
+            if (!colorItem) {
+              const checkbox = document.querySelector(`input[name="filter.v.option.color"][value="${filterValue}"]`) ||
+                              document.querySelector(`input[name="filter.v.option.color"][value="${decodedFilterValue}"]`);
+              if (checkbox) {
+                colorItem = checkbox.closest('.color-check');
+              }
+            }
+            
+            // If still not found, try to find by color text content
+            if (!colorItem) {
+              const colorItems = document.querySelectorAll('.color-check');
+              colorItems.forEach(item => {
+                const colorText = item.querySelector('.color-text');
+                if (colorText) {
+                  const textContent = colorText.textContent.trim();
+                  console.log('Checking color text:', textContent, 'against:', filterValue, 'and:', decodedFilterValue);
+                  if (textContent === filterValue || textContent === decodedFilterValue) {
+                    colorItem = item;
+                  }
+                }
+              });
+            }
+            
             if (colorItem) {
               const checkbox = colorItem.querySelector('.filter-checkbox');
               if (checkbox) {
                 checkbox.checked = false;
+                console.log('Unchecked color checkbox:', checkbox.value);
               }
               colorItem.classList.remove('active');
+              console.log('Removed active class from color item');
+            } else {
+              console.warn('Color item not found for value:', filterValue, 'or decoded value:', decodedFilterValue);
+              // Log all available color items for debugging
+              const allColorItems = document.querySelectorAll('.color-check');
+              console.log('Available color items:');
+              allColorItems.forEach((item, index) => {
+                const colorText = item.querySelector('.color-text')?.textContent.trim();
+                const dataColor = item.dataset.color;
+                const checkboxValue = item.querySelector('.filter-checkbox')?.value;
+                console.log(`  ${index}: text="${colorText}", data-color="${dataColor}", checkbox-value="${checkboxValue}"`);
+              });
             }
+            
+            // Force remove the color filter from all checkboxes with this value
+            const allColorCheckboxes = document.querySelectorAll('input[name="filter.v.option.color"]');
+            allColorCheckboxes.forEach(cb => {
+              if (cb.value === filterValue || cb.value === decodedFilterValue) {
+                cb.checked = false;
+                console.log('Force unchecked color checkbox:', cb.value);
+              }
+            });
           } else if (filterType === 'filter.v.option.size') {
             // Remove size filter
-            const sizeItem = document.querySelector(`[data-size="${filterValue}"]`);
+            console.log('Removing size filter:', filterValue);
+            
+            // Decode the filter value in case it's URL encoded
+            const decodedFilterValue = decodeURIComponent(filterValue);
+            console.log('Decoded filter value:', decodedFilterValue);
+            
+            // Try to find the size item by data-size attribute (try both encoded and decoded)
+            let sizeItem = document.querySelector(`[data-size="${filterValue}"]`) || 
+                          document.querySelector(`[data-size="${decodedFilterValue}"]`);
+            
+            // If not found, try to find by the checkbox directly
+            if (!sizeItem) {
+              const checkbox = document.querySelector(`input[name="filter.v.option.size"][value="${filterValue}"]`) ||
+                              document.querySelector(`input[name="filter.v.option.size"][value="${decodedFilterValue}"]`);
+              if (checkbox) {
+                sizeItem = checkbox.closest('.size-check');
+              }
+            }
+            
+            // If still not found, try to find by size text content
+            if (!sizeItem) {
+              const sizeItems = document.querySelectorAll('.size-check');
+              sizeItems.forEach(item => {
+                const sizeText = item.querySelector('.size');
+                if (sizeText) {
+                  const textContent = sizeText.textContent.trim();
+                  console.log('Checking size text:', textContent, 'against:', filterValue, 'and:', decodedFilterValue);
+                  if (textContent === filterValue || textContent === decodedFilterValue) {
+                    sizeItem = item;
+                  }
+                }
+              });
+            }
+            
             if (sizeItem) {
               const checkbox = sizeItem.querySelector('.filter-checkbox');
               if (checkbox) {
                 checkbox.checked = false;
+                console.log('Unchecked size checkbox:', checkbox.value);
               }
               sizeItem.classList.remove('active');
+              console.log('Removed active class from size item');
+            } else {
+              console.warn('Size item not found for value:', filterValue, 'or decoded value:', decodedFilterValue);
+              // Log all available size items for debugging
+              const allSizeItems = document.querySelectorAll('.size-check');
+              console.log('Available size items:');
+              allSizeItems.forEach((item, index) => {
+                const sizeText = item.querySelector('.size')?.textContent.trim();
+                const dataSize = item.dataset.size;
+                const checkboxValue = item.querySelector('.filter-checkbox')?.value;
+                console.log(`  ${index}: text="${sizeText}", data-size="${dataSize}", checkbox-value="${checkboxValue}"`);
+              });
             }
+            
+            // Force remove the size filter from all checkboxes with this value
+            const allSizeCheckboxes = document.querySelectorAll('input[name="filter.v.option.size"]');
+            allSizeCheckboxes.forEach(cb => {
+              if (cb.value === filterValue || cb.value === decodedFilterValue) {
+                cb.checked = false;
+                console.log('Force unchecked size checkbox:', cb.value);
+              }
+            });
           } else {
             // Remove specific checkbox filter
             const checkbox = document.querySelector(`input[name="${filterParam}"][value="${filterValue}"]`);
@@ -1870,26 +2047,62 @@
           // Update URL and products with remaining filters
           const url = new URL(window.location.href);
           
-          // Clear existing filter parameters
-          for (const param of url.searchParams.keys()) {
-            if (param.startsWith('filter.v.')) {
-              url.searchParams.delete(param);
+          // For color and size filters, directly remove the specific parameter
+          if (filterType === 'filter.v.option.color' || filterType === 'filter.v.option.size') {
+            // Decode the filter value for comparison
+            const decodedFilterValue = decodeURIComponent(filterValue);
+            
+            // Get all values for this parameter
+            const allValues = url.searchParams.getAll(filterParam);
+            console.log('All values for', filterParam, ':', allValues);
+            
+            // Remove the specific value we want to remove
+            const remainingValues = allValues.filter(value => 
+              value !== filterValue && value !== decodedFilterValue
+            );
+            
+            console.log('Remaining values after filtering:', remainingValues);
+            
+            // Remove all instances of this parameter
+            url.searchParams.delete(filterParam);
+            
+            // Add back the remaining values
+            remainingValues.forEach(value => {
+              url.searchParams.append(filterParam, value);
+            });
+            
+            console.log('Updated URL after removing filter:', url.toString());
+            
+            // Navigate to the new URL to refresh the page
+            console.log('=== NAVIGATING TO NEW URL ===');
+            console.log('New URL:', url.toString());
+            window.location.href = url.toString();
+            return; // Exit early to prevent further processing
+          } else {
+            // For other filters, use the existing logic
+            // Clear existing filter parameters
+            for (const param of url.searchParams.keys()) {
+              if (param.startsWith('filter.v.')) {
+                url.searchParams.delete(param);
+              }
             }
-          }
-          
-          // Add remaining filter parameters
-          for (const [key, value] of Object.entries(filters)) {
-            if (value !== null && value !== undefined && value !== '') {
-              url.searchParams.set(key, value);
+            
+            // Add remaining filter parameters
+            for (const [key, value] of Object.entries(filters)) {
+              if (value !== null && value !== undefined && value !== '') {
+                url.searchParams.set(key, value);
+              }
             }
+            
+            // Update URL without triggering updateAppliedFiltersDisplay
+            window.history.pushState({}, '', url.toString());
+            currentFilters = new URLSearchParams(url.search);
+            
+            // Update products with remaining filters
+            console.log('=== UPDATING PRODUCTS WITH REMAINING FILTERS ===');
+            console.log('Remaining filters:', filters);
+            updateProducts(filters, currentSort, 1, true); // Pass true to skip filter display update
           }
-          
-          // Update URL without triggering updateAppliedFiltersDisplay
-          window.history.pushState({}, '', url.toString());
-          currentFilters = new URLSearchParams(url.search);
-          
-          // Update products with remaining filters
-          updateProducts(filters, currentSort, 1, true); // Pass true to skip filter display update
         }
       }
     });
