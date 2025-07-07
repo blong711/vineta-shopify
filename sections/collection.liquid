@@ -1197,7 +1197,7 @@
     }
 
     // Main function to update products with filters and sort
-    async function updateProducts(filters = null, sort = null, page = 1) {
+    async function updateProducts(filters = null, sort = null, page = 1, skipFilterDisplayUpdate = false) {
       console.log('updateProducts called with:', { filters, sort, page, isLoading });
       if (isLoading) {
         console.log('Already loading, returning early');
@@ -1433,8 +1433,10 @@
         // Always update current filters
         currentFilters = new URLSearchParams(url.search);
         
-        // Update applied filters display
-        updateAppliedFiltersDisplay();
+        // Update applied filters display - but only if we're not skipping it
+        if (!skipFilterDisplayUpdate) {
+          updateAppliedFiltersDisplay();
+        }
         
         // Update sort display
         if (sortValueDisplay && sort) {
@@ -1720,6 +1722,8 @@
           const filterParam = closeIcon.dataset.param;
           const filterValue = closeIcon.dataset.value;
           
+          console.log('Removing filter:', { filterType, filterParam, filterValue });
+          
           // Remove specific filter
           if (filterType === 'availability') {
             const availabilityCheckboxes = document.querySelectorAll('input[name="filter.v.availability"]');
@@ -1741,12 +1745,47 @@
               const maxPrice = parseInt(priceRangeHorizontal.dataset.rangeMax);
               priceRangeHorizontal.noUiSlider.set([minPrice, maxPrice]);
             }
+          } else if (filterType === 'filter.v.option.color') {
+            // Remove color filter
+            const colorItem = document.querySelector(`[data-color="${filterValue}"]`);
+            if (colorItem) {
+              const checkbox = colorItem.querySelector('.filter-checkbox');
+              if (checkbox) {
+                checkbox.checked = false;
+              }
+              colorItem.classList.remove('active');
+            }
+          } else if (filterType === 'filter.v.option.size') {
+            // Remove size filter
+            const sizeItem = document.querySelector(`[data-size="${filterValue}"]`);
+            if (sizeItem) {
+              const checkbox = sizeItem.querySelector('.filter-checkbox');
+              if (checkbox) {
+                checkbox.checked = false;
+              }
+              sizeItem.classList.remove('active');
+            }
           } else {
             // Remove specific checkbox filter
             const checkbox = document.querySelector(`input[name="${filterParam}"][value="${filterValue}"]`);
             if (checkbox) {
               checkbox.checked = false;
             }
+          }
+          
+          // Remove the filter tag from DOM immediately
+          filterTag.remove();
+          
+          // Update the display to show/hide meta-filter-shop and clear all button
+          const remainingFilters = document.querySelectorAll('.filter-tag');
+          const clearAllBtn = document.getElementById('remove-all');
+          
+          if (clearAllBtn) {
+            clearAllBtn.style.display = remainingFilters.length > 0 ? 'block' : 'none';
+          }
+          
+          if (metaFilterShop) {
+            metaFilterShop.style.display = remainingFilters.length > 0 ? 'flex' : 'none';
           }
           
           // Collect remaining filters and update products
@@ -1783,7 +1822,31 @@
             }
           }
           
-          updateProducts(filters, currentSort);
+          console.log('Remaining filters after removal:', filters);
+          
+          // Update URL and products with remaining filters
+          const url = new URL(window.location.href);
+          
+          // Clear existing filter parameters
+          for (const param of url.searchParams.keys()) {
+            if (param.startsWith('filter.v.')) {
+              url.searchParams.delete(param);
+            }
+          }
+          
+          // Add remaining filter parameters
+          for (const [key, value] of Object.entries(filters)) {
+            if (value !== null && value !== undefined && value !== '') {
+              url.searchParams.set(key, value);
+            }
+          }
+          
+          // Update URL without triggering updateAppliedFiltersDisplay
+          window.history.pushState({}, '', url.toString());
+          currentFilters = new URLSearchParams(url.search);
+          
+          // Update products with remaining filters
+          updateProducts(filters, currentSort, 1, true); // Pass true to skip filter display update
         }
       }
     });
@@ -1796,6 +1859,25 @@
         const checkboxes = document.querySelectorAll('.filter-checkbox');
         checkboxes.forEach(cb => {
           cb.checked = false;
+        });
+        
+        // Reset color and size filters
+        const colorItems = document.querySelectorAll('.color-check');
+        colorItems.forEach(item => {
+          item.classList.remove('active');
+          const checkbox = item.querySelector('.filter-checkbox');
+          if (checkbox) {
+            checkbox.checked = false;
+          }
+        });
+        
+        const sizeItems = document.querySelectorAll('.size-check');
+        sizeItems.forEach(item => {
+          item.classList.remove('active');
+          const checkbox = item.querySelector('.filter-checkbox');
+          if (checkbox) {
+            checkbox.checked = false;
+          }
         });
         
         // Reset price range - both sidebar and horizontal
@@ -1813,11 +1895,34 @@
           priceRangeHorizontal.noUiSlider.set([minPrice, maxPrice]);
         }
         
-        // Submit the form instead of using JavaScript URL manipulation
-        const form = document.getElementById('collection-filters-form');
-        if (form) {
-          form.submit();
+        // Remove all filter tags from DOM
+        const filterTags = document.querySelectorAll('.filter-tag');
+        filterTags.forEach(tag => tag.remove());
+        
+        // Hide meta-filter-shop and clear all button
+        if (metaFilterShop) {
+          metaFilterShop.style.display = 'none';
         }
+        if (clearAllBtn) {
+          clearAllBtn.style.display = 'none';
+        }
+        
+        // Update URL and products
+        const url = new URL(window.location.href);
+        
+        // Clear all filter parameters
+        for (const param of url.searchParams.keys()) {
+          if (param.startsWith('filter.v.')) {
+            url.searchParams.delete(param);
+          }
+        }
+        
+        // Update URL without triggering updateAppliedFiltersDisplay
+        window.history.pushState({}, '', url.toString());
+        currentFilters = new URLSearchParams(url.search);
+        
+        // Update products with no filters
+        updateProducts({}, currentSort, 1, true);
       });
     }
 
