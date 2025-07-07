@@ -62,7 +62,7 @@
         <button id="accept-cookie" class="accept-button btn-out-line-white btn-submit-total tf-btn hdt-pp_cookies__accept-btn">
           {{ 'cookie.accept_button' | t }}
         </button>
-        <button class="btn-out-line-white btn-submit-total tf-btn hdt-pp_cookies__decline-btn">
+        <button id="decline-cookie" class="btn-out-line-white btn-submit-total tf-btn hdt-pp_cookies__decline-btn">
           {{ 'cookie.decline_button' | t }}
         </button>
       </div>
@@ -71,6 +71,8 @@
 {% endif %}
 
 {% javascript %}
+console.log('Cookie banner script loaded');
+
 // Global cookie functions
 function getCookie(name) {
   const value = `; ${document.cookie}`;
@@ -85,90 +87,96 @@ function setCookie(name, value, days) {
   document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax`;
 }
 
-class cookiesBar extends HTMLElement {
-  constructor() {
-    super();
-    this.cookies = JSON.parse(this.getAttribute("configs"));
-    this.cookies.cookiesName = "theme4:cookies";
-    this.cookies.drawer = this.querySelector("#drawerCookies");
-    this.isShowCookiesAll = (this.cookies.show == '1');
-    this.acceptBtn = this.cookies.drawer.querySelector(".hdt-pp_cookies__accept-btn");
-    this.declineBtn = this.cookies.drawer.querySelector(".hdt-pp_cookies__decline-btn");
-
-    this.acceptBtn?.addEventListener("click", this.handleAccept.bind(this));
-    this.declineBtn?.addEventListener("click", this.handleDecline.bind(this));
+// Initialize cookie banner when DOM is ready
+function initCookieBanner() {
+  console.log('Initializing cookie banner');
+  const banner = document.querySelector('.sys-cookies');
+  if (!banner) {
+    console.log('No cookie banner found');
+    return;
   }
-
-  connectedCallback() {
-    if (window.Shopify.designMode) {
-      document.addEventListener('shopify:section:select', (event) => {
-        if (event.target !== this) return;
-        this.showCookiesBanner();
-      });
-
-      document.addEventListener('shopify:section:deselect', (event) => {
-        if (event.target !== this) return;
-        this.hideCookiesBanner();
-      });
-    } else {
-      this.loadCookieBanner();
+  
+  console.log('Found cookie banner:', banner);
+  
+  const acceptBtn = banner.querySelector('#accept-cookie');
+  const declineBtn = banner.querySelector('#decline-cookie');
+  
+  console.log('Accept button:', acceptBtn);
+  console.log('Decline button:', declineBtn);
+  
+  if (acceptBtn) {
+    acceptBtn.addEventListener('click', function() {
+      console.log('Accept button clicked via direct listener');
+      handleAccept();
+    });
+  }
+  
+  if (declineBtn) {
+    declineBtn.addEventListener('click', function() {
+      console.log('Decline button clicked via direct listener');
+      handleDecline();
+    });
+  }
+  
+  // Also add event delegation
+  banner.addEventListener('click', function(event) {
+    console.log('Click event on banner:', event.target);
+    if (event.target.id === 'accept-cookie' || event.target.classList.contains('hdt-pp_cookies__accept-btn')) {
+      console.log('Accept clicked via delegation');
+      handleAccept();
+    } else if (event.target.id === 'decline-cookie' || event.target.classList.contains('hdt-pp_cookies__decline-btn')) {
+      console.log('Decline clicked via delegation');
+      handleDecline();
     }
+  });
+}
+
+function handleAccept() {
+  console.log('Accept button clicked');
+  const banner = document.querySelector('.sys-cookies');
+  if (banner) {
+    banner.style.display = 'none';
   }
-
-  handleAccept() {
-    if (this.isShowCookiesAll) {
-      setCookie(this.cookies.cookiesName, 'accepted', parseInt(this.cookies.day_next));
-    }
-    window.Shopify.customerPrivacy.setTrackingConsent(true, this.hideCookiesBanner.bind(this));
-  }
-
-  handleDecline() {
-    if (this.isShowCookiesAll) {
-      setCookie(this.cookies.cookiesName, 'accepted', parseInt(this.cookies.day_next));
-    }
-    window.Shopify.customerPrivacy.setTrackingConsent(false, this.hideCookiesBanner.bind(this));
-  }
-
-  showCookiesBanner() {
-    this.style.display = 'block';
-    document.querySelector("html").classList.remove("no-scroll");
-  }
-
-  hideCookiesBanner() {
-    this.style.display = 'none';
-  }
-
-  initCookieBanner() {
-    const userCanBeTracked = window.Shopify.customerPrivacy.userCanBeTracked();
-    const userTrackingConsent = window.Shopify.customerPrivacy.getTrackingConsent();
-
-    if ((!userCanBeTracked && userTrackingConsent === 'no_interaction') || this.isShowCookiesAll) {
-      this.showCookiesBanner();
-    }
-  }
-
-  loadCookieBanner() {
-    if (!this.cookies.drawer) return;
-    this.cookies.day_next = this.cookies.day_next || 60;
-    if (getCookie(this.cookies.cookiesName) == 'accepted' || this.style.display === 'block') return;
-
-    if (window.Shopify.customerPrivacy) {
-      this.initCookieBanner();
-    } else {
-      window.Shopify.loadFeatures([
-        {
-          name: 'consent-tracking-api',
-          version: '0.1',
-        }
-      ], (error) => {
-        if (error) {
-          throw error;
-        }
-        this.initCookieBanner();
-      });
+  
+  // Set cookie
+  const configs = JSON.parse(banner.getAttribute('data-configs') || '{}');
+  setCookie('theme4:cookies', 'accepted', parseInt(configs.day_next || 30));
+  
+  // Set tracking consent if Shopify API is available
+  if (window.Shopify && window.Shopify.customerPrivacy) {
+    try {
+      window.Shopify.customerPrivacy.setTrackingConsent(true);
+    } catch (error) {
+      console.error('Error setting tracking consent:', error);
     }
   }
 }
 
-customElements.define('sys-cookies', cookiesBar);
+function handleDecline() {
+  console.log('Decline button clicked');
+  const banner = document.querySelector('.sys-cookies');
+  if (banner) {
+    banner.style.display = 'none';
+  }
+  
+  // Set cookie
+  const configs = JSON.parse(banner.getAttribute('data-configs') || '{}');
+  setCookie('theme4:cookies', 'declined', parseInt(configs.day_next || 30));
+  
+  // Set tracking consent if Shopify API is available
+  if (window.Shopify && window.Shopify.customerPrivacy) {
+    try {
+      window.Shopify.customerPrivacy.setTrackingConsent(false);
+    } catch (error) {
+      console.error('Error setting tracking consent:', error);
+    }
+  }
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCookieBanner);
+} else {
+  initCookieBanner();
+}
 {% endjavascript %}
