@@ -7,7 +7,7 @@
 {%- if section.blocks.size > 0 -%}
   {%- case section.settings.layout -%}
     {%- when 'layout1' -%}
-      <section class="flat-spacing-3">
+      <section class="flat-spacing-3" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
         {% if section.settings.width == 'boxed' %}
           <div class="container">
         {% endif %}
@@ -97,7 +97,7 @@
         {% endif %}
       </section>
     {%- when 'layout2' -%}
-      <section class="flat-spacing-3">
+      <section class="flat-spacing-3" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
         {% if section.settings.width == 'boxed' %}
           <div class="container">
         {% endif %}
@@ -172,7 +172,7 @@
         {% endif %}
       </section>
     {%- when 'bicycle' -%}
-      <section>
+      <section style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
         {% if section.settings.width == 'boxed' %}
           <div class="container">
         {% endif %}
@@ -245,7 +245,7 @@
         </div>
       </section>
     {%- when 'phonecase' -%}
-      <section class="flat-spacing-11">
+      <section class="flat-spacing-11" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
         {% if section.settings.width == 'boxed' %}
           <div class="container">
         {% endif %}
@@ -366,6 +366,30 @@
       "id": "title",
       "label": "Title",
       "default": "Shop by Category"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "label": "Padding top",
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "label": "Padding bottom",
+      "default": 120,
+      "unit": "px"
     },
     {
       "type": "text",
