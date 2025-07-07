@@ -236,6 +236,7 @@
             <span class="title-filter">Filter:</span>
             <div class="meta-dropdown-filter">
               <!-- Availability Filter -->
+              <!-- Note: Counts are updated dynamically via JavaScript to reflect current filtered products -->
               <div class="dropdown dropdown-filter">
                 <div class="dropdown-toggle" id="availability" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                   <span class="text-value">Availability</span>
@@ -1310,11 +1311,17 @@
                 productGrid.appendChild(product);
               });
             }
+            
+            // Update availability counts after appending new products
+            updateAvailabilityCounts().catch(console.error);
           } else {
             console.log('Replacing products for first page');
             // Replace for filtering/sorting
             productGrid.innerHTML = newGrid.innerHTML;
           }
+          
+          // Update availability counts after grid products are updated
+          updateAvailabilityCounts().catch(console.error);
         }
         
         if (newList && productList) {
@@ -1327,10 +1334,16 @@
                 productList.insertBefore(product, loadMoreContainer);
               });
             }
+            
+            // Update availability counts after appending new products to list
+            updateAvailabilityCounts().catch(console.error);
           } else {
             // Replace for filtering/sorting
             productList.innerHTML = newList.innerHTML;
           }
+          
+          // Update availability counts after list products are updated
+          updateAvailabilityCounts().catch(console.error);
         }
 
         // Check if no products were found and show appropriate message
@@ -1445,6 +1458,9 @@
 
         // Reinitialize event listeners
         initializeProductEvents();
+        
+        // Update availability counts based on new filtered products
+        updateAvailabilityCounts().catch(console.error);
         
         // Ensure pagination is visible
         ensurePaginationVisibility();
@@ -2086,6 +2102,143 @@
       }
     }
 
+    // Update availability filter counts based on current filtered products
+    async function updateAvailabilityCounts() {
+      try {
+        // Get current URL with all active filters but remove pagination and availability filter to get total collection counts
+        const url = new URL(window.location.href);
+        url.searchParams.delete('page'); // Remove page parameter to get total collection
+        url.searchParams.delete('filter.v.availability'); // Remove availability filter to get total availability counts
+        
+        // Create a request to get availability counts for the entire filtered collection
+        console.log('Fetching availability counts from URL:', url.toString());
+        const response = await fetch(url.toString());
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        
+        // Extract availability counts from the parsed HTML
+        const inStockElement = doc.querySelector('label[for="Filter-availability-1"] .count');
+        const outOfStockElement = doc.querySelector('label[for="Filter-availability-2"] .count');
+        
+        console.log('Found inStock element:', inStockElement);
+        console.log('Found outOfStock element:', outOfStockElement);
+        
+        const inStockText = inStockElement?.textContent || '';
+        const outOfStockText = outOfStockElement?.textContent || '';
+        
+        console.log('In stock text:', inStockText);
+        console.log('Out of stock text:', outOfStockText);
+        
+        const inStockMatch = inStockText.match(/\((\d+)\)/);
+        const outOfStockMatch = outOfStockText.match(/\((\d+)\)/);
+        
+        console.log('In stock match:', inStockMatch);
+        console.log('Out of stock match:', outOfStockMatch);
+        
+        const inStockCount = inStockMatch?.[1] || '0';
+        const outOfStockCount = outOfStockMatch?.[1] || '0';
+        
+        console.log('Extracted in stock count:', inStockCount);
+        console.log('Extracted out of stock count:', outOfStockCount);
+        
+        // Update availability filter counts in sidebar
+        const inStockLabel = document.querySelector('label[for="Filter-availability-1"] .count');
+        const outOfStockLabel = document.querySelector('label[for="Filter-availability-2"] .count');
+        
+        if (inStockLabel) {
+          inStockLabel.textContent = `(${inStockCount})`;
+        }
+        if (outOfStockLabel) {
+          outOfStockLabel.textContent = `(${outOfStockCount})`;
+        }
+        
+        // Update availability filter counts in horizontal filter
+        const horizontalInStockLabel = document.querySelector('.dropdown-filter .collapse-body label[for="Filter-availability-1"] .count');
+        const horizontalOutOfStockLabel = document.querySelector('.dropdown-filter .collapse-body label[for="Filter-availability-2"] .count');
+        
+        if (horizontalInStockLabel) {
+          horizontalInStockLabel.textContent = `(${inStockCount})`;
+        }
+        if (horizontalOutOfStockLabel) {
+          horizontalOutOfStockLabel.textContent = `(${outOfStockCount})`;
+        }
+        
+        console.log('Updated availability counts for entire collection - In stock:', inStockCount, 'Out of stock:', outOfStockCount);
+
+        // Log the total product count from the response
+        const totalProductsElement = doc.querySelector('#product-count-grid .count, #product-count-list .count');
+        const totalProducts = totalProductsElement?.textContent || '0';
+        console.log('Total products in response:', totalProducts);
+      } catch (error) {
+        console.error('Error updating availability counts:', error);
+        
+        // Fallback: use the product count display to estimate availability
+        const productCountGrid = document.getElementById('product-count-grid');
+        const productCountList = document.getElementById('product-count-list');
+        
+        let totalProducts = 0;
+        if (productCountGrid && productCountGrid.style.display !== 'none') {
+          const countSpan = productCountGrid.querySelector('.count');
+          if (countSpan) {
+            totalProducts = parseInt(countSpan.textContent) || 0;
+          }
+        } else if (productCountList && productCountList.style.display !== 'none') {
+          const countSpan = productCountList.querySelector('.count');
+          if (countSpan) {
+            totalProducts = parseInt(countSpan.textContent) || 0;
+          }
+        }
+        
+        if (totalProducts > 0) {
+          // Estimate availability based on current page products
+          const gridLayout = document.getElementById('gridLayout');
+          const listLayout = document.getElementById('listLayout');
+          const isListActive = listLayout && listLayout.style.display === 'block';
+          const activeLayout = isListActive ? listLayout : gridLayout;
+          
+          if (activeLayout) {
+            const products = activeLayout.querySelectorAll('.loadItem');
+            let inStockCount = 0;
+            let outOfStockCount = 0;
+            
+            products.forEach(product => {
+              const computedStyle = window.getComputedStyle(product);
+              if (computedStyle.display !== 'none' && computedStyle.visibility !== 'hidden') {
+                const availability = product.dataset.availability;
+                if (availability === 'true' || availability === 'In stock') {
+                  inStockCount++;
+                } else {
+                  outOfStockCount++;
+                }
+              }
+            });
+            
+            // Calculate ratio and apply to total collection
+            const totalVisible = inStockCount + outOfStockCount;
+            if (totalVisible > 0) {
+              const inStockRatio = inStockCount / totalVisible;
+              const estimatedInStock = Math.round(totalProducts * inStockRatio);
+              const estimatedOutOfStock = totalProducts - estimatedInStock;
+              
+              // Update counts with estimated values
+              const inStockLabel = document.querySelector('label[for="Filter-availability-1"] .count');
+              const outOfStockLabel = document.querySelector('label[for="Filter-availability-2"] .count');
+              
+              if (inStockLabel) {
+                inStockLabel.textContent = `(${estimatedInStock})`;
+              }
+              if (outOfStockLabel) {
+                outOfStockLabel.textContent = `(${estimatedOutOfStock})`;
+              }
+              
+              console.log('Estimated availability counts for entire collection - In stock:', estimatedInStock, 'Out of stock:', estimatedOutOfStock, 'Total:', totalProducts);
+            }
+          }
+        }
+      }
+    }
+
     // Initialize everything
     function initializeAll() {
       // Initialize price range slider first
@@ -2103,6 +2256,11 @@
       setTimeout(() => {
         initializeInfiniteScroll();
       }, 200);
+      
+      // Update availability counts after products are loaded
+      setTimeout(() => {
+        updateAvailabilityCounts().catch(console.error);
+      }, 300);
       
       // Initialize product count visibility based on default layout
       // const defaultView = '{{ section.settings.default_view | default: "grid" }}';
