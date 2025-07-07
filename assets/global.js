@@ -770,32 +770,107 @@ class WishlistCompare {
     let isDown = false;
     let startX;
     let scrollLeft;
+    let animationFrameId = null;
+    let lastX = 0;
+    let dragMoved = false;
+
     // Remove previous listeners if any
     if (this._compareDragMouseUp) {
       window.removeEventListener('mouseup', this._compareDragMouseUp);
     }
+    if (this._compareDragMouseMove) {
+      window.removeEventListener('mousemove', this._compareDragMouseMove);
+    }
+
+    const onMouseMove = (e) => {
+      if (!isDown) return;
+      lastX = e.pageX - compareInner.offsetLeft;
+      dragMoved = true; // Mark that a drag happened
+      if (!animationFrameId) {
+        animationFrameId = requestAnimationFrame(updateScroll);
+      }
+    };
+
+    const updateScroll = () => {
+      if (!isDown) {
+        animationFrameId = null;
+        return;
+      }
+      const walk = (lastX - startX) * 1; // adjust multiplier for speed
+      compareInner.scrollLeft = scrollLeft - walk;
+      animationFrameId = null;
+    };
+
     compareInner.addEventListener('mousedown', (e) => {
       isDown = true;
+      dragMoved = false;
       compareInner.classList.add('dragging');
+      document.body.style.userSelect = 'none';
+      document.body.style.webkitUserSelect = 'none';
+      document.body.style.msUserSelect = 'none';
       startX = e.pageX - compareInner.offsetLeft;
       scrollLeft = compareInner.scrollLeft;
+      lastX = startX;
+
+      // Prevent default if starting on an image or link
+      if (
+        e.target.tagName === 'IMG' ||
+        e.target.tagName === 'A' ||
+        e.target.closest('a')
+      ) {
+        e.preventDefault();
+      }
+
+      window.addEventListener('mousemove', onMouseMove);
     });
+
     this._compareDragMouseUp = () => {
+      if (!isDown) return;
       isDown = false;
       compareInner.classList.remove('dragging');
+      document.body.style.userSelect = '';
+      document.body.style.webkitUserSelect = '';
+      document.body.style.msUserSelect = '';
+      window.removeEventListener('mousemove', onMouseMove);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
     };
     window.addEventListener('mouseup', this._compareDragMouseUp);
     compareInner.addEventListener('mouseleave', () => {
+      if (!isDown) return;
       isDown = false;
       compareInner.classList.remove('dragging');
+      document.body.style.userSelect = '';
+      document.body.style.webkitUserSelect = '';
+      document.body.style.msUserSelect = '';
+      window.removeEventListener('mousemove', onMouseMove);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
     });
-    compareInner.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - compareInner.offsetLeft;
-      const walk = (x - startX) * 1; // slower scroll
-      compareInner.scrollLeft = scrollLeft - walk;
+
+    // Prevent default drag behavior on images and links inside compareInner
+    compareInner.addEventListener('dragstart', function(e) {
+      if (
+        (e.target && e.target.tagName === 'IMG') ||
+        (e.target && e.target.tagName === 'A') ||
+        (e.target && e.target.closest('a'))
+      ) {
+        e.preventDefault();
+      }
     });
+
+    // Prevent accidental link navigation after drag
+    compareInner.addEventListener('click', function(e) {
+      if (dragMoved) {
+        e.preventDefault();
+        e.stopPropagation();
+        dragMoved = false;
+      }
+    }, true); // Use capture phase
   }
 
   /**
@@ -869,8 +944,8 @@ class WishlistCompare {
     
     div.innerHTML = `
       <button type="button" class="icon-close remove" data-compare data-id="${product.id}" data-action="remove" aria-label="Remove from compare"></button>
-      <a href="${product.url}" style="aspect-ratio: 4/5;" class="image">
-        <img class="lazyload" data-src="${product.image}" src="${product.image}" alt="${product.title}">
+      <a href="${product.url}" style="aspect-ratio: 4/5;" class="image" draggable="false">
+        <img class="lazyload" draggable="false" data-src="${product.image}" src="${product.image}" alt="${product.title}">
       </a>
       <div class="content">
         <div class="text-title text-left">
