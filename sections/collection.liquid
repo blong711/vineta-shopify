@@ -6,6 +6,25 @@
 {% endcomment %}
 
 {% paginate collection.products by section.settings.products_per_page %}
+
+<!-- Ensure all products are visible -->
+<style>
+  .tf-grid-layout .loadItem {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .tf-grid-layout {
+    grid-template-columns: repeat(4, 1fr) !important;
+    display: grid !important;
+  }
+  
+  .tf-grid-layout .loadItem:nth-child(n) {
+    display: block !important;
+  }
+</style>
+
 <section class="flat-spacing-24" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   {% if section.settings.width == 'boxed' %}
     <div class="container">
@@ -537,8 +556,13 @@
       <!-- List View Layout -->
       <div class="tf-list-layout wrapper-shop" id="listLayout" style="display: none;">
         {% if collection.products.size > 0 %}
+          {% assign list_product_counter = 0 %}
           {% for product in collection.products %}
-            <div class="loadItem card-product style-list" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
+            {% assign list_product_counter = list_product_counter | plus: 1 %}
+            <div class="loadItem card-product style-list" 
+                 data-availability="{{ product.available | default: 'In stock' }}" 
+                 data-brand="{{ product.vendor }}" 
+                 data-product-number="{{ list_product_counter }}">
               {% render 'card-product', product: product, show_color_swatches: true, size_swatches: true %}
             </div>
           {% endfor %}
@@ -616,10 +640,13 @@
       <!-- Grid View Layout -->
       <div class="wrapper-shop{% if collection.products.size > 0 %} tf-grid-layout tf-col-{{ section.settings.default_grid_columns }}{% endif %}" id="gridLayout" data-default-columns="{{ section.settings.default_grid_columns }}">
         {% if collection.products.size > 0 %}
+          {% assign product_counter = 0 %}
           {% for product in collection.products %}
+            {% assign product_counter = product_counter | plus: 1 %}
             <div class="loadItem card-product grid style-1{% if product.options contains 'Size' %} card-product-size{% endif %}" 
                  data-availability="{{ product.available | default: 'In stock' }}" 
-                 data-brand="{{ product.vendor }}">
+                 data-brand="{{ product.vendor }}"
+                 data-product-number="{{ product_counter }}">
               {% render 'card-product', product: product, show_color_swatches: true, show_size_swatches: true,  size_swatches: true %}
             </div>
           {% endfor %}
