@@ -3,7 +3,7 @@
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
       <div class="header">
-        <button class="icon-close icon-close-popup" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button class="icon-close icon-close-popup" data-bs-dismiss="modal" aria-label="{{ 'general.accessibility.close' | t }}"></button>
       </div>
       <div class="container">
         <div class="row justify-content-center">
@@ -13,12 +13,12 @@
               <form action="{{ routes.search_url }}" method="get" class="form-search">
                 <input type="hidden" name="type" value="product">
                 <fieldset class="text">
-                  <input type="search" name="q" placeholder="Search" class="search-input" tabindex="0" value="{{ search.terms | escape }}" aria-required="true" required>
+                  <input type="search" name="q" placeholder="{{ 'general.search.placeholder' | t }}" class="search-input" tabindex="0" value="{{ search.terms | escape }}" aria-required="true" required>
                 </fieldset>
                 <button type="submit" class="search-submit-btn">
                   <i class="icon icon-search"></i>
                   <div class="spinner-border spinner-border-sm d-none" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">{{ 'general.search.loading' | t }}</span>
                   </div>
                 </button>
               </form>
@@ -29,12 +29,12 @@
                   </div>
                   <div class="suggestions-loading d-none">
                     <div class="spinner-border text-primary" role="status">
-                      <span class="visually-hidden">Loading...</span>
+                      <span class="visually-hidden">{{ 'general.search.loading' | t }}</span>
                     </div>
                   </div>
                   <div class="view-all-container text-center mt-3 mb-3" style="display: none;">
                     <a href="#" class="tf-btn btn-out-line-dark2" id="view-all-btn">
-                      View All Results
+                      {{ 'general.search.view_all_results' | t }}
                     </a>
                   </div>
                 </div>
@@ -113,29 +113,29 @@
 
 {% schema %}
 {
-  "name": "Search Drawer",
+  "name": "t:sections.search_drawer.name",
   "settings": [
     {
       "type": "text",
       "id": "title",
-      "label": "Title",
-      "default": "What are you looking for?"
+      "label": "t:sections.search_drawer.settings.title.label",
+      "default": "t:sections.search_drawer.settings.title.default"
     },
     {
       "type": "header",
-      "content": "Featured Products"
+      "content": "t:sections.search_drawer.settings.featured_products_header.content"
     },
     {
       "type": "checkbox",
       "id": "show_featured_products",
-      "label": "Show featured products",
+      "label": "t:sections.search_drawer.settings.show_featured_products.label",
       "default": true
     },
     {
       "type": "text",
       "id": "featured_products_title",
-      "label": "Featured products title",
-      "default": "Featured product"
+      "label": "t:sections.search_drawer.settings.featured_products_title.label",
+      "default": "t:sections.search_drawer.settings.featured_products_title.default"
     },
     {
       "type": "range",
@@ -143,7 +143,7 @@
       "min": 1,
       "max": 3,
       "step": 1,
-      "label": "Columns on mobile",
+      "label": "t:sections.search_drawer.settings.columns_mobile.label",
       "default": 2
     },
     {
@@ -152,7 +152,7 @@
       "min": 2,
       "max": 4,
       "step": 1,
-      "label": "Columns on tablet",
+      "label": "t:sections.search_drawer.settings.columns_tablet.label",
       "default": 3
     },
     {
@@ -161,58 +161,58 @@
       "min": 3,
       "max": 5,
       "step": 1,
-      "label": "Columns on desktop",
+      "label": "t:sections.search_drawer.settings.columns_desktop.label",
       "default": 4
     },
     {
       "type": "product_list",
       "id": "suggested_products",
-      "label": "Products suggest",
+      "label": "t:sections.search_drawer.settings.suggested_products.label",
       "limit": 4
     },
     {
       "type": "header",
-      "content": "Popular Searches"
+      "content": "t:sections.search_drawer.settings.popular_searches_header.content"
     },
     {
       "type": "text",
       "id": "popular_searches_title",
-      "label": "Popular searches title",
-      "default": "Popular searches:"
+      "label": "t:sections.search_drawer.settings.popular_searches_title.label",
+      "default": "t:sections.search_drawer.settings.popular_searches_title.default"
     },
     {
       "type": "link_list",
       "id": "popular_searches_menu",
-      "label": "Popular searches menu",
-      "info": "Select a menu to display popular search terms"
+      "label": "t:sections.search_drawer.settings.popular_searches_menu.label",
+      "info": "t:sections.search_drawer.settings.popular_searches_menu.info"
     },
     {
       "type": "header",
-      "content": "Default Popular Search Links"
+      "content": "t:sections.search_drawer.settings.default_links_header.content"
     },
     {
       "type": "text",
       "id": "featured_link_text",
-      "label": "Featured link text",
-      "default": "Featured"
+      "label": "t:sections.search_drawer.settings.featured_link_text.label",
+      "default": "t:sections.search_drawer.settings.featured_link_text.default"
     },
     {
       "type": "text",
       "id": "trendy_link_text",
-      "label": "Trendy link text",
-      "default": "Trendy"
+      "label": "t:sections.search_drawer.settings.trendy_link_text.label",
+      "default": "t:sections.search_drawer.settings.trendy_link_text.default"
     },
     {
       "type": "text",
       "id": "new_link_text",
-      "label": "New link text",
-      "default": "New"
+      "label": "t:sections.search_drawer.settings.new_link_text.label",
+      "default": "t:sections.search_drawer.settings.new_link_text.default"
     },
     {
       "type": "text",
       "id": "sale_link_text",
-      "label": "Sale link text",
-      "default": "Sale"
+      "label": "t:sections.search_drawer.settings.sale_link_text.label",
+      "default": "t:sections.search_drawer.settings.sale_link_text.default"
     }
   ]
 }
@@ -303,7 +303,7 @@
             }
           })
           .catch(error => {
-            console.error('Error fetching search suggestions:', error);
+            console.error('{{ "general.search.error" | t }}', error);
             suggestionsContainer.style.display = 'none';
             suggestionsLoading.classList.add('d-none');
             viewAllContainer.style.display = 'none';

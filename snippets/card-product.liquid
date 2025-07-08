@@ -291,7 +291,7 @@
 </div>
 {%- elsif style == 'style-phonecase' -%}
 <!-- Debug: Checking style-phonecase condition, current style = {{ style }} -->
-<div class="card-product {% unless product.available %}out-of-stock{% endunless %} style-4">
+<div class="card-product {{ class }} style-4 {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
   <div class="card-product-wrapper radius-16 line-2 asp-ratio-1">
     <a href="{{ product.url }}" class="product-img">
       {%- if product.featured_image -%}

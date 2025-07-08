@@ -35,16 +35,16 @@
                 <div id="material-{{ block.id }}" class="collapse">
                   <div class="accordion-body widget-material">
                     <div class="item">
-                      <p class="fw-medium title">Materials Care</p>
+                      <p class="fw-medium title">{{ 'sections.product_details.materials_care' | t }}</p>
                       <ul>
                         {%- if product.metafields.material.content -%}
-                          <li>Content: {{ product.metafields.material.content }}</li>
+                          <li>{{ 'sections.product_details.material_content' | t }}: {{ product.metafields.material.content }}</li>
                         {%- endif -%}
                         {%- if product.metafields.material.care -%}
-                          <li>Care: {{ product.metafields.material.care }}</li>
+                          <li>{{ 'sections.product_details.material_care' | t }}: {{ product.metafields.material.care }}</li>
                         {%- endif -%}
                         {%- if product.metafields.material.imported -%}
-                          <li>Imported</li>
+                          <li>{{ 'sections.product_details.material_imported' | t }}</li>
                         {%- endif -%}
                         {%- if product.metafields.material.wash -%}
                           <li>{{ product.metafields.material.wash }}</li>
@@ -190,13 +190,13 @@
                       <p class="fw-medium title">{{ block.settings.subtitle }}</p>
                       <ul>
                         {%- if product.metafields.material.content -%}
-                          <li>Content: {{ product.metafields.material.content }}</li>
+                          <li>{{ 'sections.product_details.material_content' | t }}: {{ product.metafields.material.content }}</li>
                         {%- endif -%}
                         {%- if product.metafields.material.care -%}
-                          <li>Care: {{ product.metafields.material.care }}</li>
+                          <li>{{ 'sections.product_details.material_care' | t }}: {{ product.metafields.material.care }}</li>
                         {%- endif -%}
                         {%- if product.metafields.material.imported -%}
-                          <li>Imported</li>
+                          <li>{{ 'sections.product_details.material_imported' | t }}</li>
                         {%- endif -%}
                         {%- if product.metafields.material.wash -%}
                           <li>{{ product.metafields.material.wash }}</li>
@@ -335,13 +335,13 @@
                       <p class="fw-medium title">{{ block.settings.subtitle }}</p>
                       <ul>
                         {%- if product.metafields.material.content -%}
-                          <li>Content: {{ product.metafields.material.content }}</li>
+                          <li>{{ 'sections.product_details.material_content' | t }}: {{ product.metafields.material.content }}</li>
                         {%- endif -%}
                         {%- if product.metafields.material.care -%}
-                          <li>Care: {{ product.metafields.material.care }}</li>
+                          <li>{{ 'sections.product_details.material_care' | t }}: {{ product.metafields.material.care }}</li>
                         {%- endif -%}
                         {%- if product.metafields.material.imported -%}
-                          <li>Imported</li>
+                          <li>{{ 'sections.product_details.material_imported' | t }}</li>
                         {%- endif -%}
                         {%- if product.metafields.material.wash -%}
                           <li>{{ product.metafields.material.wash }}</li>
