@@ -620,7 +620,7 @@
     }
 }
 
-/* Mobile title truncation */
+/* Title truncation for mobile and when items per view > 4 */
 @media (max-width: 767px) {
     .collection-title-truncate {
         max-width: 120px;
@@ -634,6 +634,24 @@
 @media (max-width: 575px) {
     .collection-title-truncate {
         max-width: 100px;
+    }
+}
+
+/* Desktop truncation when items per view > 4 */
+@media (min-width: 1024px) {
+    .collection-title-truncate {
+        max-width: 150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+    }
+}
+
+/* Additional truncation for very high item counts */
+@media (min-width: 1200px) {
+    .collection-title-truncate {
+        max-width: 120px;
     }
 }
 </style>
