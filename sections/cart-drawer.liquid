@@ -32,10 +32,20 @@
           <div class="tf-mini-cart-bottom">
             <div class="tf-mini-cart-tool">
               {% if section.settings.enable_gift_wrap %}
-              <div class="tf-mini-cart-tool-btn btn-add-gift">
-                <i class="icon icon-gift2"></i>
-                <div class="text-xxs">{{ 'cart.drawer.gift_wrap.title' | t }}</div>
-              </div>
+                {% assign gift_wrap_product = all_products[section.settings.gift_wrap_product] %}
+                {% assign has_gift_wrap = false %}
+                {% for item in cart.items %}
+                  {% if item.product_id == gift_wrap_product.id or item.properties._gift_wrap %}
+                    {% assign has_gift_wrap = true %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+                {% unless has_gift_wrap %}
+                <div class="tf-mini-cart-tool-btn btn-add-gift" data-gift-wrap-product-id="{{ gift_wrap_product.id }}">
+                  <i class="icon icon-gift2"></i>
+                  <div class="text-xxs">{{ 'cart.drawer.gift_wrap.title' | t }}</div>
+                </div>
+                {% endunless %}
               {% endif %}
               {% if section.settings.enable_order_note %}
               <div class="tf-mini-cart-tool-btn btn-add-note">
@@ -344,6 +354,25 @@
                 document.querySelectorAll('.cart-count').forEach(element => {
                   element.textContent = cartData.item_count || '0';
                 });
+                
+                // Check if gift wrap is already in cart and hide/show button accordingly
+                {% if section.settings.gift_wrap_product != blank %}
+                  {% assign gift_wrap_product = all_products[section.settings.gift_wrap_product] %}
+                  const giftWrapProductId = {{ gift_wrap_product.id }};
+                  const hasGiftWrap = cartData.items.some(item => 
+                    item.product_id === giftWrapProductId || 
+                    (item.properties && item.properties._gift_wrap)
+                  );
+                  const giftWrapBtn = cartDrawer.querySelector('.btn-add-gift');
+                  if (giftWrapBtn) {
+                    if (hasGiftWrap) {
+                      giftWrapBtn.style.display = 'none';
+                    } else {
+                      giftWrapBtn.style.display = 'block';
+                    }
+                  }
+                {% endif %}
+                
                 // Update shipping threshold
                 const threshold = 100 * 100;
                 const progress = Math.min(100, (cartData.total_price / threshold) * 100);

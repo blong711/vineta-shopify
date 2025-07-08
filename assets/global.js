@@ -2224,6 +2224,25 @@ class Cart {
     // Update shipping threshold
     this.updateShippingThreshold(cartData.total_price);
     
+    // Check if gift wrap is already in cart and hide/show button accordingly
+    const giftWrapBtn = cartDrawer.querySelector('.btn-add-gift');
+    if (giftWrapBtn) {
+      // Get gift wrap product ID from the cart drawer data attribute or settings
+      const giftWrapProductId = giftWrapBtn.dataset.giftWrapProductId;
+      if (giftWrapProductId) {
+        const hasGiftWrap = cartData.items.some(item => 
+          item.product_id == giftWrapProductId || 
+          (item.properties && item.properties._gift_wrap)
+        );
+        
+        if (hasGiftWrap) {
+          giftWrapBtn.style.display = 'none';
+        } else {
+          giftWrapBtn.style.display = 'block';
+        }
+      }
+    }
+    
     // Log final item count
     const finalItems = cartItemsContainer.querySelectorAll('.tf-mini-cart-item');
   }
