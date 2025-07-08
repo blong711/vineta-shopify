@@ -22120,10 +22120,10 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   padding: 15px 20px;
 }
 .account-orders table thead tr {
-  border: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 .account-orders table tbody {
-  border: 1px solid var(--line);
+  /* border: 1px solid var(--line); */
   border-top: 0;
 }
 .account-orders table tbody tr:not(:last-child) {
@@ -22140,6 +22140,8 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   padding: 5px 19px;
   border: 1px solid var(--dark);
   border-radius: 99px;
+  background: white;
+  color: black;
 }
 .account-orders table .view-detail:hover {
   background-color: var(--dark);
