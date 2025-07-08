@@ -16172,7 +16172,7 @@ button.animate-btn::after,
   transform: translateY(8px);
   opacity: 0;
   visibility: hidden;
-  color: var(--white) !important;
+  color: var(--white);
   width: max-content;
   background-color: var(--dark);
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24), -webkit-transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
@@ -18061,7 +18061,7 @@ button.animate-btn::after,
 }
 .card-product .product-btn-main .btn-main-product:hover {
   background-color: var(--dark);
-  color: var(--white) !important;
+  color: var(--white);
 }
 .card-product .product-btn-main .btn-main-product.add-to-cart {
   -webkit-line-clamp: 1;
