@@ -387,26 +387,36 @@
         <span class="price-new">{{ product.price | money }}</span>
       {%- endif -%}
     </p>
-    {%- if show_color_swatches or show_case_type -%}
+      {%- if show_color_swatches and product.variants.size > 1 and product.options contains 'Color' -%}
+      <ul class="list-color-product {% if product-info == 'text-center' %}justify-content-center{% else %}{{ text_alignment | default: 'text-left' | replace: 'text-', 'justify-content-' }}{% endif %} {% if show_case_type %}list-capacity-product{% endif %}">
+        {%- for option in product.options_with_values -%}
+          {%- if option.name == 'Color' -%}
+            {%- for value in option.values -%}
+              {%- assign variant = product.variants | where: 'option1', value | first -%}
+              <li class="list-color-item color-swatch hover-tooltip tooltip-bot {% if value == 'White' %}line{% endif %} {% if forloop.first %}active{% endif %}"
+                  data-variant-id="{{ variant.id }}"
+                  data-option-name="{{ option.name }}"
+                  data-option-value="{{ value | escape }}"
+                  {%- if variant.featured_image != blank -%}
+                    data-variant-image="{{ variant.featured_image | image_url: width: 400 }}"
+                  {%- endif -%}>
+                <span class="tooltip color-filter">{{ value }}</span>
+                <span class="swatch-value bg-{{ value | handleize }}"></span>
+                {%- if variant.featured_image != blank -%}
+                  {{ variant.featured_image | image_url: width: 100 | image_tag:
+                    loading: 'lazy',
+                    class: 'lazyload',
+                    alt: value
+                  }}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    {%- if show_case_type -%}
       <ul class="list-color-product list-capacity-product justify-content-center">
-        {%- if show_color_swatches -%}
-          {%- for option in product.options_with_values -%}
-            {%- if option.name == 'Color' or option.name == 'Colour' -%}
-              {%- for value in option.values -%}
-                <li class="list-color-item color-swatch">
-                  <span class="text-quantity font-2">{{ value }}</span>
-                  <img class="lazyload" 
-                    data-src="{{ product.featured_image | image_url }}"
-                    src="{{ product.featured_image | image_url }}" 
-                    alt="{{ value }}"
-                    width="50"
-                    height="50">
-                </li>
-              {%- endfor -%}
-            {%- endif -%}
-          {%- endfor -%}
-        {%- endif -%}
-        {%- if show_case_type -%}
           {%- for option in product.options_with_values -%}
               {%- for value in option.values -%}
                 <li class="list-color-item color-swatch">
@@ -420,7 +430,6 @@
                 </li>
               {%- endfor -%}
           {%- endfor -%}
-        {%- endif -%}
       </ul>
     {%- endif -%}
   </div>
