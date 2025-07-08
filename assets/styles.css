@@ -18061,7 +18061,7 @@ button.animate-btn::after,
 }
 .card-product .product-btn-main .btn-main-product:hover {
   background-color: var(--dark);
-  color: var(--white);
+  color: var(--white) !important;
 }
 .card-product .product-btn-main .btn-main-product.add-to-cart {
   -webkit-line-clamp: 1;
@@ -28180,6 +28180,3 @@ html, body {
 /* .swiper.swiper--tooltip-visible {
   overflow: visible !important;
 } */
-.card-product .box-icon .icon:hover {
-  color: var(--white) !important;
-}
