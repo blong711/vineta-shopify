@@ -18086,6 +18086,12 @@ button.animate-btn::after,
   line-height: 1.2;
 }
 
+@container (max-width: 120px) {
+  .product-btn-main .btn-text {
+    font-size: 12px;
+  }
+}
+
 /* Responsive font sizing for small cards */
 @media (max-width: 480px) {
   .card-product .product-btn-main .btn-text {
