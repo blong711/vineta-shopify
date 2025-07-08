@@ -150,7 +150,7 @@
           {% if section.settings.layout == 'home-electronic' %}
             <div class="mw-1 m-auto flat-spacing-7">
         {% endif %}
-          <div dir="ltr" class="swiper tf-swiper {% if section.settings.layout == 'home-electronic' or section.settings.layout == 'home-fashion-02' %}tf-sw-iconbox-row{% endif %}" data-swiper='{% if section.settings.layout == "phonecase" %}{
+          <div dir="ltr" class="swiper tf-swiper swiper-center {% if section.settings.layout == 'home-electronic' or section.settings.layout == 'home-fashion-02' %}tf-sw-iconbox-row{% endif %}"  data-swiper='{% if section.settings.layout == "phonecase" %}{
               "slidesPerView": 1,
               "spaceBetween": 12,
               "speed": 800,
@@ -191,7 +191,7 @@
           }{% endif %}'>
               <div class="swiper-wrapper">
                   {% for block in section.blocks %}
-                      <div class="swiper-slide" {{ block.shopify_attributes }}>
+                      <div class="swiper-slide" {{ block.shopify_attributes }}">
                           {% if section.settings.layout == 'phonecase' %}
                               <div class="tf-icon-box-v2 justify-content-center {% if forloop.first %}justify-content-sm-start{% else %}justify-content-center{% endif %}">
                                   <i class="icon {{ block.settings.icon }}"></i>
@@ -263,3 +263,10 @@
         {% endif %}
       </div>
   </div> 
+  <style>
+    .swiper-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
