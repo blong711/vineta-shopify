@@ -146,19 +146,31 @@
     const dontShowAgainCheckbox = document.getElementById('dont-show-again');
     const closeButtons = document.querySelectorAll('.btn-hide-popup, [data-bs-dismiss="modal"]');
     
-    // Check if popup should be hidden
-    if (localStorage.getItem('newsletterPopupHidden') === 'true') {
+    // Check if we're in theme customizer mode
+    const isThemeCustomizer = window.Shopify && window.Shopify.designMode;
+    
+    // Only check localStorage if not in theme customizer
+    if (!isThemeCustomizer && localStorage.getItem('newsletterPopupHidden') === 'true') {
       if (popup) {
         popup.remove();
       }
       return;
     }
 
+    // Show popup immediately if in theme customizer
+    if (isThemeCustomizer && popup) {
+      // Remove any existing Bootstrap modal classes that might hide it
+      popup.classList.remove('fade');
+      popup.style.display = 'block';
+      popup.style.opacity = '1';
+      popup.style.visibility = 'visible';
+    }
+
     // Handle checkbox change
     dontShowAgainCheckbox.addEventListener('change', function() {
-      if (this.checked) {
+      if (this.checked && !isThemeCustomizer) {
         localStorage.setItem('newsletterPopupHidden', 'true');
-      } else {
+      } else if (!isThemeCustomizer) {
         localStorage.removeItem('newsletterPopupHidden');
       }
     });
@@ -166,7 +178,7 @@
     // Handle close buttons
     closeButtons.forEach(button => {
       button.addEventListener('click', function() {
-        if (dontShowAgainCheckbox.checked && popup) {
+        if (dontShowAgainCheckbox.checked && popup && !isThemeCustomizer) {
           popup.remove();
         }
       });

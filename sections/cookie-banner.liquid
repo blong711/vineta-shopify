@@ -98,6 +98,26 @@ function initCookieBanner() {
   
   console.log('Found cookie banner:', banner);
   
+  // Check if we're in theme customizer mode
+  const isThemeCustomizer = window.Shopify && window.Shopify.designMode;
+  
+  // Show banner immediately if in theme customizer
+  if (isThemeCustomizer) {
+    banner.style.display = 'block';
+    console.log('Showing cookie banner in theme customizer mode');
+  } else {
+    // Check if cookie banner should be shown (not in customizer)
+    const cookieConsent = getCookie('theme4:cookies');
+    if (cookieConsent) {
+      banner.style.display = 'none';
+      console.log('Cookie banner hidden due to existing consent:', cookieConsent);
+      return;
+    } else {
+      banner.style.display = 'block';
+      console.log('Showing cookie banner - no consent found');
+    }
+  }
+  
   const acceptBtn = banner.querySelector('#accept-cookie');
   const declineBtn = banner.querySelector('#decline-cookie');
   
@@ -134,20 +154,24 @@ function initCookieBanner() {
 function handleAccept() {
   console.log('Accept button clicked');
   const banner = document.querySelector('.sys-cookies');
-  if (banner) {
+  const isThemeCustomizer = window.Shopify && window.Shopify.designMode;
+  
+  if (banner && !isThemeCustomizer) {
     banner.style.display = 'none';
   }
   
-  // Set cookie
-  const configs = JSON.parse(banner.getAttribute('data-configs') || '{}');
-  setCookie('theme4:cookies', 'accepted', parseInt(configs.day_next || 30));
-  
-  // Set tracking consent if Shopify API is available
-  if (window.Shopify && window.Shopify.customerPrivacy) {
-    try {
-      window.Shopify.customerPrivacy.setTrackingConsent(true);
-    } catch (error) {
-      console.error('Error setting tracking consent:', error);
+  // Only set cookie if not in theme customizer
+  if (!isThemeCustomizer) {
+    const configs = JSON.parse(banner.getAttribute('data-configs') || '{}');
+    setCookie('theme4:cookies', 'accepted', parseInt(configs.day_next || 30));
+    
+    // Set tracking consent if Shopify API is available
+    if (window.Shopify && window.Shopify.customerPrivacy) {
+      try {
+        window.Shopify.customerPrivacy.setTrackingConsent(true);
+      } catch (error) {
+        console.error('Error setting tracking consent:', error);
+      }
     }
   }
 }
@@ -155,20 +179,24 @@ function handleAccept() {
 function handleDecline() {
   console.log('Decline button clicked');
   const banner = document.querySelector('.sys-cookies');
-  if (banner) {
+  const isThemeCustomizer = window.Shopify && window.Shopify.designMode;
+  
+  if (banner && !isThemeCustomizer) {
     banner.style.display = 'none';
   }
   
-  // Set cookie
-  const configs = JSON.parse(banner.getAttribute('data-configs') || '{}');
-  setCookie('theme4:cookies', 'declined', parseInt(configs.day_next || 30));
-  
-  // Set tracking consent if Shopify API is available
-  if (window.Shopify && window.Shopify.customerPrivacy) {
-    try {
-      window.Shopify.customerPrivacy.setTrackingConsent(false);
-    } catch (error) {
-      console.error('Error setting tracking consent:', error);
+  // Only set cookie if not in theme customizer
+  if (!isThemeCustomizer) {
+    const configs = JSON.parse(banner.getAttribute('data-configs') || '{}');
+    setCookie('theme4:cookies', 'declined', parseInt(configs.day_next || 30));
+    
+    // Set tracking consent if Shopify API is available
+    if (window.Shopify && window.Shopify.customerPrivacy) {
+      try {
+        window.Shopify.customerPrivacy.setTrackingConsent(false);
+      } catch (error) {
+        console.error('Error setting tracking consent:', error);
+      }
     }
   }
 }
