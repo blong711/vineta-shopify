@@ -16172,7 +16172,7 @@ button.animate-btn::after,
   transform: translateY(8px);
   opacity: 0;
   visibility: hidden;
-  color: var(--white);
+  color: var(--white) !important;
   width: max-content;
   background-color: var(--dark);
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24), -webkit-transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
@@ -18211,7 +18211,7 @@ button.animate-btn::after,
 }
 .card-product .box-icon:hover {
   background-color: var(--dark) !important;
-  color: var(--white);
+  color: var(--white) !important;
   border-color: var(--dark);
 }
 .card-product .countdown-box {
