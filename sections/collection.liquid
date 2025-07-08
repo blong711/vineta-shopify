@@ -462,8 +462,8 @@
 
     <div class="wrapper-control-shop" data-pagination-type="{{ section.settings.pagination_type }}">
       <div class="meta-filter-shop" style="display: {% if current_tags.size > 0 or request.search != blank %}block{% else %}none{% endif %};">
-          <div id="product-count-grid" class="count-text"><span class="count">{{ collection.products.size }}</span> Products found</div>
-          <div id="product-count-list" class="count-text"><span class="count">{{ collection.products.size }}</span> Products found</div>
+          <div id="product-count-grid" class="count-text"><span class="count">{{ collection.products_count }}</span> Products found</div>
+          <div id="product-count-list" class="count-text"><span class="count">{{ collection.products_count }}</span> Products found</div>
           <div id="applied-filters">
             {% comment %} Show current tags as applied filters {% endcomment %}
             {% if current_tags.size > 0 %}
@@ -1523,15 +1523,29 @@
         const newCountGrid = doc.getElementById('product-count-grid');
         const newCountList = doc.getElementById('product-count-list');
         
-        // Calculate actual product counts from the new content
-        const newGridProducts = newGrid ? newGrid.querySelectorAll('.loadItem') : [];
-        const newListProducts = newList ? newList.querySelectorAll('.loadItem') : [];
+        // Get filtered product count from the response
+        const responseCountGrid = doc.getElementById('product-count-grid');
+        const responseCountList = doc.getElementById('product-count-list');
         
-        // Update product count displays based on current layout
+        // Extract filtered count from the response
+        let filteredCount = 0;
+        if (responseCountGrid) {
+          const countSpan = responseCountGrid.querySelector('.count');
+          if (countSpan) {
+            filteredCount = parseInt(countSpan.textContent) || 0;
+          }
+        } else if (responseCountList) {
+          const countSpan = responseCountList.querySelector('.count');
+          if (countSpan) {
+            filteredCount = parseInt(countSpan.textContent) || 0;
+          }
+        }
+        
+        // Update product count displays with filtered count
         if (productCountGrid) {
           const countSpan = productCountGrid.querySelector('.count');
           if (countSpan) {
-            countSpan.textContent = newGridProducts.length;
+            countSpan.textContent = filteredCount;
           }
           // Show/hide based on current layout
           const isGridActive = !productList || productList.style.display === 'none';
@@ -1541,7 +1555,7 @@
         if (productCountList) {
           const countSpan = productCountList.querySelector('.count');
           if (countSpan) {
-            countSpan.textContent = newListProducts.length;
+            countSpan.textContent = filteredCount;
           }
           // Show/hide based on current layout
           const isListActive = productList && productList.style.display === 'block';
@@ -2465,20 +2479,21 @@
         const productCountGrid = document.getElementById('product-count-grid');
         const productCountList = document.getElementById('product-count-list');
         
-        let totalProducts = 0;
-        if (productCountGrid && productCountGrid.style.display !== 'none') {
+        let filteredProducts = 0;
+        // Always use the filtered count from the display, regardless of which layout is active
+        if (productCountGrid) {
           const countSpan = productCountGrid.querySelector('.count');
           if (countSpan) {
-            totalProducts = parseInt(countSpan.textContent) || 0;
+            filteredProducts = parseInt(countSpan.textContent) || 0;
           }
-        } else if (productCountList && productCountList.style.display !== 'none') {
+        } else if (productCountList) {
           const countSpan = productCountList.querySelector('.count');
           if (countSpan) {
-            totalProducts = parseInt(countSpan.textContent) || 0;
+            filteredProducts = parseInt(countSpan.textContent) || 0;
           }
         }
         
-        if (totalProducts > 0) {
+        if (filteredProducts > 0) {
           // Estimate availability based on current page products
           const gridLayout = document.getElementById('gridLayout');
           const listLayout = document.getElementById('listLayout');
@@ -2502,12 +2517,12 @@
               }
             });
             
-            // Calculate ratio and apply to total collection
+            // Calculate ratio and apply to filtered collection
             const totalVisible = inStockCount + outOfStockCount;
             if (totalVisible > 0) {
               const inStockRatio = inStockCount / totalVisible;
-              const estimatedInStock = Math.round(totalProducts * inStockRatio);
-              const estimatedOutOfStock = totalProducts - estimatedInStock;
+              const estimatedInStock = Math.round(filteredProducts * inStockRatio);
+              const estimatedOutOfStock = filteredProducts - estimatedInStock;
               
               // Update counts with estimated values
               const inStockLabel = document.querySelector('label[for="Filter-availability-1"] .count');
@@ -2520,7 +2535,7 @@
                 outOfStockLabel.textContent = `(${estimatedOutOfStock})`;
               }
               
-              console.log('Estimated availability counts for entire collection - In stock:', estimatedInStock, 'Out of stock:', estimatedOutOfStock, 'Total:', totalProducts);
+              console.log('Estimated availability counts for filtered collection - In stock:', estimatedInStock, 'Out of stock:', estimatedOutOfStock, 'Total:', filteredProducts);
             }
           }
         }
