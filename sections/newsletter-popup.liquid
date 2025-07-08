@@ -157,13 +157,29 @@
       return;
     }
 
-    // Show popup immediately if in theme customizer
+    // Handle theme customizer section selection
     if (isThemeCustomizer && popup) {
-      // Remove any existing Bootstrap modal classes that might hide it
-      popup.classList.remove('fade');
-      popup.style.display = 'block';
-      popup.style.opacity = '1';
-      popup.style.visibility = 'visible';
+      // Listen for section selection events
+      document.addEventListener('shopify:section:select', function(event) {
+        if (event.detail.sectionId === '{{ section.id }}') {
+          // Show popup when this section is selected
+          popup.classList.remove('fade');
+          popup.style.display = 'block';
+          popup.style.opacity = '1';
+          popup.style.visibility = 'visible';
+        }
+      });
+
+      // Listen for section deselection events
+      document.addEventListener('shopify:section:deselect', function(event) {
+        if (event.detail.sectionId === '{{ section.id }}') {
+          // Hide popup when this section is deselected
+          popup.style.display = 'none';
+        }
+      });
+
+      // Initially hide the popup in customizer mode
+      popup.style.display = 'none';
     }
 
     // Handle checkbox change

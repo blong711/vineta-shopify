@@ -49,7 +49,8 @@
 
 {% if section.settings.enable_cookie_banner %}
   <div class="cookie-banner sys-cookies" id="cookie-banner" style="display: none;" 
-       data-configs='{"day_next": "{{ section.settings.expiry_days }}", "show": "1"}'>
+       data-configs='{"day_next": "{{ section.settings.expiry_days }}", "show": "1"}'
+       data-section-id="{{ section.id }}">
     <div class="overplay"></div>
     <div class="content" id="drawerCookies">
       <p class="text-md">{{ 'cookie.message' | t }}</p>
@@ -101,10 +102,31 @@ function initCookieBanner() {
   // Check if we're in theme customizer mode
   const isThemeCustomizer = window.Shopify && window.Shopify.designMode;
   
-  // Show banner immediately if in theme customizer
   if (isThemeCustomizer) {
-    banner.style.display = 'block';
-    console.log('Showing cookie banner in theme customizer mode');
+    // Get section ID from data attribute
+    const sectionId = banner.getAttribute('data-section-id');
+    
+    // Handle theme customizer section selection
+    document.addEventListener('shopify:section:select', function(event) {
+      if (event.detail.sectionId === sectionId) {
+        // Show banner when this section is selected
+        banner.style.display = 'block';
+        console.log('Showing cookie banner - section selected');
+      }
+    });
+
+    // Listen for section deselection events
+    document.addEventListener('shopify:section:deselect', function(event) {
+      if (event.detail.sectionId === sectionId) {
+        // Hide banner when this section is deselected
+        banner.style.display = 'none';
+        console.log('Hiding cookie banner - section deselected');
+      }
+    });
+
+    // Initially hide the banner in customizer mode
+    banner.style.display = 'none';
+    console.log('Cookie banner hidden initially in theme customizer mode');
   } else {
     // Check if cookie banner should be shown (not in customizer)
     const cookieConsent = getCookie('theme4:cookies');
