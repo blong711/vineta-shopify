@@ -254,7 +254,7 @@
 {%- comment -%}Include the recently viewed tracking script{%- endcomment -%}
 {% render 'recently-viewed-tracking' %}
 
-<section id="search-recently-viewed-section" style="display: none;">
+<section class="flat-spacing pt-0" id="search-recently-viewed-section" style="display: none;">
   <div class="container">
     <div class="flat-title wow fadeInUp">
       <h4 class="title">Recently Viewed Products</h4>
@@ -849,19 +849,172 @@
       return '$' + dollars.toFixed(2);
     }
     
+    // Track if products have been rendered to prevent unnecessary re-renders
+    let productsRendered = false;
+    
+    // Function to render recently viewed products for search page (with caching)
+    async function renderSearchRecentlyViewedProducts(force = false) {
+      if (typeof window.RecentlyViewedManager === 'undefined') {
+        console.warn('RecentlyViewedManager not available');
+        return;
+      }
+      
+      // Get recently viewed products (no current product to exclude on search page)
+      const recentlyViewed = window.RecentlyViewedManager.getProducts().slice(0, 8);
+      
+      if (recentlyViewed.length === 0) {
+        searchSection.style.display = 'none';
+        return;
+      }
+      
+      // Show the section
+      searchSection.style.display = 'block';
+      
+      // If products are already rendered and we're not forcing a re-render, skip
+      if (productsRendered && !force && searchProductsContainer.children.length > 0) {
+        return;
+      }
+      
+      // Clear existing products
+      searchProductsContainer.innerHTML = '';
+      
+      // Fetch full product data for each recently viewed product
+      const productPromises = recentlyViewed.map(async (product) => {
+        try {
+          const response = await fetch(`/products/${product.handle}.js`);
+          if (!response.ok) throw new Error('Failed to fetch product data');
+          return await response.json();
+        } catch (error) {
+          console.error('Error fetching product data for', product.handle, error);
+          // Return the basic product data if fetch fails
+          return product;
+        }
+      });
+      
+      const fullProductData = await Promise.all(productPromises);
+      
+      // Render each product using the card-product snippet structure
+      fullProductData.forEach(function(product) {
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide';
+        
+        // Create product card HTML that matches the card-product snippet structure
+        slide.innerHTML = `
+          <div class="card-product style-1" data-availability="${product.available ? 'In stock' : 'Out of stock'}" data-brand="${product.vendor || ''}">
+            <div class="card-product-wrapper asp-ratio-1">
+              <a href="${product.url}" class="product-img">
+                ${product.featured_image ? 
+                  `<img class="img-product lazyloaded" src="${product.featured_image}" alt="${product.title}" loading="lazy">` :
+                  `<div class="placeholder-svg">${product.title}</div>`
+                }
+                ${product.images && product.images[1] ? 
+                  `<img class="img-hover lazyloaded" src="${product.images[1]}" alt="${product.title}" loading="lazy">` : ''
+                }
+              </a>
+              
+              ${product.compare_at_price && product.compare_at_price > product.price ? 
+                `<div class="on-sale-wrap">
+                  <span class="on-sale-item">${Math.round((product.compare_at_price - product.price) / product.compare_at_price * 100)}% Off</span>
+                </div>` : ''
+              }
+              
+              ${product.available ? `
+              <ul class="list-product-btn">
+                <li>
+                  <a href="javascript:void(0);" 
+                     class="box-icon hover-tooltip tooltip-left add-to-cart" 
+                     data-variant-id="${product.variants ? product.variants[0].id : product.id}"
+                     data-quantity="1"
+                     aria-label="Add to cart">
+                    <i class="icon icon-cart"></i>
+                    <span class="tooltip">Add to cart</span>
+                  </a>
+                </li>
+                <li class="wishlist">
+                  <a href="javascript:void(0);" 
+                     class="box-icon hover-tooltip tooltip-left" 
+                     data-wishlist 
+                     data-id="${product.id}" 
+                     data-action="add"
+                     aria-label="Add to wishlist">
+                    <span class="icon icon-heart2"></span>
+                    <span class="tooltip">Add to wishlist</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="javascript:void(0);" 
+                     class="box-icon hover-tooltip tooltip-left quickview" 
+                     data-product-handle="${product.handle}"
+                     data-product-id="${product.id}"
+                     data-bs-toggle="modal" 
+                     data-bs-target="#quickView">
+                    <span class="icon icon-view"></span>
+                    <span class="tooltip">Quick view</span>
+                  </a>
+                </li>
+                <li class="compare">
+                  <a href="javascript:void(0);" 
+                     class="box-icon hover-tooltip tooltip-left" 
+                     data-compare 
+                     data-id="${product.id}" 
+                     data-action="add"
+                     aria-label="Add to compare">
+                    <span class="icon icon-compare"></span>
+                    <span class="tooltip">Add to compare</span>
+                  </a>
+                </li>
+              </ul>
+              ` : ''}
+            </div>
+            
+            <div class="card-product-info">
+              <a href="${product.url}" class="name-product link fw-medium text-md">${product.title}</a>
+              <p class="price-wrap fw-medium">
+                ${product.compare_at_price && product.compare_at_price > product.price ? 
+                  `<span class="price-new text-primary">${formatMoney(product.price)}</span>
+                   <span class="price-old">${formatMoney(product.compare_at_price)}</span>` :
+                  `<span class="price-new">${formatMoney(product.price)}</span>`
+                }
+              </p>
+            </div>
+          </div>
+        `;
+        
+        searchProductsContainer.appendChild(slide);
+      });
+      
+      // Initialize product card functionality for the newly added products
+      if (typeof ProductCard !== 'undefined') {
+        try {
+          ProductCard.initializeForDynamicProducts(searchProductsContainer);
+        } catch (error) {
+          console.warn('Error initializing product card functionality for search recently viewed products:', error);
+        }
+      } else {
+        console.warn('ProductCard module not available for search recently viewed products');
+      }
+      
+      // Mark products as rendered
+      productsRendered = true;
+    }
+    
     // Initial render
     renderSearchRecentlyViewedProducts();
     
     // Listen for updates to recently viewed products
     window.addEventListener('recentlyViewedUpdated', function() {
-      renderSearchRecentlyViewedProducts();
+      renderSearchRecentlyViewedProducts(true); // Force re-render when recently viewed products change
     });
     
-    // Re-render when section becomes visible (for lazy loading)
+    // Only render once when section becomes visible (for initial lazy loading)
+    let hasInitiallyRendered = false;
     const observer = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !hasInitiallyRendered) {
           renderSearchRecentlyViewedProducts();
+          hasInitiallyRendered = true;
+          // Disconnect observer after first render to prevent future re-renders
+          observer.disconnect();
         }
       });
     });
