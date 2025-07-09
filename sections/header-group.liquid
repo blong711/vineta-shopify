@@ -1,0 +1,96 @@
+{%- comment -%}Header Group Section{%- endcomment -%}
+<div class="header-group">
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'top_bar' -%}
+        {%- if block.settings.enable_top_bar -%}
+          {% section 'top-bar' %}
+        {%- endif -%}
+      {%- when 'header' -%}
+        {% section 'header' %}
+      {%- when 'mobile_menu' -%}
+        {% section 'mobile-menu' %}
+      {%- when 'announcement_bar' -%}
+        {%- if block.settings.enable_announcement -%}
+          {% section 'announcement-bar' %}
+        {%- endif -%}
+    {%- endcase -%}
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Header Group",
+  "tag": "header",
+  "class": "header-group-section",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "top_bar",
+      "name": "Top Bar",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "enable_top_bar",
+          "label": "Enable Top Bar",
+          "default": true,
+          "info": "Shows social media, announcements, and language/currency selectors"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "name": "Main Header",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Header settings managed in Header section"
+        }
+      ]
+    },
+    {
+      "type": "mobile_menu",
+      "name": "Mobile Menu",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Mobile menu settings in Mobile Menu section"
+        }
+      ]
+    },
+    {
+      "type": "announcement_bar",
+      "name": "Announcement Bar",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "enable_announcement",
+          "label": "Enable Announcement Bar",
+          "default": false,
+          "info": "Shows promotional announcements across the site"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header Group",
+      "blocks": [
+        {
+          "type": "top_bar"
+        },
+        {
+          "type": "header"
+        },
+        {
+          "type": "mobile_menu"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 

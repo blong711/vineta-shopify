@@ -1,0 +1,41 @@
+{%- comment -%}Footer Group Section{%- endcomment -%}
+<div class="footer-group">
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'footer' -%}
+        {% section 'footer' %}
+    {%- endcase -%}
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Footer Group",
+  "tag": "footer",
+  "class": "footer-group-section",
+  "max_blocks": 1,
+  "blocks": [
+    {
+      "type": "footer",
+      "name": "Main Footer",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Footer settings managed in Footer section"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer Group",
+      "blocks": [
+        {
+          "type": "footer"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 
