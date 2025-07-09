@@ -184,14 +184,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Function to handle empty cart state
   function handleEmptyCart() {
-    console.log('Handling empty cart state');
     const mainRow = document.getElementById('cart-items-row');
     const emptyCartContainer = document.getElementById('empty-cart-container');
     const shippingProgressSection = document.querySelector('.flat-spacing-24');
-    
-    console.log('Main row found:', mainRow);
-    console.log('Empty cart container found:', emptyCartContainer);
-    console.log('Shipping progress section found:', shippingProgressSection);
     
     // Hide the entire cart layout (both columns)
     if (mainRow) {

@@ -119,14 +119,11 @@ window.addEventListener('load', () => {
 
   // Initialize Shopify language selector
   const languageSelectors = document.querySelectorAll('.type-languages');
-  console.log('Found language selectors:', languageSelectors.length);
   
   languageSelectors.forEach((languageSelector, index) => {
-    console.log(`Initializing language selector ${index + 1}:`, languageSelector);
     
     languageSelector.addEventListener('change', (event) => {
       const language = event.target.value;
-      console.log('Language changed to:', language);
       
       // Get the primary language (first option in the selector)
       const primaryLanguage = languageSelector.options[0].value;
