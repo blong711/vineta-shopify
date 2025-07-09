@@ -1,5 +1,29 @@
 // Product Card Module
 const ProductCard = {
+  // CSRF Protected Fetch Utility
+  csrfFetch(url, options = {}) {
+    // Get CSRF token from meta tag or input field
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                     document.querySelector('input[name="authenticity_token"]')?.value ||
+                     document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    
+    // Set default headers
+    const headers = {
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
+    };
+    
+    // Add CSRF token if available
+    if (csrfToken) {
+      headers['X-CSRF-Token'] = csrfToken;
+    }
+    
+    // Merge with provided options
+    options.headers = { ...headers, ...options.headers };
+    
+    return fetch(url, options);
+  },
+
   // Helper function to format money
   formatMoney(cents) {
     return new Intl.NumberFormat('en-US', {
@@ -102,11 +126,8 @@ const ProductCard = {
         if (!variantId) return;
 
         try {
-          const response = await fetch('/cart/change.js', {
+          const response = await this.csrfFetch('/cart/change.js', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
             body: JSON.stringify({
               id: variantId,
               quantity: 0
@@ -122,7 +143,7 @@ const ProductCard = {
           }
 
           // Fetch updated cart data
-          const cartResponse = await fetch('/cart.js');
+          const cartResponse = await this.csrfFetch('/cart.js');
           if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
           const cartData = await cartResponse.json();
 
@@ -175,11 +196,8 @@ const ProductCard = {
           input.value = newQuantity;
 
           // Update cart via API
-          const response = await fetch('/cart/change.js', {
+          const response = await this.csrfFetch('/cart/change.js', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
             body: JSON.stringify({
               id: variantId,
               quantity: newQuantity
@@ -254,11 +272,8 @@ const ProductCard = {
         
         if (isNaN(newValue) || newValue < 1) {
           if (newValue <= 0) {
-            const response = await fetch('/cart/change.js', {
+            const response = await this.csrfFetch('/cart/change.js', {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
               body: JSON.stringify({
                 id: variantId,
                 quantity: 0
@@ -269,11 +284,8 @@ const ProductCard = {
             }
           } else {
             this.value = 1;
-            const response = await fetch('/cart/change.js', {
+            const response = await this.csrfFetch('/cart/change.js', {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
               body: JSON.stringify({
                 id: variantId,
                 quantity: 1
@@ -284,11 +296,8 @@ const ProductCard = {
             }
           }
         } else {
-          const response = await fetch('/cart/change.js', {
+          const response = await this.csrfFetch('/cart/change.js', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
             body: JSON.stringify({
               id: variantId,
               quantity: newValue
@@ -300,7 +309,7 @@ const ProductCard = {
         }
 
         // Fetch updated cart data and update UI
-        const cartResponse = await fetch('/cart.js');
+        const cartResponse = await this.csrfFetch('/cart.js');
         if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
         const cartData = await cartResponse.json();
         
@@ -516,11 +525,8 @@ const ProductCard = {
           newButton.setAttribute('aria-disabled', 'true');
           
           // Add item to cart
-          const response = await fetch('/cart/add.js', {
+          const response = await this.csrfFetch('/cart/add.js', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
             body: JSON.stringify({
               items: [{
                 id: variantId,
@@ -530,7 +536,7 @@ const ProductCard = {
           });
 
           if (!response.ok) throw new Error('Failed to add item to cart');
-          const cartResponse = await fetch('/cart.js');
+          const cartResponse = await this.csrfFetch('/cart.js');
           const cartData = await cartResponse.json();
           
           // If we're on the cart page, add the item to the cart table
@@ -567,7 +573,7 @@ const ProductCard = {
             if (window.cart) {
               // The item has already been added via the POST request above
               // Just fetch the updated cart data and update the drawer
-              const response = await fetch('/cart.js');
+              const response = await this.csrfFetch('/cart.js');
               const cartData = await response.json();
               await this.updateCartDrawer(cartData);
               
@@ -663,11 +669,8 @@ const ProductCard = {
             console.log('Decreasing quantity for variant:', variantId, 'from', currentValue, 'to', currentValue - 1);
             
             if (currentValue > 1) {
-              const response = await fetch('/cart/change.js', {
+              const response = await this.csrfFetch('/cart/change.js', {
                 method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
                 body: JSON.stringify({
                   id: variantId,
                   quantity: currentValue - 1
@@ -680,11 +683,8 @@ const ProductCard = {
                 throw new Error(`Failed to update quantity: ${response.status} ${errorText}`);
               }
             } else {
-              const response = await fetch('/cart/change.js', {
+              const response = await this.csrfFetch('/cart/change.js', {
                 method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
                 body: JSON.stringify({
                   id: variantId,
                   quantity: 0
@@ -699,7 +699,7 @@ const ProductCard = {
             }
 
             // Fetch updated cart data and update UI
-            const cartResponse = await fetch('/cart.js');
+            const cartResponse = await this.csrfFetch('/cart.js');
             if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
             const cartData = await cartResponse.json();
             await this.updateCartDrawer(cartData);
@@ -742,11 +742,8 @@ const ProductCard = {
             
             console.log('Increasing quantity for variant:', variantId, 'from', currentValue, 'to', currentValue + 1);
             
-            const response = await fetch('/cart/change.js', {
+            const response = await this.csrfFetch('/cart/change.js', {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
               body: JSON.stringify({
                 id: variantId,
                 quantity: currentValue + 1
@@ -760,7 +757,7 @@ const ProductCard = {
             }
 
             // Fetch updated cart data and update UI
-            const cartResponse = await fetch('/cart.js');
+            const cartResponse = await this.csrfFetch('/cart.js');
             if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
             const cartData = await cartResponse.json();
             await this.updateCartDrawer(cartData);
@@ -794,11 +791,8 @@ const ProductCard = {
             
             if (isNaN(newValue) || newValue < 1) {
               if (newValue <= 0) {
-                const response = await fetch('/cart/change.js', {
+                const response = await this.csrfFetch('/cart/change.js', {
                   method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
                   body: JSON.stringify({
                     id: variantId,
                     quantity: 0
@@ -811,11 +805,8 @@ const ProductCard = {
                 }
               } else {
                 input.value = 1;
-                const response = await fetch('/cart/change.js', {
+                const response = await this.csrfFetch('/cart/change.js', {
                   method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
                   body: JSON.stringify({
                     id: variantId,
                     quantity: 1
@@ -828,11 +819,8 @@ const ProductCard = {
                 }
               }
             } else {
-              const response = await fetch('/cart/change.js', {
+              const response = await this.csrfFetch('/cart/change.js', {
                 method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
                 body: JSON.stringify({
                   id: variantId,
                   quantity: newValue
@@ -846,7 +834,7 @@ const ProductCard = {
             }
 
             // Fetch updated cart data and update UI
-            const cartResponse = await fetch('/cart.js');
+            const cartResponse = await this.csrfFetch('/cart.js');
             if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
             const cartData = await cartResponse.json();
             await this.updateCartDrawer(cartData);
@@ -877,11 +865,8 @@ const ProductCard = {
             
             console.log('Removing variant from cart:', variantId);
             
-            const response = await fetch('/cart/change.js', {
+            const response = await this.csrfFetch('/cart/change.js', {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
               body: JSON.stringify({
                 id: variantId,
                 quantity: 0
@@ -895,7 +880,7 @@ const ProductCard = {
             }
 
             // Fetch updated cart data and update UI
-            const cartResponse = await fetch('/cart.js');
+            const cartResponse = await this.csrfFetch('/cart.js');
             if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
             const cartData = await cartResponse.json();
             await this.updateCartDrawer(cartData);
@@ -1125,7 +1110,7 @@ const ProductCard = {
   // Initialize cart count
   async initializeCartCount() {
     try {
-      const response = await fetch('/cart.js');
+      const response = await this.csrfFetch('/cart.js');
       if (!response.ok) throw new Error('Failed to fetch cart data');
       const cartData = await response.json();
       

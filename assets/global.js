@@ -16,6 +16,33 @@
  */
 
 /**
+ * CSRF Protected Fetch Utility
+ * Provides secure fetch requests with CSRF token protection
+ */
+function csrfFetch(url, options = {}) {
+  // Get CSRF token from meta tag or input field
+  const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                   document.querySelector('input[name="authenticity_token"]')?.value ||
+                   document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+  
+  // Set default headers
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest'
+  };
+  
+  // Add CSRF token if available
+  if (csrfToken) {
+    headers['X-CSRF-Token'] = csrfToken;
+  }
+  
+  // Merge with provided options
+  options.headers = { ...headers, ...options.headers };
+  
+  return fetch(url, options);
+}
+
+/**
  * HTML Sanitization Utilities
  * Provides safe HTML creation and sanitization functions to prevent XSS attacks
  */
@@ -1854,11 +1881,8 @@ class Cart {
         
         try {
           if (currentValue > 1) {
-            const response = await fetch('/cart/change.js', {
+            const response = await csrfFetch('/cart/change.js', {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
               body: JSON.stringify({
                 id: variantId,
                 quantity: currentValue - 1
@@ -1866,11 +1890,8 @@ class Cart {
             });
             if (!response.ok) throw new Error('Failed to update quantity');
           } else {
-            const response = await fetch('/cart/change.js', {
+            const response = await csrfFetch('/cart/change.js', {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
               body: JSON.stringify({
                 id: variantId,
                 quantity: 0
@@ -1926,11 +1947,8 @@ class Cart {
         cartItemElement.classList.add('loading');
         
         try {
-          const response = await fetch('/cart/change.js', {
+          const response = await csrfFetch('/cart/change.js', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
             body: JSON.stringify({
               id: variantId,
               quantity: currentValue + 1
@@ -1986,11 +2004,8 @@ class Cart {
           cartItemElement.classList.add('loading');
           
           try {
-            const response = await fetch('/cart/change.js', {
+            const response = await csrfFetch('/cart/change.js', {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
               body: JSON.stringify({
                 id: variantId,
                 quantity: 0
@@ -2065,11 +2080,8 @@ class Cart {
               if (!response.ok) throw new Error('Failed to remove item');
             } else {
               event.target.value = 1;
-              const response = await fetch('/cart/change.js', {
+              const response = await csrfFetch('/cart/change.js', {
                 method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
                 body: JSON.stringify({
                   id: variantId,
                   quantity: 1
@@ -2078,11 +2090,8 @@ class Cart {
               if (!response.ok) throw new Error('Failed to update quantity');
             }
           } else {
-            const response = await fetch('/cart/change.js', {
+            const response = await csrfFetch('/cart/change.js', {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
               body: JSON.stringify({
                 id: variantId,
                 quantity: newValue
@@ -2146,11 +2155,8 @@ class Cart {
 
         try {
           // First remove the old variant
-          const removeResponse = await fetch('/cart/change.js', {
+          const removeResponse = await csrfFetch('/cart/change.js', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
             body: JSON.stringify({
               id: oldVariantId,
               quantity: 0
@@ -2159,11 +2165,8 @@ class Cart {
           if (!removeResponse.ok) throw new Error('Failed to remove old variant');
 
           // Then add the new variant
-          const addResponse = await fetch('/cart/add.js', {
+          const addResponse = await csrfFetch('/cart/add.js', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
             body: JSON.stringify({
               id: newVariantId,
               quantity: quantity
@@ -2254,11 +2257,8 @@ class Cart {
 
       
       // Make API request
-      const response = await fetch(action === this.actions.add ? '/cart/add.js' : '/cart/change.js', {
+      const response = await csrfFetch(action === this.actions.add ? '/cart/add.js' : '/cart/change.js', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
         body: JSON.stringify(action === this.actions.add ? {
           items: [{ id, quantity }]
         } : {

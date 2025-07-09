@@ -37,6 +37,31 @@
 (function ($) {
   "use strict";
 
+  /* CSRF Protected Fetch Utility
+  -------------------------------------------------------------------------------------*/
+  var csrfFetch = function(url, options = {}) {
+    // Get CSRF token from meta tag or input field
+    var csrfToken = $('meta[name="csrf-token"]').attr('content') || 
+                   $('input[name="authenticity_token"]').val() ||
+                   $('meta[name="csrf-token"]').attr('content');
+    
+    // Set default headers
+    var headers = {
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
+    };
+    
+    // Add CSRF token if available
+    if (csrfToken) {
+      headers['X-CSRF-Token'] = csrfToken;
+    }
+    
+    // Merge with provided options
+    options.headers = { ...headers, ...options.headers };
+    
+    return fetch(url, options);
+  };
+
   /* Select Image
   -------------------------------------------------------------------------------------*/
   var selectImages = function () {
@@ -725,33 +750,45 @@
         // Extract address ID from form ID
         var addressId = formId.replace('form-edit-', '');
         
-        // Create a delete form using Shopify's standard delete URL
-        var deleteForm = $('<form>', {
-          'method': 'post',
-          'action': '/account/addresses/' + addressId
+        // Use CSRF-protected fetch for address deletion
+        csrfFetch('/account/addresses/' + addressId, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        })
+        .then(function(response) {
+          if (response.ok) {
+            // Remove the address item from the DOM
+            var addressItem = $(this).closest('.account-address-item');
+            addressItem.fadeOut(300, function() {
+              $(this).remove();
+            });
+            
+            // Show success message
+            var successMessage = $('<div class="alert alert-success">Address deleted successfully.</div>');
+            $('.my-acount-content').prepend(successMessage);
+            setTimeout(function() {
+              successMessage.fadeOut(300, function() {
+                $(this).remove();
+              });
+            }, 3000);
+          } else {
+            throw new Error('Failed to delete address');
+          }
+        })
+        .catch(function(error) {
+          console.error('Error deleting address:', error);
+          
+          // Show error message
+          var errorMessage = $('<div class="alert alert-danger">Failed to delete address. Please try again.</div>');
+          $('.my-acount-content').prepend(errorMessage);
+          setTimeout(function() {
+            errorMessage.fadeOut(300, function() {
+              $(this).remove();
+            });
+          }, 3000);
         });
-        
-        // Add a hidden input to indicate this is a delete operation
-        deleteForm.append($('<input>', {
-          'type': 'hidden',
-          'name': '_method',
-          'value': 'delete'
-        }));
-        
-        // Add authenticity token if it exists
-        var authenticityToken = $('meta[name="csrf-token"]').attr('content') || 
-                               $('input[name="authenticity_token"]').val();
-        if (authenticityToken) {
-          deleteForm.append($('<input>', {
-            'type': 'hidden',
-            'name': 'authenticity_token',
-            'value': authenticityToken
-          }));
-        }
-        
-        // Append form to body and submit
-        $('body').append(deleteForm);
-        deleteForm.submit();
       }
     });
     
