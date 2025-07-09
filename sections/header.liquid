@@ -1,4 +1,6 @@
 {%- comment -%}Header Section{%- endcomment -%}
+{%- assign cached_locales = shop.published_locales -%}
+{%- assign cached_currencies = shop.enabled_currencies -%}
 <header id="header" class="header-default{% if section.settings.layout == 'layout-2' %} header-2{% endif %}{% if section.settings.layout == 'layout-3' %} header-3{% endif %}{% if section.settings.enable_transparent %} header-absolute{% endif %}" style="background-color: {{ section.settings.background_color }};">
   {%- if section.settings.layout == 'layout-2' -%}
     <div class="header-top">
@@ -15,7 +17,7 @@
               <div class="tf-languages">
                 {% assign current_language = request.locale.iso_code %}
                 <select class="image-select center style-default type-languages" name="language">
-                  {% for locale in shop.published_locales %}
+                  {% for locale in cached_locales %}
                     <option value="{{ locale.iso_code }}" {% if locale.iso_code == current_language %}selected{% endif %} {% if locale.primary %}data-primary="true"{% endif %}>
                       {{ locale.name }}
                     </option>
@@ -24,7 +26,7 @@
               </div>
               <div class="tf-currencies">
                 <select class="image-select center style-default type-currencies" name="currency">
-                  {% for currency in shop.enabled_currencies %}
+                  {% for currency in cached_currencies %}
                     <option value="{{ currency.iso_code }}" {% if currency == cart.currency %}selected{% endif %}>
                       {{ currency.iso_code }} ({{ currency.symbol }})
                     </option>
