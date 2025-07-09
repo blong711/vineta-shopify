@@ -37,6 +37,131 @@
 (function ($) {
   "use strict";
 
+  // Performance optimization utilities
+  const PerformanceUtils = {
+    // Throttle function for scroll events
+    throttle: function(func, limit) {
+      let inThrottle;
+      return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+          func.apply(context, args);
+          inThrottle = true;
+          setTimeout(() => inThrottle = false, limit);
+        }
+      };
+    },
+
+    // Debounce function for resize events
+    debounce: function(func, wait, immediate) {
+      let timeout;
+      return function() {
+        const context = this, args = arguments;
+        const later = function() {
+          timeout = null;
+          if (!immediate) func.apply(context, args);
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+      };
+    },
+
+    // RequestAnimationFrame wrapper for smooth animations
+    raf: function(callback) {
+      return requestAnimationFrame ? requestAnimationFrame(callback) : setTimeout(callback, 16);
+    },
+
+    // Intersection Observer for lazy loading
+    createIntersectionObserver: function(callback, options = {}) {
+      if ('IntersectionObserver' in window) {
+        return new IntersectionObserver(callback, {
+          root: options.root || null,
+          rootMargin: options.rootMargin || '0px',
+          threshold: options.threshold || 0.1
+        });
+      }
+      return null;
+    }
+  };
+
+  // Asynchronous jQuery plugin initialization
+  const AsyncInitializer = {
+    queue: [],
+    isProcessing: false,
+
+    add: function(initializer) {
+      this.queue.push(initializer);
+      this.process();
+    },
+
+    process: function() {
+      if (this.isProcessing || this.queue.length === 0) return;
+      
+      this.isProcessing = true;
+      
+      const processNext = () => {
+        if (this.queue.length === 0) {
+          this.isProcessing = false;
+          return;
+        }
+
+        const initializer = this.queue.shift();
+        
+        try {
+          initializer();
+        } catch (error) {
+          console.warn('Plugin initialization error:', error);
+        }
+
+        // Use requestAnimationFrame for smooth processing
+        PerformanceUtils.raf(() => {
+          processNext();
+        });
+      };
+
+      processNext();
+    }
+  };
+
+  // Optimized scroll event manager
+  const ScrollManager = {
+    handlers: new Map(),
+    isInitialized: false,
+
+    init: function() {
+      if (this.isInitialized) return;
+      
+      // Use passive scroll listener for better performance
+      window.addEventListener('scroll', this.handleScroll.bind(this), { passive: true });
+      this.isInitialized = true;
+    },
+
+    handleScroll: PerformanceUtils.throttle(function() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+      
+      this.handlers.forEach((handler, key) => {
+        try {
+          handler(scrollTop, scrollLeft);
+        } catch (error) {
+          console.warn(`Scroll handler error for ${key}:`, error);
+        }
+      });
+    }, 16), // ~60fps
+
+    add: function(key, handler) {
+      this.handlers.set(key, handler);
+      this.init();
+    },
+
+    remove: function(key) {
+      this.handlers.delete(key);
+    }
+  };
+
   /* CSRF Protected Fetch Utility
   -------------------------------------------------------------------------------------*/
   var csrfFetch = function(url, options = {}) {
@@ -330,38 +455,33 @@
     }
   };
 
-  /* Header Sticky
+  /* Header Sticky - Optimized with throttled scroll handling
   -------------------------------------------------------------------------*/
   var headerSticky = function () {
     let lastScrollTop = 0;
     let delta = 5;
     let navbarHeight = $("header").outerHeight();
-    let didScroll = false;
+    let header = $("header");
 
-    $(window).scroll(function () {
-      didScroll = true;
-    });
+    // Use ScrollManager for optimized scroll handling
+    ScrollManager.add('headerSticky', function(scrollTop) {
+      PerformanceUtils.raf(() => {
+        navbarHeight = header.outerHeight();
 
-    setInterval(function () {
-      if (didScroll) {
-        let st = $(window).scrollTop();
-        navbarHeight = $("header").outerHeight();
-
-        if (st > navbarHeight) {
-          if (st > lastScrollTop + delta) {
-            $("header").css("top", `-${navbarHeight}px`);
-          } else if (st < lastScrollTop - delta) {
-            $("header").css("top", "0");
-            $("header").addClass("header-bg");
+        if (scrollTop > navbarHeight) {
+          if (scrollTop > lastScrollTop + delta) {
+            header.css("top", `-${navbarHeight}px`);
+          } else if (scrollTop < lastScrollTop - delta) {
+            header.css("top", "0");
+            header.addClass("header-bg");
           }
         } else {
-          $("header").css("top", "unset");
-          $("header").removeClass("header-bg");
+          header.css("top", "unset");
+          header.removeClass("header-bg");
         }
-        lastScrollTop = st;
-        didScroll = false;
-      }
-    }, 250);
+        lastScrollTop = scrollTop;
+      });
+    });
   };
 
   /* Auto Popup
@@ -512,33 +632,34 @@
       }
     });
 
-    $(window).on("scroll", function () {
-      var isHorizontal = isHorizontalMode();
-      $(".item-scroll-target").each(function () {
-        var target = $(this);
-        var targetScroll = getTargetScroll(target, isHorizontal);
+    // Use ScrollManager for optimized scroll handling
+    ScrollManager.add('scrollGridProduct', function(scrollTop, scrollLeft) {
+      PerformanceUtils.raf(() => {
+        var isHorizontal = isHorizontalMode();
+        $(".item-scroll-target").each(function () {
+          var target = $(this);
+          var targetScroll = getTargetScroll(target, isHorizontal);
 
-        if (isHorizontal) {
-          if (
-            $(window).scrollLeft() >= targetScroll - offsetTolerance &&
-            $(window).scrollLeft() <= targetScroll + target.outerWidth()
-          ) {
-            // $(".btn-scroll-target").removeClass("active");
-            $(
-              ".btn-scroll-target[data-scroll='" + target.data("scroll") + "']"
-            ).addClass("active");
+          if (isHorizontal) {
+            if (
+              scrollLeft >= targetScroll - offsetTolerance &&
+              scrollLeft <= targetScroll + target.outerWidth()
+            ) {
+              $(
+                ".btn-scroll-target[data-scroll='" + target.data("scroll") + "']"
+              ).addClass("active");
+            }
+          } else {
+            if (
+              scrollTop >= targetScroll - offsetTolerance &&
+              scrollTop <= targetScroll + target.outerHeight()
+            ) {
+              $(
+                ".btn-scroll-target[data-scroll='" + target.data("scroll") + "']"
+              ).addClass("active");
+            }
           }
-        } else {
-          if (
-            $(window).scrollTop() >= targetScroll - offsetTolerance &&
-            $(window).scrollTop() <= targetScroll + target.outerHeight()
-          ) {
-            // $(".btn-scroll-target").removeClass("active");
-            $(
-              ".btn-scroll-target[data-scroll='" + target.data("scroll") + "']"
-            ).addClass("active");
-          }
-        }
+        });
       });
     });
   };
@@ -884,18 +1005,20 @@
     // to avoid conflicts and ensure proper header count updates
   };
 
-  /* Bottom Sticky
+  /* Bottom Sticky - Optimized with throttled scroll handling
   --------------------------------------------------------------------------------------*/
   var scrollBottomSticky = function () {
-    $(window).on("scroll", function () {
-      var scrollPosition = $(this).scrollTop();
-      var myElement = $(".tf-sticky-btn-atc");
+    var myElement = $(".tf-sticky-btn-atc");
 
-      if (scrollPosition >= 500) {
-        myElement.addClass("show");
-      } else {
-        myElement.removeClass("show");
-      }
+    // Use ScrollManager for optimized scroll handling
+    ScrollManager.add('scrollBottomSticky', function(scrollTop) {
+      PerformanceUtils.raf(() => {
+        if (scrollTop >= 500) {
+          myElement.addClass("show");
+        } else {
+          myElement.removeClass("show");
+        }
+      });
     });
   };
 
@@ -973,25 +1096,27 @@
     }, 300);
   };
 
-  /* Go Top
+  /* Go Top - Optimized with throttled scroll handling
   -------------------------------------------------------------------------------------*/
   var goTop = function () {
     var $goTop = $("#goTop");
     var $borderProgress = $(".border-progress");
 
-    $(window).on("scroll", function () {
-      var scrollTop = $(window).scrollTop();
-      var docHeight = $(document).height() - $(window).height();
-      var scrollPercent = (scrollTop / docHeight) * 100;
-      var progressAngle = (scrollPercent / 100) * 360;
+    // Use ScrollManager for optimized scroll handling
+    ScrollManager.add('goTop', function(scrollTop) {
+      PerformanceUtils.raf(() => {
+        var docHeight = $(document).height() - $(window).height();
+        var scrollPercent = (scrollTop / docHeight) * 100;
+        var progressAngle = (scrollPercent / 100) * 360;
 
-      $borderProgress.css("--progress-angle", progressAngle + "deg");
+        $borderProgress.css("--progress-angle", progressAngle + "deg");
 
-      if (scrollTop > 100) {
-        $goTop.addClass("show");
-      } else {
-        $goTop.removeClass("show");
-      }
+        if (scrollTop > 100) {
+          $goTop.addClass("show");
+        } else {
+          $goTop.removeClass("show");
+        }
+      });
     });
 
     $goTop.on("click", function () {
@@ -999,53 +1124,94 @@
     });
   };
 
-  // Dom Ready
+  // Dom Ready - Optimized with asynchronous initialization
   $(function () {
-    selectImages();
-    variantPicker();
-    customDropdown();
-    checkClick();
-    swatchColor();
-    sidebarMobile();
-    staggerWrap();
-    clickModalSecond();
-    estimateShipping();
-    headerSticky();
-    autoPopup();
-    handleProgress();
-    totalPriceVariant();
-    scrollGridProduct();
-    hoverVideo();
-    changeValueDropdown();
-    btnLoading();
-    itemCheckbox();
-    handleFooter();
-    efectParalax();
-    parallaxie();
-    infiniteSlide();
-    btnQuantity();
-    deleteFile();
-    clickControl();
-    tabSlide();
-    coppyText();
-    wishList();
-    scrollBottomSticky();
-    handleSidebarFilter();
-    cookieSetting();
-    preloader();
-    goTop();
-    
-    // Initialize WOW.js with error handling
-    try {
-      if (typeof WOW !== 'undefined') {
-        new WOW().init();
-        console.log('WOW.js initialized successfully');
-      } else {
-        console.warn('WOW.js not loaded, animations may not work');
+    // Critical functions that need to run immediately
+    const criticalFunctions = [
+      selectImages,
+      variantPicker,
+      customDropdown,
+      checkClick,
+      swatchColor,
+      sidebarMobile,
+      staggerWrap,
+      clickModalSecond,
+      estimateShipping,
+      autoPopup,
+      handleProgress,
+      totalPriceVariant,
+      hoverVideo,
+      changeValueDropdown,
+      btnLoading,
+      itemCheckbox,
+      handleFooter,
+      btnQuantity,
+      deleteFile,
+      clickControl,
+      tabSlide,
+      coppyText,
+      wishList,
+      handleSidebarFilter,
+      cookieSetting,
+      preloader
+    ];
+
+    // Scroll-dependent functions (use ScrollManager)
+    const scrollFunctions = [
+      headerSticky,
+      scrollGridProduct,
+      scrollBottomSticky,
+      goTop
+    ];
+
+    // Heavy functions that can be deferred
+    const heavyFunctions = [
+      efectParalax,
+      parallaxie,
+      infiniteSlide
+    ];
+
+    // Initialize critical functions immediately
+    criticalFunctions.forEach(func => {
+      try {
+        func();
+      } catch (error) {
+        console.warn('Critical function initialization error:', error);
       }
-    } catch (error) {
-      console.error('Error initializing WOW.js:', error);
-    }
+    });
+
+    // Initialize scroll functions (they register with ScrollManager)
+    scrollFunctions.forEach(func => {
+      try {
+        func();
+      } catch (error) {
+        console.warn('Scroll function initialization error:', error);
+      }
+    });
+
+    // Initialize heavy functions asynchronously
+    heavyFunctions.forEach(func => {
+      AsyncInitializer.add(() => {
+        try {
+          func();
+        } catch (error) {
+          console.warn('Heavy function initialization error:', error);
+        }
+      });
+    });
+    
+    // Initialize WOW.js asynchronously with error handling
+    AsyncInitializer.add(() => {
+      try {
+        if (typeof WOW !== 'undefined') {
+          new WOW().init();
+        } else {
+          console.warn('WOW.js not loaded, animations may not work');
+        }
+      } catch (error) {
+        console.error('Error initializing WOW.js:', error);
+      }
+    });
     
   });
 

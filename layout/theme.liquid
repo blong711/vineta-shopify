@@ -218,27 +218,37 @@
         document.addEventListener(eventType, debouncedInitializeSwipers);
       });
 
-      // Critical initialization script - moved from head to body end
+      // Optimized initialization script with performance improvements
       document.addEventListener('DOMContentLoaded', function() {
+        // Use requestIdleCallback for non-critical initialization
+        const scheduleInit = (callback) => {
+          if ('requestIdleCallback' in window) {
+            requestIdleCallback(callback, { timeout: 2000 });
+          } else {
+            setTimeout(callback, 100);
+          }
+        };
+
         // Initialize jQuery plugins after jQuery is loaded
         var checkJQuery = setInterval(function() {
           if (window.jQuery) {
             clearInterval(checkJQuery);
             
-            // Initialize bootstrap-select
+            // Critical jQuery plugins - initialize immediately
             if ($.fn.selectpicker) {
               $('.selectpicker').selectpicker();
             }
             
-            // Initialize other jQuery-dependent features
-            if (typeof selectImages === 'function') {
-              selectImages();
-            }
-            
-            // Initialize any other jQuery plugins
-            if (typeof filterProducts === 'function') {
-              filterProducts();
-            }
+            // Non-critical jQuery features - schedule for idle time
+            scheduleInit(() => {
+              if (typeof selectImages === 'function') {
+                selectImages();
+              }
+              
+              if (typeof filterProducts === 'function') {
+                filterProducts();
+              }
+            });
           }
         }, 100);
       });
