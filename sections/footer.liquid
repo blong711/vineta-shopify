@@ -230,6 +230,10 @@
               {%- if is_last_menu -%}
                 </div>
               {%- endif -%}
+            {%- when '@app' -%}
+              <div class="footer-app-block" {{ block.shopify_attributes }}>
+                {% render block %}
+              </div>
           {%- endcase -%}
         {%- endfor -%}
       </div>
@@ -490,6 +494,9 @@
           "label": "Menu"
         }
       ]
+    },
+    {
+      "type": "@app"
     }
   ],
   "default": {
@@ -518,3 +525,25 @@
   }
 }
 {% endschema %}
+
+<style>
+/* Footer App Block Styles */
+.footer-app-block {
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-app-block:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  .footer-app-block {
+    margin-top: 15px;
+    padding: 15px;
+  }
+}
+</style>

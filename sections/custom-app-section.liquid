@@ -1,0 +1,196 @@
+{% comment %}
+  Custom App Section
+  - Demonstrates how to use @app block types
+  - Can be used for product pages or any other page
+  - Supports multiple app blocks
+{% endcomment %}
+
+<div class="custom-app-section" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        {% if section.settings.title != blank %}
+          <div class="section-header text-center mb-4">
+            <h2 class="section-title">{{ section.settings.title }}</h2>
+            {% if section.settings.subtitle != blank %}
+              <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+            {% endif %}
+          </div>
+        {% endif %}
+        
+        <div class="app-blocks-container">
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when '@app' %}
+                <div class="app-block" {{ block.shopify_attributes }}>
+                  {% render block %}
+                </div>
+              {% when 'custom_content' %}
+                <div class="custom-content-block" {{ block.shopify_attributes }}>
+                  {% if block.settings.title != blank %}
+                    <h3 class="block-title">{{ block.settings.title }}</h3>
+                  {% endif %}
+                  {% if block.settings.content != blank %}
+                    <div class="block-content">
+                      {{ block.settings.content }}
+                    </div>
+                  {% endif %}
+                </div>
+            {% endcase %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .custom-app-section {
+    background-color: {{ section.settings.background_color }};
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: {{ section.settings.text_color }};
+  }
+  
+  .section-subtitle {
+    font-size: 1.1rem;
+    color: {{ section.settings.text_color | color_modify: 'alpha', 0.7 }};
+    margin-bottom: 2rem;
+  }
+  
+  .app-blocks-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .app-block {
+    width: 100%;
+  }
+  
+  .custom-content-block {
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .block-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: {{ section.settings.text_color }};
+  }
+  
+  .block-content {
+    line-height: 1.6;
+    color: {{ section.settings.text_color | color_modify: 'alpha', 0.8 }};
+  }
+  
+  @media (max-width: 768px) {
+    .custom-app-section {
+      padding-top: calc({{ section.settings.padding_top }}px * 0.7);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.7);
+    }
+    
+    .section-title {
+      font-size: 1.5rem;
+    }
+    
+    .custom-content-block {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Custom App Section",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "App Integration"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Custom app blocks and content"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f8f9fa"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "custom_content",
+      "name": "Custom Content",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title",
+          "default": "Custom Content"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Add your custom content here. This block can be used alongside app blocks to provide additional information or context.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom App Section",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "custom_content"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 

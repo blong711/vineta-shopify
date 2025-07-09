@@ -92,6 +92,15 @@
                 </li>
               {%- endif -%}
             </ul>
+            
+            <!-- App Blocks in Header -->
+            {% for block in section.blocks %}
+              {% if block.type == '@app' %}
+                <div class="header-app-block" {{ block.shopify_attributes }}>
+                  {% render block %}
+                </div>
+              {% endif %}
+            {% endfor %}
           </div>
         </div>
       </div>
@@ -182,6 +191,15 @@
               </li>
             {%- endif -%}
           </ul>
+          
+          <!-- App Blocks in Header -->
+          {% for block in section.blocks %}
+            {% if block.type == '@app' %}
+              <div class="header-app-block" {{ block.shopify_attributes }}>
+                {% render block %}
+              </div>
+            {% endif %}
+          {% endfor %}
         </div>
       </div>
     </div>
@@ -260,6 +278,15 @@
               </li>
             {%- endif -%}
           </ul>
+          
+          <!-- App Blocks in Header -->
+          {% for block in section.blocks %}
+            {% if block.type == '@app' %}
+              <div class="header-app-block" {{ block.shopify_attributes }}>
+                {% render block %}
+              </div>
+            {% endif %}
+          {% endfor %}
         </div>
       </div>
     </div>
@@ -560,6 +587,9 @@
           "default": 3
         }
       ]
+    },
+    {
+      "type": "@app"
     }
   ],
   "presets": [
@@ -731,5 +761,22 @@ document.addEventListener('DOMContentLoaded', function() {
 #header.header-visible:not(.header-absolute) {
   border-bottom: 1px solid #ebebeb !important;
   box-shadow: none !important;
+}
+
+/* Header App Block Styles */
+.header-app-block {
+  margin-left: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.header-app-block:first-child {
+  margin-left: 0;
+}
+
+@media (max-width: 1199px) {
+  .header-app-block {
+    margin-left: 10px;
+  }
 }
 </style> 
