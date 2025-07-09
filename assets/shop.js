@@ -24,30 +24,47 @@
         return;
       }
 
-      var min = parseInt(skipSlider.getAttribute("data-min"), 10) || 0;
-      var max = parseInt(skipSlider.getAttribute("data-max"), 10) || 500;
+      // Validate and sanitize min/max values
+      var rawMin = skipSlider.getAttribute("data-min");
+      var rawMax = skipSlider.getAttribute("data-max");
+      
+      // Ensure values are valid numbers and within reasonable bounds
+      var min = Math.max(0, Math.min(10000, parseInt(rawMin, 10) || 0));
+      var max = Math.max(min + 1, Math.min(10000, parseInt(rawMax, 10) || 500));
+      
+      // Update data attributes with sanitized values
+      skipSlider.setAttribute("data-min", min);
+      skipSlider.setAttribute("data-max", max);
 
-      noUiSlider.create(skipSlider, {
-        start: [min, max],
-        connect: true,
-        step: 1,
-        range: {
-          min: min,
-          max: max,
-        },
-        format: {
-          from: function (value) {
-            return parseInt(value, 10);
+      try {
+        noUiSlider.create(skipSlider, {
+          start: [min, max],
+          connect: true,
+          step: 1,
+          range: {
+            min: min,
+            max: max,
           },
-          to: function (value) {
-            return parseInt(value, 10);
+          format: {
+            from: function (value) {
+              return Math.max(min, Math.min(max, parseInt(value, 10) || min));
+            },
+            to: function (value) {
+              return Math.max(min, Math.min(max, parseInt(value, 10) || min));
+            },
           },
-        },
-      });
+        });
 
-      skipSlider.noUiSlider.on("update", function (val, e) {
-        skipValues[e].innerText = val[e];
-      });
+        skipSlider.noUiSlider.on("update", function (val, e) {
+          // Sanitize and validate values before updating DOM
+          var sanitizedValue = Math.max(min, Math.min(max, parseInt(val[e], 10) || min));
+          skipValues[e].innerText = sanitizedValue;
+        });
+      } catch (error) {
+        console.error('Error initializing price slider:', error);
+        // Fallback: disable the slider if initialization fails
+        skipSlider.style.display = 'none';
+      }
     });
   };
 
@@ -62,8 +79,16 @@
       return;
     }
 
-    const minPrice = parseInt(priceSlider.dataset.min, 10) || 0;
-    const maxPrice = parseInt(priceSlider.dataset.max, 10) || 500;
+    // Validate and sanitize price range values
+    const rawMinPrice = priceSlider.dataset.min;
+    const rawMaxPrice = priceSlider.dataset.max;
+    
+    const minPrice = Math.max(0, Math.min(10000, parseInt(rawMinPrice, 10) || 0));
+    const maxPrice = Math.max(minPrice + 1, Math.min(10000, parseInt(rawMaxPrice, 10) || 500));
+    
+    // Update dataset with sanitized values
+    priceSlider.dataset.min = minPrice;
+    priceSlider.dataset.max = maxPrice;
 
     const filters = {
       minPrice: minPrice,
@@ -75,6 +100,12 @@
       sale: false,
     };
 
+    // Input validation utility function
+    function validateAndSanitizePrice(price) {
+      const parsed = parseFloat(price);
+      return isNaN(parsed) ? 0 : Math.max(0, Math.min(10000, parsed));
+    }
+
     // Handle checkbox changes
     $('.tf-check').on('change', function() {
       if (filterForm) {
@@ -85,11 +116,31 @@
     // Only set up noUiSlider if priceSlider exists
     if (priceSlider && priceSlider.noUiSlider) {
       priceSlider.noUiSlider.on("update", function (values) {
-        filters.minPrice = parseInt(values[0], 10);
-        filters.maxPrice = parseInt(values[1], 10);
+        // Validate and sanitize slider values
+        const newMinPrice = validateAndSanitizePrice(values[0]);
+        const newMaxPrice = validateAndSanitizePrice(values[1]);
+        
+        // Ensure min doesn't exceed max
+        if (newMinPrice <= newMaxPrice) {
+          filters.minPrice = newMinPrice;
+          filters.maxPrice = newMaxPrice;
+        } else {
+          // Reset to valid range if invalid
+          filters.minPrice = minPrice;
+          filters.maxPrice = maxPrice;
+          priceSlider.noUiSlider.set([minPrice, maxPrice]);
+        }
 
-        $("#price-min-value").text(filters.minPrice);
-        $("#price-max-value").text(filters.maxPrice);
+        // Safely update DOM elements
+        const minValueElement = $("#price-min-value");
+        const maxValueElement = $("#price-max-value");
+        
+        if (minValueElement.length) {
+          minValueElement.text(filters.minPrice);
+        }
+        if (maxValueElement.length) {
+          maxValueElement.text(filters.maxPrice);
+        }
 
         applyFilters();
         updateMetaFilter();
@@ -97,26 +148,33 @@
     }
 
     $(".size-check").on("click",function () {
-      filters.size = $(this).find(".size").text().trim();
+      const sizeText = $(this).find(".size").text();
+      // Sanitize size text to prevent XSS
+      filters.size = sizeText ? sizeText.trim().substring(0, 100) : null;
       applyFilters();
       updateMetaFilter();
     });
 
     $(".color-check").on("click",function () {
-      filters.color = $(this).find(".color-text").text().trim();
+      const colorText = $(this).find(".color-text").text();
+      // Sanitize color text to prevent XSS
+      filters.color = colorText ? colorText.trim().substring(0, 100) : null;
       applyFilters();
       updateMetaFilter();
     });
 
     $('input[name="availability"]').on("change",function () {
-      filters.availability =
-        $(this).attr("id") === "inStock" ? "In stock" : "Out of stock";
+      const availabilityId = $(this).attr("id");
+      // Validate availability value
+      filters.availability = availabilityId === "inStock" ? "In stock" : "Out of stock";
       applyFilters();
       updateMetaFilter();
     });
 
     $('input[name="brand"]').on("change",function () {
-      filters.brands = $(this).attr("id");
+      const brandId = $(this).attr("id");
+      // Sanitize brand ID to prevent XSS
+      filters.brands = brandId ? brandId.trim().substring(0, 100) : null;
       applyFilters();
       updateMetaFilter();
     });
@@ -131,16 +189,22 @@
     function updateMetaFilter() {
       const appliedFilters = $("#applied-filters");
       const metaFilterShop = $(".meta-filter-shop");
+      
+      if (!appliedFilters.length) return;
+      
       appliedFilters.empty();
 
+      // Sanitize all filter values before adding to DOM
       if (filters.availability) {
+        const sanitizedAvailability = $('<div>').text(filters.availability).html();
         appliedFilters.append(
-          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="availability"></span> Availability: ${filters.availability} </span>`
+          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="availability"></span> Availability: ${sanitizedAvailability} </span>`
         );
       }
       if (filters.brands) { 
+        const sanitizedBrand = $('<div>').text(filters.brands).html();
         appliedFilters.append(
-          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="brand"></span>Brand: ${filters.brands}</span>`
+          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="brand"></span>Brand: ${sanitizedBrand}</span>`
         );
       }
       if (filters.minPrice > minPrice || filters.maxPrice < maxPrice) {
@@ -149,13 +213,15 @@
         );
       }
       if (filters.color) {
+        const sanitizedColor = $('<div>').text(filters.color).html();
         appliedFilters.append(
-          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="color"></span>Color: ${filters.color}</span>`
+          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="color"></span>Color: ${sanitizedColor}</span>`
         );
       }
       if (filters.size) {
+        const sanitizedSize = $('<div>').text(filters.size).html();
         appliedFilters.append(
-          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="size"></span>Size: ${filters.size}</span>`
+          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="size"></span>Size: ${sanitizedSize}</span>`
         );
       }
       if (filters.sale) {
@@ -245,27 +311,27 @@
         const product = $(this);
         let showProduct = true;
 
-        const priceText = product
-          .find(".price-new")
-          .text()
-          .replace("$", "");
-        const price = parseFloat(priceText);
+        // Validate and sanitize price parsing
+        const priceText = product.find(".price-new").text().replace(/[^\d.-]/g, "");
+        const price = validateAndSanitizePrice(priceText);
+        
         if (price < filters.minPrice || price > filters.maxPrice) {
           showProduct = false;
         }
 
-        if (
-          filters.size &&
-          !product.find(`.size-item:contains('${filters.size}')`).length
-        ) {
-          showProduct = false;
+        // Sanitize filter values before using in jQuery selectors
+        if (filters.size) {
+          const sanitizedSize = $('<div>').text(filters.size).html();
+          if (!product.find(`.size-item:contains('${sanitizedSize}')`).length) {
+            showProduct = false;
+          }
         }
 
-        if (
-          filters.color &&
-          !product.find(`.color-swatch:contains('${filters.color}')`).length
-        ) {
-          showProduct = false;
+        if (filters.color) {
+          const sanitizedColor = $('<div>').text(filters.color).html();
+          if (!product.find(`.color-swatch:contains('${sanitizedColor}')`).length) {
+            showProduct = false;
+          }
         }
 
         if (filters.availability) {
@@ -299,18 +365,22 @@
         }
       });
 
-      $("#product-count-grid").html(
-        `<span class="count">${visibleProductCountGrid}</span>Products found`
-      );
-      $("#product-count-list").html(
-        `<span class="count">${visibleProductCountList}</span>Products found`
-      );
+      // Safely update product count displays
+      const productCountGrid = $("#product-count-grid");
+      const productCountList = $("#product-count-list");
+      
+      if (productCountGrid.length) {
+        productCountGrid.html(
+          `<span class="count">${visibleProductCountGrid}</span>Products found`
+        );
+      }
+      if (productCountList.length) {
+        productCountList.html(
+          `<span class="count">${visibleProductCountList}</span>Products found`
+        );
+      }
+      
       updateLastVisibleItem();
-      // if (visibleProductCountGrid >= 12 || visibleProductCountList >= 12) {
-      //   $(".wrapper-shop .wg-pagination,.wrapper-shop .tf-loading").show();
-      // } else {
-      //   $(".wrapper-shop .wg-pagination,.wrapper-shop .tf-loading").hide();
-      // }
     }
 
     function updateLastVisibleItem() {

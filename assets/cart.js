@@ -1076,12 +1076,51 @@ document.addEventListener('DOMContentLoaded', function() {
   const applyButton = discountForm?.querySelector('button');
   
   if (applyButton && discountInput) {
+    // Input validation utility function for discount codes
+    function validateDiscountCode(code) {
+      if (typeof code !== 'string') {
+        return '';
+      }
+      
+      // Remove any null bytes and control characters
+      let sanitized = code.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+      
+      // Limit length (Shopify discount codes are typically 20-50 characters)
+      const maxLength = 50;
+      if (sanitized.length > maxLength) {
+        sanitized = sanitized.substring(0, maxLength);
+      }
+      
+      // Only allow alphanumeric characters, hyphens, and underscores
+      sanitized = sanitized.replace(/[^a-zA-Z0-9\-_]/g, '');
+      
+      return sanitized.trim();
+    }
+    
     applyButton.addEventListener('click', async function() {
-      const code = discountInput.value.trim();
+      const rawCode = discountInput.value;
+      const code = validateDiscountCode(rawCode);
+      
+      // Update input field with validated code
+      if (rawCode !== code) {
+        discountInput.value = code;
+      }
+      
       if (!code) {
-        alert('Please enter a discount code');
+        alert('Please enter a valid discount code');
+        discountInput.focus();
         return;
       }
+      
+      // Prevent multiple rapid submissions
+      if (applyButton.disabled) {
+        return;
+      }
+      
+      // Disable button and show loading state
+      applyButton.disabled = true;
+      const originalText = applyButton.textContent;
+      applyButton.textContent = 'Applying...';
 
       try {
         const response = await csrfFetch('/cart/update.js', {
@@ -1094,7 +1133,16 @@ document.addEventListener('DOMContentLoaded', function() {
           })
         });
 
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
+        
+        // Validate server response
+        if (!data || typeof data !== 'object') {
+          throw new Error('Invalid server response');
+        }
         
         if (data.discount_applications && data.discount_applications.length > 0) {
           alert('Discount code applied successfully!');
@@ -1112,8 +1160,45 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       } catch (error) {
         console.error('Error applying discount code:', error);
-        alert('Failed to apply discount code. Please try again.');
+        
+        // Show appropriate error message
+        let errorMessage = 'Failed to apply discount code. Please try again.';
+        if (error.message.includes('HTTP error! status: 422')) {
+          errorMessage = 'Invalid discount code format';
+        } else if (error.message.includes('HTTP error! status: 404')) {
+          errorMessage = 'Discount code not found';
+        } else if (error.message.includes('HTTP error! status: 429')) {
+          errorMessage = 'Too many attempts, please wait before trying again';
+        }
+        
+        alert(errorMessage);
+      } finally {
+        // Re-enable button and restore original text
+        applyButton.disabled = false;
+        applyButton.textContent = originalText;
       }
+    });
+    
+    // Handle input validation on keyup
+    discountInput.addEventListener('input', function() {
+      const rawCode = this.value;
+      const validatedCode = validateDiscountCode(rawCode);
+      
+      if (rawCode !== validatedCode) {
+        this.value = validatedCode;
+      }
+    });
+    
+    // Handle paste events
+    discountInput.addEventListener('paste', function(e) {
+      setTimeout(() => {
+        const rawCode = this.value;
+        const validatedCode = validateDiscountCode(rawCode);
+        
+        if (rawCode !== validatedCode) {
+          this.value = validatedCode;
+        }
+      }, 0);
     });
   }
 
@@ -1122,66 +1207,187 @@ document.addEventListener('DOMContentLoaded', function() {
   if (cartNote) {
     let noteTimeout;
     
-    cartNote.addEventListener('input', async function() {
-      // Clear any existing timeout
-      if (noteTimeout) {
-        clearTimeout(noteTimeout);
+    // Input validation utility functions
+    function validateNoteInput(input) {
+      if (typeof input !== 'string') {
+        return '';
       }
       
-      // Show saving indicator
-      const savingIndicator = document.createElement('span');
-      savingIndicator.className = 'saving-indicator';
-      savingIndicator.textContent = 'Saving...';
-      savingIndicator.style.marginLeft = '10px';
-      savingIndicator.style.fontSize = '0.9em';
-      savingIndicator.style.color = '#666';
+      // Remove any null bytes and control characters
+      let sanitized = input.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
       
+      // Limit length to prevent abuse (Shopify typically allows up to 1000 characters)
+      const maxLength = 1000;
+      if (sanitized.length > maxLength) {
+        sanitized = sanitized.substring(0, maxLength);
+      }
+      
+      return sanitized.trim();
+    }
+    
+    function sanitizeForDisplay(text) {
+      if (typeof text !== 'string') {
+        return '';
+      }
+      
+      // Use the existing HTMLSanitizer for display
+      return HTMLSanitizer.sanitizeText(text);
+    }
+    
+    function showSavingIndicator(message, color = '#666') {
       // Remove any existing indicator
       const existingIndicator = cartNote.parentElement.querySelector('.saving-indicator');
       if (existingIndicator) {
         existingIndicator.remove();
       }
       
+      // Create new indicator
+      const savingIndicator = document.createElement('span');
+      savingIndicator.className = 'saving-indicator';
+      savingIndicator.textContent = message;
+      savingIndicator.style.marginLeft = '10px';
+      savingIndicator.style.fontSize = '0.9em';
+      savingIndicator.style.color = color;
+      
       cartNote.parentElement.appendChild(savingIndicator);
+      return savingIndicator;
+    }
+    
+    function removeSavingIndicator() {
+      const existingIndicator = cartNote.parentElement.querySelector('.saving-indicator');
+      if (existingIndicator) {
+        existingIndicator.remove();
+      }
+    }
+    
+    cartNote.addEventListener('input', async function() {
+      // Clear any existing timeout
+      if (noteTimeout) {
+        clearTimeout(noteTimeout);
+      }
+      
+      // Validate and sanitize input immediately
+      const rawInput = this.value;
+      const validatedInput = validateNoteInput(rawInput);
+      
+      // Update the input field with validated content
+      if (rawInput !== validatedInput) {
+        this.value = validatedInput;
+        // Set cursor position to end of validated text
+        this.setSelectionRange(validatedInput.length, validatedInput.length);
+      }
+      
+      // Show saving indicator
+      const savingIndicator = showSavingIndicator('Saving...');
       
       // Set a timeout to save the note after 1 second of no typing
       noteTimeout = setTimeout(async () => {
         try {
+          // Final validation before sending to server
+          const finalNote = validateNoteInput(this.value);
+          
+          // Don't send if note is empty (let user clear it if they want)
+          if (finalNote === '' && this.value.trim() === '') {
+            removeSavingIndicator();
+            return;
+          }
+          
           const response = await csrfFetch('/cart/update.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              note: this.value
+              note: finalNote
             })
           });
           
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
           const data = await response.json();
           
-          if (data.note === this.value) {
+          // Validate server response
+          if (!data || typeof data.note !== 'string') {
+            throw new Error('Invalid server response');
+          }
+          
+          // Compare server response with what we sent
+          const serverNote = validateNoteInput(data.note);
+          if (serverNote === finalNote) {
             // Update the indicator to show success
             savingIndicator.textContent = 'Saved!';
             savingIndicator.style.color = '#28a745';
             
             // Remove the indicator after 2 seconds
             setTimeout(() => {
-              savingIndicator.remove();
+              removeSavingIndicator();
             }, 2000);
           } else {
-            throw new Error('Note not updated correctly');
+            // Server returned different note than expected
+            console.warn('Note mismatch - server returned different note than sent');
+            savingIndicator.textContent = 'Saved!';
+            savingIndicator.style.color = '#28a745';
+            
+            // Update the input field with server response
+            this.value = sanitizeForDisplay(data.note);
+            
+            setTimeout(() => {
+              removeSavingIndicator();
+            }, 2000);
           }
         } catch (error) {
           console.error('Error updating cart note:', error);
-          savingIndicator.textContent = 'Failed to save';
+          
+          // Show appropriate error message
+          let errorMessage = 'Failed to save';
+          if (error.message.includes('HTTP error! status: 422')) {
+            errorMessage = 'Note contains invalid characters';
+          } else if (error.message.includes('HTTP error! status: 413')) {
+            errorMessage = 'Note is too long';
+          } else if (error.message.includes('HTTP error! status: 429')) {
+            errorMessage = 'Too many requests, please wait';
+          }
+          
+          savingIndicator.textContent = errorMessage;
           savingIndicator.style.color = '#dc3545';
           
-          // Remove the indicator after 2 seconds
+          // Remove the indicator after 3 seconds for errors
           setTimeout(() => {
-            savingIndicator.remove();
-          }, 2000);
+            removeSavingIndicator();
+          }, 3000);
         }
       }, 1000);
+    });
+    
+    // Handle paste events to sanitize pasted content
+    cartNote.addEventListener('paste', function(e) {
+      // Let the paste happen, then sanitize in the input event
+      setTimeout(() => {
+        const validatedInput = validateNoteInput(this.value);
+        if (this.value !== validatedInput) {
+          this.value = validatedInput;
+          // Trigger input event to show saving indicator
+          this.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      }, 0);
+    });
+    
+    // Handle keydown to prevent certain key combinations
+    cartNote.addEventListener('keydown', function(e) {
+      // Prevent Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X from being blocked
+      // Only prevent other potentially dangerous key combinations
+      if (e.ctrlKey && !['a', 'c', 'v', 'x'].includes(e.key.toLowerCase())) {
+        e.preventDefault();
+      }
+    });
+    
+    // Clean up on page unload
+    window.addEventListener('beforeunload', function() {
+      if (noteTimeout) {
+        clearTimeout(noteTimeout);
+      }
     });
   }
 
