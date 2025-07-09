@@ -1,0 +1,150 @@
+{%- comment -%}Header Section Group - Online Store 2.0 Compliant{%- endcomment -%}
+<div class="header-group">
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when '@app' -%}
+        {%- render block -%}
+      {%- when 'header' -%}
+        {%- render 'header', section: block.settings -%}
+      {%- else -%}
+        {%- render block -%}
+    {%- endcase -%}
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Header Group",
+  "tag": "header",
+  "class": "header-group-section",
+  "max_blocks": 10,
+  "blocks": [
+    {
+      "type": "header",
+      "name": "Header",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "layout",
+          "label": "Header Layout",
+          "options": [
+            {
+              "value": "layout-1",
+              "label": "Layout 1"
+            },
+            {
+              "value": "layout-2",
+              "label": "Layout 2"
+            },
+            {
+              "value": "layout-3",
+              "label": "Layout 3"
+            }
+          ],
+          "default": "layout-1"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo"
+        },
+        {
+          "type": "range",
+          "id": "logo_width",
+          "min": 50,
+          "max": 300,
+          "step": 10,
+          "unit": "px",
+          "label": "Logo Width",
+          "default": 150
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Main Menu",
+          "default": "main-menu"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#333333"
+        },
+        {
+          "type": "color",
+          "id": "hover_color",
+          "label": "Hover Color",
+          "default": "#666666"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_transparent",
+          "label": "Enable Transparent Header",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_search",
+          "label": "Show Search Icon",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_account",
+          "label": "Show Account Icon",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_wishlist",
+          "label": "Show Wishlist Icon",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_cart",
+          "label": "Show Cart Icon",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "header_height",
+          "min": 60,
+          "max": 120,
+          "step": 5,
+          "unit": "px",
+          "label": "Header Height",
+          "default": 85
+        },
+        {
+          "type": "range",
+          "id": "sticky_header_height",
+          "min": 60,
+          "max": 120,
+          "step": 5,
+          "unit": "px",
+          "label": "Sticky Header Height",
+          "default": 70
+        }
+      ]
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "header"
+      }
+    ]
+  }
+}
+{% endschema %} 
