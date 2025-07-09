@@ -1,0 +1,332 @@
+/* Responsive Image Styles */
+
+/* Base responsive image styles */
+.responsive-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.responsive-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Product image container styles */
+.product-image-container {
+  position: relative;
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+.product-image-container img {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Product image wrapper for existing theme compatibility */
+.product-img {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.product-img img {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Hover image styles */
+.product-image-hover-wrapper,
+.img-product-hover-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.product-image-container:hover .product-image-hover-wrapper,
+.product-img:hover .img-product-hover-wrapper {
+  opacity: 1;
+}
+
+/* Legacy hover image support for existing theme */
+.img-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  object-fit: cover;
+}
+
+.product-img:hover .img-hover {
+  opacity: 1;
+}
+
+/* Ensure hover images work in all contexts */
+.card-product .product-img:hover .img-hover,
+.product-image-container:hover .img-hover {
+  opacity: 1;
+}
+
+/* Additional hover image positioning */
+.product-img .img-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.product-img .img-product {
+  position: relative;
+  z-index: 2;
+}
+
+/* Primary product image styles */
+.img-product {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Ensure hover images are positioned correctly */
+.img-hover-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.product-img:hover .img-hover-wrapper {
+  opacity: 1;
+}
+
+/* Variant image overlay styles */
+.product-image-variant-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.product-image-variant-overlay.active {
+  opacity: 1;
+}
+
+/* Lazy loading styles */
+.lazyload {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.lazyloaded {
+  opacity: 1;
+}
+
+/* Placeholder styles */
+.responsive-image-placeholder,
+.product-image-placeholder {
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+}
+
+/* Gallery image styles */
+.gallery-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.gallery-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.gallery-image-wrapper:hover img {
+  transform: scale(1.05);
+}
+
+/* Zoom functionality styles */
+.tf-image-zoom {
+  cursor: zoom-in;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 768px) {
+  .responsive-image-wrapper img,
+  .product-image-container img,
+  .gallery-image-wrapper img {
+    transition: none; /* Disable transitions on mobile for better performance */
+  }
+  
+  .product-image-container:hover .product-image-hover-wrapper {
+    opacity: 0; /* Disable hover effects on mobile */
+  }
+}
+
+/* WebP support detection */
+@supports not (background: url('data:image/webp')) {
+  .responsive-image-wrapper source[type="image/webp"] {
+    display: none;
+  }
+}
+
+/* High DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .responsive-image-wrapper img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Loading animation */
+.responsive-image-wrapper.loading::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Error state styles */
+.responsive-image-wrapper.error {
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.responsive-image-wrapper.error::after {
+  content: 'Image not available';
+  color: #6c757d;
+  font-size: 14px;
+}
+
+/* Aspect ratio utilities */
+.aspect-ratio-1-1 {
+  aspect-ratio: 1/1;
+}
+
+.aspect-ratio-4-3 {
+  aspect-ratio: 4/3;
+}
+
+.aspect-ratio-16-9 {
+  aspect-ratio: 16/9;
+}
+
+.aspect-ratio-3-4 {
+  aspect-ratio: 3/4;
+}
+
+/* Product card specific styles */
+.card-product .product-image-container {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card-product:hover .product-image-container img {
+  transform: scale(1.05);
+}
+
+/* Ensure product cards have proper hover behavior */
+.card-product .product-img {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.card-product .product-img:hover img {
+  transform: scale(1.05);
+}
+
+/* Smooth transitions for all product images */
+.card-product img {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Gallery specific styles */
+.gallery-image-container {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-image-container:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Thumbnail styles */
+.thumbnail-image-wrapper {
+  border-radius: 4px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.thumbnail-image-wrapper.active {
+  border-color: #007bff;
+}
+
+/* Color swatch image styles */
+.color-swatch-image {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.color-swatch-image:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.color-swatch-image.active {
+  border-color: #007bff;
+  transform: scale(1.1);
+} 

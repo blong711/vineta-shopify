@@ -1,0 +1,82 @@
+{%- comment -%}
+  Product Image Snippet with Variant Support
+  Usage: {% render 'product-image', product: product, variant: variant, class: 'product-image' %}
+  
+  Parameters:
+  - product: The product object
+  - variant: The variant object (optional)
+  - class: CSS class(es) for the image
+  - sizes: Custom sizes attribute (optional)
+  - lazy: Whether to use lazy loading (default: true)
+  - preload: Whether to preload this image (default: false)
+  - show_hover: Whether to show hover image (default: true)
+  - aspect_ratio: Custom aspect ratio (optional)
+{%- endcomment -%}
+
+{%- assign lazy_loading = lazy | default: true -%}
+{%- assign preload_image = preload | default: false -%}
+{%- assign image_class = class | default: 'product-image' -%}
+{%- assign show_hover_image = show_hover | default: true -%}
+{%- assign aspect_ratio = aspect_ratio | default: '1/1' -%}
+
+{%- comment -%}Determine which image to use{%- endcomment -%}
+{%- assign primary_image = variant.featured_image | default: product.featured_image -%}
+{%- assign hover_image = product.images[1] -%}
+
+{%- comment -%}Product card specific sizes{%- endcomment -%}
+{%- assign default_sizes = '(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw' -%}
+{%- assign image_sizes = sizes | default: default_sizes -%}
+
+{%- if primary_image != blank -%}
+  <div class="{{ image_class }}-container" style="aspect-ratio: {{ aspect_ratio }}; position: relative; overflow: hidden;">
+    
+    {%- comment -%}Primary image{%- endcomment -%}
+    {%- render 'responsive-image',
+      image: primary_image,
+      alt: product.title,
+      class: 'img-product',
+      sizes: image_sizes,
+      lazy: lazy_loading,
+      preload: preload_image,
+      aspect_ratio: aspect_ratio,
+      max_width: 800 -%}
+    
+    {%- comment -%}Hover image (only if different from primary and enabled){%- endcomment -%}
+    {%- if show_hover_image and hover_image and hover_image != blank and hover_image.id and hover_image.id != primary_image.id -%}
+        {%- render 'responsive-image',
+          image: hover_image,
+          alt: product.title,
+          class: 'img-hover',
+          sizes: image_sizes,
+          lazy: true,
+          preload: false,
+          aspect_ratio: aspect_ratio,
+          max_width: 800 -%}
+      {%- endif -%}
+    
+    {%- comment -%}Variant image overlay for color swatches{%- endcomment -%}
+    {%- if variant != blank and variant.featured_image != blank and variant.featured_image.id != primary_image.id -%}
+      <div class="{{ image_class }}-variant-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.3s ease;">
+        {%- render 'responsive-image',
+          image: variant.featured_image,
+          alt: variant.title,
+          class: image_class | append: '-variant',
+          sizes: image_sizes,
+          lazy: true,
+          preload: false,
+          aspect_ratio: aspect_ratio,
+          max_width: 800 -%}
+      </div>
+    {%- endif -%}
+    
+  </div>
+{%- else -%}
+  {%- comment -%}Placeholder for missing product images{%- endcomment -%}
+  <div class="{{ image_class }}-placeholder" style="aspect-ratio: {{ aspect_ratio }}; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M56 8H8C6.89543 8 6 8.89543 6 10V54C6 55.1046 6.89543 56 8 56H56C57.1046 56 58 55.1046 58 54V10C58 8.89543 57.1046 8 56 8Z" stroke="#dee2e6" stroke-width="2"/>
+      <path d="M24 28C26.2091 28 28 26.2091 28 24C28 21.7909 26.2091 20 24 20C21.7909 20 20 21.7909 20 24C20 26.2091 21.7909 28 24 28Z" fill="#dee2e6"/>
+      <path d="M58 42L44 28L8 56H56C57.1046 56 58 55.1046 58 54V42Z" fill="#dee2e6"/>
+    </svg>
+  </div>
+{%- endif -%} 

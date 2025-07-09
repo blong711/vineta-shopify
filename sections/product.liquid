@@ -296,45 +296,12 @@
           {% elsif section.settings.layout == 'stacked' %}
             <div class="wrapper-gallery-scroll flat-single-grid flat-single-stacked" id="gallery-started">
                 {% for media in product.media %}
-                  <a href="{{ media | image_url: width: 800 }}" 
-                     target="_blank" 
-                     class="item item-scroll-target" 
-                     data-media-id="{{ media.id }}"
-                     data-pswp-width="{{ media.width }}px" 
-                     data-pswp-height="{{ media.height }}px">
-                    {% case media.media_type %}
-                      {% when 'image' %}
-                        <img class="tf-image-zoom lazyload" 
-                             data-zoom="{{ media | image_url: width: 1200 }}"
-                             data-src="{{ media | image_url: width: 400 }}"
-                             src="{{ media | image_url: width: 200 }}"
-                             alt="{{ media.alt | default: product.title }}"
-                             width="{{ media.width }}"
-                             height="{{ media.height }}">
-                      {% when 'video' %}
-                        <div class="wrap-btn-viewer style-video">
-                          <i class="icon icon-video"></i>
-                        </div>
-                        <img class="tf-image-zoom lazyload"
-                             data-zoom="{{ media.preview_image | image_url: width: 1200 }}"
-                             data-src="{{ media.preview_image | image_url: width: 400 }}"
-                             src="{{ media.preview_image | image_url: width: 200 }}"
-                             alt="Video thumbnail"
-                             width="{{ media.preview_image.width }}"
-                             height="{{ media.preview_image.height }}">
-                      {% when 'model' %}
-                        <div class="wrap-btn-viewer">
-                          <i class="icon icon-btn3d"></i>
-                        </div>
-                        <img class="tf-image-zoom lazyload"
-                             data-zoom="{{ media.preview_image | image_url: width: 1200 }}"
-                             data-src="{{ media.preview_image | image_url: width: 400 }}"
-                             src="{{ media.preview_image | image_url: width: 200 }}"
-                             alt="3D model thumbnail"
-                             width="{{ media.preview_image.width }}"
-                             height="{{ media.preview_image.height }}">
-                    {% endcase %}
-                  </a>
+                  {%- render 'product-gallery-image',
+                    media: media,
+                    product: product,
+                    class: 'gallery-image',
+                    lazy: true,
+                    zoom: true -%}
                 {% endfor %}
             </div>
           {% endif %}

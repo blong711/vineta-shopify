@@ -294,29 +294,13 @@
 <div class="card-product {{ class }} style-4 {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
   <div class="card-product-wrapper radius-16 line-2 asp-ratio-1">
     <a href="{{ product.url }}" class="product-img">
-      {%- if product.featured_image -%}
-        <img class="img-product lazyload"
-          data-src="{{ product.featured_image | image_url }}"
-          src="{{ product.featured_image | image_url }}" 
-          alt="{{ product.featured_image.alt | escape }}"
-          width="400"
-          height="400">
-        {%- if product.images.size > 1 -%}
-          <img class="img-hover lazyload"
-            data-src="{{ product.images[1] | image_url }}"
-            src="{{ product.images[1] | image_url }}" 
-            alt="{{ product.images[1].alt | escape }}"
-            width="400"
-            height="400">
-        {%- else -%}
-          <img class="img-hover lazyload"
-            data-src="{{ product.featured_image | image_url }}"
-            src="{{ product.featured_image | image_url }}" 
-            alt="{{ product.featured_image.alt | escape }}"
-            width="400"
-            height="400">
-        {%- endif -%}
-      {%- endif -%}
+      {%- render 'product-image',
+        product: product,
+        class: 'img-product',
+        lazy: true,
+        preload: false,
+        show_hover: true,
+        aspect_ratio: '1/1' -%}
     </a>
     {%- if product.compare_at_price > product.price or product.tags contains 'trending' -%}
       <div class="on-sale-wrap {% if product.compare_at_price > product.price and product.tags contains 'trending' %}flex-column type-2{% endif %}">
@@ -439,26 +423,13 @@
 <div class="card-product {{ class }} style-3 card-product-size{% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
   <div class="card-product-wrapper asp-ratio-1 {% if style == 'line-2' %}line-2{% endif %}">
     <a href="{{ product.url }}" class="product-img">
-      {%- if product.featured_image != blank -%}
-        {{ product.featured_image | image_url: width: 400 | image_tag:
-          loading: 'lazy',
-          width: product.featured_image.width,
-          height: product.featured_image.height,
-          class: 'img-product',
-          alt: product.title
-        }}
-        {%- if product.images[1] != blank -%}
-          {{ product.images[1] | image_url: width: 400 | image_tag:
-            loading: 'lazy',
-            width: product.images[1].width,
-            height: product.images[1].height,
-            class: 'img-hover',
-            alt: product.title
-          }}
-        {%- endif -%}
-      {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-      {%- endif -%}
+      {%- render 'product-image',
+        product: product,
+        class: 'img-product',
+        lazy: true,
+        preload: false,
+        show_hover: true,
+        aspect_ratio: '1/1' -%}
     </a>
 
     {%- if product.available -%}
@@ -567,26 +538,13 @@
 <div class="card-product {{ class }} {% if style == 'list' %}style-list{% elsif style == 'style-center' %}style-center{% elsif style contains 'style-' %}{{ style }}{% else %}style-{{ style | default: 1 }}{% endif %} {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
   <div class="card-product-wrapper asp-ratio-1 {% if style == 'line-2' %}line-2{% endif %}">
     <a href="{{ product.url }}" class="product-img">
-      {%- if product.featured_image != blank -%}
-        {{ product.featured_image | image_url: width: 400 | image_tag:
-          loading: 'lazy',
-          width: product.featured_image.width,
-          height: product.featured_image.height,
-          class: 'img-product ls-is-cached lazyloaded',
-          alt: product.title
-        }}
-        {%- if product.images[1] != blank -%}
-          {{ product.images[1] | image_url: width: 400 | image_tag:
-            loading: 'lazy',
-            width: product.images[1].width,
-            height: product.images[1].height,
-            class: 'img-hover ls-is-cached lazyloaded',
-            alt: product.title
-          }}
-        {%- endif -%}
-      {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-      {%- endif -%}
+      {%- render 'product-image',
+        product: product,
+        class: 'img-product',
+        lazy: true,
+        preload: false,
+        show_hover: true,
+        aspect_ratio: '1/1' -%}
     </a>
 
     {%- if product.compare_at_price > product.price or product.tags contains 'trending' -%}
