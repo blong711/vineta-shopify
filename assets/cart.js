@@ -1,4 +1,111 @@
 document.addEventListener('DOMContentLoaded', function() {
+  // HTML Sanitization Utilities
+  const HTMLSanitizer = {
+    /**
+     * Sanitize text content to prevent XSS
+     * @param {string} text - Text to sanitize
+     * @returns {string} Sanitized text
+     */
+    sanitizeText(text) {
+      if (typeof text !== 'string') {
+        return String(text || '');
+      }
+      
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    },
+
+    /**
+     * Sanitize URL to prevent XSS and ensure it's safe
+     * @param {string} url - URL to sanitize
+     * @returns {string} Sanitized URL
+     */
+    sanitizeUrl(url) {
+      if (typeof url !== 'string') {
+        return '';
+      }
+      
+      // Remove any script or javascript protocols
+      const sanitized = url.replace(/^javascript:/i, '').replace(/^data:/i, '');
+      
+      // Only allow http, https, and relative URLs
+      if (sanitized && !sanitized.match(/^(https?:\/\/|\/|#)/)) {
+        return '';
+      }
+      
+      return sanitized;
+    },
+
+    /**
+     * Create a safe HTML element with sanitized attributes
+     * @param {string} tagName - HTML tag name
+     * @param {Object} attributes - Object of attributes
+     * @param {string} content - Inner content (will be sanitized)
+     * @returns {HTMLElement} Safe HTML element
+     */
+    createElement(tagName, attributes = {}, content = '') {
+      const element = document.createElement(tagName);
+      
+      // Set attributes safely
+      Object.entries(attributes).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+          if (key === 'href' || key === 'src') {
+            const sanitizedUrl = this.sanitizeUrl(value);
+            if (sanitizedUrl) {
+              element.setAttribute(key, sanitizedUrl);
+            }
+          } else if (key === 'alt' || key === 'title' || key === 'aria-label') {
+            element.setAttribute(key, this.sanitizeText(value));
+          } else {
+            element.setAttribute(key, this.sanitizeText(value));
+          }
+        }
+      });
+      
+      // Set content safely
+      if (content) {
+        element.textContent = content;
+      }
+      
+      return element;
+    },
+
+    /**
+     * Safely set innerHTML with sanitized content
+     * @param {HTMLElement} element - Target element
+     * @param {string} html - HTML content to sanitize and set
+     */
+    setInnerHTML(element, html) {
+      if (!element || typeof html !== 'string') {
+        return;
+      }
+      
+      // Create a temporary container to sanitize the HTML
+      const temp = document.createElement('div');
+      temp.innerHTML = html;
+      
+      // Remove any script tags and event handlers
+      const scripts = temp.querySelectorAll('script');
+      scripts.forEach(script => script.remove());
+      
+      // Remove event handlers from all elements
+      const allElements = temp.querySelectorAll('*');
+      allElements.forEach(el => {
+        const attrs = el.attributes;
+        for (let i = attrs.length - 1; i >= 0; i--) {
+          const attr = attrs[i];
+          if (attr.name.startsWith('on') || attr.name.startsWith('javascript:')) {
+            el.removeAttribute(attr.name);
+          }
+        }
+      });
+      
+      // Set the sanitized content
+      element.innerHTML = temp.innerHTML;
+    }
+  };
+
   // Prevent cart drawer from opening on cart page
   const isCartPage = window.location.pathname === '/cart';
   if (isCartPage) {
@@ -154,11 +261,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     if (progressText) {
+      progressText.innerHTML = '';
       if (cartTotal >= threshold) {
-        progressText.innerHTML = 'Congratulations! You\'ve unlocked <span class="fw-medium">Free Shipping</span>';
+        const textNode = document.createTextNode('Congratulations! You\'ve unlocked Free Shipping');
+        progressText.appendChild(textNode);
       } else {
         const remaining = threshold - cartTotal;
-        progressText.innerHTML = `Spend <span class="fw-medium">$${remaining.toFixed(2)}</span> more to get <span class="fw-medium">Free Shipping</span>`;
+        const textNode = document.createTextNode(`Spend $${remaining.toFixed(2)} more to get Free Shipping`);
+        progressText.appendChild(textNode);
       }
     }
   }
@@ -488,9 +598,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // Show loading state
       estimateButton.disabled = true;
-      estimateButton.innerHTML = '<span class="loading-spinner"></span> Calculating...';
+      estimateButton.innerHTML = '';
+      const loadingSpinner = HTMLSanitizer.createElement('span', { class: 'loading-spinner' });
+      const loadingText = document.createTextNode(' Calculating...');
+      estimateButton.appendChild(loadingSpinner);
+      estimateButton.appendChild(loadingText);
       shippingRatesContainer.style.display = 'block';
-      shippingRatesList.innerHTML = '<div class="text-center">Calculating shipping rates...</div>';
+      shippingRatesList.innerHTML = '';
+      const calculatingDiv = HTMLSanitizer.createElement('div', { class: 'text-center' }, 'Calculating shipping rates...');
+      shippingRatesList.appendChild(calculatingDiv);
 
       try {
         const response = await fetch('/cart/shipping_rates.json', {
@@ -514,27 +630,45 @@ document.addEventListener('DOMContentLoaded', function() {
         const data = await response.json();
         
         if (data.shipping_rates && data.shipping_rates.length > 0) {
+          // Clear existing content
+          shippingRatesList.innerHTML = '';
+          
           // Display shipping rates
-          shippingRatesList.innerHTML = data.shipping_rates.map(rate => `
-            <div class="shipping-rate-item" style="padding: 10px; border-bottom: 1px solid #eee;">
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="shipping-rate-name text-md">${rate.name}</div>
-                <div class="shipping-rate-price text-md fw-medium">
-                  ${formatMoney(rate.price)}
-                </div>
-              </div>
-              ${rate.delivery_time ? `<div class="shipping-rate-delivery text-sm text-dark-4">Estimated delivery: ${rate.delivery_time}</div>` : ''}
-            </div>
-          `).join('');
+          data.shipping_rates.forEach(rate => {
+            const rateItem = HTMLSanitizer.createElement('div', {
+              class: 'shipping-rate-item',
+              style: 'padding: 10px; border-bottom: 1px solid #eee;'
+            });
+            
+            const rateHeader = HTMLSanitizer.createElement('div', { class: 'd-flex justify-content-between align-items-center' });
+            const rateName = HTMLSanitizer.createElement('div', { class: 'shipping-rate-name text-md' }, HTMLSanitizer.sanitizeText(rate.name));
+            const ratePrice = HTMLSanitizer.createElement('div', { class: 'shipping-rate-price text-md fw-medium' }, formatMoney(rate.price));
+            
+            rateHeader.appendChild(rateName);
+            rateHeader.appendChild(ratePrice);
+            rateItem.appendChild(rateHeader);
+            
+            if (rate.delivery_time) {
+              const deliveryDiv = HTMLSanitizer.createElement('div', { class: 'shipping-rate-delivery text-sm text-dark-4' }, `Estimated delivery: ${HTMLSanitizer.sanitizeText(rate.delivery_time)}`);
+              rateItem.appendChild(deliveryDiv);
+            }
+            
+            shippingRatesList.appendChild(rateItem);
+          });
           
           // Add a note about zipcode validation
           if (data.shipping_rates.length > 0) {
-            shippingRatesList.innerHTML += `
-              <div class="text-sm text-dark-4 mt-2" style="padding: 10px; background-color: #f8f9fa; border-radius: 4px;">
-                <i class="icon icon-info"></i> Note: Shipping rates are calculated based on the provided address. 
-                Please verify your zipcode is correct for accurate delivery estimates.
-              </div>
-            `;
+            const noteDiv = HTMLSanitizer.createElement('div', {
+              class: 'text-sm text-dark-4 mt-2',
+              style: 'padding: 10px; background-color: #f8f9fa; border-radius: 4px;'
+            });
+            
+            const infoIcon = HTMLSanitizer.createElement('i', { class: 'icon icon-info' });
+            const noteText = document.createTextNode(' Note: Shipping rates are calculated based on the provided address. Please verify your zipcode is correct for accurate delivery estimates.');
+            
+            noteDiv.appendChild(infoIcon);
+            noteDiv.appendChild(noteText);
+            shippingRatesList.appendChild(noteDiv);
           }
           
           // Show the header when rates are available
@@ -543,12 +677,14 @@ document.addEventListener('DOMContentLoaded', function() {
             shippingRatesHeader.style.display = 'block';
           }
         } else {
-          shippingRatesList.innerHTML = `
-            <div class="text-center text-dark-4">
-              <div>No shipping rates available for this location</div>
-              <div class="text-sm mt-1">Please verify your address information is correct</div>
-            </div>
-          `;
+          shippingRatesList.innerHTML = '';
+          const noRatesDiv = HTMLSanitizer.createElement('div', { class: 'text-center text-dark-4' });
+          const noRatesText = HTMLSanitizer.createElement('div', {}, 'No shipping rates available for this location');
+          const verifyText = HTMLSanitizer.createElement('div', { class: 'text-sm mt-1' }, 'Please verify your address information is correct');
+          
+          noRatesDiv.appendChild(noRatesText);
+          noRatesDiv.appendChild(verifyText);
+          shippingRatesList.appendChild(noRatesDiv);
           
           // Hide the header when no rates are available
           const shippingRatesHeader = shippingForm.querySelector('.shipping-rates-header');
@@ -614,31 +750,94 @@ document.addEventListener('DOMContentLoaded', function() {
               giftWrapRow.setAttribute('data-item-id', giftWrapItem.key);
               giftWrapRow.setAttribute('data-variant-id', giftWrapItem.variant_id);
               
-              giftWrapRow.innerHTML = `
-                <td class="tf-cart-item_product">
-                  <a href="${giftWrapItem.url}" class="img-box">
-                    <img src="${giftWrapItem.image}" alt="${giftWrapItem.title}" width="150" height="150">
-                  </a>
-                  <div class="cart-info">
-                    <a href="${giftWrapItem.url}" class="name text-md link fw-medium">${giftWrapItem.product_title}</a>
-                    <div></div>
-                    <span class="remove-cart link remove" data-item-id="${giftWrapItem.key}" data-variant-id="${giftWrapItem.variant_id}">Remove</span>
-                  </div>
-                </td>
-                <td class="tf-cart-item_price text-center" data-cart-title="Price">
-                  <span class="cart-price price-on-sale text-md fw-medium">${formatMoney(giftWrapItem.final_price)}</span>
-                </td>
-                <td class="tf-cart-item_quantity" data-cart-title="Quantity">
-                  <div class="wg-quantity">
-                    <button type="button" class="btn-quantity minus" data-variant-id="${giftWrapItem.variant_id}" data-item-id="${giftWrapItem.key}">-</button>
-                    <input class="quantity-product" type="text" name="updates[]" value="1" min="0" data-variant-id="${giftWrapItem.variant_id}" data-item-id="${giftWrapItem.key}">
-                    <button type="button" class="btn-quantity plus" data-variant-id="${giftWrapItem.variant_id}" data-item-id="${giftWrapItem.key}">+</button>
-                  </div>
-                </td>
-                <td class="tf-cart-item_total text-center" data-cart-title="Total">
-                  <div class="cart-total total-price text-md fw-medium">${formatMoney(giftWrapItem.final_line_price)}</div>
-                </td>
-              `;
+              // Create product cell
+              const productCell = HTMLSanitizer.createElement('td', { class: 'tf-cart-item_product' });
+              const imgBox = HTMLSanitizer.createElement('a', {
+                href: HTMLSanitizer.sanitizeUrl(giftWrapItem.url),
+                class: 'img-box'
+              });
+              const img = HTMLSanitizer.createElement('img', {
+                src: HTMLSanitizer.sanitizeUrl(giftWrapItem.image),
+                alt: HTMLSanitizer.sanitizeText(giftWrapItem.title),
+                width: '150',
+                height: '150'
+              });
+              imgBox.appendChild(img);
+              productCell.appendChild(imgBox);
+              
+              const cartInfo = HTMLSanitizer.createElement('div', { class: 'cart-info' });
+              const nameLink = HTMLSanitizer.createElement('a', {
+                href: HTMLSanitizer.sanitizeUrl(giftWrapItem.url),
+                class: 'name text-md link fw-medium'
+              }, HTMLSanitizer.sanitizeText(giftWrapItem.product_title));
+              const emptyDiv = HTMLSanitizer.createElement('div');
+              const removeSpan = HTMLSanitizer.createElement('span', {
+                class: 'remove-cart link remove',
+                'data-item-id': giftWrapItem.key,
+                'data-variant-id': giftWrapItem.variant_id
+              }, 'Remove');
+              
+              cartInfo.appendChild(nameLink);
+              cartInfo.appendChild(emptyDiv);
+              cartInfo.appendChild(removeSpan);
+              productCell.appendChild(cartInfo);
+              giftWrapRow.appendChild(productCell);
+              
+              // Create price cell
+              const priceCell = HTMLSanitizer.createElement('td', {
+                class: 'tf-cart-item_price text-center',
+                'data-cart-title': 'Price'
+              });
+              const priceSpan = HTMLSanitizer.createElement('span', {
+                class: 'cart-price price-on-sale text-md fw-medium'
+              }, formatMoney(giftWrapItem.final_price));
+              priceCell.appendChild(priceSpan);
+              giftWrapRow.appendChild(priceCell);
+              
+              // Create quantity cell
+              const quantityCell = HTMLSanitizer.createElement('td', {
+                class: 'tf-cart-item_quantity',
+                'data-cart-title': 'Quantity'
+              });
+              const quantityDiv = HTMLSanitizer.createElement('div', { class: 'wg-quantity' });
+              const minusBtn = HTMLSanitizer.createElement('button', {
+                type: 'button',
+                class: 'btn-quantity minus',
+                'data-variant-id': giftWrapItem.variant_id,
+                'data-item-id': giftWrapItem.key
+              }, '-');
+              const quantityInput = HTMLSanitizer.createElement('input', {
+                class: 'quantity-product',
+                type: 'text',
+                name: 'updates[]',
+                value: '1',
+                min: '0',
+                'data-variant-id': giftWrapItem.variant_id,
+                'data-item-id': giftWrapItem.key
+              });
+              const plusBtn = HTMLSanitizer.createElement('button', {
+                type: 'button',
+                class: 'btn-quantity plus',
+                'data-variant-id': giftWrapItem.variant_id,
+                'data-item-id': giftWrapItem.key
+              }, '+');
+              
+              quantityDiv.appendChild(minusBtn);
+              quantityDiv.appendChild(quantityInput);
+              quantityDiv.appendChild(plusBtn);
+              quantityCell.appendChild(quantityDiv);
+              giftWrapRow.appendChild(quantityCell);
+              
+              // Create total cell
+              const totalCell = HTMLSanitizer.createElement('td', {
+                class: 'tf-cart-item_total text-center',
+                'data-cart-title': 'Total'
+              });
+              const totalDiv = HTMLSanitizer.createElement('div', {
+                class: 'cart-total total-price text-md fw-medium'
+              }, formatMoney(giftWrapItem.final_line_price));
+              totalCell.appendChild(totalDiv);
+              giftWrapRow.appendChild(totalCell);
               
               // Insert at the top of the cart table
               if (cartTableBody.firstChild) {

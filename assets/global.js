@@ -14,6 +14,129 @@
  * - Keyboard navigation support
  * - Automatic UI updates
  */
+
+/**
+ * HTML Sanitization Utilities
+ * Provides safe HTML creation and sanitization functions to prevent XSS attacks
+ */
+const HTMLSanitizer = {
+  /**
+   * Sanitize text content to prevent XSS
+   * @param {string} text - Text to sanitize
+   * @returns {string} Sanitized text
+   */
+  sanitizeText(text) {
+    if (typeof text !== 'string') {
+      return String(text || '');
+    }
+    
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  },
+
+  /**
+   * Sanitize URL to prevent XSS and ensure it's safe
+   * @param {string} url - URL to sanitize
+   * @returns {string} Sanitized URL
+   */
+  sanitizeUrl(url) {
+    if (typeof url !== 'string') {
+      return '';
+    }
+    
+    // Remove any script or javascript protocols
+    const sanitized = url.replace(/^javascript:/i, '').replace(/^data:/i, '');
+    
+    // Only allow http, https, and relative URLs
+    if (sanitized && !sanitized.match(/^(https?:\/\/|\/|#)/)) {
+      return '';
+    }
+    
+    return sanitized;
+  },
+
+  /**
+   * Create a safe HTML element with sanitized attributes
+   * @param {string} tagName - HTML tag name
+   * @param {Object} attributes - Object of attributes
+   * @param {string} content - Inner content (will be sanitized)
+   * @returns {HTMLElement} Safe HTML element
+   */
+  createElement(tagName, attributes = {}, content = '') {
+    const element = document.createElement(tagName);
+    
+    // Set attributes safely
+    Object.entries(attributes).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        if (key === 'href' || key === 'src') {
+          const sanitizedUrl = this.sanitizeUrl(value);
+          if (sanitizedUrl) {
+            element.setAttribute(key, sanitizedUrl);
+          }
+        } else if (key === 'alt' || key === 'title' || key === 'aria-label') {
+          element.setAttribute(key, this.sanitizeText(value));
+        } else {
+          element.setAttribute(key, this.sanitizeText(value));
+        }
+      }
+    });
+    
+    // Set content safely
+    if (content) {
+      element.textContent = content;
+    }
+    
+    return element;
+  },
+
+  /**
+   * Create a safe HTML string for specific use cases
+   * @param {string} tagName - HTML tag name
+   * @param {Object} attributes - Object of attributes
+   * @param {string} content - Inner content (will be sanitized)
+   * @returns {string} Safe HTML string
+   */
+  createHTMLString(tagName, attributes = {}, content = '') {
+    const element = this.createElement(tagName, attributes, content);
+    return element.outerHTML;
+  },
+
+  /**
+   * Safely set innerHTML with sanitized content
+   * @param {HTMLElement} element - Target element
+   * @param {string} html - HTML content to sanitize and set
+   */
+  setInnerHTML(element, html) {
+    if (!element || typeof html !== 'string') {
+      return;
+    }
+    
+    // Create a temporary container to sanitize the HTML
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+    
+    // Remove any script tags and event handlers
+    const scripts = temp.querySelectorAll('script');
+    scripts.forEach(script => script.remove());
+    
+    // Remove event handlers from all elements
+    const allElements = temp.querySelectorAll('*');
+    allElements.forEach(el => {
+      const attrs = el.attributes;
+      for (let i = attrs.length - 1; i >= 0; i--) {
+        const attr = attrs[i];
+        if (attr.name.startsWith('on') || attr.name.startsWith('javascript:')) {
+          el.removeAttribute(attr.name);
+        }
+      }
+    });
+    
+    // Set the sanitized content
+    element.innerHTML = temp.innerHTML;
+  }
+};
+
 class WishlistCompare {
   constructor() {
     // Storage keys for wishlist and compare lists
@@ -318,11 +441,11 @@ class WishlistCompare {
       // Add the tf-grid-layout class back if it was removed
       gridLayout.classList.add('tf-grid-layout');
       
-      // Create product card HTML
-      const productCardHTML = this.createWishlistProductCard(product);
+      // Create product card element safely
+      const productCardElement = this.createWishlistProductCard(product);
       
       // Insert the new product card at the beginning
-      gridLayout.insertAdjacentHTML('afterbegin', productCardHTML);
+      gridLayout.insertBefore(productCardElement, gridLayout.firstChild);
       
       // Get the newly added product card and add animation class
       const newProductCard = gridLayout.querySelector(`[data-product-id="${product.id}"]`);
@@ -356,9 +479,9 @@ class WishlistCompare {
   }
 
   /**
-   * Create wishlist product card HTML
+   * Create wishlist product card HTML safely
    * @param {Object} product - Product data
-   * @returns {string} HTML string for the product card
+   * @returns {HTMLElement} Safe HTML element for the product card
    */
   createWishlistProductCard(product) {
     const formatMoney = (cents) => {
@@ -368,96 +491,189 @@ class WishlistCompare {
       }).format(cents / 100);
     };
 
-    return `
-      <div class="card-product grid file-delete style-wishlist style-3 ${!product.variants[0].available ? 'out-of-stock' : ''}" data-product-id="${product.id}">
-        <i class="icon icon-close remove" data-wishlist data-id="${product.id}" data-action="remove"></i>
-        <div class="card-product-wrapper">
-          <a href="/products/${product.handle}" class="product-img">
-            <img class="img-product lazyload"
-              data-src="${product.featured_image ? product.featured_image.src : product.images[0].src}"
-              src="${product.featured_image ? product.featured_image.src : product.images[0].src}"
-              alt="${product.title}">
-            ${product.images[1] ? `
-              <img class="img-hover lazyload"
-                data-src="${product.images[1].src}"
-                src="${product.images[1].src}"
-                alt="${product.title}">
-            ` : ''}
-          </a>
-          <ul class="list-product-btn">
-            <li>
-              <a href="javascript:void(0);" 
-                 class="box-icon hover-tooltip add-to-cart" 
-                 data-variant-id="${product.variants[0].id}"
-                 data-quantity="1"
-                 aria-label="Add to cart">
-                <span class="icon icon-cart2"></span>
-                <span class="tooltip">Add to Cart</span>
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0);" 
-                 class="box-icon hover-tooltip quickview" 
-                 data-product-handle="${product.handle}"
-                 data-product-id="${product.id}"
-                 data-bs-toggle="modal" 
-                 data-bs-target="#quickView">
-                <span class="icon icon-view"></span>
-                <span class="tooltip">Quick View</span>
-              </a>
-            </li>
-            <li class="compare">
-              <a href="javascript:void(0);" 
-                 class="box-icon hover-tooltip tooltip-left" 
-                 data-compare 
-                 data-id="${product.id}" 
-                 data-action="add"
-                 aria-label="Add to compare">
-                <span class="icon icon-compare"></span>
-                <span class="tooltip">Add to Compare</span>
-              </a>
-            </li>
-          </ul>
-          ${!product.variants[0].available ? '<div class="sold-out-badge">Sold Out</div>' : ''}
-        </div>
-        <div class="card-product-info">
-          <a href="/products/${product.handle}" class="name-product link fw-medium text-md">${product.title}</a>
-          <p class="price-wrap fw-medium">
-            <span class="price-new text-primary">${formatMoney(product.variants[0].price * 100)}</span>
-            ${product.variants[0].compare_at_price > product.variants[0].price ? 
-              `<span class="price-old">${formatMoney(product.variants[0].compare_at_price * 100)}</span>` : ''}
-          </p>
-          ${product.variants.length > 1 ? `
-            <ul class="list-color-product">
-              ${product.options.map(option => {
-                if (option.name.toLowerCase() === 'color' || option.name.toLowerCase() === 'colour') {
-                  return option.values.map(value => {
-                    const variant = product.variants.find(v => v.option1 === value);
-                    return `
-                      <li class="list-color-item color-swatch hover-tooltip tooltip-bot ${value === option.values[0] ? 'active' : ''}"
-                          data-variant-id="${variant.id}"
-                          data-option-name="${option.name}"
-                          data-option-value="${value}">
-                        <span class="tooltip color-filter">${value}</span>
-                        <span class="swatch-value bg-${value.toLowerCase().replace(/\s+/g, '-')}"></span>
-                        ${variant.featured_image ? `
-                          <img class="lazyload" 
-                            data-src="${variant.featured_image.src}" 
-                            src="${variant.featured_image.src}" 
-                            alt="${value}"
-                            loading="lazy">
-                        ` : ''}
-                      </li>
-                    `;
-                  }).join('');
-                }
-                return '';
-              }).join('')}
-            </ul>
-          ` : ''}
-        </div>
-      </div>
-    `;
+    // Create main container
+    const cardDiv = HTMLSanitizer.createElement('div', {
+      class: `card-product grid file-delete style-wishlist style-3 ${!product.variants[0].available ? 'out-of-stock' : ''}`,
+      'data-product-id': product.id
+    });
+
+    // Create remove button
+    const removeIcon = HTMLSanitizer.createElement('i', {
+      class: 'icon icon-close remove',
+      'data-wishlist': '',
+      'data-id': product.id,
+      'data-action': 'remove'
+    });
+    cardDiv.appendChild(removeIcon);
+
+    // Create wrapper
+    const wrapper = HTMLSanitizer.createElement('div', { class: 'card-product-wrapper' });
+
+    // Create product image link
+    const productLink = HTMLSanitizer.createElement('a', {
+      href: `/products/${HTMLSanitizer.sanitizeText(product.handle)}`,
+      class: 'product-img'
+    });
+
+    // Create main image
+    const mainImage = HTMLSanitizer.createElement('img', {
+      class: 'img-product lazyload',
+      'data-src': HTMLSanitizer.sanitizeUrl(product.featured_image ? product.featured_image.src : product.images[0].src),
+      src: HTMLSanitizer.sanitizeUrl(product.featured_image ? product.featured_image.src : product.images[0].src),
+      alt: HTMLSanitizer.sanitizeText(product.title)
+    });
+    productLink.appendChild(mainImage);
+
+    // Create hover image if available
+    if (product.images && product.images[1]) {
+      const hoverImage = HTMLSanitizer.createElement('img', {
+        class: 'img-hover lazyload',
+        'data-src': HTMLSanitizer.sanitizeUrl(product.images[1].src),
+        src: HTMLSanitizer.sanitizeUrl(product.images[1].src),
+        alt: HTMLSanitizer.sanitizeText(product.title)
+      });
+      productLink.appendChild(hoverImage);
+    }
+
+    wrapper.appendChild(productLink);
+
+    // Create product buttons list
+    const buttonsList = HTMLSanitizer.createElement('ul', { class: 'list-product-btn' });
+
+    // Add to cart button
+    const addToCartLi = HTMLSanitizer.createElement('li');
+    const addToCartLink = HTMLSanitizer.createElement('a', {
+      href: 'javascript:void(0);',
+      class: 'box-icon hover-tooltip add-to-cart',
+      'data-variant-id': product.variants[0].id,
+      'data-quantity': '1',
+      'aria-label': 'Add to cart'
+    });
+    
+    const cartIcon = HTMLSanitizer.createElement('span', { class: 'icon icon-cart2' });
+    const cartTooltip = HTMLSanitizer.createElement('span', { class: 'tooltip' }, 'Add to Cart');
+    
+    addToCartLink.appendChild(cartIcon);
+    addToCartLink.appendChild(cartTooltip);
+    addToCartLi.appendChild(addToCartLink);
+    buttonsList.appendChild(addToCartLi);
+
+    // Quickview button
+    const quickviewLi = HTMLSanitizer.createElement('li');
+    const quickviewLink = HTMLSanitizer.createElement('a', {
+      href: 'javascript:void(0);',
+      class: 'box-icon hover-tooltip quickview',
+      'data-product-handle': HTMLSanitizer.sanitizeText(product.handle),
+      'data-product-id': product.id,
+      'data-bs-toggle': 'modal',
+      'data-bs-target': '#quickView'
+    });
+    
+    const viewIcon = HTMLSanitizer.createElement('span', { class: 'icon icon-view' });
+    const viewTooltip = HTMLSanitizer.createElement('span', { class: 'tooltip' }, 'Quick View');
+    
+    quickviewLink.appendChild(viewIcon);
+    quickviewLink.appendChild(viewTooltip);
+    quickviewLi.appendChild(quickviewLink);
+    buttonsList.appendChild(quickviewLi);
+
+    // Compare button
+    const compareLi = HTMLSanitizer.createElement('li', { class: 'compare' });
+    const compareLink = HTMLSanitizer.createElement('a', {
+      href: 'javascript:void(0);',
+      class: 'box-icon hover-tooltip tooltip-left',
+      'data-compare': '',
+      'data-id': product.id,
+      'data-action': 'add',
+      'aria-label': 'Add to compare'
+    });
+    
+    const compareIcon = HTMLSanitizer.createElement('span', { class: 'icon icon-compare' });
+    const compareTooltip = HTMLSanitizer.createElement('span', { class: 'tooltip' }, 'Add to Compare');
+    
+    compareLink.appendChild(compareIcon);
+    compareLink.appendChild(compareTooltip);
+    compareLi.appendChild(compareLink);
+    buttonsList.appendChild(compareLi);
+
+    wrapper.appendChild(buttonsList);
+
+    // Add sold out badge if needed
+    if (!product.variants[0].available) {
+      const soldOutBadge = HTMLSanitizer.createElement('div', { class: 'sold-out-badge' }, 'Sold Out');
+      wrapper.appendChild(soldOutBadge);
+    }
+
+    cardDiv.appendChild(wrapper);
+
+    // Create product info
+    const infoDiv = HTMLSanitizer.createElement('div', { class: 'card-product-info' });
+
+    // Product title link
+    const titleLink = HTMLSanitizer.createElement('a', {
+      href: `/products/${HTMLSanitizer.sanitizeText(product.handle)}`,
+      class: 'name-product link fw-medium text-md'
+    }, HTMLSanitizer.sanitizeText(product.title));
+    infoDiv.appendChild(titleLink);
+
+    // Price wrapper
+    const priceWrap = HTMLSanitizer.createElement('p', { class: 'price-wrap fw-medium' });
+    
+    const newPrice = HTMLSanitizer.createElement('span', { class: 'price-new text-primary' }, formatMoney(product.variants[0].price * 100));
+    priceWrap.appendChild(newPrice);
+
+    if (product.variants[0].compare_at_price > product.variants[0].price) {
+      const oldPrice = HTMLSanitizer.createElement('span', { class: 'price-old' }, formatMoney(product.variants[0].compare_at_price * 100));
+      priceWrap.appendChild(oldPrice);
+    }
+
+    infoDiv.appendChild(priceWrap);
+
+    // Color swatches if multiple variants
+    if (product.variants.length > 1) {
+      const colorList = HTMLSanitizer.createElement('ul', { class: 'list-color-product' });
+      
+      product.options.forEach(option => {
+        if (option.name.toLowerCase() === 'color' || option.name.toLowerCase() === 'colour') {
+          option.values.forEach(value => {
+            const variant = product.variants.find(v => v.option1 === value);
+            if (variant) {
+              const colorItem = HTMLSanitizer.createElement('li', {
+                class: `list-color-item color-swatch hover-tooltip tooltip-bot ${value === option.values[0] ? 'active' : ''}`,
+                'data-variant-id': variant.id,
+                'data-option-name': HTMLSanitizer.sanitizeText(option.name),
+                'data-option-value': HTMLSanitizer.sanitizeText(value)
+              });
+
+              const tooltip = HTMLSanitizer.createElement('span', { class: 'tooltip color-filter' }, HTMLSanitizer.sanitizeText(value));
+              const swatchValue = HTMLSanitizer.createElement('span', { class: `swatch-value bg-${value.toLowerCase().replace(/\s+/g, '-')}` });
+
+              colorItem.appendChild(tooltip);
+              colorItem.appendChild(swatchValue);
+
+              if (variant.featured_image) {
+                const variantImage = HTMLSanitizer.createElement('img', {
+                  class: 'lazyload',
+                  'data-src': HTMLSanitizer.sanitizeUrl(variant.featured_image.src),
+                  src: HTMLSanitizer.sanitizeUrl(variant.featured_image.src),
+                  alt: HTMLSanitizer.sanitizeText(value),
+                  loading: 'lazy'
+                });
+                colorItem.appendChild(variantImage);
+              }
+
+              colorList.appendChild(colorItem);
+            }
+          });
+        }
+      });
+
+      infoDiv.appendChild(colorList);
+    }
+
+    cardDiv.appendChild(infoDiv);
+
+    return cardDiv;
   }
 
   /**
@@ -490,14 +706,18 @@ class WishlistCompare {
             const gridLayout = document.getElementById('gridLayout');
             if (gridLayout) {
               gridLayout.classList.remove('tf-grid-layout');
-              gridLayout.innerHTML = `
-                <div class="wrapper-wishlist tf-col-2 lg-col-3 xl-col-4">
-                  <div class="tf-wishlist-empty text-center">
-                    <p class="text-md text-noti">No product were added to the wishlist.</p>
-                    <a href="/" class="tf-btn animate-btn btn-back-shop">Back to Shopping</a>
-                  </div>
-                </div>  
-              `;
+              const wrapperDiv = HTMLSanitizer.createElement('div', { class: 'wrapper-wishlist tf-col-2 lg-col-3 xl-col-4' });
+              const emptyDiv = HTMLSanitizer.createElement('div', { class: 'tf-wishlist-empty text-center' });
+              const emptyText = HTMLSanitizer.createElement('p', { class: 'text-md text-noti' }, 'No product were added to the wishlist.');
+              const backLink = HTMLSanitizer.createElement('a', {
+                href: '/',
+                class: 'tf-btn animate-btn btn-back-shop'
+              }, 'Back to Shopping');
+              
+              emptyDiv.appendChild(emptyText);
+              emptyDiv.appendChild(backLink);
+              wrapperDiv.appendChild(emptyDiv);
+              gridLayout.appendChild(wrapperDiv);
             }
             
             const paginationContainer = document.getElementById('paginationContainer');
@@ -537,17 +757,18 @@ class WishlistCompare {
             await window.cart.updateQuantity(variantId, quantity, 'add');
             
             // Show success feedback
-            addToCartButton.innerHTML = `
-              <div class="success-feedback">
-                <i class="icon icon-check text-success"></i>
-              </div>
-            `;
+            addToCartButton.innerHTML = '';
+            const successFeedback = HTMLSanitizer.createElement('div', { class: 'success-feedback' });
+            const successIcon = HTMLSanitizer.createElement('i', { class: 'icon icon-check text-success' });
+            successFeedback.appendChild(successIcon);
+            addToCartButton.appendChild(successFeedback);
             
             setTimeout(() => {
-              addToCartButton.innerHTML = `
-                <span class="icon icon-cart2"></span>
-                <span class="tooltip">Add to Cart</span>
-              `;
+              addToCartButton.innerHTML = '';
+              const cartIcon = HTMLSanitizer.createElement('span', { class: 'icon icon-cart2' });
+              const cartTooltip = HTMLSanitizer.createElement('span', { class: 'tooltip' }, 'Add to Cart');
+              addToCartButton.appendChild(cartIcon);
+              addToCartButton.appendChild(cartTooltip);
               addToCartButton.classList.remove('loading');
             }, 1000);
           }
@@ -628,12 +849,14 @@ class WishlistCompare {
     // Update pagination HTML (this is a simplified version - you may want to implement full pagination logic)
     const pagination = document.getElementById('pagination');
     if (pagination) {
-      // Simple pagination display
-      pagination.innerHTML = `
-        <li class="active">
-          <div class="pagination-item">1</div>
-        </li>
-      `;
+      // Clear existing content
+      pagination.innerHTML = '';
+      
+      // Create simple pagination display
+      const paginationItem = HTMLSanitizer.createElement('li', { class: 'active' });
+      const paginationDiv = HTMLSanitizer.createElement('div', { class: 'pagination-item' }, '1');
+      paginationItem.appendChild(paginationDiv);
+      pagination.appendChild(paginationItem);
     }
   }
 
@@ -910,9 +1133,10 @@ class WishlistCompare {
   }
 
   createCompareItem(product) {
-    const div = document.createElement('div');
-    div.className = 'tf-compare-item file-delete';
-    div.setAttribute('data-product-id', product.id);
+    const div = HTMLSanitizer.createElement('div', {
+      class: 'tf-compare-item file-delete',
+      'data-product-id': product.id
+    });
     
     // Format price properly
     const formatMoney = (price) => {
@@ -942,34 +1166,70 @@ class WishlistCompare {
       return price;
     };
     
-    div.innerHTML = `
-      <button type="button" class="icon-close remove" data-compare data-id="${product.id}" data-action="remove" aria-label="Remove from compare"></button>
-      <a href="${product.url}" style="aspect-ratio: 4/5;" class="image" draggable="false">
-        <img class="lazyload" draggable="false" data-src="${product.image}" src="${product.image}" alt="${product.title}">
-      </a>
-      <div class="content">
-        <div class="text-title text-left">
-          <a class="link text-line-clamp-2" href="${product.url}">${product.title}</a>
-        </div>
-        <p class="price-wrap text-left">
-          <span class="new-price text-primary">${formatMoney(product.price)}</span>
-          ${product.comparePrice ? `<span class="old-price text-decoration-line-through text-dark-1">${formatMoney(product.comparePrice)}</span>` : ''}
-        </p>
-      </div>
-    `;
+    // Create remove button
+    const removeButton = HTMLSanitizer.createElement('button', {
+      type: 'button',
+      class: 'icon-close remove',
+      'data-compare': '',
+      'data-id': product.id,
+      'data-action': 'remove',
+      'aria-label': 'Remove from compare'
+    });
+    div.appendChild(removeButton);
+    
+    // Create image link
+    const imageLink = HTMLSanitizer.createElement('a', {
+      href: HTMLSanitizer.sanitizeUrl(product.url),
+      style: 'aspect-ratio: 4/5;',
+      class: 'image',
+      draggable: 'false'
+    });
+    
+    // Create image
+    const image = HTMLSanitizer.createElement('img', {
+      class: 'lazyload',
+      draggable: 'false',
+      'data-src': HTMLSanitizer.sanitizeUrl(product.image),
+      src: HTMLSanitizer.sanitizeUrl(product.image),
+      alt: HTMLSanitizer.sanitizeText(product.title)
+    });
+    imageLink.appendChild(image);
+    div.appendChild(imageLink);
+    
+    // Create content div
+    const content = HTMLSanitizer.createElement('div', { class: 'content' });
+    
+    // Create title div
+    const titleDiv = HTMLSanitizer.createElement('div', { class: 'text-title text-left' });
+    const titleLink = HTMLSanitizer.createElement('a', {
+      class: 'link text-line-clamp-2',
+      href: HTMLSanitizer.sanitizeUrl(product.url)
+    }, HTMLSanitizer.sanitizeText(product.title));
+    titleDiv.appendChild(titleLink);
+    content.appendChild(titleDiv);
+    
+    // Create price wrapper
+    const priceWrap = HTMLSanitizer.createElement('p', { class: 'price-wrap text-left' });
+    const newPrice = HTMLSanitizer.createElement('span', { class: 'new-price text-primary' }, formatMoney(product.price));
+    priceWrap.appendChild(newPrice);
+    
+    if (product.comparePrice) {
+      const oldPrice = HTMLSanitizer.createElement('span', { class: 'old-price text-decoration-line-through text-dark-1' }, formatMoney(product.comparePrice));
+      priceWrap.appendChild(oldPrice);
+    }
+    
+    content.appendChild(priceWrap);
+    div.appendChild(content);
     
     // Add event listener for the remove button
-    const removeButton = div.querySelector('.remove');
-    if (removeButton) {
-      removeButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const productId = removeButton.getAttribute('data-id');
-        if (productId) {
-          this.removeFromCompare(productId);
-        }
-      });
-    }
+    removeButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const productId = removeButton.getAttribute('data-id');
+      if (productId) {
+        this.removeFromCompare(productId);
+      }
+    });
     
     return div;
   }
@@ -2151,54 +2411,108 @@ class Cart {
           selected: true
         }];
         
-        itemElement.innerHTML = `
-          <div class="tf-mini-cart-image">
-            <a href="${itemUrl}">
-              <img class="lazyload" data-src="${itemImage}" src="${itemImage}" alt="${item.title}">
-            </a>
-          </div>
-          <div class="tf-mini-cart-info">
-            <div class="d-flex justify-content-between">
-              <a class="title link text-md fw-medium" href="${itemUrl}">${item.title}</a>
-              <i class="icon icon-close remove fs-12" data-variant-id="${item.variant_id}"></i>
-            </div>
-            <div class="d-flex gap-10">
-              ${variantOptions.length > 1 ? `
-              <div class="info-variant">
-                <select class="text-xs" data-variant-id="${item.variant_id}">
-                  ${variantOptions.map(option => 
-                    `<option value="${option.id}" ${option.selected ? 'selected' : ''}>${option.title}</option>`
-                  ).join('')}
-                </select>
-                <i class="icon-pen edit"></i>
-              </div>
-              ` : ''}
-            </div>
-            <p class="price-wrap text-sm fw-medium">
-              <span class="new-price text-primary">${formattedPrice}</span>
-              ${formattedOriginalPrice ? 
-                `<span class="old-price text-decoration-line-through text-dark-1">${formattedOriginalPrice}</span>` : 
-                ''}
-            </p>
-            <div class="wg-quantity small">
-              <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
-              <input class="quantity-product font-4" type="text" name="updates[]" value="${item.quantity}" data-variant-id="${item.variant_id}">
-              <button class="btn-quantity btn-increase" data-variant-id="${item.variant_id}">+</button>
-            </div>
-          </div>
-        `;
+        // Create cart item image
+        const imageDiv = HTMLSanitizer.createElement('div', { class: 'tf-mini-cart-image' });
+        const imageLink = HTMLSanitizer.createElement('a', { href: HTMLSanitizer.sanitizeUrl(itemUrl) });
+        const image = HTMLSanitizer.createElement('img', {
+          class: 'lazyload',
+          'data-src': HTMLSanitizer.sanitizeUrl(itemImage),
+          src: HTMLSanitizer.sanitizeUrl(itemImage),
+          alt: HTMLSanitizer.sanitizeText(item.title)
+        });
+        imageLink.appendChild(image);
+        imageDiv.appendChild(imageLink);
+        itemElement.appendChild(imageDiv);
+
+        // Create cart item info
+        const infoDiv = HTMLSanitizer.createElement('div', { class: 'tf-mini-cart-info' });
+
+        // Create title and remove button row
+        const titleRow = HTMLSanitizer.createElement('div', { class: 'd-flex justify-content-between' });
+        const titleLink = HTMLSanitizer.createElement('a', {
+          class: 'title link text-md fw-medium',
+          href: HTMLSanitizer.sanitizeUrl(itemUrl)
+        }, HTMLSanitizer.sanitizeText(item.title));
+        const removeIcon = HTMLSanitizer.createElement('i', {
+          class: 'icon icon-close remove fs-12',
+          'data-variant-id': item.variant_id
+        });
+        titleRow.appendChild(titleLink);
+        titleRow.appendChild(removeIcon);
+        infoDiv.appendChild(titleRow);
+
+        // Create variant options if available
+        if (variantOptions.length > 1) {
+          const variantDiv = HTMLSanitizer.createElement('div', { class: 'd-flex gap-10' });
+          const infoVariant = HTMLSanitizer.createElement('div', { class: 'info-variant' });
+          
+          const select = HTMLSanitizer.createElement('select', { class: 'text-xs', 'data-variant-id': item.variant_id });
+          variantOptions.forEach(option => {
+            const optionElement = HTMLSanitizer.createElement('option', {
+              value: option.id,
+              selected: option.selected ? 'selected' : undefined
+            }, HTMLSanitizer.sanitizeText(option.title));
+            select.appendChild(optionElement);
+          });
+          
+          const editIcon = HTMLSanitizer.createElement('i', { class: 'icon-pen edit' });
+          infoVariant.appendChild(select);
+          infoVariant.appendChild(editIcon);
+          variantDiv.appendChild(infoVariant);
+          infoDiv.appendChild(variantDiv);
+        }
+
+        // Create price wrapper
+        const priceWrap = HTMLSanitizer.createElement('p', { class: 'price-wrap text-sm fw-medium' });
+        const newPrice = HTMLSanitizer.createElement('span', { class: 'new-price text-primary' }, formattedPrice);
+        priceWrap.appendChild(newPrice);
+        
+        if (formattedOriginalPrice) {
+          const oldPrice = HTMLSanitizer.createElement('span', { class: 'old-price text-decoration-line-through text-dark-1' }, formattedOriginalPrice);
+          priceWrap.appendChild(oldPrice);
+        }
+        infoDiv.appendChild(priceWrap);
+
+        // Create quantity controls
+        const quantityDiv = HTMLSanitizer.createElement('div', { class: 'wg-quantity small' });
+        const decreaseBtn = HTMLSanitizer.createElement('button', {
+          class: 'btn-quantity btn-decrease',
+          'data-variant-id': item.variant_id
+        }, '-');
+        const quantityInput = HTMLSanitizer.createElement('input', {
+          class: 'quantity-product font-4',
+          type: 'text',
+          name: 'updates[]',
+          value: item.quantity,
+          'data-variant-id': item.variant_id
+        });
+        const increaseBtn = HTMLSanitizer.createElement('button', {
+          class: 'btn-quantity btn-increase',
+          'data-variant-id': item.variant_id
+        }, '+');
+        
+        quantityDiv.appendChild(decreaseBtn);
+        quantityDiv.appendChild(quantityInput);
+        quantityDiv.appendChild(increaseBtn);
+        infoDiv.appendChild(quantityDiv);
+
+        itemElement.appendChild(infoDiv);
         
         cartItemsContainer.appendChild(itemElement);
       });
 
       // Add empty cart placeholder if needed
       if (!cartData.items || cartData.items.length === 0) {
-        cartItemsContainer.innerHTML = `
-          <div class="empty-cart">
-            <p>Your cart is currently empty.</p>
-            <a href="/collections" class="tf-btn animate-btn d-inline-flex bg-dark-2">Continue shopping</a>
-          </div>
-        `;
+        const emptyCartDiv = HTMLSanitizer.createElement('div', { class: 'empty-cart' });
+        const emptyText = HTMLSanitizer.createElement('p', {}, 'Your cart is currently empty.');
+        const continueLink = HTMLSanitizer.createElement('a', {
+          href: '/collections',
+          class: 'tf-btn animate-btn d-inline-flex bg-dark-2'
+        }, 'Continue shopping');
+        
+        emptyCartDiv.appendChild(emptyText);
+        emptyCartDiv.appendChild(continueLink);
+        cartItemsContainer.appendChild(emptyCartDiv);
       }
 
       // Restore scroll position after items are added
@@ -2207,12 +2521,16 @@ class Cart {
       }, 10);
     } else {
       // Show empty cart message if no items
-      cartItemsContainer.innerHTML = `
-        <div class="empty-cart">
-          <p>Your cart is currently empty.</p>
-          <a href="/collections" class="tf-btn animate-btn d-inline-flex bg-dark-2">Continue shopping</a>
-        </div>
-      `;
+      const emptyCartDiv = HTMLSanitizer.createElement('div', { class: 'empty-cart' });
+      const emptyText = HTMLSanitizer.createElement('p', {}, 'Your cart is currently empty.');
+      const continueLink = HTMLSanitizer.createElement('a', {
+        href: '/collections',
+        class: 'tf-btn animate-btn d-inline-flex bg-dark-2'
+      }, 'Continue shopping');
+      
+      emptyCartDiv.appendChild(emptyText);
+      emptyCartDiv.appendChild(continueLink);
+      cartItemsContainer.appendChild(emptyCartDiv);
     }
 
     // Update total price with proper formatting
@@ -2263,11 +2581,16 @@ class Cart {
     const remaining = Math.max(0, threshold - totalPrice) / 100;
     const thresholdText = document.querySelector('.tf-mini-cart-threshold .text');
     if (thresholdText) {
+      thresholdText.innerHTML = '';
       if (totalPrice >= threshold) {
-        thresholdText.innerHTML = window.theme?.settings?.free_shipping_message || 'Congratulations! You\'ve unlocked <span class="fw-medium">Free Shipping</span>';
+        const message = window.theme?.settings?.free_shipping_message || 'Congratulations! You\'ve unlocked Free Shipping';
+        const textNode = document.createTextNode(message.replace(/<span class="fw-medium">(.*?)<\/span>/g, '$1'));
+        thresholdText.appendChild(textNode);
       } else {
-        const progressMessage = window.theme?.settings?.progress_message || 'Spend <span class="fw-medium">[amount]</span> more to get <span class="fw-medium">Free Shipping</span>';
-        thresholdText.innerHTML = progressMessage.replace('[amount]', `$${remaining.toFixed(2)}`);
+        const progressMessage = window.theme?.settings?.progress_message || 'Spend [amount] more to get Free Shipping';
+        const message = progressMessage.replace('[amount]', `$${remaining.toFixed(2)}`);
+        const textNode = document.createTextNode(message.replace(/<span class="fw-medium">(.*?)<\/span>/g, '$1'));
+        thresholdText.appendChild(textNode);
       }
     }
   }
@@ -2489,9 +2812,14 @@ class Cart {
       const selectElement = cartItemElement.querySelector('select[data-variant-id]');
       if (selectElement && variantOptions.length > 1) {
         selectElement.dataset.variantId = newItem.variant_id;
-        selectElement.innerHTML = variantOptions.map(option => 
-          `<option value="${option.id}" ${option.selected ? 'selected' : ''}>${option.title}</option>`
-        ).join('');
+        selectElement.innerHTML = '';
+        variantOptions.forEach(option => {
+          const optionElement = HTMLSanitizer.createElement('option', {
+            value: option.id,
+            selected: option.selected ? 'selected' : undefined
+          }, HTMLSanitizer.sanitizeText(option.title));
+          selectElement.appendChild(optionElement);
+        });
       }
 
       // Update quantity controls
