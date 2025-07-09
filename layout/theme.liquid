@@ -165,23 +165,23 @@
     {% endif %}
 
     <div id="wrapper">
-      {% section 'header-group' %}
+      {% sections 'header-group' %}
       
       <main role="main">
         {{ content_for_layout }}
       </main>
-      
-      {% section 'footer-group' %}
+      {% section 'pickup-available' %}
+      {% sections 'footer-group' %}
       {% section 'cart-drawer' %}
       {% section 'search-drawer' %}
       {% render 'login-drawer' %}
       {% render 'register-drawer' %}
       {% render 'reset-password-drawer' %}
+      {% section 'mobile-menu' %}
       {% section 'ask-question-drawer' %}
       {% section 'mobile-toolbar' %}
       {% section 'newsletter-popup' %}
       {% section 'cookie-banner' %}
-      {% section 'pickup-available' %}
       {% render 'quickview-modal' %}
       {% render 'compare-drawer' %}
     </div>
