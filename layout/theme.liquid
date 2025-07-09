@@ -129,108 +129,14 @@
 
     {%- comment -%}Recently Viewed Tracking - Available globally{%- endcomment -%}
     {% render 'recently-viewed-tracking' %}
-  <style>
-    body {
-      font-family: 
-        {% if settings.font_library == 'google' and settings.body_font_family != blank %}
-          {{ settings.body_font_family }}
-        {% else %}
-          {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }}
-        {% endif %} !important;
-      /* font-weight: {{ settings.body_font_weight | default: settings.body_font.weight }} !important; */
-      line-height: {{ settings.body_line_height }} !important;
-      letter-spacing: {{ settings.body_letter_spacing | divided_by: 100.0 }}em !important;
-      font-size: {{ settings.body_font_size_mobile }}px !important;
-    }
-    @media (min-width: 768px) {
-      body {
-        font-size: {{ settings.body_font_size_desktop }}px !important;
-      }
-    }
-    h1, h2, h3, h4, h5, h6 {
-      font-family: 
-        {% if settings.font_library == 'google' and settings.heading_font_family != blank %}
-          {{ settings.heading_font_family }}
-        {% else %}
-          {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }}
-        {% endif %} !important;
-      /* font-weight: {{ settings.heading_font_weight | default: settings.heading_font.weight }} !important; */
-      line-height: {{ settings.heading_line_height }} !important;
-      letter-spacing: {{ settings.heading_letter_spacing | divided_by: 100.0 }}em !important;
-    }
-    .text-sm {
-      font-size: {{ settings.body_font_size_mobile | minus: 2 }}px !important;
-    }
-    @media (min-width: 768px) {
-      .text-sm {
-        font-size: {{ settings.body_font_size_desktop | minus: 2 }}px !important;
-      }
-    }
-    .text-md {
-      font-size: {{ settings.body_font_size_desktop }}px;
-      line-height: 24px;
-    }
-    .container {
-      max-width: {{ settings.container_width }};
-      margin-left: auto;
-      margin-right: auto;
-      width: 100%;
-    }
-    /* .grid, .grid-cols {
-      grid-gap: {{ settings.grid_gap }}px;
-      gap: {{ settings.grid_gap }}px;
-    } */
-    /* .section {
-      margin-bottom: {{ settings.section_spacing }}px;
-    }
-    .element, .element-spacing {
-      margin-bottom: {{ settings.element_spacing }}px;
-    } */
     
-    /* Section Spacing Settings */
-    {% if settings.enable_section_spacing %}
-      .shopify-section {
-        {% if settings.section_spacing_position == 'top' or settings.section_spacing_position == 'both' %}
-          padding-top: calc(var(--section-padding-top, 0px) + {{ settings.section_spacing_mobile }}px);
-        {% endif %}
-        {% if settings.section_spacing_position == 'bottom' or settings.section_spacing_position == 'both' %}
-          padding-bottom: calc(var(--section-padding-bottom, 0px) + {{ settings.section_spacing_mobile }}px);
-        {% endif %}
-      }
-      
-      @media (min-width: 768px) {
-        .shopify-section {
-          {% if settings.section_spacing_position == 'top' or settings.section_spacing_position == 'both' %}
-            padding-top: calc(var(--section-padding-top, 0px) + {{ settings.section_spacing_tablet }}px);
-          {% endif %}
-          {% if settings.section_spacing_position == 'bottom' or settings.section_spacing_position == 'both' %}
-            padding-bottom: calc(var(--section-padding-bottom, 0px) + {{ settings.section_spacing_tablet }}px);
-          {% endif %}
-        }
-      }
-      
-      @media (min-width: 1024px) {
-        .shopify-section {
-          {% if settings.section_spacing_position == 'top' or settings.section_spacing_position == 'both' %}
-            padding-top: calc(var(--section-padding-top, 0px) + {{ settings.section_spacing_desktop }}px);
-          {% endif %}
-          {% if settings.section_spacing_position == 'bottom' or settings.section_spacing_position == 'both' %}
-            padding-bottom: calc(var(--section-padding-bottom, 0px) + {{ settings.section_spacing_desktop }}px);
-          {% endif %}
-        }
-      }
-    {% endif %}
+    <!-- Theme Settings CSS - External file for better CSP compliance -->
+    {{ 'theme.css.liquid' | asset_url | stylesheet_tag }}
     
-    {% if settings.enable_animations %}
-      /* Animations enabled: use section styles as defined in each section */
-    {% else %}
-      .section, [data-section-animate], .slider-effect-fade, .fadeInUp, .wow, .fadeInLeft, .fade-item, .fade-item-1, .fade-item-2, .fade-item-3, .animated {
-        animation: none !important;
-        transition: none !important;
-        opacity: 1 !important;
-      }
-    {% endif %}
-  </style>
+    <!-- Set animation data attribute -->
+    <script>
+      document.documentElement.setAttribute('data-enable-animations', '{% if settings.enable_animations %}true{% else %}false{% endif %}');
+    </script>
 </head>
 
   <body class="{% if template == 'page.phonecase' %}bg-surface-2{% endif %}">
