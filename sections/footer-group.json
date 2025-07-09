@@ -1,13 +1,76 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "footer",
   "name": "Footer Group",
   "sections": {
     "footer": {
       "type": "footer",
-      "settings": {}
+      "blocks": {
+        "contact_NcBzhQ": {
+          "type": "contact",
+          "settings": {
+            "title": "Business Contact",
+            "address": "123 Yarran st, Punchbowl, NSW 2196, Australia",
+            "phone": "(64) 8342 1245",
+            "email": "support@example.com",
+            "map_link": "https://www.google.com/maps?q=15Yarranst,Punchbowl,NSW,Australia"
+          }
+        },
+        "newsletter_wcpDrT": {
+          "type": "newsletter",
+          "settings": {
+            "title": "Newsletter",
+            "text": ""
+          }
+        },
+        "menu_e9FPJm": {
+          "type": "menu",
+          "settings": {
+            "title": "About Us",
+            "menu": "about-us"
+          }
+        },
+        "menu_N6zfad": {
+          "type": "menu",
+          "settings": {
+            "title": "Resource",
+            "menu": "resource"
+          }
+        }
+      },
+      "block_order": [
+        "contact_NcBzhQ",
+        "newsletter_wcpDrT",
+        "menu_e9FPJm",
+        "menu_N6zfad"
+      ],
+      "settings": {
+        "logo": "shopify://shop_images/logo.svg",
+        "social_facebook_link": "facebook.com",
+        "social_instagram_link": "instagram.com",
+        "social_linkedin_link": "https://www.linkedin.com/",
+        "social_x_link": "https://x.com/",
+        "show_payment_icons": true,
+        "payment_icons": "visa,paypal,master,american_express,diners_club",
+        "payment_icons_size": 40,
+        "padding_top_main": 0,
+        "padding_bottom_main": 0,
+        "text_size": "medium",
+        "heading_size": "medium",
+        "heading_font_weight": "medium",
+        "heading_margin_bottom": 30
+      }
     }
   },
   "order": [
     "footer"
   ]
-} 
+}

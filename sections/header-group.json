@@ -1,18 +1,119 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header Group",
   "sections": {
     "top-bar": {
       "type": "top-bar",
-      "settings": {}
+      "blocks": {
+        "social_media_afx8fc": {
+          "type": "social_media",
+          "settings": {}
+        },
+        "announcement_7a6xry": {
+          "type": "announcement",
+          "settings": {
+            "announcements": "Return extended to 60 days, Life-time Guarantees, Limited-Time Offer"
+          }
+        },
+        "language_currency_Bfa9pK": {
+          "type": "language_currency",
+          "settings": {
+            "show_language": true,
+            "show_currency": true
+          }
+        }
+      },
+      "block_order": [
+        "social_media_afx8fc",
+        "announcement_7a6xry",
+        "language_currency_Bfa9pK"
+      ],
+      "settings": {
+        "background_color": "#313030"
+      }
     },
     "header": {
       "type": "header",
-      "settings": {}
+      "blocks": {
+        "mega_menu_html_PPjQR8": {
+          "type": "mega_menu_html",
+          "settings": {
+            "title": "Home"
+          }
+        },
+        "mega_menu_shop_DAKWDf": {
+          "type": "mega_menu_shop",
+          "settings": {
+            "title": "Shop",
+            "collections": []
+          }
+        },
+        "mega_menu_product_nYLchP": {
+          "type": "mega_menu_product",
+          "settings": {
+            "title": "Products",
+            "products_list_title": "BEST SELLER",
+            "products": []
+          }
+        },
+        "mega_menu_pages_UBLJQR": {
+          "type": "mega_menu_pages",
+          "settings": {
+            "title": "Pages",
+            "menu": "",
+            "banner_link": "",
+            "banner_title": "Unveiling the latest gear"
+          }
+        },
+        "mega_menu_blog_3GqRec": {
+          "type": "mega_menu_blog",
+          "settings": {
+            "title": "Blog",
+            "blog_categories": "",
+            "recent_posts_title": "Recent Posts",
+            "blog": "",
+            "posts_limit": 3
+          }
+        }
+      },
+      "block_order": [
+        "mega_menu_html_PPjQR8",
+        "mega_menu_shop_DAKWDf",
+        "mega_menu_product_nYLchP",
+        "mega_menu_pages_UBLJQR",
+        "mega_menu_blog_3GqRec"
+      ],
+      "settings": {
+        "layout": "layout-1",
+        "header_height": 87,
+        "sticky_header_height": 70,
+        "background_color": "#ffffff",
+        "text_color": "#333333",
+        "hover_color": "#ff6f61",
+        "enable_transparent": false,
+        "logo": "shopify://shop_images/logo.svg",
+        "logo_width": 100,
+        "menu": "main-menu",
+        "show_search": true,
+        "show_account": true,
+        "show_wishlist": true,
+        "show_cart": true,
+        "mobile_menu_background": "#ffffff",
+        "mobile_menu_text_color": "#333333"
+      }
     }
   },
   "order": [
     "top-bar",
     "header"
   ]
-} 
+}
