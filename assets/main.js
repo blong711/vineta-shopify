@@ -1034,7 +1034,18 @@
     cookieSetting();
     preloader();
     goTop();
-    new WOW().init();
+    
+    // Initialize WOW.js with error handling
+    try {
+      if (typeof WOW !== 'undefined') {
+        new WOW().init();
+        console.log('WOW.js initialized successfully');
+      } else {
+        console.warn('WOW.js not loaded, animations may not work');
+      }
+    } catch (error) {
+      console.error('Error initializing WOW.js:', error);
+    }
     
   });
 
@@ -1046,6 +1057,16 @@
       $(".image-select").selectpicker('destroy');
       // Re-initialize
       selectImages();
+    }
+    
+    // Re-initialize WOW.js for new sections
+    try {
+      if (typeof WOW !== 'undefined') {
+        new WOW().init();
+        console.log('WOW.js reinitialized after section load');
+      }
+    } catch (error) {
+      console.error('Error reinitializing WOW.js after section load:', error);
     }
   });
 

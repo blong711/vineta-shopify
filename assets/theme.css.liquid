@@ -112,25 +112,24 @@ h1, h2, h3, h4, h5, h6 {
 /* =========================================================
    Animation Settings
    ========================================================= */
+/* Default state - animations disabled only when explicitly set to false */
 .section, [data-section-animate], .slider-effect-fade, .fadeInUp, .wow, .fadeInLeft, .fade-item, .fade-item-1, .fade-item-2, .fade-item-3, .animated {
+  /* Keep default animation behavior unless explicitly disabled */
+}
+
+/* Disable animations only when explicitly set to false */
+[data-enable-animations="false"] .section,
+[data-enable-animations="false"] [data-section-animate],
+[data-enable-animations="false"] .slider-effect-fade,
+[data-enable-animations="false"] .fadeInUp,
+[data-enable-animations="false"] .wow,
+[data-enable-animations="false"] .fadeInLeft,
+[data-enable-animations="false"] .fade-item,
+[data-enable-animations="false"] .fade-item-1,
+[data-enable-animations="false"] .fade-item-2,
+[data-enable-animations="false"] .fade-item-3,
+[data-enable-animations="false"] .animated {
   animation: none !important;
   transition: none !important;
   opacity: 1 !important;
-}
-
-/* Enable animations when setting is on */
-[data-enable-animations="true"] .section,
-[data-enable-animations="true"] [data-section-animate],
-[data-enable-animations="true"] .slider-effect-fade,
-[data-enable-animations="true"] .fadeInUp,
-[data-enable-animations="true"] .wow,
-[data-enable-animations="true"] .fadeInLeft,
-[data-enable-animations="true"] .fade-item,
-[data-enable-animations="true"] .fade-item-1,
-[data-enable-animations="true"] .fade-item-2,
-[data-enable-animations="true"] .fade-item-3,
-[data-enable-animations="true"] .animated {
-  animation: inherit !important;
-  transition: inherit !important;
-  opacity: inherit !important;
 }
