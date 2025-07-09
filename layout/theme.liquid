@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="{{ settings.primary_button }}">
     <link rel="canonical" href="{{ canonical_url }}">
+    
+    <!-- Performance optimizations -->
+    <link rel="dns-prefetch" href="//cdn.shopify.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
@@ -71,66 +79,48 @@
     {{ 'theme.css' | asset_url | stylesheet_tag }}
     {{ 'styles.css' | asset_url | stylesheet_tag }}
 
-    <!-- Core JavaScript -->
+    <!-- Critical JavaScript - Load with high priority -->
     <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="{{ 'bootstrap.min.js' | asset_url }}" as="script">
+    <link rel="preload" href="{{ 'swiper-bundle.min.js' | asset_url }}" as="script">
+    <link rel="preload" href="{{ 'theme.js' | asset_url }}" as="script">
+    
+    <!-- Core JavaScript - Load after critical -->
     <script src="{{ 'bootstrap.min.js' | asset_url }}" defer></script>
     <script src="{{ 'bootstrap-select.min.js' | asset_url }}" defer></script>
-
-    <!-- Third-party JavaScript -->
     <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
-    <!-- PhotoSwipe is loaded as ES module in zoom.js -->
-    <script src="{{ 'drift.min.js' | asset_url }}" defer></script>
-    <script type="module" src="{{ 'image-compare-viewer.js' | asset_url }}" defer></script>
-    <script src="{{ 'lazysize.min.js' | asset_url }}" defer></script>
-    <!-- model-viewer is loaded as ES module from CDN -->
+    
+    <!-- jQuery-dependent scripts: load after jQuery, with defer -->
     <script src="{{ 'multiple-modal.js' | asset_url }}" defer></script>
-    <script src="{{ 'nouislider.min.js' | asset_url }}" defer></script>
-    <script src="{{ 'simpleParallaxVanilla.umd.js' | asset_url }}" defer></script>
-    <script src="{{ 'wow.min.js' | asset_url }}" defer></script>
-    <script type="module" src="{{ 'zoom.js' | asset_url }}" defer></script>
     <script src="{{ 'carousel.js' | asset_url }}" defer></script>
-    <script src="{{ 'count-down.js' | asset_url }}" defer></script>
     <script src="{{ 'infinityslide.js' | asset_url }}" defer></script>
     <script src="{{ 'paralaxei.js' | asset_url }}" defer></script>
-
-    <!-- Theme JavaScript -->
+    
+    <!-- Non-critical JavaScript - Load with lower priority (async/lazy) -->
+    <script src="{{ 'drift.min.js' | asset_url }}" async></script>
+    <script type="module" src="{{ 'image-compare-viewer.js' | asset_url }}" async></script>
+    <script src="{{ 'lazysize.min.js' | asset_url }}" async></script>
+    <script src="{{ 'nouislider.min.js' | asset_url }}" async></script>
+    <script src="{{ 'simpleParallaxVanilla.umd.js' | asset_url }}" async></script>
+    <script src="{{ 'wow.min.js' | asset_url }}" async></script>
+    <script src="{{ 'count-down.js' | asset_url }}" async></script>
+    
+    <!-- Theme JavaScript - Load after core dependencies -->
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
     <script src="{{ 'main.js' | asset_url }}" defer></script>
     <script src="{{ 'shop.js' | asset_url }}" defer></script>
     <script src="{{ 'global.js' | asset_url }}" defer></script>
     <script src="{{ 'product-card.js' | asset_url }}" defer></script>
     <script src="{{ 'application.js' | asset_url }}" defer></script>
+    
+    <!-- Model viewer - Load as module -->
+    <script type="module" src="{{ 'model-viewer.min.js' | asset_url }}" async></script>
 
     {%- comment -%}Recently Viewed Tracking - Available globally{%- endcomment -%}
     {% render 'recently-viewed-tracking' %}
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Initialize jQuery plugins after jQuery is loaded
-        var checkJQuery = setInterval(function() {
-          if (window.jQuery) {
-            clearInterval(checkJQuery);
-            
-            // Initialize bootstrap-select
-            if ($.fn.selectpicker) {
-              $('.selectpicker').selectpicker();
-            }
-            
-            // Initialize other jQuery-dependent features
-            if (typeof selectImages === 'function') {
-              selectImages();
-            }
-            
-            // Initialize any other jQuery plugins
-            if (typeof filterProducts === 'function') {
-              filterProducts();
-            }
-          }
-        }, 100);
-      });
-    </script>
-  
-  <script type="module" src="{{ 'model-viewer.min.js' | asset_url }}"></script>
+    <script src="{{ 'performance-optimizer.js' | asset_url }}" defer></script>
   <style>
     body {
       font-family: 
@@ -274,7 +264,9 @@
       {% render 'compare-drawer' %}
     </div>
     {%- if request.design_mode -%}{%- render 'var_adm' -%}{% endif -%}
+    <!-- Theme configuration and initialization -->
     <script>
+      // Theme configuration - load immediately
       window.theme = {
         settings: {
           free_shipping_threshold: {{ settings.free_shipping_threshold | default: 10000 }},
@@ -283,100 +275,136 @@
         }
       };
 
-      // Global Swiper and Countdown reinitialization for theme editor
+      // Optimized Swiper initialization with debouncing
+      let swiperInitTimeout;
+      function debouncedInitializeSwipers() {
+        clearTimeout(swiperInitTimeout);
+        swiperInitTimeout = setTimeout(initializeAllSwipers, 50);
+      }
+
+      // Initialize swipers when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', debouncedInitializeSwipers);
+      } else {
+        debouncedInitializeSwipers();
+      }
+
+      // Theme editor event listeners with debouncing
+      ['shopify:section:load', 'shopify:section:reorder', 'shopify:block:select'].forEach(eventType => {
+        document.addEventListener(eventType, debouncedInitializeSwipers);
+      });
+
+      // Critical initialization script - moved from head to body end
       document.addEventListener('DOMContentLoaded', function() {
-        initializeAllSwipers();
-      });
-
-      // Reinitialize all swipers and countdowns when sections are updated in theme editor
-      document.addEventListener('shopify:section:load', function(event) {
-        setTimeout(function() {
-          initializeAllSwipers();
+        // Initialize jQuery plugins after jQuery is loaded
+        var checkJQuery = setInterval(function() {
+          if (window.jQuery) {
+            clearInterval(checkJQuery);
+            
+            // Initialize bootstrap-select
+            if ($.fn.selectpicker) {
+              $('.selectpicker').selectpicker();
+            }
+            
+            // Initialize other jQuery-dependent features
+            if (typeof selectImages === 'function') {
+              selectImages();
+            }
+            
+            // Initialize any other jQuery plugins
+            if (typeof filterProducts === 'function') {
+              filterProducts();
+            }
+          }
         }, 100);
       });
 
-      document.addEventListener('shopify:section:reorder', function(event) {
-        setTimeout(function() {
-          initializeAllSwipers();
-        }, 100);
-      });
-
-      document.addEventListener('shopify:block:select', function(event) {
-        setTimeout(function() {
-          initializeAllSwipers();
-        }, 100);
-      });
-
-      // Additional event listeners for product changes
-      document.addEventListener('shopify:section:select', function(event) {
-      });
-
+      // Optimized Swiper initialization function
       function initializeAllSwipers() {
+        if (typeof Swiper === 'undefined') {
+          // Retry after a short delay if Swiper isn't loaded yet
+          setTimeout(initializeAllSwipers, 100);
+          return;
+        }
+
         const swiperElements = document.querySelectorAll('.tf-swiper, .tf-sw-slideshow');
         swiperElements.forEach(function(element) {
+          // Skip if already initialized
+          if (element.swiper && !element.swiper.destroyed) {
+            return;
+          }
+
           // Destroy existing swiper instance if it exists
           if (element.swiper) {
             element.swiper.destroy(true, true);
           }
 
-          // If data-swiper attribute exists, use it
-          if (element.dataset.swiper) {
-            const options = JSON.parse(element.dataset.swiper);
-            new Swiper(element, options);
-          } else if (element.classList.contains('tf-sw-slideshow')) {
-            // Build config for tf-sw-slideshow (like original carousel.js)
-            const getBool = v => v === 'true' || v === true;
-            const getNum = v => v === undefined ? undefined : Number(v);
-            const preview = getNum(element.dataset.preview) || 1;
-            const tablet = getNum(element.dataset.tablet) || 1;
-            const mobile = getNum(element.dataset.mobile) || 1;
-            const spacing = getNum(element.dataset.space) || 0;
-            const spacingMb = getNum(element.dataset.spaceMb) || 0;
-            const loop = getBool(element.dataset.loop);
-            const play = getBool(element.dataset.autoPlay);
-            const centered = getBool(element.dataset.centered);
-            const effect = element.dataset.effect || 'slide';
-            const speed = getNum(element.dataset.speed) || 1000;
-            const options = {
-              autoplay: play ? {
-                delay: 5000,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: true,
-              } : false,
-              slidesPerView: mobile,
-              loop: loop,
-              spaceBetween: spacingMb,
-              speed: speed,
-              observer: true,
-              observeParents: true,
-              pagination: {
-                el: '.sw-pagination-slider',
-                clickable: true,
-              },
-              navigation: {
-                clickable: true,
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-              },
-              centeredSlides: false,
-              breakpoints: {
-                768: {
-                  slidesPerView: tablet,
-                  spaceBetween: spacing,
-                  centeredSlides: false,
+          try {
+            // If data-swiper attribute exists, use it
+            if (element.dataset.swiper) {
+              const options = JSON.parse(element.dataset.swiper);
+              new Swiper(element, options);
+            } else if (element.classList.contains('tf-sw-slideshow')) {
+              // Build config for tf-sw-slideshow
+              const getBool = v => v === 'true' || v === true;
+              const getNum = v => v === undefined ? undefined : Number(v);
+              
+              const preview = getNum(element.dataset.preview) || 1;
+              const tablet = getNum(element.dataset.tablet) || 1;
+              const mobile = getNum(element.dataset.mobile) || 1;
+              const spacing = getNum(element.dataset.space) || 0;
+              const spacingMb = getNum(element.dataset.spaceMb) || 0;
+              const loop = getBool(element.dataset.loop);
+              const play = getBool(element.dataset.autoPlay);
+              const centered = getBool(element.dataset.centered);
+              const effect = element.dataset.effect || 'slide';
+              const speed = getNum(element.dataset.speed) || 1000;
+              
+              const options = {
+                autoplay: play ? {
+                  delay: 5000,
+                  disableOnInteraction: false,
+                  pauseOnMouseEnter: true,
+                } : false,
+                slidesPerView: mobile,
+                loop: loop,
+                spaceBetween: spacingMb,
+                speed: speed,
+                observer: true,
+                observeParents: true,
+                pagination: {
+                  el: '.sw-pagination-slider',
+                  clickable: true,
                 },
-                1200: {
-                  slidesPerView: preview,
-                  spaceBetween: spacing,
-                  centeredSlides: centered,
+                navigation: {
+                  clickable: true,
+                  nextEl: '.swiper-button-next',
+                  prevEl: '.swiper-button-prev',
                 },
-              },
-            };
-            if (effect === 'fade') {
-              options.effect = 'fade';
-              options.fadeEffect = { crossFade: true };
+                centeredSlides: false,
+                breakpoints: {
+                  768: {
+                    slidesPerView: tablet,
+                    spaceBetween: spacing,
+                    centeredSlides: false,
+                  },
+                  1200: {
+                    slidesPerView: preview,
+                    spaceBetween: spacing,
+                    centeredSlides: centered,
+                  },
+                },
+              };
+              
+              if (effect === 'fade') {
+                options.effect = 'fade';
+                options.fadeEffect = { crossFade: true };
+              }
+              
+              new Swiper(element, options);
             }
-            new Swiper(element, options);
+          } catch (error) {
+            console.warn('Failed to initialize swiper:', error);
           }
         });
       }
