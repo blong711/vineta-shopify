@@ -343,8 +343,9 @@
                                 </div>
                               </div>
                             </div>
-                            <input type="hidden" name="filter.v.price.gte" id="price-min-input-horizontal" value="{{ filter.min_value.value | default: 0 | money_without_currency | round }}">
-                            <input type="hidden" name="filter.v.price.lte" id="price-max-input-horizontal" value="{{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}">
+                            {% comment %} Don't include price inputs by default - only add them via JavaScript when user changes the slider {% endcomment %}
+                            <input type="hidden" name="filter.v.price.gte" id="price-min-input-horizontal" value="" style="display: none;">
+                            <input type="hidden" name="filter.v.price.lte" id="price-max-input-horizontal" value="" style="display: none;">
                           </div>
                       {%- endcase -%}
                     </div>
@@ -1148,6 +1149,14 @@
       const minPrice = urlParams.get('filter.v.price.gte');
       const maxPrice = urlParams.get('filter.v.price.lte');
       
+      // If no price filters in URL, ensure horizontal price inputs are removed
+      if (!minPrice || !maxPrice) {
+        const horizontalMinInput = document.getElementById('price-min-input-horizontal');
+        const horizontalMaxInput = document.getElementById('price-max-input-horizontal');
+        if (horizontalMinInput) horizontalMinInput.remove();
+        if (horizontalMaxInput) horizontalMaxInput.remove();
+      }
+      
       if (minPrice && maxPrice) {
         console.log('Setting price range:', minPrice, '-', maxPrice);
         // Update drawer price range
@@ -1179,11 +1188,56 @@
         // Update horizontal price range
         if (priceRangeHorizontal && priceRangeHorizontal.noUiSlider) {
           priceRangeHorizontal.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
+          
+          // Create price inputs for horizontal filter if they don't exist
+          let horizontalMinInput = document.getElementById('price-min-input-horizontal');
+          let horizontalMaxInput = document.getElementById('price-max-input-horizontal');
+          
+          if (!horizontalMinInput) {
+            horizontalMinInput = document.createElement('input');
+            horizontalMinInput.type = 'hidden';
+            horizontalMinInput.name = 'filter.v.price.gte';
+            horizontalMinInput.id = 'price-min-input-horizontal';
+            priceRangeHorizontal.closest('.widget-price').appendChild(horizontalMinInput);
+          }
+          if (!horizontalMaxInput) {
+            horizontalMaxInput = document.createElement('input');
+            horizontalMaxInput.type = 'hidden';
+            horizontalMaxInput.name = 'filter.v.price.lte';
+            horizontalMaxInput.id = 'price-max-input-horizontal';
+            priceRangeHorizontal.closest('.widget-price').appendChild(horizontalMaxInput);
+          }
+          
+          horizontalMinInput.value = minPrice;
+          horizontalMaxInput.value = maxPrice;
         } else if (priceRangeHorizontal) {
           // Wait for noUiSlider to be initialized
           const checkSlider = setInterval(() => {
             if (priceRangeHorizontal.noUiSlider) {
               priceRangeHorizontal.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
+              
+              // Create price inputs for horizontal filter if they don't exist
+              let horizontalMinInput = document.getElementById('price-min-input-horizontal');
+              let horizontalMaxInput = document.getElementById('price-max-input-horizontal');
+              
+              if (!horizontalMinInput) {
+                horizontalMinInput = document.createElement('input');
+                horizontalMinInput.type = 'hidden';
+                horizontalMinInput.name = 'filter.v.price.gte';
+                horizontalMinInput.id = 'price-min-input-horizontal';
+                priceRangeHorizontal.closest('.widget-price').appendChild(horizontalMinInput);
+              }
+              if (!horizontalMaxInput) {
+                horizontalMaxInput = document.createElement('input');
+                horizontalMaxInput.type = 'hidden';
+                horizontalMaxInput.name = 'filter.v.price.lte';
+                horizontalMaxInput.id = 'price-max-input-horizontal';
+                priceRangeHorizontal.closest('.widget-price').appendChild(horizontalMaxInput);
+              }
+              
+              horizontalMinInput.value = minPrice;
+              horizontalMaxInput.value = maxPrice;
+              
               clearInterval(checkSlider);
             }
           }, 100);
@@ -1271,9 +1325,41 @@
 
         // Handle change event
         priceRange.noUiSlider.on('change', function(values) {
-          // Update the hidden inputs
-          if (minInput) minInput.value = Math.round(values[0]);
-          if (maxInput) maxInput.value = Math.round(values[1]);
+          const minVal = Math.round(values[0]);
+          const maxVal = Math.round(values[1]);
+          const rangeMin = parseInt(priceRange.dataset.rangeMin) || 0;
+          const rangeMax = parseInt(priceRange.dataset.rangeMax) || 1000;
+          
+          // Get or create the hidden inputs
+          let currentMinInput = document.getElementById(minInputId);
+          let currentMaxInput = document.getElementById(maxInputId);
+          
+          // Only add price filter if it's different from the full range
+          if (minVal > rangeMin || maxVal < rangeMax) {
+            // Create the hidden inputs if they don't exist
+            if (!currentMinInput) {
+              currentMinInput = document.createElement('input');
+              currentMinInput.type = 'hidden';
+              currentMinInput.name = 'filter.v.price.gte';
+              currentMinInput.id = minInputId;
+              priceRange.closest('.widget-price').appendChild(currentMinInput);
+            }
+            if (!currentMaxInput) {
+              currentMaxInput = document.createElement('input');
+              currentMaxInput.type = 'hidden';
+              currentMaxInput.name = 'filter.v.price.lte';
+              currentMaxInput.id = maxInputId;
+              priceRange.closest('.widget-price').appendChild(currentMaxInput);
+            }
+            
+            // Update the values
+            currentMinInput.value = minVal;
+            currentMaxInput.value = maxVal;
+          } else {
+            // Remove the inputs if they exist (back to full range)
+            if (currentMinInput) currentMinInput.remove();
+            if (currentMaxInput) currentMaxInput.remove();
+          }
           
           // Submit the form instead of using JavaScript URL manipulation
           const form = document.getElementById('collection-filters-form') || document.getElementById('collection-filters-form-sidebar') || document.getElementById('collection-filters-form-drawer');
@@ -1671,6 +1757,12 @@
                                url.searchParams.toString().includes('filter.v') ||
                                url.searchParams.toString().includes('current_tags');
         
+        // Special check for price filters - only show count if both min and max are present
+        const hasPriceFilters = url.searchParams.has('filter.v.price.gte') && url.searchParams.has('filter.v.price.lte');
+        const hasOnlyOnePriceFilter = (url.searchParams.has('filter.v.price.gte') && !url.searchParams.has('filter.v.price.lte')) || 
+                                     (!url.searchParams.has('filter.v.price.gte') && url.searchParams.has('filter.v.price.lte'));
+        const hasOtherFilters = hasFilterParams && !hasOnlyOnePriceFilter;
+        
         // Update product count displays with filtered count
         if (productCountGrid) {
           const countSpan = productCountGrid.querySelector('.count');
@@ -1679,7 +1771,7 @@
           }
           // Show/hide based on current layout AND filter presence
           const isGridActive = !productList || productList.style.display === 'none';
-          productCountGrid.style.display = (isGridActive && hasFilterParams) ? 'block' : 'none';
+          productCountGrid.style.display = (isGridActive && hasOtherFilters) ? 'block' : 'none';
         }
         
         if (productCountList) {
@@ -1689,12 +1781,12 @@
           }
           // Show/hide based on current layout AND filter presence
           const isListActive = productList && productList.style.display === 'block';
-          productCountList.style.display = (isListActive && hasFilterParams) ? 'block' : 'none';
+          productCountList.style.display = (isListActive && hasOtherFilters) ? 'block' : 'none';
         }
 
         // Show/hide meta-filter-shop based on whether there are applied filters
         if (metaFilterShop) {
-          const hasFilters = Object.keys(filters || {}).length > 0 || url.searchParams.toString().length > 0;
+          const hasFilters = hasOtherFilters;
           metaFilterShop.style.display = hasFilters ? 'flex' : 'none';
         }
 
@@ -1898,12 +1990,18 @@
                                  layoutUrlParams.toString().includes('current_tags') ||
                                  document.querySelectorAll('.filter-tag').length > 0;
           
+          // Special check for price filters - only show count if both min and max are present
+          const hasPriceFilters = layoutUrlParams.has('filter.v.price.gte') && layoutUrlParams.has('filter.v.price.lte');
+          const hasOnlyOnePriceFilter = (layoutUrlParams.has('filter.v.price.gte') && !layoutUrlParams.has('filter.v.price.lte')) || 
+                                       (!layoutUrlParams.has('filter.v.price.gte') && layoutUrlParams.has('filter.v.price.lte'));
+          const hasOtherFilters = hasFilterParams && !hasOnlyOnePriceFilter;
+          
           // Update product count visibility based on layout AND filter presence
           if (productCountGrid) {
-            productCountGrid.style.display = (layout !== 'list' && hasFilterParams) ? 'block' : 'none';
+            productCountGrid.style.display = (layout !== 'list' && hasOtherFilters) ? 'block' : 'none';
           }
           if (productCountList) {
-            productCountList.style.display = (layout === 'list' && hasFilterParams) ? 'block' : 'none';
+            productCountList.style.display = (layout === 'list' && hasOtherFilters) ? 'block' : 'none';
           }
         }
       });
@@ -1988,6 +2086,12 @@
           
           if (minInput) minInput.remove();
           if (maxInput) maxInput.remove();
+          
+          // Also remove horizontal price inputs if this is the horizontal filter
+          const horizontalMinInput = document.getElementById('price-min-input-horizontal');
+          const horizontalMaxInput = document.getElementById('price-max-input-horizontal');
+          if (horizontalMinInput) horizontalMinInput.remove();
+          if (horizontalMaxInput) horizontalMaxInput.remove();
           
           // Submit the form
           const form = document.getElementById('collection-filters-form') || document.getElementById('collection-filters-form-sidebar') || document.getElementById('collection-filters-form-drawer');
@@ -2298,11 +2402,11 @@
       const minPriceHorizontal = document.getElementById('price-min-input-horizontal')?.value;
       const maxPriceHorizontal = document.getElementById('price-max-input-horizontal')?.value;
       
-      // Use whichever price range is available
+      // Use whichever price range is available, but only if inputs exist and have values
       const minPrice = minPriceHorizontal || minPriceSidebar;
       const maxPrice = maxPriceHorizontal || maxPriceSidebar;
       
-      if (minPrice && maxPrice) {
+      if (minPrice && maxPrice && minPrice !== '' && maxPrice !== '') {
         filters['filter.v.price.gte'] = minPrice;
         filters['filter.v.price.lte'] = maxPrice;
       }
@@ -2598,13 +2702,19 @@
                              initUrlParams.toString().includes('current_tags') ||
                              document.querySelectorAll('.filter-tag').length > 0;
       
+      // Special check for price filters - only show count if both min and max are present
+      const hasPriceFilters = initUrlParams.has('filter.v.price.gte') && initUrlParams.has('filter.v.price.lte');
+      const hasOnlyOnePriceFilter = (initUrlParams.has('filter.v.price.gte') && !initUrlParams.has('filter.v.price.lte')) || 
+                                   (!initUrlParams.has('filter.v.price.gte') && initUrlParams.has('filter.v.price.lte'));
+      const hasOtherFilters = hasFilterParams && !hasOnlyOnePriceFilter;
+      
       if (productCountGrid) {
         const isListActive = productList && productList.style.display === 'block';
-        productCountGrid.style.display = (!isListActive && hasFilterParams) ? 'block' : 'none';
+        productCountGrid.style.display = (!isListActive && hasOtherFilters) ? 'block' : 'none';
       }
       if (productCountList) {
         const isListActive = productList && productList.style.display === 'block';
-        productCountList.style.display = (isListActive && hasFilterParams) ? 'block' : 'none';
+        productCountList.style.display = (isListActive && hasOtherFilters) ? 'block' : 'none';
       }
       
       // Debug: Check if pagination exists and is visible
