@@ -1,17 +1,17 @@
 {%- if section.blocks.size > 0 -%}
-  <div class="marquee-sale" style="background-color: {{ section.settings.background_color }};">
-      <div class="marquee-wrapper">
+  <div class="marquee-sale" style="background-color: {{ section.settings.background_color }}; padding: {{ section.settings.section_padding }}px 0;">
+      <div class="marquee-wrapper" style="--marquee-speed: {{ section.settings.speed_factor }}s;">
         <div class="initial-child-container">
           {%- assign repeat_count = 10 -%}
           {%- for i in (1..repeat_count) -%}
             {%- for block in section.blocks -%}
               <div class="marquee-child-item" {{ block.shopify_attributes }}>
                 {%- if block.settings.text != blank -%}
-                  <p class="display-xs fw-medium">{{ block.settings.text }}</p>
+                  <p class="display-xs fw-medium" style="font-size: {{ section.settings.text_size }}px; color: {{ section.settings.text_color }};">{{ block.settings.text }}</p>
                 {%- endif -%}
               </div>
               <div class="marquee-child-item">
-                <i class="icon-flash-star"></i>
+                <i class="icon-flash-star" style="color: {{ section.settings.text_color }};"></i>
               </div>
             {%- endfor -%}
           {%- endfor -%}
@@ -29,6 +29,43 @@
       "id": "background_color",
       "label": "Background Color",
       "default": "#74da30"
+    },
+    {
+      "type": "range",
+      "id": "speed_factor",
+      "min": 5,
+      "max": 50,
+      "step": 1,
+      "unit": "s",
+      "label": "Animation Speed",
+      "default": 20,
+      "info": "Lower values = faster animation"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 12,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Text Size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Section Padding",
+      "default": 0
     }
   ],
   "blocks": [

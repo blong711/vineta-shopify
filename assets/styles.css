@@ -2198,7 +2198,7 @@ a:focus, a:hover {
 }
 .marquee-sale .marquee-wrapper {
   display: flex;
-  animation: infiniteScroll 20s linear infinite;
+  animation: infiniteScroll var(--marquee-speed, 20s) linear infinite;
   align-items: center;
   transition: animation-duration 300ms;
 }
@@ -2206,7 +2206,7 @@ a:focus, a:hover {
   animation-play-state: paused;
 }
 .marquee-sale .marquee-wrapper.scrollRight {
-  animation: infiniteScrollRight 20s linear infinite;
+  animation: infiniteScrollRight var(--marquee-speed, 20s) linear infinite;
 }
 .marquee-sale .marquee-wrapper.scrollRight:hover {
   animation-play-state: paused;
@@ -10209,7 +10209,7 @@ a:focus, a:hover {
 }
 .marquee-sale .marquee-wrapper {
   display: flex;
-  animation: infiniteScroll 20s linear infinite;
+  animation: infiniteScroll var(--marquee-speed, 20s) linear infinite;
   align-items: center;
   transition: animation-duration 300ms;
 }
@@ -10217,7 +10217,7 @@ a:focus, a:hover {
   animation-play-state: paused;
 }
 .marquee-sale .marquee-wrapper.scrollRight {
-  animation: infiniteScrollRight 20s linear infinite;
+  animation: infiniteScrollRight var(--marquee-speed, 20s) linear infinite;
 }
 .marquee-sale .marquee-wrapper.scrollRight:hover {
   animation-play-state: paused;
