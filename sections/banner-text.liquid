@@ -220,7 +220,8 @@
     {
       "type": "image_picker",
       "id": "banner_image",
-      "label": "Banner Image (Fallback)"
+      "label": "Banner Image (Fallback)",
+      "visible_if": "{{section.settings.layout == 'default'}}"
     },
     {
       "type": "url",
@@ -253,12 +254,14 @@
     {
       "type": "image_picker",
       "id": "image_1",
-      "label": "First Image (Home Fashion 02)"
+      "label": "First Image (Banner Text Layout)",
+      "visible_if": "{{section.settings.layout == 'home-fashion-02'}}"
     },
     {
       "type": "image_picker",
       "id": "image_2",
-      "label": "Second Image (Home Fashion 02)"
+      "label": "Second Image (Banner Text Layout)",
+      "visible_if": "{{section.settings.layout == 'home-fashion-02'}}"
     }
   ],
   "blocks": [
