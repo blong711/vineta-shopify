@@ -80,7 +80,7 @@
   {% endif %}
 </section>
 {% elsif section.settings.layout == 'layout2' %}
-<section class="flat-spacing-3 {% if section.settings.width == 'full' %} section-full-width{% endif %} {% if section.settings.layout == 'layout2' %}pb-0{% else %} pt-0{% endif %} section-{{ section.id }}-padding" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+<section class="flat-spacing-3 {% if section.settings.width == 'full' %} section-full-width{% endif %} section-{{ section.id }}-padding" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   {% if section.settings.width == 'boxed' %}
     <div class="container">
   {% endif %}
