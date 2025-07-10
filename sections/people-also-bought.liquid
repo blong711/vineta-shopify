@@ -1,7 +1,7 @@
 {%- comment -%}People Also Bought Section{%- endcomment -%}
 {%- assign related_products = product.collections.first.products | reject: "id", product.id | slice: 0, section.settings.products_to_show -%}
 {%- if related_products.size > 0 -%}
-<section>
+<section class="{% if section.settings.width == 'full' %} section-full-width{% endif %}">
 {% if section.settings.width == 'boxed' %}
   <div class="container">
 {% endif %}
@@ -95,7 +95,7 @@
       "max": 3,
       "step": 1,
       "default": 2,
-      "label": "Slides per view (mobile)"
+      "label": "Items per row (mobile)"
     },
     {
       "type": "range",
@@ -104,7 +104,7 @@
       "max": 4,
       "step": 1,
       "default": 3,
-      "label": "Slides per view (tablet)"
+      "label": "Items per row (tablet)"
     },
     {
       "type": "range",
@@ -113,7 +113,7 @@
       "max": 6,
       "step": 1,
       "default": 4,
-      "label": "Slides per view (desktop)"
+      "label": "Items per row (desktop)"
     },
     {
       "type": "range",
@@ -122,7 +122,7 @@
       "max": 30,
       "step": 2,
       "default": 12,
-      "label": "Space between slides"
+      "label": "Space between items"
     }
   ],
   "presets": [
