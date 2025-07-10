@@ -247,13 +247,6 @@
                       </div>
                   {% endfor %}
               </div>
-              {% if section.settings.show_pagination %}
-                  {% if section.settings.layout == 'phonecase' %}
-                      <div class="d-flex sw-dot-default sw-pagination-iconbox justify-content-center"></div>
-                  {% else %}
-                      <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
-                  {% endif %}
-              {% endif %}
           </div>
           {% if section.settings.layout == 'default' or section.settings.layout == 'home-fashion-02' %}
               </div>
@@ -261,8 +254,19 @@
           {% if section.settings.layout == 'home-electronic' %}
             </div>
         {% endif %}
+        {% if section.settings.show_pagination %}
+      {% endif %}
+      {% if section.settings.layout != 'phonecase' %}
+        <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
+      {% endif %}
       </div>
-  </div> 
+
+  </div>
+  {% if section.settings.layout == 'phonecase' %}
+    <div class="mx_40 my_20">
+      <div class="d-flex sw-dot-default sw-pagination-iconbox justify-content-center"></div>
+    </div>
+  {% endif %}
   <style>
     .swiper-center {
       display: flex;
