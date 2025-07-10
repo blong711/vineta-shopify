@@ -11,6 +11,8 @@
           My Account
         {% elsif template contains 'login' %}
           Login
+        {% elsif template contains 'page' and page.handle == 'faq' %}
+          Frequently Asked Questions
         {% else %}
           {{ page_title | default: settings.title }}
         {% endif %}
