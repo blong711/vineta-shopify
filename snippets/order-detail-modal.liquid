@@ -1,4 +1,4 @@
-    <div class="modal fade modalCentered modal-order-detail" id="order_detail" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
+    <div class="modal fade modalCentered modal-order-detail" id="order_detail_{{ order.id }}" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="header">
@@ -128,42 +128,4 @@
                 </div>
             </div>
         </div>
-    </div>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize order detail modal functionality
-        const orderDetailModal = document.getElementById('order_detail');
-        
-        if (orderDetailModal) {
-            // Close modal when clicking outside
-            orderDetailModal.addEventListener('click', function(e) {
-                if (e.target === orderDetailModal) {
-                    const modal = bootstrap.Modal.getInstance(orderDetailModal);
-                    if (modal) {
-                        modal.hide();
-                    }
-                }
-            });
-            
-            // Close modal when clicking close button
-            const closeButtons = orderDetailModal.querySelectorAll('[data-bs-dismiss="modal"]');
-            closeButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const modal = bootstrap.Modal.getInstance(orderDetailModal);
-                    if (modal) {
-                        modal.hide();
-                    }
-                });
-            });
-        }
-    });
-    
-    // Function to open order detail modal with order data
-    function openOrderDetailModal(orderData) {
-        // This function can be called from order list items
-        // You would need to populate the modal with order data
-        // and then show the modal
-        const modal = new bootstrap.Modal(document.getElementById('order_detail'));
-        modal.show();
-    }
-    </script> 
+    </div> 

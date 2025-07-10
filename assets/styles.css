@@ -28188,3 +28188,14 @@ html, body {
 .wg-coming-soon .form-email-wrap .button-submit {
   right: 5px;
 }
+.modal-order-detail .list-infor li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    display: block;
+    right: 0px;
+    top: 1.5px;
+    bottom: 1.5px;
+    width: 1px;
+    height: 100%;
+    background-color: var(--line);
+}
