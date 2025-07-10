@@ -7,7 +7,7 @@
 {%- if section.blocks.size > 0 -%}
   {%- case section.settings.layout -%}
     {%- when 'layout1' -%}
-      <section class="flat-spacing-3" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+      <section class="flat-spacing-3 {% if section.settings.width == 'full' %} section-full-width{% endif %}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
         {% if section.settings.width == 'boxed' %}
           <div class="container">
         {% endif %}
@@ -97,7 +97,7 @@
         {% endif %}
       </section>
     {%- when 'layout2' -%}
-      <section class="flat-spacing-3" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+      <section class="flat-spacing-3 {% if section.settings.width == 'full' %} section-full-width{% endif %}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
         {% if section.settings.width == 'boxed' %}
           <div class="container">
         {% endif %}
@@ -172,7 +172,7 @@
         {% endif %}
       </section>
     {%- when 'bicycle' -%}
-      <section style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+      <section class="{% if section.settings.width == 'full' %} section-full-width{% endif %}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
         {% if section.settings.width == 'boxed' %}
           <div class="container">
         {% endif %}
@@ -245,7 +245,7 @@
         </div>
       </section>
     {%- when 'phonecase' -%}
-      <section class="flat-spacing-11" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+      <section class="flat-spacing-11 {% if section.settings.width == 'full' %} section-full-width{% endif %}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
         {% if section.settings.width == 'boxed' %}
           <div class="container">
         {% endif %}
@@ -368,6 +368,20 @@
       "default": "Shop by Category"
     },
     {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Categories",
+      "visible_if": "{{ section.settings.layout == 'bicycle' }}"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL",
+      "default": "/collections",
+      "visible_if": "{{ section.settings.layout == 'bicycle' }}"
+    },
+    {
       "type": "header",
       "content": "Spacing"
     },
@@ -390,20 +404,6 @@
       "label": "Padding bottom",
       "default": 120,
       "unit": "px"
-    },
-    {
-      "type": "text",
-      "id": "button_text",
-      "label": "Button Text",
-      "default": "Categories",
-      "visible_if": "{{ section.settings.layout == 'bicycle' }}"
-    },
-    {
-      "type": "url",
-      "id": "button_url",
-      "label": "Button URL",
-      "default": "/collections",
-      "visible_if": "{{ section.settings.layout == 'bicycle' }}"
     },
     {
       "type": "header",
