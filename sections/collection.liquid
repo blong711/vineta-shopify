@@ -462,8 +462,8 @@
 
     <div class="wrapper-control-shop" data-pagination-type="{{ section.settings.pagination_type }}">
       <div class="meta-filter-shop" style="display: {% if current_tags.size > 0 or request.search != blank %}block{% else %}none{% endif %};">
-          <div id="product-count-grid" class="count-text"><span class="count">{{ collection.products_count }}</span> Products found</div>
-          <div id="product-count-list" class="count-text"><span class="count">{{ collection.products_count }}</span> Products found</div>
+          <div id="product-count-grid" class="count-text" style="display: {% if current_tags.size > 0 or request.search contains 'filter.v' %}block{% else %}none{% endif %};"><span class="count">{{ collection.products_count }}</span> Products found</div>
+          <div id="product-count-list" class="count-text" style="display: {% if current_tags.size > 0 or request.search contains 'filter.v' %}block{% else %}none{% endif %};"><span class="count">{{ collection.products_count }}</span> Products found</div>
           <div id="applied-filters">
             {% comment %} Show current tags as applied filters {% endcomment %}
             {% if current_tags.size > 0 %}
@@ -1532,15 +1532,20 @@
           }
         }
         
+        // Check if there are filter parameters (not just sort)
+        const hasFilterParams = Object.keys(filters || {}).length > 0 || 
+                               url.searchParams.toString().includes('filter.v') ||
+                               url.searchParams.toString().includes('current_tags');
+        
         // Update product count displays with filtered count
         if (productCountGrid) {
           const countSpan = productCountGrid.querySelector('.count');
           if (countSpan) {
             countSpan.textContent = filteredCount;
           }
-          // Show/hide based on current layout
+          // Show/hide based on current layout AND filter presence
           const isGridActive = !productList || productList.style.display === 'none';
-          productCountGrid.style.display = isGridActive ? 'block' : 'none';
+          productCountGrid.style.display = (isGridActive && hasFilterParams) ? 'block' : 'none';
         }
         
         if (productCountList) {
@@ -1548,9 +1553,9 @@
           if (countSpan) {
             countSpan.textContent = filteredCount;
           }
-          // Show/hide based on current layout
+          // Show/hide based on current layout AND filter presence
           const isListActive = productList && productList.style.display === 'block';
-          productCountList.style.display = isListActive ? 'block' : 'none';
+          productCountList.style.display = (isListActive && hasFilterParams) ? 'block' : 'none';
         }
 
         // Show/hide meta-filter-shop based on whether there are applied filters
@@ -1753,12 +1758,18 @@
             gridLayout.classList.add(layout);
           }
           
-          // Update product count visibility based on layout
+          // Check if there are filter parameters (not just sort)
+          const layoutUrlParams = new URLSearchParams(window.location.search);
+          const hasFilterParams = layoutUrlParams.toString().includes('filter.v') || 
+                                 layoutUrlParams.toString().includes('current_tags') ||
+                                 document.querySelectorAll('.filter-tag').length > 0;
+          
+          // Update product count visibility based on layout AND filter presence
           if (productCountGrid) {
-            productCountGrid.style.display = layout === 'list' ? 'none' : 'block';
+            productCountGrid.style.display = (layout !== 'list' && hasFilterParams) ? 'block' : 'none';
           }
           if (productCountList) {
-            productCountList.style.display = layout === 'list' ? 'block' : 'none';
+            productCountList.style.display = (layout === 'list' && hasFilterParams) ? 'block' : 'none';
           }
         }
       });
@@ -2556,14 +2567,20 @@
         updateAvailabilityCounts().catch(console.error);
       }, 300);
       
-      // Initialize product count visibility based on default layout
-      // const defaultView = '{{ section.settings.default_view | default: "grid" }}';
-      // if (productCountGrid) {
-      //   productCountGrid.style.display = defaultView === 'list' ? 'none' : 'block';
-      // }
-      // if (productCountList) {
-      //   productCountList.style.display = defaultView === 'list' ? 'block' : 'none';
-      // }
+      // Initialize product count visibility based on filter parameters and current layout
+      const initUrlParams = new URLSearchParams(window.location.search);
+      const hasFilterParams = initUrlParams.toString().includes('filter.v') || 
+                             initUrlParams.toString().includes('current_tags') ||
+                             document.querySelectorAll('.filter-tag').length > 0;
+      
+      if (productCountGrid) {
+        const isListActive = productList && productList.style.display === 'block';
+        productCountGrid.style.display = (!isListActive && hasFilterParams) ? 'block' : 'none';
+      }
+      if (productCountList) {
+        const isListActive = productList && productList.style.display === 'block';
+        productCountList.style.display = (isListActive && hasFilterParams) ? 'block' : 'none';
+      }
       
       // Debug: Check if pagination exists and is visible
       const pagination = document.querySelector('.wg-pagination');
