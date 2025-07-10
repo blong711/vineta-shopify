@@ -93,7 +93,11 @@
         "text_4CT4kM"
       ],
       "settings": {
-        "background_color": "#74da30"
+        "background_color": "#74da30",
+        "speed_factor": 20,
+        "text_size": 24,
+        "text_color": "#000000",
+        "section_padding": 0
       }
     },
     "categories_BpWrEg": {
@@ -155,10 +159,10 @@
         "width": "boxed",
         "layout": "layout2",
         "title": "Categories",
-        "padding_top": 120,
-        "padding_bottom": 120,
         "button_text": "Categories",
         "button_url": "shopify://collections",
+        "padding_top": 120,
+        "padding_bottom": 120,
         "slides_per_view_mobile": 2,
         "slides_per_view_tablet": 3,
         "slides_per_view_desktop": 6,
