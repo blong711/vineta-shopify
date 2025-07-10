@@ -15,23 +15,142 @@
           {{ page_title | default: settings.title }}
         {% endif %}
       </h4>
-      <div class="breadcrumb-list">
-        <a style="font-size: 14px;" class="breadcrumb-item" href="/">Home</a>
-        <div class="breadcrumb-item dot"><span></span></div>
+      
+      {% comment %} Enhanced Breadcrumb Implementation {% endcomment %}
+      <div class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <a style="font-size: 14px;" class="breadcrumb-item" href="/" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span itemprop="name">Home</span>
+          <meta itemprop="position" content="1" />
+        </a>
+        
+        {% comment %} Handle different template types {% endcomment %}
         {% if template == 'list-collections' %}
-          <span style="font-size: 14px;" class="breadcrumb-item current">Collections</span>
+          <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
+          <span style="font-size: 14px;" class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <span itemprop="name">Collections</span>
+            <meta itemprop="position" content="2" />
+          </span>
           {% if collection.title != blank %}
             <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
-            <span style="font-size: 14px;" class="breadcrumb-item current">{{ collection.title }}</span>
+            <span style="font-size: 14px;" class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <span itemprop="name">{{ collection.title }}</span>
+              <meta itemprop="position" content="3" />
+            </span>
           {% endif %}
+          
         {% elsif template contains 'collection' %}
-          <a style="font-size: 14px;" class="breadcrumb-item" href="/collections">Collections</a>
+          <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
+          <a style="font-size: 14px;" class="breadcrumb-item" href="/collections" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <span itemprop="name">Collections</span>
+            <meta itemprop="position" content="2" />
+          </a>
           {% if collection.title != blank %}
             <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
-            <span style="font-size: 14px;" class="breadcrumb-item current">{{ collection.title }}</span>
+            <span style="font-size: 14px;" class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <span itemprop="name">{{ collection.title }}</span>
+              <meta itemprop="position" content="3" />
+            </span>
           {% endif %}
+          
+        {% elsif template contains 'product' %}
+          {% comment %} Product breadcrumb: Home > Collections > Collection > Product {% endcomment %}
+          <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
+          <a style="font-size: 14px;" class="breadcrumb-item" href="/collections" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <span itemprop="name">Collections</span>
+            <meta itemprop="position" content="2" />
+          </a>
+          
+          {% if product.collections.size > 0 %}
+            {% assign primary_collection = product.collections.first %}
+            <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
+            <a style="font-size: 14px;" class="breadcrumb-item" href="{{ primary_collection.url }}" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <span itemprop="name">{{ primary_collection.title }}</span>
+              <meta itemprop="position" content="3" />
+            </a>
+          {% endif %}
+          
+          <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
+          <span style="font-size: 14px;" class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <span itemprop="name">{{ product.title }}</span>
+            <meta itemprop="position" content="{% if product.collections.size > 0 %}4{% else %}3{% endif %}" />
+          </span>
+          
+        {% elsif template contains 'blog' %}
+          {% comment %} Blog breadcrumb: Home > Blog > Article (if single post) {% endcomment %}
+          <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
+          <a style="font-size: 14px;" class="breadcrumb-item" href="/blogs" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <span itemprop="name">Blog</span>
+            <meta itemprop="position" content="2" />
+          </a>
+          
+          {% if blog.title != blank %}
+            <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
+            <a style="font-size: 14px;" class="breadcrumb-item" href="{{ blog.url }}" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <span itemprop="name">{{ blog.title }}</span>
+              <meta itemprop="position" content="3" />
+            </a>
+          {% endif %}
+          
+          {% if article.title != blank %}
+            <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
+            <span style="font-size: 14px;" class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <span itemprop="name">{{ article.title }}</span>
+              <meta itemprop="position" content="{% if blog.title != blank %}4{% else %}3{% endif %}" />
+            </span>
+          {% endif %}
+          
+        {% elsif template contains 'search' %}
+          <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
+          <span style="font-size: 14px;" class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <span itemprop="name">Search Results</span>
+            <meta itemprop="position" content="2" />
+          </span>
+          
+        {% elsif template contains 'cart' %}
+          <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
+          <span style="font-size: 14px;" class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <span itemprop="name">Shopping Cart</span>
+            <meta itemprop="position" content="2" />
+          </span>
+          
+        {% elsif template contains 'checkout' %}
+          <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
+          <a style="font-size: 14px;" class="breadcrumb-item" href="/cart" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <span itemprop="name">Shopping Cart</span>
+            <meta itemprop="position" content="2" />
+          </a>
+          <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
+          <span style="font-size: 14px;" class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <span itemprop="name">Checkout</span>
+            <meta itemprop="position" content="3" />
+          </span>
+          
+        {% elsif template contains 'account' %}
+          <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
+          <span style="font-size: 14px;" class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <span itemprop="name">My Account</span>
+            <meta itemprop="position" content="2" />
+          </span>
+          
+        {% elsif template contains 'page' %}
+          {% comment %} Custom page breadcrumb {% endcomment %}
+          {% if page.title != blank %}
+            <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
+            <span style="font-size: 14px;" class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <span itemprop="name">{{ page.title }}</span>
+              <meta itemprop="position" content="2" />
+            </span>
+          {% endif %}
+          
         {% else %}
-          <span style="font-size: 14px;" class="breadcrumb-item current">{{ page_title | default: settings.title }}</span>
+          {% comment %} Fallback for other templates {% endcomment %}
+          {% if page_title != blank %}
+            <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
+            <span style="font-size: 14px;" class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <span itemprop="name">{{ page_title }}</span>
+              <meta itemprop="position" content="2" />
+            </span>
+          {% endif %}
         {% endif %}
       </div>
       
