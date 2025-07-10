@@ -22,7 +22,7 @@
 </style>
 
 <!-- Banner with text-->
-<div class="{% if section.settings.layout == 'home-fashion-02' %}s-banner-with-text banner-text-fashion flat-spacing-3 pt-0{% else %}s-banner-product{% endif %}">
+<div class="{% if section.settings.layout == 'home-fashion-02' %}s-banner-with-text banner-text-fashion flat-spacing-3 pt-0{% else %}s-banner-product{% endif %}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   {% if section.settings.width == 'boxed' %}
     <div class="container" style="padding-left: 15px; padding-right: 15px;">
   {% endif %}
@@ -262,6 +262,26 @@
       "id": "image_2",
       "label": "Second Image (Banner Text Layout)",
       "visible_if": "{{section.settings.layout == 'home-fashion-02'}}"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 0
     }
   ],
   "blocks": [
