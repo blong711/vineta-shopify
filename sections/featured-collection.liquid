@@ -1,6 +1,6 @@
 <!-- Collection -->
 {% if section.settings.layout == 'layout2' %}
-    <section class="{% if section.settings.width == 'full' %}section-full-width{% endif %}">
+    <section class="{% if section.settings.width == 'full' %}section-full-width{% endif %}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
     {% if section.settings.width == 'boxed' %}
         <div class="container">
     {% endif %}
@@ -81,7 +81,7 @@
     {% endif %}
     </section>
 {% elsif section.settings.layout == 'layout3' %}
-    <section class="{% if section.settings.width == 'full' %} section-full-width{% endif %}">
+    <section class="{% if section.settings.width == 'full' %} section-full-width{% endif %}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
     {% if section.settings.width == 'boxed' %}
         <div class="container">
     {% endif %}
@@ -168,7 +168,7 @@
     {% endif %}
     </section>
 {% elsif section.settings.layout == 'layout4' %}
-    <section class="{% if section.settings.width == 'full' %} section-full-width{% endif %}">
+    <section class="{% if section.settings.width == 'full' %} section-full-width{% endif %}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
     {% if section.settings.width == 'boxed' %}
         <div class="container">
     {% endif %}
@@ -251,7 +251,7 @@
     {% endif %}
     </section>
 {% else %}
-    <section class="pt-24{% if section.settings.width == 'full' %} section-full-width{% endif %}">
+    <section class="pt-24{% if section.settings.width == 'full' %} section-full-width{% endif %}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
         {% if section.settings.width == 'boxed' %}
             <div class="container">
         {% endif %}
@@ -507,6 +507,26 @@
             "label": "Enable observer",
             "default": true,
             "info": "Update slider when DOM changes"
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "min": 0,
+            "max": 200,
+            "step": 4,
+            "unit": "px",
+            "label": "Padding top",
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom",
+            "min": 0,
+            "max": 200,
+            "step": 4,
+            "unit": "px",
+            "label": "Padding bottom",
+            "default": 0
         }
     ],
     "blocks": [
