@@ -89,7 +89,7 @@
         <div class="mx_40 my_24">
             <div dir="ltr" class="swiper tf-swiper" data-swiper='{
                 "slidesPerView": 1,
-                "spaceBetween": 12,
+                "spaceBetween": {{ section.settings.space_between_mobile }},
                 "speed": {{ section.settings.speed }},
                 "observer": {{ section.settings.enable_observer }},
                 "observeParents": {{ section.settings.enable_observer }},
@@ -109,8 +109,8 @@
                     "disableOnInteraction": false
                 }{% else %}false{% endif %},
                 "breakpoints": {
-                    "768": { "slidesPerView": 1, "spaceBetween": 12, "slidesPerGroup": 2 },
-                    "1024": { "slidesPerView": 2, "spaceBetween": 24, "slidesPerGroup": 2}
+                    "768": { "slidesPerView": 1, "spaceBetween": {{ section.settings.space_between_tablet }}, "slidesPerGroup": 2 },
+                    "1024": { "slidesPerView": 2, "spaceBetween": {{ section.settings.space_between_desktop }}, "slidesPerGroup": 2}
                 }
             }'>
                 <div class="swiper-wrapper">
