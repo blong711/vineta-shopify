@@ -1,23 +1,25 @@
 {%- if section.blocks.size > 0 -%}
-  <div class="marquee-sale" style="background-color: {{ section.settings.background_color }}; padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0;">
-      <div class="marquee-wrapper" style="--marquee-speed: {{ section.settings.speed_factor }}s;">
-        <div class="initial-child-container">
-          {%- assign repeat_count = 10 -%}
-          {%- for i in (1..repeat_count) -%}
-            {%- for block in section.blocks -%}
-              <div class="marquee-child-item" {{ block.shopify_attributes }}>
-                {%- if block.settings.text != blank -%}
-                  <p class="display-xs fw-medium" style="font-size: {{ section.settings.text_size }}px; color: {{ section.settings.text_color }};">{{ block.settings.text }}</p>
-                {%- endif -%}
-              </div>
-              <div class="marquee-child-item">
-                <i class="icon-flash-star" style="color: {{ section.settings.text_color }};"></i>
-              </div>
-            {%- endfor -%}
+<section style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="marquee-sale" style="background-color: {{ section.settings.background_color }}">
+    <div class="marquee-wrapper" style="--marquee-speed: {{ section.settings.speed_factor }}s;">
+      <div class="initial-child-container">
+        {%- assign repeat_count = 10 -%}
+        {%- for i in (1..repeat_count) -%}
+          {%- for block in section.blocks -%}
+            <div class="marquee-child-item" {{ block.shopify_attributes }}>
+              {%- if block.settings.text != blank -%}
+                <p class="display-xs fw-medium" style="font-size: {{ section.settings.text_size }}px; color: {{ section.settings.text_color }};">{{ block.settings.text }}</p>
+              {%- endif -%}
+            </div>
+            <div class="marquee-child-item">
+              <i class="icon-flash-star" style="color: {{ section.settings.text_color }};"></i>
+            </div>
           {%- endfor -%}
-        </div>
+        {%- endfor -%}
       </div>
-  </div>
+    </div>
+</div>
+</section>
 {%- endif -%}
 
 {% schema %}
