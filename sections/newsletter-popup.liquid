@@ -156,17 +156,33 @@
       }
       return;
     }
+    
+    // If in theme customizer mode, immediately hide the popup
+    if (isThemeCustomizer && popup) {
+      popup.style.display = 'none';
+      popup.style.opacity = '0';
+      popup.style.visibility = 'hidden';
+      popup.classList.remove('auto-popup');
+    }
 
     // Handle theme customizer section selection
     if (isThemeCustomizer && popup) {
+      // Initially hide the popup in customizer mode and prevent auto-show
+      popup.style.display = 'none';
+      popup.style.opacity = '0';
+      popup.style.visibility = 'hidden';
+      popup.classList.remove('auto-popup'); // Remove auto-popup class to prevent automatic display
+      
       // Listen for section selection events
       document.addEventListener('shopify:section:select', function(event) {
         if (event.detail.sectionId === '{{ section.id }}') {
-          // Show popup when this section is selected
-          popup.classList.remove('fade');
-          popup.style.display = 'block';
-          popup.style.opacity = '1';
-          popup.style.visibility = 'visible';
+          // Show popup when this section is selected with a small delay
+          setTimeout(function() {
+            popup.style.display = 'block';
+            popup.style.opacity = '1';
+            popup.style.visibility = 'visible';
+            popup.classList.remove('fade');
+          }, 100);
         }
       });
 
@@ -175,11 +191,10 @@
         if (event.detail.sectionId === '{{ section.id }}') {
           // Hide popup when this section is deselected
           popup.style.display = 'none';
+          popup.style.opacity = '0';
+          popup.style.visibility = 'hidden';
         }
       });
-
-      // Initially hide the popup in customizer mode
-      popup.style.display = 'none';
     }
 
     // Handle checkbox change
