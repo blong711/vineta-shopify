@@ -543,18 +543,9 @@
               {% endif %}
             {% endfor %}
           </div>
-          {% assign has_filters = false %}
-          {% if current_tags.size > 0 %}
-            {% assign has_filters = true %}
-          {% endif %}
-          {% if request.search contains 'filter.v.' %}
-            {% assign has_filters = true %}
-          {% endif %}
-          {% if has_filters %}
-            <button id="remove-all" class="remove-all-filters">
-              <i class="icon icon-close"></i> Clear all filter
-            </button>
-          {% endif %}
+          <button id="remove-all" class="remove-all-filters">
+            <i class="icon icon-close"></i> Clear all filter
+          </button>
       </div>
 
       <!-- List View Layout -->
