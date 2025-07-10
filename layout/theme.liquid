@@ -352,7 +352,7 @@
         "itemListElement": [{
           "@type": "ListItem",
           "position": {{ position }},
-          "name": "{{ 'general.breadcrumb.home' | t }}",
+          "name": "{{ 'general.breadcrumbs.home' | t }}",
           "item": "{{ shop.url }}"
           {%- assign position = position | plus: 1 -%}
         }
@@ -396,7 +396,7 @@
         ,{
           "@type": "ListItem",
           "position": {{ position }},
-          "name": "{{ page_title }}{%- if current_tags -%}{%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tag' | t: tags: meta_tags -}}{%- endif -%}",
+          "name": "{{ page_title }}{%- if current_tags -%}{%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}{%- endif -%}",
           "item": "{{ canonical_url }}"
           {%- assign position = position | plus: 1 -%}
         }
