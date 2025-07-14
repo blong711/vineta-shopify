@@ -376,6 +376,16 @@
       "email": "Email",
       "notification_description": "Enter your email address to be notified if the product becomes available again.",
       "notify_when_available": "Notify me when it back in stock"
+    },
+    "main-password": {
+      "settings": {
+        "heading": {
+          "label": "Heading"
+        },
+        "content": {
+          "label": "Content"
+        }
+      }
     }
   },
   "recipient": {
@@ -685,5 +695,26 @@
   "cart_drawer_saved": "Saved!",
   "cart_drawer_error_try_again": "Error - Try Again",
   "cart_drawer_calculating": "Calculating...",
-  "brands_brand_image": "Brand Image"
+  "brands_brand_image": "Brand Image",
+  "settings_schema": {
+    "social-media": {
+      "settings": {
+        "paragraph": {
+          "content": "Social media paragraph content."
+        },
+        "social_style": {
+          "label": "Social style",
+          "options__1": { "label": "Default" },
+          "options__2": { "label": "Outline" },
+          "options__3": { "label": "Simple" }
+        },
+        "social_size": {
+          "label": "Social size",
+          "options__1": { "label": "Small" },
+          "options__2": { "label": "Medium" },
+          "options__3": { "label": "Large" }
+        }
+      }
+    }
+  }
 } 
