@@ -110,6 +110,7 @@
         <div class="tf-mini-cart-tool-openable add-note">
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form action="/cart" method="post" class="tf-mini-cart-tool-content" id="cart-note-form">
+            <input type="hidden" name="authenticity_token" value="{{ csrf_token }}">
             <label for="Cart-note" class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.order_note.title' | t }}</label>
             <textarea name="note" id="Cart-note" placeholder="{{ 'cart.drawer.order_note.placeholder' | t }}">{{ cart.note }}</textarea>
             <div class="tf-cart-tool-btns">
@@ -123,6 +124,7 @@
         <div class="tf-mini-cart-tool-openable coupon">
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form action="/cart" method="post" class="tf-mini-cart-tool-content">
+            <input type="hidden" name="authenticity_token" value="{{ csrf_token }}">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.coupon.title' | t }}</div>
             <div class="tf-mini-cart-tool-text1" style="font-size: 14px;">{{ 'cart.drawer.coupon.message' | t }}</div>
             <input type="text" name="discount" placeholder="{{ 'cart.drawer.coupon.placeholder' | t }}">
@@ -137,6 +139,7 @@
         <div class="tf-mini-cart-tool-openable estimate-shipping">
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form id="shipping-form" class="tf-mini-cart-tool-content" data-shipping-calculator>
+            <input type="hidden" name="authenticity_token" value="{{ csrf_token }}">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.shipping.title' | t }}</div>
             <div class="field">
               <p class="text-sm">{{ 'cart.drawer.shipping.country' | t }}</p>
@@ -170,6 +173,30 @@
 </div>
 
 <script>
+  // CSRF Protected Fetch Utility (same as in quickview-modal.liquid)
+  function csrfFetch(url, options = {}) {
+    // Get CSRF token from meta tag or input field
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                     document.querySelector('input[name="authenticity_token"]')?.value ||
+                     document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    
+    // Set default headers
+    const headers = {
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
+    };
+    
+    // Add CSRF token if available
+    if (csrfToken) {
+      headers['X-CSRF-Token'] = csrfToken;
+    }
+    
+    // Merge with provided options
+    options.headers = { ...headers, ...options.headers };
+    
+    return fetch(url, options);
+  }
+
   if (Shopify.designMode) {
     document.addEventListener('shopify:section:select', function(event) {
       if (event.target.id === 'shopify-section-cart-drawer') {
@@ -246,13 +273,9 @@
           
           console.log('Adding gift wrap product with ID:', giftWrapProductId);
           
-          // Add gift wrap product to cart via AJAX
-          const response = await fetch('/cart/add.js', {
+          // Add gift wrap product to cart via AJAX with CSRF protection
+          const response = await csrfFetch('/cart/add.js', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Requested-With': 'XMLHttpRequest'
-            },
             body: JSON.stringify({
               items: [{
                 id: giftWrapProductId,
@@ -288,7 +311,7 @@
             
             // Inline cart drawer update logic
             try {
-              const cartResponse = await fetch('/cart.js');
+              const cartResponse = await csrfFetch('/cart.js');
               const cartData = await cartResponse.json();
 
               // Update cart items in drawer
@@ -301,7 +324,7 @@
                     // Fetch product data for variants
                     let productData = null;
                     try {
-                      const productResponse = await fetch(`/products/${item.handle}.js`);
+                      const productResponse = await csrfFetch(`/products/${item.handle}.js`);
                       productData = await productResponse.json();
                     } catch (e) {}
                     let variantOptions = '';
@@ -407,7 +430,7 @@
       });
     }
     
-    // Cart note form handling
+    // Cart note form handling with CSRF protection
     const cartNoteForm = document.getElementById('cart-note-form');
     if (cartNoteForm) {
       cartNoteForm.addEventListener('submit', async function(event) {
@@ -423,13 +446,9 @@
         submitButton.textContent = '{{ 'cart_drawer_saving' | t }}';
         
         try {
-          // Update cart note via AJAX
-          const response = await fetch('/cart/update.js', {
+          // Update cart note via AJAX with CSRF protection
+          const response = await csrfFetch('/cart/update.js', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Requested-With': 'XMLHttpRequest'
-            },
             body: JSON.stringify({
               note: note
             })
@@ -579,7 +598,7 @@
       return `$${dollars}`;
     }
 
-    // Handle form submission
+    // Handle form submission with CSRF protection
     if (shippingForm) {
       shippingForm.addEventListener('submit', async function(event) {
         event.preventDefault();
@@ -632,13 +651,9 @@
             shippingAddress.province = province;
           }
           
-          // Fetch shipping rates from Shopify
-          const response = await fetch('/cart/shipping_rates.json', {
+          // Fetch shipping rates from Shopify with CSRF protection
+          const response = await csrfFetch('/cart/shipping_rates.json', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Requested-With': 'XMLHttpRequest'
-            },
             body: JSON.stringify({
               shipping_address: shippingAddress
             })

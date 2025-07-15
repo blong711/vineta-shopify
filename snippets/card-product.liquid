@@ -13,22 +13,13 @@
 <div class="card-product {{ class }} style-2 {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
   <div class="card-product-wrapper asp-ratio-1 {% if style == 'line-2' %}line-2{% endif %}">
     <a href="{{ product.url }}" class="product-img">
-      {%- if product.featured_image != blank -%}
-        {{ product.featured_image | image_url: width: 400 | image_tag:
-          loading: 'lazy',
-          class: 'img-product lazyloaded',
-          alt: product.title
-        }}
-        {%- if product.images[1] != blank -%}
-          {{ product.images[1] | image_url: width: 400 | image_tag:
-            loading: 'lazy',
-            class: 'img-hover lazyloaded',
-            alt: product.title
-          }}
-        {%- endif -%}
-      {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-      {%- endif -%}
+      {%- render 'product-image',
+        product: product,
+        class: 'img-product',
+        lazy: true,
+        preload: false,
+        show_hover: true,
+        aspect_ratio: '1/1' -%}
     </a>
 
     {%- if product.compare_at_price > product.price or product.tags contains 'trending' -%}
@@ -132,12 +123,12 @@
                   data-option-name="{{ option.name }}"
                   data-option-value="{{ value | escape }}"
                   {%- if variant.featured_image != blank -%}
-                    data-variant-image="{{ variant.featured_image | image_url: width: 400 }}"
+                    data-variant-image="{{ variant.featured_image | image_url: width: 400, format: 'webp' }}"
                   {%- endif -%}>
                 <span class="tooltip color-filter">{{ value }}</span>
                 <span class="swatch-value bg-{{ value | handleize }}"></span>
                 {%- if variant.featured_image != blank -%}
-                  {{ variant.featured_image | image_url: width: 100 | image_tag:
+                  {{ variant.featured_image | image_url: width: 100, format: 'webp' | image_tag:
                     loading: 'lazy',
                     class: 'lazyload',
                     alt: value
@@ -156,26 +147,13 @@
 <div class="card-product {{ class }} style-center {% unless product.available %}out-of-stock{% endunless %}" data-availability="{{ product.available | default: 'In stock' }}" data-brand="{{ product.vendor }}">
   <div class="card-product-wrapper asp-ratio-1 {% if style == 'line-2' %}line-2{% endif %}">
     <a href="{{ product.url }}" class="product-img">
-      {%- if product.featured_image != blank -%}
-        {{ product.featured_image | image_url: width: 400 | image_tag:
-          loading: 'lazy',
-          width: product.featured_image.width,
-          height: product.featured_image.height,
-          class: 'img-product',
-          alt: product.title
-        }}
-        {%- if product.images[1] != blank -%}
-          {{ product.images[1] | image_url: width: 400 | image_tag:
-            loading: 'lazy',
-            width: product.images[1].width,
-            height: product.images[1].height,
-            class: 'img-hover',
-            alt: product.title
-          }}
-        {%- endif -%}
-      {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-      {%- endif -%}
+      {%- render 'product-image',
+        product: product,
+        class: 'img-product',
+        lazy: true,
+        preload: false,
+        show_hover: true,
+        aspect_ratio: '1/1' -%}
     </a>
 
     {%- if product.compare_at_price > product.price or product.tags contains 'trending' -%}
@@ -276,12 +254,12 @@
                   data-option-name="{{ option.name }}"
                   data-option-value="{{ value | escape }}"
                   {%- if variant.featured_image != blank -%}
-                    data-variant-image="{{ variant.featured_image | image_url: width: 400 }}"
+                    data-variant-image="{{ variant.featured_image | image_url: width: 400, format: 'webp' }}"
                   {%- endif -%}>
                 <span class="tooltip">{{ value }}</span>
                 <span class="swatch-value bg-{{ value | handleize }}"></span>
                 {%- if variant.featured_image != blank -%}
-                  {{ variant.featured_image | image_url: width: 100 | image_tag:
+                  {{ variant.featured_image | image_url: width: 100, format: 'webp' | image_tag:
                     loading: 'lazy',
                     class: 'lazyload',
                     alt: value,
@@ -409,12 +387,12 @@
                   data-option-name="{{ option.name }}"
                   data-option-value="{{ value | escape }}"
                   {%- if variant.featured_image != blank -%}
-                    data-variant-image="{{ variant.featured_image | image_url: width: 400 }}"
+                    data-variant-image="{{ variant.featured_image | image_url: width: 400, format: 'webp' }}"
                   {%- endif -%}>
                 <span class="tooltip color-filter">{{ value }}</span>
                 <span class="swatch-value bg-{{ value | handleize }}"></span>
                 {%- if variant.featured_image != blank -%}
-                  {{ variant.featured_image | image_url: width: 100 | image_tag:
+                  {{ variant.featured_image | image_url: width: 100, format: 'webp' | image_tag:
                     loading: 'lazy',
                     class: 'lazyload',
                     alt: value
@@ -433,8 +411,8 @@
                 <li class="list-color-item color-swatch">
                   <span class="text-quantity font-2">{{ value }}</span>
                   <img class="lazyload" 
-                    data-src="{{ product.featured_image | image_url }}"
-                    src="{{ product.featured_image | image_url }}" 
+                    data-src="{{ product.featured_image | image_url: width: 100, format: 'webp' }}"
+                    src="{{ product.featured_image | image_url: width: 100, format: 'webp' }}" 
                     alt="{{ value }}"
                     width="50"
                     height="50">
@@ -557,7 +535,7 @@
                 <span class="tooltip color-filter">{{ value }}</span>
                 <span class="swatch-value bg-{{ value | handleize }}"></span>
                 {%- if variant.featured_image != blank -%}
-                  {{ variant.featured_image | image_url: width: 100 | image_tag:
+                  {{ variant.featured_image | image_url: width: 100, format: 'webp' | image_tag:
                     loading: 'lazy',
                     class: 'lazyload',
                     alt: value
@@ -696,12 +674,12 @@
                   data-option-name="{{ option.name }}"
                   data-option-value="{{ value | escape }}"
                   {%- if variant.featured_image != blank -%}
-                    data-variant-image="{{ variant.featured_image | image_url: width: 400 }}"
+                    data-variant-image="{{ variant.featured_image | image_url: width: 400, format: 'webp' }}"
                   {%- endif -%}>
                 <span class="tooltip color-filter">{{ value }}</span>
                 <span class="swatch-value bg-{{ value | handleize }}"></span>
                 {%- if variant.featured_image != blank -%}
-                  {{ variant.featured_image | image_url: width: 100 | image_tag:
+                  {{ variant.featured_image | image_url: width: 100, format: 'webp' | image_tag:
                     loading: 'lazy',
                     class: 'lazyload',
                     alt: value
@@ -720,8 +698,8 @@
                 <li class="list-color-item color-swatch">
                   <span class="text-quantity font-2">{{ value }}</span>
                   <img class="lazyload" 
-                    data-src="{{ product.featured_image | image_url }}"
-                    src="{{ product.featured_image | image_url }}" 
+                    data-src="{{ product.featured_image | image_url: width: 100, format: 'webp' }}"
+                    src="{{ product.featured_image | image_url: width: 100, format: 'webp' }}" 
                     alt="{{ value }}"
                     width="50"
                     height="50">
