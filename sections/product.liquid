@@ -30,7 +30,7 @@
     <div class="container">
           <div class="breadcrumb-wrap">
             <div class="breadcrumb-list">
-                <a class="breadcrumb-item" href="{{ routes.root_url }}" style="font-size: 14px;">Home</a>
+                <a class="breadcrumb-item" href="{{ routes.root_url }}" style="font-size: 14px;">{{ 'sections.product.breadcrumb_home' | t }}</a>
                 {% if product.collections.size > 0 %}
                     <div class="breadcrumb-item dot" style="font-size: 14px;"><span></span></div>
                     <a class="breadcrumb-item" style="font-size: 14px;" href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
@@ -468,15 +468,15 @@
                          data-payment-button="true"
                          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
                          data-quantity="1"
-                         aria-label="Buy it now">Buy it now</a>
+                         aria-label="{{ 'sections.product.buy_it_now' | t }}">{{ 'sections.product.buy_it_now' | t }}</a>
                       <a href="javascript:void(0);" 
                          style="font-size: 14px" 
                          class="more-choose-payment link buy-it-now" 
                          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
                          data-quantity="1"
-                         aria-label="More payment options">More payment options</a>
+                         aria-label="{{ 'sections.product.more_payment_options' | t }}">{{ 'sections.product.more_payment_options' | t }}</a>
                   {% else %}
-                    <button class="tf-btn btn-out-stock w-100">This product is currently unavailable</button>
+                    <button class="tf-btn btn-out-stock w-100">{{ 'sections.product.unavailable' | t }}</button>
                   {% endif %}
                 </div>
               {% endunless %}
@@ -759,11 +759,11 @@
                                 {% endfor %}
                               </div>
                               <div class="bundle-total-submit">
-                                <div class="text">Total price:</div>
+                                <div class="text">{{ 'sections.product.total_price' | t }}</div>
                                 <span class="total-price">{{ product.price | money }}</span>
                                 <span class="total-price-old" style="display: none;"></span>
                               </div>
-                              <button type="button" class="btn-submit-total tf-btn btn-out-line-primary">Add selected to cart</button>
+                              <button type="button" class="btn-submit-total tf-btn btn-out-line-primary">{{ 'sections.product.add_selected_to_cart' | t }}</button>
                             </form>
                           </div>
                         {% endif %}
@@ -815,7 +815,7 @@
                    class="tf-btn hover-primary add-to-cart sticky-add-to-cart" 
                    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
                    data-quantity="1"
-                   aria-label="Add to cart">Add to cart</a>
+                   aria-label="{{ 'sections.product.add_to_cart' | t }}">{{ 'sections.product.add_to_cart' | t }}</a>
               </div>
             </form>
           </div>
@@ -840,7 +840,8 @@
           {% if pages[size_guide_block.settings.size_guide_page].content != blank %}
             {{ pages[size_guide_block.settings.size_guide_page].content }}
           {% else %}
-            <p><strong>Error:</strong> The selected page "{{ pages[size_guide_block.settings.size_guide_page].title }}" has no content. Please add content to this page or select a different page.</p>
+            <p><strong>{{ 'sections.product.size_guide_error' | t: page_title: pages[size_guide_block.settings.size_guide_page].title }}</strong></p>
+            <p>{{ 'sections.product.size_guide_empty' | t }}</p>
           {% endif %}
         {% else %}
           <p>No size guide content found. Please select a page in the theme settings.</p>
@@ -856,7 +857,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <span class="title text-xl-2 fw-medium">Share</span>
+        <span class="title text-xl-2 fw-medium">{{ 'sections.product.share' | t }}</span>
         <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
       </div>
       <div class="wrap-code style-1">

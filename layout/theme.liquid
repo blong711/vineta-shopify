@@ -92,7 +92,6 @@
     
     <!-- Non-critical CSS - Load with lower priority -->
     <link rel="preload" href="{{ 'font-icons.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="{{ 'bootstrap-select.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="{{ 'swiper-bundle.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="{{ 'photoswipe.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="{{ 'animate.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -102,7 +101,6 @@
     <!-- Fallback for non-critical CSS -->
     <noscript>
       <link rel="stylesheet" href="{{ 'font-icons.css' | asset_url }}">
-      <link rel="stylesheet" href="{{ 'bootstrap-select.min.css' | asset_url }}">
       <link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}">
       <link rel="stylesheet" href="{{ 'photoswipe.css' | asset_url }}">
       <link rel="stylesheet" href="{{ 'animate.css' | asset_url }}">
@@ -121,7 +119,7 @@
     {% endif %}
 
     <!-- Critical JavaScript - Load with high priority -->
-    <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
+    <!-- <script src="{{ 'jquery.min.js' | asset_url }}" defer></script> -->
     
     <!-- Preload critical resources -->
     <link rel="preload" href="{{ 'bootstrap.min.js' | asset_url }}" as="script">
@@ -211,29 +209,7 @@
             setTimeout(callback, 100);
           }
         };
-
-        // Initialize jQuery plugins after jQuery is loaded
-        var checkJQuery = setInterval(function() {
-          if (window.jQuery) {
-            clearInterval(checkJQuery);
-            
-            // Critical jQuery plugins - initialize immediately
-            if ($.fn.selectpicker) {
-              $('.selectpicker').selectpicker();
-            }
-            
-            // Non-critical jQuery features - schedule for idle time
-            scheduleInit(() => {
-              if (typeof selectImages === 'function') {
-                selectImages();
-              }
-              
-              if (typeof filterProducts === 'function') {
-                filterProducts();
-              }
-            });
-          }
-        }, 100);
+        // All jQuery plugin initialization removed
       });
 
       // Optimized Swiper initialization function
@@ -458,7 +434,6 @@
 <!-- Tom Select JS -->
 <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js" defer></script>
 <script src="{{ 'bootstrap.min.js' | asset_url }}" defer></script>
-<script src="{{ 'bootstrap-select.min.js' | asset_url }}" defer></script>
 <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
 <script src="{{ 'multiple-modal.js' | asset_url }}" defer></script>
 <script src="{{ 'carousel.js' | asset_url }}" defer></script>
