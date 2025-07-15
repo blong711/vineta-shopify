@@ -97,8 +97,7 @@
           <div class="tf-mini-cart-tool-content">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.gift_wrap.title' | t }}</div>
             {% assign gift_wrap_product = all_products[section.settings.gift_wrap_product] %}
-            <div style="font-size: 14px;" class="tf-mini-cart-tool-text1">The product will be wrapped carefully. Fee is only 
-              <span class="text fw-medium text-dark">{{ gift_wrap_product.price | money }}</span>. Do you want a gift wrap?
+            <div style="font-size: 14px;" class="tf-mini-cart-tool-text1">{{ 'cart.drawer.gift_wrap.message' | t: price: gift_wrap_product.price | money }}
             </div>
             <div class="tf-cart-tool-btns">
               <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100 btn-add-gift-confirm">{{ 'cart.drawer.gift_wrap.save' | t }}</button>
@@ -224,7 +223,7 @@
         
         // Show loading state
         this.disabled = true;
-        this.textContent = 'Adding...';
+        this.textContent = '{{ 'cart.drawer.gift_wrap.adding' | t }}';
         
         try {
           // Get gift wrap product ID
@@ -234,13 +233,13 @@
               const giftWrapProductId = {{ gift_wrap_product.variants[0].id }};
             {% else %}
               console.error('Gift wrap product not found');
-              this.textContent = 'Error: Gift wrap product not found';
+              this.textContent = '{{ 'cart.drawer.gift_wrap.error_not_found' | t }}';
               this.disabled = false;
               return;
             {% endif %}
           {% else %}
             console.error('Gift wrap product not configured');
-            this.textContent = 'Error: Gift wrap not configured';
+            this.textContent = '{{ 'cart.drawer.gift_wrap.error_not_configured' | t }}';
             this.disabled = false;
             return;
           {% endif %}
@@ -275,7 +274,7 @@
           console.log('Gift wrap added successfully:', cartData);
           
           // Show success message briefly
-          this.textContent = 'Added!';
+          this.textContent = '{{ 'cart.drawer.gift_wrap.added' | t }}';
 
           setTimeout(async () => {
             this.textContent = originalButtonText;
@@ -385,9 +384,10 @@
                 const thresholdText = cartDrawer.querySelector('.tf-mini-cart-threshold .text');
                 if (thresholdText) {
                   if (cartData.total_price >= threshold) {
-                    thresholdText.innerHTML = 'Congratulations! You\'ve unlocked <span class="fw-medium">Free Shipping</span>';
+                    thresholdText.innerHTML = '{{ 'cart.drawer.free_shipping.unlocked' | t }}';
                   } else {
-                    thresholdText.innerHTML = `Spend <span class="fw-medium">$${remaining.toFixed(2)}</span> more to get <span class="fw-medium">Free Shipping</span>`;
+                    const progressMessage = '{{ 'cart.drawer.free_shipping.progress' | t }}';
+                    thresholdText.innerHTML = progressMessage.replace('{{ amount }}', `$${remaining.toFixed(2)}`);
                   }
                 }
               }
@@ -596,20 +596,20 @@
         
         // Validate inputs
         if (!country) {
-          zipcodeMessage.textContent = 'Please select a country.';
+          zipcodeMessage.textContent = '{{ 'cart.drawer.shipping.error_select_country' | t }}';
           zipcodeMessage.style.display = 'block';
           return;
         }
         
         if (!zipcode) {
-          zipcodeMessage.textContent = 'Please enter a zipcode.';
+          zipcodeMessage.textContent = '{{ 'cart.drawer.shipping.error_enter_zipcode' | t }}';
           zipcodeMessage.style.display = 'block';
           return;
         }
         
         // Validate zipcode format
         if (!validateZipcode(zipcode, country)) {
-          zipcodeMessage.textContent = 'Please enter a valid zipcode for the selected country.';
+          zipcodeMessage.textContent = '{{ 'cart.drawer.shipping.error_invalid_zipcode' | t }}';
           zipcodeMessage.style.display = 'block';
           return;
         }
@@ -652,7 +652,7 @@
           
           if (data.shipping_rates && data.shipping_rates.length > 0) {
             // Display shipping rates
-            let successHTML = '<p>Available shipping rates for your address:</p>';
+            let successHTML = '<p>{{ 'cart.drawer.shipping.rates_available' | t }}</p>';
             
             data.shipping_rates.forEach((rate, index) => {
               const price = formatMoney(rate.price);
@@ -663,13 +663,13 @@
             zipcodeSuccess.innerHTML = successHTML;
             zipcodeSuccess.style.display = 'block';
           } else {
-            zipcodeMessage.textContent = 'No shipping rates available for this address.';
+            zipcodeMessage.textContent = '{{ 'cart.drawer.shipping.no_rates' | t }}';
             zipcodeMessage.style.display = 'block';
           }
           
         } catch (error) {
           console.error('Error fetching shipping rates:', error);
-          zipcodeMessage.textContent = 'Failed to calculate shipping rates. Please try again.';
+          zipcodeMessage.textContent = '{{ 'cart.drawer.shipping.error_calculation' | t }}';
           zipcodeMessage.style.display = 'block';
         } finally {
           // Restore button state

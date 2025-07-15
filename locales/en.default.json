@@ -135,9 +135,13 @@
       "checkout": "Check out",
       "gift_wrap": {
         "title": "Add gift wrap",
-        "message": "The product will be wrapped carefully. Free is only {{ price }}. Do you want a gift wrap?",
+        "message": "The product will be wrapped carefully. Fee is only <span class=\"text fw-medium text-dark\">{{ price }}</span>. Do you want a gift wrap?",
         "save": "Add a Gift Wrap",
-        "close": "Cancel"
+        "close": "Cancel",
+        "adding": "Adding...",
+        "added": "Added!",
+        "error_not_found": "Error: Gift wrap product not found",
+        "error_not_configured": "Error: Gift wrap not configured"
       },
       "order_note": {
         "title": "Order note",
@@ -159,7 +163,17 @@
         "zipcode": "Zipcode",
         "calculate": "Estimate",
         "cancel": "Close",
-        "select_province": "Select Province/State"
+        "select_province": "Select Province/State",
+        "error_select_country": "Please select a country.",
+        "error_enter_zipcode": "Please enter a zipcode.",
+        "error_invalid_zipcode": "Please enter a valid zipcode for the selected country.",
+        "rates_available": "Available shipping rates for your address:",
+        "no_rates": "No shipping rates available for this address.",
+        "error_calculation": "Failed to calculate shipping rates. Please try again."
+      },
+      "free_shipping": {
+        "unlocked": "Congratulations! You've unlocked <span class=\"fw-medium\">Free Shipping</span>",
+        "progress": "Spend <span class=\"fw-medium\">{{ amount }}</span> more to get <span class=\"fw-medium\">Free Shipping</span>"
       }
     },
     "shipping_estimates": {
