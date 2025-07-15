@@ -452,11 +452,13 @@
                           <input class="quantity-product font-4" type="text" name="number" value="1" min="1">
                           <button class="btn-quantity plus-btn">+</button>
                         </div>
-                        <a href="javascript:void(0);" 
-                          class="tf-btn hover-primary add-to-cart" 
-                          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-                          data-quantity="1"
-                          aria-label="Add to cart">Add to cart</a>
+                        <button type="button"
+                                class="tf-btn hover-primary add-to-cart add-to-cart-btn" 
+                                data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                                data-quantity="1"
+                                aria-label="Add {{ product.title }} to cart">
+                          Add to cart
+                        </button>
                       </div>
                       <a href="javascript:void(0);" 
                          class="tf-btn btn-primary w-100 animate-btn buy-it-now" 
@@ -482,12 +484,25 @@
                     </div>
                     <div class="group-form-field">
                       <div class="tf-field style-2 style-3">
-                        <input class="tf-field-input tf-input" id="name" placeholder=" " type="text" name="name" required>
-                        <label class="tf-field-label" for="name">{{ 'sections.product.name' | t }}</label>
+                        <input class="tf-field-input tf-input" 
+                               id="notify-name" 
+                               placeholder=" " 
+                               type="text" 
+                               name="name" 
+                               aria-required="true"
+                               required>
+                        <label class="tf-field-label" for="notify-name">{{ 'sections.product.name' | t }}</label>
                       </div>
                       <div class="tf-field style-2 style-3">
-                        <input class="tf-field-input tf-input" id="email" placeholder=" " type="email" name="email" required>
-                        <label class="tf-field-label" for="email">{{ 'sections.product.email' | t }}</label>
+                        <input class="tf-field-input tf-input" 
+                               id="notify-email" 
+                               placeholder=" " 
+                               type="email" 
+                               name="email" 
+                               aria-required="true"
+                               autocomplete="email"
+                               required>
+                        <label class="tf-field-label" for="notify-email">{{ 'sections.product.email' | t }}</label>
                       </div>
                     </div>
                     <button type="submit" class="tf-btn animate-btn">{{ 'sections.product.submit' | t }}</button>

@@ -3,21 +3,28 @@
   This section creates a mobile menu with collapsible navigation
 {% endcomment %}
 
-<div class="offcanvas offcanvas-start canvas-mb" id="mobileMenu">
-  <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+<div class="offcanvas offcanvas-start canvas-mb" id="mobileMenu" role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title">
+  <button class="icon-close icon-close-popup" 
+          data-bs-dismiss="offcanvas" 
+          aria-label="Close mobile menu"
+          aria-expanded="false">
+  </button>
   <div class="mb-canvas-content">
     <div class="mb-body">
       <div class="mb-content-top">
-        <form class="form-search" action="/search" method="get" role="search">
+        <form class="form-search search-form" action="/search" method="get" role="search">
           <input type="text" 
+                 id="mobile-search"
                  placeholder="Search product" 
-                 class="" 
+                 class="search-input" 
                  name="q" 
                  value="{{ search.terms | escape }}"
                  aria-required="true" 
                  required>
           <input type="hidden" name="type" value="product">
-          <button type="submit"><i class="icon icon-search"></i></button>
+          <button type="submit" class="search-button" aria-label="Search">
+            <i class="icon icon-search" aria-hidden="true"></i>
+          </button> 
         </form>
         
         {% render 'mobile-menu-navigation' %}
@@ -26,11 +33,11 @@
       <div class="mb-other-content">
         <div class="group-icon">
           <a href="/pages/wishlist" class="site-nav-icon">
-            <i class="icon icon-heart"></i>
+            <i class="icon icon-heart" aria-hidden="true"></i>
             Wishlist
           </a>
-          <a href="#login" data-bs-toggle="offcanvas" class="site-nav-icon">
-            <i class="icon icon-user"></i>
+          <a href="#login" data-bs-toggle="offcanvas" class="site-nav-icon" aria-label="Sign in to your account" aria-expanded="false">
+            <i class="icon icon-user" aria-hidden="true"></i>
             Login
           </a>
         </div>
@@ -62,7 +69,7 @@
       <div class="bottom-bar-language">
         {% if section.settings.show_currency_selector %}
           <div class="tf-currencies">
-            <select class="image-select center style-default type-currencies" name="currency">
+            <select id="mobile-currency-select" class="image-select center style-default type-currencies" name="currency" aria-label="Select currency">
               {% for currency in shop.enabled_currencies %}
                 <option value="{{ currency.iso_code }}" {% if currency == cart.currency %}selected{% endif %}>
                   {% if currency.iso_code == 'USD' %}
@@ -78,7 +85,7 @@
         
         {% if section.settings.show_language_selector %}
           <div class="tf-languages">
-            <select class="image-select center style-default type-languages" name="language">
+            <select id="mobile-language-select" class="image-select center style-default type-languages" name="language" aria-label="Select language">
               {% for locale in shop.published_locales %}
                 <option value="{{ locale.iso_code }}" {% if locale.primary %}selected{% endif %}>
                   {{ locale.name }}

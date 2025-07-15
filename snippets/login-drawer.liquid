@@ -1,25 +1,50 @@
 {%- comment -%}Login Drawer Snippet{%- endcomment -%}
-<div class="offcanvas offcanvas-end popup-style-1 popup-login" id="login">
+<div class="offcanvas offcanvas-end popup-style-1 popup-login" id="login" role="dialog" aria-modal="true" aria-labelledby="login-title">
   <div class="canvas-wrapper">
     <div class="canvas-header popup-header">
       <span class="title">{{ 'templates.customers.login.title' | t }}</span>
-      <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="{{ 'general.accessibility.close' | t }}"></button>
+      <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-expanded="false" aria-label="{{ 'general.accessibility.close' | t }}"></button>
     </div>
     <div class="canvas-body popup-inner">
       {% form 'customer_login', class: 'form-login', return_to: routes.account_url %}
         <div>
           <fieldset class="email mb_12">
-            <input type="email" name="customer[email]" class="form-control" placeholder="{{ 'templates.customers.login.email' | t }}*" required>
+            <label for="login-email" class="sr-only">{{ 'templates.customers.login.email' | t }}</label>
+            <input type="email" 
+                   id="login-email"
+                   name="customer[email]" 
+                   class="form-control" 
+                   placeholder="{{ 'templates.customers.login.email' | t }}*" 
+                   aria-required="true"
+                   autocomplete="email"
+                   required>
           </fieldset>
           <fieldset class="password">
-            <input type="password" name="customer[password]" class="form-control" placeholder="{{ 'templates.customers.login.password' | t }}*" required>
+            <label for="login-password" class="sr-only">{{ 'templates.customers.login.password' | t }}</label>
+            <input type="password" 
+                   id="login-password"
+                   name="customer[password]" 
+                   class="form-control" 
+                   placeholder="{{ 'templates.customers.login.password' | t }}*" 
+                   aria-required="true"
+                   autocomplete="current-password"
+                   required>
           </fieldset>
         </div>
         <div class="bot">
-          <a href="#resetPass" data-bs-toggle="offcanvas" class="text text-sm text-main-2">{{ 'templates.customers.login.forgot_password' | t }}</a>
+          <a href="#resetPass" 
+             data-bs-toggle="offcanvas" 
+             class="text text-sm text-main-2"
+             aria-label="Reset your password">{{ 'templates.customers.login.forgot_password' | t }}</a>
           <div class="button-wrap">
-            <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">{{ 'templates.customers.login.sign_in' | t }}</button>
-            <button type="button" data-bs-target="#register" data-bs-toggle="offcanvas" class="tf-btn btn-out-line-dark2 w-100">{{ 'templates.customers.login.create_account' | t }}</button>
+            <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" 
+                    type="submit"
+                    aria-label="Sign in to your account">{{ 'templates.customers.login.sign_in' | t }}</button>
+            <button type="button" 
+                    data-bs-target="#register" 
+                    data-bs-toggle="offcanvas" 
+                    class="tf-btn btn-out-line-dark2 w-100"
+                    aria-label="Create a new account">{{ 'templates.customers.login.create_account' | t }}</button>
           </div>
         </div>
       {% endform %}

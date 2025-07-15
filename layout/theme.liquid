@@ -133,7 +133,7 @@
 
   <body class="{% if template == 'page.phonecase' %}bg-surface-2{% endif %}">
     <!-- Scroll Top -->
-    <button id="goTop">
+    <button id="goTop" aria-label="Scroll to top of page">
       <span class="border-progress"></span>
       <span class="icon icon-arrow-right"></span>
     </button>
@@ -150,7 +150,7 @@
     <div id="wrapper">
       {% sections 'header-group' %}
       
-      <main role="main">
+      <main role="main" id="main-content">
         {{ content_for_layout }}
       </main>
       {% section 'pickup-available' %}
@@ -470,6 +470,7 @@
 {% if template contains 'product' %}
   <script type="module" src="{{ 'image-compare-viewer.js' | asset_url }}" async></script>
 {% endif %}
+<script src="{{ 'accessibility.js' | asset_url }}" defer></script>
 <script src="{{ 'theme.js' | asset_url }}" defer></script>
 <script src="{{ 'main.js' | asset_url }}" defer></script>
 <script src="{{ 'shop.js' | asset_url }}" defer></script>

@@ -7,8 +7,13 @@
       <div class="container">
         <div class="row wrapper-header align-items-center">
           <div class="col-md-4 col-3 d-xl-none">
-            <a href="#mobileMenu" class="mobile-menu" data-bs-toggle="offcanvas" aria-controls="mobileMenu">
-              <i class="icon icon-categories1"></i>
+            <a href="#mobileMenu" 
+               class="mobile-menu mobile-menu-toggle" 
+               data-bs-toggle="offcanvas" 
+               aria-controls="mobileMenu"
+               aria-label="Open mobile menu"
+               aria-expanded="false">
+              <i class="icon icon-categories1" aria-hidden="true"></i>
             </a>
           </div>
           
@@ -16,7 +21,7 @@
             <div class="header-language">
               <div class="tf-languages">
                 {% assign current_language = request.locale.iso_code %}
-                <select class="image-select center style-default type-languages" name="language">
+                <select id="language-select" class="image-select center style-default type-languages" name="language" aria-label="Select language">
                   {% for locale in cached_locales %}
                     <option value="{{ locale.iso_code }}" {% if locale.iso_code == current_language %}selected{% endif %} {% if locale.primary %}data-primary="true"{% endif %}>
                       {{ locale.name }}
@@ -25,7 +30,7 @@
                 </select>
               </div>
               <div class="tf-currencies">
-                <select class="image-select center style-default type-currencies" name="currency">
+                <select id="currency-select" class="image-select center style-default type-currencies" name="currency" aria-label="Select currency">
                   {% for currency in cached_currencies %}
                     <option value="{{ currency.iso_code }}" {% if currency == cart.currency %}selected{% endif %}>
                       {{ currency.iso_code }} ({{ currency.symbol }})
@@ -54,8 +59,12 @@
             <ul class="nav-icon d-flex justify-content-end align-items-center">
               {%- if section.settings.show_search -%}
                 <li class="nav-search">
-                  <a href="#search" data-bs-toggle="modal" class="nav-icon-item">
-                    <i class="icon icon-search"></i>
+                  <a href="#search" 
+                     data-bs-toggle="modal" 
+                     class="nav-icon-item icon-button"
+                     aria-label="Open search"
+                     aria-expanded="false">
+                    <i class="icon icon-search" aria-hidden="true"></i>
                   </a>
                 </li>
               {%- endif -%}
@@ -63,12 +72,19 @@
               {%- if section.settings.show_account -%}
                 <li class="nav-account">
                   {%- if customer -%}
-                    <a href="{{ routes.account_url }}" class="nav-icon-item">
-                      <i class="icon icon-user"></i>
+                    <a href="{{ routes.account_url }}" 
+                       class="nav-icon-item icon-button"
+                       aria-label="My account">
+                      <i class="icon icon-user" aria-hidden="true"></i>
                     </a>
                   {%- else -%}
-                    <a href="javascript:void(0);" class="nav-icon-item" data-bs-toggle="offcanvas" data-bs-target="#login">
-                      <i class="icon icon-user"></i>
+                    <a href="#login" 
+                       class="nav-icon-item icon-button" 
+                       data-bs-toggle="offcanvas" 
+                       data-bs-target="#login"
+                       aria-label="Sign in to your account"
+                       aria-expanded="false">
+                      <i class="icon icon-user" aria-hidden="true"></i>
                     </a>
                   {%- endif -%}
                 </li>
@@ -76,18 +92,24 @@
 
               {%- if section.settings.show_wishlist -%}
                 <li class="nav-wishlist">
-                  <a href="/pages/wishlist" class="nav-icon-item">
-                    <i class="icon icon-heart"></i>
-                    <span class="count-box wishlist-count">0</span>
+                  <a href="/pages/wishlist" 
+                     class="nav-icon-item icon-button"
+                     aria-label="View wishlist">
+                    <i class="icon icon-heart" aria-hidden="true"></i>
+                    <span class="count-box wishlist-count" aria-label="0 items in wishlist">0</span>
                   </a>
                 </li>
               {%- endif -%}
 
               {%- if section.settings.show_cart -%}
                 <li class="nav-cart">
-                  <a href="#" class="nav-icon-item" onclick="event.preventDefault(); window.openCartDrawer();">
-                    <i class="icon icon-cart"></i>
-                    <span class="count-box cart-count">{{ cart.item_count }}</span>
+                  <a href="#" 
+                     class="nav-icon-item icon-button" 
+                     onclick="event.preventDefault(); window.openCartDrawer();"
+                     aria-label="View shopping cart"
+                     aria-expanded="false">
+                    <i class="icon icon-cart" aria-hidden="true"></i>
+                    <span class="count-box cart-count" aria-label="{{ cart.item_count }} items in cart">{{ cart.item_count }}</span>
                   </a>
                 </li>
               {%- endif -%}
