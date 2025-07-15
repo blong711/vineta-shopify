@@ -578,7 +578,7 @@ class WishlistCompare {
     });
     
     const cartIcon = HTMLSanitizer.createElement('span', { class: 'icon icon-cart2' });
-    const cartTooltip = HTMLSanitizer.createElement('span', { class: 'tooltip' }, 'Add to Cart');
+    const cartTooltip = HTMLSanitizer.createElement('span', { class: 'tooltip' }, wishlistT.add_to_cart || 'Add to Cart');
     
     addToCartLink.appendChild(cartIcon);
     addToCartLink.appendChild(cartTooltip);
@@ -597,7 +597,7 @@ class WishlistCompare {
     });
     
     const viewIcon = HTMLSanitizer.createElement('span', { class: 'icon icon-view' });
-    const viewTooltip = HTMLSanitizer.createElement('span', { class: 'tooltip' }, 'Quick View');
+    const viewTooltip = HTMLSanitizer.createElement('span', { class: 'tooltip' }, wishlistT.quick_view || 'Quick View');
     
     quickviewLink.appendChild(viewIcon);
     quickviewLink.appendChild(viewTooltip);
@@ -616,7 +616,7 @@ class WishlistCompare {
     });
     
     const compareIcon = HTMLSanitizer.createElement('span', { class: 'icon icon-compare' });
-    const compareTooltip = HTMLSanitizer.createElement('span', { class: 'tooltip' }, 'Add to Compare');
+    const compareTooltip = HTMLSanitizer.createElement('span', { class: 'tooltip' }, wishlistT.add_to_compare || 'Add to Compare');
     
     compareLink.appendChild(compareIcon);
     compareLink.appendChild(compareTooltip);
@@ -627,7 +627,7 @@ class WishlistCompare {
 
     // Add sold out badge if needed
     if (!product.variants[0].available) {
-      const soldOutBadge = HTMLSanitizer.createElement('div', { class: 'sold-out-badge' }, 'Sold Out');
+      const soldOutBadge = HTMLSanitizer.createElement('div', { class: 'sold-out-badge' }, wishlistT.sold_out || 'Sold Out');
       wrapper.appendChild(soldOutBadge);
     }
 
@@ -735,11 +735,11 @@ class WishlistCompare {
               gridLayout.classList.remove('tf-grid-layout');
               const wrapperDiv = HTMLSanitizer.createElement('div', { class: 'wrapper-wishlist tf-col-2 lg-col-3 xl-col-4' });
               const emptyDiv = HTMLSanitizer.createElement('div', { class: 'tf-wishlist-empty text-center' });
-              const emptyText = HTMLSanitizer.createElement('p', { class: 'text-md text-noti' }, 'No product were added to the wishlist.');
+              const emptyText = HTMLSanitizer.createElement('p', { class: 'text-md text-noti' }, wishlistT.empty_wishlist || 'No product were added to the wishlist.');
               const backLink = HTMLSanitizer.createElement('a', {
                 href: '/',
                 class: 'tf-btn animate-btn btn-back-shop'
-              }, 'Back to Shopping');
+              }, wishlistT.back_to_shopping || 'Back to Shopping');
               
               emptyDiv.appendChild(emptyText);
               emptyDiv.appendChild(backLink);
@@ -947,16 +947,16 @@ class WishlistCompare {
     // Update tooltip if it exists
     const tooltip = button.querySelector('.tooltip');
     if (tooltip) {
-      tooltip.textContent = isActive ? `Remove from ${type}` : `Add to ${type}`;
+      tooltip.textContent = isActive ? (type === 'compare' ? (wishlistT.remove_from_compare || 'Remove from compare') : (wishlistT.remove_from_wishlist || 'Remove from wishlist')) : (type === 'compare' ? (wishlistT.compare || 'Compare') : (wishlistT.add_to_wishlist || 'Add to wishlist'));
     }
     
     // Update button text content
     const textElement = button.querySelector('.text');
     if (textElement) {
       if (type === 'compare') {
-        textElement.textContent = isActive ? 'Remove from compare' : 'Compare';
+        textElement.textContent = isActive ? (wishlistT.remove_from_compare || 'Remove from compare') : (wishlistT.compare || 'Compare');
       } else if (type === 'wishlist') {
-        textElement.textContent = isActive ? 'Remove from wishlist' : 'Add to wishlist';
+        textElement.textContent = isActive ? (wishlistT.remove_from_wishlist || 'Remove from wishlist') : (wishlistT.add_to_wishlist || 'Add to wishlist');
       }
     }
     
@@ -1204,7 +1204,7 @@ class WishlistCompare {
       'data-compare': '',
       'data-id': product.id,
       'data-action': 'remove',
-      'aria-label': 'Remove from compare'
+      'aria-label': wishlistT.remove_from_compare || 'Remove from compare'
     });
     div.appendChild(removeButton);
     
@@ -2339,41 +2339,37 @@ class Cart {
    * @returns {string} User-friendly error message
    */
   getErrorMessage(status, errorData, action) {
-    const actionText = action === this.actions.add ? 'add to cart' : 'update cart';
-    
+    const actionText = action === this.actions.add ? (window.theme?.translations?.cart?.add_to_cart || 'add to cart') : (window.theme?.translations?.cart?.update_cart || 'update cart');
+    const t = window.theme?.translations?.cart || {};
+    function interpolate(str, vars) {
+      return str.replace(/\{\{\s*(\w+)\s*\}\}/g, (m, key) => vars[key] || '');
+    }
     switch (status) {
       case 400:
         if (errorData.description) {
           return errorData.description;
         }
-        return `Unable to ${actionText}. Please check your selection and try again.`;
-      
+        return interpolate(t.error_unable_action || 'Unable to {{ action }}. Please check your selection and try again.', { action: actionText });
       case 401:
-        return 'Session expired. Please refresh the page and try again.';
-      
+        return t.error_session_expired || 'Session expired. Please refresh the page and try again.';
       case 403:
-        return 'Access denied. Please refresh the page and try again.';
-      
+        return t.error_access_denied || 'Access denied. Please refresh the page and try again.';
       case 404:
-        return 'Product not found. It may have been removed or is no longer available.';
-      
+        return t.error_product_not_found || 'Product not found. It may have been removed or is no longer available.';
       case 422:
         if (errorData.description) {
           return errorData.description;
         }
-        return `Unable to ${actionText}. The product may be out of stock.`;
-      
+        return interpolate(t.error_unable_action_out_of_stock || 'Unable to {{ action }}. The product may be out of stock.', { action: actionText });
       case 429:
-        return 'Too many requests. Please wait a moment and try again.';
-      
+        return t.error_too_many_requests || 'Too many requests. Please wait a moment and try again.';
       case 500:
       case 502:
       case 503:
       case 504:
-        return 'Server error. Please try again in a few moments.';
-      
+        return t.error_server || 'Server error. Please try again in a few moments.';
       default:
-        return `Failed to ${actionText}. Please try again.`;
+        return interpolate(t.error_failed_action || 'Failed to {{ action }}. Please try again.', { action: actionText });
     }
   }
 
@@ -2571,11 +2567,11 @@ class Cart {
       // Add empty cart placeholder if needed
       if (!cartData.items || cartData.items.length === 0) {
         const emptyCartDiv = HTMLSanitizer.createElement('div', { class: 'empty-cart' });
-        const emptyText = HTMLSanitizer.createElement('p', {}, 'Your cart is currently empty.');
+        const emptyText = HTMLSanitizer.createElement('p', {}, cartT.empty_cart || 'Your cart is currently empty.');
         const continueLink = HTMLSanitizer.createElement('a', {
           href: '/collections',
           class: 'tf-btn animate-btn d-inline-flex bg-dark-2'
-        }, 'Continue shopping');
+        }, cartT.continue_shopping || 'Continue shopping');
         
         emptyCartDiv.appendChild(emptyText);
         emptyCartDiv.appendChild(continueLink);
@@ -2589,11 +2585,11 @@ class Cart {
     } else {
       // Show empty cart message if no items
       const emptyCartDiv = HTMLSanitizer.createElement('div', { class: 'empty-cart' });
-      const emptyText = HTMLSanitizer.createElement('p', {}, 'Your cart is currently empty.');
+      const emptyText = HTMLSanitizer.createElement('p', {}, cartT.empty_cart || 'Your cart is currently empty.');
       const continueLink = HTMLSanitizer.createElement('a', {
         href: '/collections',
         class: 'tf-btn animate-btn d-inline-flex bg-dark-2'
-      }, 'Continue shopping');
+      }, cartT.continue_shopping || 'Continue shopping');
       
       emptyCartDiv.appendChild(emptyText);
       emptyCartDiv.appendChild(continueLink);
@@ -3030,7 +3026,7 @@ class CartNotificationManager {
           ${this.getIcon(notification.type)}
         </div>
         <div class="notification-message">${notification.message}</div>
-        <button class="notification-close" aria-label="Close notification">
+        <button class="notification-close" aria-label="${cartT.close_notification || 'Close notification'}">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
             <path d="M1 1l10 10M1 11L11 1"/>
           </svg>

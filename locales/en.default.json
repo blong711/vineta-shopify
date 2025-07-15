@@ -110,6 +110,9 @@
     "sidebar_title": "SIDEBAR"
   },
   "cart": {
+    "empty_cart": "Your cart is currently empty.",
+    "continue_shopping": "Continue shopping",
+    "close_notification": "Close notification",
     "general": {
       "title": "Shopping Cart",
       "remove": "Remove",
@@ -337,7 +340,15 @@
       "update": "Update",
       "checkout": "Check out",
       "in_stock": "In stock",
-      "out_of_stock": "Out of stock"
+      "out_of_stock": "Out of stock",
+      "error_unable_action": "Unable to {{ action }}. Please check your selection and try again.",
+      "error_session_expired": "Session expired. Please refresh the page and try again.",
+      "error_access_denied": "Access denied. Please refresh the page and try again.",
+      "error_product_not_found": "Product not found. It may have been removed or is no longer available.",
+      "error_unable_action_out_of_stock": "Unable to {{ action }}. The product may be out of stock.",
+      "error_too_many_requests": "Too many requests. Please wait a moment and try again.",
+      "error_server": "Server error. Please try again in a few moments.",
+      "error_failed_action": "Failed to {{ action }}. Please try again."
     },
     "collection": {
       "sort_by": "Sort by",
@@ -786,5 +797,17 @@
   "cart_drawer_saved": "Saved!",
   "cart_drawer_error_try_again": "Error - Try Again",
   "cart_drawer_calculating": "Calculating...",
-  "brands_brand_image": "Brand Image"
+  "brands_brand_image": "Brand Image",
+  "wishlist": {
+    "add_to_cart": "Add to Cart",
+    "quick_view": "Quick View",
+    "add_to_compare": "Add to Compare",
+    "remove_from_compare": "Remove from compare",
+    "compare": "Compare",
+    "remove_from_wishlist": "Remove from wishlist",
+    "add_to_wishlist": "Add to wishlist",
+    "sold_out": "Sold Out",
+    "empty_wishlist": "No product were added to the wishlist.",
+    "back_to_shopping": "Back to Shopping"
+  }
 } 
