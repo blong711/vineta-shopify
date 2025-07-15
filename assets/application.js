@@ -72,6 +72,9 @@ window.addEventListener('load', () => {
         }
       } catch (error) {
         console.error('Error:', error);
+        if (window.cartNotifications) {
+          window.cartNotifications.show(error.message || 'Error adding to cart', 'error');
+        }
         submitButton.textContent = 'Error adding to cart';
       } finally {
         submitButton.disabled = false;

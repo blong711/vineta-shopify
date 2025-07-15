@@ -623,7 +623,11 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         } catch (error) {
           console.error('Error adding item to cart:', error);
-          alert('Failed to add item to cart. Please try again.');
+          if (window.cartNotifications) {
+            window.cartNotifications.show(error.message || 'Failed to add item to cart. Please try again.', 'error');
+          } else {
+            alert('Failed to add item to cart. Please try again.');
+          }
         } finally {
           // Remove loading state
           this.classList.remove('loading');
@@ -778,7 +782,11 @@ document.addEventListener('DOMContentLoaded', function() {
                   }
                 } catch (error) {
                   console.error('Error adding item to cart:', error);
-                  alert('Failed to add item to cart. Please try again.');
+                  if (window.cartNotifications) {
+                    window.cartNotifications.show(error.message || 'Failed to add item to cart. Please try again.', 'error');
+                  } else {
+                    alert('Failed to add item to cart. Please try again.');
+                  }
                 } finally {
                   this.classList.remove('loading');
                 }

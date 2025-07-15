@@ -894,7 +894,11 @@
               }
             } catch (error) {
               console.error('Error adding item to cart:', error);
-              alert('Failed to add item to cart. Please try again.');
+              if (window.cartNotifications) {
+                window.cartNotifications.show(error.message || 'Failed to add item to cart. Please try again.', 'error');
+              } else {
+                alert('Failed to add item to cart. Please try again.');
+              }
             } finally {
               this.classList.remove('loading');
             }
@@ -927,7 +931,11 @@
               window.location.href = '/checkout';
             } catch (error) {
               console.error('Error with Buy It Now:', error);
-              alert('Failed to process Buy It Now. Please try again.');
+              if (window.cartNotifications) {
+                window.cartNotifications.show(error.message || 'Failed to process Buy It Now. Please try again.', 'error');
+              } else {
+                alert('Failed to process Buy It Now. Please try again.');
+              }
             } finally {
               this.classList.remove('loading');
             }

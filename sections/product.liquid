@@ -1885,7 +1885,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to add items to cart');
+          const errorData = await response.json().catch(() => ({}));
+          const errorMessage = errorData.description || 'Failed to add items to cart';
+          throw new Error(errorMessage);
         }
         const cartResponse = await fetch('/cart.js');
         const cartData = await cartResponse.json(); 
@@ -2056,7 +2058,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
       } catch (error) {
         console.error('Error adding bundle to cart:', error);
-        alert('Failed to add items to cart. Please try again.');
+        if (window.cartNotifications) {
+          window.cartNotifications.show(error.message || 'Failed to add items to cart. Please try again.', 'error');
+        } else {
+          alert('Failed to add items to cart. Please try again.');
+        }
       } finally {
         this.classList.remove('loading');
         this.textContent = 'Add selected to cart';
@@ -2690,7 +2696,11 @@ document.addEventListener('DOMContentLoaded', function() {
           window.cart.showCartDrawer();
         }
       } catch (error) {
-        alert('Failed to add items to cart. Please try again.');
+        if (window.cartNotifications) {
+          window.cartNotifications.show(error.message || 'Failed to add items to cart. Please try again.', 'error');
+        } else {
+          alert('Failed to add items to cart. Please try again.');
+        }
         // Reset button text on error
         button.textContent = form.querySelector('.btn-special-deal').dataset.originalText || 'Add to Cart';
       } finally {
@@ -2750,7 +2760,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
       } catch (error) {
         console.error('Error adding item to cart:', error);
-        alert('Failed to add item to cart. Please try again.');
+        if (window.cartNotifications) {
+          window.cartNotifications.show(error.message || 'Failed to add item to cart. Please try again.', 'error');
+        } else {
+          alert('Failed to add item to cart. Please try again.');
+        }
         // Reset button state
         this.textContent = originalText;
         this.classList.remove('loading');

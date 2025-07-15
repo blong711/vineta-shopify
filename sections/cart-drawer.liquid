@@ -421,6 +421,9 @@
           
         } catch (error) {
           console.error('Error adding gift wrap to cart:', error);
+          if (window.cartNotifications) {
+            window.cartNotifications.show(error.message || 'Failed to add gift wrap. Please try again.', 'error');
+          }
           this.textContent = '{{ 'cart_drawer_error_try_again' | t }}';
           setTimeout(() => {
             this.textContent = originalButtonText;
@@ -475,6 +478,9 @@
           
         } catch (error) {
           console.error('Error updating cart note:', error);
+          if (window.cartNotifications) {
+            window.cartNotifications.show(error.message || 'Failed to update cart note. Please try again.', 'error');
+          }
           submitButton.textContent = '{{ 'cart_drawer_error_try_again' | t }}';
           setTimeout(() => {
             submitButton.textContent = originalButtonText;

@@ -617,7 +617,12 @@ const ProductCard = {
             </div>
           `;
           
-          alert('Failed to add item to cart. Please try again.');
+          // Show error notification
+          if (window.cartNotifications) {
+            window.cartNotifications.show(error.message || 'Failed to add item to cart. Please try again.', 'error');
+          } else {
+            alert('Failed to add item to cart. Please try again.');
+          }
         } finally {
           // Restore button state after a brief delay
           setTimeout(() => {
@@ -705,7 +710,11 @@ const ProductCard = {
             await this.updateCartDrawer(cartData);
           } catch (error) {
             console.error('Error updating cart:', error);
-            alert('Failed to update cart. Product out of stock.');
+            if (window.cartNotifications) {
+              window.cartNotifications.show(error.message || 'Failed to update cart. Product out of stock.', 'error');
+            } else {
+              alert('Failed to update cart. Product out of stock.');
+            }
           } finally {
             // Remove loading state
             cartItemElement.classList.remove('loading');
@@ -763,7 +772,11 @@ const ProductCard = {
             await this.updateCartDrawer(cartData);
           } catch (error) {
             console.error('Error updating cart:', error);
-            alert('Failed to update cart. Product out of stock.');
+            if (window.cartNotifications) {
+              window.cartNotifications.show(error.message || 'Failed to update cart. Product out of stock.', 'error');
+            } else {
+              alert('Failed to update cart. Product out of stock.');
+            }
           } finally {
             // Remove loading state
             cartItemElement.classList.remove('loading');
@@ -840,7 +853,11 @@ const ProductCard = {
             await this.updateCartDrawer(cartData);
           } catch (error) {
             console.error('Error updating cart:', error);
-            alert('Failed to update cart. Product out of stock.');
+            if (window.cartNotifications) {
+              window.cartNotifications.show(error.message || 'Failed to update cart. Product out of stock.', 'error');
+            } else {
+              alert('Failed to update cart. Product out of stock.');
+            }
           } finally {
             // Remove loading state
             cartItemElement.classList.remove('loading');
@@ -886,7 +903,11 @@ const ProductCard = {
             await this.updateCartDrawer(cartData);
           } catch (error) {
             console.error('Error updating cart:', error);
-            alert('Failed to update cart. Product out of stock.');
+            if (window.cartNotifications) {
+              window.cartNotifications.show(error.message || 'Failed to update cart. Product out of stock.', 'error');
+            } else {
+              alert('Failed to update cart. Product out of stock.');
+            }
           } finally {
             // Remove loading state
             cartItemElement.classList.remove('loading');

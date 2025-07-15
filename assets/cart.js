@@ -420,7 +420,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       } catch (error) {
         console.error('Error removing item:', error);
-        alert('Failed to remove item. Please try again.');
+        if (window.cartNotifications) {
+          window.cartNotifications.show(error.message || 'Failed to remove item. Please try again.', 'error');
+        } else {
+          alert('Failed to remove item. Please try again.');
+        }
       }
     });
   });
@@ -509,7 +513,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       } catch (error) {
         console.error('Error updating quantity:', error);
-        alert('Failed to update quantity. Product out of stock.');
+        if (window.cartNotifications) {
+          window.cartNotifications.show(error.message || 'Failed to update quantity. Product out of stock.', 'error');
+        } else {
+          alert('Failed to update quantity. Product out of stock.');
+        }
       }
     });
   });
@@ -912,15 +920,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Uncheck the gift wrap checkbox
                     giftWrapCheckbox.checked = false;
 
-                    // Check if cart is now empty
-                    if (cartData.item_count === 0) {
-                      handleEmptyCart();
-                    }
-                  } catch (error) {
-                    console.error('Error removing item:', error);
-                    alert('Failed to remove item. Please try again.');
-                  }
-                });
+                                  // Check if cart is now empty
+              if (cartData.item_count === 0) {
+                handleEmptyCart();
+              }
+            } catch (error) {
+              console.error('Error removing item:', error);
+              if (window.cartNotifications) {
+                window.cartNotifications.show(error.message || 'Failed to remove item. Please try again.', 'error');
+              } else {
+                alert('Failed to remove item. Please try again.');
+              }
+            }
+          });
               }
 
               // Add quantity button event listeners
