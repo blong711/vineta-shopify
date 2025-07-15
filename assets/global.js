@@ -2295,7 +2295,7 @@ class Cart {
 
       // Show success notification
       if (action === this.actions.add) {
-        window.cartNotifications.show('Item added to cart successfully!', 'success');
+        window.cartNotifications.show(cartT.item_added_success || 'Item added to cart successfully!', 'success');
         // First make sure cart display is updated
         this.updateCartDisplay(cartData);
         // Then show the drawer only if not on cart page
@@ -2303,7 +2303,7 @@ class Cart {
           this.showCartDrawer();
         }
       } else {
-        window.cartNotifications.show('Cart updated successfully!', 'success');
+        window.cartNotifications.show(cartT.cart_updated_success || 'Cart updated successfully!', 'success');
       }
 
       // Update header cart count without requiring page reload
@@ -2667,7 +2667,7 @@ class Cart {
       await this.updateQuantity(variantId, 0, this.actions.update);
     } catch (error) {
       console.error('Error removing item:', error);
-      alert('Failed to remove item. Please try again.');
+      alert(cartT.failed_remove_item || 'Failed to remove item. Please try again.');    
     }
   }
 
