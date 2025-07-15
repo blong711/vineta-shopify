@@ -1,70 +1,58 @@
-(function($, window) {
-    'use strict';
+// Vanilla JS rewrite of multiple-modal.js
+// MultiModal manager for Bootstrap modals
 
-    var MultiModal = function(element) {
-        this.$element = $(element);
-        this.modalCount = 0;
-    };
+class MultiModal {
+  constructor(element) {
+    this.element = element;
+    this.modalCount = 0;
+  }
 
-    MultiModal.BASE_ZINDEX = 1050;
+  static BASE_ZINDEX = 1050;
 
-    MultiModal.prototype.show = function(target) {
-        var that = this;
-        var $target = $(target);
-        var modalIndex = that.modalCount++;
+  show(target) {
+    const modalIndex = this.modalCount++;
+    target.style.zIndex = MultiModal.BASE_ZINDEX + (modalIndex * 20) + 10;
+    // Timeout to allow Bootstrap to create the backdrop
+    window.setTimeout(() => {
+      // Hide all but the first backdrop
+      const backdrops = Array.from(document.querySelectorAll('.modal-backdrop'));
+      backdrops.forEach((bd, i) => {
+        if (i > 0) bd.classList.add('hidden');
+        else bd.classList.remove('hidden');
+      });
+      this.adjustBackdrop();
+    });
+  }
 
-        $target.css('z-index', MultiModal.BASE_ZINDEX + (modalIndex * 20) + 10);
-
-        // Bootstrap triggers the show event at the beginning of the show function and before
-        // the modal backdrop element has been created. The timeout here allows the modal
-        // show function to complete, after which the modal backdrop will have been created
-        // and appended to the DOM.
-        window.setTimeout(function() {
-            // we only want one backdrop; hide any extras
-            if(modalIndex > 0)
-                $('.modal-backdrop').not(':first').addClass('hidden');
-
-            that.adjustBackdrop();
-        });
-    };
-
-    MultiModal.prototype.hidden = function(target) {
-        this.modalCount--;
-
-        if(this.modalCount) {
-           this.adjustBackdrop();
-
-            // bootstrap removes the modal-open class when a modal is closed; add it back
-            $('body').addClass('modal-open');
-        }
-    };
-
-    MultiModal.prototype.adjustBackdrop = function() {
-        var modalIndex = this.modalCount - 1;
-        $('.modal-backdrop:first').css('z-index', MultiModal.BASE_ZINDEX + (modalIndex * 20));
-    };
-
-    function Plugin(method, target) {
-        return this.each(function() {
-            var $this = $(this);
-            var data = $this.data('multi-modal-plugin');
-
-            if(!data)
-                $this.data('multi-modal-plugin', (data = new MultiModal(this)));
-
-            if(method)
-                data[method](target);
-        });
+  hidden(target) {
+    this.modalCount--;
+    if (this.modalCount) {
+      this.adjustBackdrop();
+      // Bootstrap removes modal-open; add it back
+      document.body.classList.add('modal-open');
     }
+  }
 
-    $.fn.multiModal = Plugin;
-    $.fn.multiModal.Constructor = MultiModal;
+  adjustBackdrop() {
+    const modalIndex = this.modalCount - 1;
+    const firstBackdrop = document.querySelector('.modal-backdrop');
+    if (firstBackdrop) {
+      firstBackdrop.style.zIndex = MultiModal.BASE_ZINDEX + (modalIndex * 20);
+    }
+  }
+}
 
-    $(document).on('show.bs.modal', function(e) {
-        $(document).multiModal('show', e.target);
-    });
+// Singleton instance for document
+const multiModalInstance = new MultiModal(document);
 
-    $(document).on('hidden.bs.modal', function(e) {
-        $(document).multiModal('hidden', e.target);
-    });
-}(jQuery, window));
+// Listen for Bootstrap modal events
+// (Assumes Bootstrap's events are available on document)
+document.addEventListener('show.bs.modal', function(e) {
+  multiModalInstance.show(e.target);
+});
+document.addEventListener('hidden.bs.modal', function(e) {
+  multiModalInstance.hidden(e.target);
+});
+
+// Usage: Bootstrap modals will trigger these events automatically.
+// No jQuery required.

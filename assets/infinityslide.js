@@ -1,214 +1,143 @@
-/*以下、jsファイル内の記述のためコピー不要******************************/
+// infiniteslide.js v2 - Vanilla JS rewrite
+// Author: T.Morimoto (rewritten for vanilla JS)
+// MIT License
 
-//【infiniteslidev2.js】
+function infiniteslide(element, options = {}) {
+  // Default settings
+  const settings = Object.assign({
+    speed: 100, // px/sec
+    direction: 'left', // up/down/left/right
+    pauseonhover: true,
+    responsive: false,
+    clone: 1,
+  }, options);
 
-/*
-   infiniteslide.js v2
-   version: 2.0.1
-   Author: T.Morimoto
-   
-   Copyright 2017, T.Morimoto
-   * Free to use and abuse under the MIT license.
-   * http://www.opensource.org/licenses/mit-license.php
-   
-   https://github.com/woodroots/infiniteslidev2
-   */
+  // Helper functions
+  function setCss(el, direction) {
+    // Wrap in .infiniteslide_wrap
+    let wrapper = document.createElement('div');
+    wrapper.className = 'infiniteslide_wrap';
+    el.parentNode.insertBefore(wrapper, el);
+    wrapper.appendChild(el);
+    wrapper.style.overflow = 'hidden';
 
-(function ($) {
-    $(window).on("load", function () {
-        window.loaded = true;
+    let flexDirection = (direction === 'up' || direction === 'down') ? 'column' : 'row';
+    el.style.display = 'flex';
+    el.style.flexWrap = 'nowrap';
+    el.style.alignItems = 'center';
+    el.style.flexDirection = flexDirection;
+    // For IE11
+    el.style.msFlexAlign = 'center';
+    Array.from(el.children).forEach(child => {
+      child.style.flex = 'none';
+      child.style.display = 'block';
     });
-    $(function () {
-        $.fn.infiniteslide = function (options) {
-            //option
-            var settings = $.extend(
-                {
-                    speed: 100, //速さ　単位はpx/秒です。
-                    direction: "left", //up/down/left/rightから選択
-                    pauseonhover: true, //マウスオーバーでストップ
-                    responsive: false, //子要素の幅を%で指定しているとき
-                    clone: 1,
-                },
-                options
-            );
+  }
 
-            var setCss = function (obj, direction) {
-                $(obj)
-                    .wrap('<div class="infiniteslide_wrap"></div>')
-                    .parent()
-                    .css({
-                        overflow: "hidden",
-                    });
+  function setClone(el, cloneCount) {
+    let children = Array.from(el.children).filter(child => !child.classList.contains('infiniteslide_clone'));
+    for (let i = 0; i < cloneCount; i++) {
+      children.forEach(child => {
+        let clone = child.cloneNode(true);
+        clone.classList.add('infiniteslide_clone');
+        el.appendChild(clone);
+      });
+    }
+  }
 
-                if (direction == "up" || direction == "down") {
-                    var d = "column";
-                } else {
-                    var d = "row";
-                }
-
-                $(obj)
-                    .css({
-                        display: "flex",
-                        flexWrap: "nowrap",
-                        alignItems: "center",
-                        "-ms-flex-align": "center",
-                        flexDirection: d,
-                    })
-                    .children()
-                    .css({
-                        flex: "none",
-                        display: "block",
-                    });
-            };
-
-            var setClone = function (obj, clone) {
-                var $clone = $(obj)
-                    .children()
-                    .clone(true)
-                    .addClass("infiniteslide_clone");
-                i = 1;
-                while (i <= clone) {
-                    $clone.clone(true).appendTo($(obj));
-                    i++;
-                }
-            };
-
-            var getWidth = function (obj) {
-                w = 0;
-                $(obj)
-                    .children(":not(.infiniteslide_clone)")
-                    .each(function (key, value) {
-                        w = w + $(this).outerWidth(true);
-                    });
-                return w;
-            };
-            var getHeight = function (obj) {
-                h = 0;
-                $(obj)
-                    .children(":not(.infiniteslide_clone)")
-                    .each(function (key, value) {
-                        h = h + $(this).outerHeight(true);
-                    });
-                return h;
-            };
-
-            var getSpeed = function (l, s) {
-                return l / s;
-            };
-            var getNum = function (obj, direction) {
-                if (direction == "up" || direction == "down") {
-                    var num = getHeight(obj);
-                } else {
-                    var num = getWidth(obj);
-                }
-                return num;
-            };
-
-            var getTranslate = function (num, direction) {
-                if (direction == "up" || direction == "down") {
-                    var i = "0,-" + num + "px,0";
-                } else {
-                    var i = "-" + num + "px,0,0";
-                }
-                return i;
-            };
-
-            var setAnim = function (obj, id, direction, speed) {
-                var num = getNum(obj, direction);
-                if (direction == "up" || direction == "down") {
-                    $(obj)
-                        .parent(".infiniteslide_wrap")
-                        .css({
-                            height: num + "px",
-                        });
-                }
-                var i = getTranslate(num, direction);
-
-                $(obj).attr("data-style", "infiniteslide" + id);
-
-                var css =
-                    "@keyframes infiniteslide" +
-                    id +
-                    "{" +
-                    "from {transform:translate3d(0,0,0);}" +
-                    "to {transform:translate3d(" +
-                    i +
-                    ");}" +
-                    "}";
-                $("<style />")
-                    .attr("id", "infiniteslide" + id + "_style")
-                    .html(css)
-                    .appendTo("head");
-
-                if (direction == "right" || direction == "down") {
-                    var reverse = " reverse";
-                } else {
-                    var reverse = "";
-                }
-
-                $(obj).css({
-                    animation:
-                        "infiniteslide" +
-                        id +
-                        " " +
-                        getSpeed(num, speed) +
-                        "s linear 0s infinite" +
-                        reverse,
-                });
-            };
-            var setStop = function (obj) {
-                $(obj)
-                    .on("mouseenter", function () {
-                        $(this).css({
-                            animationPlayState: "paused",
-                        });
-                    })
-                    .on("mouseleave", function () {
-                        $(this).css({
-                            animationPlayState: "running",
-                        });
-                    });
-            };
-
-            var setResponsive = function (obj, direction) {
-                var num = getNum(obj, direction);
-                var i = getTranslate(num, direction);
-                return i;
-            };
-
-            return this.each(function (key, value) {
-                var $this = $(this);
-                var num =
-                    Date.now() + Math.floor(10000 * Math.random()).toString(16);
-                if (settings.pauseonhover == true) {
-                    setStop($this);
-                }
-                var _onload = function () {
-                    setCss($this, settings.direction);
-                    setClone($this, settings.clone);
-                    setAnim($this, num, settings.direction, settings.speed);
-
-                    if (settings.responsive) {
-                        $(window).on("resize", function () {
-                            var i = setResponsive($this, settings.direction);
-                            var styleid = $this.attr("data-style");
-                            var stylehtml = $("#" + styleid + "_style").html();
-
-                            var stylehtml_new = stylehtml.replace(
-                                /to {transform:translate3d\((.*?)\)/,
-                                "to {transform:translate3d(" + i + ")"
-                            );
-                            $("#" + styleid + "_style").html(stylehtml_new);
-                        });
-                    }
-                };
-
-                if (window.loaded) {
-                    _onload();
-                } else {
-                    $(window).on("load", _onload);
-                }
-            });
-        };
+  function getWidth(el) {
+    let w = 0;
+    Array.from(el.children).forEach(child => {
+      if (!child.classList.contains('infiniteslide_clone')) {
+        w += child.offsetWidth;
+      }
     });
-})(jQuery);
+    return w;
+  }
+  function getHeight(el) {
+    let h = 0;
+    Array.from(el.children).forEach(child => {
+      if (!child.classList.contains('infiniteslide_clone')) {
+        h += child.offsetHeight;
+      }
+    });
+    return h;
+  }
+
+  function getSpeed(length, speed) {
+    return length / speed;
+  }
+  function getNum(el, direction) {
+    return (direction === 'up' || direction === 'down') ? getHeight(el) : getWidth(el);
+  }
+  function getTranslate(num, direction) {
+    if (direction === 'up' || direction === 'down') {
+      return `0,-${num}px,0`;
+    } else {
+      return `-${num}px,0,0`;
+    }
+  }
+
+  function setAnim(el, id, direction, speed) {
+    const num = getNum(el, direction);
+    if (direction === 'up' || direction === 'down') {
+      el.parentNode.style.height = num + 'px';
+    }
+    const i = getTranslate(num, direction);
+    el.setAttribute('data-style', 'infiniteslide' + id);
+    // Create keyframes
+    const styleId = 'infiniteslide' + id + '_style';
+    let style = document.getElementById(styleId);
+    if (!style) {
+      style = document.createElement('style');
+      style.id = styleId;
+      document.head.appendChild(style);
+    }
+    style.textContent = `@keyframes infiniteslide${id}{from {transform:translate3d(0,0,0);}to {transform:translate3d(${i});}}`;
+    let reverse = (direction === 'right' || direction === 'down') ? ' reverse' : '';
+    el.style.animation = `infiniteslide${id} ${getSpeed(num, speed)}s linear 0s infinite${reverse}`;
+  }
+
+  function setStop(el) {
+    el.addEventListener('mouseenter', function () {
+      el.style.animationPlayState = 'paused';
+    });
+    el.addEventListener('mouseleave', function () {
+      el.style.animationPlayState = 'running';
+    });
+  }
+
+  function setResponsive(el, direction) {
+    const num = getNum(el, direction);
+    return getTranslate(num, direction);
+  }
+
+  // Main logic
+  const id = Date.now() + Math.floor(10000 * Math.random()).toString(16);
+  if (settings.pauseonhover) {
+    setStop(element);
+  }
+  function _onload() {
+    setCss(element, settings.direction);
+    setClone(element, settings.clone);
+    setAnim(element, id, settings.direction, settings.speed);
+    if (settings.responsive) {
+      window.addEventListener('resize', function () {
+        const i = setResponsive(element, settings.direction);
+        const styleId = element.getAttribute('data-style');
+        const style = document.getElementById(styleId + '_style');
+        if (style) {
+          style.textContent = style.textContent.replace(/to {transform:translate3d\((.*?)\)/, `to {transform:translate3d(${i})`);
+        }
+      });
+    }
+  }
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    _onload();
+  } else {
+    window.addEventListener('load', _onload);
+  }
+}
+
+// Usage example:
+// infiniteslide(document.querySelector('.your-slider'), { speed: 100, direction: 'left' });

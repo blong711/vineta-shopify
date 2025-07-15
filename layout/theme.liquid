@@ -129,6 +129,8 @@
     <link rel="preload" href="{{ 'theme.js' | asset_url }}" as="script">
     
     <!-- Other scripts moved to end of body -->
+    <!-- Choices.js for custom select -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
   </head>
 
   <body class="{% if template == 'page.phonecase' %}bg-surface-2{% endif %}">
@@ -453,6 +455,7 @@
     {%- endcapture -%}
     {{- grich | strip_newlines | remove: '  ' -}}
   </body>
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js" defer></script>
 <script src="{{ 'bootstrap.min.js' | asset_url }}" defer></script>
 <script src="{{ 'bootstrap-select.min.js' | asset_url }}" defer></script>
 <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
