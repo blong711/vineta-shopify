@@ -24,6 +24,8 @@
 {%- comment -%}Recently Viewed Tracking{%- endcomment -%}
 {% render 'recently-viewed-tracking' %}
 
+
+
 <div class="breadcrumb-sec">
     <div class="container">
           <div class="breadcrumb-wrap">
@@ -462,6 +464,8 @@
                       </div>
                       <a href="javascript:void(0);" 
                          class="tf-btn btn-primary w-100 animate-btn buy-it-now" 
+                         data-shopify="payment-button"
+                         data-payment-button="true"
                          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
                          data-quantity="1"
                          aria-label="Buy it now">Buy it now</a>
@@ -1375,10 +1379,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update main add to cart button only
     updateMainAddToCartButton(variant);
-    // Also update buy it now buttons if needed
-    if (typeof updateBuyItNowButtons === 'function') {
-      updateBuyItNowButtons(variant);
-    }
+    // Update dynamic checkout buttons
+    updateDynamicCheckoutButtons(variant);
   }
 
   // Use event delegation for color swatch clicks
@@ -2215,6 +2217,15 @@ document.addEventListener('DOMContentLoaded', function() {
       value = Math.max(1, value); // Ensure minimum value is 1
       this.value = value;
       updateAddToCartQuantity(value);
+      
+      // Update dynamic checkout buttons with new quantity
+      const currentVariant = document.querySelector('.add-to-cart')?.dataset.variantId;
+      if (currentVariant) {
+        const variant = {{ product.variants | json }}.find(v => v.id.toString() === currentVariant);
+        if (variant) {
+          updateDynamicCheckoutButtons(variant);
+        }
+      }
     });
   });
 
@@ -2227,6 +2238,15 @@ document.addEventListener('DOMContentLoaded', function() {
         value--;
         input.value = value + 1;
         updateAddToCartQuantity(value);
+        
+        // Update dynamic checkout buttons with new quantity
+        const currentVariant = document.querySelector('.add-to-cart')?.dataset.variantId;
+        if (currentVariant) {
+          const variant = {{ product.variants | json }}.find(v => v.id.toString() === currentVariant);
+          if (variant) {
+            updateDynamicCheckoutButtons(variant);
+          }
+        }
       }
     });
   });
@@ -2239,6 +2259,15 @@ document.addEventListener('DOMContentLoaded', function() {
       value++;
       input.value = value - 1;
       updateAddToCartQuantity(value);
+      
+      // Update dynamic checkout buttons with new quantity
+      const currentVariant = document.querySelector('.add-to-cart')?.dataset.variantId;
+      if (currentVariant) {
+        const variant = {{ product.variants | json }}.find(v => v.id.toString() === currentVariant);
+        if (variant) {
+          updateDynamicCheckoutButtons(variant);
+        }
+      }
     });
   });
 
@@ -2724,7 +2753,29 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Handle buy it now buttons
+  // Handle dynamic checkout buttons
+  function updateDynamicCheckoutButtons(variant) {
+    const buyItNowButton = document.querySelector('.buy-it-now');
+    if (buyItNowButton) {
+      // Get quantity from the main product info input
+      let quantity = 1;
+      const mainQuantityInput = document.querySelector('.tf-product-info-list .quantity-product');
+      if (mainQuantityInput) {
+        quantity = parseInt(mainQuantityInput.value) || 1;
+      }
+      
+      // Update the button attributes
+      buyItNowButton.setAttribute('data-variant-id', variant.id);
+      buyItNowButton.setAttribute('data-quantity', quantity);
+      
+      // Reinitialize Shopify's dynamic checkout buttons
+      if (window.Shopify && window.Shopify.PaymentButton) {
+        window.Shopify.PaymentButton.init();
+      }
+    }
+  }
+
+  // Handle buy it now button clicks
   document.querySelectorAll('.buy-it-now').forEach(button => {
     button.addEventListener('click', async function(e) {
       e.preventDefault();
@@ -2734,14 +2785,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
       
-      const variantId = this.dataset.variantId;
-      let quantity = 1;
-      
-      // Get quantity from the main product info input
-      const mainQuantityInput = document.querySelector('.tf-product-info-list .quantity-product');
-      if (mainQuantityInput) {
-        quantity = parseInt(mainQuantityInput.value) || 1;
-      }
+      const variantId = this.getAttribute('data-variant-id');
+      let quantity = parseInt(this.getAttribute('data-quantity')) || 1;
       
       try {
         // Show loading state
@@ -2787,28 +2832,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Function to update buy it now buttons when variant changes
-  function updateBuyItNowButtons(variant) {
-    document.querySelectorAll('.buy-it-now').forEach(button => {
-      if (variant) {
-        button.dataset.variantId = variant.id;
-        
-        // Update quantity from main product info input
-        const quantityInput = document.querySelector('.tf-product-info-list .quantity-product');
-        if (quantityInput) {
-          const quantity = parseInt(quantityInput.value) || 1;
-          button.dataset.quantity = quantity;
-        }
-      }
-    });
-  }
 
-  // Update the updateVariantSelection function to also update buy it now buttons
-  const originalUpdateVariantSelection = updateVariantSelection;
-  updateVariantSelection = function(variant) {
-    originalUpdateVariantSelection(variant);
-    updateBuyItNowButtons(variant);
-  };
 });
 
 // Function to update header cart count

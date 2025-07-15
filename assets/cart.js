@@ -413,6 +413,11 @@ document.addEventListener('DOMContentLoaded', function() {
           updateShippingProgress();
         }
 
+        // Update dynamic checkout buttons
+        if (window.updateDynamicCheckoutButtons) {
+          window.updateDynamicCheckoutButtons();
+        }
+
         // Check if cart is now empty
         if (cartData.item_count === 0) {
           console.log('Cart is now empty, calling handleEmptyCart');
@@ -498,6 +503,11 @@ document.addEventListener('DOMContentLoaded', function() {
           updateShippingProgress();
         }
 
+        // Update dynamic checkout buttons
+        if (window.updateDynamicCheckoutButtons) {
+          window.updateDynamicCheckoutButtons();
+        }
+
         // If quantity is 0, remove the item row
         if (newQuantity === 0) {
           const itemRow = this.closest('.tf-cart-item');
@@ -574,6 +584,30 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
     });
+
+    // Initialize dynamic checkout buttons
+    function initializeDynamicCheckoutButtons() {
+      if (window.Shopify && window.Shopify.PaymentButton) {
+        window.Shopify.PaymentButton.init();
+      }
+    }
+
+    // Update dynamic checkout buttons when cart changes
+    function updateDynamicCheckoutButtons() {
+      const checkoutButton = document.getElementById('checkout-button');
+      if (checkoutButton) {
+        // Reinitialize Shopify's dynamic checkout buttons
+        if (window.Shopify && window.Shopify.PaymentButton) {
+          window.Shopify.PaymentButton.init();
+        }
+      }
+    }
+
+    // Initialize dynamic checkout buttons on page load
+    initializeDynamicCheckoutButtons();
+
+    // Update dynamic checkout buttons when cart state changes
+    window.updateDynamicCheckoutButtons = updateDynamicCheckoutButtons;
   }
 
   // Handle shipping estimates
@@ -917,6 +951,11 @@ document.addEventListener('DOMContentLoaded', function() {
                       updateShippingProgress();
                     }
 
+                    // Update dynamic checkout buttons
+                    if (window.updateDynamicCheckoutButtons) {
+                      window.updateDynamicCheckoutButtons();
+                    }
+
                     // Uncheck the gift wrap checkbox
                     giftWrapCheckbox.checked = false;
 
@@ -1005,6 +1044,11 @@ document.addEventListener('DOMContentLoaded', function() {
                       updateShippingProgress();
                     }
 
+                    // Update dynamic checkout buttons
+                    if (window.updateDynamicCheckoutButtons) {
+                      window.updateDynamicCheckoutButtons();
+                    }
+
                     // If quantity is 0, remove the item row and uncheck the checkbox
                     if (newQuantity === 0) {
                       const itemRow = this.closest('.tf-cart-item');
@@ -1064,6 +1108,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update shipping progress only if cart still has items
         if (cartData.item_count > 0) {
           updateShippingProgress();
+        }
+
+        // Update dynamic checkout buttons
+        if (window.updateDynamicCheckoutButtons) {
+          window.updateDynamicCheckoutButtons();
         }
 
         // Check if cart is now empty
