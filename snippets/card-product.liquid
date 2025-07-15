@@ -52,44 +52,53 @@
     {%- if product.available -%}
     <ul class="list-product-btn">
       <li>
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="box-icon hover-tooltip add-to-cart" 
            data-variant-id="{{ product.variants.first.id }}"
            data-quantity="1"
-           aria-label="{{ 'products.card.add_to_cart' | t }}">
+           aria-label="{{ 'products.card.add_to_cart' | t }}"
+           role="button"
+           tabindex="0">
           <i class="icon icon-cart"></i>
           <span class="tooltip">{{ 'products.card.add_to_cart' | t }}</span>
         </a>
       </li>
       <li class="wishlist">
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="box-icon hover-tooltip" 
            data-wishlist 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="{{ 'products.card.add_to_wishlist' | t }}">
+           aria-label="{{ 'products.card.add_to_wishlist' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-heart2"></span>
           <span class="tooltip">{{ 'products.card.add_to_wishlist' | t }}</span>
         </a>
       </li>
       <li>
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="box-icon hover-tooltip quickview" 
            data-product-handle="{{ product.handle }}"
            data-product-id="{{ product.id }}"
            data-bs-toggle="modal" 
-           data-bs-target="#quickView">
+           data-bs-target="#quickView"
+           aria-label="{{ 'products.card.quick_view' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-view"></span>
           <span class="tooltip">{{ 'products.card.quick_view' | t }}</span>
         </a>
       </li>
       <li class="compare">
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="box-icon hover-tooltip" 
            data-compare 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="{{ 'products.card.add_to_compare' | t }}">
+           aria-label="{{ 'products.card.add_to_compare' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-compare"></span>
           <span class="tooltip">{{ 'products.card.add_to_compare' | t }}</span>
         </a>
@@ -184,44 +193,53 @@
     {%- if product.available -%}
     <ul class="list-product-btn">
       <li>
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="bg-surface hover-tooltip box-icon add-to-cart" 
            data-variant-id="{{ product.variants.first.id }}"
            data-quantity="1"
-           aria-label="{{ 'products.card.add_to_cart' | t }}">
+           aria-label="{{ 'products.card.add_to_cart' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-cart2"></span>
           <span class="tooltip">{{ 'products.card.add_to_cart' | t }}</span>
         </a>
       </li>
       <li class="wishlist">
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="bg-surface hover-tooltip box-icon" 
            data-wishlist 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="{{ 'products.card.add_to_wishlist' | t }}">
+           aria-label="{{ 'products.card.add_to_wishlist' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-heart2"></span>
           <span class="tooltip">{{ 'products.card.add_to_wishlist' | t }}</span>
         </a>
       </li>
       <li>
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="bg-surface hover-tooltip box-icon quickview" 
            data-product-handle="{{ product.handle }}"
            data-product-id="{{ product.id }}"
            data-bs-toggle="modal" 
-           data-bs-target="#quickView">
+           data-bs-target="#quickView"
+           aria-label="{{ 'products.card.quick_view' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-view"></span>
           <span class="tooltip">{{ 'products.card.quick_view' | t }}</span>
         </a>
       </li>
       <li class="compare">
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="bg-surface hover-tooltip box-icon" 
            data-compare 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="{{ 'products.card.add_to_compare' | t }}">
+           aria-label="{{ 'products.card.add_to_compare' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-compare"></span>
           <span class="tooltip">{{ 'products.card.add_to_compare' | t }}</span>
         </a>
@@ -316,44 +334,53 @@
     {%- if product.available -%}
     <ul class="list-product-btn">
       <li>
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="bg-surface hover-tooltip tooltip-left box-icon add-to-cart" 
            data-variant-id="{{ product.variants.first.id }}"
            data-quantity="1"
-           aria-label="{{ 'products.card.add_to_cart' | t }}">
+           aria-label="{{ 'products.card.add_to_cart' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-cart2"></span>
           <span class="tooltip">{{ 'products.card.add_to_cart' | t }}</span>
         </a>
       </li>
       <li class="wishlist">
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="bg-surface hover-tooltip tooltip-left box-icon" 
            data-wishlist 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="{{ 'products.card.add_to_wishlist' | t }}">
+           aria-label="{{ 'products.card.add_to_wishlist' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-heart2"></span>
           <span class="tooltip">{{ 'products.card.add_to_wishlist' | t }}</span>
         </a>
       </li>
       <li>
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="bg-surface hover-tooltip tooltip-left box-icon quickview" 
            data-product-handle="{{ product.handle }}"
            data-product-id="{{ product.id }}"
            data-bs-toggle="modal" 
-           data-bs-target="#quickView">
+           data-bs-target="#quickView"
+           aria-label="{{ 'products.card.quick_view' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-view"></span>
           <span class="tooltip">{{ 'products.card.quick_view' | t }}</span>
         </a>
       </li>
       <li class="compare">
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="bg-surface hover-tooltip tooltip-left box-icon" 
            data-compare 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="{{ 'products.card.add_to_compare' | t }}">
+           aria-label="{{ 'products.card.add_to_compare' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-compare"></span>
           <span class="tooltip">{{ 'products.card.add_to_compare' | t }}</span>
         </a>
@@ -435,44 +462,53 @@
     {%- if product.available -%}
     <ul class="list-product-btn">
       {% comment %} <li>
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="box-icon hover-tooltip add-to-cart" 
            data-variant-id="{{ product.variants.first.id }}"
            data-quantity="1"
-           aria-label="{{ 'products.card.add_to_cart' | t }}">
+           aria-label="{{ 'products.card.add_to_cart' | t }}"
+           role="button"
+           tabindex="0">
           <i class="icon icon-cart"></i>
           <span class="tooltip">{{ 'products.card.add_to_cart' | t }}</span>
         </a>
       </li> {% endcomment %}
       <li class="wishlist">
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="box-icon hover-tooltip" 
            data-wishlist 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="{{ 'products.card.add_to_wishlist' | t }}">
+           aria-label="{{ 'products.card.add_to_wishlist' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-heart2"></span>
           <span class="tooltip">{{ 'products.card.add_to_wishlist' | t }}</span>
         </a>
       </li>
       <li>
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="box-icon hover-tooltip quickview" 
            data-product-handle="{{ product.handle }}"
            data-product-id="{{ product.id }}"
            data-bs-toggle="modal" 
-           data-bs-target="#quickView">
+           data-bs-target="#quickView"
+           aria-label="{{ 'products.card.quick_view' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-view"></span>
           <span class="tooltip">{{ 'products.card.quick_view' | t }}</span>
         </a>
       </li>
       <li class="compare">
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="box-icon hover-tooltip" 
            data-compare 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="{{ 'products.card.add_to_compare' | t }}">
+           aria-label="{{ 'products.card.add_to_compare' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-compare"></span>
           <span class="tooltip">{{ 'products.card.add_to_compare' | t }}</span>
         </a>
@@ -480,10 +516,13 @@
     </ul>
     {%- endif -%}
     <div class="product-btn-main">
-      <a class="btn-main-product add-to-cart" 
+      <a href="#"
+              class="btn-main-product add-to-cart" 
               data-variant-id="{{ product.variants.first.id }}"
               data-quantity="1"
-              aria-label="{{ 'products.card.add_to_cart' | t }}">
+              aria-label="{{ 'products.card.add_to_cart' | t }}"
+              role="button"
+              tabindex="0">
         <span class="icon icon-cart2"></span>
         <span class="btn-text fw-medium">{{ 'products.card.add_to_cart' | t }}</span>
       </a>
@@ -568,44 +607,53 @@
     {%- if product.available -%}
     <ul class="list-product-btn">
       <li>
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="box-icon hover-tooltip tooltip-left add-to-cart" 
            data-variant-id="{{ product.variants.first.id }}"
            data-quantity="1"
-           aria-label="{{ 'products.card.add_to_cart' | t }}">
+           aria-label="{{ 'products.card.add_to_cart' | t }}"
+           role="button"
+           tabindex="0">
           <i class="icon icon-cart"></i>
           <span class="tooltip">{{ 'products.card.add_to_cart' | t }}</span>
         </a>
       </li>
       <li class="wishlist">
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="box-icon hover-tooltip tooltip-left" 
            data-wishlist 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="{{ 'products.card.add_to_wishlist' | t }}">
+           aria-label="{{ 'products.card.add_to_wishlist' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-heart2"></span>
           <span class="tooltip">{{ 'products.card.add_to_wishlist' | t }}</span>
         </a>
       </li>
       <li>
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="box-icon hover-tooltip tooltip-left quickview" 
            data-product-handle="{{ product.handle }}"
            data-product-id="{{ product.id }}"
            data-bs-toggle="modal" 
-           data-bs-target="#quickView">
+           data-bs-target="#quickView"
+           aria-label="{{ 'products.card.quick_view' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-view"></span>
           <span class="tooltip">{{ 'products.card.quick_view' | t }}</span>
         </a>
       </li>
       <li class="compare">
-        <a href="javascript:void(0);" 
+        <a href="#" 
            class="box-icon hover-tooltip tooltip-left" 
            data-compare 
            data-id="{{ product.id }}" 
            data-action="add"
-           aria-label="{{ 'products.card.add_to_compare' | t }}">
+           aria-label="{{ 'products.card.add_to_compare' | t }}"
+           role="button"
+           tabindex="0">
           <span class="icon icon-compare"></span>
           <span class="tooltip">{{ 'products.card.add_to_compare' | t }}</span>
         </a>
