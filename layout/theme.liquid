@@ -76,7 +76,7 @@
     {{ content_for_header }}
 
     <!-- CSRF Protection -->
-    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="csrf-token" content="{{ 'csrf_token' | hmac_sha256: shop.permanent_domain }}">
 
     <!-- Critical CSS - Preload for performance -->
     <link rel="preload" href="{{ 'fonts.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">

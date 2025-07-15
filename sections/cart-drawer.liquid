@@ -110,7 +110,6 @@
         <div class="tf-mini-cart-tool-openable add-note">
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form action="/cart" method="post" class="tf-mini-cart-tool-content" id="cart-note-form">
-            <input type="hidden" name="authenticity_token" value="{{ csrf_token }}">
             <label for="Cart-note" class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.order_note.title' | t }}</label>
             <textarea name="note" id="Cart-note" placeholder="{{ 'cart.drawer.order_note.placeholder' | t }}">{{ cart.note }}</textarea>
             <div class="tf-cart-tool-btns">
@@ -123,13 +122,13 @@
         {% if section.settings.enable_coupon %}
         <div class="tf-mini-cart-tool-openable coupon">
           <div class="overplay tf-mini-cart-tool-close"></div>
-          <form action="/cart" method="post" class="tf-mini-cart-tool-content">
-            <input type="hidden" name="authenticity_token" value="{{ csrf_token }}">
+          <form action="/cart" method="post" class="tf-mini-cart-tool-content" id="coupon-form">
+            <input type="hidden" name="authenticity_token" value="{{ 'csrf_token' | hmac_sha256: shop.permanent_domain }}">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.coupon.title' | t }}</div>
             <div class="tf-mini-cart-tool-text1" style="font-size: 14px;">{{ 'cart.drawer.coupon.message' | t }}</div>
-            <input type="text" name="discount" placeholder="{{ 'cart.drawer.coupon.placeholder' | t }}">
+            <input type="text" name="discount" placeholder="{{ 'cart.drawer.coupon.placeholder' | t }}" id="coupon-code-input">
             <div class="tf-cart-tool-btns">
-              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">{{ 'cart.drawer.coupon.apply' | t }}</button>
+              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit" id="apply-coupon-btn">{{ 'cart.drawer.coupon.apply' | t }}</button>
               <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">{{ 'cart.drawer.coupon.cancel' | t }}</div>
             </div>
           </form>
@@ -139,7 +138,7 @@
         <div class="tf-mini-cart-tool-openable estimate-shipping">
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form id="shipping-form" class="tf-mini-cart-tool-content" data-shipping-calculator>
-            <input type="hidden" name="authenticity_token" value="{{ csrf_token }}">
+            <input type="hidden" name="authenticity_token" value="{{ 'csrf_token' | hmac_sha256: shop.permanent_domain }}">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.shipping.title' | t }}</div>
             <div class="field">
               <p class="text-sm">{{ 'cart.drawer.shipping.country' | t }}</p>
@@ -162,7 +161,7 @@
             <div id="zipcode-message" class="error" style="display: none;"></div>
             <div id="zipcode-success" class="success" style="display: none;"></div>
             <div class="tf-cart-tool-btns">
-              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">{{ 'cart.drawer.shipping.calculate' | t }}</button>
+              <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit" id="calculate-shipping-btn">{{ 'cart.drawer.shipping.calculate' | t }}</button>
               <div class="tf-mini-cart-tool-primary tf-btn btn-out-line-dark2 text-center fw-6 w-100 tf-mini-cart-tool-close">{{ 'cart.drawer.shipping.cancel' | t }}</div>
             </div>
           </form>
@@ -480,6 +479,84 @@
           console.error('Error updating cart note:', error);
           if (window.cartNotifications) {
             window.cartNotifications.show(error.message || 'Failed to update cart note. Please try again.', 'error');
+          }
+          submitButton.textContent = '{{ 'cart_drawer_error_try_again' | t }}';
+          setTimeout(() => {
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
+          }, 2000);
+        }
+      });
+    }
+    
+    // Coupon form handling with CSRF protection
+    const couponForm = document.getElementById('coupon-form');
+    if (couponForm) {
+      couponForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        
+        const couponInput = document.getElementById('coupon-code-input');
+        const couponCode = couponInput.value.trim();
+        const submitButton = document.getElementById('apply-coupon-btn');
+        const originalButtonText = submitButton.textContent;
+        
+        if (!couponCode) {
+          if (window.cartNotifications) {
+            window.cartNotifications.show('Please enter a coupon code', 'error');
+          }
+          return;
+        }
+        
+        // Show loading state
+        submitButton.disabled = true;
+        submitButton.textContent = '{{ 'cart.drawer.coupon.applying' | t }}';
+        
+        try {
+          // Apply coupon via AJAX with CSRF protection
+          const response = await csrfFetch('/cart/update.js', {
+            method: 'POST',
+            body: JSON.stringify({
+              discount_code: couponCode
+            })
+          });
+          
+          if (!response.ok) {
+            throw new Error('Failed to apply coupon');
+          }
+          
+          const cartData = await response.json();
+          
+          // Check if coupon was applied successfully
+          if (cartData.discount_applications && cartData.discount_applications.length > 0) {
+            // Show success message
+            submitButton.textContent = '{{ 'cart.drawer.coupon.applied' | t }}';
+            if (window.cartNotifications) {
+              window.cartNotifications.show('Coupon applied successfully!', 'success');
+            }
+            
+            // Update cart total in drawer
+            const totalElement = document.querySelector('.cart-total-price');
+            if (totalElement) {
+              totalElement.textContent = `$${(cartData.total_price/100).toFixed(2)}`;
+            }
+            
+            // Close the coupon form
+            setTimeout(() => {
+              submitButton.textContent = originalButtonText;
+              submitButton.disabled = false;
+              const closeButton = couponForm.querySelector('.tf-mini-cart-tool-close');
+              if (closeButton) {
+                closeButton.click();
+              }
+            }, 1000);
+          } else {
+            throw new Error('Invalid coupon code');
+          }
+          
+        } catch (error) {
+          console.error('Error applying coupon:', error);
+          if (window.cartNotifications) {
+            window.cartNotifications.show(error.message || 'Failed to apply coupon. Please try again.', 'error');
           }
           submitButton.textContent = '{{ 'cart_drawer_error_try_again' | t }}';
           setTimeout(() => {
