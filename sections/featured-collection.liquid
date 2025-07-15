@@ -55,6 +55,7 @@
                                     data-src="{{ block.settings.custom_image | default: collection.featured_image | image_url }}" 
                                     alt="{{ collection.title | escape }}" 
                                     class="lazyload min-width-635"
+                                    loading="lazy"
                                     width="{{ block.settings.custom_image.width | default: collection.featured_image.width }}"
                                     height="{{ block.settings.custom_image.height | default: collection.featured_image.height }}">
                             </div>
@@ -124,6 +125,7 @@
                                             data-src="{{ block.settings.custom_image | default: collection.featured_image | image_url }}" 
                                             alt="{{ collection.title | escape }}" 
                                             class="lazyload min-width-905"
+                                            loading="lazy"
                                             width="{{ block.settings.custom_image.width | default: collection.featured_image.width }}"
                                             height="{{ block.settings.custom_image.height | default: collection.featured_image.height }}">
                                     </a>
@@ -224,6 +226,7 @@
                                             data-src="{{ block.settings.custom_image | default: collection.featured_image | image_url }}" 
                                             alt="{{ collection.title | escape }}" 
                                             class="lazyload min-width-599"
+                                            loading="lazy"
                                             width="{{ block.settings.custom_image.width | default: collection.featured_image.width }}"
                                             height="{{ block.settings.custom_image.height | default: collection.featured_image.height }}">
                                     </div>

@@ -36,6 +36,7 @@
                                         data-src="{{ block.settings.image | image_url }}"
                                         alt="{{ block.settings.image.alt | escape }}"
                                         class="lazyload"
+                                        {% unless forloop.first %}loading="lazy"{% endunless %}
                                         width="{{ block.settings.image.width }}"
                                         height="{{ block.settings.image.height }}"
                                         style="{% if section.settings.image_height_mode == 'fill' %} object-fit: cover;{% elsif section.settings.image_height_mode == 'fixed' %} object-fit: cover;{% endif %} {% if section.settings.mobile_image_height_mode == 'fixed' %}@media (max-width: 767px) { height: {{ section.settings.mobile_fixed_height }}px !important; object-fit: cover; }{% endif %}">

@@ -31,9 +31,9 @@
                      data-search="{{ child.title | downcase }} {{ child.title | handleize }}">
                   <a href="{{ demo_entry.url | default: child.url }}" class="demo-image">
                     {% if demo_entry.image != blank %}
-                      <img src="{{ demo_entry.image | image_url: width: 200 }}" alt="{{ child.title }}" width="200" height="120">
+                      <img src="{{ demo_entry.image | image_url: width: 200 }}" data-src="{{ demo_entry.image | image_url: width: 200 }}" alt="{{ child.title }}" width="200" height="120" loading="lazy">
                     {% else %}
-                      <img src="{{ 'placeholder-image.jpg' | asset_url }}" alt="{{ child.title }}" width="200" height="120">
+                      <img src="{{ 'placeholder-image.jpg' | asset_url }}" data-src="{{ 'placeholder-image.jpg' | asset_url }}" alt="{{ child.title }}" width="200" height="120" loading="lazy">
                     {% endif %}
                     {% if demo_entry.label != blank %}
                       {% for label in demo_entry.label %}
@@ -161,7 +161,7 @@
                     <div class="swiper-slide">
                       <div class="wg-cls style-abs asp-1 hover-img">
                         <a href="{{ collection.url }}" class="image img-style d-block">
-                          <img src="{{ collection.featured_image | image_url: width: 200 }}" alt="{{ collection.title }}" class="lazyload" width="200" height="200">
+                          <img src="{{ collection.featured_image | image_url: width: 200 }}" data-src="{{ collection.featured_image | image_url: width: 200 }}" alt="{{ collection.title }}" class="lazyload" width="200" height="200">
                         </a>
                         <div class="cls-btn text-center">
                           <a href="{{ collection.url }}" class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
@@ -257,7 +257,7 @@
             {% assign block = section.blocks | where: "type", "mega_menu_pages" | first %}
             {% if block and block.settings.banner_image != blank %}
               <a href="{{ block.settings.banner_link }}" class="img-style">
-                <img src="{{ block.settings.banner_image | image_url: width: 500 }}" alt="{{ block.settings.banner_title }}" width="500" height="275">
+                <img src="{{ block.settings.banner_image | image_url: width: 500 }}" data-src="{{ block.settings.banner_image | image_url: width: 500 }}" alt="{{ block.settings.banner_title }}" width="500" height="275" loading="lazy">
               </a>
             {% endif %}
             <div class="content">
@@ -302,6 +302,7 @@
                       <a href="{{ post.url }}" class="img-box">
                         <img data-src="{{ post.image | image_url: width: 80, height: 80, crop: 'center' }}" 
                              src="{{ post.image | image_url }}"
+                             data-src="{{ post.image | image_url }}"
                              alt="{{ post.title }}" 
                              width="80" 
                              height="80"

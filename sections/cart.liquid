@@ -317,7 +317,7 @@
                             <div class="box-author">
                                 {% if block.settings.testimonial1_author_image %}
                               <div class="img">
-                                    <img src="{{ block.settings.testimonial1_author_image | image_url: width: 100 }}" alt="{{ block.settings.testimonial1_author_name }}" width="100" height="100">
+                                    <img src="{{ block.settings.testimonial1_author_image | image_url: width: 100 }}" alt="{{ block.settings.testimonial1_author_name }}" loading="lazy" width="100" height="100">
                               </div>
                                 {% endif %}
                                 <span class="name text-sm fw-medium">{{ block.settings.testimonial1_author_name }}</span>
@@ -340,7 +340,7 @@
                               <div class="box-author">
                                 {% if block.settings.testimonial2_author_image %}
                                   <div class="img">
-                                    <img src="{{ block.settings.testimonial2_author_image | image_url: width: 100 }}" alt="{{ block.settings.testimonial2_author_name }}" width="100" height="100">
+                                    <img src="{{ block.settings.testimonial2_author_image | image_url: width: 100 }}" alt="{{ block.settings.testimonial2_author_name }}" loading="lazy" width="100" height="100">
                                   </div>
                                 {% endif %}
                                 <span class="name text-sm fw-medium">{{ block.settings.testimonial2_author_name }}</span>
@@ -363,7 +363,7 @@
                               <div class="box-author">
                                 {% if block.settings.testimonial3_author_image %}
                                   <div class="img">
-                                    <img src="{{ block.settings.testimonial3_author_image | image_url: width: 100 }}" alt="{{ block.settings.testimonial3_author_name }}" width="100" height="100">
+                                    <img src="{{ block.settings.testimonial3_author_image | image_url: width: 100 }}" alt="{{ block.settings.testimonial3_author_name }}" loading="lazy" width="100" height="100">
                                   </div>
                                 {% endif %}
                                 <span class="name text-sm fw-medium">{{ block.settings.testimonial3_author_name }}</span>

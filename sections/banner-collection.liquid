@@ -25,8 +25,10 @@
           {%- if section.settings.image != blank -%}
             <img 
               src="{{ section.settings.image | image_url }}" 
+              data-src="{{ section.settings.image | image_url }}"
               alt="{{ section.settings.image.alt | escape }}" 
               class="lazyload"
+              loading="lazy"
               width="{{ section.settings.image.width }}"
               height="{{ section.settings.image.height }}"
             >
@@ -40,8 +42,10 @@
             {%- if section.settings.image != blank -%}
               <img 
                 src="{{ section.settings.image | image_url }}" 
+                data-src="{{ section.settings.image | image_url }}"
                 alt="{{ section.settings.image.alt | escape }}" 
                 class="lazyload"
+                loading="lazy"
                 width="{{ section.settings.image.width }}"
                 height="{{ section.settings.image.height }}"
               >
@@ -78,8 +82,10 @@
           {% elsif section.settings.image != blank %}
             <img 
               src="{{ section.settings.image | image_url }}" 
+              data-src="{{ section.settings.image | image_url }}"
               alt="{{ section.settings.image.alt | escape }}" 
               class="lazyload banner-image"
+              loading="lazy"
               width="{{ section.settings.image.width }}"
               height="{{ section.settings.image.height }}"
             >

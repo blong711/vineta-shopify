@@ -38,7 +38,8 @@
             alt="{{ section.settings.heading | escape }}"
             width="{{ section.settings.banner_image.width }}"
             height="{{ section.settings.banner_image.height }}"
-            class="lazyload effect-paralax">
+            class="lazyload effect-paralax"
+            loading="lazy">
         {%- else -%}
           {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
         {%- endif -%}
@@ -56,7 +57,8 @@
               alt="{{ section.settings.heading | escape }}"
               width="{{ section.settings.banner_image.width }}"
               height="{{ section.settings.banner_image.height }}"
-              class="lazyload">
+              class="lazyload"
+              loading="lazy">
           {%- else -%}
             {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
           {%- endif -%}

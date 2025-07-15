@@ -20,7 +20,9 @@
       <img src="{{ section.settings.image | image_url }}" 
            data-src="{{ section.settings.image | image_url }}" 
            alt="{{ section.settings.image.alt | escape }}" 
-           class="w-100 h-100 object-fit-cover ls-is-cached lazyloaded" width="600" height="400">
+           class="w-100 h-100 object-fit-cover ls-is-cached lazyloaded"
+           loading="lazy"
+           width="600" height="400">
     </div>
   </div>
 </section>
