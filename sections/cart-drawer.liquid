@@ -123,7 +123,6 @@
         <div class="tf-mini-cart-tool-openable coupon">
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form action="/cart" method="post" class="tf-mini-cart-tool-content" id="coupon-form">
-            <input type="hidden" name="authenticity_token" value="{{ 'csrf_token' | hmac_sha256: shop.permanent_domain }}">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.coupon.title' | t }}</div>
             <div class="tf-mini-cart-tool-text1" style="font-size: 14px;">{{ 'cart.drawer.coupon.message' | t }}</div>
             <input type="text" name="discount" placeholder="{{ 'cart.drawer.coupon.placeholder' | t }}" id="coupon-code-input">
@@ -138,7 +137,6 @@
         <div class="tf-mini-cart-tool-openable estimate-shipping">
           <div class="overplay tf-mini-cart-tool-close"></div>
           <form id="shipping-form" class="tf-mini-cart-tool-content" data-shipping-calculator>
-            <input type="hidden" name="authenticity_token" value="{{ 'csrf_token' | hmac_sha256: shop.permanent_domain }}">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.shipping.title' | t }}</div>
             <div class="field">
               <p class="text-sm">{{ 'cart.drawer.shipping.country' | t }}</p>

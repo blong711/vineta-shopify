@@ -231,6 +231,7 @@
     const suggestionsLoading = document.querySelector('.suggestions-loading');
     const viewAllContainer = document.querySelector('.view-all-container');
     const viewAllBtn = document.getElementById('view-all-btn');
+    
     let searchTimeout;
 
     // Format money helper function
@@ -247,6 +248,7 @@
       searchSpinner.classList.remove('d-none');
     });
 
+    // Enhanced search input handling
     searchInput.addEventListener('input', function(e) {
       const query = e.target.value.trim();
       
@@ -266,51 +268,56 @@
       suggestionsLoading.classList.remove('d-none');
       viewAllContainer.style.display = 'none';
 
-      // Set new timeout for search
+      // Set timeout for search suggestions
       searchTimeout = setTimeout(() => {
-        fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=8`)
-          .then(response => response.json())
-          .then(data => {
-            suggestionsLoading.classList.add('d-none');
-            suggestionsWrapper.style.display = 'grid';
-            
-            if (data.resources.results.products.length > 0) {
-              suggestionsWrapper.innerHTML = data.resources.results.products.map(product => `
-                <div class="loadItem card-product grid style-1">
-                  <div class="card-product-wrapper" style="aspect-ratio: 4/5;">
-                    <a href="${product.url}" class="product-img">
-                      <img src="${product.featured_image.url}" alt="${product.title}" width="300" height="300">
-                    </a>
-                  </div>
-                  <div class="card-product-info">
-                    <a class="name-product link fw-medium text-md" href="${product.url}">${product.title}</a>
-                    <p class="price-wrap fw-medium">
-                      ${product.compare_at_price > product.price ? 
-                        `<span class="price-new text-primary">${formatMoney(product.price)}</span>
-                         <span class="price-old text-dark">${formatMoney(product.compare_at_price)}</span>` :
-                        `<span class="price-new">${formatMoney(product.price)}</span>`
-                      }
-                    </p>
-                  </div>
-                </div>
-              `).join('');
-              
-              // Show "View All" button and set its href
-              viewAllBtn.href = `/search?q=${encodeURIComponent(query)}`;
-              viewAllContainer.style.display = 'block';
-            } else {
-              suggestionsContainer.style.display = 'none';
-              viewAllContainer.style.display = 'none';
-            }
-          })
-          .catch(error => {
-            console.error('{{ "general.search.error" | t }}', error);
-            suggestionsContainer.style.display = 'none';
-            suggestionsLoading.classList.add('d-none');
-            viewAllContainer.style.display = 'none';
-          });
-      }, 300); // 300ms delay to prevent too many requests
+        fetchSearchSuggestions(query);
+      }, 300);
     });
+
+    // Fetch search suggestions
+    function fetchSearchSuggestions(query) {
+      fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=8`)
+        .then(response => response.json())
+        .then(data => {
+          suggestionsLoading.classList.add('d-none');
+          suggestionsWrapper.style.display = 'grid';
+          
+          if (data.resources.results.products.length > 0) {
+            suggestionsWrapper.innerHTML = data.resources.results.products.map(product => `
+              <div class="loadItem card-product grid style-1">
+                <div class="card-product-wrapper" style="aspect-ratio: 4/5;">
+                  <a href="${product.url}" class="product-img">
+                    <img src="${product.featured_image.url}" alt="${product.title}" width="300" height="300">
+                  </a>
+                </div>
+                <div class="card-product-info">
+                  <a class="name-product link fw-medium text-md" href="${product.url}">${product.title}</a>
+                  <p class="price-wrap fw-medium">
+                    ${product.compare_at_price > product.price ? 
+                      `<span class="price-new text-primary">${formatMoney(product.price)}</span>
+                       <span class="price-old text-dark">${formatMoney(product.compare_at_price)}</span>` :
+                      `<span class="price-new">${formatMoney(product.price)}</span>`
+                    }
+                  </p>
+                </div>
+              </div>
+            `).join('');
+            
+            // Show "View All" button and set its href
+            viewAllBtn.href = `/search?q=${encodeURIComponent(query)}`;
+            viewAllContainer.style.display = 'block';
+          } else {
+            suggestionsContainer.style.display = 'none';
+            viewAllContainer.style.display = 'none';
+          }
+        })
+        .catch(error => {
+          console.error('{{ "general.search.error" | t }}', error);
+          suggestionsContainer.style.display = 'none';
+          suggestionsLoading.classList.add('d-none');
+          viewAllContainer.style.display = 'none';
+        });
+    }
 
     // Hide suggestions when clicking outside
     document.addEventListener('click', function(e) {
