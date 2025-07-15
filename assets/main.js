@@ -40,7 +40,7 @@ function qs(selector, scope = document) {
 }
 function qsa(selector, scope = document) {
   return Array.from(scope.querySelectorAll(selector));
-}
+        }
 function on(el, event, handler) {
   if (typeof handler === 'function') {
     el.addEventListener(event, handler);
@@ -49,14 +49,14 @@ function on(el, event, handler) {
 function onAll(selector, event, handler, scope = document) {
   if (typeof handler === 'function') {
     qsa(selector, scope).forEach(el => on(el, event, handler));
-  }
+    }
 }
 function addClass(el, className) {
   el.classList.add(className);
 }
 function removeClass(el, className) {
   el.classList.remove(className);
-}
+        }
 function setText(el, text) {
   el.textContent = text;
 }
@@ -71,7 +71,7 @@ function getAttr(el, attr) {
 }
 function setStyle(el, prop, value) {
   el.style[prop] = value;
-}
+    }
 
 // CSRF Protected Fetch Utility
   var csrfFetch = function(url, options = {}) {
@@ -1029,13 +1029,14 @@ function setStyle(el, prop, value) {
       });
     });
 
-    // Initialize Choices.js for all .image-select select elements
-    if (window.Choices) {
-      document.querySelectorAll('.image-select select').forEach(select => {
-        new Choices(select, {
-          searchEnabled: false,
-          itemSelectText: '',
-          shouldSort: false
+    // Initialize Tom Select for all select.image-select elements
+    if (window.TomSelect) {
+      document.querySelectorAll('select.image-select').forEach(function(select) {
+        new TomSelect(select, {
+          create: false,
+          searchField: [],
+          openOnFocus: true,
+          controlInput: null,
         });
       });
     }

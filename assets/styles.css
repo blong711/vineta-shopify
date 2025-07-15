@@ -28199,64 +28199,69 @@ html, body {
     height: 100%;
     background-color: var(--line);
 }
-.choices {
-  display: inline-block;
-  min-width: unset;
-  margin: 0 8px 0 0;
-  vertical-align: middle;
-  font-size: 16px;
-  background: none;
-  border: none;
-  box-shadow: none;
+/* Remove Tom Select border, background, and arrow */
+.ts-wrapper {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
 }
-.choices__inner {
-  background: none;
-  border: none;
-  min-height: unset;
-  padding: 0 18px 0 0;
-  font-size: 16px;
+.ts-control {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  color: #fff; /* or your topbar text color */
+}
+.ts-control .item {
+  padding: 0 !important;
+  background: none !important;
+  border: none !important;
   color: #fff;
-  box-shadow: none;
+  font-size: 14px;
 }
-.choices__list--single {
-  padding: 0;
-  display: flex;
-  align-items: center;
+.ts-dropdown {
+  background: #fff !important;
+  border-radius: 8 !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+  margin-top: 10px !important;
+  min-width: 160px !important;
+  padding: 8px 0 !important;
+  border: none !important;
 }
-.choices__list--dropdown, .choices__list[aria-expanded] {
-  background: #222;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  min-width: 160px;
-  color: #fff;
+.ts-dropdown .option {
+  color: #222 !important;
+  background: none !important;
+  padding: 8px 20px !important;
+  border-radius: 0 !important;
+  font-weight: normal;
+  transition: background 0.2s;
 }
-.choices__item--selectable {
-  padding: 8px 16px;
-  font-size: 16px;
-  color: #fff;
+.ts-dropdown .option.selected,
+.ts-dropdown .option.active {
+  color: #ff6f61 !important; /* your theme's accent color */
+  background: none !important;
 }
-.choices__item--selectable.is-highlighted, 
-.choices__item--selectable:hover {
-  background: #333;
-  color: #fff;
+.ts-dropdown .option:hover {
+  background: #f8f8f8 !important;
 }
-.choices[data-type*=select-one] .choices__inner::after {
-  content: '\25BC'; /* ▼ */
+.ts-dropdown-content {
+  font-size: 14px !important;
+}
+.ts-wrapper.single .ts-control:after {
+  content: "\e95a";
+  font-family: "icomoon";
   font-size: 10px;
-  color: #fff;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  display: block;
   position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 16px;
   pointer-events: none;
-  border: none;
-  margin: 0;
-}
-.choices[data-type*=select-one] .choices__inner {
-  position: relative;
-  padding-right: 18px;
-}
-.choices__placeholder {
-  opacity: 1;
+  background: url("data:image/svg+xml,%3Csvg width='16' height='16' fill='none' stroke='%23222' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;
+  transform: translateY(-50%);
   color: #fff;
 }
