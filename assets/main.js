@@ -661,13 +661,13 @@ function setStyle(el, prop, value) {
   /* Infinite Slide
   ----------------------------------------------------------------------------*/
   var infiniteSlide = function () {
-    if (qsa(".infiniteslide").length > 0) {
+    if (qsa(".infiniteslide").length > 0 && typeof infiniteslide === 'function') {
       qsa(".infiniteslide").forEach(function (container) {
         var $this = container;
         var style = getData($this, "style") || "left";
         var clone = getData($this, "clone") || 2;
         var speed = getData($this, "speed") || 100;
-        $this.infiniteslide({
+        infiniteslide($this, {
           speed: speed,
           direction: style,
           clone: clone,
@@ -1106,13 +1106,7 @@ function setStyle(el, prop, value) {
     // If WOW.js is still needed, it should be re-added and initialized here.
 
     // Initialize infiniteslide for all .infiniteslide elements
-    document.querySelectorAll('.infiniteslide').forEach(el => {
-      infiniteslide(el, {
-        speed: el.dataset.speed ? Number(el.dataset.speed) : undefined,
-        direction: el.dataset.style || undefined,
-        clone: el.dataset.clone ? Number(el.dataset.clone) : undefined
-      });
-    });
+    // This is now handled by the infiniteSlide function above
 
     // Initialize Tom Select for all select.image-select elements
     if (window.TomSelect) {
