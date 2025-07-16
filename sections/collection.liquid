@@ -2350,27 +2350,26 @@
 
     // Handle clear all filters
     const clearAllBtn = document.getElementById('remove-all');
-    if (clearAllBtn) {
-      clearAllBtn.addEventListener('click', function() {
-        // Show loading spinner
-        showFilterLoading();
-        
-        // Update URL and navigate to refresh the page
-        const url = new URL(window.location.href);
-        
-        // Clear all filter parameters
-        for (const param of url.searchParams.keys()) {
-          if (param.startsWith('filter.v.')) {
-            url.searchParams.delete(param);
+      if (clearAllBtn) {
+        clearAllBtn.addEventListener('click', function(e) {
+          e.preventDefault(); 
+          showFilterLoading();
+
+          const url = new URL(window.location.href);
+
+          // Collect all filter keys first
+          const paramsToDelete = [];
+          for (const param of url.searchParams.keys()) {
+            if (param.startsWith('filter.v.')) {
+              paramsToDelete.push(param);
+            }
           }
-        }
-        
-        console.log('Clearing all filters, navigating to:', url.toString());
-        
-        // Navigate to the new URL to refresh the page
-        window.location.href = url.toString();
-      });
-    }
+          paramsToDelete.forEach(param => url.searchParams.delete(param));
+
+          console.log('Clearing all filters, navigating to:', url.toString());
+          window.location.href = url.toString();
+        });
+      }
 
     // Handle load more functionality
     const loadMoreListBtn = document.getElementById('loadMoreListBtn');
