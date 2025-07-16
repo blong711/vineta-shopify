@@ -56,3 +56,10 @@ document.addEventListener('hidden.bs.modal', function(e) {
 
 // Usage: Bootstrap modals will trigger these events automatically.
 // No jQuery required.
+
+// If you instantiate or use MultiModal at the top level, wrap it like this:
+document.addEventListener('DOMContentLoaded', function() {
+  // Example usage:
+  // const modalManager = new MultiModal(document.getElementById('your-modal-element'));
+  // modalManager.show(...);
+});

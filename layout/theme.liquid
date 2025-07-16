@@ -84,13 +84,16 @@
     <link rel="stylesheet" href="{{ 'bootstrap.min.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
     
-    <!-- Non-critical CSS - Load asynchronously for better performance -->
-    <link rel="preload" href="{{ 'font-icons.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="{{ 'swiper-bundle.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="{{ 'photoswipe.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="{{ 'animate.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="{{ 'styles.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="{{ 'responsive-images.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    {{ 'fonts.css' | asset_url | stylesheet_tag }}
+    {{ 'font-icons.css' | asset_url | stylesheet_tag }}
+    {{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}
+    {{ 'bootstrap-select.min.css' | asset_url | stylesheet_tag }}
+    {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+    {{ 'photoswipe.css' | asset_url | stylesheet_tag }}
+    {{ 'animate.css' | asset_url | stylesheet_tag }}
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    {{ 'styles.css' | asset_url | stylesheet_tag }}
+    {{ 'responsive-images.css' | asset_url | stylesheet_tag }}
     
     <!-- Fallback for browsers that don't support preload -->
     <noscript>

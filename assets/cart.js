@@ -130,7 +130,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   };
 
-  // Prevent cart drawer from opening on cart page
   const isCartPage = window.location.pathname === '/cart';
   if (isCartPage) {
     // Override the openCartDrawer function
@@ -150,14 +149,12 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.tf-toolbar-bottom .toolbar-item a[href="#shoppingCart"]').forEach(trigger => {
       // Remove the data-bs-toggle attribute to prevent Bootstrap offcanvas
       trigger.removeAttribute('data-bs-toggle');
-      
       // Override the onclick handler
       trigger.onclick = function(e) {
         e.preventDefault();
         e.stopPropagation();
         return false;
       };
-      
       // Also prevent any Bootstrap offcanvas events
       trigger.addEventListener('click', function(e) {
         e.preventDefault();
@@ -171,7 +168,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (cartDrawer) {
       cartDrawer.remove();
     }
-    
     // Also prevent any Bootstrap offcanvas events for shoppingCart
     document.addEventListener('click', function(e) {
       if (e.target.closest('a[href="#shoppingCart"]')) {
