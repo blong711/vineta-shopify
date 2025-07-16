@@ -36,8 +36,8 @@
     <div class="offcanvas offcanvas-start canvas-sidebar canvas-filter" id="filterShop">
       <div class="canvas-wrapper">
         <div class="canvas-header">
-          <span class="title">Filter</span>
-          <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          <span class="title">{{ 'sections.collection.filter' | t }}</span>
+          <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="{{ 'sections.collection.close' | t }}"></button>
         </div>
                   <div class="canvas-body">
             {% render 'filter-content', 
@@ -104,7 +104,7 @@
             <div class="tf-group-filter">
               <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="filterShop" class="tf-btn-filter">
                 <span class="icon icon-filter"></span>
-                <span class="text">Filter</span>
+                <span class="text">{{ 'sections.collection.filter' | t }}</span>
               </a>
               <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
                 <div class="btn-select">
@@ -134,7 +134,7 @@
             <div class="tf-group-filter">
               <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="filterShop" class="tf-btn-filter d-lg-none">
                 <span class="icon icon-filter"></span>
-                <span class="text">Filter</span>
+                <span class="text">{{ 'sections.collection.filter' | t }}</span>
               </a>
               <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
                 <div class="btn-select">
@@ -256,13 +256,13 @@
         </div>
         <form id="collection-filters-form" method="GET" action="{{ collection.url }}" class="filter-form">
           <div class="tf-filter-dropdown">
-            <span class="title-filter">Filter:</span>
+            <span class="title-filter">{{ 'sections.collection.filter' | t }}:</span>
             <div class="meta-dropdown-filter">
               <!-- Availability Filter -->
               <!-- Note: Counts are updated dynamically via JavaScript to reflect current filtered products -->
               <div class="dropdown dropdown-filter">
                 <div class="dropdown-toggle" id="availability" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-                  <span class="text-value">Availability</span>
+                  <span class="text-value">{{ 'sections.collection.availability' | t }}</span>
                   <span class="icon icon-arr-down"></span>
                 </div>
                 <div class="dropdown-menu" aria-labelledby="availability">
@@ -275,7 +275,7 @@
                         {% if current_tags contains 'filter.v.availability:1' %}checked{% endif %}
                         class="filter-checkbox tf-check">
                       <label for="Filter-availability-1" class="label">
-                        <span>In stock</span>
+                        <span>{{ 'sections.collection.in_stock' | t }}</span>
                         <span class="count">({{ collection.products | where: "available", true | size }})</span>
                       </label>
                     </li>
@@ -287,7 +287,7 @@
                         {% if current_tags contains 'filter.v.availability:0' %}checked{% endif %}
                         class="filter-checkbox tf-check">
                       <label for="Filter-availability-2" class="label">
-                        <span>Out of stock</span>
+                        <span>{{ 'sections.collection.out_of_stock' | t }}</span>
                         <span class="count">({{ collection.products | where: "available", false | size }})</span>
                       </label>
                     </li>
@@ -325,14 +325,14 @@
                           </ul>
                         {%- when 'price_range' -%}
                           <div class="collapse-body widget-price filter-price">
-                            <span class="reset-price">Reset</span>
+                            <span class="reset-price">{{ 'sections.collection.reset' | t }}</span>
                             <div class="price-val-range" id="price-value-range-horizontal" 
                               data-min="{{ filter.min_value.value | default: 0 | money_without_currency | round }}"
                               data-max="{{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}"
                               data-range-min="{{ filter.range_min | money_without_currency | round }}"
                               data-range-max="{{ filter.range_max | money_without_currency | round }}"></div>
                             <div class="box-value-price">
-                              <span class="text-sm">Price:</span>
+                              <span class="text-sm">{{ 'sections.collection.price' | t }}</span>
                               <div class="price-box">
                                 <div class="price-val" id="price-min-value-horizontal" data-currency="{{ shop.currency.symbol }}">
                                   {{ filter.min_value.value | default: 0 | money_without_currency | round }}
@@ -370,7 +370,7 @@
               {%- if unique_colors.size > 0 -%}
                 <div class="dropdown dropdown-filter">
                   <div class="dropdown-toggle" id="color-filter" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-                    <span class="text-value">Color</span>
+                    <span class="text-value">{{ 'sections.collection.color' | t }}</span>
                     <span class="icon icon-arr-down"></span>
                   </div>
                   <div class="dropdown-menu" aria-labelledby="color-filter">
@@ -422,7 +422,7 @@
               {%- if unique_sizes.size > 0 -%}
                 <div class="dropdown dropdown-filter">
                   <div class="dropdown-toggle" id="size-filter" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-                    <span class="text-value">Size</span>
+                    <span class="text-value">{{ 'sections.collection.size' | t }}</span>
                     <span class="icon icon-arr-down"></span>
                   </div>
                   <div class="dropdown-menu" aria-labelledby="size-filter">
@@ -463,8 +463,8 @@
 
     <div class="wrapper-control-shop" data-pagination-type="{{ section.settings.pagination_type }}">
       <div class="meta-filter-shop" style="display: {% if current_tags.size > 0 or request.search != blank %}block{% else %}none{% endif %};">
-          <div id="product-count-grid" class="count-text" style="display: {% if current_tags.size > 0 or request.search contains 'filter.v' %}block{% else %}none{% endif %};"><span class="count">{{ collection.products_count }}</span> Products found</div>
-          <div id="product-count-list" class="count-text" style="display: {% if current_tags.size > 0 or request.search contains 'filter.v' %}block{% else %}none{% endif %};"><span class="count">{{ collection.products_count }}</span> Products found</div>
+          <div id="product-count-grid" class="count-text" style="display: {% if current_tags.size > 0 or request.search contains 'filter.v' %}block{% else %}none{% endif %};"><span class="count">{{ collection.products_count }}</span> {{ 'sections.collection.products_found' | t }}</div>
+          <div id="product-count-list" class="count-text" style="display: {% if current_tags.size > 0 or request.search contains 'filter.v' %}block{% else %}none{% endif %};"><span class="count">{{ collection.products_count }}</span> {{ 'sections.collection.products_found' | t }}</div>
           <div id="applied-filters">
             {% comment %} Show current tags as applied filters {% endcomment %}
             {% if current_tags.size > 0 %}
@@ -545,7 +545,7 @@
             {% endfor %}
           </div>
           <button id="remove-all" class="remove-all-filters">
-            <i class="icon icon-close"></i> Clear all filter
+            <i class="icon icon-close"></i> {{ 'sections.collection.clear_all_filter' | t }}
           </button>
       </div>
 
@@ -574,10 +574,10 @@
                   <path d="M14.5 15.03C14.5 15.03 13.5 15.03 12.5 16.03C11.5 17.03 11.5 19.03 11.5 19.03" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
-              <h3 class="no-products-title">No products found</h3>
-              <p class="no-products-description">We couldn't find any products matching your criteria. Try adjusting your filters or browse our other collections.</p>
+              <h3 class="no-products-title">{{ 'sections.collection.no_products_found' | t }}</h3>
+              <p class="no-products-description">{{ 'sections.collection.no_products_description' | t }}</p>
               <div class="no-products-actions">
-                <a href="/collections" class="tf-btn btn-out-line-dark2">Browse all collections</a>
+                <a href="/collections" class="tf-btn btn-out-line-dark2">{{ 'sections.collection.browse_all_collections' | t }}</a>
               </div>
             </div>
           </div>
@@ -587,7 +587,7 @@
           {% if paginate.next %}
             <div class="wd-load">
               <button id="loadMoreListBtn" class="tf-btn btn-out-line-dark2 tf-loading loadmore">
-                <span class="text">Load more</span>
+                <span class="text">{{ 'sections.collection.load_more' | t }}</span>
                 <div class="spinner-circle">
                   <span class="spinner-circle1 spinner-child"></span>
                   <span class="spinner-circle2 spinner-child"></span>
@@ -658,10 +658,10 @@
                   <path d="M14.5 15.03C14.5 15.03 13.5 15.03 12.5 16.03C11.5 17.03 11.5 19.03 11.5 19.03" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
-              <h3 class="no-products-title">No products found</h3>
-              <p class="no-products-description">We couldn't find any products matching your criteria. Try adjusting your filters or browse our other collections.</p>
+              <h3 class="no-products-title">{{ 'sections.collection.no_products_found' | t }}</h3>
+              <p class="no-products-description">{{ 'sections.collection.no_products_description' | t }}</p>
               <div class="no-products-actions">
-                <a href="/collections" class="tf-btn btn-out-line-dark2">Browse all collections</a>
+                <a href="/collections" class="tf-btn btn-out-line-dark2">{{ 'sections.collection.browse_all_collections' | t }}</a>
               </div>
             </div>
           </div>
@@ -671,7 +671,7 @@
           {% if paginate.next %}
             <div class="wd-load d-flex justify-content-center">
               <button id="loadMoreGridBtn" class="tf-btn btn-out-line-dark2 tf-loading loadmore">
-                <span class="text">Load more</span>
+                <span class="text">{{ 'sections.collection.load_more' | t }}</span>
                 <div class="spinner-circle">
                   <span class="spinner-circle1 spinner-child"></span>
                   <span class="spinner-circle2 spinner-child"></span>

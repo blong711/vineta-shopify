@@ -6,7 +6,7 @@
   <div class="container">
 {% endif %}
     <div class="flat-title wow fadeInUp">
-      <h4 class="title">{{ section.settings.title }}</h4>
+      <h4 class="title">{{ 'sections.recently_viewed.title' | t }}</h4>
     </div>
     <div class="hover-sw-nav hover-sw-2 wow wrap-pos-nav sw-over-product fadeInUp">
       <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
@@ -139,9 +139,9 @@ document.addEventListener('DOMContentLoaded', function() {
                    class="box-icon hover-tooltip tooltip-left add-to-cart" 
                    data-variant-id="${product.variants ? product.variants[0].id : product.id}"
                    data-quantity="1"
-                   aria-label="Add to cart">
+                   aria-label="{{ 'sections.recently_viewed.add_to_cart' | t }}">
                   <i class="icon icon-cart"></i>
-                  <span class="tooltip">Add to cart</span>
+                  <span class="tooltip">{{ 'sections.recently_viewed.add_to_cart' | t }}</span>
                 </a>
               </li>
               <li class="wishlist">
@@ -150,9 +150,9 @@ document.addEventListener('DOMContentLoaded', function() {
                    data-wishlist 
                    data-id="${product.id}" 
                    data-action="add"
-                   aria-label="Add to wishlist">
+                   aria-label="{{ 'sections.recently_viewed.add_to_wishlist' | t }}">
                   <span class="icon icon-heart2"></span>
-                  <span class="tooltip">Add to wishlist</span>
+                  <span class="tooltip">{{ 'sections.recently_viewed.add_to_wishlist' | t }}</span>
                 </a>
               </li>
               <li>
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
                    data-bs-toggle="modal" 
                    data-bs-target="#quickView">
                   <span class="icon icon-view"></span>
-                  <span class="tooltip">Quick view</span>
+                  <span class="tooltip">{{ 'sections.recently_viewed.quick_view' | t }}</span>
                 </a>
               </li>
               <li class="compare">
@@ -172,9 +172,9 @@ document.addEventListener('DOMContentLoaded', function() {
                    data-compare 
                    data-id="${product.id}" 
                    data-action="add"
-                   aria-label="Add to compare">
+                   aria-label="{{ 'sections.recently_viewed.add_to_compare' | t }}">
                   <span class="icon icon-compare"></span>
-                  <span class="tooltip">Add to compare</span>
+                  <span class="tooltip">{{ 'sections.recently_viewed.add_to_compare' | t }}</span>
                 </a>
               </li>
             </ul>
@@ -417,12 +417,6 @@ document.addEventListener('DOMContentLoaded', function() {
 {
   "name": "Recently Viewed",
   "settings": [
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Title",
-      "default": "Recently Viewed"
-    },
     {
       "type": "select",
       "id": "width",
