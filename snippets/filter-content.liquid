@@ -179,7 +179,7 @@
         <!-- Debug: Using product list source, products: {{ on_sale_products | size }}, on_sale_products: {{ on_sale_products }} -->
         {%- for product in on_sale_products -%}
           <!-- Debug: Product {{ product.title }} - compare: {{ product.compare_at_price }}, price: {{ product.price }} -->
-          {%- if product.compare_at_price > product.price -%}
+          {% comment %} {%- if product.compare_at_price > product.price -%} {% endcomment %}
                           <li>
                 <div class="recent-blog-item">
                   <a href="{{ product.url }}" class="img-product">
@@ -194,7 +194,7 @@
                   </div>
                 </div>
               </li>
-          {%- endif -%}
+          {% comment %} {%- endif -%} {% endcomment %}
         {%- endfor -%}
       {%- else -%}
         <!-- Debug: Using collection source, checking {{ collection.products.size }} products -->
