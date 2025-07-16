@@ -621,7 +621,7 @@ class WishlistCompare {
     // Add to cart button
     const addToCartLi = HTMLSanitizer.createElement('li');
     const addToCartLink = HTMLSanitizer.createElement('a', {
-      href: 'javascript:void(0);',
+      href: '#',
       class: 'box-icon hover-tooltip add-to-cart',
       'data-variant-id': product.variants[0].id,
       'data-quantity': '1',
@@ -639,7 +639,7 @@ class WishlistCompare {
     // Quickview button
     const quickviewLi = HTMLSanitizer.createElement('li');
     const quickviewLink = HTMLSanitizer.createElement('a', {
-      href: 'javascript:void(0);',
+      href: '#',
       class: 'box-icon hover-tooltip quickview',
       'data-product-handle': HTMLSanitizer.sanitizeText(product.handle),
       'data-product-id': product.id,
@@ -658,7 +658,7 @@ class WishlistCompare {
     // Compare button
     const compareLi = HTMLSanitizer.createElement('li', { class: 'compare' });
     const compareLink = HTMLSanitizer.createElement('a', {
-      href: 'javascript:void(0);',
+      href: '#',
       class: 'box-icon hover-tooltip tooltip-left',
       'data-compare': '',
       'data-id': product.id,
@@ -3256,5 +3256,20 @@ class CartNotificationManager {
 
 // Initialize global notification manager
 window.cartNotifications = new CartNotificationManager();
+
+/**
+ * Global event handler to prevent default behavior for href="#" links
+ * This prevents page jumping when clicking links with href="#"
+ */
+document.addEventListener('DOMContentLoaded', () => {
+  // Prevent default behavior for all links with href="#"
+  document.addEventListener('click', (e) => {
+    const target = e.target.closest('a[href="#"]');
+    if (target) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  });
+});
 
 // ... existing code ...

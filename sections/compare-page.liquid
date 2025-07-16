@@ -41,7 +41,7 @@
                             {% endif %}
                         </p>
                         <div class="tf-compare-btn">
-                            <a href="javascript:void(0);"
+                            <a href="#"
                                class="box-icon hover-tooltip tooltip-left add-to-cart"
                                data-variant-id="{{ product.variants[0].id }}"
                                data-quantity="1"
@@ -286,7 +286,7 @@ async function renderCompareTable() {
             ${product.comparePrice && product.comparePrice !== '' ? `<span class="price-old text-dark">${product.comparePrice}</span>` : ''}
           </p>
           <div class="tf-compare-btn">
-            <a href="javascript:void(0);"
+            <a href="#"
                class="tf-btn animate-btn w-100 add-to-cart"
                data-variant-id="${variantId}"
                data-quantity="1"

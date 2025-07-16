@@ -467,7 +467,7 @@
                         <input type="hidden" name="quantity" value="1">
                         {{ form | payment_button }}
                       {% endform %}
-                      <a href="javascript:void(0);" 
+                      <a href="#" 
                          style="font-size: 14px" 
                          class="more-choose-payment link buy-it-now" 
                          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
@@ -538,7 +538,7 @@
                         {% if block.settings.show_wishlist or block.settings.show_compare or block.settings.show_ask_question or block.settings.show_share %}
                           <div class="tf-product-info-extra-link" {{ block.shopify_attributes }}>
                             {% if block.settings.show_wishlist %}
-                              <a href="javascript:void(0);" 
+                              <a href="#" 
                                  class="product-extra-icon link btn-wishlist" 
                                  data-wishlist 
                                  data-id="{{ product.id }}" 
@@ -555,7 +555,7 @@
                               </a>
                             {% endif %}
                             {% if block.settings.show_compare %}
-                              <a href="javascript:void(0);" 
+                              <a href="#" 
                                  class="product-extra-icon link" 
                                  data-compare 
                                  data-id="{{ product.id }}" 
@@ -809,7 +809,7 @@
                     <button class="btn-quantity plus-btn">+</button>
                   </div>
                 </div>
-                <a href="javascript:void(0);" 
+                <a href="#" 
                    class="tf-btn hover-primary add-to-cart sticky-add-to-cart" 
                    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
                    data-quantity="1"

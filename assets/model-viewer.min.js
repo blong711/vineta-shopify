@@ -388,7 +388,7 @@ canvas {
       <a id="default-ar-button" part="default-ar-button" class="fab"
           tabindex="2"
           role="button"
-          href="javascript:void(0);"
+          href="#"
           aria-label="View in your space">
         ${jc`
 <svg version="1.1" id="view_x5F_in_x5F_AR_x5F_icon"
