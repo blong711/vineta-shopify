@@ -463,7 +463,14 @@
 
     <div class="wrapper-control-shop" data-pagination-type="{{ section.settings.pagination_type }}">
       <div class="meta-filter-shop" style="display: {% if current_tags.size > 0 or request.search != blank %}block{% else %}none{% endif %};">
-          <div id="product-count-grid" class="count-text" style="display: {% if current_tags.size > 0 or request.search contains 'filter.v' %}block{% else %}none{% endif %};"><span class="count">{{ collection.products_count }}</span> {{ 'sections.collection.products_found' | t }}</div>
+          <div id="product-count-grid" class="count-text" style="display: {% if current_tags.size > 0 or request.search contains 'filter.v' %}block{% else %}none{% endif %};">
+            <span class="count">{{ collection.products_count }}</span>
+            {% if collection.products_count == 1 %}
+              {{ 'sections.collection.product_found' | t }}
+            {% else %}
+              {{ 'sections.collection.products_found' | t }}
+            {% endif %}
+          </div>
           <div id="product-count-list" class="count-text" style="display: {% if current_tags.size > 0 or request.search contains 'filter.v' %}block{% else %}none{% endif %};"><span class="count">{{ collection.products_count }}</span> {{ 'sections.collection.products_found' | t }}</div>
           <div id="applied-filters">
             {% comment %} Show current tags as applied filters {% endcomment %}
