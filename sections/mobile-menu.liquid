@@ -6,7 +6,7 @@
 <div class="offcanvas offcanvas-start canvas-mb" id="mobileMenu" role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title">
   <button class="icon-close icon-close-popup" 
           data-bs-dismiss="offcanvas" 
-          aria-label="Close mobile menu"
+          aria-label="{{ 'sections.mobile_menu.close_mobile_menu' | t }}"
           aria-expanded="false">
   </button>
   <div class="mb-canvas-content">
@@ -15,14 +15,14 @@
         <form class="form-search search-form" action="/search" method="get" role="search">
           <input type="text" 
                  id="mobile-search"
-                 placeholder="Search product" 
+                 placeholder="{{ 'sections.mobile_menu.search_product' | t }}" 
                  class="search-input" 
                  name="q" 
                  value="{{ search.terms | escape }}"
                  aria-required="true" 
                  required>
           <input type="hidden" name="type" value="product">
-          <button type="submit" class="search-button" aria-label="Search">
+          <button type="submit" class="search-button" aria-label="{{ 'sections.mobile_menu.search' | t }}">
             <i class="icon icon-search" aria-hidden="true"></i>
           </button> 
         </form>
@@ -34,11 +34,11 @@
         <div class="group-icon">
           <a href="/pages/wishlist" class="site-nav-icon">
             <i class="icon icon-heart" aria-hidden="true"></i>
-            Wishlist
+            {{ 'sections.mobile_menu.wishlist' | t }}
           </a>
-          <a href="#login" data-bs-toggle="offcanvas" class="site-nav-icon" aria-label="Sign in to your account" aria-expanded="false">
+          <a href="#login" data-bs-toggle="offcanvas" class="site-nav-icon" aria-label="{{ 'sections.mobile_menu.sign_in_account' | t }}" aria-expanded="false">
             <i class="icon icon-user" aria-hidden="true"></i>
-            Login
+            {{ 'sections.mobile_menu.login' | t }}
           </a>
         </div>
         
@@ -54,11 +54,11 @@
         
         <ul class="mb-info">
           <li>
-            Email:
+            {{ 'sections.mobile_menu.email' | t }}
             <b class="fw-medium">{{ section.settings.email }}</b>
           </li>
           <li>
-            Phone:
+            {{ 'sections.mobile_menu.phone' | t }}
             <b class="fw-medium">{{ section.settings.phone }}</b>
           </li>
         </ul>
@@ -69,7 +69,7 @@
       <div class="bottom-bar-language">
         {% if section.settings.show_currency_selector %}
           <div class="tf-currencies">
-            <select id="mobile-currency-select" class="image-select center style-default type-currencies" name="currency" aria-label="Select currency">
+            <select id="mobile-currency-select" class="image-select center style-default type-currencies" name="currency" aria-label="{{ 'sections.mobile_menu.select_currency' | t }}">
               {% for currency in shop.enabled_currencies %}
                 <option value="{{ currency.iso_code }}" {% if currency == cart.currency %}selected{% endif %}>
                   {% if currency.iso_code == 'USD' %}
@@ -85,7 +85,7 @@
         
         {% if section.settings.show_language_selector %}
           <div class="tf-languages">
-            <select id="mobile-language-select" class="image-select center style-default type-languages" name="language" aria-label="Select language">
+            <select id="mobile-language-select" class="image-select center style-default type-languages" name="language" aria-label="{{ 'sections.mobile_menu.select_language' | t }}">
               {% for locale in shop.published_locales %}
                 <option value="{{ locale.iso_code }}" {% if locale.primary %}selected{% endif %}>
                   {{ locale.name }}

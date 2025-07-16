@@ -4,15 +4,15 @@
     <div class="box-title text-center">
       <h4 class="title">
         {% if template == 'list-collections' %}
-          Collections
+          {{ 'sections.page_title.collections' | t }}
         {% elsif template == 'page.compare' %}
-          Compare Products
+          {{ 'sections.page_title.compare_products' | t }}
         {% elsif template contains 'account' %}
-          My Account
+          {{ 'sections.page_title.my_account' | t }}
         {% elsif template contains 'login' %}
-          Login
+          {{ 'sections.page_title.login' | t }}
         {% elsif template contains 'page' and page.handle == 'faq' %}
-          Frequently Asked Questions
+          {{ 'sections.page_title.frequently_asked_questions' | t }}
         {% else %}
           {{ page_title | default: settings.title }}
         {% endif %}
@@ -21,7 +21,7 @@
       {% comment %} Enhanced Breadcrumb Implementation {% endcomment %}
       <div class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList">
         <a style="font-size: 14px;" class="breadcrumb-item" href="/" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-          <span itemprop="name">Home</span>
+          <span itemprop="name">{{ 'sections.page_title.home' | t }}</span>
           <meta itemprop="position" content="1" />
         </a>
         
@@ -29,7 +29,7 @@
         {% if template == 'list-collections' %}
           <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
           <span style="font-size: 14px;" class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-            <span itemprop="name">Collections</span>
+            <span itemprop="name">{{ 'sections.page_title.collections' | t }}</span>
             <meta itemprop="position" content="2" />
           </span>
           {% if collection.title != blank %}
@@ -43,7 +43,7 @@
         {% elsif template contains 'collection' %}
           <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
           <a style="font-size: 14px;" class="breadcrumb-item" href="/collections" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-            <span itemprop="name">Collections</span>
+            <span itemprop="name">{{ 'sections.page_title.collections' | t }}</span>
             <meta itemprop="position" content="2" />
           </a>
           {% if collection.title != blank %}
@@ -58,7 +58,7 @@
           {% comment %} Product breadcrumb: Home > Collections > Collection > Product {% endcomment %}
           <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
           <a style="font-size: 14px;" class="breadcrumb-item" href="/collections" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-            <span itemprop="name">Collections</span>
+            <span itemprop="name">{{ 'sections.page_title.collections' | t }}</span>
             <meta itemprop="position" content="2" />
           </a>
           
@@ -81,7 +81,7 @@
           {% comment %} Blog breadcrumb: Home > Blog > Article (if single post) {% endcomment %}
           <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
           <a style="font-size: 14px;" class="breadcrumb-item" href="/blogs" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-            <span itemprop="name">Blog</span>
+            <span itemprop="name">{{ 'sections.page_title.blog' | t }}</span>
             <meta itemprop="position" content="2" />
           </a>
           
@@ -104,33 +104,33 @@
         {% elsif template contains 'search' %}
           <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
           <span style="font-size: 14px;" class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-            <span itemprop="name">Search Results</span>
+            <span itemprop="name">{{ 'sections.page_title.search_results' | t }}</span>
             <meta itemprop="position" content="2" />
           </span>
           
         {% elsif template contains 'cart' %}
           <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
           <span style="font-size: 14px;" class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-            <span itemprop="name">Shopping Cart</span>
+            <span itemprop="name">{{ 'sections.page_title.shopping_cart' | t }}</span>
             <meta itemprop="position" content="2" />
           </span>
           
         {% elsif template contains 'checkout' %}
           <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
           <a style="font-size: 14px;" class="breadcrumb-item" href="/cart" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-            <span itemprop="name">Shopping Cart</span>
+            <span itemprop="name">{{ 'sections.page_title.shopping_cart' | t }}</span>
             <meta itemprop="position" content="2" />
           </a>
           <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
           <span style="font-size: 14px;" class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-            <span itemprop="name">Checkout</span>
+            <span itemprop="name">{{ 'sections.page_title.checkout' | t }}</span>
             <meta itemprop="position" content="3" />
           </span>
           
         {% elsif template contains 'account' %}
           <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
           <span style="font-size: 14px;" class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-            <span itemprop="name">My Account</span>
+            <span itemprop="name">{{ 'sections.page_title.my_account' | t }}</span>
             <meta itemprop="position" content="2" />
           </span>
           
@@ -179,7 +179,7 @@
           <span class="description-short">{{ description_text | strip_html | truncate: truncate_length }}</span>
           <span class="description-full" style="display: none;">{{ description_text | strip_html }}</span>
           {% if description_text.size > truncate_length %}
-            <button class="read-more-btn" style="background: none; border: none; color: #666; cursor: pointer; padding: 0; margin-left: 5px; text-decoration: underline;">Read More</button>
+            <button class="read-more-btn" style="background: none; border: none; color: #666; cursor: pointer; padding: 0; margin-left: 5px; text-decoration: underline;">{{ 'sections.page_title.read_more' | t }}</button>
           {% endif %}
         </p>
       {% endif %}
@@ -207,11 +207,11 @@
         if (shortDesc.style.display !== 'none') {
           shortDesc.style.display = 'none';
           fullDesc.style.display = 'inline';
-          this.textContent = 'Show Less';
+          this.textContent = '{{ 'sections.page_title.show_less' | t }}';
         } else {
           shortDesc.style.display = 'inline';
           fullDesc.style.display = 'none';
-          this.textContent = 'Read More';
+          this.textContent = '{{ 'sections.page_title.read_more' | t }}';
         }
       });
     });

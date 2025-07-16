@@ -306,6 +306,28 @@
       "view_all": "View All",
       "items": "items"
     },
+    "coming_soon": {
+      "thank_you_message": "Thank you! You've been successfully added to our notification list.",
+      "invalid_email_alert": "Please enter a valid email address.",
+      "submitting_text": "Submitting..."
+    },
+    "compare": {
+      "add_to_cart": "Add to Cart",
+      "in_stock": "In Stock",
+      "vendor": "Vendor",
+      "color": "Color",
+      "availability": "Availability",
+      "na": "N/A"
+    },
+    "contact_us": {
+      "address_label": "Address:",
+      "phone_label": "Phone number:",
+      "email_label": "Email:",
+      "open_label": "Open:",
+      "name_label": "Your name*",
+      "email_input_label": "Your email*",
+      "message_label": "Message*"
+    },
     "collection": {
       "filter": "Filter",
       "close": "Close",
@@ -423,12 +445,77 @@
       "material_imported": "Imported"
     },
     "main_login": {
+      "log_in": "Log in",
+      "email": "Email",
+      "password": "Password",
+      "forgot_password": "Forgot your password?",
+      "reset_password": "Reset your password",
+      "reset_description": "We will send you an email to reset your password.",
+      "reset_success_message": "We've sent you an email with a link to update your password.",
       "submit": "Submit",
       "back_to_login": "Back to login",
       "register": "Register",
       "sending": "Sending...",
       "reset_success": "We've sent you an email with a link to update your password.",
       "error_message": "An error occurred. Please try again."
+    },
+    "main_reset_password": {
+      "reset_password": "Reset your password",
+      "enter_new_password": "Enter a new password for your account",
+      "password": "Password",
+      "confirm_password": "Confirm password",
+      "reset_password_button": "Reset password"
+    },
+    "mobile_menu": {
+      "close_mobile_menu": "Close mobile menu",
+      "search_product": "Search product",
+      "search": "Search",
+      "wishlist": "Wishlist",
+      "login": "Login",
+      "sign_in_account": "Sign in to your account",
+      "email": "Email:",
+      "phone": "Phone:",
+      "select_currency": "Select currency",
+      "select_language": "Select language"
+    },
+    "mobile_toolbar": {
+      "home": "Home",
+      "account": "Account",
+      "shop": "Shop",
+      "wishlist": "Wishlist",
+      "cart": "Cart"
+    },
+    "newsletter_popup": {
+      "newsletter": "Newsletter",
+      "privacy_policy": "Privacy Policy"
+    },
+    "page_title": {
+      "collections": "Collections",
+      "compare_products": "Compare Products",
+      "my_account": "My Account",
+      "login": "Login",
+      "frequently_asked_questions": "Frequently Asked Questions",
+      "home": "Home",
+      "blog": "Blog",
+      "search_results": "Search Results",
+      "shopping_cart": "Shopping Cart",
+      "checkout": "Checkout",
+      "read_more": "Read More",
+      "show_less": "Show Less"
+    },
+    "pickup_available": {
+      "close": "Close",
+      "pickup_available_at": "Pickup available at",
+      "usually_ready_in": "Usually ready in"
+    },
+    "search_page": {
+      "products_found": "Products found",
+      "recently_viewed_products": "Recently Viewed Products",
+      "add_to_cart": "Add to cart",
+      "add_to_wishlist": "Add to wishlist",
+      "quick_view": "Quick view",
+      "add_to_compare": "Add to compare",
+      "off": "Off"
     },
     "main_register": {
       "register": "Register",
@@ -459,7 +546,20 @@
       "of": "of",
       "addresses": "addresses",
       "previous": "Previous",
-      "next": "Next"
+      "next": "Next",
+      "nav_dashboard": "Dashboard",
+      "nav_my_orders": "My Orders",
+      "nav_my_wishlist": "My Wishlist",
+      "nav_addresses": "Addresses",
+      "nav_log_out": "Log Out",
+      "your_addresses": "Your addresses",
+      "add_new_address": "Add new address",
+      "update": "Update",
+      "sidebar_account": "SIDEBAR ACCOUNT",
+      "close": "Close",
+      "please_correct_errors": "Please correct the following errors:",
+      "error": "Error:",
+      "select_province_state": "Select Province/State"
     },
     "product": {
       "submit": "Submit",
@@ -520,6 +620,87 @@
           "label": "Content"
         }
       }
+    },
+    "store_location": {
+      "address_label": "Address:",
+      "phone_label": "Phone number:",
+      "email_label": "Email:",
+      "open_label": "Open:",
+      "get_direction_button": "Get direction"
+    },
+    "sub_collection": {
+      "items": "items",
+      "button_text": "View all"
+    },
+    "testimonials": {
+      "verified_buyer": "Verified Buyer",
+      "item_purchased": "Item purchased:",
+      "purchase_item": "Purchase item:"
+    },
+    "wishlist": {
+      "loading": "Loading wishlist...",
+      "empty": "No product were added to the wishlist.",
+      "back_to_shopping": "Back to Shopping",
+      "add_to_cart": "Add to Cart",
+      "quick_view": "Quick View",
+      "add_to_compare": "Add to Compare",
+      "sold_out": "Sold Out"
+    }
+  },
+  "snippets": {
+    "compare_drawer": {
+      "title": "Compare Products",
+      "compare_button": "Compare",
+      "clear_all": "Clear All"
+    },
+    "filter_content": {
+      "collections": "Collections",
+      "availability": "Availability",
+      "in_stock": "In stock",
+      "out_of_stock": "Out of stock",
+      "price_label": "Price:",
+      "reset": "Reset"
+    },
+    "header_menu_item": {
+      "all_categories": "All Categories",
+      "search_demo_placeholder": "Search demo...",
+      "no_demos_found": "No demos found.",
+      "default_banner_title": "Unveiling the latest gear"
+    },
+    "quickview_modal": {
+      "add_to_cart": "Add to cart",
+      "buy_it_now": "Buy It Now",
+      "more_payment_options": "More payment options",
+      "view_full_details": "View full details",
+      "remove": "Remove",
+      "default": "Default",
+      "add_to_cart_error": "Failed to add item to cart. Please try again.",
+      "buy_now_error": "Failed to process Buy It Now. Please try again."
+    },
+    "register_drawer": {
+      "create_account": "Create account",
+      "close": "Close",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email*",
+      "password": "Password*",
+      "newsletter_text": "Sign up for early Sale access plus tailored new arrivals, trends and promotions. To opt out, click unsubscribe in our emails.",
+      "sign_up": "Sign up",
+      "sign_in": "Sign in"
+    },
+    "var_adm": {
+      "welcome_message": "Welcome to {{ Name }} 🎉",
+      "follow_steps": "Follow these simple steps to activate your theme & get started:",
+      "step1_title": "Step 1: Activate theme",
+      "step1_instruction1": "Go to \"Theme Settings\" > \"Theme Activate\"",
+      "step1_instruction2": "Enter your theme purchase code (license code) and save it",
+      "see_guide": "See detailed guide here",
+      "step2_title": "Step 2: Import theme demos in a click",
+      "step2_instruction": "Simply install EcomRise (FREE) to import demos and update the latest theme versions in the future, with just a single click. (Otherwise, you will need to import demos using JSON codes, which is much more complex & time-taking)",
+      "recommended_app": "Recommended app:",
+      "ecomposer_description": "EComposer Page Builder - an advanced design tool for your website (drag-drop editor, 300+ pre-made templates, 20+ boost sales add-ons)",
+      "special_offer": "Special offer: Install EComposer HERE. Then open chatbox icon in EComposer and leave a message with subject \"{{ Name }}+EComposer\" to upgrade EComposer Standard Plan for Free 6 months (Save $114)",
+      "install_ecomposer": "Install EComposer"
     }
   },
   "settings_schema": {

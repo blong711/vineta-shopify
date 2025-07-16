@@ -16,7 +16,7 @@
     <div class="canvas-wrapper">
       <div class="popup-header">
         <span class="title">{{ section.settings.popup_title }}</span>
-        <span class="icon-close icon-close-popup" data-bs-dismiss="modal" aria-label="Close"></span>
+        <span class="icon-close icon-close-popup" data-bs-dismiss="modal" aria-label="{{ 'sections.pickup_available.close' | t }}"></span>
       </div>
       <div class="popup-inner">
         <div class="pickup-available-list">
@@ -27,8 +27,8 @@
                   <div class="title text-lg fw-medium">{{ block.settings.store_name }}</div>
                   <div class="desc d-flex gap-8 align-items-center">
                     <i class="icon icon-fill-check-circle"></i>
-                    <div class="text-sm">Pickup available at <span class="fw-medium">{{ block.settings.store_display_name }}</span>.
-                      Usually ready in {{ block.settings.ready_time }}.</div>
+                    <div class="text-sm">{{ 'sections.pickup_available.pickup_available_at' | t }} <span class="fw-medium">{{ block.settings.store_display_name }}</span>.
+                      {{ 'sections.pickup_available.usually_ready_in' | t }} {{ block.settings.ready_time }}.</div>
                   </div>
                   <ul>
                     {% if block.settings.address_line_1 != blank %}

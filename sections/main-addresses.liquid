@@ -37,38 +37,38 @@
                             <ul class="my-account-nav">
                                 <li>
                                     <a href="{{ routes.account_url }}" class="text-sm link fw-medium my-account-nav-item {% if template == 'customers/account' %}active{% endif %}">
-                                        Dashboard
+                                        {{ 'sections.main_addresses.nav_dashboard' | t }}
                                     </a>
                                 </li>
                                 <li>
                                     <a href="/pages/orders" class="text-sm link fw-medium my-account-nav-item {% if template == 'customers/orders' %}active{% endif %}">
-                                        My Orders
+                                        {{ 'sections.main_addresses.nav_my_orders' | t }}
                                     </a>
                                 </li>
                                 <li>
                                     <a href="/pages/wishlist" class="text-sm link fw-medium my-account-nav-item {% if template == 'customers/wishlist' %}active{% endif %}">
-                                        My Wishlist
+                                        {{ 'sections.main_addresses.nav_my_wishlist' | t }}
                                     </a>
                                 </li>
                                 <li>
                                     <a href="/account/addresses" class="text-sm link fw-medium my-account-nav-item {% if template == 'customers/addresses' %}active{% endif %}">
-                                        Addresses
+                                        {{ 'sections.main_addresses.nav_addresses' | t }}
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{{ routes.account_logout_url }}" class="text-sm link fw-medium my-account-nav-item">
-                                        Log Out
+                                        {{ 'sections.main_addresses.nav_log_out' | t }}
                                     </a>
                                 </li>
                             </ul>
                         </div>
                         <div class="my-acount-content account-address">
                             <h6 class="title-account">
-                                Your addresses ({{ customer.addresses_count }})
+                                {{ 'sections.main_addresses.your_addresses' | t }} ({{ customer.addresses_count }})
                             </h6>
                             <div class="widget-inner-address">
                                 <button class="tf-btn btn-add-address animate-btn" data-form="form-add-address">
-                                    Add new address
+                                    {{ 'sections.main_addresses.add_new_address' | t }}
                                 </button>
 
                                 {% form 'customer_address', customer.new_address %}
@@ -78,7 +78,7 @@
                                     {% comment %} Display server-side errors {% endcomment %}
                                     {% if form.errors %}
                                     <div class="form-errors" style="background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 10px; margin-bottom: 20px; border-radius: 4px;">
-                                        <strong>Please correct the following errors:</strong>
+                                        <strong>{{ 'sections.main_addresses.please_correct_errors' | t }}</strong>
                                         <ul style="margin: 5px 0 0 20px;">
                                             {% for field in form.errors %}
                                                 {% for error in field %}
@@ -91,7 +91,7 @@
                                     
                                     {% comment %} General error message area {% endcomment %}
                                     <div class="general-error" id="general-error" style="display: none; background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 10px; margin-bottom: 20px; border-radius: 4px;">
-                                        <strong>Error:</strong> <span id="general-error-text"></span>
+                                        <strong>{{ 'sections.main_addresses.error' | t }}</strong> <span id="general-error-text"></span>
                                     </div>
                                     <div class="cols">
                                         <fieldset>
@@ -156,7 +156,7 @@
                                                     data-default="{{ form.province }}"
                                                     autocomplete="address-level1"
                                                 >
-                                                    <option value="">Select Province/State</option>
+                                                    <option value="">{{ 'sections.main_addresses.select_province_state' | t }}</option>
                                                 </select>
                                                 <span class="svg-wrapper">
                                                     {{- 'icon-caret.svg' | inline_asset_content -}}
@@ -307,15 +307,15 @@
                                     <div class="tf-cart-checkbox">
                                         <input type="checkbox" name="address[default]" class="tf-check" id="default-address-edit-{{ address.id }}" {% if address.default %}checked{% endif %}>
                                         <label for="default-address-edit-{{ address.id }}" class="label">
-                                            <span>Set as default address</span>
+                                            <span>{{ 'sections.main_addresses.set_as_default' | t }}</span>
                                         </label>
                                     </div>
                                     <div class="box-btn">
                                         <button class="tf-btn animate-btn" type="submit">
-                                            Update
+                                            {{ 'sections.main_addresses.update' | t }}
                                         </button>
                                         <a href="#" class="tf-btn btn-out-line-dark btn-hide-edit-address">
-                                            Cancel
+                                            {{ 'sections.main_addresses.cancel' | t }}
                                         </a>
                                     </div>
                                 </div>
@@ -334,8 +334,8 @@
         <div class="offcanvas offcanvas-start canvas-filter canvas-sidebar canvas-sidebar-account" id="mbAccount">
             <div class="canvas-wrapper">
                 <div class="canvas-header">
-                    <span class="title">SIDEBAR ACCOUNT</span>
-                    <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    <span class="title">{{ 'sections.main_addresses.sidebar_account' | t }}</span>
+                    <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="{{ 'sections.main_addresses.close' | t }}"></button>
                 </div>
                 <div class="canvas-body">
                     <div class="sidebar-account-wrap sidebar-mobile-append"></div>

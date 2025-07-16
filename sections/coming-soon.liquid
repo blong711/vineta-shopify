@@ -101,7 +101,7 @@
               </div>
             </form>
             <div id="coming-soon-submit-message" class="coming-soon-submit-message" style="margin-top: 15px; color: #28a745; font-size: 14px; display: none; text-align: center;">
-              Thank you! You've been successfully added to our notification list.
+              {{ 'sections.coming_soon.thank_you_message' | t }}
             </div>
           </div>
           <div class="bot">
@@ -132,14 +132,14 @@
         
         // Basic email validation
         if (!email || !email.includes('@')) {
-          alert('Please enter a valid email address.');
+          alert('{{ 'sections.coming_soon.invalid_email_alert' | t }}');
           return;
         }
         
         // Disable submit button and show loading state
         submitButton.disabled = true;
         const originalText = submitButton.textContent;
-        submitButton.textContent = 'Submitting...';
+        submitButton.textContent = '{{ 'sections.coming_soon.submitting_text' | t }}';
         
         // Simulate form submission (you can replace this with actual API call)
         setTimeout(() => {

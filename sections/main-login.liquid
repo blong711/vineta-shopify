@@ -8,7 +8,7 @@
           {%- when 'form' -%}
             <div class="login-form">
               <div id="login-form-block">
-                <h2 class="form-heading">Log in</h2>
+                <h2 class="form-heading">{{ 'sections.main_login.log_in' | t }}</h2>
                 <div id="login">
                   {%- form 'customer_login', novalidate: 'novalidate' -%}
                     {%- if form.errors -%}
@@ -30,19 +30,19 @@
                       </div>
                     {%- endif -%}
                     <div class="form-field">
-                      <input class="form-input" type="email" name="customer[email]" id="CustomerEmail-{{ section.id }}" autocomplete="email" autocorrect="off" autocapitalize="off" {% if form.errors contains 'form' %} aria-invalid="true" {% endif %} placeholder="Email *">
+                      <input class="form-input" type="email" name="customer[email]" id="CustomerEmail-{{ section.id }}" autocomplete="email" autocorrect="off" autocapitalize="off" {% if form.errors contains 'form' %} aria-invalid="true" {% endif %} placeholder="{{ 'sections.main_login.email' | t }} *">
                     </div>
                     <div class="form-field">
-                      <input class="form-input" type="password" value="" name="customer[password]" id="CustomerPassword-{{ section.id }}" autocomplete="current-password" placeholder="Password *">
+                      <input class="form-input" type="password" value="" name="customer[password]" id="CustomerPassword-{{ section.id }}" autocomplete="current-password" placeholder="{{ 'sections.main_login.password' | t }} *">
                     </div>
-                    <a href="#" class="forgot-link" id="show-reset-form">Forgot your password?</a>
-                    <button class="btn btn-primary" type="submit">Log in</button>
+                    <a href="#" class="forgot-link" id="show-reset-form">{{ 'sections.main_login.forgot_password' | t }}</a>
+                    <button class="btn btn-primary" type="submit">{{ 'sections.main_login.log_in' | t }}</button>
                   {%- endform -%}
                 </div>
               </div>
               <div id="reset-form-block" style="display:none;">
-                <h2 class="form-heading">Reset your password</h2>
-                <p class="form-description">We will send you an email to reset your password.</p>
+                <h2 class="form-heading">{{ 'sections.main_login.reset_password' | t }}</h2>
+                <p class="form-description">{{ 'sections.main_login.reset_description' | t }}</p>
                 {%- form 'recover_customer_password' -%}
                   {%- if form.errors -%}
                     <div class="form-message error">
@@ -67,11 +67,11 @@
                       <svg class="success-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                       </svg>
-                      <span>We've sent you an email with a link to update your password.</span>
+                      <span>{{ 'sections.main_login.reset_success_message' | t }}</span>
                     </div>
                   {%- endif -%}
                   <div class="form-field">
-                    <input class="form-input" type="email" name="email" id="RecoverEmail-{{ section.id }}" autocomplete="email" autocorrect="off" autocapitalize="off" placeholder="Email *" required>
+                    <input class="form-input" type="email" name="email" id="RecoverEmail-{{ section.id }}" autocomplete="email" autocorrect="off" autocapitalize="off" placeholder="{{ 'sections.main_login.email' | t }} *" required>
                   </div>
                   <div class="form-field">
                     <a href="#" class="forgot-link" id="back-to-login">{{ 'sections.main_login.back_to_login' | t }}</a>

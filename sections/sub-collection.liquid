@@ -62,13 +62,13 @@
                       {% endif %}
                     </div>
                     <div class="cls-btn text-center">
-                      <button class="tf-btn btn-white hover-dark">{{ section.settings.button_text }}</button>
+                      <button class="tf-btn btn-white hover-dark">{{ 'sections.sub_collection.button_text' | t }}</button>
                     </div>
                     <span class="tf-overlay"></span>
                   </a>
                   <div class="cls-content text-center">
                     <a href="{{ collection.url }}" class="text-type text-xl-2 fw-medium link">{{ collection.title }}</a>
-                    <span class="count-item body-text-2 text-main">{{ collection.all_products_count }} items</span>
+                    <span class="count-item body-text-2 text-main">{{ collection.all_products_count }} {{ 'sections.sub_collection.items' | t }}</span>
                   </div>
                 </div>
               {% else %}

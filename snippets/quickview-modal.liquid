@@ -77,15 +77,15 @@
                                     <button class="btn-quantity btn-plus" data-variant-id="{{ product.selected_or_first_available_variant.id }}">+</button>
                                 </div>
                                 <button type="button" class="tf-btn hover-primary add-to-cart" data-product-id="{{ product.id }}" data-variant-id="{{ product.variants.first.id }}">
-                                    Add to cart
+                                    {{ 'snippets.quickview_modal.add_to_cart' | t }}
                                 </button>
                             </div>
                             <button type="button" class="tf-btn w-100 animate-btn buy-now-btn btn-primary" data-product-id="{{ product.id }}">
-                                Buy It Now
+                                {{ 'snippets.quickview_modal.buy_it_now' | t }}
                             </button>
-                            <a href="{{ product.url }}" style="font-size: 14px;" class="more-choose-payment link">More payment options</a>
+                            <a href="{{ product.url }}" style="font-size: 14px;" class="more-choose-payment link">{{ 'snippets.quickview_modal.more_payment_options' | t }}</a>
                         </div>
-                        <a href="{{ product.url }}" class="view-details link">View full details <i class="icon icon-arrow-right"></i></a>
+                        <a href="{{ product.url }}" class="view-details link">{{ 'snippets.quickview_modal.view_full_details' | t }} <i class="icon icon-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -176,7 +176,7 @@
               <a href="${addedItem.url}" class="name text-md link fw-medium">${addedItem.product_title}</a>
               ${addedItem.variant_title ? `<div class="variants">${addedItem.variant_title}</div>` : ''}
               <div></div>
-              <span class="remove-cart link remove" data-item-id="${addedItem.key}" data-variant-id="${addedItem.variant_id}">Remove</span>
+              <span class="remove-cart link remove" data-item-id="${addedItem.key}" data-variant-id="${addedItem.variant_id}">{{ 'snippets.quickview_modal.remove' | t }}</span>
             </div>
           </td>
           <td class="tf-cart-item_price text-center" data-cart-title="Price">
@@ -792,7 +792,7 @@
                               <select class="text-xs" data-variant-id="${item.variant_id}">
                                 ${currentProduct.variants.map(variant => 
                                   `<option value="${variant.id}" ${variant.id === item.variant_id ? 'selected' : ''}>
-                                    ${variant.title === 'Default Title' ? 'Default' : variant.title}
+                                    ${variant.title === 'Default Title' ? '{{ 'snippets.quickview_modal.default' | t }}' : variant.title}
                                   </option>`
                                 ).join('')}
                               </select>
@@ -895,7 +895,7 @@
             } catch (error) {
               console.error('Error adding item to cart:', error);
               if (window.cartNotifications) {
-                window.cartNotifications.show(error.message || 'Failed to add item to cart. Please try again.', 'error');
+                window.cartNotifications.show(error.message || '{{ 'snippets.quickview_modal.add_to_cart_error' | t }}', 'error');
               } else {
                 alert('Failed to add item to cart. Please try again.');
               }
@@ -932,7 +932,7 @@
             } catch (error) {
               console.error('Error with Buy It Now:', error);
               if (window.cartNotifications) {
-                window.cartNotifications.show(error.message || 'Failed to process Buy It Now. Please try again.', 'error');
+                window.cartNotifications.show(error.message || '{{ 'snippets.quickview_modal.buy_now_error' | t }}', 'error');
               } else {
                 alert('Failed to process Buy It Now. Please try again.');
               }

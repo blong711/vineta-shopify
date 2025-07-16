@@ -28,7 +28,7 @@
                 <ul class="contact-list">
                   <li>
                     <p>
-                      Address:
+                      {{ 'sections.contact_us.address_label' | t }}
                       <a class="link" href="{{ block.settings.address_link }}" target="_blank">
                         {{ block.settings.address }}
                       </a>
@@ -36,7 +36,7 @@
                   </li>
                   <li>
                     <p>
-                      Phone number:
+                      {{ 'sections.contact_us.phone_label' | t }}
                       <a class="link" href="tel:{{ block.settings.phone }}">
                         {{ block.settings.phone }}
                       </a>
@@ -44,7 +44,7 @@
                   </li>
                   <li>
                     <p>
-                      Email:
+                      {{ 'sections.contact_us.email_label' | t }}
                       <a class="link" href="mailto:{{ block.settings.email }}">
                         {{ block.settings.email }}
                       </a>
@@ -52,7 +52,7 @@
                   </li>
                   <li>
                     <p>
-                      Open:
+                      {{ 'sections.contact_us.open_label' | t }}
                       <span class="text-main">
                         {{ block.settings.hours }}
                       </span>
@@ -106,7 +106,7 @@
                     <div class="wrap">
                       <div class="cols">
                         <fieldset>
-                          <label for="ContactFormName">Your name*</label>
+                          <label for="ContactFormName">{{ 'sections.contact_us.name_label' | t }}</label>
                           <input 
                             type="text"
                             name="contact[name]"
@@ -117,7 +117,7 @@
                           >
                         </fieldset>
                         <fieldset>
-                          <label for="ContactFormEmail">Your email*</label>
+                          <label for="ContactFormEmail">{{ 'sections.contact_us.email_input_label' | t }}</label>
                           <input
                             type="email"
                             name="contact[email]"
@@ -130,7 +130,7 @@
                       </div>
                       <div class="cols">
                         <fieldset class="textarea">
-                          <label for="ContactFormMessage">Message*</label>
+                          <label for="ContactFormMessage">{{ 'sections.contact_us.message_label' | t }}</label>
                           <textarea
                             name="contact[body]"
                             id="ContactFormMessage"

@@ -24,7 +24,7 @@
                 <ul class="contact-list">
                   <li>
                     <p>
-                      Address:
+                      {{ 'sections.store_location.address_label' | t }}
                       <a class="link" href="" target="_blank">
                         {{ block.settings.address }}
                       </a>
@@ -32,7 +32,7 @@
                   </li>
                   <li>
                     <p>
-                      Phone number:
+                      {{ 'sections.store_location.phone_label' | t }}
                       <a class="link" href="tel:{{ block.settings.phone }}">
                         {{ block.settings.phone }}
                       </a>
@@ -40,7 +40,7 @@
                   </li>
                   <li>
                     <p>
-                      Email:
+                      {{ 'sections.store_location.email_label' | t }}
                       <a class="link" href="mailto:{{ block.settings.email }}">
                         {{ block.settings.email }}
                       </a>
@@ -48,7 +48,7 @@
                   </li>
                   <li>
                     <p>
-                      Open:
+                      {{ 'sections.store_location.open_label' | t }}
                       <span class="text-main">
                         {{ block.settings.hours }}
                       </span>
@@ -58,7 +58,7 @@
               </div>
               <div class="bot">
                 <a href="{{ block.settings.directions_link }}" class="tf-btn btn-line">
-                  Get direction
+                  {{ 'sections.store_location.get_direction_button' | t }}
                   <i class="icon-arrow-top-left"></i>
                 </a>
               </div>

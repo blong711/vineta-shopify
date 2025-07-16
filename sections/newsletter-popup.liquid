@@ -66,7 +66,7 @@
           {{ section.settings.popup_image | image_url: width: 800 | image_tag: 
             loading: 'lazy',
             class: 'lazyload',
-            alt: section.settings.popup_image.alt | default: 'Newsletter'
+            alt: section.settings.popup_image.alt | default: 'sections.newsletter_popup.newsletter' | t
           }}
         {% endif %}
         <span class="icon icon-close btn-hide-popup" data-bs-dismiss="modal"></span>
@@ -132,7 +132,7 @@
         <p class="text text-sm mb-0 text-main">
           {{ section.settings.privacy_text }}
           {% if section.settings.privacy_link %}
-            <a href="{{ section.settings.privacy_link }}" class="fw-medium link">Privacy Policy</a>
+            <a href="{{ section.settings.privacy_link }}" class="fw-medium link">{{ 'sections.newsletter_popup.privacy_policy' | t }}</a>
           {% endif %}
         </p>
       </div>

@@ -9,26 +9,26 @@
 <template id="t4s-temp-key-active">
   <div class="content">
     <div style="text-align: center">
-      <h3 style="font-weight: 800;">Welcome to {{ Name }} 🎉 </h3>
-      <p>Follow these simple steps to activate your theme & get started:</p>
+      <h3 style="font-weight: 800;">{{ 'snippets.var_adm.welcome_message' | t: Name: Name }} </h3>
+      <p>{{ 'snippets.var_adm.follow_steps' | t }}</p>
     </div>
     <div class="step-1" style="flex: 1 0 0%;">
-      <h4 style="font-weight: 700;font-size: 14px;margin-bottom: 5px;">Step 1: Activate theme</h4>
+      <h4 style="font-weight: 700;font-size: 14px;margin-bottom: 5px;">{{ 'snippets.var_adm.step1_title' | t }}</h4>
       <ul>
-        <li><p>Go to "Theme Settings" &gt; "Theme Activate"</p></li>
-        <li><p>Enter your theme purchase code (license code) and save it </p></li>
+        <li><p>{{ 'snippets.var_adm.step1_instruction1' | t }}</p></li>
+        <li><p>{{ 'snippets.var_adm.step1_instruction2' | t }}</p></li>
       </ul>
-      <p>👉 See detailed guide here <a href="https://cdn.shopify.com/s/files/1/0715/0505/1965/files/active.png" target="_blank"> (https://cln.sh/m2PCbz8h)</a></p>
+      <p>👉 {{ 'snippets.var_adm.see_guide' | t }} <a href="https://cdn.shopify.com/s/files/1/0715/0505/1965/files/active.png" target="_blank"> (https://cln.sh/m2PCbz8h)</a></p>
     </div>
     <div class="step-2" style="flex: 1 0 0%;">
-      <h4 style="font-weight: 700;font-size: 14px;margin-bottom: 5px;">Step 2: Import theme demos in a click</h4>
+      <h4 style="font-weight: 700;font-size: 14px;margin-bottom: 5px;">{{ 'snippets.var_adm.step2_title' | t }}</h4>
       <ul>
-        <li><p style="margin-bottom: 10px; line-height: 1.5;">Simply <a href="https://kits.ecomrise.app/install?utm_source=the4-{{ name }}&utm_medium=intheme&utm_content=theme-activate" target="_blank" rel="noopener noreferrer">install EcomRise (FREE)</a> to import demos and update the latest theme versions in the future, with just a single click. (Otherwise, you will need to import demos using JSON codes, which is much more complex & time-taking)</p></li>
+        <li><p style="margin-bottom: 10px; line-height: 1.5;">{{ 'snippets.var_adm.step2_instruction' | t }}</p></li>
       </ul>
-      <p style="margin-bottom: 10px;">👉 See detailed guide here <a href="https://support.the4.co/articles/import-demo#1-one-click-demo-import-with-ecomrise" target="_blank"> (https://support.the4.co/articles/import-demo#1-one-click-demo-import-with-ecomrise)</a></p>
+      <p style="margin-bottom: 10px;">👉 {{ 'snippets.var_adm.see_guide' | t }} <a href="https://support.the4.co/articles/import-demo#1-one-click-demo-import-with-ecomrise" target="_blank"> (https://support.the4.co/articles/import-demo#1-one-click-demo-import-with-ecomrise)</a></p>
     </div>    
     <div class="recomen">
-      <h4 style="font-weight: 700;font-size: 20px;margin-bottom: 5px; margin-top: 30px;text-align: center">Recommended app:</h4>
+      <h4 style="font-weight: 700;font-size: 20px;margin-bottom: 5px; margin-top: 30px;text-align: center">{{ 'snippets.var_adm.recommended_app' | t }}:</h4>
       {% comment %} <div class="recomen-app">
         <div class="recomen-img">
           <img
@@ -67,23 +67,16 @@
         </div>
         <div class="recomen-info">
           <p style="margin-bottom: 5px;line-height: 1.5;">
-            <strong style="font-weight: 700"
-              >EComposer Page Builder - an advanced design tool for your website (drag-drop editor, 300+ pre-made
-              templates, 20+ boost sales add-ons)</strong
-            >
+            <strong style="font-weight: 700">{{ 'snippets.var_adm.ecomposer_description' | t }}</strong>
           </p>
           <p style="font-size: 12px;margin-bottom: 0; line-height: 16px;">
-            🔥 Special offer: Install EComposer
-            <a href="https://ecomposer.app/install?utm_source={{ Name }}&utm_medium=activate-{{ name }}" target="_blank"
-              >HERE</a
-            >. Then open chatbox icon in EComposer and leave a message with subject "{{ Name }}+EComposer" to upgrade
-            EComposer Standard Plan for Free 6 months (Save $114)
+            🔥 {{ 'snippets.var_adm.special_offer' | t: Name: Name }}
           </p>
           <a
             class="recomen-btn"
             href="https://ecomposer.app/install?utm_source={{ Name }}&utm_medium=activate-{{ name }}"
             target="_blank"
-            >Install EComposer</a
+            >{{ 'snippets.var_adm.install_ecomposer' | t }}</a
           >
         </div>
       </div>

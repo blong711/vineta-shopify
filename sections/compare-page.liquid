@@ -291,7 +291,7 @@ async function renderCompareTable() {
                data-variant-id="${variantId}"
                data-quantity="1"
                aria-label="Add to cart">
-              Add to Cart
+              {{ 'sections.compare.add_to_cart' | t }}
             </a>
           </div>
         </div>
@@ -312,23 +312,23 @@ async function renderCompareTable() {
         <div class="icon">
           <i class="icon-fill-check-circle"></i>
         </div>
-        <span>In Stock</span>
+        <span>{{ 'sections.compare.in_stock' | t }}</span>
       </div>
     `;
   });
-  compareContent.appendChild(createSimpleRow('Availability', availabilityRowValues));
+  compareContent.appendChild(createSimpleRow('{{ 'sections.compare.availability' | t }}', availabilityRowValues));
 
   // 3. Vendor row - Since we don't have vendor in stored data, we'll show "N/A"
   const vendorRowValues = compareProducts.map(product =>
-    `<div class="tf-compare-col tf-compare-field text-center"><p class="text-sm">N/A</p></div>`
+    `<div class="tf-compare-col tf-compare-field text-center"><p class="text-sm">{{ 'sections.compare.na' | t }}</p></div>`
   );
-  compareContent.appendChild(createRow('Vendor', vendorRowValues));
+  compareContent.appendChild(createRow('{{ 'sections.compare.vendor' | t }}', vendorRowValues));
 
   // 4. Color row - Since we don't have color in stored data, we'll show "N/A"
   const colorRowValues = compareProducts.map(product =>
-    `<div class="tf-compare-col tf-compare-field text-center"><p class="text-sm">N/A</p></div>`
+    `<div class="tf-compare-col tf-compare-field text-center"><p class="text-sm">{{ 'sections.compare.na' | t }}</p></div>`
   );
-  compareContent.appendChild(createRow('Color', colorRowValues));
+  compareContent.appendChild(createRow('{{ 'sections.compare.color' | t }}', colorRowValues));
 
   // Re-attach event listeners after re-rendering
   attachCompareEventListeners();
