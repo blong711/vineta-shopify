@@ -371,25 +371,25 @@ function setStyle(el, prop, value) {
 
   /* Auto Popup
   ------------------------------------------------------------------------------------- */
-  var autoPopup = function () {
-    if (qsa(".auto-popup").length > 0) {
-        let pageKey = "showPopup_" + window.location.pathname; 
-        let showPopup = sessionStorage.getItem(pageKey);
+  // var autoPopup = function () {
+  //   if (qsa(".auto-popup").length > 0) {
+  //       let pageKey = "showPopup_" + window.location.pathname; 
+  //       let showPopup = sessionStorage.getItem(pageKey);
 
-        if (!JSON.parse(showPopup)) {
-            setTimeout(function () {
-                var autoPopupElement = qs(".auto-popup");
-                if (autoPopupElement && typeof autoPopupElement.modal === 'function') {
-                    autoPopupElement.modal("show");
-                }
-            }, 3000);
-        }
+  //       if (!JSON.parse(showPopup)) {
+  //           setTimeout(function () {
+  //               var autoPopupElement = qs(".auto-popup");
+  //               if (autoPopupElement && typeof autoPopupElement.modal === 'function') {
+  //                   autoPopupElement.modal("show");
+  //               }
+  //           }, 3000);
+  //       }
         
-        onAll(".btn-hide-popup", "click", function () {
-            sessionStorage.setItem(pageKey, true); 
-        });
-    }
-  };
+  //       onAll(".btn-hide-popup", "click", function () {
+  //           sessionStorage.setItem(pageKey, true); 
+  //       });
+  //   }
+  // };
 
   /* Handle Progress
   ------------------------------------------------------------------------------------- */
@@ -1060,7 +1060,7 @@ function setStyle(el, prop, value) {
       staggerWrap,
       clickModalSecond,
       estimateShipping,
-      autoPopup,
+      // autoPopup,
       handleProgress,
       totalPriceVariant,
       hoverVideo,
