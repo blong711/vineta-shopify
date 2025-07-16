@@ -462,13 +462,11 @@
                           Add to cart
                         </button>
                       </div>
-                      <a href="javascript:void(0);" 
-                         class="tf-btn btn-primary w-100 animate-btn buy-it-now" 
-                         data-shopify="payment-button"
-                         data-payment-button="true"
-                         data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-                         data-quantity="1"
-                         aria-label="{{ 'sections.product.buy_it_now' | t }}">{{ 'sections.product.buy_it_now' | t }}</a>
+                      {% form 'product', product %}
+                        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        {{ form | payment_button }}
+                      {% endform %}
                       <a href="javascript:void(0);" 
                          style="font-size: 14px" 
                          class="more-choose-payment link buy-it-now" 
@@ -2219,6 +2217,15 @@ document.addEventListener('DOMContentLoaded', function() {
       this.value = value;
       updateAddToCartQuantity(value);
       
+      // Update form quantity input
+      const productForm = document.querySelector('form[action*="/cart/add"]');
+      if (productForm) {
+        const formQuantityInput = productForm.querySelector('input[name="quantity"]');
+        if (formQuantityInput) {
+          formQuantityInput.value = value;
+        }
+      }
+      
       // Update dynamic checkout buttons with new quantity
       const currentVariant = document.querySelector('.add-to-cart')?.dataset.variantId;
       if (currentVariant) {
@@ -2240,6 +2247,15 @@ document.addEventListener('DOMContentLoaded', function() {
         input.value = value + 1;
         updateAddToCartQuantity(value);
         
+        // Update form quantity input
+        const productForm = document.querySelector('form[action*="/cart/add"]');
+        if (productForm) {
+          const formQuantityInput = productForm.querySelector('input[name="quantity"]');
+          if (formQuantityInput) {
+            formQuantityInput.value = value;
+          }
+        }
+        
         // Update dynamic checkout buttons with new quantity
         const currentVariant = document.querySelector('.add-to-cart')?.dataset.variantId;
         if (currentVariant) {
@@ -2260,6 +2276,15 @@ document.addEventListener('DOMContentLoaded', function() {
       value++;
       input.value = value - 1;
       updateAddToCartQuantity(value);
+      
+      // Update form quantity input
+      const productForm = document.querySelector('form[action*="/cart/add"]');
+      if (productForm) {
+        const formQuantityInput = productForm.querySelector('input[name="quantity"]');
+        if (formQuantityInput) {
+          formQuantityInput.value = value;
+        }
+      }
       
       // Update dynamic checkout buttons with new quantity
       const currentVariant = document.querySelector('.add-to-cart')?.dataset.variantId;
@@ -2756,82 +2781,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Handle dynamic checkout buttons
   function updateDynamicCheckoutButtons(variant) {
-    const buyItNowButton = document.querySelector('.buy-it-now');
-    if (buyItNowButton) {
-      // Get quantity from the main product info input
-      let quantity = 1;
-      const mainQuantityInput = document.querySelector('.tf-product-info-list .quantity-product');
-      if (mainQuantityInput) {
-        quantity = parseInt(mainQuantityInput.value) || 1;
+    // Get quantity from the main product info input
+    let quantity = 1;
+    const mainQuantityInput = document.querySelector('.tf-product-info-list .quantity-product');
+    if (mainQuantityInput) {
+      quantity = parseInt(mainQuantityInput.value) || 1;
+    }
+    
+    // Update the form hidden inputs
+    const productForm = document.querySelector('form[action*="/cart/add"]');
+    if (productForm) {
+      const variantInput = productForm.querySelector('input[name="id"]');
+      const quantityInput = productForm.querySelector('input[name="quantity"]');
+      
+      if (variantInput) {
+        variantInput.value = variant.id;
       }
-      
-      // Update the button attributes
-      buyItNowButton.setAttribute('data-variant-id', variant.id);
-      buyItNowButton.setAttribute('data-quantity', quantity);
-      
-      // Reinitialize Shopify's dynamic checkout buttons
-      if (window.Shopify && window.Shopify.PaymentButton) {
-        window.Shopify.PaymentButton.init();
+      if (quantityInput) {
+        quantityInput.value = quantity;
       }
     }
+    
+    // Reinitialize Shopify's dynamic checkout buttons
+    if (window.Shopify && window.Shopify.PaymentButton) {
+      window.Shopify.PaymentButton.init();
+    }
   }
-
-  // Handle buy it now button clicks
-  document.querySelectorAll('.buy-it-now').forEach(button => {
-    button.addEventListener('click', async function(e) {
-      e.preventDefault();
-      
-      // Prevent multiple clicks
-      if (this.classList.contains('loading')) {
-        return;
-      }
-      
-      const variantId = this.getAttribute('data-variant-id');
-      let quantity = parseInt(this.getAttribute('data-quantity')) || 1;
-      
-      try {
-        // Show loading state
-        this.classList.add('loading');
-        const originalText = this.textContent;
-        this.textContent = 'Adding...';
-        
-        // Clear cart first (optional - remove this if you want to add to existing cart)
-        await fetch('/cart/clear.js', { method: 'POST' });
-        
-        // Add item to cart
-        const response = await fetch('/cart/add.js', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            items: [{
-              id: variantId,
-              quantity: quantity
-            }]
-          })
-        });
-        
-        if (!response.ok) {
-          throw new Error('Failed to add item to cart');
-        }
-        
-        // Redirect to checkout
-        window.location.href = '/checkout';
-        
-      } catch (error) {
-        console.error('Error adding item to cart:', error);
-        if (window.cartNotifications) {
-          window.cartNotifications.show(error.message || 'Failed to add item to cart. Please try again.', 'error');
-        } else {
-          alert('Failed to add item to cart. Please try again.');
-        }
-        // Reset button state
-        this.textContent = originalText;
-        this.classList.remove('loading');
-      }
-    });
-  });
 
 
 });
@@ -2891,6 +2866,8 @@ if (variant && variant.option2) {
     }
   });
 }
+
+
 </script>
 
 {% schema %}
@@ -3525,3 +3502,50 @@ if (variant && variant.option2) {
   ]
 }
 {% endschema %}
+<style> 
+    shopify-accelerated-checkout {
+    --shopify-accelerated-checkout-button-block-size: 50px;
+    --shopify-accelerated-checkout-button-border-radius: 99px;
+    --shopify-accelerated-checkout-button-box-shadow: none;
+    --shopify-accelerated-checkout-skeleton-background-color: #ff6f61;
+    --shopify-accelerated-checkout-skeleton-animation-opacity-start: 1;
+    --shopify-accelerated-checkout-skeleton-animation-opacity-end: 0.5;
+    --shopify-accelerated-checkout-skeleton-animation-duration: 4s;
+    --shopify-accelerated-checkout-skeleton-animation-timing-function: ease;
+  }
+  
+  /* Custom styling for accelerated checkout buttons */
+  .shopify-payment-button__button,
+  .shopify-payment-button__button--unbranded {
+    -webkit-transition: all 0.3s ease-in-out !important;
+    -moz-transition: all 0.3s ease-in-out !important;
+    -ms-transition: all 0.3s ease-in-out !important;
+    -o-transition: all 0.3s ease-in-out !important;
+    transition: all 0.3s ease-in-out !important;
+    background-color: var(--primary) !important;
+    border: 1px solid var(--primary) !important;
+    color: var(--white) !important;
+    padding: 13px 32px !important;
+    border-radius: 99px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+    font-weight: 500 !important;
+    width: 100% !important;
+    text-transform: none !important;
+    height: auto !important;
+    min-height: auto !important;
+    box-shadow: none !important;
+  }
+  
+  .shopify-payment-button__button:hover,
+  .shopify-payment-button__button--unbranded:hover {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    transform: scale(1.02) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  }
+</style>
