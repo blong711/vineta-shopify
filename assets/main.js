@@ -70,8 +70,10 @@ function getAttr(el, attr) {
   return el.getAttribute(attr);
 }
 function setStyle(el, prop, value) {
-  el.style[prop] = value;
-    }
+  if (el && el.style) {
+    el.style[prop] = value;
+  }
+}
 
 // CSRF Protected Fetch Utility
   var csrfFetch = function(url, options = {}) {
@@ -191,9 +193,11 @@ function setStyle(el, prop, value) {
     if (qsa(".stagger-wrap").length) {
       var count = qsa(".stagger-item").length;
       for (var i = 1, time = 0.2; i <= count; i++) {
-        qsa(".stagger-item:nth-child(" + i + ")")[0]
-          .style.transitionDelay = time * i + "s";
-        addClass(qsa(".stagger-item:nth-child(" + i + ")")[0], "stagger-finished");
+        var staggerItem = qsa(".stagger-item:nth-child(" + i + ")")[0];
+        if (staggerItem) {
+          staggerItem.style.transitionDelay = time * i + "s";
+          addClass(staggerItem, "stagger-finished");
+        }
       }
     }
   };
@@ -330,12 +334,20 @@ function setStyle(el, prop, value) {
           const country = countrySelect.value;
 
           if (!validateZipcode(zipcode, country)) {
-            zipcodeMessage.style.display = "block";
-            zipcodeSuccess.style.display = "none";
+            if (zipcodeMessage) {
+              zipcodeMessage.style.display = "block";
+            }
+            if (zipcodeSuccess) {
+              zipcodeSuccess.style.display = "none";
+            }
             event.preventDefault();
           } else {
-            zipcodeMessage.style.display = "none";
-            zipcodeSuccess.style.display = "block";
+            if (zipcodeMessage) {
+              zipcodeMessage.style.display = "none";
+            }
+            if (zipcodeSuccess) {
+              zipcodeSuccess.style.display = "block";
+            }
             event.preventDefault();
           }
         });
@@ -349,8 +361,8 @@ function setStyle(el, prop, value) {
   var headerSticky = function () {
     let lastScrollTop = 0;
     let delta = 5;
-    let navbarHeight = qs('header').offsetHeight;
     let header = qs('header');
+    let navbarHeight = header ? header.offsetHeight : 0;
 
     // Use ScrollManager for optimized scroll handling
     // This section is removed as per the new_code, as the ScrollManager object is removed.
@@ -366,7 +378,10 @@ function setStyle(el, prop, value) {
 
         if (!JSON.parse(showPopup)) {
             setTimeout(function () {
-                qs(".auto-popup").modal("show");
+                var autoPopupElement = qs(".auto-popup");
+                if (autoPopupElement && typeof autoPopupElement.modal === 'function') {
+                    autoPopupElement.modal("show");
+                }
             }, 3000);
         }
         
@@ -572,25 +587,35 @@ function setStyle(el, prop, value) {
       onAll(".footer-heading-mobile", "click", function () {
         addClass(this.closest(".footer-col-block"), "open");
         if (!this.closest(".footer-col-block").classList.contains("open")) {
-          this.nextElementSibling.style.display = "none";
+          if (this.nextElementSibling) {
+            this.nextElementSibling.style.display = "none";
+          }
         } else {
-          this.nextElementSibling.style.display = "block";
+          if (this.nextElementSibling) {
+            this.nextElementSibling.style.display = "block";
+          }
         }
       });
     };
     function handleAccordion() {
       if (matchMedia("only screen and (max-width: 575px)").matches) {
-        if (!qs(".footer-heading-mobile").dataset.accordionInitialized) {
+        var footerHeading = qs(".footer-heading-mobile");
+        if (footerHeading && !footerHeading.dataset.accordionInitialized) {
           footerAccordion();
-          qs(".footer-heading-mobile").dataset.accordionInitialized = "true";
+          footerHeading.dataset.accordionInitialized = "true";
         }
       } else {
         onAll(".footer-heading-mobile", "click", null);
         qsa(".footer-heading-mobile").forEach(heading => {
           removeClass(heading.closest(".footer-col-block"), "open");
-          heading.nextElementSibling.removeAttribute("style");
+          if (heading.nextElementSibling) {
+            heading.nextElementSibling.removeAttribute("style");
+          }
         });
-        qs(".footer-heading-mobile").dataset.accordionInitialized = "false";
+        var footerHeading = qs(".footer-heading-mobile");
+        if (footerHeading) {
+          footerHeading.dataset.accordionInitialized = "false";
+        }
       }
     }
     handleAccordion();
@@ -717,20 +742,29 @@ function setStyle(el, prop, value) {
           if (response.ok) {
             // Remove the address item from the DOM
             var addressItem = this.closest('.account-address-item');
-            addressItem.style.display = 'none';
-            setTimeout(function() {
-              addressItem.remove();
-            }, 300);
+            if (addressItem) {
+              addressItem.style.display = 'none';
+              setTimeout(function() {
+                if (addressItem && addressItem.parentNode) {
+                  addressItem.remove();
+                }
+              }, 300);
+            }
             
             // Show success message
-            var successMessage = document.createElement("div");
-            successMessage.className = "alert alert-success";
-            successMessage.textContent = "Address deleted successfully.";
-            qs(".my-acount-content").prepend(successMessage);
-            setTimeout(function() {
-              successMessage.style.display = 'none';
-              successMessage.remove();
-            }, 3000);
+            var myAccountContent = qs(".my-acount-content");
+            if (myAccountContent) {
+              var successMessage = document.createElement("div");
+              successMessage.className = "alert alert-success";
+              successMessage.textContent = "Address deleted successfully.";
+              myAccountContent.prepend(successMessage);
+              setTimeout(function() {
+                if (successMessage && successMessage.parentNode) {
+                  successMessage.style.display = 'none';
+                  successMessage.remove();
+                }
+              }, 3000);
+            }
           } else {
             throw new Error('Failed to delete address');
           }
@@ -739,14 +773,19 @@ function setStyle(el, prop, value) {
           console.error('Error deleting address:', error);
           
           // Show error message
-          var errorMessage = document.createElement("div");
-          errorMessage.className = "alert alert-danger";
-          errorMessage.textContent = "Failed to delete address. Please try again.";
-          qs(".my-acount-content").prepend(errorMessage);
-          setTimeout(function() {
-            errorMessage.style.display = 'none';
-            errorMessage.remove();
-          }, 3000);
+          var myAccountContent = qs(".my-acount-content");
+          if (myAccountContent) {
+            var errorMessage = document.createElement("div");
+            errorMessage.className = "alert alert-danger";
+            errorMessage.textContent = "Failed to delete address. Please try again.";
+            myAccountContent.prepend(errorMessage);
+            setTimeout(function() {
+              if (errorMessage && errorMessage.parentNode) {
+                errorMessage.style.display = 'none';
+                errorMessage.remove();
+              }
+            }, 3000);
+          }
         });
       }
     });
@@ -757,7 +796,11 @@ function setStyle(el, prop, value) {
       var targetForm = qs("#" + formId);
       
       // Hide all edit forms first
-      qsa(".edit-form-address").forEach(form => form.style.display = 'none');
+      qsa(".edit-form-address").forEach(form => {
+        if (form) {
+          form.style.display = 'none';
+        }
+      });
       qsa(".edit-form-address").forEach(form => removeClass(form, "show"));
       qsa(".account-address-item").forEach(item => removeClass(item, "editing"));
       
@@ -769,7 +812,11 @@ function setStyle(el, prop, value) {
       }
     });
     onAll(".btn-hide-edit-address", "click", function () {
-      qsa(".edit-form-address").forEach(form => form.style.display = 'none');
+      qsa(".edit-form-address").forEach(form => {
+        if (form) {
+          form.style.display = 'none';
+        }
+      });
       qsa(".edit-form-address").forEach(form => removeClass(form, "show"));
       qsa(".account-address-item").forEach(item => removeClass(item, "editing"));
     });
@@ -901,7 +948,10 @@ function setStyle(el, prop, value) {
     }
     
     onAll(".cookie-banner .overplay", "click", function () {
-      qs(".cookie-banner").style.display = "none";
+      var cookieBanner = qs(".cookie-banner");
+      if (cookieBanner) {
+        cookieBanner.style.display = "none";
+      }
     });
 
     function setCookie(name, value, days) {
@@ -927,17 +977,22 @@ function setStyle(el, prop, value) {
       const $cookieBanner = qs("#cookie-banner");
       const accepted = getCookie("cookieAccepted");
 
-      if (accepted) {
-        $cookieBanner.style.display = "none";
-      } else {
-        $cookieBanner.style.display = "block";
+      if ($cookieBanner) {
+        if (accepted) {
+          $cookieBanner.style.display = "none";
+        } else {
+          $cookieBanner.style.display = "block";
+        }
       }
     }
 
     document.addEventListener("DOMContentLoaded", function () {
       onAll("#accept-cookie", "click", function () {
         setCookie("cookieAccepted", "true", 30);
-        qs("#cookie-banner").style.display = "none";
+        var cookieBanner = qs("#cookie-banner");
+        if (cookieBanner) {
+          cookieBanner.style.display = "none";
+        }
       });
 
       checkCookie();
@@ -948,10 +1003,15 @@ function setStyle(el, prop, value) {
   -------------------------------------------------------------------------------------*/
   var preloader = function () {
     setTimeout(function () {
-      qs(".preload").style.opacity = "0";
-      setTimeout(function() {
-        qs(".preload").remove();
-      }, 300);
+      var preloadElement = qs(".preload");
+      if (preloadElement) {
+        preloadElement.style.opacity = "0";
+        setTimeout(function() {
+          if (preloadElement && preloadElement.parentNode) {
+            preloadElement.remove();
+          }
+        }, 300);
+      }
     }, 300);
   };
 
