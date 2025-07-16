@@ -177,6 +177,41 @@
           free_shipping_threshold: {{ settings.free_shipping_threshold | default: 10000 }},
           progress_message: {{ settings.progress_message | json | default: '"Spend <span class=\'fw-medium\'>[amount]</span> more to get <span class=\'fw-medium\'>Free Shipping</span>"' }},
           free_shipping_message: {{ settings.free_shipping_message | json | default: '"Congratulations! You\'ve unlocked <span class=\'fw-medium\'>Free Shipping</span>"' }}
+        },
+        translations: {
+          cart: {
+            empty_cart: {{ 'cart.empty_cart' | t | json }},
+            continue_shopping: {{ 'cart.continue_shopping' | t | json }},
+            close_notification: {{ 'cart.close_notification' | t | json }},
+            add_to_cart: {{ 'products.product.add_to_cart' | t | json }},
+            update_cart: {{ 'cart.general.update' | t | json }},
+            remove: {{ 'cart.general.remove' | t | json }},
+            checkout: {{ 'cart.general.checkout' | t | json }},
+            subtotal: {{ 'cart.general.subtotal' | t | json }},
+            total: {{ 'cart.drawer.total' | t | json }},
+            taxes_shipping: {{ 'cart.general.shipping_at_checkout' | t | json }},
+            shipping_at_checkout: {{ 'cart.general.shipping_at_checkout' | t | json }},
+            cart_error: {{ 'cart.general.cart_error' | t | json }},
+            cart_quantity_error: {{ 'cart.general.cart_quantity_error_html' | t | json }}
+          },
+          wishlist: {
+            add_to_wishlist: {{ 'products.product.add_to_wishlist' | t | json }},
+            remove_from_wishlist: {{ 'products.product.remove_from_wishlist' | t | json }},
+            add_to_cart: {{ 'products.product.add_to_cart' | t | json }},
+            quick_view: {{ 'products.product.quick_view' | t | json }},
+            add_to_compare: {{ 'wishlist.add_to_compare' | t | json }},
+            remove_from_compare: {{ 'wishlist.remove_from_compare' | t | json }},
+            compare: {{ 'wishlist.compare' | t | json }},
+            sold_out: {{ 'wishlist.sold_out' | t | json }},
+            empty_wishlist: {{ 'wishlist.empty_wishlist' | t | json }},
+            back_to_shopping: {{ 'wishlist.back_to_shopping' | t | json }},
+            my_wishlist: {{ 'customer.account.my_wishlist' | t | json }},
+            wishlist: {{ 'customer.account.wishlist' | t | json }},
+            check_wishlist: {{ 'customer.account.check_wishlist' | t | json }},
+            your_wishlist: {{ 'customer.account.your_wishlist' | t | json }},
+            loading_wishlist: {{ 'customer.account.loading_wishlist' | t | json }},
+            wishlist_empty: {{ 'customer.account.wishlist_empty' | t | json }}
+          }
         }
       };
 

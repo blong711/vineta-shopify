@@ -1,22 +1,20 @@
-(function ($) {
+(function () {
   "use strict";
 
   /* Range Two Price
   -------------------------------------------------------------------------------------*/
   var rangeTwoPrice = function () {
-    $(".price-val-range").each(function() {
-      var skipSlider = this;
-      
+    document.querySelectorAll(".price-val-range").forEach(function(skipSlider) {
       // Skip if already initialized
       if (skipSlider.noUiSlider) {
         return;
       }
       
       // Find min/max value elements within the same container
-      var container = $(skipSlider).closest('.widget-price, .collapse-body');
+      var container = skipSlider.closest('.widget-price, .collapse-body');
       var skipValues = [
-        container.find("#price-min-value")[0],
-        container.find("#price-max-value")[0],
+        container.querySelector("#price-min-value"),
+        container.querySelector("#price-max-value"),
       ];
 
       // Skip if min/max value elements are not found
@@ -107,10 +105,12 @@
     }
 
     // Handle checkbox changes
-    $('.tf-check').on('change', function() {
-      if (filterForm) {
-        filterForm.submit();
-      }
+    document.querySelectorAll('.tf-check').forEach(function(checkbox) {
+      checkbox.addEventListener('change', function() {
+        if (filterForm) {
+          filterForm.submit();
+        }
+      });
     });
 
     // Only set up noUiSlider if priceSlider exists
@@ -132,14 +132,14 @@
         }
 
         // Safely update DOM elements
-        const minValueElement = $("#price-min-value");
-        const maxValueElement = $("#price-max-value");
+        const minValueElement = document.getElementById("price-min-value");
+        const maxValueElement = document.getElementById("price-max-value");
         
-        if (minValueElement.length) {
-          minValueElement.text(filters.minPrice);
+        if (minValueElement) {
+          minValueElement.textContent = filters.minPrice;
         }
-        if (maxValueElement.length) {
-          maxValueElement.text(filters.maxPrice);
+        if (maxValueElement) {
+          maxValueElement.textContent = filters.maxPrice;
         }
 
         applyFilters();
@@ -147,132 +147,165 @@
       });
     }
 
-    $(".size-check").on("click",function () {
-      const sizeText = $(this).find(".size").text();
-      // Sanitize size text to prevent XSS
-      filters.size = sizeText ? sizeText.trim().substring(0, 100) : null;
-      applyFilters();
-      updateMetaFilter();
+    document.querySelectorAll(".size-check").forEach(function(element) {
+      element.addEventListener("click", function() {
+        const sizeText = this.querySelector(".size").textContent;
+        // Sanitize size text to prevent XSS
+        filters.size = sizeText ? sizeText.trim().substring(0, 100) : null;
+        applyFilters();
+        updateMetaFilter();
+      });
     });
 
-    $(".color-check").on("click",function () {
-      const colorText = $(this).find(".color-text").text();
-      // Sanitize color text to prevent XSS
-      filters.color = colorText ? colorText.trim().substring(0, 100) : null;
-      applyFilters();
-      updateMetaFilter();
+    document.querySelectorAll(".color-check").forEach(function(element) {
+      element.addEventListener("click", function() {
+        const colorText = this.querySelector(".color-text").textContent;
+        // Sanitize color text to prevent XSS
+        filters.color = colorText ? colorText.trim().substring(0, 100) : null;
+        applyFilters();
+        updateMetaFilter();
+      });
     });
 
-    $('input[name="availability"]').on("change",function () {
-      const availabilityId = $(this).attr("id");
-      // Validate availability value
-      filters.availability = availabilityId === "inStock" ? "In stock" : "Out of stock";
-      applyFilters();
-      updateMetaFilter();
+    document.querySelectorAll('input[name="availability"]').forEach(function(element) {
+      element.addEventListener("change", function() {
+        const availabilityId = this.getAttribute("id");
+        // Validate availability value
+        filters.availability = availabilityId === "inStock" ? "In stock" : "Out of stock";
+        applyFilters();
+        updateMetaFilter();
+      });
     });
 
-    $('input[name="brand"]').on("change",function () {
-      const brandId = $(this).attr("id");
-      // Sanitize brand ID to prevent XSS
-      filters.brands = brandId ? brandId.trim().substring(0, 100) : null;
-      applyFilters();
-      updateMetaFilter();
+    document.querySelectorAll('input[name="brand"]').forEach(function(element) {
+      element.addEventListener("change", function() {
+        const brandId = this.getAttribute("id");
+        // Sanitize brand ID to prevent XSS
+        filters.brands = brandId ? brandId.trim().substring(0, 100) : null;
+        applyFilters();
+        updateMetaFilter();
+      });
     });
 
-    $(".shop-sale-text").on("click",function () {
-      filters.sale = !filters.sale;
-      $(this).toggleClass("active", filters.sale);
-      applyFilters();
-      updateMetaFilter();
+    document.querySelectorAll(".shop-sale-text").forEach(function(element) {
+      element.addEventListener("click", function() {
+        filters.sale = !filters.sale;
+        this.classList.toggle("active", filters.sale);
+        applyFilters();
+        updateMetaFilter();
+      });
     });
 
     function updateMetaFilter() {
-      const appliedFilters = $("#applied-filters");
-      const metaFilterShop = $(".meta-filter-shop");
+      const appliedFilters = document.getElementById("applied-filters");
+      const metaFilterShop = document.querySelector(".meta-filter-shop");
       
-      if (!appliedFilters.length) return;
+      if (!appliedFilters) return;
       
-      appliedFilters.empty();
+      appliedFilters.innerHTML = '';
 
       // Sanitize all filter values before adding to DOM
       if (filters.availability) {
-        const sanitizedAvailability = $('<div>').text(filters.availability).html();
-        appliedFilters.append(
-          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="availability"></span> Availability: ${sanitizedAvailability} </span>`
-        );
+        const sanitizedAvailability = document.createElement('div');
+        sanitizedAvailability.textContent = filters.availability;
+        appliedFilters.innerHTML +=
+          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="availability"></span> Availability: ${sanitizedAvailability.innerHTML} </span>`;
       }
       if (filters.brands) { 
-        const sanitizedBrand = $('<div>').text(filters.brands).html();
-        appliedFilters.append(
-          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="brand"></span>Brand: ${sanitizedBrand}</span>`
-        );
+        const sanitizedBrand = document.createElement('div');
+        sanitizedBrand.textContent = filters.brands;
+        appliedFilters.innerHTML +=
+          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="brand"></span>Brand: ${sanitizedBrand.innerHTML}</span>`;
       }
       if (filters.minPrice > minPrice || filters.maxPrice < maxPrice) {
-        appliedFilters.append(
-          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="price"></span>Price: $${filters.minPrice} - $${filters.maxPrice}</span>`
-        );
+        appliedFilters.innerHTML +=
+          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="price"></span>Price: $${filters.minPrice} - $${filters.maxPrice}</span>`;
       }
       if (filters.color) {
-        const sanitizedColor = $('<div>').text(filters.color).html();
-        appliedFilters.append(
-          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="color"></span>Color: ${sanitizedColor}</span>`
-        );
+        const sanitizedColor = document.createElement('div');
+        sanitizedColor.textContent = filters.color;
+        appliedFilters.innerHTML +=
+          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="color"></span>Color: ${sanitizedColor.innerHTML}</span>`;
       }
       if (filters.size) {
-        const sanitizedSize = $('<div>').text(filters.size).html();
-        appliedFilters.append(
-          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="size"></span>Size: ${sanitizedSize}</span>`
-        );
+        const sanitizedSize = document.createElement('div');
+        sanitizedSize.textContent = filters.size;
+        appliedFilters.innerHTML +=
+          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="size"></span>Size: ${sanitizedSize.innerHTML}</span>`;
       }
       if (filters.sale) {
-        appliedFilters.append(
-          `<span class="filter-tag on-sale d-none">On Sale <span class="remove-tag icon-close" data-filter="sale"></span></span>`
-        );
+        appliedFilters.innerHTML +=
+          `<span class="filter-tag on-sale d-none">On Sale <span class="remove-tag icon-close" data-filter="sale"></span></span>`;
       }
 
-      const hasFiltersApplied = appliedFilters.children().length > 0;
-      metaFilterShop.toggle(hasFiltersApplied);
+      const hasFiltersApplied = appliedFilters.children.length > 0;
+      if (metaFilterShop) {
+        metaFilterShop.style.display = hasFiltersApplied ? '' : 'none';
+      }
 
-      $("#remove-all").toggle(hasFiltersApplied);
+      const removeAll = document.getElementById("remove-all");
+      if (removeAll) {
+        removeAll.style.display = hasFiltersApplied ? '' : 'none';
+      }
     }
 
-    $("#applied-filters").on("click", ".remove-tag", function () {
-      const filterType = $(this).data("filter");
+    document.getElementById("applied-filters")?.addEventListener("click", function(e) {
+      if (e.target.classList.contains("remove-tag")) {
+        const filterType = e.target.dataset.filter;
 
-      if (filterType === "size") {
-        filters.size = null;
-        $(".size-check").removeClass("active");
-      }
-      if (filterType === "color") {
-        filters.color = null;
-        $(".color-check").removeClass("active");
-      }
-      if (filterType === "availability") {
-        filters.availability = null;
-        $('input[name="availability"]').prop("checked", false);
-      }
-      if (filterType === "brand") {
-        filters.brands = null; 
-        $('input[name="brand"]').prop("checked", false);
-      }
-      if (filterType === "price") {
-        filters.minPrice = minPrice;
-        filters.maxPrice = maxPrice;
-        if (priceSlider && priceSlider.noUiSlider) {
-          priceSlider.noUiSlider.set([minPrice, maxPrice]);
+        if (filterType === "size") {
+          filters.size = null;
+          document.querySelectorAll(".size-check").forEach(function(el) {
+            el.classList.remove("active");
+          });
         }
-      }
+        if (filterType === "color") {
+          filters.color = null;
+          document.querySelectorAll(".color-check").forEach(function(el) {
+            el.classList.remove("active");
+          });
+        }
+        if (filterType === "availability") {
+          filters.availability = null;
+          document.querySelectorAll('input[name="availability"]').forEach(function(el) {
+            el.checked = false;
+          });
+        }
+        if (filterType === "brand") {
+          filters.brands = null; 
+          document.querySelectorAll('input[name="brand"]').forEach(function(el) {
+            el.checked = false;
+          });
+        }
+        if (filterType === "price") {
+          filters.minPrice = minPrice;
+          filters.maxPrice = maxPrice;
+          if (priceSlider && priceSlider.noUiSlider) {
+            priceSlider.noUiSlider.set([minPrice, maxPrice]);
+          }
+        }
 
-      if (filterType === "sale") {
-        filters.sale = false;
-        $(".shop-sale-text").removeClass("active");
-      }
+        if (filterType === "sale") {
+          filters.sale = false;
+          document.querySelectorAll(".shop-sale-text").forEach(function(el) {
+            el.classList.remove("active");
+          });
+        }
 
-      applyFilters();
-      updateMetaFilter();
+        applyFilters();
+        updateMetaFilter();
+      }
     });
 
-    $("#remove-all,#reset-filter").on("click",function () {
+    document.getElementById("remove-all")?.addEventListener("click", function() {
+      resetFilters();
+    });
+
+    document.getElementById("reset-filter")?.addEventListener("click", function() {
+      resetFilters();
+    });
+
+    function resetFilters() {
       filters.size = null;
       filters.color = null;
       filters.availability = null;
@@ -281,103 +314,122 @@
       filters.maxPrice = maxPrice;
       filters.sale = false;
 
-      $(".shop-sale-text").removeClass("active");
-      $('input[name="brand"]').prop("checked", false);
-      $('input[name="availability"]').prop("checked", false);
-      $(".size-check, .color-check").removeClass("active");
+      document.querySelectorAll(".shop-sale-text").forEach(function(el) {
+        el.classList.remove("active");
+      });
+      document.querySelectorAll('input[name="brand"]').forEach(function(el) {
+        el.checked = false;
+      });
+      document.querySelectorAll('input[name="availability"]').forEach(function(el) {
+        el.checked = false;
+      });
+      document.querySelectorAll(".size-check, .color-check").forEach(function(el) {
+        el.classList.remove("active");
+      });
       if (priceSlider && priceSlider.noUiSlider) {
         priceSlider.noUiSlider.set([minPrice, maxPrice]);
       }
 
       applyFilters();
       updateMetaFilter();
+    }
+
+    document.querySelectorAll(".reset-price").forEach(function(element) {
+      element.addEventListener("click", function() {
+        filters.minPrice = minPrice;
+        filters.maxPrice = maxPrice;
+        if (priceSlider && priceSlider.noUiSlider) {
+          priceSlider.noUiSlider.set([minPrice, maxPrice]);
+        }
+        applyFilters();
+        updateMetaFilter();
+      });
     });
-
-    $(".reset-price").on("click",function(){
-      filters.minPrice = minPrice;
-      filters.maxPrice = maxPrice;
-      if (priceSlider && priceSlider.noUiSlider) {
-        priceSlider.noUiSlider.set([minPrice, maxPrice]);
-      }
-      applyFilters();
-      updateMetaFilter();
-    })
 
     function applyFilters() {
       let visibleProductCountGrid = 0;
       let visibleProductCountList = 0;
 
-      $(".wrapper-shop .card-product").each(function () {
-        const product = $(this);
+      document.querySelectorAll(".wrapper-shop .card-product").forEach(function(product) {
         let showProduct = true;
 
         // Validate and sanitize price parsing
-        const priceText = product.find(".price-new").text().replace(/[^\d.-]/g, "");
+        const priceText = product.querySelector(".price-new").textContent.replace(/[^\d.-]/g, "");
         const price = validateAndSanitizePrice(priceText);
         
         if (price < filters.minPrice || price > filters.maxPrice) {
           showProduct = false;
         }
 
-        // Sanitize filter values before using in jQuery selectors
+        // Sanitize filter values before using in selectors
         if (filters.size) {
-          const sanitizedSize = $('<div>').text(filters.size).html();
-          if (!product.find(`.size-item:contains('${sanitizedSize}')`).length) {
+          const sizeItems = product.querySelectorAll('.size-item');
+          let sizeFound = false;
+          sizeItems.forEach(function(item) {
+            if (item.textContent.includes(filters.size)) {
+              sizeFound = true;
+            }
+          });
+          if (!sizeFound) {
             showProduct = false;
           }
         }
 
         if (filters.color) {
-          const sanitizedColor = $('<div>').text(filters.color).html();
-          if (!product.find(`.color-swatch:contains('${sanitizedColor}')`).length) {
+          const colorSwatches = product.querySelectorAll('.color-swatch');
+          let colorFound = false;
+          colorSwatches.forEach(function(swatch) {
+            if (swatch.textContent.includes(filters.color)) {
+              colorFound = true;
+            }
+          });
+          if (!colorFound) {
             showProduct = false;
           }
         }
 
         if (filters.availability) {
-          const availabilityStatus = product.data("availability");
+          const availabilityStatus = product.dataset.availability;
           if (filters.availability !== availabilityStatus) {
             showProduct = false;
           }
         }
 
         if (filters.sale) {
-          if (!product.find(".on-sale-wrap").length) {
+          if (!product.querySelector(".on-sale-wrap")) {
             showProduct = false;
           }
         }
 
         if (filters.brands) { 
-          const brandId = product.attr("data-brand");
+          const brandId = product.getAttribute("data-brand");
           if (filters.brands !== brandId) {
             showProduct = false;
           }
         }
 
-        product.toggle(showProduct);
+        product.style.display = showProduct ? '' : 'none';
 
         if (showProduct) {
-          if (product.hasClass("grid")) {
+          if (product.classList.contains("grid")) {
             visibleProductCountGrid++;
-          } else if (product.hasClass("style-list")) {
+          } else if (product.classList.contains("style-list")) {
             visibleProductCountList++;
           }
         }
       });
 
       // Safely update product count displays
-      const productCountGrid = $("#product-count-grid");
-      const productCountList = $("#product-count-list");
+      const productCountGrid = document.getElementById("product-count-grid");
+      const productCountList = document.getElementById("product-count-list");
       
-      if (productCountGrid.length) {
-        productCountGrid.html(
-          `<span class="count">${visibleProductCountGrid}</span>Products found`
-        );
+      if (productCountGrid) {
+        productCountGrid.innerHTML =
+          `<span class="count">${visibleProductCountGrid}</span>Products found`;
       }
-      if (productCountList.length) {
-        productCountList.html(
-          `<span class="count">${visibleProductCountList}</span>Products found`
-        );
+      if (productCountList) {
+        productCountList.innerHTML =
+          `<span class="count">${visibleProductCountList}</span>Products found`;
       }
       
       updateLastVisibleItem();
@@ -385,10 +437,12 @@
 
     function updateLastVisibleItem() {
       setTimeout(() => {
-        $(".card-product.style-list").removeClass("last");
-        const lastVisible = $(".card-product.style-list:visible").last();
-        if (lastVisible.length > 0) {
-          lastVisible.addClass("last");
+        document.querySelectorAll(".card-product.style-list").forEach(function(el) {
+          el.classList.remove("last");
+        });
+        const lastVisible = document.querySelector(".card-product.style-list:not([style*='display: none']):last-child");
+        if (lastVisible) {
+          lastVisible.classList.add("last");
         }
       }, 50);
     }
@@ -397,52 +451,72 @@
   /* Filter Sort
   -------------------------------------------------------------------------------------*/
   var filterSort = function () {
-    let isListActive = $(".sw-layout-list").hasClass("active");
-    let originalProductsList = $("#listLayout .card-product").clone();
-    let originalProductsGrid = $("#gridLayout .card-product").clone();
-    let paginationList = $("#listLayout .wg-pagination").clone();
-    let paginationGrid = $("#gridLayout .wg-pagination").clone();
+    let isListActive = document.querySelector(".sw-layout-list")?.classList.contains("active");
+    let originalProductsList = document.getElementById("listLayout")?.querySelector(".card-product")?.cloneNode(true);
+    let originalProductsGrid = document.getElementById("gridLayout")?.querySelector(".card-product")?.cloneNode(true);
+    let paginationList = document.getElementById("listLayout")?.querySelector(".wg-pagination")?.cloneNode(true);
+    let paginationGrid = document.getElementById("gridLayout")?.querySelector(".wg-pagination")?.cloneNode(true);
 
-    $(".select-item").on("click", function () {
-      const sortValue = $(this).data("sort-value");
-      $(".select-item").removeClass("active");
-      $(this).addClass("active");
-      $(this)
-        .closest(".tf-dropdown")
-        .find(".text-sort-value")
-        .text($(this).find(".text-value-item").text());
+    document.querySelectorAll(".select-item").forEach(function(element) {
+      element.addEventListener("click", function() {
+        const sortValue = this.dataset.sortValue;
+        document.querySelectorAll(".select-item").forEach(function(el) {
+          el.classList.remove("active");
+        });
+        this.classList.add("active");
+        
+        const dropdown = this.closest(".tf-dropdown");
+        const textSortValue = dropdown?.querySelector(".text-sort-value");
+        const textValueItem = this.querySelector(".text-value-item");
+        if (textSortValue && textValueItem) {
+          textSortValue.textContent = textValueItem.textContent;
+        }
 
-      applyFilter(sortValue, isListActive);
+        applyFilter(sortValue, isListActive);
+      });
     });
 
-    $(".tf-view-layout-switch").on("click", function () {
-      const layout = $(this).data("value-layout");
+    document.querySelectorAll(".tf-view-layout-switch").forEach(function(element) {
+      element.addEventListener("click", function() {
+        const layout = this.dataset.valueLayout;
 
-      if (layout === "list") {
-        isListActive = true;
-        $("#gridLayout").hide();
-        $("#listLayout").show();
-      } else {
-        isListActive = false;
-        $("#listLayout").hide();
-        setGridLayout(layout);
-      }
+        if (layout === "list") {
+          isListActive = true;
+          const gridLayout = document.getElementById("gridLayout");
+          const listLayout = document.getElementById("listLayout");
+          if (gridLayout) gridLayout.style.display = 'none';
+          if (listLayout) listLayout.style.display = '';
+        } else {
+          isListActive = false;
+          const listLayout = document.getElementById("listLayout");
+          if (listLayout) listLayout.style.display = 'none';
+          setGridLayout(layout);
+        }
+      });
     });
 
     function applyFilter(sortValue, isListActive) {
       let products;
 
       if (isListActive) {
-        products = $("#listLayout .card-product");
+        products = Array.from(document.getElementById("listLayout")?.querySelectorAll(".card-product") || []);
       } else {
-        products = $("#gridLayout .card-product");
+        products = Array.from(document.getElementById("gridLayout")?.querySelectorAll(".card-product") || []);
       }
 
       if (sortValue === "best-selling") {
         if (isListActive) {
-          $("#listLayout").empty().append(originalProductsList.clone());
+          const listLayout = document.getElementById("listLayout");
+          if (listLayout && originalProductsList) {
+            listLayout.innerHTML = '';
+            listLayout.appendChild(originalProductsList.cloneNode(true));
+          }
         } else {
-          $("#gridLayout").empty().append(originalProductsGrid.clone());
+          const gridLayout = document.getElementById("gridLayout");
+          if (gridLayout && originalProductsGrid) {
+            gridLayout.innerHTML = '';
+            gridLayout.appendChild(originalProductsGrid.cloneNode(true));
+          }
         }
         bindProductEvents();
         displayPagination(products, isListActive);
@@ -452,29 +526,41 @@
       if (sortValue === "price-low-high") {
         products.sort(
           (a, b) =>
-            parseFloat($(a).find(".price-new").text().replace("$", "")) -
-            parseFloat($(b).find(".price-new").text().replace("$", ""))
+            parseFloat(a.querySelector(".price-new").textContent.replace("$", "")) -
+            parseFloat(b.querySelector(".price-new").textContent.replace("$", ""))
         );
       } else if (sortValue === "price-high-low") {
         products.sort(
           (a, b) =>
-            parseFloat($(b).find(".price-new").text().replace("$", "")) -
-            parseFloat($(a).find(".price-new").text().replace("$", ""))
+            parseFloat(b.querySelector(".price-new").textContent.replace("$", "")) -
+            parseFloat(a.querySelector(".price-new").textContent.replace("$", ""))
         );
       } else if (sortValue === "a-z") {
         products.sort((a, b) =>
-          $(a).find(".name-product").text().localeCompare($(b).find(".name-product").text())
+          a.querySelector(".name-product").textContent.localeCompare(b.querySelector(".name-product").textContent)
         );
       } else if (sortValue === "z-a") {
         products.sort((a, b) =>
-          $(b).find(".name-product").text().localeCompare($(a).find(".name-product").text())
+          b.querySelector(".name-product").textContent.localeCompare(a.querySelector(".name-product").textContent)
         );
       }
 
       if (isListActive) {
-        $("#listLayout").empty().append(products);
+        const listLayout = document.getElementById("listLayout");
+        if (listLayout) {
+          listLayout.innerHTML = '';
+          products.forEach(function(product) {
+            listLayout.appendChild(product);
+          });
+        }
       } else {
-        $("#gridLayout").empty().append(products);
+        const gridLayout = document.getElementById("gridLayout");
+        if (gridLayout) {
+          gridLayout.innerHTML = '';
+          products.forEach(function(product) {
+            gridLayout.appendChild(product);
+          });
+        }
       }
       bindProductEvents();
       displayPagination(products, isListActive);
@@ -483,66 +569,101 @@
     function displayPagination(products, isListActive) {
       if (products.length >= 12) {
         if (isListActive) {
-          $("#listLayout").append(paginationList.clone());
+          const listLayout = document.getElementById("listLayout");
+          if (listLayout && paginationList) {
+            listLayout.appendChild(paginationList.cloneNode(true));
+          }
         } else {
-          $("#gridLayout").append(paginationGrid.clone());
+          const gridLayout = document.getElementById("gridLayout");
+          if (gridLayout && paginationGrid) {
+            gridLayout.appendChild(paginationGrid.cloneNode(true));
+          }
         }
       }
     }
 
     function setGridLayout(layoutClass) {
-      $("#gridLayout")
-        .show()
-        .removeClass()
-        .addClass(`wrapper-shop tf-grid-layout ${layoutClass}`);
-      $(".tf-view-layout-switch").removeClass("active");
-      $(`.tf-view-layout-switch[data-value-layout="${layoutClass}"]`).addClass(
-        "active"
-      );
+      const gridLayout = document.getElementById("gridLayout");
+      if (gridLayout) {
+        gridLayout.style.display = '';
+        gridLayout.className = `wrapper-shop tf-grid-layout ${layoutClass}`;
+      }
+      
+      document.querySelectorAll(".tf-view-layout-switch").forEach(function(el) {
+        el.classList.remove("active");
+      });
+      
+      const activeSwitch = document.querySelector(`.tf-view-layout-switch[data-value-layout="${layoutClass}"]`);
+      if (activeSwitch) {
+        activeSwitch.classList.add("active");
+      }
     }
+    
     function bindProductEvents() {
-      if ($(".card-product").length > 0) {
-        $(".color-swatch").on("click, mouseover", function () {
-          var swatchColor = $(this).find("img").attr("src");
-          var imgProduct = $(this)
-            .closest(".card-product")
-            .find(".img-product");
-          imgProduct.attr("src", swatchColor);
-          $(this)
-            .closest(".card-product")
-            .find(".color-swatch.active")
-            .removeClass("active");
-          $(this).addClass("active");
+      if (document.querySelectorAll(".card-product").length > 0) {
+        document.querySelectorAll(".color-swatch").forEach(function(element) {
+          element.addEventListener("click", function() {
+            handleColorSwatch(this);
+          });
+          element.addEventListener("mouseover", function() {
+            handleColorSwatch(this);
+          });
         });
       }
-      $(".size-box").on("click", ".size-item", function () {
-        $(this).closest(".size-box").find(".size-item").removeClass("active");
-        $(this).addClass("active");
+      
+      document.querySelectorAll(".size-box").forEach(function(element) {
+        element.addEventListener("click", function(e) {
+          if (e.target.classList.contains("size-item")) {
+            this.querySelectorAll(".size-item").forEach(function(el) {
+              el.classList.remove("active");
+            });
+            e.target.classList.add("active");
+          }
+        });
       });
     }
+    
+    function handleColorSwatch(swatch) {
+      const swatchColor = swatch.querySelector("img")?.getAttribute("src");
+      const cardProduct = swatch.closest(".card-product");
+      const imgProduct = cardProduct?.querySelector(".img-product");
+      
+      if (swatchColor && imgProduct) {
+        imgProduct.setAttribute("src", swatchColor);
+      }
+      
+      const activeSwatch = cardProduct?.querySelector(".color-swatch.active");
+      if (activeSwatch) {
+        activeSwatch.classList.remove("active");
+      }
+      swatch.classList.add("active");
+    }
+    
     bindProductEvents();
   };
  
   /* Switch Layout 
   -------------------------------------------------------------------------------------*/  
   var swLayoutShop = function () {
-    let isListActive = $(".sw-layout-list").hasClass("active");
+    let isListActive = document.querySelector(".sw-layout-list")?.classList.contains("active");
     let userSelectedLayout = null;
 
     function hasValidLayout() {
-      return (
-        $("#gridLayout").hasClass("tf-col-2") ||
-        $("#gridLayout").hasClass("tf-col-3") ||
-        $("#gridLayout").hasClass("tf-col-4") ||
-        $("#gridLayout").hasClass("tf-col-5") ||
-        $("#gridLayout").hasClass("tf-col-6") ||
-        $("#gridLayout").hasClass("tf-col-7")
+      const gridLayout = document.getElementById("gridLayout");
+      return gridLayout && (
+        gridLayout.classList.contains("tf-col-2") ||
+        gridLayout.classList.contains("tf-col-3") ||
+        gridLayout.classList.contains("tf-col-4") ||
+        gridLayout.classList.contains("tf-col-5") ||
+        gridLayout.classList.contains("tf-col-6") ||
+        gridLayout.classList.contains("tf-col-7")
       );
     }
 
     function updateLayoutDisplay() {
-      const windowWidth = $(window).width();
-      const currentLayout = $("#gridLayout").attr("class");
+      const windowWidth = window.innerWidth;
+      const gridLayout = document.getElementById("gridLayout");
+      const currentLayout = gridLayout?.className;
 
       if (!hasValidLayout()) {
         console.warn(
@@ -552,11 +673,15 @@
       }
 
       if (isListActive) {
-        $("#gridLayout").hide();
-        $("#listLayout").show();
-        $(".wrapper-control-shop")
-          .addClass("listLayout-wrapper")
-          .removeClass("gridLayout-wrapper");
+        if (gridLayout) gridLayout.style.display = 'none';
+        const listLayout = document.getElementById("listLayout");
+        if (listLayout) listLayout.style.display = '';
+        
+        const wrapperControlShop = document.querySelector(".wrapper-control-shop");
+        if (wrapperControlShop) {
+          wrapperControlShop.classList.add("listLayout-wrapper");
+          wrapperControlShop.classList.remove("gridLayout-wrapper");
+        }
         return;
       }
 
@@ -579,90 +704,132 @@
       }
 
       if (windowWidth <= 767) {
-        if (!currentLayout.includes("tf-col-2")) {
+        if (!currentLayout?.includes("tf-col-2")) {
           setGridLayout("tf-col-2");
         }
       } else if (windowWidth <= 1200) {
-        if (!currentLayout.includes("tf-col-3")) {
+        if (!currentLayout?.includes("tf-col-3")) {
           setGridLayout("tf-col-3");
         }
       } else if (windowWidth <= 1400) {
         if (
-          currentLayout.includes("tf-col-5") ||
-          currentLayout.includes("tf-col-6") ||
-          currentLayout.includes("tf-col-7")
+          currentLayout?.includes("tf-col-5") ||
+          currentLayout?.includes("tf-col-6") ||
+          currentLayout?.includes("tf-col-7")
         ) {
           setGridLayout("tf-col-4");
         }
       } else {
-        $("#listLayout").hide();
-        $("#gridLayout").show();
-        $(".wrapper-control-shop")
-          .addClass("gridLayout-wrapper")
-          .removeClass("listLayout-wrapper");
+        const listLayout = document.getElementById("listLayout");
+        if (listLayout) listLayout.style.display = 'none';
+        if (gridLayout) gridLayout.style.display = '';
+        
+        const wrapperControlShop = document.querySelector(".wrapper-control-shop");
+        if (wrapperControlShop) {
+          wrapperControlShop.classList.add("gridLayout-wrapper");
+          wrapperControlShop.classList.remove("listLayout-wrapper");
+        }
       }
     }
 
     function setGridLayout(layoutClass) {
-      $("#listLayout").hide();
-      $("#gridLayout")
-        .show()
-        .removeClass()
-        .addClass(`wrapper-shop tf-grid-layout ${layoutClass}`);
-      $(".tf-view-layout-switch").removeClass("active");
-      $(`.tf-view-layout-switch[data-value-layout="${layoutClass}"]`).addClass(
-        "active"
-      );
-      $(".wrapper-control-shop")
-        .addClass("gridLayout-wrapper")
-        .removeClass("listLayout-wrapper");
+      const listLayout = document.getElementById("listLayout");
+      const gridLayout = document.getElementById("gridLayout");
+      
+      if (listLayout) listLayout.style.display = 'none';
+      if (gridLayout) {
+        gridLayout.style.display = '';
+        gridLayout.className = `wrapper-shop tf-grid-layout ${layoutClass}`;
+      }
+      
+      document.querySelectorAll(".tf-view-layout-switch").forEach(function(el) {
+        el.classList.remove("active");
+      });
+      
+      const activeSwitch = document.querySelector(`.tf-view-layout-switch[data-value-layout="${layoutClass}"]`);
+      if (activeSwitch) {
+        activeSwitch.classList.add("active");
+      }
+      
+      const wrapperControlShop = document.querySelector(".wrapper-control-shop");
+      if (wrapperControlShop) {
+        wrapperControlShop.classList.add("gridLayout-wrapper");
+        wrapperControlShop.classList.remove("listLayout-wrapper");
+      }
       isListActive = false;
     }
 
-    $(document).ready(function () {
+    document.addEventListener("DOMContentLoaded", function () {
       if (isListActive) {
-        $("#gridLayout").hide();
-        $("#listLayout").show();
-        $(".wrapper-control-shop")
-          .addClass("listLayout-wrapper")
-          .removeClass("gridLayout-wrapper");
+        const gridLayout = document.getElementById("gridLayout");
+        const listLayout = document.getElementById("listLayout");
+        if (gridLayout) gridLayout.style.display = 'none';
+        if (listLayout) listLayout.style.display = '';
+        
+        const wrapperControlShop = document.querySelector(".wrapper-control-shop");
+        if (wrapperControlShop) {
+          wrapperControlShop.classList.add("listLayout-wrapper");
+          wrapperControlShop.classList.remove("gridLayout-wrapper");
+        }
       } else {
-        $("#listLayout").hide();
-        $("#gridLayout").show();
+        const listLayout = document.getElementById("listLayout");
+        if (listLayout) listLayout.style.display = 'none';
         updateLayoutDisplay();
       }
     });
 
-    $(window).on("resize", updateLayoutDisplay);
+    window.addEventListener("resize", updateLayoutDisplay);
 
-    $(".tf-view-layout-switch").on("click", function () {
-      const layout = $(this).data("value-layout");
-      $(".tf-view-layout-switch").removeClass("active");
-      $(this).addClass("active");
-      $(".wrapper-control-shop").addClass("loading-shop");
-      setTimeout(() => {
-        $(".wrapper-control-shop").removeClass("loading-shop");
-        if (isListActive) {
-          $("#gridLayout").css("display", "none");
-          $("#listLayout").css("display", "");
-        } else {
-          $("#listLayout").css("display", "none");
-          $("#gridLayout").css("display", "");
+    document.querySelectorAll(".tf-view-layout-switch").forEach(function(element) {
+      element.addEventListener("click", function() {
+        const layout = this.dataset.valueLayout;
+        
+        document.querySelectorAll(".tf-view-layout-switch").forEach(function(el) {
+          el.classList.remove("active");
+        });
+        this.classList.add("active");
+        
+        const wrapperControlShop = document.querySelector(".wrapper-control-shop");
+        if (wrapperControlShop) {
+          wrapperControlShop.classList.add("loading-shop");
         }
-      }, 500);
+        
+        setTimeout(() => {
+          if (wrapperControlShop) {
+            wrapperControlShop.classList.remove("loading-shop");
+          }
+          
+          if (isListActive) {
+            const gridLayout = document.getElementById("gridLayout");
+            const listLayout = document.getElementById("listLayout");
+            if (gridLayout) gridLayout.style.display = 'none';
+            if (listLayout) listLayout.style.display = '';
+          } else {
+            const listLayout = document.getElementById("listLayout");
+            const gridLayout = document.getElementById("gridLayout");
+            if (listLayout) listLayout.style.display = 'none';
+            if (gridLayout) gridLayout.style.display = '';
+          }
+        }, 500);
 
-      if (layout === "list") {
-        isListActive = true;
-        userSelectedLayout = null;
-        $("#gridLayout").hide();
-        $("#listLayout").show();
-        $(".wrapper-control-shop")
-          .addClass("listLayout-wrapper")
-          .removeClass("gridLayout-wrapper");
-      } else {
-        userSelectedLayout = layout;
-        setGridLayout(layout);
-      }
+        if (layout === "list") {
+          isListActive = true;
+          userSelectedLayout = null;
+          const gridLayout = document.getElementById("gridLayout");
+          const listLayout = document.getElementById("listLayout");
+          if (gridLayout) gridLayout.style.display = 'none';
+          if (listLayout) listLayout.style.display = '';
+          
+          const wrapperControlShop = document.querySelector(".wrapper-control-shop");
+          if (wrapperControlShop) {
+            wrapperControlShop.classList.add("listLayout-wrapper");
+            wrapperControlShop.classList.remove("gridLayout-wrapper");
+          }
+        } else {
+          userSelectedLayout = layout;
+          setGridLayout(layout);
+        }
+      });
     });
   };
 
@@ -680,20 +847,23 @@
     let scrollTimeout;
 
     function hideExtraItems(layout, itemsDisplayed) {
-      layout.find(".loadItem").each(function (index) {
+      const loadItems = layout.querySelectorAll(".loadItem");
+      loadItems.forEach(function(element, index) {
         if (index >= itemsDisplayed) {
-          $(this).addClass("hidden");
+          element.classList.add("hidden");
         }
       });
-      if (layout.is("#listLayout")) updateLastVisible(layout);
+      if (layout.id === "listLayout") updateLastVisible(layout);
     }
 
     function showMoreItems(layout, itemsPerPage, itemsDisplayed) {
-      const hiddenItems = layout.find(".loadItem.hidden");
+      const hiddenItems = Array.from(layout.querySelectorAll(".loadItem.hidden"));
 
       setTimeout(function () {
-        hiddenItems.slice(0, itemsPerPage).removeClass("hidden");
-        if (layout.is("#listLayout")) updateLastVisible(layout);
+        hiddenItems.slice(0, itemsPerPage).forEach(function(element) {
+          element.classList.remove("hidden");
+        });
+        if (layout.id === "listLayout") updateLastVisible(layout);
         checkLoadMoreButton(layout);
       }, 600);
 
@@ -701,78 +871,100 @@
     }
 
     function updateLastVisible(layout) {
-      layout.find(".loadItem").removeClass("last-visible");
-      layout
-        .find(".loadItem")
-        .not(".hidden")
-        .last()
-        .addClass("last-visible");
+      layout.querySelectorAll(".loadItem").forEach(function(element) {
+        element.classList.remove("last-visible");
+      });
+      
+      const visibleItems = Array.from(layout.querySelectorAll(".loadItem")).filter(function(element) {
+        return !element.classList.contains("hidden");
+      });
+      
+      if (visibleItems.length > 0) {
+        visibleItems[visibleItems.length - 1].classList.add("last-visible");
+      }
     }
+    
     function checkLoadMoreButton(layout) {
-      if (layout.find(".loadItem.hidden").length === 0) {
-        if (layout.is("#listLayout")) {
-          $("#loadMoreListBtn").hide();
-          $("#infiniteScrollList").hide();
-        } else if (layout.is("#gridLayout")) {
-          $("#loadMoreGridBtn").hide();
-          $("#infiniteScrollGrid").hide();
+      if (layout.querySelectorAll(".loadItem.hidden").length === 0) {
+        if (layout.id === "listLayout") {
+          const loadMoreListBtn = document.getElementById("loadMoreListBtn");
+          const infiniteScrollList = document.getElementById("infiniteScrollList");
+          if (loadMoreListBtn) loadMoreListBtn.style.display = 'none';
+          if (infiniteScrollList) infiniteScrollList.style.display = 'none';
+        } else if (layout.id === "gridLayout") {
+          const loadMoreGridBtn = document.getElementById("loadMoreGridBtn");
+          const infiniteScrollGrid = document.getElementById("infiniteScrollGrid");
+          if (loadMoreGridBtn) loadMoreGridBtn.style.display = 'none';
+          if (infiniteScrollGrid) infiniteScrollGrid.style.display = 'none';
         }
       }
     }
 
-    hideExtraItems($("#listLayout"), listItemsDisplayed);
-    hideExtraItems($("#gridLayout"), gridItemsDisplayed);
+    const listLayout = document.getElementById("listLayout");
+    const gridLayout = document.getElementById("gridLayout");
+    
+    if (listLayout) hideExtraItems(listLayout, listItemsDisplayed);
+    if (gridLayout) hideExtraItems(gridLayout, gridItemsDisplayed);
 
-    $("#loadMoreListBtn").on("click", function () {
-      listItemsDisplayed = showMoreItems(
-        $("#listLayout"),
-        listItemsPerPage,
-        listItemsDisplayed
-      );
+    document.getElementById("loadMoreListBtn")?.addEventListener("click", function () {
+      if (listLayout) {
+        listItemsDisplayed = showMoreItems(
+          listLayout,
+          listItemsPerPage,
+          listItemsDisplayed
+        );
+      }
     });
 
-
-
-    $("#loadMoreGridBtn").on("click", function () {
-      gridItemsDisplayed = showMoreItems(
-        $("#gridLayout"),
-        gridItemsPerPage,
-        gridItemsDisplayed
-      );
+    document.getElementById("loadMoreGridBtn")?.addEventListener("click", function () {
+      if (gridLayout) {
+        gridItemsDisplayed = showMoreItems(
+          gridLayout,
+          gridItemsPerPage,
+          gridItemsDisplayed
+        );
+      }
     });
 
     // Infinite Scrolling
     function onScroll() {
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(function () {
-        const infiniteScrollList = $("#infiniteScrollList");
-        const infiniteScrollGrid = $("#infiniteScrollGrid");
+        const infiniteScrollList = document.getElementById("infiniteScrollList");
+        const infiniteScrollGrid = document.getElementById("infiniteScrollGrid");
 
         if (
-          infiniteScrollList.is(":visible") &&
+          infiniteScrollList && 
+          infiniteScrollList.style.display !== 'none' &&
           isElementInViewport(infiniteScrollList)
         ) {
-          listItemsDisplayed = showMoreItems(
-            $("#listLayout"),
-            listItemsPerPage,
-            listItemsDisplayed
-          );
+          if (listLayout) {
+            listItemsDisplayed = showMoreItems(
+              listLayout,
+              listItemsPerPage,
+              listItemsDisplayed
+            );
+          }
         }
 
         if (
-          infiniteScrollGrid.is(":visible") &&
+          infiniteScrollGrid && 
+          infiniteScrollGrid.style.display !== 'none' &&
           isElementInViewport(infiniteScrollGrid)
         ) {
-          gridItemsDisplayed = showMoreItems(
-            $("#gridLayout"),
-            gridItemsPerPage,
-            gridItemsDisplayed
-          );
+          if (gridLayout) {
+            gridItemsDisplayed = showMoreItems(
+              gridLayout,
+              gridItemsPerPage,
+              gridItemsDisplayed
+            );
+          }
         }
       }, 300);
     }
+    
     function isElementInViewport(el) {
-      const rect = el[0].getBoundingClientRect();
+      const rect = el.getBoundingClientRect();
       return (
         rect.top >= 0 &&
         rect.left >= 0 &&
@@ -782,13 +974,12 @@
         (window.innerWidth || document.documentElement.clientWidth)
       );
     }
-    $(window).on("scroll", onScroll);
+    
+    window.addEventListener("scroll", onScroll);
   };
 
-
-
-
-  $(function () {
+  // Initialize all functions when DOM is ready
+  document.addEventListener("DOMContentLoaded", function () {
     rangeTwoPrice();
     filterProducts();
     filterSort();
@@ -796,12 +987,12 @@
     loadProduct();
     
     // Reinitialize price slider when dropdowns are shown
-    $(document).on('shown.bs.dropdown', function (e) {
-      const dropdown = $(e.target);
-      const priceSlider = dropdown.find('#price-value-range');
-      if (priceSlider.length > 0 && !priceSlider[0].noUiSlider) {
+    document.addEventListener('shown.bs.dropdown', function (e) {
+      const dropdown = e.target;
+      const priceSlider = dropdown.querySelector('#price-value-range');
+      if (priceSlider && !priceSlider.noUiSlider) {
         rangeTwoPrice();
       }
     });
   });
-})(jQuery);
+})();

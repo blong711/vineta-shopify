@@ -16,6 +16,57 @@
  */
 
 /**
+ * Cart and Wishlist Translation Objects
+ * Provides translation strings for cart and wishlist functionality
+ * Uses translations from window.theme.translations if available, falls back to defaults
+ */
+const cartT = window.theme?.translations?.cart || {
+  empty_cart: 'Your cart is currently empty.',
+  continue_shopping: 'Continue shopping',
+  close_notification: 'Close notification',
+  item_added_success: 'Item added to cart successfully!',
+  cart_updated_success: 'Cart updated successfully!',
+  failed_remove_item: 'Failed to remove item. Please try again.',
+  add_to_cart: 'Add to Cart',
+  update_cart: 'Update Cart',
+  remove: 'Remove',
+  checkout: 'Check Out',
+  subtotal: 'Subtotal',
+  total: 'Total:',
+  taxes_shipping: 'Taxes and shipping calculated at checkout',
+  shipping_at_checkout: 'Shipping & taxes calculated at checkout',
+  cart_error: 'There was an error while updating your cart. Please try again.',
+  cart_quantity_error: 'You can only add [quantity] of this item to your cart.',
+  error_unable_action: 'Unable to {{ action }}. Please check your selection and try again.',
+  error_session_expired: 'Session expired. Please refresh the page and try again.',
+  error_access_denied: 'Access denied. Please refresh the page and try again.',
+  error_product_not_found: 'Product not found. It may have been removed or is no longer available.',
+  error_unable_action_out_of_stock: 'Unable to {{ action }}. The product may be out of stock.',
+  error_too_many_requests: 'Too many requests. Please wait a moment and try again.',
+  error_server: 'Server error. Please try again in a few moments.',
+  error_failed_action: 'Failed to {{ action }}. Please try again.'
+};
+
+const wishlistT = window.theme?.translations?.wishlist || {
+  add_to_wishlist: 'Add to wishlist',
+  remove_from_wishlist: 'Remove from wishlist',
+  add_to_cart: 'Add to Cart',
+  quick_view: 'Quick View',
+  add_to_compare: 'Add to Compare',
+  remove_from_compare: 'Remove from compare',
+  compare: 'Compare',
+  sold_out: 'Sold Out',
+  empty_wishlist: 'No product were added to the wishlist.',
+  back_to_shopping: 'Back to Shopping',
+  my_wishlist: 'My Wishlist',
+  wishlist: 'Wishlist',
+  check_wishlist: 'Check your wishlist',
+  your_wishlist: 'your wishlist',
+  loading_wishlist: 'Loading your wishlist...',
+  wishlist_empty: 'Your wishlist is empty.'
+};
+
+/**
  * CSRF Protected Fetch Utility
  * Provides secure fetch requests with CSRF token protection
  */
