@@ -847,10 +847,35 @@ function setStyle(el, prop, value) {
   --------------------------------------------------------------------------------------*/
   var scrollBottomSticky = function () {
     var myElement = qs(".tf-sticky-btn-atc");
+    if (!myElement) return;
 
-    // Use ScrollManager for optimized scroll handling
-    // This section is removed as per the new_code, as the ScrollManager object is removed.
-    // The logic for scrollBottomSticky is now directly integrated into the ScrollManager.
+    // Throttle scroll events for better performance
+    let ticking = false;
+    
+    function handleScroll() {
+      var scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+      
+      if (scrollPosition >= 500) {
+        addClass(myElement, "show");
+      } else {
+        removeClass(myElement, "show");
+      }
+    }
+
+    function requestTick() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    window.addEventListener("scroll", requestTick, { passive: true });
+    
+    // Initial check
+    handleScroll();
   };
 
   /* Handle Sidebar Filter 
