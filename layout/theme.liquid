@@ -466,7 +466,7 @@
     {%- assign potential_action_target = shop.url | append: routes.search_url | append: "?q={search_term_string}" -%}
     <script type="application/ld+json">
       {
-        "@context": "http://schema.org",
+        "@context": "https://schema.org",
         "@type": "WebSite",
         "name": {{ shop.name | json }},
         "potentialAction": {
@@ -475,6 +475,22 @@
           "query-input": "required name=search_term_string"
         },
         "url": {{ shop.url | append: page.url | json }}
+      }
+    </script>
+    
+    <!-- Organization structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": {{ shop.name | json }},
+        "url": {{ shop.url | json }},
+        "logo": {{ shop.logo | image_url: width: 600 | json }},
+        "sameAs": [
+          {%- if settings.social_facebook_link != blank -%}{{ settings.social_facebook_link | json }}{%- endif -%}
+          {%- if settings.social_twitter_link != blank -%}{% if settings.social_facebook_link != blank %},{% endif %}{{ settings.social_twitter_link | json }}{%- endif -%}
+          {%- if settings.social_instagram_link != blank -%}{% if settings.social_facebook_link != blank or settings.social_twitter_link != blank %},{% endif %}{{ settings.social_instagram_link | json }}{%- endif -%}
+        ]
       }
     </script>
     {%- elsif request.page_type == 'product' -%}
