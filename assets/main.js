@@ -1018,12 +1018,33 @@ function setStyle(el, prop, value) {
   /* Go Top - Optimized with throttled scroll handling
   -------------------------------------------------------------------------------------*/
   var goTop = function () {
-    var $goTop = qs("#goTop");
-    var $borderProgress = qs(".border-progress");
+    var goTopBtn = document.getElementById("goTop");
+    var borderProgress = document.querySelector(".border-progress");
 
-    // Use ScrollManager for optimized scroll handling
-    // This section is removed as per the new_code, as the ScrollManager object is removed.
-    // The logic for goTop is now directly integrated into the ScrollManager.
+    window.addEventListener("scroll", function () {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      var scrollPercent = (scrollTop / docHeight) * 100;
+      var progressAngle = (scrollPercent / 100) * 360;
+
+      if (borderProgress) {
+        borderProgress.style.setProperty("--progress-angle", progressAngle + "deg");
+      }
+
+      if (scrollTop > 100) {
+        if (goTopBtn) goTopBtn.classList.add("show");
+      } else {
+        if (goTopBtn) goTopBtn.classList.remove("show");
+      }
+    });
+
+    if (goTopBtn) {
+      goTopBtn.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        document.body.scrollTop = 0; // For Safari
+      });
+    }
   };
 
   // Dom Ready - Optimized with asynchronous initialization

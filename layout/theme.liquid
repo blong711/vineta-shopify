@@ -24,6 +24,7 @@
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+      <img src="{{ settings.favicon | image_url: width: 120, height: 32 }}" width="120" height="32" alt="{{ shop.name }} logo" style="display:none;" />
     {%- endif -%}
 
     {%- if settings.apple_touch_icon != blank -%}
@@ -547,31 +548,31 @@
     {%- endcapture -%}
     {{- grich | strip_newlines | remove: '  ' -}}
   </body>
-<!-- Tom Select JS -->
-<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js" defer></script>
-<script src="{{ 'bootstrap.min.js' | asset_url }}" defer></script>
-<script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
-<script src="{{ 'multiple-modal.js' | asset_url }}" defer></script>
-<script src="{{ 'carousel.js' | asset_url }}" defer></script>
-<script src="{{ 'infinityslide.js' | asset_url }}" defer></script>
-<script src="{{ 'paralaxei.js' | asset_url }}" defer></script>
-<script src="{{ 'lazysize.min.js' | asset_url }}" async></script>
-<script src="{{ 'simpleParallaxVanilla.umd.js' | asset_url }}" async></script>
-<script src="{{ 'wow.min.js' | asset_url }}" async></script>
-<script src="{{ 'count-down.js' | asset_url }}" async></script>
-{% if template contains 'collection' or template contains 'search' %}
-  <script src="{{ 'nouislider.min.js' | asset_url }}" async></script>
-{% endif %}
-{% if template contains 'product' %}
-  <script type="module" src="{{ 'image-compare-viewer.js' | asset_url }}" async></script>
-{% endif %}
-<script src="{{ 'accessibility.js' | asset_url }}" defer></script>
-<script src="{{ 'theme.js' | asset_url }}" defer></script>
-<script src="{{ 'main.js' | asset_url }}" defer></script>
-<script src="{{ 'shop.js' | asset_url }}" defer></script>
-<script src="{{ 'global.js' | asset_url }}" defer></script>
-<script src="{{ 'product-card.js' | asset_url }}" defer></script>
-<script src="{{ 'application.js' | asset_url }}" defer></script>
-<script src="{{ 'responsive-images.js' | asset_url }}" defer></script>
-<script type="module" src="{{ 'model-viewer.min.js' | asset_url }}" async></script>
+  <!-- Move all non-critical scripts here -->
+  <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js" defer></script>
+  <script src="{{ 'bootstrap.min.js' | asset_url }}" defer></script>
+  <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+  <script src="{{ 'multiple-modal.js' | asset_url }}" defer></script>
+  <script src="{{ 'carousel.js' | asset_url }}" defer></script>
+  <script src="{{ 'infinityslide.js' | asset_url }}" defer></script>
+  <script src="{{ 'paralaxei.js' | asset_url }}" defer></script>
+  <script src="{{ 'lazysize.min.js' | asset_url }}" async></script>
+  <!-- <script src="{{ 'simpleParallaxVanilla.umd.js' | asset_url }}" async></script> -->
+  <!-- <script src="{{ 'wow.min.js' | asset_url }}" async></script> -->
+  <script src="{{ 'count-down.js' | asset_url }}" async></script>
+  {% if template contains 'collection' or template contains 'search' %}
+    <script src="{{ 'nouislider.min.js' | asset_url }}" async></script>
+  {% endif %}
+  {% if template contains 'product' %}
+    <script type="module" src="{{ 'image-compare-viewer.js' | asset_url }}" async></script>
+  {% endif %}
+  <script src="{{ 'accessibility.js' | asset_url }}" defer></script>
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+  <script src="{{ 'main.js' | asset_url }}" defer></script>
+  <script src="{{ 'shop.js' | asset_url }}" defer></script>
+  <script src="{{ 'global.js' | asset_url }}" defer></script>
+  <script src="{{ 'product-card.js' | asset_url }}" defer></script>
+  <script src="{{ 'application.js' | asset_url }}" defer></script>
+  <script src="{{ 'responsive-images.js' | asset_url }}" defer></script>
+  <!-- <script type="module" src="{{ 'model-viewer.min.js' | asset_url }}" async></script> -->
 </html> 
