@@ -78,19 +78,12 @@
     <!-- CSRF Protection -->
     <meta name="csrf-token" content="{{ csrf_token }}">
 
-    <!-- Critical CSS - Preload for performance -->
-    <link rel="preload" href="{{ 'fonts.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="{{ 'bootstrap.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="{{ 'theme.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <!-- Critical CSS - Load immediately for above-the-fold content -->
+    <link rel="stylesheet" href="{{ 'fonts.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'bootstrap.min.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
     
-    <!-- Fallback for browsers that don't support preload -->
-    <noscript>
-      <link rel="stylesheet" href="{{ 'fonts.css' | asset_url }}">
-      <link rel="stylesheet" href="{{ 'bootstrap.min.css' | asset_url }}">
-      <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
-    </noscript>
-    
-    <!-- Non-critical CSS - Load with lower priority -->
+    <!-- Non-critical CSS - Load asynchronously for better performance -->
     <link rel="preload" href="{{ 'font-icons.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="{{ 'swiper-bundle.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="{{ 'photoswipe.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -98,7 +91,7 @@
     <link rel="preload" href="{{ 'styles.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="{{ 'responsive-images.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     
-    <!-- Fallback for non-critical CSS -->
+    <!-- Fallback for browsers that don't support preload -->
     <noscript>
       <link rel="stylesheet" href="{{ 'font-icons.css' | asset_url }}">
       <link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}">
@@ -138,13 +131,39 @@
       <span class="icon icon-arrow-right"></span>
     </button>
 
-    <!-- Preload -->
+    <!-- Preload - Optimized for performance -->
     {% if settings.enable_preload %}
-    <div class="preload preload-container">
+    <div class="preload preload-container" id="preloadContainer">
       <div class="preload-logo">
         <div class="spinner"></div>
       </div>
     </div>
+    <script>
+      // Optimized preload screen handling
+      document.addEventListener('DOMContentLoaded', function() {
+        const preloadContainer = document.getElementById('preloadContainer');
+        if (preloadContainer) {
+          // Hide preload screen after critical content is loaded
+          setTimeout(function() {
+            preloadContainer.classList.add('active');
+            setTimeout(function() {
+              preloadContainer.style.display = 'none';
+            }, 300);
+          }, 100);
+        }
+      });
+      
+      // Hide preload screen if page takes too long to load
+      window.addEventListener('load', function() {
+        const preloadContainer = document.getElementById('preloadContainer');
+        if (preloadContainer && preloadContainer.style.display !== 'none') {
+          preloadContainer.classList.add('active');
+          setTimeout(function() {
+            preloadContainer.style.display = 'none';
+          }, 300);
+        }
+      });
+    </script>
     {% endif %}
 
     <div id="wrapper">
