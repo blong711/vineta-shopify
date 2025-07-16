@@ -8,6 +8,63 @@
  * ------------------------------------------------------------
  */
 {
+  "js": {
+    "cart": {
+      "empty_cart": "Your cart is currently empty.",
+      "continue_shopping": "Continue shopping",
+      "close_notification": "Close notification",
+      "item_added_success": "Item added to cart successfully!",
+      "cart_updated_success": "Cart updated successfully!",
+      "failed_remove_item": "Failed to remove item. Please try again.",
+      "add_to_cart": "Add to Cart",
+      "update_cart": "Update Cart",
+      "remove": "Remove",
+      "checkout": "Check Out",
+      "subtotal": "Subtotal",
+      "total": "Total:",
+      "taxes_shipping": "Taxes and shipping calculated at checkout",
+      "shipping_at_checkout": "Shipping & taxes calculated at checkout",
+      "cart_error": "There was an error while updating your cart. Please try again.",
+      "cart_quantity_error": "You can only add [quantity] of this item to your cart.",
+      "error_unable_action": "Unable to {{ action }}. Please check your selection and try again.",
+      "error_session_expired": "Session expired. Please refresh the page and try again.",
+      "error_access_denied": "Access denied. Please refresh the page and try again.",
+      "error_product_not_found": "Product not found. It may have been removed or is no longer available.",
+      "error_unable_action_out_of_stock": "Unable to {{ action }}. The product may be out of stock.",
+      "error_too_many_requests": "Too many requests. Please wait a moment and try again.",
+      "error_server": "Server error. Please try again in a few moments.",
+      "error_failed_action": "Failed to {{ action }}. Please try again."
+    },
+    "wishlist": {
+      "add_to_wishlist": "Add to wishlist",
+      "remove_from_wishlist": "Remove from wishlist",
+      "add_to_cart": "Add to Cart",
+      "quick_view": "Quick View",
+      "add_to_compare": "Add to Compare",
+      "remove_from_compare": "Remove from compare",
+      "compare": "Compare",
+      "sold_out": "Sold Out",
+      "empty_wishlist": "No product were added to the wishlist.",
+      "back_to_shopping": "Back to Shopping",
+      "my_wishlist": "My Wishlist",
+      "wishlist": "Wishlist",
+      "check_wishlist": "Check your wishlist",
+      "your_wishlist": "your wishlist",
+      "loading_wishlist": "Loading your wishlist...",
+      "wishlist_empty": "Your wishlist is empty."
+    },
+    "shop": {
+      "in_stock": "In Stock",
+      "out_of_stock": "Out of Stock",
+      "on_sale": "On Sale",
+      "products_found": " products found"
+    }
+  },
+  "snippets": {
+    "filter_content": {
+      "collections": "Collections"
+    }
+  },
   "general": {
     "404": {
       "title": "Page not found",
@@ -178,7 +235,9 @@
       },
       "free_shipping": {
         "unlocked": "Congratulations! You've unlocked <span class=\"fw-medium\">Free Shipping</span>",
-        "progress": "Spend <span class=\"fw-medium\">{{ amount }}</span> more to get <span class=\"fw-medium\">Free Shipping</span>"
+        "progress": "Spend <span class=\"fw-medium\">{{ amount }}</span> more to get <span class=\"fw-medium\">Free Shipping</span>",
+        "congratulations_message": "Congratulations! You've unlocked <span class=\"fw-medium\">Free Shipping</span>",
+        "progress_message": "Spend <span class=\"fw-medium\">[amount]</span> more to get <span class=\"fw-medium\">Free Shipping</span>"
       },
       "cart_drawer_saving": "Saving...",
       "cart_drawer_saved": "Saved!",
@@ -396,7 +455,19 @@
       "error_unable_action_out_of_stock": "Unable to {{ action }}. The product may be out of stock.",
       "error_too_many_requests": "Too many requests. Please wait a moment and try again.",
       "error_server": "Server error. Please try again in a few moments.",
-      "error_failed_action": "Failed to {{ action }}. Please try again."
+      "error_failed_action": "Failed to {{ action }}. Please try again.",
+      "remove": "Remove",
+      "price": "Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "loading": "Loading...",
+      "failed_remove_item": "Failed to remove item. Please try again.",
+      "failed_update_quantity": "Failed to update quantity. Product out of stock.",
+      "failed_add_item": "Failed to add item to cart. Please try again.",
+      "failed_fetch_cart": "Failed to fetch cart data",
+      "failed_remove_item_with_status": "Failed to remove item: {{ status }} {{ error }}",
+      "failed_update_quantity_with_status": "Failed to update quantity: {{ status }} {{ error }}",
+      "remove_item_aria_label": "Remove item"
     },
     "recently_viewed": {
       "title": "Recently Viewed",
@@ -1032,4 +1103,26 @@
     "empty_wishlist": "No product were added to the wishlist.",
     "back_to_shopping": "Back to Shopping"
   },
+  "js": {
+    "shop": {
+      "availability": "Availability",
+      "brand": "Brand",
+      "price": "Price",
+      "color": "Color",
+      "size": "Size",
+      "on_sale": "On Sale",
+      "products_found": "Products found",
+      "in_stock": "In stock",
+      "out_of_stock": "Out of stock",
+      "invalid_layout_warning": "Page does not contain a valid layout (2-7 columns), skipping layout adjustments.",
+      "sort_best_selling": "Best selling",
+      "sort_price_low_high": "Price: Low to High",
+      "sort_price_high_low": "Price: High to Low",
+      "sort_a_z": "A-Z",
+      "sort_z_a": "Z-A",
+      "remove_all": "Remove all",
+      "reset": "Reset",
+      "load_more": "Load more"
+    }
+  }
 } 
