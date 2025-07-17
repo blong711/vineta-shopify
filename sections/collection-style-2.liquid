@@ -567,7 +567,7 @@
                    data-availability="{{ product.available | default: 'In stock' }}" 
                    data-brand="{{ product.vendor }}" 
                    data-product-number="{{ list_product_counter }}">
-                {% render 'card-product', product: product, show_color_swatches: true, size_swatches: true, style: 2 %}
+                {% render 'card-product', product: product, show_color_swatches: true, size_swatches: true, style: 'style-2' %}
               </div>
             {% endfor %}
           {% else %}
@@ -651,7 +651,7 @@
                    data-availability="{{ product.available | default: 'In stock' }}" 
                    data-brand="{{ product.vendor }}"
                    data-product-number="{{ product_counter }}">
-                {% render 'card-product', product: product, show_color_swatches: true, show_size_swatches: true,  size_swatches: true, style: 2 %}
+                {% render 'card-product', product: product, show_color_swatches: true, show_size_swatches: true,  size_swatches: true, style: 'style-2' %}
               </div>
             {% endfor %}
           {% else %}
