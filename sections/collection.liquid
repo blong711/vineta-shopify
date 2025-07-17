@@ -5,7 +5,8 @@
   - Product cards with hover effects and quick actions
 {% endcomment %}
 
-{% paginate collection.products by section.settings.products_per_page %}
+{% if collection != blank and collection.products != blank %}
+  {% paginate collection.products by section.settings.products_per_page %}
 
 <!-- Ensure all products are visible -->
 <style>
@@ -799,7 +800,7 @@
   </div>
 {% endif %}
 {% endpaginate %}
-
+{% endif %}
 {% if section.settings.show_icon_box %}
   <div class="flat-spacing-5 line-top flat-wrap-iconbox">
     <div class="container">
