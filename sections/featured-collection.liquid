@@ -619,52 +619,137 @@
 }
 {% endschema %}
 <style>
-@media (min-width: 1200px) {
+@media (min-width: 1200) {
     .min-width-599 {
         min-width: 599px;
-        aspect-ratio: 599/824.84;
+        aspect-ratio: 599/82484;
     }
     .min-width-635 {
         min-width: 635px;
-        aspect-ratio: 635/824.83;
+        aspect-ratio: 635/82483;
     }
     .min-width-905 {
-        aspect-ratio: 900.5 / 575.2;
+        aspect-ratio: 9000.5/ 575.2;
     }
 }
 
-/* Title truncation for mobile and when items per view > 4 */
-@media (max-width: 767px) {
-    .collection-title-truncate {
-        max-width: 120px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: inline-block;
-    }
+/* Button text truncation - General styles */
+.tf-btn {
+    max-width: 10;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
 }
 
-@media (max-width: 575px) {
-    .collection-title-truncate {
-        max-width: 100px;
-    }
+.tf-btn span,
+.tf-btn .collection-title-truncate {
+    max-width: 10;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-shrink: 1;
 }
 
-/* Desktop truncation when items per view > 4 */
-@media (min-width: 1024px) {
-    .collection-title-truncate {
-        max-width: 150px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: inline-block;
-    }
+.tf-btn .icon {
+    flex-shrink: 0;
 }
 
-/* Additional truncation for very high item counts */
-@media (min-width: 1200px) {
+/* Mobile truncation */
+@media (max-width: 575) {
+    .tf-btn {
+        max-width: 120;
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+    
     .collection-title-truncate {
         max-width: 80px;
     }
+}
+
+@media (max-width: 767) {
+    .tf-btn {
+        max-width: 140px;
+    }
+    
+    .collection-title-truncate {
+        max-width: 100;
+    }
+}
+
+/* Tablet truncation */
+@media (min-width: 768px) and (max-width:1023) {
+    .tf-btn {
+        max-width: 160px;
+    }
+    
+    .collection-title-truncate {
+        max-width: 120;
+    }
+}
+
+/* Desktop truncation */
+@media (min-width:1024) {
+    .tf-btn {
+        max-width: 180px;
+    }
+    
+    .collection-title-truncate {
+        max-width: 140;
+    }
+}
+
+/* Additional truncation for very high item counts on large screens */
+@media (min-width:1200) {
+    .tf-btn {
+        max-width: 150px;
+    }
+    
+    .collection-title-truncate {
+        max-width: 100;
+    }
+}
+
+/* Extra large screens */
+@media (min-width:1400) {
+    .tf-btn {
+        max-width: 200px;
+    }
+    
+    .collection-title-truncate {
+        max-width: 150;
+    }
+}
+
+/* Ensure buttons don't overflow their containers */
+.fs-cls .content,
+.banner-shop .content,
+.wg-cls .cls-btn {
+    overflow: hidden;
+}
+
+/* Specific layout adjustments */
+.fs-cls .content .tf-btn,
+.banner-shop .content .tf-btn {
+    width: 100%;
+    justify-content: center;
+}
+
+.wg-cls .cls-btn .tf-btn {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Prevent button overflow in swiper slides */
+.swiper-slide {
+    overflow: hidden;
+}
+
+.swiper-slide .tf-btn {
+    box-sizing: border-box;
 }
 </style>
