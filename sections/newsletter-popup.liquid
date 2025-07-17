@@ -58,7 +58,7 @@
 }
 {% endschema %}
 
-<div class="modal modalCentered fade auto-popup modal-newsletter">
+<div class="modal modalCentered fade auto-popup modal-newsletter" id="newsletterPopup" tabindex="-1" aria-labelledby="newsletterPopupLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-top">
@@ -153,20 +153,21 @@
     
     // Only check localStorage if not in theme customizer
     if (!isThemeCustomizer && localStorage.getItem('newsletterPopupHidden') === 'true') {
-      if (popup) {
-        popup.remove();
-      }
       return;
     }
-    
-    // If in theme customizer mode, immediately hide the popup
-    if (isThemeCustomizer && popup) {
-      popup.style.display = 'none';
-      popup.style.opacity = '0';
-      popup.style.visibility = 'hidden';
-      popup.classList.remove('auto-popup');
-    }
 
+    // Show popup after a delay if not in customizer mode
+    if (!isThemeCustomizer) {
+      setTimeout(function() {
+        if (popup) {
+          popup.classList.add('show');
+          popup.style.display = 'block';
+          popup.style.opacity = '1';
+          popup.style.visibility = 'visible';
+        }
+      }, 2000); // Show after 5 seconds
+    }
+    
     // Handle theme customizer section selection
     if (isThemeCustomizer && popup) {
       // Initially hide the popup in customizer mode and prevent auto-show
