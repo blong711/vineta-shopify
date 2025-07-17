@@ -1,0 +1,3097 @@
+{% comment %}
+  Collection Section
+  - Includes filter controls, sorting options, layout switching
+  - Responsive product grid with list view option
+  - Product cards with hover effects and quick actions
+{% endcomment %}
+
+{% if collection != blank and collection.products != blank %}
+    {% paginate collection.products by section.settings.products_per_page %}
+  
+  <!-- Ensure all products are visible -->
+  <style>
+    .tf-grid-layout .loadItem {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+    
+    .tf-grid-layout {
+      grid-template-columns: repeat(4, 1fr);
+      display: grid !important;
+    }
+    
+    .tf-grid-layout .loadItem:nth-child(n) {
+      display: block !important;
+    }
+  </style>
+  
+  <section class="flat-spacing-24" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+    {% if section.settings.width == 'boxed' %}
+      <div class="container">
+    {% elsif section.settings.width == 'full' %}
+      <div class="container-full">
+    {% endif %}
+      
+      <!-- Filter Drawer - Always present for mobile/tablet responsive behavior -->
+      <div class="offcanvas offcanvas-start canvas-sidebar canvas-filter" id="filterShop">
+        <div class="canvas-wrapper">
+          <div class="canvas-header">
+            <span class="title">{{ 'sections.collection.filter' | t }}</span>
+            <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="{{ 'sections.collection.close' | t }}"></button>
+          </div>
+                    <div class="canvas-body">
+              {% render 'filter-content', 
+                show_banner: section.settings.show_banner,
+                banner_title: section.settings.banner_title,
+                banner_button_text: section.settings.banner_button_text,
+                banner_button_url: section.settings.banner_button_url,
+                collections_title: section.settings.collections_title,
+                categories_mode: section.settings.categories_mode,
+                categories_link_list: section.settings.categories_link_list,
+                categories_show_count: section.settings.categories_show_count,
+                show_on_sale: section.settings.show_on_sale,
+                on_sale_title: section.settings.on_sale_title,
+                on_sale_source: section.settings.on_sale_source,
+                on_sale_products: section.settings.on_sale_products,
+                filter_banner: section.settings.filter_banner,
+                form_id: 'collection-filters-form-drawer'
+              %}
+          </div>
+        </div>
+      </div>
+  
+      {%- case section.settings.filter_type -%}
+        {%- when 'drawer' -%}
+          <!-- Drawer filter type - no additional sidebar needed -->
+        {%- when 'left' -%}
+          <!-- Left Sidebar - visible on desktop, hidden on mobile/tablet -->
+          <div class="row">
+            <div class="col-lg-3 d-none d-lg-block">
+              <div class="filter-sidebar filter-left canvas-filter">
+                <div class="filter-content">
+                  {% render 'filter-content', 
+                    show_banner: section.settings.show_banner,
+                    banner_title: section.settings.banner_title,
+                    banner_button_text: section.settings.banner_button_text,
+                    banner_button_url: section.settings.banner_button_url,
+                    collections_title: section.settings.collections_title,
+                    categories_mode: section.settings.categories_mode,
+                    categories_link_list: section.settings.categories_link_list,
+                    categories_show_count: section.settings.categories_show_count,
+                    show_on_sale: section.settings.show_on_sale,
+                    on_sale_title: section.settings.on_sale_title,
+                    on_sale_source: section.settings.on_sale_source,
+                    on_sale_products: section.settings.on_sale_products,
+                    filter_banner: section.settings.filter_banner,
+                    form_id: 'collection-filters-form-sidebar'
+                  %}
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-9 col-12">
+        {%- when 'right' -%}
+          <!-- Right Sidebar - visible on desktop, hidden on mobile/tablet -->
+          <div class="row">
+            <div class="col-lg-9 col-12">
+        {%- when 'horizontal' -%}
+          <!-- Horizontal filter type - no additional sidebar needed -->
+      {%- endcase -%}
+  
+      {%- if section.settings.filter_type == 'drawer' or section.settings.filter_type == 'left' or section.settings.filter_type == 'right' -%}
+        {% if collection.products.size > 0 %}
+          <div class="tf-shop-control">
+            {%- if section.settings.filter_type == 'drawer' -%}
+              <div class="tf-group-filter">
+                <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="filterShop" class="tf-btn-filter">
+                  <span class="icon icon-filter"></span>
+                  <span class="text">{{ 'sections.collection.filter' | t }}</span>
+                </a>
+                <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
+                  <div class="btn-select">
+                    <span class="text-sort-value">{{ collection.sort_by | default: 'best-selling' | replace: '-', ' ' | capitalize }}</span>
+                    <span class="icon icon-arr-down"></span>
+                  </div>
+                  <div class="dropdown-menu">
+                    <div class="select-item{% if collection.sort_by == 'best-selling' %} active{% endif %}" data-sort-value="best-selling">
+                      <span class="text-value-item">Best selling</span>
+                    </div>
+                    <div class="select-item{% if collection.sort_by == 'title-ascending' %} active{% endif %}" data-sort-value="title-ascending">
+                      <span class="text-value-item">Title ascending</span>
+                    </div>
+                    <div class="select-item{% if collection.sort_by == 'title-descending' %} active{% endif %}" data-sort-value="title-descending">
+                      <span class="text-value-item">Title descending</span>
+                    </div>
+                    <div class="select-item{% if collection.sort_by == 'price-ascending' %} active{% endif %}" data-sort-value="price-ascending">
+                      <span class="text-value-item">Price ascending</span>
+                    </div>
+                    <div class="select-item{% if collection.sort_by == 'price-descending' %} active{% endif %}" data-sort-value="price-descending">
+                      <span class="text-value-item">Price descending</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {%- elsif section.settings.filter_type == 'left' or section.settings.filter_type == 'right' -%}
+              <div class="tf-group-filter">
+                <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="filterShop" class="tf-btn-filter d-lg-none">
+                  <span class="icon icon-filter"></span>
+                  <span class="text">{{ 'sections.collection.filter' | t }}</span>
+                </a>
+                <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
+                  <div class="btn-select">
+                    <span class="text-sort-value">{{ collection.sort_by | default: 'best-selling' | replace: '-', ' ' | capitalize }}</span>
+                    <span class="icon icon-arr-down"></span>
+                  </div>
+                  <div class="dropdown-menu">
+                    <div class="select-item{% if collection.sort_by == 'best-selling' %} active{% endif %}" data-sort-value="best-selling">
+                      <span class="text-value-item">Best selling</span>
+                    </div>
+                    <div class="select-item{% if collection.sort_by == 'title-ascending' %} active{% endif %}" data-sort-value="title-ascending">
+                      <span class="text-value-item">Title ascending</span>
+                    </div>
+                    <div class="select-item{% if collection.sort_by == 'title-descending' %} active{% endif %}" data-sort-value="title-descending">
+                      <span class="text-value-item">Title descending</span>
+                    </div>
+                    <div class="select-item{% if collection.sort_by == 'price-ascending' %} active{% endif %}" data-sort-value="price-ascending">
+                      <span class="text-value-item">Price ascending</span>
+                    </div>
+                    <div class="select-item{% if collection.sort_by == 'price-descending' %} active{% endif %}" data-sort-value="price-descending">
+                      <span class="text-value-item">Price descending</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.filter_type != 'horizontal' -%}
+              <ul class="tf-control-layout">
+                {% comment %} <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
+                  <div class="item icon-list">
+                    <span></span>
+                    <span></span>
+                  </div>
+                </li> {% endcomment %}
+                <li class="tf-view-layout-switch sw-layout-2" data-value-layout="tf-col-2">
+                  <div class="item icon-grid-2">
+                    <span></span>
+                    <span></span>
+                  </div>
+                </li>
+                <li class="tf-view-layout-switch sw-layout-3{% if section.settings.default_grid_columns == '3' %} active{% endif %}" data-value-layout="tf-col-3">
+                  <div class="item icon-grid-3">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </li>
+                <li class="tf-view-layout-switch sw-layout-4{% if section.settings.default_grid_columns == '4' %} active{% endif %}" data-value-layout="tf-col-4">
+                  <div class="item icon-grid-4">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </li>
+              </ul>
+            {%- endif -%}
+          </div>
+        {% endif %}
+      {%- endif -%}
+  
+      {%- if section.settings.filter_type == 'horizontal' -%}
+        {% if collection.products.size > 0 %}
+          <div class="tf-shop-control mb1">
+            <div class="tf-group-filter">
+              <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
+                <div class="btn-select">
+                  <span class="text-sort-value">{{ collection.sort_by | default: 'best-selling' | replace: '-', ' ' | capitalize }}</span>
+                  <span class="icon icon-arr-down"></span>
+                </div>
+                <div class="dropdown-menu">
+                  <div class="select-item{% if collection.sort_by == 'best-selling' %} active{% endif %}" data-sort-value="best-selling">
+                    <span class="text-value-item">Best selling</span>
+                  </div>
+                  <div class="select-item{% if collection.sort_by == 'title-ascending' %} active{% endif %}" data-sort-value="title-ascending">
+                    <span class="text-value-item">Title ascending</span>
+                  </div>
+                  <div class="select-item{% if collection.sort_by == 'title-descending' %} active{% endif %}" data-sort-value="title-descending">
+                    <span class="text-value-item">Title descending</span>
+                  </div>
+                  <div class="select-item{% if collection.sort_by == 'price-ascending' %} active{% endif %}" data-sort-value="price-ascending">
+                    <span class="text-value-item">Price ascending</span>
+                  </div>
+                  <div class="select-item{% if collection.sort_by == 'price-descending' %} active{% endif %}" data-sort-value="price-descending">
+                    <span class="text-value-item">Price descending</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="tf-control-layout">
+            {% comment %} <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
+              <div class="item icon-list">
+                <span></span>
+                <span></span>
+              </div>
+            </li> {% endcomment %}
+            <li class="tf-view-layout-switch sw-layout-2" data-value-layout="tf-col-2">
+              <div class="item icon-grid-2">
+                <span></span>
+                <span></span>
+              </div>
+            </li>
+            <li class="tf-view-layout-switch sw-layout-3{% if section.settings.default_grid_columns == '3' %} active{% endif %}" data-value-layout="tf-col-3">
+              <div class="item icon-grid-3">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </li>
+            <li class="tf-view-layout-switch sw-layout-4{% if section.settings.default_grid_columns == '4' %} active{% endif %}" data-value-layout="tf-col-4">
+              <div class="item icon-grid-4">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </li>
+          </ul>
+          </div>
+          <form id="collection-filters-form" method="GET" action="{{ collection.url }}" class="filter-form">
+            <div class="tf-filter-dropdown">
+              <span class="title-filter">{{ 'sections.collection.filter' | t }}:</span>
+              <div class="meta-dropdown-filter">
+                <!-- Availability Filter -->
+                <!-- Note: Counts are updated dynamically via JavaScript to reflect current filtered products -->
+                <div class="dropdown dropdown-filter">
+                  <div class="dropdown-toggle" id="availability" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                    <span class="text-value">{{ 'sections.collection.availability' | t }}</span>
+                    <span class="icon icon-arr-down"></span>
+                  </div>
+                  <div class="dropdown-menu" aria-labelledby="availability">
+                    <ul class="collapse-body filter-group-check current-scrollbar">
+                      <li class="list-item">
+                        <input type="checkbox"
+                          name="filter.v.availability"
+                          value="1"
+                          id="Filter-availability-1"
+                          {% if current_tags contains 'filter.v.availability:1' %}checked{% endif %}
+                          class="filter-checkbox tf-check">
+                        <label for="Filter-availability-1" class="label">
+                          <span>{{ 'sections.collection.in_stock' | t }}</span>
+                          <span class="count">({{ collection.products | where: "available", true | size }})</span>
+                        </label>
+                      </li>
+                      <li class="list-item">
+                        <input type="checkbox"
+                          name="filter.v.availability"
+                          value="0"
+                          id="Filter-availability-2"
+                          {% if current_tags contains 'filter.v.availability:0' %}checked{% endif %}
+                          class="filter-checkbox tf-check">
+                        <label for="Filter-availability-2" class="label">
+                          <span>{{ 'sections.collection.out_of_stock' | t }}</span>
+                          <span class="count">({{ collection.products | where: "available", false | size }})</span>
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+  
+                <!-- Dynamic Shopify Filters -->
+                {%- for filter in collection.filters -%}
+                  {%- if filter.label != 'Availability' -%}
+                    <div class="dropdown dropdown-filter">
+                      <div class="dropdown-toggle" id="filter-{{ filter.label | handle }}" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                        <span class="text-value">{{ filter.label }}</span>
+                        <span class="icon icon-arr-down"></span>
+                      </div>
+                      <div class="dropdown-menu" aria-labelledby="filter-{{ filter.label | handle }}">
+                        {%- case filter.type -%}
+                          {%- when 'boolean' or 'list' -%}
+                            <ul class="filter-group-check">
+                              {%- for filter_value in filter.values -%}
+                                <li class="list-item">
+                                  <input type="checkbox"
+                                    name="{{ filter_value.param_name }}"
+                                    value="{{ filter_value.value }}"
+                                    id="Filter-{{ filter.label | escape }}-{{ forloop.index }}"
+                                    {% if filter_value.active -%}checked{%- endif %}
+                                    {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
+                                    class="filter-checkbox tf-check">
+                                  <label for="Filter-{{ filter.label | escape }}-{{ forloop.index }}" class="label">
+                                    <span>{{ filter_value.label }}</span>
+                                    <span class="count">({{ filter_value.count }})</span>
+                                  </label>
+                                </li>
+                              {%- endfor -%}
+                            </ul>
+                          {%- when 'price_range' -%}
+                            <div class="collapse-body widget-price filter-price">
+                              <span class="reset-price">{{ 'sections.collection.reset' | t }}</span>
+                              <div class="price-val-range" id="price-value-range-horizontal" 
+                                data-min="{{ filter.min_value.value | default: 0 | money_without_currency | round }}"
+                                data-max="{{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}"
+                                data-range-min="{{ filter.range_min | money_without_currency | round }}"
+                                data-range-max="{{ filter.range_max | money_without_currency | round }}"></div>
+                              <div class="box-value-price">
+                                <span class="text-sm">{{ 'sections.collection.price' | t }}</span>
+                                <div class="price-box">
+                                  <div class="price-val" id="price-min-value-horizontal" data-currency="{{ shop.currency.symbol }}">
+                                    {{ filter.min_value.value | default: 0 | money_without_currency | round }}
+                                  </div>
+                                  <span>-</span>
+                                  <div class="price-val" id="price-max-value-horizontal" data-currency="{{ shop.currency.symbol }}">
+                                    {{ filter.max_value.value | default: filter.range_max | money_without_currency | round }}
+                                  </div>
+                                </div>
+                              </div>
+                              {% comment %} Don't include price inputs by default - only add them via JavaScript when user changes the slider {% endcomment %}
+                              <input type="hidden" name="filter.v.price.gte" id="price-min-input-horizontal" value="" style="display: none;">
+                              <input type="hidden" name="filter.v.price.lte" id="price-max-input-horizontal" value="" style="display: none;">
+                            </div>
+                        {%- endcase -%}
+                      </div>
+                    </div>
+                  {%- endif -%}
+                {%- endfor -%}
+  
+                <!-- Color Filter -->
+                {%- assign unique_colors = '' | split: '' -%}
+                {%- for product in collection.products -%}
+                  {%- for option in product.options_with_values -%}
+                    {%- if option.name == 'Color' or option.name == 'Colour' -%}
+                      {%- for value in option.values -%}
+                        {%- unless unique_colors contains value -%}
+                          {%- assign unique_colors = unique_colors | concat: value | uniq -%}
+                        {%- endunless -%}
+                      {%- endfor -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endfor -%}
+                
+                {%- if unique_colors.size > 0 -%}
+                  <div class="dropdown dropdown-filter">
+                    <div class="dropdown-toggle" id="color-filter" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                      <span class="text-value">{{ 'sections.collection.color' | t }}</span>
+                      <span class="icon icon-arr-down"></span>
+                    </div>
+                    <div class="dropdown-menu" aria-labelledby="color-filter">
+                      <div class="filter-color-box">
+                        {%- for color in unique_colors -%}
+                          {%- assign color_count = 0 -%}
+                          {%- for product in collection.products -%}
+                            {%- for option in product.options_with_values -%}
+                              {%- if option.name == 'Color' or option.name == 'Colour' -%}
+                                {%- if option.values contains color -%}
+                                  {%- assign color_count = color_count | plus: 1 -%}
+                                  {%- break -%}
+                                {%- endif -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                          {%- endfor -%}
+                          <div class="color-item color-check{% if current_tags contains color or request.search contains color %} active{% endif %}" data-color="{{ color | escape }}">
+                            <span class="color bg-{{ color | handleize }}"></span>
+                            <span class="color-text">{{ color }}</span>
+                            <input type="checkbox"
+                              name="filter.v.option.color"
+                              value="{{ color | escape }}"
+                              id="Filter-color-{{ forloop.index }}"
+                              {% if current_tags contains color or request.search contains color %}checked{% endif %}
+                              class="filter-checkbox tf-check"
+                              style="display: none;">
+                            <span class="count">({{ color_count }})</span>
+                          </div>
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  </div>
+                {%- endif -%}
+  
+                <!-- Size Filter -->
+                {%- assign unique_sizes = '' | split: '' -%}
+                {%- for product in collection.products -%}
+                  {%- for option in product.options_with_values -%}
+                    {%- if option.name == 'Size' -%}
+                      {%- for value in option.values -%}
+                        {%- unless unique_sizes contains value -%}
+                          {%- assign unique_sizes = unique_sizes | concat: value | uniq -%}
+                        {%- endunless -%}
+                      {%- endfor -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endfor -%}
+                
+                {%- if unique_sizes.size > 0 -%}
+                  <div class="dropdown dropdown-filter">
+                    <div class="dropdown-toggle" id="size-filter" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                      <span class="text-value">{{ 'sections.collection.size' | t }}</span>
+                      <span class="icon icon-arr-down"></span>
+                    </div>
+                    <div class="dropdown-menu" aria-labelledby="size-filter">
+                      <div class="filter-size-box">
+                        {%- for size in unique_sizes -%}
+                          {%- assign size_count = 0 -%}
+                          {%- for product in collection.products -%}
+                            {%- for option in product.options_with_values -%}
+                              {%- if option.name == 'Size' -%}
+                                {%- if option.values contains size -%}
+                                  {%- assign size_count = size_count | plus: 1 -%}
+                                  {%- break -%}
+                                {%- endif -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                          {%- endfor -%}
+                          <div class="size-item size-check{% if current_tags contains size or request.search contains size %} active{% endif %}" data-size="{{ size | escape }}">
+                            <span class="size">{{ size }}</span>
+                            <input type="checkbox"
+                              name="filter.v.option.size"
+                              value="{{ size | escape }}"
+                              id="Filter-size-{{ forloop.index }}"
+                              {% if current_tags contains size or request.search contains size %}checked{% endif %}
+                              class="filter-checkbox tf-check"
+                              style="display: none;">
+                            <span class="count">({{ size_count }})</span>
+                          </div>
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </form>
+        {% endif %}
+      {%- endif -%}
+  
+      <div class="wrapper-control-shop" data-pagination-type="{{ section.settings.pagination_type }}">
+        <div class="meta-filter-shop" style="display: {% if current_tags.size > 0 or request.search != blank %}block{% else %}none{% endif %};">
+            <div id="product-count-grid" class="count-text" style="display: {% if current_tags.size > 0 or request.search contains 'filter.v' %}block{% else %}none{% endif %};">
+              <span class="count">{{ collection.products_count }}</span>
+              {% if collection.products_count == 1 %}
+                {{ 'sections.collection.product_found' | t }}
+              {% else %}
+                {{ 'sections.collection.products_found' | t }}
+              {% endif %}
+            </div>
+            <div id="product-count-list" class="count-text" style="display: {% if current_tags.size > 0 or request.search contains 'filter.v' %}block{% else %}none{% endif %};"><span class="count">{{ collection.products_count }}</span> {{ 'sections.collection.products_found' | t }}</div>
+            <div id="applied-filters">
+              {% comment %} Show current tags as applied filters {% endcomment %}
+              {% if current_tags.size > 0 %}
+                {% for tag in current_tags %}
+                  <span class="filter-tag">
+                    <i class="icon icon-close" data-filter-tag="{{ tag | escape }}"></i>
+                    {{ tag }}
+                  </span>
+                {% endfor %}
+              {% endif %}
+              
+              {% comment %} Show URL parameters as applied filters {% endcomment %}
+              {% assign url_params = request.search | remove: '?' | split: '&' %}
+              {% for param in url_params %}
+                {% assign key_value = param | split: '=' %}
+                {% assign param_key = key_value[0] %}
+                {% assign param_value = key_value[1] %}
+                
+                {% if param_key == 'filter.v.availability' %}
+                  {% assign availability_label = 'Out of stock' %}
+                  {% if param_value == '1' %}
+                    {% assign availability_label = 'In stock' %}
+                  {% endif %}
+                  <span class="filter-tag">
+                    <i class="icon icon-close" data-filter-type="availability" data-param="filter.v.availability" data-value="{{ param_value }}"></i>
+                    Availability: {{ availability_label }}
+                  </span>
+                {% elsif param_key == 'filter.v.price.gte' %}
+                  {% assign min_price = param_value %}
+                  {% assign max_price = '' %}
+                  {% for param2 in url_params %}
+                    {% assign key_value2 = param2 | split: '=' %}
+                    {% if key_value2[0] == 'filter.v.price.lte' %}
+                      {% assign max_price = key_value2[1] %}
+                      {% break %}
+                    {% endif %}
+                  {% endfor %}
+                  {% if max_price != '' %}
+                    <span class="filter-tag">
+                      <i class="icon icon-close" data-filter-type="price" data-param="price" data-value="{{ min_price }}-{{ max_price }}"></i>
+                      Price: {{ shop.currency.symbol }}{{ min_price }} - {{ shop.currency.symbol }}{{ max_price }}
+                    </span>
+                  {% endif %}
+                {% elsif param_key == 'filter.v.option.color' %}
+                  <span class="filter-tag">
+                    <i class="icon icon-close" data-filter-type="filter.v.option.color" data-param="filter.v.option.color" data-value="{{ param_value }}"></i>
+                    Color: {{ param_value }}
+                  </span>
+                {% elsif param_key == 'filter.v.option.size' %}
+                  <span class="filter-tag">
+                    <i class="icon icon-close" data-filter-type="filter.v.option.size" data-param="filter.v.option.size" data-value="{{ param_value }}"></i>
+                    Size: {{ param_value }}
+                  </span>
+                {% elsif param_key contains 'filter.v.' and param_key != 'filter.v.price.lte' %}
+                  {% comment %} Handle other filter parameters by finding the checkbox label {% endcomment %}
+                  {% assign checkbox_found = false %}
+                  {% assign param_key_clean = param_key | remove: 'filter.v.' %}
+                  {% assign param_key_capitalized = param_key_clean | capitalize %}
+                  {% for product in collection.products %}
+                    {% for option in product.options_with_values %}
+                      {% if option.name == param_key_capitalized %}
+                        {% for value in option.values %}
+                          {% if value == param_value %}
+                            <span class="filter-tag">
+                              <i class="icon icon-close" data-filter-type="{{ param_key }}" data-param="{{ param_key }}" data-value="{{ param_value }}"></i>
+                              {{ option.name }}: {{ value }}
+                            </span>
+                            {% assign checkbox_found = true %}
+                            {% break %}
+                          {% endif %}
+                        {% endfor %}
+                        {% if checkbox_found %}{% break %}{% endif %}
+                      {% endif %}
+                    {% endfor %}
+                    {% if checkbox_found %}{% break %}{% endif %}
+                  {% endfor %}
+                {% endif %}
+              {% endfor %}
+            </div>
+            <button id="remove-all" class="remove-all-filters">
+              <i class="icon icon-close"></i> {{ 'sections.collection.clear_all_filter' | t }}
+            </button>
+        </div>
+  
+        <!-- List View Layout -->
+        <div class="tf-list-layout wrapper-shop" id="listLayout" style="display: none;">
+          {% if collection.products.size > 0 %}
+            {% assign list_product_counter = 0 %}
+            {% for product in collection.products %}
+              {% assign list_product_counter = list_product_counter | plus: 1 %}
+              <div class="loadItem card-product style-list" 
+                   data-availability="{{ product.available | default: 'In stock' }}" 
+                   data-brand="{{ product.vendor }}" 
+                   data-product-number="{{ list_product_counter }}">
+                {% render 'card-product', product: product, show_color_swatches: true, size_swatches: true, style: 2 %}
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="no-products-found">
+              <div class="no-products-content">
+                <div class="no-products-icon">
+                  <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.5 8.96997C9.5 8.96997 10.5 8.96997 11.5 9.96997C12.5 10.97 12.5 12.97 12.5 12.97" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14.5 8.96997C14.5 8.96997 13.5 8.96997 12.5 9.96997C11.5 10.97 11.5 12.97 11.5 12.97" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.5 15.03C9.5 15.03 10.5 15.03 11.5 16.03C12.5 17.03 12.5 19.03 12.5 19.03" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14.5 15.03C14.5 15.03 13.5 15.03 12.5 16.03C11.5 17.03 11.5 19.03 11.5 19.03" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <h3 class="no-products-title">{{ 'sections.collection.no_products_found' | t }}</h3>
+                <p class="no-products-description">{{ 'sections.collection.no_products_description' | t }}</p>
+                <div class="no-products-actions">
+                  <a href="/collections" class="tf-btn btn-out-line-dark2">{{ 'sections.collection.browse_all_collections' | t }}</a>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+  
+          {% if section.settings.pagination_type == 'load_more' %}
+            {% if paginate.next %}
+              <div class="wd-load">
+                <button id="loadMoreListBtn" class="tf-btn btn-out-line-dark2 tf-loading loadmore">
+                  <span class="text">{{ 'sections.collection.load_more' | t }}</span>
+                  <div class="spinner-circle">
+                    <span class="spinner-circle1 spinner-child"></span>
+                    <span class="spinner-circle2 spinner-child"></span>
+                    <span class="spinner-circle3 spinner-child"></span>
+                    <span class="spinner-circle4 spinner-child"></span>
+                    <span class="spinner-circle5 spinner-child"></span>
+                    <span class="spinner-circle6 spinner-child"></span>
+                    <span class="spinner-circle7 spinner-child"></span>
+                    <span class="spinner-circle8 spinner-child"></span>
+                    <span class="spinner-circle9 spinner-child"></span>
+                  </div>
+                </button>
+              </div>
+            {% endif %}
+          {% else %}
+            {% if paginate.pages > 1 %}
+              <ul class="wg-pagination">
+                {% if paginate.previous %}
+                  <li>
+                    <a href="{{ paginate.previous.url }}" class="pagination-item"><i class="icon-arr-left"></i></a>
+                  </li>
+                {% endif %}
+                
+                {% for part in paginate.parts %}
+                  {% if part.is_link %}
+                    <li>
+                      <a href="{{ part.url }}" class="pagination-item">{{ part.title }}</a>
+                    </li>
+                  {% else %}
+                    <li class="{% if part.title == paginate.current_page %}active{% endif %}">
+                      <div class="pagination-item">{{ part.title }}</div>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+  
+                {% if paginate.next %}
+                  <li>
+                    <a href="{{ paginate.next.url }}" class="pagination-item"><i class="icon-arr-right2"></i></a>
+                  </li>
+                {% endif %}
+              </ul>
+            {% endif %}
+          {% endif %}
+        </div>
+  
+        <!-- Grid View Layout -->
+        <div class="wrapper-shop{% if collection.products.size > 0 %} tf-grid-layout tf-col-{{ section.settings.default_grid_columns }}{% endif %}" id="gridLayout" data-default-columns="{{ section.settings.default_grid_columns }}">
+          {% if collection.products.size > 0 %}
+            {% assign product_counter = 0 %}
+            {% for product in collection.products %}
+              {% assign product_counter = product_counter | plus: 1 %}
+              <div class="loadItem card-product grid style-1{% if product.options contains 'Size' %} card-product-size{% endif %}" 
+                   data-availability="{{ product.available | default: 'In stock' }}" 
+                   data-brand="{{ product.vendor }}"
+                   data-product-number="{{ product_counter }}">
+                {% render 'card-product', product: product, show_color_swatches: true, show_size_swatches: true,  size_swatches: true, style: 2 %}
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="no-products-found">
+              <div class="no-products-content">
+                <div class="no-products-icon">
+                  <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.5 8.96997C9.5 8.96997 10.5 8.96997 11.5 9.96997C12.5 10.97 12.5 12.97 12.5 12.97" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14.5 8.96997C14.5 8.96997 13.5 8.96997 12.5 9.96997C11.5 10.97 11.5 12.97 11.5 12.97" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.5 15.03C9.5 15.03 10.5 15.03 11.5 16.03C12.5 17.03 12.5 19.03 12.5 19.03" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14.5 15.03C14.5 15.03 13.5 15.03 12.5 16.03C11.5 17.03 11.5 19.03 11.5 19.03" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <h3 class="no-products-title">{{ 'sections.collection.no_products_found' | t }}</h3>
+                <p class="no-products-description">{{ 'sections.collection.no_products_description' | t }}</p>
+                <div class="no-products-actions">
+                  <a href="/collections" class="tf-btn btn-out-line-dark2">{{ 'sections.collection.browse_all_collections' | t }}</a>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+  
+          {% if section.settings.pagination_type == 'load_more' %}
+            {% if paginate.next %}
+              <div class="wd-load d-flex justify-content-center">
+                <button id="loadMoreGridBtn" class="tf-btn btn-out-line-dark2 tf-loading loadmore">
+                  <span class="text">{{ 'sections.collection.load_more' | t }}</span>
+                  <div class="spinner-circle">
+                    <span class="spinner-circle1 spinner-child"></span>
+                    <span class="spinner-circle2 spinner-child"></span>
+                    <span class="spinner-circle3 spinner-child"></span>
+                    <span class="spinner-circle4 spinner-child"></span>
+                    <span class="spinner-circle5 spinner-child"></span>
+                    <span class="spinner-circle6 spinner-child"></span>
+                    <span class="spinner-circle7 spinner-child"></span>
+                    <span class="spinner-circle8 spinner-child"></span>
+                    <span class="spinner-circle9 spinner-child"></span>
+                  </div>
+                </button>
+              </div>
+            {% endif %}
+          {% elsif section.settings.pagination_type == 'pagination' %}
+            {% if paginate.pages > 1 %}
+              <ul class="wg-pagination">
+                {% if paginate.previous %}
+                  <li>
+                    <a href="{{ paginate.previous.url }}" class="pagination-item"><i class="icon-arr-left"></i></a>
+                  </li>
+                {% endif %}
+                
+                {% for part in paginate.parts %}
+                  {% if part.is_link %}
+                    <li>
+                      <a href="{{ part.url }}" class="pagination-item">{{ part.title }}</a>
+                    </li>
+                  {% else %}
+                    <li class="{% if part.title == paginate.current_page %}active{% endif %}">
+                      <div class="pagination-item">{{ part.title }}</div>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+  
+                {% if paginate.next %}
+                  <li>
+                    <a href="{{ paginate.next.url }}" class="pagination-item"><i class="icon-arr-right2"></i></a>
+                  </li>
+                {% endif %}
+              </ul>
+            {% endif %}
+          {% else %}
+            {% if paginate.next %}
+              <div class="wd-load d-flex justify-content-center" id="infiniteScrollLoader" style="display: block;">
+                <button class="tf-btn btn-dark2 tf-loading animate-btn animate-dark">
+                  <div class="spinner-circle">
+                    <span class="spinner-circle1 spinner-child"></span>
+                    <span class="spinner-circle2 spinner-child"></span>
+                    <span class="spinner-circle3 spinner-child"></span>
+                    <span class="spinner-circle4 spinner-child"></span>
+                    <span class="spinner-circle5 spinner-child"></span>
+                    <span class="spinner-circle6 spinner-child"></span>
+                    <span class="spinner-circle7 spinner-child"></span>
+                    <span class="spinner-circle8 spinner-child"></span>
+                    <span class="spinner-circle9 spinner-child"></span>
+                  </div>
+                </button>
+              </div>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+  
+      {%- if section.settings.filter_type == 'left' or section.settings.filter_type == 'right' -%}
+        </div>
+        {%- if section.settings.filter_type == 'right' -%}
+          <div class="col-lg-3">
+            <div class="filter-sidebar filter-right">
+              <div class="filter-content">
+                {% render 'filter-content', 
+                  show_banner: section.settings.show_banner,
+                  banner_title: section.settings.banner_title,
+                  banner_button_text: section.settings.banner_button_text,
+                  banner_button_url: section.settings.banner_button_url,
+                  collections_title: section.settings.collections_title,
+                  categories_mode: section.settings.categories_mode,
+                  categories_link_list: section.settings.categories_link_list,
+                  categories_show_count: section.settings.categories_show_count,
+                  show_on_sale: section.settings.show_on_sale,
+                  on_sale_title: section.settings.on_sale_title,
+                  on_sale_source: section.settings.on_sale_source,
+                  on_sale_products: section.settings.on_sale_products,
+                  filter_banner: section.settings.filter_banner,
+                  form_id: 'collection-filters-form-sidebar'
+                %}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+        </div>
+      {%- endif -%}
+    {% if section.settings.width == 'boxed' %}
+      </div>
+    {% elsif section.settings.width == 'full' %}
+      </div>
+    {% endif %}
+  </section>
+  {% if section.settings.show_description %}
+    <div id="description" style="padding-top: {{ section.settings.description_padding_top }}px; padding-bottom: {{ section.settings.description_padding_bottom }}px;">
+      <div class="container">
+        <p class="text text-md text-center">
+          {{ collection.description | strip_html }}
+        </p>
+        {% if section.settings.related_collection_1 or section.settings.related_collection_2 %}
+          <p class="mt_12 text-md text-center">
+            {{ section.settings.related_collections_text }}
+            {% if section.settings.related_collection_1 %}
+              <a href="{{ collections[section.settings.related_collection_1].url }}" class="text-primary text-decoration-underline fw-medium">{{ collections[section.settings.related_collection_1].title | upcase }}</a>
+            {% endif %}
+            {% if section.settings.related_collection_1 and section.settings.related_collection_2 %} and {% endif %}
+            {% if section.settings.related_collection_2 %}
+              <a href="{{ collections[section.settings.related_collection_2].url }}" class="text-primary text-decoration-underline fw-medium">{{ collections[section.settings.related_collection_2].title | upcase }}</a>
+            {% endif %}.
+          </p>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+  {% endpaginate %}
+  {% endif %}
+  {% if section.settings.show_icon_box %}
+    <div class="flat-spacing-5 line-top flat-wrap-iconbox">
+      <div class="container">
+        <div dir="ltr" class="swiper tf-swiper wow fadeInUp" data-swiper='{
+          "slidesPerView": 1,
+          "spaceBetween": 12,
+          "speed": 800,
+          "observer": true,
+          "observeParents": true,
+          "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+          "breakpoints": {
+              "575": { "slidesPerView": 2, "spaceBetween": 24}, 
+              "768": { "slidesPerView": 3, "spaceBetween": 24},
+              "1200": { "slidesPerView": 3, "spaceBetween": 100},
+              "1440": { "slidesPerView": 3, "spaceBetween": 205}
+          }
+      }'>
+          <div class="swiper-wrapper" id="swiper-wrapper-7d6807784d704712" aria-live="polite" style="transition-duration: 0ms; transition-delay: 0ms; transform: translate3d(0px, 0px, 0px);">
+            <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 3" style="width: 391.667px; margin-right: 100px;">
+              <div class="tf-icon-box style-2">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M38.9421 14.922L24.328 6.48452C24.2283 6.42685 24.1151 6.39648 23.9999 6.39648C23.8847 6.39648 23.7715 6.42685 23.6717 6.48452L9.05762 14.922C8.95781 14.9795 8.87492 15.0623 8.81731 15.1621C8.75971 15.2618 8.72941 15.375 8.72949 15.4901V32.3651C8.72946 32.4804 8.75977 32.5936 8.81737 32.6934C8.87497 32.7932 8.95783 32.876 9.05762 32.9336L23.6717 41.3711C23.7715 41.4286 23.8847 41.4589 23.9999 41.4589C24.115 41.4589 24.2282 41.4286 24.328 41.3711L38.9421 32.9336C39.0419 32.876 39.1248 32.7932 39.1824 32.6934C39.24 32.5936 39.2703 32.4804 39.2702 32.3651V15.4901C39.2703 15.375 39.24 15.2618 39.1824 15.1621C39.1248 15.0623 39.0419 14.9795 38.9421 14.922ZM23.9999 7.81052L37.3015 15.4901L23.9999 23.1698L10.6982 15.4901L23.9999 7.81052ZM10.042 16.6268L23.3436 24.3064V39.666L10.042 31.9875V16.6268ZM37.9577 31.9875L24.6561 39.666V24.3064L37.9577 16.6268V31.9875Z" fill="#ABABAB"></path>
+                </svg>
+                <div class="content">
+                  <div class="title">{{ section.settings.icon_box_title_1 | default: 'Free Shipping' }}</div>
+                  <p class="desc text-grey-2">{{ section.settings.icon_box_desc_1 | default: 'Enjoy free shipping on all orders over $150' }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 3" style="width: 391.667px; margin-right: 100px;">
+              <div class="tf-icon-box style-2">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M24.3943 15.1144C24.3216 15.0724 24.239 15.0503 24.155 15.0503C24.071 15.0503 23.9885 15.0724 23.9158 15.1144L16.6187 19.3274C16.5459 19.3694 16.4855 19.4298 16.4435 19.5025C16.4015 19.5753 16.3794 19.6578 16.3794 19.7418V28.1677C16.3794 28.2517 16.4015 28.3342 16.4435 28.407C16.4855 28.4797 16.5459 28.5401 16.6187 28.5821L23.9158 32.7952C23.9885 32.8372 24.071 32.8593 24.155 32.8593C24.239 32.8593 24.3216 32.8372 24.3943 32.7952L31.6915 28.5821C31.7642 28.5401 31.8246 28.4797 31.8666 28.407C31.9086 28.3342 31.9307 28.2517 31.9307 28.1677V19.7418C31.9307 19.6578 31.9086 19.5753 31.8666 19.5025C31.8246 19.4298 31.7642 19.3694 31.6915 19.3274L24.3943 15.1144ZM24.155 16.0813L30.4951 19.7418L24.155 23.4022L17.815 19.7418L24.155 16.0813ZM17.3365 20.5706L23.6765 24.231V31.5523L17.3365 27.8918V20.5706ZM24.6336 31.5519V24.2306L30.9737 20.5702V27.8915L24.6336 31.5519ZM8.18376 25.8952C8.19119 25.9576 8.18624 26.0209 8.1692 26.0815C8.15215 26.142 8.12334 26.1986 8.08442 26.2479C8.04549 26.2973 7.99722 26.3386 7.94235 26.3693C7.88748 26.4 7.8271 26.4196 7.76465 26.427C7.74577 26.4292 7.72678 26.4304 7.70777 26.4304C7.59071 26.4302 7.47776 26.3872 7.39031 26.3093C7.30286 26.2315 7.24697 26.1243 7.23322 26.0081C7.15459 25.3417 7.11519 24.6712 7.11523 24.0002C7.11592 21.0265 7.90177 18.1056 9.39334 15.533C10.8849 12.9604 13.0293 10.8272 15.6097 9.34915C18.1901 7.87109 21.115 7.10055 24.0887 7.11545C27.0624 7.13034 29.9795 7.93015 32.5449 9.43399C34.624 10.6583 36.4184 12.3116 37.8086 14.2836L37.7701 8.77077C37.7697 8.70793 37.7816 8.64561 37.8052 8.58738C37.8289 8.52916 37.8637 8.47615 37.9078 8.4314C37.9969 8.34102 38.1183 8.28974 38.2452 8.28883C38.3721 8.28793 38.4942 8.33747 38.5846 8.42657C38.6749 8.51567 38.7262 8.63702 38.7271 8.76393L38.7772 15.9456C38.7777 16.0087 38.7656 16.0713 38.7418 16.1297C38.7179 16.1882 38.6828 16.2413 38.6383 16.2861C38.5938 16.3309 38.5409 16.3664 38.4826 16.3907C38.4244 16.4149 38.3619 16.4274 38.2987 16.4274C38.2942 16.4274 38.2895 16.4274 38.2851 16.4274L31.6136 16.235C31.5505 16.2336 31.4883 16.2197 31.4306 16.1942C31.3729 16.1687 31.3208 16.132 31.2774 16.0863C31.2339 16.0405 31.1999 15.9866 31.1773 15.9277C31.1548 15.8688 31.1441 15.806 31.1459 15.7429C31.1477 15.6799 31.162 15.6178 31.1879 15.5602C31.2137 15.5027 31.2508 15.4508 31.2968 15.4077C31.3428 15.3645 31.3969 15.3308 31.4559 15.3086C31.515 15.2865 31.5779 15.2762 31.6409 15.2784L37.4378 15.4456C35.9942 13.19 34.0074 11.3329 31.6595 10.0447C29.3117 8.75649 26.678 8.07835 24 8.07247C15.2174 8.07247 8.07227 15.2176 8.07227 24.0002C8.0723 24.6335 8.10953 25.2663 8.18376 25.8952ZM40.8848 24.0002C40.8838 26.9002 40.1361 29.751 38.7138 32.2783C37.2915 34.8055 35.2425 36.924 32.7641 38.4297C30.2857 39.9355 27.4613 40.7777 24.563 40.8754C21.6647 40.973 18.79 40.3228 16.2158 38.9874C14.2573 37.9639 12.5166 36.569 11.0908 34.8806L10.8796 39.7981C10.8744 39.9212 10.8217 40.0376 10.7327 40.123C10.6437 40.2083 10.5252 40.256 10.402 40.2561C10.3951 40.2561 10.3883 40.2561 10.381 40.2556C10.2542 40.2501 10.1348 40.1945 10.049 40.101C9.9632 40.0075 9.91806 39.8838 9.92351 39.757L10.1901 33.5439C10.1951 33.4201 10.248 33.3031 10.3376 33.2177C10.4273 33.1322 10.5466 33.0849 10.6705 33.0859L17.54 33.1193C17.6029 33.1195 17.6651 33.132 17.7231 33.1562C17.7811 33.1804 17.8337 33.2158 17.8781 33.2603C17.9224 33.3048 17.9575 33.3577 17.9814 33.4158C18.0053 33.4739 18.0176 33.5362 18.0174 33.599C18.0173 33.6618 18.0048 33.724 17.9806 33.782C17.9564 33.84 17.921 33.8927 17.8765 33.937C17.8319 33.9814 17.7791 34.0165 17.721 34.0404C17.6629 34.0643 17.6006 34.0765 17.5378 34.0764H17.5355L11.6419 34.0479C13.1384 35.8813 15.0231 37.3598 17.1602 38.3766C19.2973 39.3934 21.6334 39.9233 24 39.9279C32.7826 39.9279 39.9277 32.7828 39.9277 24.0002C39.9277 23.8733 39.9781 23.7516 40.0679 23.6618C40.1576 23.5721 40.2793 23.5217 40.4062 23.5217C40.5332 23.5217 40.6549 23.5721 40.7446 23.6618C40.8344 23.7516 40.8848 23.8733 40.8848 24.0002Z" fill="#ABABAB"></path>
+                </svg>
+                <div class="content">
+                  <div class="title">{{ section.settings.icon_box_title_2 | default: 'Easy Returns' }}</div>
+                  <p class="desc text-grey-2">{{ section.settings.icon_box_desc_2 | default: 'Hassle-free returns for a worry-free shopping experience.' }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide" role="group" aria-label="3 / 3" style="width: 391.667px; margin-right: 100px;">
+              <div class="tf-icon-box style-2">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18.2486 37.718C18.2484 38.0955 18.5544 38.4017 18.932 38.4017C19.0615 38.4018 19.1884 38.365 19.2978 38.2957L29.2659 31.9856H38.0487C39.9538 31.9836 41.4977 30.4398 41.4999 28.5346V13.0492C41.4977 11.1441 39.9538 9.60027 38.0487 9.59814H9.95096C8.04595 9.60034 6.50213 11.1442 6.5 13.0492V28.5345C6.5022 30.4395 8.04595 31.9833 9.95096 31.9855H18.2498L18.2486 37.718ZM9.95096 30.6184C8.80064 30.6171 7.86847 29.6849 7.86719 28.5346V13.0492C7.86854 11.8989 8.80064 10.9667 9.95096 10.9654H38.0487C39.1991 10.9667 40.1313 11.8988 40.1327 13.0492V28.5345C40.1314 29.6848 39.1993 30.617 38.049 30.6183H29.0678C28.9384 30.6183 28.8115 30.6551 28.7021 30.7243L19.6162 36.476L19.6176 31.3021C19.6176 30.9247 19.3115 30.6186 18.934 30.6186L9.95096 30.6184Z" fill="#ABABAB"></path>
+                </svg>
+                <div class="content">
+                  <div class="title">{{ section.settings.icon_box_title_3 | default: '24/7 Support' }}</div>
+                  <p class="desc text-grey-2">{{ section.settings.icon_box_desc_3 | default: 'We are here for you anytime with 24/7 customer support.' }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal swiper-pagination-lock"><span class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0" role="button" aria-label="Go to slide 1" aria-current="true"></span></div>
+          <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  
+  <script>
+    // Add CSS styles for no products found message and loading spinner
+    const noProductsStyles = `
+      <style>
+        .no-products-found {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 400px;
+          width: 100%;
+          padding: 40px 20px;
+        }
+        
+        .no-products-content {
+          text-align: center;
+          max-width: 500px;
+        }
+        
+        .no-products-icon {
+          margin-bottom: 24px;
+          color: #6b7280;
+        }
+        
+        .no-products-icon svg {
+          width: 64px;
+          height: 64px;
+        }
+        
+        .no-products-title {
+          font-size: 24px;
+          font-weight: 600;
+          margin-bottom: 12px;
+          color: #1f2937;
+        }
+        
+        .no-products-description {
+          font-size: 16px;
+          line-height: 1.5;
+          color: #6b7280;
+          margin-bottom: 32px;
+        }
+        
+        .no-products-actions {
+          display: flex;
+          gap: 12px;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+        
+        .no-products-actions .tf-btn {
+          min-width: 140px;
+        }
+        
+        /* Loading spinner styles */
+        .filter-loading-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(255, 255, 255, 0.9);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 9999;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .filter-loading-overlay.show {
+          opacity: 1;
+          visibility: visible;
+        }
+        
+        .filter-loading-spinner {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        
+        .filter-loading-spinner .spinner {
+          width: 40px;
+          height: 40px;
+          border: 3px solid #f3f3f3;
+          border-top: 3px solid #3498db;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+          .no-products-found {
+            min-height: 300px;
+            padding: 20px;
+          }
+          
+          .no-products-title {
+            font-size: 20px;
+          }
+          
+          .no-products-description {
+            font-size: 14px;
+          }
+          
+          .no-products-actions {
+            flex-direction: column;
+            align-items: center;
+          }
+          
+          .no-products-actions .tf-btn {
+            width: 100%;
+            max-width: 200px;
+          }
+          
+          .filter-loading-spinner .spinner {
+            width: 32px;
+            height: 32px;
+          }
+          
+  
+        }
+      </style>
+    `;
+    
+    // Inject styles into head
+    document.head.insertAdjacentHTML('beforeend', noProductsStyles);
+  
+    // Add loading overlay to body
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.className = 'filter-loading-overlay';
+    loadingOverlay.innerHTML = `
+      <div class="filter-loading-spinner">
+        <div class="spinner"></div>
+      </div>
+    `;
+    document.body.appendChild(loadingOverlay);
+  
+    // Function to show loading spinner
+    function showFilterLoading() {
+      const overlay = document.querySelector('.filter-loading-overlay');
+      if (overlay) {
+        overlay.classList.add('show');
+      }
+    }
+  
+    // Function to hide loading spinner
+    function hideFilterLoading() {
+      const overlay = document.querySelector('.filter-loading-overlay');
+      if (overlay) {
+        overlay.classList.remove('show');
+      }
+    }
+  
+    document.addEventListener('DOMContentLoaded', function() {
+      // Global variables for state management
+      let isLoading = false;
+      let currentPage = 1;
+      let currentSort = '{{ collection.sort_by | default: "best-selling" }}';
+      let currentFilters = new URLSearchParams(window.location.search);
+      
+      // Cache DOM elements
+      const productGrid = document.querySelector('.tf-grid-layout');
+      const productList = document.querySelector('.tf-list-layout');
+      const sortDropdown = document.querySelector('.tf-dropdown-sort');
+      const sortValueDisplay = document.querySelector('.text-sort-value');
+      const filterForm = document.getElementById('collection-filters-form');
+      const appliedFiltersContainer = document.getElementById('applied-filters');
+      const productCountGrid = document.getElementById('product-count-grid');
+      const productCountList = document.getElementById('product-count-list');
+      const metaFilterShop = document.querySelector('.meta-filter-shop');
+  
+      // Initialize filter state from URL parameters
+      function initializeFilterState() {
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Debug: Log URL parameters
+        console.log('Initializing filter state with URL params:', urlParams.toString());
+        
+        // Set checkboxes based on URL parameters
+        const checkboxes = document.querySelectorAll('.filter-checkbox');
+        checkboxes.forEach(checkbox => {
+          const paramName = checkbox.name;
+          const paramValue = checkbox.value;
+          
+          if (urlParams.has(paramName)) {
+            const urlValue = urlParams.get(paramName);
+            if (urlValue === paramValue || urlValue.includes(paramValue)) {
+              checkbox.checked = true;
+              console.log('Checked checkbox:', paramName, paramValue);
+            }
+          }
+        });
+  
+        // Set color and size filter states
+        const colorFilters = urlParams.getAll('filter.v.option.color');
+        const sizeFilters = urlParams.getAll('filter.v.option.size');
+        
+        colorFilters.forEach(color => {
+          // Decode the color value in case it's URL encoded
+          const decodedColor = decodeURIComponent(color);
+          console.log('Processing color filter:', color, 'decoded:', decodedColor);
+          
+          // Try to find the color item by data-color attribute (try both encoded and decoded)
+          let colorItem = document.querySelector(`[data-color="${color}"]`) || 
+                         document.querySelector(`[data-color="${decodedColor}"]`);
+          
+          // If not found, try to find by the checkbox directly
+          if (!colorItem) {
+            const checkbox = document.querySelector(`input[name="filter.v.option.color"][value="${color}"]`) ||
+                            document.querySelector(`input[name="filter.v.option.color"][value="${decodedColor}"]`);
+            if (checkbox) {
+              colorItem = checkbox.closest('.color-check');
+            }
+          }
+          
+          // If still not found, try to find by color text content
+          if (!colorItem) {
+            const colorItems = document.querySelectorAll('.color-check');
+            colorItems.forEach(item => {
+              const colorText = item.querySelector('.color-text');
+              if (colorText) {
+                const textContent = colorText.textContent.trim();
+                if (textContent === color || textContent === decodedColor) {
+                  colorItem = item;
+                }
+              }
+            });
+          }
+          
+          if (colorItem) {
+            const checkbox = colorItem.querySelector('.filter-checkbox');
+            if (checkbox) {
+              checkbox.checked = true;
+              colorItem.classList.add('active');
+              console.log('Activated color filter:', color, 'decoded:', decodedColor);
+            }
+          } else {
+            console.warn('Color item not found for initialization:', color, 'decoded:', decodedColor);
+          }
+        });
+        
+        sizeFilters.forEach(size => {
+          // Decode the size value in case it's URL encoded
+          const decodedSize = decodeURIComponent(size);
+          console.log('Processing size filter:', size, 'decoded:', decodedSize);
+          
+          // Try to find the size item by data-size attribute (try both encoded and decoded)
+          let sizeItem = document.querySelector(`[data-size="${size}"]`) || 
+                        document.querySelector(`[data-size="${decodedSize}"]`);
+          
+          // If not found, try to find by the checkbox directly
+          if (!sizeItem) {
+            const checkbox = document.querySelector(`input[name="filter.v.option.size"][value="${size}"]`) ||
+                            document.querySelector(`input[name="filter.v.option.size"][value="${decodedSize}"]`);
+            if (checkbox) {
+              sizeItem = checkbox.closest('.size-check');
+            }
+          }
+          
+          // If still not found, try to find by size text content
+          if (!sizeItem) {
+            const sizeItems = document.querySelectorAll('.size-check');
+            sizeItems.forEach(item => {
+              const sizeText = item.querySelector('.size');
+              if (sizeText) {
+                const textContent = sizeText.textContent.trim();
+                if (textContent === size || textContent === decodedSize) {
+                  sizeItem = item;
+                }
+              }
+            });
+          }
+          
+          if (sizeItem) {
+            const checkbox = sizeItem.querySelector('.filter-checkbox');
+            if (checkbox) {
+              checkbox.checked = true;
+              sizeItem.classList.add('active');
+              console.log('Activated size filter:', size, 'decoded:', decodedSize);
+            }
+          } else {
+            console.warn('Size item not found for initialization:', size, 'decoded:', decodedSize);
+          }
+        });
+  
+        // Set price range if exists - check all filter types
+        const priceRangeDrawer = document.getElementById('price-value-range-drawer');
+        const priceRangeSidebar = document.getElementById('price-value-range-sidebar');
+        const priceRangeHorizontal = document.getElementById('price-value-range-horizontal');
+        const minPrice = urlParams.get('filter.v.price.gte');
+        const maxPrice = urlParams.get('filter.v.price.lte');
+        
+        // If no price filters in URL, ensure horizontal price inputs are removed
+        if (!minPrice || !maxPrice) {
+          const horizontalMinInput = document.getElementById('price-min-input-horizontal');
+          const horizontalMaxInput = document.getElementById('price-max-input-horizontal');
+          if (horizontalMinInput) horizontalMinInput.remove();
+          if (horizontalMaxInput) horizontalMaxInput.remove();
+        }
+        
+        if (minPrice && maxPrice) {
+          console.log('Setting price range:', minPrice, '-', maxPrice);
+          // Update drawer price range
+          if (priceRangeDrawer && priceRangeDrawer.noUiSlider) {
+            priceRangeDrawer.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
+          } else if (priceRangeDrawer) {
+            // Wait for noUiSlider to be initialized
+            const checkSlider = setInterval(() => {
+              if (priceRangeDrawer.noUiSlider) {
+                priceRangeDrawer.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
+                clearInterval(checkSlider);
+              }
+            }, 100);
+          }
+          
+          // Update sidebar price range
+          if (priceRangeSidebar && priceRangeSidebar.noUiSlider) {
+            priceRangeSidebar.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
+          } else if (priceRangeSidebar) {
+            // Wait for noUiSlider to be initialized
+            const checkSlider = setInterval(() => {
+              if (priceRangeSidebar.noUiSlider) {
+                priceRangeSidebar.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
+                clearInterval(checkSlider);
+              }
+            }, 100);
+          }
+          
+          // Update horizontal price range
+          if (priceRangeHorizontal && priceRangeHorizontal.noUiSlider) {
+            priceRangeHorizontal.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
+            
+            // Create price inputs for horizontal filter if they don't exist
+            let horizontalMinInput = document.getElementById('price-min-input-horizontal');
+            let horizontalMaxInput = document.getElementById('price-max-input-horizontal');
+            
+            if (!horizontalMinInput) {
+              horizontalMinInput = document.createElement('input');
+              horizontalMinInput.type = 'hidden';
+              horizontalMinInput.name = 'filter.v.price.gte';
+              horizontalMinInput.id = 'price-min-input-horizontal';
+              priceRangeHorizontal.closest('.widget-price').appendChild(horizontalMinInput);
+            }
+            if (!horizontalMaxInput) {
+              horizontalMaxInput = document.createElement('input');
+              horizontalMaxInput.type = 'hidden';
+              horizontalMaxInput.name = 'filter.v.price.lte';
+              horizontalMaxInput.id = 'price-max-input-horizontal';
+              priceRangeHorizontal.closest('.widget-price').appendChild(horizontalMaxInput);
+            }
+            
+            horizontalMinInput.value = minPrice;
+            horizontalMaxInput.value = maxPrice;
+          } else if (priceRangeHorizontal) {
+            // Wait for noUiSlider to be initialized
+            const checkSlider = setInterval(() => {
+              if (priceRangeHorizontal.noUiSlider) {
+                priceRangeHorizontal.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
+                
+                // Create price inputs for horizontal filter if they don't exist
+                let horizontalMinInput = document.getElementById('price-min-input-horizontal');
+                let horizontalMaxInput = document.getElementById('price-max-input-horizontal');
+                
+                if (!horizontalMinInput) {
+                  horizontalMinInput = document.createElement('input');
+                  horizontalMinInput.type = 'hidden';
+                  horizontalMinInput.name = 'filter.v.price.gte';
+                  horizontalMinInput.id = 'price-min-input-horizontal';
+                  priceRangeHorizontal.closest('.widget-price').appendChild(horizontalMinInput);
+                }
+                if (!horizontalMaxInput) {
+                  horizontalMaxInput = document.createElement('input');
+                  horizontalMaxInput.type = 'hidden';
+                  horizontalMaxInput.name = 'filter.v.price.lte';
+                  horizontalMaxInput.id = 'price-max-input-horizontal';
+                  priceRangeHorizontal.closest('.widget-price').appendChild(horizontalMaxInput);
+                }
+                
+                horizontalMinInput.value = minPrice;
+                horizontalMaxInput.value = maxPrice;
+                
+                clearInterval(checkSlider);
+              }
+            }, 100);
+          }
+        }
+  
+        // Update applied filters display
+        updateAppliedFiltersDisplay();
+        
+        // Fallback: Ensure meta-filter-shop is visible if there are URL parameters
+        const hasUrlParams = urlParams.toString().length > 0;
+        if (hasUrlParams && metaFilterShop) {
+          metaFilterShop.style.display = 'flex';
+          console.log('Ensured meta-filter-shop is visible due to URL parameters');
+        }
+        
+        // Debug: Log final state
+        const appliedFilters = document.querySelectorAll('.filter-tag');
+        console.log('Applied filters count:', appliedFilters.length);
+      }
+  
+      // Initialize price range slider
+      function initializePriceRangeSlider() {
+        // Check for all possible price range sliders
+        const priceRangeDrawer = document.getElementById('price-value-range-drawer');
+        const priceRangeSidebar = document.getElementById('price-value-range-sidebar');
+        const priceRangeHorizontal = document.getElementById('price-value-range-horizontal');
+        
+        // Initialize drawer price range slider
+        if (priceRangeDrawer && !priceRangeDrawer.noUiSlider) {
+          initializeSinglePriceSlider(priceRangeDrawer, 'price-min-value-drawer', 'price-max-value-drawer', 'price-min-input', 'price-max-input');
+        }
+        
+        // Initialize sidebar price range slider
+        if (priceRangeSidebar && !priceRangeSidebar.noUiSlider) {
+          initializeSinglePriceSlider(priceRangeSidebar, 'price-min-value-sidebar', 'price-max-value-sidebar', 'price-min-input', 'price-max-input');
+        }
+        
+        // Initialize horizontal price range slider
+        if (priceRangeHorizontal && !priceRangeHorizontal.noUiSlider) {
+          initializeSinglePriceSlider(priceRangeHorizontal, 'price-min-value-horizontal', 'price-max-value-horizontal', 'price-min-input-horizontal', 'price-max-input-horizontal');
+        }
+      }
+  
+      // Helper function to initialize a single price slider
+      function initializeSinglePriceSlider(priceRange, minValueId, maxValueId, minInputId, maxInputId) {
+        // Check if noUiSlider is available
+        if (typeof noUiSlider === 'undefined') {
+          console.warn('noUiSlider not available, retrying in 500ms...');
+          setTimeout(() => initializePriceRangeSlider(), 500);
+          return;
+        }
+  
+        const minValue = document.getElementById(minValueId);
+        const maxValue = document.getElementById(maxValueId);
+        const minInput = document.getElementById(minInputId);
+        const maxInput = document.getElementById(maxInputId);
+        
+        if (!minValue || !maxValue) return;
+  
+        const currency = minValue.dataset.currency || '$';
+        const rangeMin = parseInt(priceRange.dataset.rangeMin) || 0;
+        const rangeMax = parseInt(priceRange.dataset.rangeMax) || 1000;
+        const currentMin = parseInt(priceRange.dataset.min) || rangeMin;
+        const currentMax = parseInt(priceRange.dataset.max) || rangeMax;
+  
+        try {
+          noUiSlider.create(priceRange, {
+            start: [currentMin, currentMax],
+            connect: true,
+            range: {
+              'min': rangeMin,
+              'max': rangeMax
+            },
+            step: 1
+          });
+  
+          // Update display values
+          priceRange.noUiSlider.on('update', function(values) {
+            if (minValue) minValue.textContent = currency + Math.round(values[0]);
+            if (maxValue) maxValue.textContent = currency + Math.round(values[1]);
+            if (minInput) minInput.value = Math.round(values[0]);
+            if (maxInput) maxInput.value = Math.round(values[1]);
+          });
+  
+          // Handle change event
+          priceRange.noUiSlider.on('change', function(values) {
+            const minVal = Math.round(values[0]);
+            const maxVal = Math.round(values[1]);
+            const rangeMin = parseInt(priceRange.dataset.rangeMin) || 0;
+            const rangeMax = parseInt(priceRange.dataset.rangeMax) || 1000;
+            
+            // Get or create the hidden inputs
+            let currentMinInput = document.getElementById(minInputId);
+            let currentMaxInput = document.getElementById(maxInputId);
+            
+            // Only add price filter if it's different from the full range
+            if (minVal > rangeMin || maxVal < rangeMax) {
+              // Create the hidden inputs if they don't exist
+              if (!currentMinInput) {
+                currentMinInput = document.createElement('input');
+                currentMinInput.type = 'hidden';
+                currentMinInput.name = 'filter.v.price.gte';
+                currentMinInput.id = minInputId;
+                priceRange.closest('.widget-price').appendChild(currentMinInput);
+              }
+              if (!currentMaxInput) {
+                currentMaxInput = document.createElement('input');
+                currentMaxInput.type = 'hidden';
+                currentMaxInput.name = 'filter.v.price.lte';
+                currentMaxInput.id = maxInputId;
+                priceRange.closest('.widget-price').appendChild(currentMaxInput);
+              }
+              
+              // Update the values
+              currentMinInput.value = minVal;
+              currentMaxInput.value = maxVal;
+            } else {
+              // Remove the inputs if they exist (back to full range)
+              if (currentMinInput) currentMinInput.remove();
+              if (currentMaxInput) currentMaxInput.remove();
+            }
+            
+            // Submit the form instead of using JavaScript URL manipulation
+            const form = document.getElementById('collection-filters-form') || document.getElementById('collection-filters-form-sidebar') || document.getElementById('collection-filters-form-drawer');
+            if (form) {
+              form.submit();
+            }
+          });
+  
+        } catch (error) {
+          console.error('Error initializing price range slider:', error);
+        }
+      }
+  
+      // Update applied filters display
+      function updateAppliedFiltersDisplay() {
+        if (!appliedFiltersContainer) return;
+        
+        // Check if applied filters were already rendered by Liquid
+        const existingFilters = appliedFiltersContainer.querySelectorAll('.filter-tag');
+        const hasLiquidRenderedFilters = existingFilters.length > 0;
+        
+        console.log('updateAppliedFiltersDisplay - existing filters:', existingFilters.length, 'hasLiquidRendered:', hasLiquidRenderedFilters);
+        
+        // Only clear and rebuild if no filters were rendered by Liquid
+        if (!hasLiquidRenderedFilters) {
+          console.log('No Liquid-rendered filters found, building from JavaScript');
+          appliedFiltersContainer.innerHTML = '';
+          const urlParams = new URLSearchParams(window.location.search);
+          const appliedFilters = [];
+  
+          // Check availability filters
+          const availability = urlParams.get('filter.v.availability');
+          if (availability) {
+            const label = availability === '1' ? 'In stock' : 'Out of stock';
+            appliedFilters.push({
+              type: 'availability',
+              label: `Availability: ${label}`,
+              param: 'filter.v.availability',
+              value: availability
+            });
+          }
+  
+          // Check other filters
+          for (const [param, value] of urlParams.entries()) {
+            if (param.startsWith('filter.v.') && param !== 'filter.v.availability' && param !== 'filter.v.price.gte' && param !== 'filter.v.price.lte') {
+              const checkbox = document.querySelector(`input[name="${param}"][value="${value}"]`);
+              if (checkbox) {
+                const labelElement = checkbox.closest('label');
+                const labelText = labelElement ? labelElement.querySelector('span').textContent : value;
+                appliedFilters.push({
+                  type: param,
+                  label: labelText,
+                  param: param,
+                  value: value
+                });
+              }
+            }
+          }
+  
+          // Check color and size filters specifically
+          const colorFilters = urlParams.getAll('filter.v.option.color');
+          const sizeFilters = urlParams.getAll('filter.v.option.size');
+          
+          colorFilters.forEach(color => {
+            const colorItem = document.querySelector(`[data-color="${color}"]`);
+            if (colorItem) {
+              const colorText = colorItem.querySelector('.color-text')?.textContent || color;
+              appliedFilters.push({
+                type: 'filter.v.option.color',
+                label: `Color: ${colorText}`,
+                param: 'filter.v.option.color',
+                value: color
+              });
+            }
+          });
+          
+          sizeFilters.forEach(size => {
+            const sizeItem = document.querySelector(`[data-size="${size}"]`);
+            if (sizeItem) {
+              const sizeText = sizeItem.querySelector('.size')?.textContent || size;
+              appliedFilters.push({
+                type: 'filter.v.option.size',
+                label: `Size: ${sizeText}`,
+                param: 'filter.v.option.size',
+                value: size
+              });
+            }
+          });
+  
+          // Check price range
+          const minPrice = urlParams.get('filter.v.price.gte');
+          const maxPrice = urlParams.get('filter.v.price.lte');
+          if (minPrice && maxPrice) {
+            const currencySidebar = document.querySelector('#price-min-value')?.dataset.currency;
+            const currencyHorizontal = document.querySelector('#price-min-value-horizontal')?.dataset.currency;
+            const currency = currencyHorizontal || currencySidebar || '$';
+            appliedFilters.push({
+              type: 'price',
+              label: `Price: ${currency}${minPrice} - ${currency}${maxPrice}`,
+              param: 'price',
+              value: `${minPrice}-${maxPrice}`
+            });
+          }
+  
+          // Render applied filters
+          appliedFilters.forEach(filter => {
+            const filterTag = document.createElement('span');
+            filterTag.className = 'filter-tag';
+            filterTag.innerHTML = `
+              <i class="icon icon-close" data-filter-type="${filter.type}" data-param="${filter.param}" data-value="${filter.value}"></i>
+              ${filter.label}
+            `;
+            appliedFiltersContainer.appendChild(filterTag);
+          });
+        } else {
+          // Ensure existing Liquid-rendered filters have proper data attributes for JavaScript functionality
+          existingFilters.forEach(filterTag => {
+            const closeIcon = filterTag.querySelector('.icon-close');
+            if (closeIcon && !closeIcon.dataset.filterType) {
+              // Add missing data attributes if they don't exist
+              const filterText = filterTag.textContent.trim();
+              if (filterText.includes('Availability:')) {
+                const isInStock = filterText.includes('In stock');
+                closeIcon.dataset.filterType = 'availability';
+                closeIcon.dataset.param = 'filter.v.availability';
+                closeIcon.dataset.value = isInStock ? '1' : '0';
+              } else if (filterText.includes('Price:')) {
+                closeIcon.dataset.filterType = 'price';
+                closeIcon.dataset.param = 'price';
+                // Extract price range from text
+                const priceMatch = filterText.match(/\$(\d+)\s*-\s*\$(\d+)/);
+                if (priceMatch) {
+                  closeIcon.dataset.value = `${priceMatch[1]}-${priceMatch[2]}`;
+                }
+              } else if (filterText.includes('Color:')) {
+                const colorValue = filterText.replace('Color:', '').trim();
+                closeIcon.dataset.filterType = 'filter.v.option.color';
+                closeIcon.dataset.param = 'filter.v.option.color';
+                closeIcon.dataset.value = colorValue;
+              } else if (filterText.includes('Size:')) {
+                const sizeValue = filterText.replace('Size:', '').trim();
+                closeIcon.dataset.filterType = 'filter.v.option.size';
+                closeIcon.dataset.param = 'filter.v.option.size';
+                closeIcon.dataset.value = sizeValue;
+              }
+            }
+          });
+        }
+  
+        // Count total applied filters (both Liquid-rendered and JavaScript-rendered)
+        const totalFilters = appliedFiltersContainer.querySelectorAll('.filter-tag').length;
+  
+        // Show/hide clear all button
+        const clearAllBtn = document.getElementById('remove-all');
+        if (clearAllBtn) {
+          clearAllBtn.style.display = totalFilters > 0 ? 'block' : 'none';
+        }
+        
+        // Show/hide meta-filter-shop container
+        if (metaFilterShop) {
+          metaFilterShop.style.display = totalFilters > 0 ? 'flex' : 'none';
+        }
+        
+        console.log('updateAppliedFiltersDisplay - final total filters:', totalFilters, 'meta-filter-shop display:', metaFilterShop ? metaFilterShop.style.display : 'N/A');
+      }
+  
+      // Main function to update products with filters and sort
+      async function updateProducts(filters = null, sort = null, page = 1, skipFilterDisplayUpdate = false) {
+        console.log('updateProducts called with:', { filters, sort, page, isLoading });
+        if (isLoading) {
+          console.log('Already loading, returning early');
+          return;
+        }
+        isLoading = true;
+  
+        try {
+          // Show loading state
+          if (productGrid) {
+            productGrid.style.opacity = '0.6';
+            productGrid.style.pointerEvents = 'none';
+          }
+          if (productList) {
+            productList.style.opacity = '0.6';
+            productList.style.pointerEvents = 'none';
+          }
+  
+          // Add loading indicator
+          const loadingIndicator = document.createElement('div');
+          loadingIndicator.className = 'loading-indicator';
+          loadingIndicator.innerHTML = `
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          `;
+          loadingIndicator.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          `;
+          document.body.appendChild(loadingIndicator);
+  
+          const url = new URL(window.location.href);
+          console.log('Original URL:', url.toString());
+          
+          // Update filters
+          if (filters) {
+            console.log('Updating filters:', filters);
+            // Clear existing filter parameters
+            for (const param of url.searchParams.keys()) {
+              if (param.startsWith('filter.v.')) {
+                url.searchParams.delete(param);
+              }
+            }
+            
+            // Add new filter parameters
+            for (const [key, value] of Object.entries(filters)) {
+              if (value !== null && value !== undefined && value !== '') {
+                url.searchParams.set(key, value);
+              }
+            }
+          }
+  
+          // Update sort
+          if (sort) {
+            url.searchParams.set('sort_by', sort);
+            currentSort = sort;
+          }
+  
+          // Update page - add page parameter for AJAX request but handle URL differently
+          if (page > 1) {
+            url.searchParams.set('page', page);
+          } else {
+            url.searchParams.delete('page');
+          }
+          
+          console.log('Final URL for AJAX request:', url.toString());
+  
+          // Fetch updated content
+          console.log('Making fetch request to:', url.toString());
+          const response = await fetch(url.toString());
+          console.log('Fetch response status:', response.status, response.ok);
+          if (!response.ok) throw new Error('Network response was not ok');
+          
+          const html = await response.text();
+          console.log('Response HTML length:', html.length);
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+  
+          // Update product grids
+          const newGrid = doc.querySelector('.tf-grid-layout');
+          const newList = doc.querySelector('.tf-list-layout');
+          
+          console.log('Found new grid:', !!newGrid, 'Found new list:', !!newList);
+          console.log('New grid products count:', newGrid ? newGrid.querySelectorAll('.loadItem').length : 0);
+          console.log('New list products count:', newList ? newList.querySelectorAll('.loadItem').length : 0);
+          
+          if (newGrid && productGrid) {
+            if (page > 1) {
+              console.log('Appending products for page:', page);
+              // Append for pagination
+              const loadMoreContainer = productGrid.querySelector('.wd-load');
+              if (loadMoreContainer) {
+                const newProducts = newGrid.querySelectorAll('.loadItem');
+                console.log('Appending', newProducts.length, 'new products');
+                newProducts.forEach(product => {
+                  productGrid.insertBefore(product, loadMoreContainer);
+                });
+              } else {
+                console.log('No load more container found, appending to end');
+                const newProducts = newGrid.querySelectorAll('.loadItem');
+                newProducts.forEach(product => {
+                  productGrid.appendChild(product);
+                });
+              }
+              
+              // Update availability counts after appending new products
+              updateAvailabilityCounts().catch(console.error);
+            } else {
+              console.log('Replacing products for first page');
+              // Replace for filtering/sorting
+              productGrid.innerHTML = newGrid.innerHTML;
+            }
+            
+            // Update availability counts after grid products are updated
+            updateAvailabilityCounts().catch(console.error);
+          }
+          
+          if (newList && productList) {
+            if (page > 1) {
+              // Append for pagination
+              const loadMoreContainer = productList.querySelector('.wd-load');
+              if (loadMoreContainer) {
+                const newProducts = newList.querySelectorAll('.loadItem');
+                newProducts.forEach(product => {
+                  productList.insertBefore(product, loadMoreContainer);
+                });
+              }
+              
+              // Update availability counts after appending new products to list
+              updateAvailabilityCounts().catch(console.error);
+            } else {
+              // Replace for filtering/sorting
+              productList.innerHTML = newList.innerHTML;
+            }
+            
+            // Update availability counts after list products are updated
+            updateAvailabilityCounts().catch(console.error);
+          }
+  
+          // Check if no products were found and show appropriate message
+          const gridProducts = productGrid ? productGrid.querySelectorAll('.loadItem') : [];
+          const listProducts = productList ? productList.querySelectorAll('.loadItem') : [];
+          
+          if (gridProducts.length === 0 && listProducts.length === 0 && page === 1) {
+            // No products found - show no products message
+            const noProductsHTML = `
+              <div class="no-products-found">
+                <div class="no-products-content">
+                  <div class="no-products-icon">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M9.5 8.96997C9.5 8.96997 10.5 8.96997 11.5 9.96997C12.5 10.97 12.5 12.97 12.5 12.97" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M14.5 8.96997C14.5 8.96997 13.5 8.96997 12.5 9.96997C11.5 10.97 11.5 12.97 11.5 12.97" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M9.5 15.03C9.5 15.03 10.5 15.03 11.5 16.03C12.5 17.03 12.5 19.03 12.5 19.03" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M14.5 15.03C14.5 15.03 13.5 15.03 12.5 16.03C11.5 17.03 11.5 19.03 11.5 19.03" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <h3 class="no-products-title">No products found</h3>
+                  <p class="no-products-description">We couldn't find any products matching your criteria. Try adjusting your filters or browse our other collections.</p>
+                  <div class="no-products-actions">
+                    <a href="/collections" class="tf-btn btn-out-line-dark2">Browse all collections</a>
+                  </div>
+                </div>
+              </div>
+            `;
+            
+            if (productGrid) {
+              productGrid.innerHTML = noProductsHTML;
+              // Remove grid layout classes when no products
+              productGrid.className = 'wrapper-shop';
+            }
+            if (productList) {
+              productList.innerHTML = noProductsHTML;
+            }
+            
+            // Hide shop controls when no products found
+            const shopControl = document.querySelector('.tf-shop-control');
+            const metaFilterShop = document.querySelector('.meta-filter-shop');
+            if (shopControl) shopControl.style.display = 'none';
+            if (metaFilterShop) metaFilterShop.style.display = 'none';
+          } else {
+            // Show shop controls when products are found
+            const shopControl = document.querySelector('.tf-shop-control');
+            const metaFilterShop = document.querySelector('.meta-filter-shop');
+            if (shopControl) shopControl.style.display = '';
+            if (metaFilterShop) metaFilterShop.style.display = '';
+            
+            // Restore grid layout classes when products are found
+            if (productGrid && !productGrid.classList.contains('tf-grid-layout')) {
+              const defaultColumns = productGrid.dataset.defaultColumns || '4';
+              productGrid.className = `wrapper-shop tf-grid-layout tf-col-${defaultColumns}`;
+            }
+          }
+  
+          // Update product counts
+          const newCountGrid = doc.getElementById('product-count-grid');
+          const newCountList = doc.getElementById('product-count-list');
+          
+          // Get filtered product count from the response
+          const responseCountGrid = doc.getElementById('product-count-grid');
+          const responseCountList = doc.getElementById('product-count-list');
+          
+          // Extract filtered count from the response
+          let filteredCount = 0;
+          if (responseCountGrid) {
+            const countSpan = responseCountGrid.querySelector('.count');
+            if (countSpan) {
+              filteredCount = parseInt(countSpan.textContent) || 0;
+            }
+          } else if (responseCountList) {
+            const countSpan = responseCountList.querySelector('.count');
+            if (countSpan) {
+              filteredCount = parseInt(countSpan.textContent) || 0;
+            }
+          }
+          
+          // Check if there are filter parameters (not just sort)
+          const hasFilterParams = Object.keys(filters || {}).length > 0 || 
+                                 url.searchParams.toString().includes('filter.v') ||
+                                 url.searchParams.toString().includes('current_tags');
+          
+          // Special check for price filters - only show count if both min and max are present
+          const hasPriceFilters = url.searchParams.has('filter.v.price.gte') && url.searchParams.has('filter.v.price.lte');
+          const hasOnlyOnePriceFilter = (url.searchParams.has('filter.v.price.gte') && !url.searchParams.has('filter.v.price.lte')) || 
+                                       (!url.searchParams.has('filter.v.price.gte') && url.searchParams.has('filter.v.price.lte'));
+          const hasOtherFilters = hasFilterParams && !hasOnlyOnePriceFilter;
+          
+          // Update product count displays with filtered count
+          if (productCountGrid) {
+            const countSpan = productCountGrid.querySelector('.count');
+            if (countSpan) {
+              countSpan.textContent = filteredCount;
+            }
+            // Show/hide based on current layout AND filter presence
+            const isGridActive = !productList || productList.style.display === 'none';
+            productCountGrid.style.display = (isGridActive && hasOtherFilters) ? 'block' : 'none';
+          }
+          
+          if (productCountList) {
+            const countSpan = productCountList.querySelector('.count');
+            if (countSpan) {
+              countSpan.textContent = filteredCount;
+            }
+            // Show/hide based on current layout AND filter presence
+            const isListActive = productList && productList.style.display === 'block';
+            productCountList.style.display = (isListActive && hasOtherFilters) ? 'block' : 'none';
+          }
+  
+          // Show/hide meta-filter-shop based on whether there are applied filters
+          if (metaFilterShop) {
+            const hasFilters = hasOtherFilters;
+            metaFilterShop.style.display = hasFilters ? 'flex' : 'none';
+          }
+  
+          // Update URL without reload - but not for infinite scroll page changes
+          const currentPaginationType = document.querySelector('.wrapper-control-shop')?.dataset.paginationType;
+          if (currentPaginationType !== 'infinite_scroll' || page === 1) {
+            // Only update URL for non-infinite scroll or first page
+            window.history.pushState({}, '', url.toString());
+          }
+          
+          // Always update current filters
+          currentFilters = new URLSearchParams(url.search);
+          
+          // Update applied filters display - but only if we're not skipping it
+          if (!skipFilterDisplayUpdate) {
+            updateAppliedFiltersDisplay();
+          }
+          
+          // Update sort display
+          if (sortValueDisplay && sort) {
+            sortValueDisplay.textContent = sort.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+          }
+  
+          // Reinitialize event listeners
+          initializeProductEvents();
+          
+          // Update availability counts based on new filtered products
+          updateAvailabilityCounts().catch(console.error);
+          
+          // Ensure pagination is visible
+          ensurePaginationVisibility();
+          
+          // Check if there are more pages and update pagination/load more buttons
+          const hasNextPage = doc.querySelector('.wd-load');
+          const newPagination = doc.querySelector('.wg-pagination');
+          
+          if (page > 1) {
+            // For pagination, update the pagination element if it exists
+            if (newPagination) {
+              const currentPagination = productGrid ? productGrid.querySelector('.wg-pagination') : null;
+              if (currentPagination) {
+                currentPagination.innerHTML = newPagination.innerHTML;
+              }
+            }
+            
+            // Remove load more buttons if no more products
+            if (!hasNextPage) {
+              const loadMoreBtns = document.querySelectorAll('.wd-load');
+              loadMoreBtns.forEach(btn => btn.remove());
+            }
+          } else {
+            // For first page, replace pagination/load more elements
+            if (newPagination) {
+              const currentPagination = productGrid ? productGrid.querySelector('.wg-pagination') : null;
+              if (currentPagination) {
+                currentPagination.innerHTML = newPagination.innerHTML;
+              } else {
+                // Create new pagination if it doesn't exist
+                if (productGrid) {
+                  productGrid.appendChild(newPagination.cloneNode(true));
+                }
+              }
+            }
+            
+            // Update load more buttons
+            const newLoadMore = doc.querySelector('.wd-load');
+            const currentLoadMore = productGrid ? productGrid.querySelector('.wd-load') : null;
+            if (newLoadMore && currentLoadMore) {
+              currentLoadMore.innerHTML = newLoadMore.innerHTML;
+            } else if (newLoadMore && !currentLoadMore) {
+              // Add new load more button if it doesn't exist
+              if (productGrid) {
+                productGrid.appendChild(newLoadMore);
+              }
+            } else if (!newLoadMore && currentLoadMore) {
+              // Remove load more button if no more pages
+              currentLoadMore.remove();
+            }
+          }
+  
+          // Handle infinite scroll specific logic
+          const infiniteScrollType = document.querySelector('.wrapper-control-shop')?.dataset.paginationType;
+          if (infiniteScrollType === 'infinite_scroll') {
+            // For infinite scroll, we need to handle the sentinel element differently
+            if (page > 1) {
+              // Move the sentinel element to the end of the new products
+              const sentinelElement = document.getElementById('infiniteScrollLoader');
+              if (sentinelElement) {
+                const targetLayout = listLayout && listLayout.style.display === 'block' ? listLayout : gridLayout;
+                if (targetLayout) {
+                  targetLayout.appendChild(sentinelElement);
+                }
+              }
+            }
+            
+            // If no more pages, remove the sentinel element and disconnect observer
+            if (!hasNextPage) {
+              const sentinelElement = document.getElementById('infiniteScrollLoader');
+              if (sentinelElement) {
+                sentinelElement.remove();
+              }
+              if (window.infiniteScrollObserver) {
+                window.infiniteScrollObserver.disconnect();
+                console.log('Infinite scroll observer disconnected - no more pages');
+              }
+            } else {
+              // Reinitialize infinite scroll observer for the new sentinel element
+              setTimeout(() => {
+                initializeInfiniteScroll();
+              }, 100);
+            }
+          }
+  
+                } catch (error) {
+            console.error('Error updating products:', error);
+            // Show error message to user
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'alert alert-danger';
+            errorMessage.textContent = 'An error occurred while updating the products. Please try again.';
+            errorMessage.style.cssText = `
+              position: fixed;
+              top: 20px;
+              right: 20px;
+              z-index: 9999;
+              max-width: 300px;
+            `;
+            document.body.appendChild(errorMessage);
+            setTimeout(() => errorMessage.remove(), 5000);
+          } finally {
+            console.log('updateProducts finally block - setting isLoading to false');
+            isLoading = false;
+            // Restore opacity and pointer events
+            if (productGrid) {
+              productGrid.style.opacity = '1';
+              productGrid.style.pointerEvents = 'auto';
+            }
+            if (productList) {
+              productList.style.opacity = '1';
+              productList.style.pointerEvents = 'auto';
+            }
+            // Remove loading indicator
+            const loadingIndicator = document.querySelector('.loading-indicator');
+            if (loadingIndicator) {
+              loadingIndicator.remove();
+            }
+          }
+      }
+  
+      // Handle sort selection
+      const sortItems = document.querySelectorAll('.select-item');
+      sortItems.forEach(item => {
+        item.addEventListener('click', function() {
+          const sortValue = this.dataset.sortValue;
+          
+          // Update active state
+          sortItems.forEach(s => s.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Update products
+          updateProducts(null, sortValue);
+          
+          // Close dropdown
+          if (sortDropdown) {
+            const dropdown = bootstrap.Dropdown.getInstance(sortDropdown);
+            if (dropdown) dropdown.hide();
+          }
+        });
+      });
+  
+      // Handle layout switching
+      const layoutSwitches = document.querySelectorAll('.tf-view-layout-switch');
+      const listLayout = document.getElementById('listLayout');
+      const gridLayout = document.getElementById('gridLayout');
+  
+      layoutSwitches.forEach(switchEl => {
+        switchEl.addEventListener('click', function() {
+          const layout = this.dataset.valueLayout;
+          
+          // Update active state
+          layoutSwitches.forEach(s => s.classList.remove('active'));
+          this.classList.add('active');
+  
+          // Show/hide layouts
+          if (listLayout && gridLayout) {
+            const hasProducts = gridLayout.querySelector('.card-product');
+  
+            listLayout.style.display = layout === 'list' ? 'block' : 'none';
+            gridLayout.style.display = layout === 'list' ? 'none' : '';
+            
+            if (layout !== 'list' && hasProducts) {
+              gridLayout.classList.remove('tf-col-2', 'tf-col-3', 'tf-col-4');
+              if (!gridLayout.classList.contains('tf-grid-layout')) {
+                gridLayout.classList.add('tf-grid-layout');
+              }
+              gridLayout.classList.add(layout);
+            }
+            
+            // Check if there are filter parameters (not just sort)
+            const layoutUrlParams = new URLSearchParams(window.location.search);
+            const hasFilterParams = layoutUrlParams.toString().includes('filter.v') || 
+                                   layoutUrlParams.toString().includes('current_tags') ||
+                                   document.querySelectorAll('.filter-tag').length > 0;
+            
+            // Special check for price filters - only show count if both min and max are present
+            const hasPriceFilters = layoutUrlParams.has('filter.v.price.gte') && layoutUrlParams.has('filter.v.price.lte');
+            const hasOnlyOnePriceFilter = (layoutUrlParams.has('filter.v.price.gte') && !layoutUrlParams.has('filter.v.price.lte')) || 
+                                         (!layoutUrlParams.has('filter.v.price.gte') && layoutUrlParams.has('filter.v.price.lte'));
+            const hasOtherFilters = hasFilterParams && !hasOnlyOnePriceFilter;
+            
+            // Update product count visibility based on layout AND filter presence
+            if (productCountGrid) {
+              productCountGrid.style.display = (layout !== 'list' && hasOtherFilters) ? 'block' : 'none';
+            }
+            if (productCountList) {
+              productCountList.style.display = (layout === 'list' && hasOtherFilters) ? 'block' : 'none';
+            }
+          }
+        });
+      });
+  
+      // Handle filter checkbox changes
+      const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+      filterCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+          // Handle availability filters - make them mutually exclusive
+          if (this.name === 'filter.v.availability') {
+            const availabilityCheckboxes = document.querySelectorAll('input[name="filter.v.availability"]');
+            availabilityCheckboxes.forEach(cb => {
+              if (cb !== this) {
+                cb.checked = false;
+              }
+            });
+          }
+          
+          // Submit the form instead of using JavaScript URL manipulation
+          const form = document.getElementById('collection-filters-form') || document.getElementById('collection-filters-form-sidebar') || document.getElementById('collection-filters-form-drawer');
+          if (form) {
+            form.submit();
+          }
+        });
+      });
+  
+      // Handle color filter clicks in horizontal filter
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('.color-check')) {
+          const colorItem = e.target.closest('.color-check');
+          const checkbox = colorItem.querySelector('.filter-checkbox');
+          const colorValue = colorItem.dataset.color;
+          
+          // Toggle the checkbox
+          checkbox.checked = !checkbox.checked;
+          
+          // Toggle active class
+          colorItem.classList.toggle('active', checkbox.checked);
+          
+          // Submit the form instead of using JavaScript URL manipulation
+          const form = document.getElementById('collection-filters-form') || document.getElementById('collection-filters-form-sidebar') || document.getElementById('collection-filters-form-drawer');
+          if (form) {
+            form.submit();
+          }
+        }
+        
+        if (e.target.closest('.size-check')) {
+          const sizeItem = e.target.closest('.size-check');
+          const checkbox = sizeItem.querySelector('.filter-checkbox');
+          const sizeValue = sizeItem.dataset.size;
+          
+          // Toggle the checkbox
+          checkbox.checked = !checkbox.checked;
+          
+          // Toggle active class
+          sizeItem.classList.toggle('active', checkbox.checked);
+          
+          // Submit the form instead of using JavaScript URL manipulation
+          const form = document.getElementById('collection-filters-form') || document.getElementById('collection-filters-form-sidebar') || document.getElementById('collection-filters-form-drawer');
+          if (form) {
+            form.submit();
+          }
+        }
+      });
+  
+      // Handle reset price button
+      document.querySelectorAll('.reset-price').forEach(resetPriceBtn => {
+        resetPriceBtn.addEventListener('click', function() {
+          // Find the price range slider that belongs to this reset button
+          const priceRange = this.closest('.widget-price').querySelector('.price-val-range');
+          if (priceRange && priceRange.noUiSlider) {
+            const minPrice = parseInt(priceRange.dataset.rangeMin);
+            const maxPrice = parseInt(priceRange.dataset.rangeMax);
+            
+            // Reset the slider
+            priceRange.noUiSlider.set([minPrice, maxPrice]);
+            
+            // Remove the hidden form inputs since we're resetting to full range (no filter)
+            const minInput = this.closest('.widget-price').querySelector('input[name="filter.v.price.gte"]');
+            const maxInput = this.closest('.widget-price').querySelector('input[name="filter.v.price.lte"]');
+            
+            if (minInput) minInput.remove();
+            if (maxInput) maxInput.remove();
+            
+            // Also remove horizontal price inputs if this is the horizontal filter
+            const horizontalMinInput = document.getElementById('price-min-input-horizontal');
+            const horizontalMaxInput = document.getElementById('price-max-input-horizontal');
+            if (horizontalMinInput) horizontalMinInput.remove();
+            if (horizontalMaxInput) horizontalMaxInput.remove();
+            
+            // Submit the form
+            const form = document.getElementById('collection-filters-form') || document.getElementById('collection-filters-form-sidebar') || document.getElementById('collection-filters-form-drawer');
+            if (form) {
+              form.submit();
+            }
+          }
+        });
+      });
+  
+      // Handle individual filter tag removal
+      document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('icon-close') || e.target.closest('.icon-close')) {
+          const closeIcon = e.target.classList.contains('icon-close') ? e.target : e.target.closest('.icon-close');
+          const filterTag = closeIcon.closest('.filter-tag');
+          
+          if (filterTag) {
+            const filterType = closeIcon.dataset.filterType;
+            const filterParam = closeIcon.dataset.param;
+            const filterValue = closeIcon.dataset.value;
+            
+            console.log('=== FILTER REMOVAL START ===');
+            console.log('Removing filter:', { filterType, filterParam, filterValue });
+            console.log('Current URL:', window.location.href);
+            console.log('Current URL search params:', window.location.search);
+            
+            // Remove specific filter
+            if (filterType === 'availability') {
+              const availabilityCheckboxes = document.querySelectorAll('input[name="filter.v.availability"]');
+              availabilityCheckboxes.forEach(cb => {
+                cb.checked = false;
+              });
+            } else if (filterType === 'price') {
+                      // Reset price range - all filter types
+          const priceRangeDrawer = document.getElementById('price-value-range-drawer');
+          if (priceRangeDrawer && priceRangeDrawer.noUiSlider) {
+            const minPrice = parseInt(priceRangeDrawer.dataset.rangeMin);
+            const maxPrice = parseInt(priceRangeDrawer.dataset.rangeMax);
+            priceRangeDrawer.noUiSlider.set([minPrice, maxPrice]);
+          }
+          
+          const priceRangeSidebar = document.getElementById('price-value-range-sidebar');
+          if (priceRangeSidebar && priceRangeSidebar.noUiSlider) {
+            const minPrice = parseInt(priceRangeSidebar.dataset.rangeMin);
+            const maxPrice = parseInt(priceRangeSidebar.dataset.rangeMax);
+            priceRangeSidebar.noUiSlider.set([minPrice, maxPrice]);
+          }
+          
+          const priceRangeHorizontal = document.getElementById('price-value-range-horizontal');
+          if (priceRangeHorizontal && priceRangeHorizontal.noUiSlider) {
+            const minPrice = parseInt(priceRangeHorizontal.dataset.rangeMin);
+            const maxPrice = parseInt(priceRangeHorizontal.dataset.rangeMax);
+            priceRangeHorizontal.noUiSlider.set([minPrice, maxPrice]);
+          }
+            } else if (filterType === 'filter.v.option.color') {
+              // Remove color filter
+              console.log('Removing color filter:', filterValue);
+              
+              // Decode the filter value in case it's URL encoded
+              const decodedFilterValue = decodeURIComponent(filterValue);
+              console.log('Decoded filter value:', decodedFilterValue);
+              
+              // Try to find the color item by data-color attribute (try both encoded and decoded)
+              let colorItem = document.querySelector(`[data-color="${filterValue}"]`) || 
+                             document.querySelector(`[data-color="${decodedFilterValue}"]`);
+              
+              // If not found, try to find by the checkbox directly
+              if (!colorItem) {
+                const checkbox = document.querySelector(`input[name="filter.v.option.color"][value="${filterValue}"]`) ||
+                                document.querySelector(`input[name="filter.v.option.color"][value="${decodedFilterValue}"]`);
+                if (checkbox) {
+                  colorItem = checkbox.closest('.color-check');
+                }
+              }
+              
+              // If still not found, try to find by color text content
+              if (!colorItem) {
+                const colorItems = document.querySelectorAll('.color-check');
+                colorItems.forEach(item => {
+                  const colorText = item.querySelector('.color-text');
+                  if (colorText) {
+                    const textContent = colorText.textContent.trim();
+                    console.log('Checking color text:', textContent, 'against:', filterValue, 'and:', decodedFilterValue);
+                    if (textContent === filterValue || textContent === decodedFilterValue) {
+                      colorItem = item;
+                    }
+                  }
+                });
+              }
+              
+              if (colorItem) {
+                const checkbox = colorItem.querySelector('.filter-checkbox');
+                if (checkbox) {
+                  checkbox.checked = false;
+                  console.log('Unchecked color checkbox:', checkbox.value);
+                }
+                colorItem.classList.remove('active');
+                console.log('Removed active class from color item');
+              } else {
+                console.warn('Color item not found for value:', filterValue, 'or decoded value:', decodedFilterValue);
+                // Log all available color items for debugging
+                const allColorItems = document.querySelectorAll('.color-check');
+                console.log('Available color items:');
+                allColorItems.forEach((item, index) => {
+                  const colorText = item.querySelector('.color-text')?.textContent.trim();
+                  const dataColor = item.dataset.color;
+                  const checkboxValue = item.querySelector('.filter-checkbox')?.value;
+                  console.log(`  ${index}: text="${colorText}", data-color="${dataColor}", checkbox-value="${checkboxValue}"`);
+                });
+              }
+              
+              // Force remove the color filter from all checkboxes with this value
+              const allColorCheckboxes = document.querySelectorAll('input[name="filter.v.option.color"]');
+              allColorCheckboxes.forEach(cb => {
+                if (cb.value === filterValue || cb.value === decodedFilterValue) {
+                  cb.checked = false;
+                  console.log('Force unchecked color checkbox:', cb.value);
+                }
+              });
+            } else if (filterType === 'filter.v.option.size') {
+              // Remove size filter
+              console.log('Removing size filter:', filterValue);
+              
+              // Decode the filter value in case it's URL encoded
+              const decodedFilterValue = decodeURIComponent(filterValue);
+              console.log('Decoded filter value:', decodedFilterValue);
+              
+              // Try to find the size item by data-size attribute (try both encoded and decoded)
+              let sizeItem = document.querySelector(`[data-size="${filterValue}"]`) || 
+                            document.querySelector(`[data-size="${decodedFilterValue}"]`);
+              
+              // If not found, try to find by the checkbox directly
+              if (!sizeItem) {
+                const checkbox = document.querySelector(`input[name="filter.v.option.size"][value="${filterValue}"]`) ||
+                                document.querySelector(`input[name="filter.v.option.size"][value="${decodedFilterValue}"]`);
+                if (checkbox) {
+                  sizeItem = checkbox.closest('.size-check');
+                }
+              }
+              
+              // If still not found, try to find by size text content
+              if (!sizeItem) {
+                const sizeItems = document.querySelectorAll('.size-check');
+                sizeItems.forEach(item => {
+                  const sizeText = item.querySelector('.size');
+                  if (sizeText) {
+                    const textContent = sizeText.textContent.trim();
+                    console.log('Checking size text:', textContent, 'against:', filterValue, 'and:', decodedFilterValue);
+                    if (textContent === filterValue || textContent === decodedFilterValue) {
+                      sizeItem = item;
+                    }
+                  }
+                });
+              }
+              
+              if (sizeItem) {
+                const checkbox = sizeItem.querySelector('.filter-checkbox');
+                if (checkbox) {
+                  checkbox.checked = false;
+                  console.log('Unchecked size checkbox:', checkbox.value);
+                }
+                sizeItem.classList.remove('active');
+                console.log('Removed active class from size item');
+              } else {
+                console.warn('Size item not found for value:', filterValue, 'or decoded value:', decodedFilterValue);
+                // Log all available size items for debugging
+                const allSizeItems = document.querySelectorAll('.size-check');
+                console.log('Available size items:');
+                allSizeItems.forEach((item, index) => {
+                  const sizeText = item.querySelector('.size')?.textContent.trim();
+                  const dataSize = item.dataset.size;
+                  const checkboxValue = item.querySelector('.filter-checkbox')?.value;
+                  console.log(`  ${index}: text="${sizeText}", data-size="${dataSize}", checkbox-value="${checkboxValue}"`);
+                });
+              }
+              
+              // Force remove the size filter from all checkboxes with this value
+              const allSizeCheckboxes = document.querySelectorAll('input[name="filter.v.option.size"]');
+              allSizeCheckboxes.forEach(cb => {
+                if (cb.value === filterValue || cb.value === decodedFilterValue) {
+                  cb.checked = false;
+                  console.log('Force unchecked size checkbox:', cb.value);
+                }
+              });
+            } else {
+              // Remove specific checkbox filter
+              const checkbox = document.querySelector(`input[name="${filterParam}"][value="${filterValue}"]`);
+              if (checkbox) {
+                checkbox.checked = false;
+              }
+            }
+            
+            // Show loading spinner
+            showFilterLoading();
+            
+            // Remove the filter tag from DOM immediately
+            filterTag.remove();
+            
+            // Update URL and navigate to refresh the page
+            const url = new URL(window.location.href);
+            
+            // For color and size filters, directly remove the specific parameter
+            if (filterType === 'filter.v.option.color' || filterType === 'filter.v.option.size') {
+              // Decode the filter value for comparison
+              const decodedFilterValue = decodeURIComponent(filterValue);
+              
+              // Get all values for this parameter
+              const allValues = url.searchParams.getAll(filterParam);
+              console.log('All values for', filterParam, ':', allValues);
+              
+              // Remove the specific value we want to remove
+              const remainingValues = allValues.filter(value => 
+                value !== filterValue && value !== decodedFilterValue
+              );
+              
+              console.log('Remaining values after filtering:', remainingValues);
+              
+              // Remove all instances of this parameter
+              url.searchParams.delete(filterParam);
+              
+              // Add back the remaining values
+              remainingValues.forEach(value => {
+                url.searchParams.append(filterParam, value);
+              });
+              
+              console.log('Updated URL after removing filter:', url.toString());
+              
+              // Navigate to the new URL to refresh the page
+              console.log('=== NAVIGATING TO NEW URL ===');
+              console.log('New URL:', url.toString());
+              window.location.href = url.toString();
+              return; // Exit early to prevent further processing
+            } else {
+              // For other filters, remove the specific parameter and navigate
+              if (filterType === 'availability') {
+                url.searchParams.delete('filter.v.availability');
+              } else if (filterType === 'price') {
+                url.searchParams.delete('filter.v.price.gte');
+                url.searchParams.delete('filter.v.price.lte');
+              } else {
+                // Remove the specific filter parameter
+                url.searchParams.delete(filterParam);
+              }
+              
+              console.log('Updated URL after removing filter:', url.toString());
+              
+              // Navigate to the new URL to refresh the page
+              console.log('=== NAVIGATING TO NEW URL ===');
+              console.log('New URL:', url.toString());
+              window.location.href = url.toString();
+              return; // Exit early to prevent further processing
+            }
+          }
+        }
+      });
+  
+      // Handle clear all filters
+      const clearAllBtn = document.getElementById('remove-all');
+        if (clearAllBtn) {
+          clearAllBtn.addEventListener('click', function(e) {
+            e.preventDefault(); 
+            showFilterLoading();
+  
+            const url = new URL(window.location.href);
+  
+            // Collect all filter keys first
+            const paramsToDelete = [];
+            for (const param of url.searchParams.keys()) {
+              if (param.startsWith('filter.v.')) {
+                paramsToDelete.push(param);
+              }
+            }
+            paramsToDelete.forEach(param => url.searchParams.delete(param));
+  
+            console.log('Clearing all filters, navigating to:', url.toString());
+            window.location.href = url.toString();
+          });
+        }
+  
+      // Handle load more functionality
+      const loadMoreListBtn = document.getElementById('loadMoreListBtn');
+      const loadMoreGridBtn = document.getElementById('loadMoreGridBtn');
+  
+      async function loadMoreProducts(layout) {
+        console.log('loadMoreProducts called with layout:', layout, 'isLoading:', isLoading);
+        if (isLoading) {
+          console.log('Already loading, returning early from loadMoreProducts');
+          return;
+        }
+        
+        currentPage++;
+        console.log('Loading more products, page:', currentPage);
+        
+        const filters = {};
+        const checkboxes = document.querySelectorAll('.filter-checkbox');
+        checkboxes.forEach(cb => {
+          if (cb.checked) {
+            filters[cb.name] = cb.value;
+          }
+        });
+        
+        console.log('Current filters:', filters);
+        
+        // Add price filters - check both sidebar and horizontal
+        const minPriceSidebar = document.getElementById('price-min-input')?.value;
+        const maxPriceSidebar = document.getElementById('price-max-input')?.value;
+        const minPriceHorizontal = document.getElementById('price-min-input-horizontal')?.value;
+        const maxPriceHorizontal = document.getElementById('price-max-input-horizontal')?.value;
+        
+        // Use whichever price range is available, but only if inputs exist and have values
+        const minPrice = minPriceHorizontal || minPriceSidebar;
+        const maxPrice = maxPriceHorizontal || maxPriceSidebar;
+        
+        if (minPrice && maxPrice && minPrice !== '' && maxPrice !== '') {
+          filters['filter.v.price.gte'] = minPrice;
+          filters['filter.v.price.lte'] = maxPrice;
+        }
+        
+        console.log('Final filters for loadMoreProducts:', filters);
+        await updateProducts(filters, currentSort, currentPage);
+      }
+  
+      if (loadMoreListBtn) {
+        loadMoreListBtn.addEventListener('click', () => loadMoreProducts('list'));
+      }
+  
+      if (loadMoreGridBtn) {
+        loadMoreGridBtn.addEventListener('click', () => loadMoreProducts('grid'));
+      }
+  
+      // Initialize infinite scroll if enabled
+      function initializeInfiniteScroll() {
+        console.log('initializeInfiniteScroll called');
+        const scrollPaginationType = document.querySelector('.wrapper-control-shop')?.dataset.paginationType;
+        console.log('Pagination type:', scrollPaginationType);
+        if (scrollPaginationType !== 'infinite_scroll') {
+          console.log('Not infinite scroll, returning');
+          return;
+        }
+  
+        // Remove existing observer if any
+        if (window.infiniteScrollObserver) {
+          window.infiniteScrollObserver.disconnect();
+        }
+  
+        const options = {
+          root: null,
+          rootMargin: '200px',
+          threshold: 0.1
+        };
+  
+        window.infiniteScrollObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            console.log('Intersection observer triggered:', entry.isIntersecting, 'isLoading:', isLoading, 'target:', entry.target);
+            if (entry.isIntersecting && !isLoading) {
+              const layout = listLayout && listLayout.style.display === 'block' ? 'list' : 'grid';
+              console.log('Loading more products via infinite scroll, layout:', layout);
+              loadMoreProducts(layout);
+            } else {
+              console.log('Intersection observer triggered but not loading because:', {
+                isIntersecting: entry.isIntersecting,
+                isLoading: isLoading
+              });
+            }
+          });
+        }, options);
+  
+        // Observe the infinite scroll loader or create a sentinel element
+        let sentinelElement = document.getElementById('infiniteScrollLoader');
+        
+        if (!sentinelElement) {
+          // Create a sentinel element if it doesn't exist
+          sentinelElement = document.createElement('div');
+          sentinelElement.id = 'infiniteScrollLoader';
+          sentinelElement.style.height = '20px';
+          sentinelElement.style.width = '100%';
+          sentinelElement.style.display = 'block';
+          
+          // Add to the appropriate layout
+          const targetLayout = listLayout && listLayout.style.display === 'block' ? listLayout : gridLayout;
+          if (targetLayout) {
+            targetLayout.appendChild(sentinelElement);
+          }
+        } else {
+          // Ensure the existing loader is visible
+          sentinelElement.style.display = 'block';
+        }
+  
+        if (sentinelElement) {
+          window.infiniteScrollObserver.observe(sentinelElement);
+          console.log('Infinite scroll observer initialized, observing:', sentinelElement);
+          console.log('Sentinel element display style:', window.getComputedStyle(sentinelElement).display);
+          console.log('Sentinel element visibility:', window.getComputedStyle(sentinelElement).visibility);
+        } else {
+          console.log('No sentinel element found!');
+        }
+      }
+  
+      // Initialize product-specific event listeners
+      function initializeProductEvents() {
+        // Add any product-specific event listeners here
+        // For example, quick view, add to cart, etc.
+        
+        // Handle pagination links - ensure they work correctly
+        const paginationLinks = document.querySelectorAll('.wg-pagination a');
+        paginationLinks.forEach(link => {
+          link.addEventListener('click', function(e) {
+            // Allow normal navigation for pagination links
+            // The href will handle the page change
+            // No need to prevent default or use AJAX for pagination
+          });
+        });
+        
+        // Re-observe for infinite scroll
+        if (document.querySelector('[data-pagination-type="infinite_scroll"]')) {
+          initializeInfiniteScroll();
+        }
+      }
+  
+      // Function to ensure pagination is visible
+      function ensurePaginationVisibility() {
+        const pagination = document.querySelector('.wg-pagination');
+        if (pagination) {
+          // Ensure pagination is visible
+          if (window.getComputedStyle(pagination).display === 'none') {
+            pagination.style.display = 'flex';
+            console.log('Pagination was hidden, made visible');
+          }
+          
+          // Ensure pagination links are clickable
+          const paginationLinks = pagination.querySelectorAll('a');
+          paginationLinks.forEach(link => {
+            if (window.getComputedStyle(link).pointerEvents === 'none') {
+              link.style.pointerEvents = 'auto';
+            }
+          });
+        }
+      }
+  
+      // Update availability filter counts based on current filtered products
+      async function updateAvailabilityCounts() {
+        try {
+          // Get current URL with all active filters but remove pagination and availability filter to get total collection counts
+          const url = new URL(window.location.href);
+          url.searchParams.delete('page'); // Remove page parameter to get total collection
+          url.searchParams.delete('filter.v.availability'); // Remove availability filter to get total availability counts
+          
+          // Create a request to get availability counts for the entire filtered collection
+          console.log('Fetching availability counts from URL:', url.toString());
+          const response = await fetch(url.toString());
+          const html = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          
+          // Extract availability counts from the parsed HTML
+          const inStockElement = doc.querySelector('label[for="Filter-availability-1"] .count');
+          const outOfStockElement = doc.querySelector('label[for="Filter-availability-2"] .count');
+          
+          console.log('Found inStock element:', inStockElement);
+          console.log('Found outOfStock element:', outOfStockElement);
+          
+          const inStockText = inStockElement?.textContent || '';
+          const outOfStockText = outOfStockElement?.textContent || '';
+          
+          console.log('In stock text:', inStockText);
+          console.log('Out of stock text:', outOfStockText);
+          
+          const inStockMatch = inStockText.match(/\((\d+)\)/);
+          const outOfStockMatch = outOfStockText.match(/\((\d+)\)/);
+          
+          console.log('In stock match:', inStockMatch);
+          console.log('Out of stock match:', outOfStockMatch);
+          
+          const inStockCount = inStockMatch?.[1] || '0';
+          const outOfStockCount = outOfStockMatch?.[1] || '0';
+          
+          console.log('Extracted in stock count:', inStockCount);
+          console.log('Extracted out of stock count:', outOfStockCount);
+          
+          // Update availability filter counts in sidebar
+          const inStockLabel = document.querySelector('label[for="Filter-availability-1"] .count');
+          const outOfStockLabel = document.querySelector('label[for="Filter-availability-2"] .count');
+          
+          if (inStockLabel) {
+            inStockLabel.textContent = `(${inStockCount})`;
+          }
+          if (outOfStockLabel) {
+            outOfStockLabel.textContent = `(${outOfStockCount})`;
+          }
+          
+          // Update availability filter counts in horizontal filter
+          const horizontalInStockLabel = document.querySelector('.dropdown-filter .collapse-body label[for="Filter-availability-1"] .count');
+          const horizontalOutOfStockLabel = document.querySelector('.dropdown-filter .collapse-body label[for="Filter-availability-2"] .count');
+          
+          if (horizontalInStockLabel) {
+            horizontalInStockLabel.textContent = `(${inStockCount})`;
+          }
+          if (horizontalOutOfStockLabel) {
+            horizontalOutOfStockLabel.textContent = `(${outOfStockCount})`;
+          }
+          
+          console.log('Updated availability counts for entire collection - In stock:', inStockCount, 'Out of stock:', outOfStockCount);
+  
+          // Log the total product count from the response
+          const totalProductsElement = doc.querySelector('#product-count-grid .count, #product-count-list .count');
+          const totalProducts = totalProductsElement?.textContent || '0';
+          console.log('Total products in response:', totalProducts);
+        } catch (error) {
+          console.error('Error updating availability counts:', error);
+          
+          // Fallback: use the product count display to estimate availability
+          const productCountGrid = document.getElementById('product-count-grid');
+          const productCountList = document.getElementById('product-count-list');
+          
+          let filteredProducts = 0;
+          // Always use the filtered count from the display, regardless of which layout is active
+          if (productCountGrid) {
+            const countSpan = productCountGrid.querySelector('.count');
+            if (countSpan) {
+              filteredProducts = parseInt(countSpan.textContent) || 0;
+            }
+          } else if (productCountList) {
+            const countSpan = productCountList.querySelector('.count');
+            if (countSpan) {
+              filteredProducts = parseInt(countSpan.textContent) || 0;
+            }
+          }
+          
+          if (filteredProducts > 0) {
+            // Estimate availability based on current page products
+            const gridLayout = document.getElementById('gridLayout');
+            const listLayout = document.getElementById('listLayout');
+            const isListActive = listLayout && listLayout.style.display === 'block';
+            const activeLayout = isListActive ? listLayout : gridLayout;
+            
+            if (activeLayout) {
+              const products = activeLayout.querySelectorAll('.loadItem');
+              let inStockCount = 0;
+              let outOfStockCount = 0;
+              
+              products.forEach(product => {
+                const computedStyle = window.getComputedStyle(product);
+                if (computedStyle.display !== 'none' && computedStyle.visibility !== 'hidden') {
+                  const availability = product.dataset.availability;
+                  if (availability === 'true' || availability === 'In stock') {
+                    inStockCount++;
+                  } else {
+                    outOfStockCount++;
+                  }
+                }
+              });
+              
+              // Calculate ratio and apply to filtered collection
+              const totalVisible = inStockCount + outOfStockCount;
+              if (totalVisible > 0) {
+                const inStockRatio = inStockCount / totalVisible;
+                const estimatedInStock = Math.round(filteredProducts * inStockRatio);
+                const estimatedOutOfStock = filteredProducts - estimatedInStock;
+                
+                // Update counts with estimated values
+                const inStockLabel = document.querySelector('label[for="Filter-availability-1"] .count');
+                const outOfStockLabel = document.querySelector('label[for="Filter-availability-2"] .count');
+                
+                if (inStockLabel) {
+                  inStockLabel.textContent = `(${estimatedInStock})`;
+                }
+                if (outOfStockLabel) {
+                  outOfStockLabel.textContent = `(${estimatedOutOfStock})`;
+                }
+                
+                console.log('Estimated availability counts for filtered collection - In stock:', estimatedInStock, 'Out of stock:', estimatedOutOfStock, 'Total:', filteredProducts);
+              }
+            }
+          }
+        }
+      }
+  
+      // Initialize everything
+      function initializeAll() {
+        // Hide any existing loading spinner on page load
+        hideFilterLoading();
+        
+        // Initialize price range slider first
+        initializePriceRangeSlider();
+        
+        // Initialize filter state with a small delay to ensure Liquid-rendered filters are present
+        setTimeout(() => {
+          initializeFilterState();
+        }, 50);
+        
+        // Initialize product events
+        initializeProductEvents();
+        
+        // Initialize infinite scroll with a delay to ensure DOM is ready
+        setTimeout(() => {
+          initializeInfiniteScroll();
+        }, 200);
+        
+        // Update availability counts after products are loaded
+        setTimeout(() => {
+          updateAvailabilityCounts().catch(console.error);
+        }, 300);
+        
+        // Initialize product count visibility based on filter parameters and current layout
+        const initUrlParams = new URLSearchParams(window.location.search);
+        const hasFilterParams = initUrlParams.toString().includes('filter.v') || 
+                               initUrlParams.toString().includes('current_tags') ||
+                               document.querySelectorAll('.filter-tag').length > 0;
+        
+        // Special check for price filters - only show count if both min and max are present
+        const hasPriceFilters = initUrlParams.has('filter.v.price.gte') && initUrlParams.has('filter.v.price.lte');
+        const hasOnlyOnePriceFilter = (initUrlParams.has('filter.v.price.gte') && !initUrlParams.has('filter.v.price.lte')) || 
+                                     (!initUrlParams.has('filter.v.price.gte') && initUrlParams.has('filter.v.price.lte'));
+        const hasOtherFilters = hasFilterParams && !hasOnlyOnePriceFilter;
+        
+        if (productCountGrid) {
+          const isListActive = productList && productList.style.display === 'block';
+          productCountGrid.style.display = (!isListActive && hasOtherFilters) ? 'block' : 'none';
+        }
+        if (productCountList) {
+          const isListActive = productList && productList.style.display === 'block';
+          productCountList.style.display = (isListActive && hasOtherFilters) ? 'block' : 'none';
+        }
+        
+        // Debug: Check if pagination exists and is visible
+        const pagination = document.querySelector('.wg-pagination');
+        if (pagination) {
+          // Ensure pagination is visible
+          if (window.getComputedStyle(pagination).display === 'none') {
+            pagination.style.display = 'flex';
+          }
+        }
+        
+        // Check current page from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentPageParam = urlParams.get('page');
+        if (currentPageParam) {
+          currentPage = parseInt(currentPageParam);
+          
+          // If we're on page 2 or higher, ensure pagination is visible
+          if (currentPage > 1) {
+            setTimeout(() => {
+              ensurePaginationVisibility();
+            }, 200);
+          }
+        }
+        
+        // Ensure pagination is not hidden by any CSS or JavaScript
+        setTimeout(() => {
+          const paginationAfterDelay = document.querySelector('.wg-pagination');
+          if (paginationAfterDelay && window.getComputedStyle(paginationAfterDelay).display === 'none') {
+            paginationAfterDelay.style.display = 'flex';
+            console.log('Pagination was hidden after delay, made visible');
+          }
+          ensurePaginationVisibility();
+        }, 100);
+      }
+  
+      // Wait for DOM and dependencies to be ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeAll);
+      } else {
+        // DOM is already ready, but wait a bit for noUiSlider to be available
+        setTimeout(initializeAll, 100);
+      }
+    });
+  </script>
+  
+  {% schema %}
+  {
+    "name": "Collection Style 2",
+    "settings": [
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Section width",
+        "options": [
+          {
+            "value": "full",
+            "label": "Full width"
+          },
+          {
+            "value": "boxed",
+            "label": "Boxed"
+          }
+        ],
+        "default": "boxed"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding top",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "default": 36
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding bottom",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "default": 36
+      },
+      {
+        "type": "select",
+        "id": "filter_type",
+        "label": "Filter Type",
+        "options": [
+          {
+            "value": "drawer",
+            "label": "Drawer"
+          },
+          {
+            "value": "left",
+            "label": "Left Sidebar"
+          },
+          {
+            "value": "right",
+            "label": "Right Sidebar"
+          },
+          {
+            "value": "horizontal",
+            "label": "Horizontal"
+          }
+        ],
+        "default": "drawer"
+      },
+      {
+        "type": "select",
+        "id": "default_grid_columns",
+        "label": "Default Grid Columns",
+        "options": [
+          {
+            "value": "3",
+            "label": "3 Columns"
+          },
+          {
+            "value": "4",
+            "label": "4 Columns"
+          }
+        ],
+        "default": "4"
+      },
+      {
+        "type": "range",
+        "id": "products_per_page",
+        "label": "Products per page",
+        "min": 8,
+        "max": 48,
+        "step": 4,
+        "default": 12
+      },
+      {
+        "type": "select",
+        "id": "pagination_type",
+        "label": "Pagination Type",
+        "options": [
+          {
+            "value": "pagination",
+            "label": "Pagination"
+          },
+          {
+            "value": "load_more",
+            "label": "Load More"
+          },
+          {
+            "value": "infinite_scroll",
+            "label": "Infinite Scroll"
+          }
+        ],
+        "default": "pagination"
+      },
+      {
+        "type": "header",
+        "content": "On Sale Section"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_on_sale",
+        "label": "Show On Sale Section",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "on_sale_title",
+        "label": "On Sale Title",
+        "default": "On sale"
+      },
+      {
+        "type": "select",
+        "id": "on_sale_source",
+        "label": "On Sale Products Source",
+        "options": [
+          {
+            "value": "collection",
+            "label": "Current Collection"
+          },
+          {
+            "value": "product_list",
+            "label": "Specific Products"
+          }
+        ],
+        "default": "collection"
+      },
+      {
+        "type": "product_list",
+        "id": "on_sale_products",
+        "label": "On Sale Products",
+        "info": "Select specific products to show in the on sale section"
+      },
+      {
+        "type": "header",
+        "content": "Banner Section"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_banner",
+        "label": "Show Banner",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "filter_banner",
+        "label": "Banner Image"
+      },
+      {
+        "type": "text",
+        "id": "banner_title",
+        "label": "Banner Title",
+        "default": "Elevate\nYour Style"
+      },
+      {
+        "type": "text",
+        "id": "banner_button_text",
+        "label": "Button Text",
+        "default": "Shop Now"
+      },
+      {
+        "type": "url",
+        "id": "banner_button_url",
+        "label": "Button Link"
+      },
+      {
+        "type": "header",
+        "content": "Filter collections"
+      },
+      {
+        "type": "text",
+        "id": "collections_title",
+        "label": "Collections Title",
+        "default": "Collections",
+        "info": "Not show if blank"
+      },
+      {
+        "type": "radio",
+        "id": "categories_mode",
+        "label": "Show all / Show a link list",
+        "options": [
+          { "value": "all", "label": "Show all" },
+          { "value": "link_list", "label": "Show link list" }
+        ],
+        "default": "all"
+      },
+      {
+        "type": "link_list",
+        "id": "categories_link_list",
+        "label": "Choose link list"
+      },
+      {
+        "type": "checkbox",
+        "id": "categories_show_count",
+        "label": "Show count",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Description Section"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_description",
+        "label": "Show Description Section",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "description_padding_top",
+        "label": "Description padding top",
+        "min": 0,
+        "max": 200,
+        "step": 4,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "description_padding_bottom",
+        "label": "Description padding bottom",
+        "min": 0,
+        "max": 200,
+        "step": 4,
+        "unit": "px",
+        "default": 100
+      },
+      {
+        "type": "text",
+        "id": "related_collections_text",
+        "label": "Related Collections Text",
+        "default": "Looking for more? Don't miss out on our other exciting collections for"
+      },
+      {
+        "type": "collection",
+        "id": "related_collection_1",
+        "label": "First Related Collection"
+      },
+      {
+        "type": "collection",
+        "id": "related_collection_2",
+        "label": "Second Related Collection"
+      },
+      {
+        "type": "header",
+        "content": "Icon Box Section"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_icon_box",
+        "label": "Show Icon Box Section",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "icon_box_title_1",
+        "label": "First Icon Title",
+        "default": "Free Shipping"
+      },
+      {
+        "type": "textarea",
+        "id": "icon_box_desc_1",
+        "label": "First Icon Description",
+        "default": "Enjoy free shipping on all orders over $150"
+      },
+      {
+        "type": "text",
+        "id": "icon_box_title_2",
+        "label": "Second Icon Title",
+        "default": "Easy Returns"
+      },
+      {
+        "type": "textarea",
+        "id": "icon_box_desc_2",
+        "label": "Second Icon Description",
+        "default": "Hassle-free returns for a worry-free shopping experience."
+      },
+      {
+        "type": "text",
+        "id": "icon_box_title_3",
+        "label": "Third Icon Title",
+        "default": "24/7 Support"
+      },
+      {
+        "type": "textarea",
+        "id": "icon_box_desc_3",
+        "label": "Third Icon Description",
+        "default": "We are here for you anytime with 24/7 customer support."
+      }
+    ],
+    "presets": [
+      {
+        "name": "Collection Style 2",
+        "category": "Collection",
+        "settings": {
+          "width": "boxed",
+          "padding_top": 36,
+          "padding_bottom": 36,
+          "filter_type": "drawer",
+          "default_grid_columns": "4",
+          "products_per_page": 12,
+          "pagination_type": "pagination",
+          "collections_title": "Collections",
+          "show_on_sale": true,
+          "on_sale_title": "On sale",
+          "show_banner": true,
+          "banner_title": "Elevate\nYour Style",
+          "banner_button_text": "Shop Now"
+        }
+      }
+    ]
+  }
+  {% endschema %}
