@@ -93,8 +93,10 @@
           </button>
           <div class="mt-3">
             <label class="d-flex align-items-center justify-content-center">
-              <input type="checkbox" id="dont-show-again" class="me-2">
-              <span class="text-sm">{{ section.settings.dont_show_text }}</span>
+              {% if section.settings.dont_show_text != blank %}
+                <input type="checkbox" id="dont-show-again" class="me-2">
+                <span class="text-sm">{{ section.settings.dont_show_text }}</span>
+              {% endif %}
             </label>
           </div>
         </form>
