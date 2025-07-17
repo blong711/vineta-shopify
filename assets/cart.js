@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Function to fetch and update cart data
   async function fetchCartData() {
     try {
-      const response = await fetch('/cart.js');
+      const response = await fetch(routes.cart_url + '.js');
       const cartData = await response.json();
       
       // Update cart items with proper image data
@@ -323,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize cart state on page load
   async function initializeCartState() {
     try {
-      const response = await fetch('/cart.js');
+      const response = await fetch(routes.cart_url + '.js');
       const cartData = await response.json();
       
       if (cartData.item_count === 0) {
@@ -349,7 +349,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!variantId) return;
 
       try {
-        const response = await fetch('/cart/change.js', {
+        const response = await fetch(routes.cart_change_url + '.js', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -428,7 +428,7 @@ document.addEventListener('DOMContentLoaded', function() {
         input.value = newQuantity;
 
         // Update cart via API
-        const response = await fetch('/cart/change.js', {
+        const response = await fetch(routes.cart_change_url + '.js', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -643,7 +643,7 @@ document.addEventListener('DOMContentLoaded', function() {
       shippingRatesList.appendChild(calculatingDiv);
 
       try {
-        const response = await fetch('/cart/shipping_rates.json', {
+        const response = await fetch(routes.cart_url + '/shipping_rates.json', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -745,7 +745,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check if gift wrap exists in cart on page load
     const checkGiftWrapInCart = async () => {
       try {
-        const cartData = await fetch('/cart.js').then(res => res.json());
+        const cartData = await fetch(routes.cart_url + '.js').then(res => res.json());
         const variantId = giftWrapCheckbox.dataset.variantId;
         const hasGiftWrap = cartData.items.some(item => item.variant_id == variantId);
         giftWrapCheckbox.checked = hasGiftWrap;
@@ -762,7 +762,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!variantId) return;
       try {
         if (this.checked) {
-          const response = await fetch('/cart/add.js', {
+          const response = await fetch(routes.cart_add_url + '.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -889,7 +889,7 @@ document.addEventListener('DOMContentLoaded', function() {
                   if (!variantId) return;
 
                   try {
-                    const response = await fetch('/cart/change.js', {
+                    const response = await fetch(routes.cart_change_url + '.js', {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json'
@@ -969,7 +969,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     input.value = newQuantity;
 
                     // Update cart via API
-                    const response = await fetch('/cart/change.js', {
+                    const response = await fetch(routes.cart_change_url + '.js', {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json'
@@ -1045,10 +1045,10 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         } else {
           // Remove all gift wrap items from cart
-          const cartItems = await fetch('/cart.js').then(res => res.json());
+          const cartItems = await fetch(routes.cart_url + '.js').then(res => res.json());
           const giftWrapItem = cartItems.items.find(item => item.variant_id == variantId);
           if (giftWrapItem) {
-            await fetch('/cart/change.js', {
+            await fetch(routes.cart_change_url + '.js', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -1068,7 +1068,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Update cart total and count
-        const cartData = await fetch('/cart.js').then(res => res.json());
+        const cartData = await fetch(routes.cart_url + '.js').then(res => res.json());
         const cartTotal = document.querySelector('.total');
         if (cartTotal) {
           cartTotal.textContent = formatMoney(cartData.total_price);
@@ -1152,7 +1152,7 @@ document.addEventListener('DOMContentLoaded', function() {
       applyButton.textContent = 'Applying...';
 
       try {
-        const response = await fetch('/cart/update.js', {
+        const response = await fetch(routes.cart_update_url + '.js', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -1321,7 +1321,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
           }
           
-          const response = await fetch('/cart/update.js', {
+          const response = await fetch(routes.cart_update_url + '.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

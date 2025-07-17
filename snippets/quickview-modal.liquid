@@ -188,7 +188,7 @@
             if (!variantId) return;
 
             try {
-              const response = await fetch('/cart/change.js', {
+              const response = await fetch('{{ routes.cart_change_url }}.js', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -209,7 +209,7 @@
               }
 
               // Fetch updated cart data
-              const cartResponse = await fetch('/cart.js');
+              const cartResponse = await fetch('{{ routes.cart_url }}.js');
               if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
               const cartData = await cartResponse.json();
 
@@ -265,7 +265,7 @@
               input.value = newQuantity;
 
               // Update cart via API
-              const response = await fetch('/cart/change.js', {
+              const response = await fetch('{{ routes.cart_change_url }}.js', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -346,7 +346,7 @@
             
             if (isNaN(newValue) || newValue < 1) {
               if (newValue <= 0) {
-                const response = await fetch('/cart/change.js', {
+                const response = await fetch('{{ routes.cart_change_url }}.js', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',
@@ -362,7 +362,7 @@
                 }
               } else {
                 this.value = 1;
-                const response = await fetch('/cart/change.js', {
+                const response = await fetch('{{ routes.cart_change_url }}.js', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',
@@ -378,7 +378,7 @@
                 }
               }
             } else {
-              const response = await fetch('/cart/change.js', {
+              const response = await fetch('{{ routes.cart_change_url }}.js', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -395,7 +395,7 @@
             }
 
             // Fetch updated cart data and update UI
-            const cartResponse = await fetch('/cart.js');
+            const cartResponse = await fetch('{{ routes.cart_url }}.js');
             if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
             const cartData = await cartResponse.json();
             
@@ -727,7 +727,7 @@
                   }
                 }
                 // Fetch updated cart data
-                const response = await fetch('/cart.js');
+                const response = await fetch('{{ routes.cart_url }}.js');
                 const cartData = await response.json();
                 
                 // If we're on the cart page, add the item to the cart table
@@ -917,9 +917,9 @@
             try {
               this.classList.add('loading');
               // Optionally clear the cart for a true "Buy It Now" experience
-              await fetch('/cart/clear.js', { method: 'POST' });
+              await fetch('{{ routes.cart_clear_url }}.js', { method: 'POST' });
               // Add the selected variant to the cart
-              await fetch('/cart/add.js', {
+              await fetch('{{ routes.cart_add_url }}.js', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',

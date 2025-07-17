@@ -33,7 +33,7 @@
     <div class="row" id="cart-items-row" style="{% if cart.item_count == 0 %}display: none;{% endif %}">
         <div class="col-xl-8">
           <div class="tf-page-cart-main">
-            <form action="/cart" method="post" id="cart-form" class="form-cart">
+            <form action="{{ routes.cart_url }}" method="post" id="cart-form" class="form-cart">
               {% for block in section.blocks %}
                 {% if block.type == 'cart_items' %}
                   <table class="table-page-cart" {{ block.shopify_attributes }}>

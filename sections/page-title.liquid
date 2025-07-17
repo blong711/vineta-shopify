@@ -117,7 +117,7 @@
           
         {% elsif template contains 'checkout' %}
           <div style="font-size: 14px;" class="breadcrumb-item dot"><span></span></div>
-          <a style="font-size: 14px;" class="breadcrumb-item" href="/cart" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a style="font-size: 14px;" class="breadcrumb-item" href="{{ routes.cart_url }}" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
             <span itemprop="name">{{ 'sections.page_title.shopping_cart' | t }}</span>
             <meta itemprop="position" content="2" />
           </a>

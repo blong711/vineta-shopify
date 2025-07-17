@@ -104,7 +104,7 @@ const ProductCard = {
         if (!variantId) return;
 
         try {
-          const response = await fetch('/cart/change.js', {
+          const response = await fetch(routes.cart_change_url + '.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -125,7 +125,7 @@ const ProductCard = {
           }
 
           // Fetch updated cart data
-          const cartResponse = await fetch('/cart.js', {
+          const cartResponse = await fetch(routes.cart_url + '.js', {
             headers: {
               'Content-Type': 'application/json',
               'X-Requested-With': 'XMLHttpRequest'
@@ -183,7 +183,7 @@ const ProductCard = {
           input.value = newQuantity;
 
           // Update cart via API
-          const response = await fetch('/cart/change.js', {
+          const response = await fetch(routes.cart_change_url + '.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -263,7 +263,7 @@ const ProductCard = {
         
         if (isNaN(newValue) || newValue < 1) {
           if (newValue <= 0) {
-            const response = await fetch('/cart/change.js', {
+            const response = await fetch(routes.cart_change_url + '.js', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -279,7 +279,7 @@ const ProductCard = {
             }
           } else {
             this.value = 1;
-            const response = await fetch('/cart/change.js', {
+            const response = await fetch(routes.cart_change_url + '.js', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -295,7 +295,7 @@ const ProductCard = {
             }
           }
         } else {
-          const response = await fetch('/cart/change.js', {
+          const response = await fetch(routes.cart_change_url + '.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -312,7 +312,7 @@ const ProductCard = {
         }
 
         // Fetch updated cart data and update UI
-        const cartResponse = await fetch('/cart.js', {
+        const cartResponse = await fetch(routes.cart_url + '.js', {
           headers: {
             'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest'
@@ -533,7 +533,7 @@ const ProductCard = {
           newButton.setAttribute('aria-disabled', 'true');
           
           // Add item to cart
-          const response = await fetch('/cart/add.js', {
+          const response = await fetch(routes.cart_add_url + '.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -548,7 +548,7 @@ const ProductCard = {
           });
 
           if (!response.ok) throw new Error('Failed to add item to cart');
-          const cartResponse = await fetch('/cart.js', {
+          const cartResponse = await fetch(routes.cart_url + '.js', {
             headers: {
               'Content-Type': 'application/json',
               'X-Requested-With': 'XMLHttpRequest'
@@ -590,7 +590,7 @@ const ProductCard = {
             if (window.cart) {
               // The item has already been added via the POST request above
               // Just fetch the updated cart data and update the drawer
-              const response = await fetch('/cart.js', {
+              const response = await fetch(routes.cart_url + '.js', {
                 headers: {
                   'Content-Type': 'application/json',
                   'X-Requested-With': 'XMLHttpRequest'
@@ -696,7 +696,7 @@ const ProductCard = {
             console.log('Decreasing quantity for variant:', variantId, 'from', currentValue, 'to', currentValue - 1);
             
             if (currentValue > 1) {
-                        const response = await fetch('/cart/change.js', {
+                        const response = await fetch(routes.cart_change_url + '.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -714,7 +714,7 @@ const ProductCard = {
                 throw new Error(`Failed to update quantity: ${response.status} ${errorText}`);
               }
             } else {
-              const response = await fetch('/cart/change.js', {
+              const response = await fetch(routes.cart_change_url + '.js', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -734,7 +734,7 @@ const ProductCard = {
             }
 
             // Fetch updated cart data and update UI
-            const cartResponse = await fetch('/cart.js', {
+            const cartResponse = await fetch(routes.cart_url + '.js', {
               headers: {
                 'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
@@ -786,7 +786,7 @@ const ProductCard = {
             
             console.log('Increasing quantity for variant:', variantId, 'from', currentValue, 'to', currentValue + 1);
             
-            const response = await fetch('/cart/change.js', {
+            const response = await fetch(routes.cart_change_url + '.js', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -805,7 +805,7 @@ const ProductCard = {
             }
 
             // Fetch updated cart data and update UI
-            const cartResponse = await fetch('/cart.js', {
+            const cartResponse = await fetch(routes.cart_url + '.js', {
               headers: {
                 'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
@@ -848,7 +848,7 @@ const ProductCard = {
             
             if (isNaN(newValue) || newValue < 1) {
               if (newValue <= 0) {
-                const response = await fetch('/cart/change.js', {
+              const response = await fetch(routes.cart_change_url + '.js', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',
@@ -866,7 +866,7 @@ const ProductCard = {
                 }
               } else {
                 input.value = 1;
-                const response = await fetch('/cart/change.js', {
+                const response = await fetch(routes.cart_change_url + '.js', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',
@@ -884,7 +884,7 @@ const ProductCard = {
                 }
               }
             } else {
-              const response = await fetch('/cart/change.js', {
+              const response = await fetch(routes.cart_change_url + '.js', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -903,7 +903,7 @@ const ProductCard = {
             }
 
             // Fetch updated cart data and update UI
-            const cartResponse = await fetch('/cart.js', {
+            const cartResponse = await fetch(routes.cart_url + '.js', {
               headers: {
                 'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
@@ -943,7 +943,7 @@ const ProductCard = {
             
             console.log('Removing variant from cart:', variantId);
             
-            const response = await fetch('/cart/change.js', {
+            const response = await fetch(routes.cart_change_url + '.js', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -962,7 +962,7 @@ const ProductCard = {
             }
 
             // Fetch updated cart data and update UI
-            const cartResponse = await fetch('/cart.js', {
+            const cartResponse = await fetch(routes.cart_url + '.js', {
               headers: {
                 'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
@@ -1201,7 +1201,7 @@ const ProductCard = {
   // Initialize cart count
   async initializeCartCount() {
     try {
-      const response = await fetch('/cart.js', {
+      const response = await fetch(routes.cart_url + '.js', {
         headers: {
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest'

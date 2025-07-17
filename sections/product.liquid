@@ -1545,7 +1545,7 @@ document.addEventListener('DOMContentLoaded', function() {
           await window.cart.updateQuantity(variantId, quantity, 'add');
           
           // Fetch updated cart data
-          const response = await fetch('/cart.js');
+          const response = await fetch('{{ routes.cart_url }}.js');
           const cartData = await response.json();
           
           // Update cart drawer
@@ -1890,7 +1890,7 @@ document.addEventListener('DOMContentLoaded', function() {
         this.textContent = 'Adding to cart...';
 
         // Add all items to cart in a single API call
-        const response = await fetch('/cart/add.js', {
+        const response = await fetch('{{ routes.cart_add_url }}.js', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -1905,7 +1905,7 @@ document.addEventListener('DOMContentLoaded', function() {
           const errorMessage = errorData.description || 'Failed to add items to cart';
           throw new Error(errorMessage);
         }
-        const cartResponse = await fetch('/cart.js');
+        const cartResponse = await fetch('{{ routes.cart_url }}.js');
         const cartData = await cartResponse.json(); 
 
         // Update cart drawer
@@ -2218,7 +2218,7 @@ document.addEventListener('DOMContentLoaded', function() {
       updateAddToCartQuantity(value);
       
       // Update form quantity input
-      const productForm = document.querySelector('form[action*="/cart/add"]');
+      const productForm = document.querySelector('form[action*="{{ routes.cart_add_url }}"]');
       if (productForm) {
         const formQuantityInput = productForm.querySelector('input[name="quantity"]');
         if (formQuantityInput) {
@@ -2248,7 +2248,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateAddToCartQuantity(value);
         
         // Update form quantity input
-        const productForm = document.querySelector('form[action*="/cart/add"]');
+        const productForm = document.querySelector('form[action*="{{ routes.cart_add_url }}"]');
         if (productForm) {
           const formQuantityInput = productForm.querySelector('input[name="quantity"]');
           if (formQuantityInput) {
@@ -2278,7 +2278,7 @@ document.addEventListener('DOMContentLoaded', function() {
       updateAddToCartQuantity(value);
       
       // Update form quantity input
-      const productForm = document.querySelector('form[action*="/cart/add"]');
+      const productForm = document.querySelector('form[action*="{{ routes.cart_add_url }}"]');
       if (productForm) {
         const formQuantityInput = productForm.querySelector('input[name="quantity"]');
         if (formQuantityInput) {
@@ -2372,7 +2372,7 @@ document.addEventListener('DOMContentLoaded', function() {
           await window.cart.updateQuantity(variantId, quantity, 'add');
           
           // Fetch updated cart data
-          const response = await fetch('/cart.js');
+          const response = await fetch('{{ routes.cart_url }}.js');
           const cartData = await response.json();
           
           // Update cart drawer
@@ -2622,14 +2622,14 @@ document.addEventListener('DOMContentLoaded', function() {
         button.classList.add('loading');
         button.textContent = 'Adding...';
 
-        const response = await fetch('/cart/add.js', {
+        const response = await fetch('{{ routes.cart_add_url }}.js', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ items })
         });
 
         if (!response.ok) throw new Error('Failed to add items to cart');
-        const cartResponse = await fetch('/cart.js');
+        const cartResponse = await fetch('{{ routes.cart_url }}.js');
         const cartData = await cartResponse.json();
 
         // Show success message briefly
@@ -2789,7 +2789,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Update the form hidden inputs
-    const productForm = document.querySelector('form[action*="/cart/add"]');
+    const productForm = document.querySelector('form[action*="{{ routes.cart_add_url }}"]');
     if (productForm) {
       const variantInput = productForm.querySelector('input[name="id"]');
       const quantityInput = productForm.querySelector('input[name="quantity"]');

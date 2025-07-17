@@ -109,7 +109,7 @@
         {% if section.settings.enable_order_note %}
         <div class="tf-mini-cart-tool-openable add-note">
           <div class="overplay tf-mini-cart-tool-close"></div>
-          <form action="/cart" method="post" class="tf-mini-cart-tool-content" id="cart-note-form">
+          <form action="{{ routes.cart_url }}" method="post" class="tf-mini-cart-tool-content" id="cart-note-form">
             <label for="Cart-note" class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.order_note.title' | t }}</label>
             <textarea name="note" id="Cart-note" placeholder="{{ 'cart.drawer.order_note.placeholder' | t }}">{{ cart.note }}</textarea>
             <div class="tf-cart-tool-btns">
@@ -122,7 +122,7 @@
         {% if section.settings.enable_coupon %}
         <div class="tf-mini-cart-tool-openable coupon">
           <div class="overplay tf-mini-cart-tool-close"></div>
-          <form action="/cart" method="post" class="tf-mini-cart-tool-content" id="coupon-form">
+          <form action="{{ routes.cart_url }}" method="post" class="tf-mini-cart-tool-content" id="coupon-form">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.coupon.title' | t }}</div>
             <div class="tf-mini-cart-tool-text1" style="font-size: 14px;">{{ 'cart.drawer.coupon.message' | t }}</div>
             <input type="text" name="discount" placeholder="{{ 'cart.drawer.coupon.placeholder' | t }}" id="coupon-code-input">
@@ -247,7 +247,7 @@
           console.log('Adding gift wrap product with ID:', giftWrapProductId);
           
           // Add gift wrap product to cart via AJAX with CSRF protection
-          const response = await fetch('/cart/add.js', {
+          const response = await fetch('{{ routes.cart_add_url }}.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -288,7 +288,7 @@
             
             // Inline cart drawer update logic
             try {
-              const cartResponse = await fetch('/cart.js');
+              const cartResponse = await fetch('{{ routes.cart_url }}.js');
               const cartData = await cartResponse.json();
 
               // Update cart items in drawer
@@ -427,7 +427,7 @@
         
         try {
           // Update cart note via AJAX with CSRF protection
-          const response = await fetch('/cart/update.js', {
+          const response = await fetch('{{ routes.cart_update_url }}.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -495,7 +495,7 @@
         
         try {
           // Apply coupon via AJAX with CSRF protection
-          const response = await fetch('/cart/update.js', {
+          const response = await fetch('{{ routes.cart_update_url }}.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -721,7 +721,7 @@
           }
           
           // Fetch shipping rates from Shopify with CSRF protection
-          const response = await fetch('/cart/shipping_rates.json', {
+          const response = await fetch('{{ routes.cart_url }}/shipping_rates.json', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

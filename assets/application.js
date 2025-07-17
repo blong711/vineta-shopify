@@ -54,7 +54,7 @@ window.addEventListener('load', () => {
         submitButton.disabled = true;
         submitButton.classList.add('loading');
 
-        const response = await fetch('/cart/add.js', {
+        const response = await fetch(window.theme.routes.cart_add_url + '.js', {
           method: 'POST',
           body: formData,
         });
@@ -104,7 +104,7 @@ window.addEventListener('load', () => {
       formData.append('currency_code', currency);
 
       try {
-        const response = await fetch('/cart/update', {
+        const response = await fetch(window.theme.routes.cart_update_url, {
           method: 'POST',
           body: formData,
         });

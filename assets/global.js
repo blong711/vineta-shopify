@@ -18,7 +18,7 @@
 /**
  * Cart and Wishlist Translation Objects
  * Provides translation strings for cart and wishlist functionality
- * Uses translations from window.theme.translations if available, falls back to defaults
+ * Uses translations from translations if available, falls back to defaults
  */
 const cartT = window.theme?.translations?.cart || {
   empty_cart: 'Your cart is currently empty.',
@@ -1911,7 +1911,7 @@ class Cart {
         
         try {
           if (currentValue > 1) {
-                      const response = await fetch('/cart/change.js', {
+                      const response = await fetch(routes.cart_change_url + '.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -1927,7 +1927,7 @@ class Cart {
               throw new Error(this.getErrorMessage(response.status, errorData, 'update'));
             }
           } else {
-            const response = await fetch('/cart/change.js', {
+            const response = await fetch(routes.cart_change_url + '.js', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -1945,7 +1945,7 @@ class Cart {
           }
 
           // Fetch updated cart data and update UI
-          const cartResponse = await fetch('/cart.js');
+          const cartResponse = await fetch(routes.cart_url + '.js');
           if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
           const cartData = await cartResponse.json();
           
@@ -1995,7 +1995,7 @@ class Cart {
         cartItemElement.classList.add('loading');
         
         try {
-          const response = await fetch('/cart/change.js', {
+          const response = await fetch(routes.cart_change_url + '.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -2009,7 +2009,7 @@ class Cart {
           if (!response.ok) throw new Error('Failed to update quantity');
 
           // Fetch updated cart data and update UI
-          const cartResponse = await fetch('/cart.js');
+          const cartResponse = await fetch(routes.cart_url + '.js');
           if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
           const cartData = await cartResponse.json();
           
@@ -2056,7 +2056,7 @@ class Cart {
           cartItemElement.classList.add('loading');
           
           try {
-            const response = await fetch('/cart/change.js', {
+            const response = await fetch(routes.cart_change_url + '.js', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -2070,7 +2070,7 @@ class Cart {
             if (!response.ok) throw new Error('Failed to remove item');
 
             // Fetch updated cart data and update UI
-            const cartResponse = await fetch('/cart.js');
+            const cartResponse = await fetch(routes.cart_url + '.js');
             if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
             const cartData = await cartResponse.json();
             
@@ -2123,7 +2123,7 @@ class Cart {
         try {
           if (isNaN(newValue) || newValue < 1) {
             if (newValue <= 0) {
-              const response = await fetch('/cart/change.js', {
+              const response = await fetch(routes.cart_change_url + '.js', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
@@ -2136,7 +2136,7 @@ class Cart {
               if (!response.ok) throw new Error('Failed to remove item');
             } else {
               event.target.value = 1;
-              const response = await fetch('/cart/change.js', {
+              const response = await fetch(routes.cart_change_url + '.js', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -2150,7 +2150,7 @@ class Cart {
               if (!response.ok) throw new Error('Failed to update quantity');
             }
           } else {
-            const response = await fetch('/cart/change.js', {
+            const response = await fetch(routes.cart_change_url + '.js', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -2165,7 +2165,7 @@ class Cart {
           }
 
           // Fetch updated cart data and update UI
-          const cartResponse = await fetch('/cart.js');
+          const cartResponse = await fetch(routes.cart_url + '.js');
           if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
           const cartData = await cartResponse.json();
           
@@ -2219,7 +2219,7 @@ class Cart {
 
         try {
           // First remove the old variant
-          const removeResponse = await fetch('/cart/change.js', {
+          const removeResponse = await fetch(routes.cart_change_url + '.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -2233,7 +2233,7 @@ class Cart {
           if (!removeResponse.ok) throw new Error('Failed to remove old variant');
 
           // Then add the new variant
-          const addResponse = await fetch('/cart/add.js', {
+          const addResponse = await fetch(routes.cart_add_url + '.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -2247,7 +2247,7 @@ class Cart {
           if (!addResponse.ok) throw new Error('Failed to add new variant');
 
           // Fetch updated cart data
-          const cartResponse = await fetch('/cart.js');
+          const cartResponse = await fetch(routes.cart_url + '.js');
           if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
           const cartData = await cartResponse.json();
           
@@ -2328,7 +2328,7 @@ class Cart {
       }
 
       // Make API request
-      const response = await fetch(action === this.actions.add ? '/cart/add.js' : '/cart/change.js', {
+      const response = await fetch(action === this.actions.add ? routes.cart_add_url + '.js' : routes.cart_change_url + '.js', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -2739,7 +2739,7 @@ class Cart {
    */
   async createCartPromise() {
     try {
-      const response = await fetch('/cart.js');
+      const response = await fetch(routes.cart_url + '.js');
       if (!response.ok) {
         throw new Error('Failed to fetch cart');
       }

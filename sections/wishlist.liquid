@@ -499,7 +499,7 @@ document.addEventListener('DOMContentLoaded', function() {
             await window.cart.updateQuantity(variantId, quantity, 'add');
             
             // Fetch updated cart data
-            const response = await fetch('/cart.js');
+            const response = await fetch('{{ routes.cart_url }}.js');
             const cartData = await response.json();
             
             // Update cart drawer with all items
