@@ -66,7 +66,7 @@
           {{ section.settings.popup_image | image_url: width: 800 | image_tag: 
             loading: 'lazy',
             class: 'lazyload',
-            alt: section.settings.popup_image.alt | default: 'sections.newsletter_popup.newsletter' | t
+            alt: section.settings.popup_image.alt
           }}
         {% endif %}
         <span class="icon icon-close btn-hide-popup" data-bs-dismiss="modal"></span>
