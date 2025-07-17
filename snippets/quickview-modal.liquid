@@ -190,6 +190,10 @@
             try {
               const response = await fetch('/cart/change.js', {
                 method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-Requested-With': 'XMLHttpRequest'
+                },
                 body: JSON.stringify({
                   id: variantId,
                   quantity: 0
@@ -263,6 +267,10 @@
               // Update cart via API
               const response = await fetch('/cart/change.js', {
                 method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-Requested-With': 'XMLHttpRequest'
+                },
                 body: JSON.stringify({
                   id: variantId,
                   quantity: newQuantity
@@ -340,6 +348,10 @@
               if (newValue <= 0) {
                 const response = await fetch('/cart/change.js', {
                   method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                  },
                   body: JSON.stringify({
                     id: variantId,
                     quantity: 0
@@ -352,6 +364,10 @@
                 this.value = 1;
                 const response = await fetch('/cart/change.js', {
                   method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                  },
                   body: JSON.stringify({
                     id: variantId,
                     quantity: 1
@@ -364,6 +380,10 @@
             } else {
               const response = await fetch('/cart/change.js', {
                 method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-Requested-With': 'XMLHttpRequest'
+                },
                 body: JSON.stringify({
                   id: variantId,
                   quantity: newValue
@@ -901,6 +921,10 @@
               // Add the selected variant to the cart
               await fetch('/cart/add.js', {
                 method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-Requested-With': 'XMLHttpRequest'
+                },
                 body: JSON.stringify({ id: variantId, quantity: quantity })
               });
               // Redirect to checkout

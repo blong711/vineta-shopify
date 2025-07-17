@@ -1911,13 +1911,17 @@ class Cart {
         
         try {
           if (currentValue > 1) {
-            const response = await fetch('/cart/change.js', {
-              method: 'POST',
-              body: JSON.stringify({
-                id: variantId,
-                quantity: currentValue - 1
-              })
-            });
+                      const response = await fetch('/cart/change.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+              id: variantId,
+              quantity: currentValue - 1
+            })
+          });
             if (!response.ok) {
               const errorData = await response.json().catch(() => ({}));
               throw new Error(this.getErrorMessage(response.status, errorData, 'update'));
@@ -1925,6 +1929,10 @@ class Cart {
           } else {
             const response = await fetch('/cart/change.js', {
               method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+              },
               body: JSON.stringify({
                 id: variantId,
                 quantity: 0
@@ -1989,6 +1997,10 @@ class Cart {
         try {
           const response = await fetch('/cart/change.js', {
             method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
             body: JSON.stringify({
               id: variantId,
               quantity: currentValue + 1
@@ -2046,6 +2058,10 @@ class Cart {
           try {
             const response = await fetch('/cart/change.js', {
               method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+              },
               body: JSON.stringify({
                 id: variantId,
                 quantity: 0
@@ -2122,6 +2138,10 @@ class Cart {
               event.target.value = 1;
               const response = await fetch('/cart/change.js', {
                 method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-Requested-With': 'XMLHttpRequest'
+                },
                 body: JSON.stringify({
                   id: variantId,
                   quantity: 1
@@ -2132,6 +2152,10 @@ class Cart {
           } else {
             const response = await fetch('/cart/change.js', {
               method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+              },
               body: JSON.stringify({
                 id: variantId,
                 quantity: newValue
@@ -2197,6 +2221,10 @@ class Cart {
           // First remove the old variant
           const removeResponse = await fetch('/cart/change.js', {
             method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
             body: JSON.stringify({
               id: oldVariantId,
               quantity: 0
@@ -2207,6 +2235,10 @@ class Cart {
           // Then add the new variant
           const addResponse = await fetch('/cart/add.js', {
             method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
             body: JSON.stringify({
               id: newVariantId,
               quantity: quantity
@@ -2298,6 +2330,10 @@ class Cart {
       // Make API request
       const response = await fetch(action === this.actions.add ? '/cart/add.js' : '/cart/change.js', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
         body: JSON.stringify(action === this.actions.add ? {
           items: [{ id, quantity }]
         } : {

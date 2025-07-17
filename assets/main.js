@@ -711,7 +711,8 @@ function setStyle(el, prop, value) {
         fetch('/account/addresses/' + addressId, {
           method: 'DELETE',
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
           }
         })
         .then(function(response) {
