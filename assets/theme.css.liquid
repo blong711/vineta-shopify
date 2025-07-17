@@ -95,15 +95,12 @@ h1, h2, h3, h4, h5, h6 {
   padding-bottom: calc(var(--section-padding-bottom, 0px) + (var(--enable-section-spacing) * var(--section-spacing-mobile)));
 }
 
-/* Exclude header and footer sections from spacing */
-.shopify-section[data-section-type="header"],
-.shopify-section[data-section-type="footer"],
-.shopify-section[data-section-type="top-bar"],
-.shopify-section[data-section-type="announcement"],
-.shopify-section[data-section-type="header-group"],
-.shopify-section[data-section-type=footer-group] {
-  padding-top: var(--section-padding-top, 0px) !important;
-  padding-bottom: var(--section-padding-bottom, 0px) !important;
+/* Exclude spacing for header and footer sections */
+.shopify-section[id*="shopify-section-top-bar"],
+.shopify-section[id*="shopify-section-header"],
+.shopify-section[id*="shopify-section-footer"] {
+  padding-top: var(--section-padding-top, 0px);
+  padding-bottom: var(--section-padding-bottom, 0px);
 }
 
 @media (min-width: 768px) {
@@ -112,15 +109,12 @@ h1, h2, h3, h4, h5, h6 {
     padding-bottom: calc(var(--section-padding-bottom, 0px) + (var(--enable-section-spacing) * var(--section-spacing-tablet)));
   }
   
-  /* Exclude header and footer sections from spacing on tablet */
-  .shopify-section[data-section-type=header"],
-  .shopify-section[data-section-type=footer"],
-  .shopify-section[data-section-type="top-bar"],
-  .shopify-section[data-section-type=announcement"],
-  .shopify-section[data-section-type=header-group"],
-  .shopify-section[data-section-type=footer-group"] {
-    padding-top: var(--section-padding-top, 0px) !important;
-    padding-bottom: var(--section-padding-bottom, 0px) !important;
+  /* Exclude spacing for header and footer sections on tablet */
+  .shopify-section[id*="shopify-section-top-bar"],
+  .shopify-section[id*="shopify-section-header"],
+  .shopify-section[id*="shopify-section-footer"] {
+    padding-top: var(--section-padding-top, 0px);
+    padding-bottom: var(--section-padding-bottom, 0px);
   }
 }
 
@@ -130,15 +124,12 @@ h1, h2, h3, h4, h5, h6 {
     padding-bottom: calc(var(--section-padding-bottom, 0px) + (var(--enable-section-spacing) * var(--section-spacing-desktop)));
   }
   
-  /* Exclude header and footer sections from spacing on desktop */
-  .shopify-section[data-section-type=header"],
-  .shopify-section[data-section-type=footer"],
-  .shopify-section[data-section-type="top-bar"],
-  .shopify-section[data-section-type=announcement"],
-  .shopify-section[data-section-type=header-group"],
-  .shopify-section[data-section-type=footer-group"] {
-    padding-top: var(--section-padding-top, 0px) !important;
-    padding-bottom: var(--section-padding-bottom, 0px) !important;
+  /* Exclude spacing for header and footer sections on desktop */
+  .shopify-section[id*="shopify-section-top-bar"],
+  .shopify-section[id*="shopify-section-header"],
+  .shopify-section[id*="shopify-section-footer"] {
+    padding-top: var(--section-padding-top, 0px);
+    padding-bottom: var(--section-padding-bottom, 0px);
   }
 }
 
