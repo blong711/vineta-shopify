@@ -32,6 +32,7 @@
   --section-spacing-desktop: {{ settings.section_spacing_desktop }}px;
   --section-spacing-position: {{ settings.section_spacing_position }};
   --enable-section-spacing: {% if settings.enable_section_spacing %}1{% else %}0{% endif %};
+  --section-spacing-multiplier: {% if settings.enable_section_spacing %}1{% else %}0{% endif %};
   
   /* Animations */
   --enable-animations: {% if settings.enable_animations %}1{% else %}0{% endif %};
@@ -91,28 +92,52 @@ h1, h2, h3, h4, h5, h6 {
    Section Spacing Settings
    ========================================================= */
 .shopify-section {
-  padding-top: calc(var(--section-padding-top, 0px) + (var(--enable-section-spacing) * var(--section-spacing-mobile)));
-  padding-bottom: calc(var(--section-padding-bottom, 0px) + (var(--enable-section-spacing) * var(--section-spacing-mobile)));
+  padding-top: calc(var(--section-padding-top, 0px) + (var(--section-spacing-multiplier) * var(--section-spacing-mobile)));
+  padding-bottom: calc(var(--section-padding-bottom, 0px) + (var(--section-spacing-multiplier) * var(--section-spacing-mobile)));
 }
 
 /* Exclude spacing for header and footer sections */
-.shopify-section[id*="shopify-section-top-bar"],
-.shopify-section[id*="shopify-section-header"],
-.shopify-section[id*="shopify-section-footer"] {
+.shopify-section[id*="top-bar"],
+.shopify-section[id*="header"],
+.shopify-section[id*="footer"],
+.shopify-section[id*="cart-drawer"],
+.shopify-section[id*="search-drawer"],
+.shopify-section[id*="login-drawer"],
+.shopify-section[id*="register-drawer"],
+.shopify-section[id*="reset-password-drawer"],
+.shopify-section[id*="mobile-menu"],
+.shopify-section[id*="ask-question-drawer"],
+.shopify-section[id*="mobile-toolbar"],
+.shopify-section[id*="newsletter-popup"],
+.shopify-section[id*="cookie-banner"],
+.shopify-section[id*="quickview-modal"],
+.shopify-section[id*="compare-drawer"] {
   padding-top: var(--section-padding-top, 0px);
   padding-bottom: var(--section-padding-bottom, 0px);
 }
 
 @media (min-width: 768px) {
   .shopify-section {
-    padding-top: calc(var(--section-padding-top, 0px) + (var(--enable-section-spacing) * var(--section-spacing-tablet)));
-    padding-bottom: calc(var(--section-padding-bottom, 0px) + (var(--enable-section-spacing) * var(--section-spacing-tablet)));
+    padding-top: calc(var(--section-padding-top, 0px) + (var(--section-spacing-multiplier) * var(--section-spacing-tablet)));
+    padding-bottom: calc(var(--section-padding-bottom, 0px) + (var(--section-spacing-multiplier) * var(--section-spacing-tablet)));
   }
   
   /* Exclude spacing for header and footer sections on tablet */
-  .shopify-section[id*="shopify-section-top-bar"],
-  .shopify-section[id*="shopify-section-header"],
-  .shopify-section[id*="shopify-section-footer"] {
+  .shopify-section[id*="top-bar"],
+  .shopify-section[id*="header"],
+  .shopify-section[id*="cart-drawer"],
+  .shopify-section[id*="search-drawer"],
+  .shopify-section[id*="login-drawer"],
+  .shopify-section[id*="register-drawer"],
+  .shopify-section[id*="reset-password-drawer"],
+  .shopify-section[id*="mobile-menu"],
+  .shopify-section[id*="ask-question-drawer"],
+  .shopify-section[id*="mobile-toolbar"],
+  .shopify-section[id*="newsletter-popup"],
+  .shopify-section[id*="cookie-banner"],
+  .shopify-section[id*="quickview-modal"],
+  .shopify-section[id*="compare-drawer"],
+  .shopify-section[id*="footer"] {
     padding-top: var(--section-padding-top, 0px);
     padding-bottom: var(--section-padding-bottom, 0px);
   }
@@ -120,14 +145,26 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (min-width: 1024px) {
   .shopify-section {
-    padding-top: calc(var(--section-padding-top, 0px) + (var(--enable-section-spacing) * var(--section-spacing-desktop)));
-    padding-bottom: calc(var(--section-padding-bottom, 0px) + (var(--enable-section-spacing) * var(--section-spacing-desktop)));
+    padding-top: calc(var(--section-padding-top, 0px) + (var(--section-spacing-multiplier) * var(--section-spacing-desktop)));
+    padding-bottom: calc(var(--section-padding-bottom, 0px) + (var(--section-spacing-multiplier) * var(--section-spacing-desktop)));
   }
   
   /* Exclude spacing for header and footer sections on desktop */
-  .shopify-section[id*="shopify-section-top-bar"],
-  .shopify-section[id*="shopify-section-header"],
-  .shopify-section[id*="shopify-section-footer"] {
+  .shopify-section[id*="top-bar"],
+  .shopify-section[id*="header"],
+  .shopify-section[id*="cart-drawer"],
+  .shopify-section[id*="search-drawer"],
+  .shopify-section[id*="login-drawer"],
+  .shopify-section[id*="register-drawer"],
+  .shopify-section[id*="reset-password-drawer"],
+  .shopify-section[id*="mobile-menu"],
+  .shopify-section[id*="ask-question-drawer"],
+  .shopify-section[id*="mobile-toolbar"],
+  .shopify-section[id*="newsletter-popup"],
+  .shopify-section[id*="cookie-banner"],
+  .shopify-section[id*="quickview-modal"],
+  .shopify-section[id*="compare-drawer"],
+  .shopify-section[id*="footer"] {
     padding-top: var(--section-padding-top, 0px);
     padding-bottom: var(--section-padding-bottom, 0px);
   }
