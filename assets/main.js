@@ -75,30 +75,6 @@ function setStyle(el, prop, value) {
   }
 }
 
-// CSRF Protected Fetch Utility
-  var csrfFetch = function(url, options = {}) {
-    // Get CSRF token from meta tag or input field
-  var csrfToken = (qs('meta[name="csrf-token"]') && qs('meta[name="csrf-token"]').getAttribute('content')) ||
-                  (qs('input[name="authenticity_token"]') && qs('input[name="authenticity_token"]').value) ||
-                  (qs('meta[name="csrf-token"]') && qs('meta[name="csrf-token"]').getAttribute('content'));
-    
-    // Set default headers
-    var headers = {
-      'Content-Type': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest'
-    };
-    
-    // Add CSRF token if available
-    if (csrfToken) {
-      headers['X-CSRF-Token'] = csrfToken;
-    }
-    
-    // Merge with provided options
-    options.headers = { ...headers, ...options.headers };
-    
-    return fetch(url, options);
-  };
-
 // Select Image
   var selectImages = function () {
   const selectIMG = qs('.image-select');
@@ -732,7 +708,7 @@ function setStyle(el, prop, value) {
         var addressId = formId.replace('form-edit-', '');
         
         // Use CSRF-protected fetch for address deletion
-        csrfFetch('/account/addresses/' + addressId, {
+        fetch('/account/addresses/' + addressId, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'

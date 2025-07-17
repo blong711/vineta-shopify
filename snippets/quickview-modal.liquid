@@ -98,30 +98,6 @@
       {% endfor %}
     </script>
     <script>
-    // CSRF Protected Fetch Utility
-    function csrfFetch(url, options = {}) {
-      // Get CSRF token from meta tag or input field
-      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
-                       document.querySelector('input[name="authenticity_token"]')?.value ||
-                       document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-      
-      // Set default headers
-      const headers = {
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest'
-      };
-      
-      // Add CSRF token if available
-      if (csrfToken) {
-        headers['X-CSRF-Token'] = csrfToken;
-      }
-      
-      // Merge with provided options
-      options.headers = { ...headers, ...options.headers };
-      
-      return fetch(url, options);
-    }
-
     let quickviewSwiper = null;
     document.addEventListener('DOMContentLoaded', function() {
       let selectedVariant = null;
@@ -212,7 +188,7 @@
             if (!variantId) return;
 
             try {
-              const response = await csrfFetch('/cart/change.js', {
+              const response = await fetch('/cart/change.js', {
                 method: 'POST',
                 body: JSON.stringify({
                   id: variantId,
@@ -229,7 +205,7 @@
               }
 
               // Fetch updated cart data
-              const cartResponse = await csrfFetch('/cart.js');
+              const cartResponse = await fetch('/cart.js');
               if (!cartResponse.ok) throw new Error('Failed to fetch cart data');
               const cartData = await cartResponse.json();
 
@@ -285,7 +261,7 @@
               input.value = newQuantity;
 
               // Update cart via API
-              const response = await csrfFetch('/cart/change.js', {
+              const response = await fetch('/cart/change.js', {
                 method: 'POST',
                 body: JSON.stringify({
                   id: variantId,
@@ -362,7 +338,7 @@
             
             if (isNaN(newValue) || newValue < 1) {
               if (newValue <= 0) {
-                const response = await csrfFetch('/cart/change.js', {
+                const response = await fetch('/cart/change.js', {
                   method: 'POST',
                   body: JSON.stringify({
                     id: variantId,
@@ -374,7 +350,7 @@
                 }
               } else {
                 this.value = 1;
-                const response = await csrfFetch('/cart/change.js', {
+                const response = await fetch('/cart/change.js', {
                   method: 'POST',
                   body: JSON.stringify({
                     id: variantId,
@@ -386,7 +362,7 @@
                 }
               }
             } else {
-              const response = await csrfFetch('/cart/change.js', {
+              const response = await fetch('/cart/change.js', {
                 method: 'POST',
                 body: JSON.stringify({
                   id: variantId,
@@ -921,9 +897,9 @@
             try {
               this.classList.add('loading');
               // Optionally clear the cart for a true "Buy It Now" experience
-              await csrfFetch('/cart/clear.js', { method: 'POST' });
+              await fetch('/cart/clear.js', { method: 'POST' });
               // Add the selected variant to the cart
-              await csrfFetch('/cart/add.js', {
+              await fetch('/cart/add.js', {
                 method: 'POST',
                 body: JSON.stringify({ id: variantId, quantity: quantity })
               });

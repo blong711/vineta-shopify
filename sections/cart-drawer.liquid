@@ -170,30 +170,6 @@
 </div>
 
 <script>
-  // CSRF Protected Fetch Utility (same as in quickview-modal.liquid)
-  function csrfFetch(url, options = {}) {
-    // Get CSRF token from meta tag or input field
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
-                     document.querySelector('input[name="authenticity_token"]')?.value ||
-                     document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-    
-    // Set default headers
-    const headers = {
-      'Content-Type': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest'
-    };
-    
-    // Add CSRF token if available
-    if (csrfToken) {
-      headers['X-CSRF-Token'] = csrfToken;
-    }
-    
-    // Merge with provided options
-    options.headers = { ...headers, ...options.headers };
-    
-    return fetch(url, options);
-  }
-
   if (Shopify.designMode) {
     document.addEventListener('shopify:section:select', function(event) {
       if (event.target.id === 'shopify-section-cart-drawer') {
@@ -271,8 +247,12 @@
           console.log('Adding gift wrap product with ID:', giftWrapProductId);
           
           // Add gift wrap product to cart via AJAX with CSRF protection
-          const response = await csrfFetch('/cart/add.js', {
+          const response = await fetch('/cart/add.js', {
             method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
             body: JSON.stringify({
               items: [{
                 id: giftWrapProductId,
@@ -308,7 +288,7 @@
             
             // Inline cart drawer update logic
             try {
-              const cartResponse = await csrfFetch('/cart.js');
+              const cartResponse = await fetch('/cart.js');
               const cartData = await cartResponse.json();
 
               // Update cart items in drawer
@@ -321,7 +301,7 @@
                     // Fetch product data for variants
                     let productData = null;
                     try {
-                      const productResponse = await csrfFetch(`/products/${item.handle}.js`);
+                      const productResponse = await fetch(`/products/${item.handle}.js`);
                       productData = await productResponse.json();
                     } catch (e) {}
                     let variantOptions = '';
@@ -447,8 +427,12 @@
         
         try {
           // Update cart note via AJAX with CSRF protection
-          const response = await csrfFetch('/cart/update.js', {
+          const response = await fetch('/cart/update.js', {
             method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
             body: JSON.stringify({
               note: note
             })
@@ -511,8 +495,12 @@
         
         try {
           // Apply coupon via AJAX with CSRF protection
-          const response = await csrfFetch('/cart/update.js', {
+          const response = await fetch('/cart/update.js', {
             method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
             body: JSON.stringify({
               discount_code: couponCode
             })
@@ -733,8 +721,12 @@
           }
           
           // Fetch shipping rates from Shopify with CSRF protection
-          const response = await csrfFetch('/cart/shipping_rates.json', {
+          const response = await fetch('/cart/shipping_rates.json', {
             method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
             body: JSON.stringify({
               shipping_address: shippingAddress
             })

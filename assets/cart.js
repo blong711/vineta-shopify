@@ -1,27 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // CSRF Protected Fetch Utility
-  function csrfFetch(url, options = {}) {
-    // Get CSRF token from meta tag or input field
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
-                     document.querySelector('input[name="authenticity_token"]')?.value ||
-                     document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-    
-    // Set default headers
-    const headers = {
-      'Content-Type': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest'
-    };
-    
-    // Add CSRF token if available
-    if (csrfToken) {
-      headers['X-CSRF-Token'] = csrfToken;
-    }
-    
-    // Merge with provided options
-    options.headers = { ...headers, ...options.headers };
-    
-    return fetch(url, options);
-  }
 
   // HTML Sanitization Utilities
   const HTMLSanitizer = {
@@ -372,7 +349,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!variantId) return;
 
       try {
-        const response = await csrfFetch('/cart/change.js', {
+        const response = await fetch('/cart/change.js', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -451,7 +428,7 @@ document.addEventListener('DOMContentLoaded', function() {
         input.value = newQuantity;
 
         // Update cart via API
-        const response = await csrfFetch('/cart/change.js', {
+        const response = await fetch('/cart/change.js', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -666,7 +643,7 @@ document.addEventListener('DOMContentLoaded', function() {
       shippingRatesList.appendChild(calculatingDiv);
 
       try {
-        const response = await csrfFetch('/cart/shipping_rates.json', {
+        const response = await fetch('/cart/shipping_rates.json', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -785,7 +762,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!variantId) return;
       try {
         if (this.checked) {
-          const response = await csrfFetch('/cart/add.js', {
+          const response = await fetch('/cart/add.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -912,7 +889,7 @@ document.addEventListener('DOMContentLoaded', function() {
                   if (!variantId) return;
 
                   try {
-                    const response = await csrfFetch('/cart/change.js', {
+                    const response = await fetch('/cart/change.js', {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json'
@@ -992,7 +969,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     input.value = newQuantity;
 
                     // Update cart via API
-                    const response = await csrfFetch('/cart/change.js', {
+                    const response = await fetch('/cart/change.js', {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json'
@@ -1071,7 +1048,7 @@ document.addEventListener('DOMContentLoaded', function() {
           const cartItems = await fetch('/cart.js').then(res => res.json());
           const giftWrapItem = cartItems.items.find(item => item.variant_id == variantId);
           if (giftWrapItem) {
-            await csrfFetch('/cart/change.js', {
+            await fetch('/cart/change.js', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -1175,7 +1152,7 @@ document.addEventListener('DOMContentLoaded', function() {
       applyButton.textContent = 'Applying...';
 
       try {
-        const response = await csrfFetch('/cart/update.js', {
+        const response = await fetch('/cart/update.js', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -1344,7 +1321,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
           }
           
-          const response = await csrfFetch('/cart/update.js', {
+          const response = await fetch('/cart/update.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
