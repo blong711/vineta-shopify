@@ -71,6 +71,7 @@
   </div>
   {% endif %}
   
+  {% if section.settings.show_cart %} 
   <div class="toolbar-item">
     <a href="#shoppingCart" 
        {% unless request.page_type == 'cart' %}data-bs-toggle="offcanvas" onclick="event.preventDefault(); window.openCartDrawer();"{% endunless %}
@@ -85,6 +86,7 @@
       <div class="toolbar-label">{{ 'sections.mobile_toolbar.cart' | t }}</div>
     </a>
   </div>
+  {% endif %}
 </div>
 
 {% schema %}
@@ -113,6 +115,12 @@
       "type": "checkbox",
       "id": "show_home",
       "label": "Show home",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "Show cart",
       "default": true
     }
   ]
