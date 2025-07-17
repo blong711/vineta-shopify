@@ -1,3 +1,4 @@
+/* Cache buster: {{ 'now' | date: '%s' }}
 /* =========================================================
    Theme Settings CSS
    =========================================================
@@ -31,6 +32,7 @@
   --section-spacing-tablet: {{ settings.section_spacing_tablet }}px;
   --section-spacing-desktop: {{ settings.section_spacing_desktop }}px;
   --section-spacing-position: {{ settings.section_spacing_position }};
+  /* Force recompile */
   --enable-section-spacing: {% if settings.enable_section_spacing %}1{% else %}0{% endif %};
   --section-spacing-multiplier: {% if settings.enable_section_spacing %}1{% else %}0{% endif %};
   
