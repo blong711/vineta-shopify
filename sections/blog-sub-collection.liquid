@@ -196,7 +196,7 @@
                     {{ block.settings.category_title | default: blog.title }}
                   </a>
                   <span class="count-item text-sm text-main">
-                    {{ block.settings.post_count | default: blog.articles_count | append: ' ' | append: 'blog_sub_collection_posts' | t }}
+                    {{ block.settings.post_count | default: blog.articles_count | append: ' ' }} {{ 'blog_sub_collection_posts' | t }}
                   </span>
                 </div>
               </div>
