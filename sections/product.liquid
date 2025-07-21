@@ -403,6 +403,7 @@
                                 {% else %}
                                   <div class="variant-picker-values">
                                     {% if option.name == 'Color' %}
+                                      <span class="value-currentColor" style="display: none;">{{ option.selected_value }}</span>
                                       {% for value in option.values %}
                                         <div class="hover-tooltip tooltip-bot color-btn btn-scroll-target color-size-{{ block.settings.color_selector_size }}{% if value == option.selected_value %} active{% endif %}"
                                             data-scroll="{{ value | handle }}"
@@ -413,6 +414,7 @@
                                         </div>
                                       {% endfor %}
                                     {% elsif option.name == 'Size' %}
+                                      <span class="value-currentSize" style="display: none;">{{ option.selected_value }}</span>
                                       {% for value in option.values %}
                                         <span class="size-btn{% if value == option.selected_value %} active{% endif %}"
                                               data-size="{{ value | handle }}"
@@ -1187,7 +1189,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Function to update variant selection
   function updateVariantSelection(variant) {
-    console.log('updateVariantSelection called with variant:', variant?.title, 'at:', new Date().toISOString());
     if (!variant) {
       return;
     }
@@ -1376,6 +1377,18 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
 
+    // Set the active size button based on the selected size
+    if (variant && variant.option2) {
+      const size = variant.option2.toLowerCase();
+      document.querySelectorAll('.size-btn, .select-item[data-option="size"]').forEach(btn => {
+        if (btn.getAttribute('data-value') && btn.getAttribute('data-value').toLowerCase() === size) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
     // Update main add to cart button only
     updateMainAddToCartButton(variant);
     // Update dynamic checkout buttons
@@ -1389,7 +1402,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const color = btn.getAttribute('data-scroll');
     const variant = findVariantByColor(color);
     if (variant) {
-      console.log('Found variant for color:', color, 'variant:', variant.title);
       updateVariantSelection(variant);
     } else {
       console.log('No variant found for color:', color);
@@ -2854,19 +2866,6 @@ function updateMainAddToCartButton(variant) {
     }
   }
 }
-
-// Set the active size button based on the selected size
-if (variant && variant.option2) {
-  const size = variant.option2.toLowerCase();
-  document.querySelectorAll('.size-btn, .select-item[data-option="size"]').forEach(btn => {
-    if (btn.getAttribute('data-value') && btn.getAttribute('data-value').toLowerCase() === size) {
-      btn.classList.add('active');
-    } else {
-      btn.classList.remove('active');
-    }
-  });
-}
-
 
 </script>
 

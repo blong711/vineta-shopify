@@ -549,7 +549,7 @@ function setStyle(el, prop, value) {
   -------------------------------------------------------------------------*/
   var itemCheckbox = function () {
     if (qsa(".item-has-checkbox").length) {
-      onAll(".item-has-checkbox input:checkbox", "click", function (e) {
+      onAll(".item-has-checkbox input[type='checkbox']", "click", function (e) {
         addClass(this.closest(".item-has-checkbox"), "check");
       });
     }
