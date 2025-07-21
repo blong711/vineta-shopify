@@ -83,17 +83,15 @@
     <link rel="stylesheet" href="{{ 'fonts.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'bootstrap.min.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}?v={{ 'now' | date: '%s' }}">
+    <link rel="stylesheet" href="{{ 'font-icons.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'bootstrap-select.min.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'photoswipe.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'animate.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'styles.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'responsive-images.css' | asset_url }}">
     
-    {{ 'fonts.css' | asset_url | stylesheet_tag }}
-    {{ 'font-icons.css' | asset_url | stylesheet_tag }}
-    {{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}
-    {{ 'bootstrap-select.min.css' | asset_url | stylesheet_tag }}
-    {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
-    {{ 'photoswipe.css' | asset_url | stylesheet_tag }}
-    {{ 'animate.css' | asset_url | stylesheet_tag }}
-    {{ 'theme.css' | asset_url | stylesheet_tag }}
-    {{ 'styles.css' | asset_url | stylesheet_tag }}
-    {{ 'responsive-images.css' | asset_url | stylesheet_tag }}
+    <!-- Remove duplicate stylesheet_tag loads -->
     
     <!-- Fallback for browsers that don't support preload -->
     <noscript>
@@ -576,7 +574,6 @@
   {% if template contains 'product' %}
     <script type="module" src="{{ 'image-compare-viewer.js' | asset_url }}" async></script>
   {% endif %}
-  <script src="{{ 'accessibility.js' | asset_url }}" defer></script>
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
   <script src="{{ 'main.js' | asset_url }}" defer></script>
   <script src="{{ 'shop.js' | asset_url }}" defer></script>

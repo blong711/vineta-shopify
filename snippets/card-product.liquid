@@ -96,6 +96,17 @@
       </li>
     </ul>
     {%- endif -%}
+    {%- if product.variants.size > 1 and product.options contains 'Size' -%}
+      <ul class="size-box">
+        {%- for option in product.options_with_values -%}
+          {%- if option.name == 'Size' -%}
+            {%- for value in option.values -%}
+              <li class="size-item text-xs text-white">{{ value }}</li>
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
   </div>
 
   <div class="card-product-info {{ product-info }}">
