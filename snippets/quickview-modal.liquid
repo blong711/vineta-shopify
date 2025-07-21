@@ -963,210 +963,105 @@
     
       // Initialize variant selection
       function initVariantSelection(modal) {
-        const variantContainer = modal.querySelector('.tf-product-info-variant');
-        if (!variantContainer) return;
-        
-        // Handle select element changes
-        const variantSelect = modal.querySelector('select[data-variant-id]');
-        if (variantSelect) {
-          variantSelect.addEventListener('change', async (e) => {
-            try {
-              const oldVariantId = variantSelect.dataset.variantId;
-              const newVariantId = e.target.value;
-              
-              // Update the data-variant-id attribute on the select
-              variantSelect.dataset.variantId = newVariantId;
-              
-              // Update all elements with data-variant-id in this modal
-              modal.querySelectorAll('[data-variant-id]').forEach(el => {
-                el.dataset.variantId = newVariantId;
-              });
-
-              // Update add to cart button
-              const addToCartBtn = modal.querySelector('.add-to-cart');
-              if (addToCartBtn) {
-                addToCartBtn.dataset.variantId = newVariantId;
-              }
-
-              // Update wishlist button if it exists
-              const wishlistBtn = modal.querySelector('[data-wishlist]');
-              if (wishlistBtn) {
-                wishlistBtn.dataset.id = newVariantId;
-              }
-
-              // Update compare button if it exists
-              const compareBtn = modal.querySelector('[data-compare]');
-              if (compareBtn) {
-                compareBtn.dataset.id = newVariantId;
-              }
-
-              // Find the selected variant
-              const selectedVariant = currentProduct.variants.find(v => v.id === parseInt(newVariantId));
-              if (selectedVariant) {
-                // Update price display
-                const priceContainer = modal.querySelector('.product-info-price');
-                if (priceContainer) {
-                  if (selectedVariant.compare_at_price > selectedVariant.price) {
-                    const discountPercentage = Math.round(((selectedVariant.compare_at_price - selectedVariant.price) / selectedVariant.compare_at_price) * 100);
-                    priceContainer.innerHTML = `
-                      <h6 class="price-new price-on-sale">${formatMoney(selectedVariant.price)}</h6>
-                      <h6 class="price-old">${formatMoney(selectedVariant.compare_at_price)}</h6>
-                      <span class="badge-sale">${discountPercentage}% Off</span>
-                    `;
-                  } else {
-                    priceContainer.innerHTML = `
-                      <h6 class="price-new">${formatMoney(selectedVariant.price)}</h6>
-                    `;
-                  }
+        try {
+          const variantContainer = modal.querySelector('.tf-product-info-variant');
+          if (!variantContainer) {
+            console.warn('Variant container not found in quickview modal');
+            return;
+          }
+          
+          // Handle select element changes
+          const variantSelect = modal.querySelector('select[data-variant-id]');
+          if (variantSelect) {
+            variantSelect.addEventListener('change', async (e) => {
+              try {
+                if (!e.target.value) {
+                  console.warn('No variant selected in quickview modal');
+                  return;
                 }
 
-                // Update variant options UI
-                currentProduct.options.forEach((option, index) => {
-                  const optionValue = selectedVariant[`option${index + 1}`];
-                  const optionName = option.name.toLowerCase();
-                  
-                  // Update color swatches if it's a color option
-                  if (optionName === 'color' || optionName === 'colour') {
-                    const colorBtns = modal.querySelectorAll('.color-btn');
-                    colorBtns.forEach(btn => {
-                      if (btn.dataset.optionValue === optionValue) {
-                        btn.classList.add('active');
-                      } else {
-                        btn.classList.remove('active');
-                      }
-                    });
-                    
-                    // Update product image if variant has an image
-                    if (selectedVariant.featured_image) {
-                      updateProductImage(selectedVariant.featured_image.src);
-                    }
-                  }
-                  
-                  // Update size buttons if it's a size option
-                  if (optionName === 'size') {
-                    const sizeBtns = modal.querySelectorAll('.size-btn');
-                    sizeBtns.forEach(btn => {
-                      if (btn.dataset.optionValue === optionValue) {
-                        btn.classList.add('active');
-                      } else {
-                        btn.classList.remove('active');
-                      }
-                    });
-                  }
-
-                  // Update case type buttons if it's a case type option
-                  if (optionName === 'case type') {
-                    const typeBtns = modal.querySelectorAll('.type-btn');
-                    typeBtns.forEach(btn => {
-                      if (btn.dataset.optionValue === optionValue) {
-                        btn.classList.add('active');
-                      } else {
-                        btn.classList.remove('active');
-                      }
-                    });
-                  }
-
-                  // Update option value display
-                  const valueDisplay = modal.querySelector(`.value-current${optionName.toLowerCase().replace(/\s+/g, '-')}`);
-                  if (valueDisplay) {
-                    valueDisplay.textContent = optionValue;
-                  }
+                const oldVariantId = variantSelect.dataset.variantId;
+                const newVariantId = e.target.value;
+                
+                // Update the data-variant-id attribute on the select
+                variantSelect.dataset.variantId = newVariantId;
+                
+                // Update all elements with data-variant-id in this modal
+                modal.querySelectorAll('[data-variant-id]').forEach(el => {
+                  if (el) el.dataset.variantId = newVariantId;
                 });
 
-                // Update product image if variant has an image
-                if (selectedVariant.featured_image) {
-                  const mainImage = modal.querySelector('.product-img img');
-                  if (mainImage) {
-                    mainImage.src = selectedVariant.featured_image.src;
-                    mainImage.setAttribute('data-src', selectedVariant.featured_image.src);
+                // Update add to cart button
+                const addToCartBtn = modal.querySelector('.add-to-cart');
+                if (addToCartBtn) {
+                  addToCartBtn.dataset.variantId = newVariantId;
+                  
+                  // Update button state based on variant availability
+                  const selectedVariant = currentProduct.variants.find(v => v.id === parseInt(newVariantId));
+                  if (selectedVariant) {
+                    addToCartBtn.disabled = !selectedVariant.available;
+                    addToCartBtn.textContent = selectedVariant.available ? 
+                      {{ 'products.product.add_to_cart' | t | json }} : 
+                      {{ 'products.product.sold_out' | t | json }};
                   }
                 }
-              }
-            } catch (error) {
-              console.error('Error changing variant:', error);
-              // Revert the select to the old value
-              e.target.value = oldVariantId;
-            }
-          });
-        }
-        
-        // Use event delegation for variant selection
-        variantContainer.addEventListener('click', function(e) {
-          const button = e.target.closest('.color-btn, .size-btn, .type-btn');
-          if (!button) return;
-          
-          e.preventDefault();
-          
-          const optionName = button.dataset.optionName;
-          const optionValue = button.dataset.optionValue;
-          
-          // Update selected value display
-          const valueDisplay = variantContainer.querySelector(`.value-current${optionName.toLowerCase().replace(/\s+/g, '-')}`);
-          if (valueDisplay) {
-            valueDisplay.textContent = optionValue;
-          }
-          
-          // Remove active class from all buttons in this option group
-          const optionGroup = variantContainer.querySelectorAll(`[data-option-name="${optionName}"]`);
-          optionGroup.forEach(btn => {
-            btn.classList.remove('active');
-          });
-          
-          // Add active class to clicked button
-          button.classList.add('active');
-          
-          // Find matching variant
-          const selectedOptions = {};
-          variantContainer.querySelectorAll('.variant-picker-item').forEach(item => {
-            const name = item.querySelector('.variant-picker-label').textContent.split(':')[0].trim();
-            const activeBtn = item.querySelector('.active');
-            if (activeBtn) {
-              const value = activeBtn.dataset.optionValue;
-              selectedOptions[name] = value;
-            }
-          });
-          
-          selectedVariant = currentProduct.variants.find(variant => {
-            return Object.keys(selectedOptions).every(option => 
-              variant[`option${currentProduct.options.findIndex(o => o.name === option) + 1}`] === selectedOptions[option]
-            );
-          });
-          
-          // Update add-to-cart button with selected variant id
-          const addToCartBtn = modal.querySelector('.add-to-cart');
-          if (addToCartBtn && selectedVariant) {
-            addToCartBtn.dataset.variantId = selectedVariant.id;
-          }
 
-          // Update select element if it exists
-          const variantSelect = modal.querySelector('select[data-variant-id]');
-          if (variantSelect && selectedVariant) {
-            variantSelect.value = selectedVariant.id;
-            variantSelect.dataset.variantId = selectedVariant.id;
+                // Update wishlist button if it exists
+                const wishlistBtn = modal.querySelector('[data-wishlist]');
+                if (wishlistBtn) {
+                  wishlistBtn.dataset.id = newVariantId;
+                }
+
+                // Update compare button if it exists
+                const compareBtn = modal.querySelector('[data-compare]');
+                if (compareBtn) {
+                  compareBtn.dataset.id = newVariantId;
+                }
+
+                // Find the selected variant
+                const selectedVariant = currentProduct.variants.find(v => v.id === parseInt(newVariantId));
+                if (selectedVariant) {
+                  // Update price
+                  const priceElement = modal.querySelector('.price-new');
+                  const oldPriceElement = modal.querySelector('.price-old');
+                  
+                  if (priceElement && typeof selectedVariant.price === 'number') {
+                    priceElement.textContent = formatMoney(selectedVariant.price);
+                  }
+                  
+                  if (oldPriceElement && typeof selectedVariant.compare_at_price === 'number') {
+                    if (selectedVariant.compare_at_price > selectedVariant.price) {
+                      oldPriceElement.textContent = formatMoney(selectedVariant.compare_at_price);
+                      oldPriceElement.style.display = 'inline';
+                    } else {
+                      oldPriceElement.style.display = 'none';
+                    }
+                  }
+
+                  // Update variant image if it exists
+                  if (selectedVariant.featured_image) {
+                    const modalImage = modal.querySelector('.quickview-image img');
+                    if (modalImage) {
+                      modalImage.src = selectedVariant.featured_image.src;
+                      modalImage.setAttribute('data-src', selectedVariant.featured_image.src);
+                    }
+                  }
+                } else {
+                  console.warn('Selected variant not found:', newVariantId);
+                }
+              } catch (error) {
+                console.error('Error updating variant in quickview:', error);
+                // Revert to old variant if there's an error
+                if (oldVariantId) {
+                  e.target.value = oldVariantId;
+                }
+                alert({{ 'products.product.variant_error' | t | json }});
+              }
+            });
           }
-          
-          // Update price
-          if (selectedVariant) {
-            const priceContainer = modal.querySelector('.product-info-price');
-            if (selectedVariant.compare_at_price > selectedVariant.price) {
-              const discountPercentage = Math.round(((selectedVariant.compare_at_price - selectedVariant.price) / selectedVariant.compare_at_price) * 100);
-              priceContainer.innerHTML = `
-                <h6 class="price-new price-on-sale">${formatMoney(selectedVariant.price)}</h6>
-                <h6 class="price-old">${formatMoney(selectedVariant.compare_at_price)}</h6>
-                <span class="badge-sale">${discountPercentage}% Off</span>
-              `;
-            } else {
-              priceContainer.innerHTML = `
-                <h6 class="price-new">${formatMoney(selectedVariant.price)}</h6>
-              `;
-            }
-            
-            // Update product image if variant has an image
-            if (selectedVariant.featured_image) {
-              updateProductImage(selectedVariant.featured_image.src);
-            }
-          }
-        });
+        } catch (error) {
+          console.error('Error initializing variant selection in quickview:', error);
+        }
       }
     
       // Initialize everything

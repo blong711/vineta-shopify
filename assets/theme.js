@@ -13,31 +13,55 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize variant selectors
   document.querySelectorAll('[data-option-selector]').forEach((select) => {
     select.addEventListener('change', (event) => {
-      const form = event.target.closest('form');
-      if (form) {
-        const variantId = form.querySelector('[name="id"]').value;
+      try {
+        const form = event.target.closest('form');
+        if (!form) {
+          console.warn('Variant selector form not found');
+          return;
+        }
+
+        const variantIdInput = form.querySelector('[name="id"]');
+        if (!variantIdInput) {
+          console.warn('Variant ID input not found');
+          return;
+        }
+
+        const variantId = variantIdInput.value;
+        if (!variantId) {
+          console.warn('No variant ID value found');
+          return;
+        }
+
         const variant = form.querySelector(`[data-variant-id="${variantId}"]`);
         if (variant) {
-          const price = variant.querySelector('[data-price]').textContent;
-          const comparePrice = variant.querySelector('[data-compare-price]')?.textContent;
-          const availability = variant.querySelector('[data-availability]').textContent;
+          const priceElement = variant.querySelector('[data-price]');
+          const comparePriceElement = variant.querySelector('[data-compare-price]');
+          const availabilityElement = variant.querySelector('[data-availability]');
           const addButton = form.querySelector('[type="submit"]');
 
           // Update price
-          const priceElement = form.querySelector('.product-price');
-          if (priceElement) {
-            priceElement.innerHTML = price;
-            if (comparePrice) {
-              priceElement.innerHTML += `<span class="product-price__compare">${comparePrice}</span>`;
+          const priceContainer = form.querySelector('.product-price');
+          if (priceContainer && priceElement) {
+            let priceHtml = priceElement.textContent;
+            if (comparePriceElement && comparePriceElement.textContent) {
+              priceHtml += `<span class="product-price__compare">${comparePriceElement.textContent}</span>`;
             }
+            priceContainer.innerHTML = priceHtml;
           }
 
-          // Update availability
-          if (addButton) {
-            addButton.disabled = availability === 'false';
-            addButton.textContent = availability === 'false' ? 'Sold Out' : 'Add to Cart';
+          // Update availability and button state
+          if (addButton && availabilityElement) {
+            const isAvailable = availabilityElement.textContent === 'true';
+            addButton.disabled = !isAvailable;
+            addButton.textContent = isAvailable ? 
+              addButton.dataset.addText || 'Add to Cart' : 
+              addButton.dataset.soldText || 'Sold Out';
           }
+        } else {
+          console.warn('Variant element not found for ID:', variantId);
         }
+      } catch (error) {
+        console.error('Error updating variant selection:', error);
       }
     });
   });

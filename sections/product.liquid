@@ -1112,39 +1112,59 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Function to find variant by color
   function findVariantByColor(color) {
-    if (!color) {
-      return null;
-    }
-
-    const variants = {{ product.variants | json }};
-    const options = {{ product.options | json }};
-    
-    // Get current size selection
-    const activeSizeBtn = document.querySelector('.size-btn.active, .select-item[data-option="size"].active');
-    const selectedSize = activeSizeBtn ? activeSizeBtn.getAttribute('data-value') : null;
-    
-    // Find variant that matches both color and size
-    for (const variant of variants) {
-      const matchesColor = variant.option1 && variant.option1.toLowerCase() === color.toLowerCase();
-      const matchesSize = !selectedSize || (variant.option2 && variant.option2.toLowerCase() === selectedSize.toLowerCase());
-      
-      if (matchesColor && matchesSize) {
-        return variant;
+    try {
+      if (!color) {
+        console.warn('No color provided to findVariantByColor');
+        return null;
       }
-    }
-    
-    // If no size is selected, return the first available variant for the selected color
-    if (!selectedSize) {
+
+      const variants = {{ product.variants | json }};
+      if (!Array.isArray(variants) || variants.length === 0) {
+        console.warn('No variants available');
+        return null;
+      }
+
+      const options = {{ product.options | json }};
+      if (!Array.isArray(options)) {
+        console.warn('Product options not available');
+        return null;
+      }
+      
+      // Get current size selection
+      const activeSizeBtn = document.querySelector('.size-btn.active, .select-item[data-option="size"].active');
+      const selectedSize = activeSizeBtn ? activeSizeBtn.getAttribute('data-value') : null;
+      
+      // Find variant that matches both color and size
       for (const variant of variants) {
+        if (!variant || typeof variant !== 'object') continue;
+        
         const matchesColor = variant.option1 && variant.option1.toLowerCase() === color.toLowerCase();
-        if (matchesColor && variant.available) {
-          console.log('No size selected, returning first available variant for color:', variant.title);
+        const matchesSize = !selectedSize || (variant.option2 && variant.option2.toLowerCase() === selectedSize.toLowerCase());
+        
+        if (matchesColor && matchesSize) {
           return variant;
         }
       }
+      
+      // If no size is selected, return the first available variant for the selected color
+      if (!selectedSize) {
+        for (const variant of variants) {
+          if (!variant || typeof variant !== 'object') continue;
+          
+          const matchesColor = variant.option1 && variant.option1.toLowerCase() === color.toLowerCase();
+          if (matchesColor && variant.available) {
+            console.log('No size selected, returning first available variant for color:', variant.title);
+            return variant;
+          }
+        }
+      }
+      
+      console.warn(`No variant found for color: ${color}${selectedSize ? ` and size: ${selectedSize}` : ''}`);
+      return null;
+    } catch (error) {
+      console.error('Error in findVariantByColor:', error);
+      return null;
     }
-    
-    return null;
   }
 
   // Function to find variant ID based on selected options
@@ -1189,263 +1209,356 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Function to update variant selection
   function updateVariantSelection(variant) {
-    if (!variant) {
-      return;
-    }
+    try {
+      if (!variant || typeof variant !== 'object') {
+        console.warn('Invalid variant provided to updateVariantSelection');
+        return;
+      }
 
-    // Update add to cart button
-    const addToCartBtn = document.querySelector('.add-to-cart');
-    if (addToCartBtn) {
-      addToCartBtn.dataset.variantId = variant.id;
-      
-      // Update quantity in add to cart button
-      const quantityInput = document.querySelector('.quantity-product');
-      if (quantityInput) {
-        const quantity = parseInt(quantityInput.value) || 1;
-        addToCartBtn.dataset.quantity = quantity;
-      }
-    }
-
-    // Update price
-    const priceElement = document.querySelector('.price-new');
-    const oldPriceElement = document.querySelector('.price-old');
-    if (priceElement) {
-      priceElement.textContent = formatMoney(variant.price);
-    }
-    if (oldPriceElement) {
-      if (variant.compare_at_price > variant.price) {
-        oldPriceElement.textContent = formatMoney(variant.compare_at_price);
-        oldPriceElement.style.display = 'inline';
-      } else {
-        oldPriceElement.style.display = 'none';
-      }
-    }
-
-    // Update selected options
-    selectedOptions['color'] = variant.option1 ? variant.option1.toLowerCase() : '';
-    selectedOptions['size'] = variant.option2 ? variant.option2.toLowerCase() : '';
-
-    // Update the label value for each option
-    const options = {{ product.options_with_values | json }};
-    options.forEach(function(option, idx) {
-      var value = variant.options[idx];
-      var labelClass = '.variant-picker-label-value.value-current' + option.name;
-      var labelEl = document.querySelector(labelClass);
-      if (labelEl && value) {
-        labelEl.textContent = value;
-      }
-    });
-
-    // Check if we're in grid or stacked layout
-    const isGridOrStacked = document.querySelector('.flat-single-grid') !== null;
-    
-    if (isGridOrStacked) {
-      // For grid and stacked layouts, scroll to the matching image
-      const productMedia = {{ product.media | json }};
-      let targetImage = null;
-      
-      // First try to find the variant's featured image
-      if (variant.featured_image) {
-        targetImage = productMedia.find(m => m.id === variant.featured_image.id);
-      }
-      
-      // If no featured image found, try to find any image associated with this variant
-      if (!targetImage) {
-        targetImage = productMedia.find(m => 
-          m.variant_ids && m.variant_ids.includes(variant.id)
-        );
-      }
-      
-      // If still no image found, try to match by src
-      if (!targetImage && variant.featured_image && variant.featured_image.src) {
-        targetImage = productMedia.find(m => m.src === variant.featured_image.src);
-      }
-      
-      // Scroll to the target image if found
-      if (targetImage) {
-        console.log('Scrolling to target image:', targetImage.id);
-        // Find the gallery item with the matching media ID
-        const galleryItems = document.querySelectorAll('.item-scroll-target');
-        for (let item of galleryItems) {
-          const mediaId = parseInt(item.getAttribute('data-media-id'));
-          if (mediaId === targetImage.id) {
-            console.log('Found matching gallery item, scrolling...');
-            item.scrollIntoView({ 
-              behavior: 'smooth', 
-              block: 'center',
-              inline: 'center'
-            });
-            break;
-          }
-        }
-      }
-    } else {
-      // Default layout with Swiper - existing logic
-      const mainSwiper = document.querySelector('.tf-product-media-main')?.swiper;
-      
-      if (mainSwiper) {
-        const slides = mainSwiper.slides;
-        let foundMatchingSlide = false;
+      // Update add to cart button
+      const addToCartBtn = document.querySelector('.add-to-cart');
+      if (addToCartBtn) {
+        addToCartBtn.dataset.variantId = variant.id;
         
-        // First try to find a slide that matches the variant's featured image
-        if (variant.featured_image) {
-          for (let i = 0; i < slides.length; i++) {
-            const mediaId = parseInt(slides[i].getAttribute('data-media-id'));
-            
-            if (mediaId === variant.featured_image.id) {
-              mainSwiper.slideTo(i);
-              foundMatchingSlide = true;
-              break;
-            }
-          }
+        // Update quantity in add to cart button
+        const quantityInput = document.querySelector('.quantity-product');
+        if (quantityInput) {
+          const quantity = parseInt(quantityInput.value) || 1;
+          addToCartBtn.dataset.quantity = quantity;
         }
+      }
 
-        // If no exact match found, try to find the first image for this variant
-        if (!foundMatchingSlide) {
-          const productMedia = {{ product.media | json }};
-          
-          for (let i = 0; i < slides.length; i++) {
-            const mediaId = parseInt(slides[i].getAttribute('data-media-id'));
-            const media = productMedia.find(m => m.id === mediaId);
+      // Update price
+      const priceElement = document.querySelector('.price-new');
+      const oldPriceElement = document.querySelector('.price-old');
+      if (priceElement && typeof variant.price === 'number') {
+        priceElement.textContent = formatMoney(variant.price);
+      }
+      if (oldPriceElement && typeof variant.compare_at_price === 'number') {
+        if (variant.compare_at_price > variant.price) {
+          oldPriceElement.textContent = formatMoney(variant.compare_at_price);
+          oldPriceElement.style.display = 'inline';
+        } else {
+          oldPriceElement.style.display = 'none';
+        }
+      }
+
+      // Update selected options
+      if (variant.option1) {
+        selectedOptions['color'] = variant.option1.toLowerCase();
+      }
+      if (variant.option2) {
+        selectedOptions['size'] = variant.option2.toLowerCase();
+      }
+
+      // Update the label value for each option
+      try {
+        const options = {{ product.options_with_values | json }};
+        if (Array.isArray(options)) {
+          options.forEach(function(option, idx) {
+            if (!option || !variant.options || !Array.isArray(variant.options)) return;
             
-            if (media && media.variant_ids && media.variant_ids.includes(variant.id)) {
-              mainSwiper.slideTo(i);
-              foundMatchingSlide = true;
-              break;
+            var value = variant.options[idx];
+            var labelClass = '.variant-picker-label-value.value-current' + option.name;
+            var labelEl = document.querySelector(labelClass);
+            if (labelEl && value) {
+              labelEl.textContent = value;
             }
+          });
+        }
+      } catch (error) {
+        console.error('Error updating option labels:', error);
+      }
+
+      // Check if we're in grid or stacked layout
+      const isGridOrStacked = document.querySelector('.flat-single-grid') !== null;
+      
+      try {
+        // Handle image switching based on layout
+        if (isGridOrStacked) {
+          // For grid and stacked layouts, scroll to the matching image
+          const productMedia = {{ product.media | json }};
+          if (!Array.isArray(productMedia)) {
+            console.warn('Product media data is not available');
+            return;
           }
-          // Fallback: try matching by src if variant.featured_image.src exists
-          if (!foundMatchingSlide && variant.featured_image && variant.featured_image.src) {
-            for (let i = 0; i < slides.length; i++) {
-              const mediaId = parseInt(slides[i].getAttribute('data-media-id'));
-              const media = productMedia.find(m => m.id === mediaId);
-              if (media && media.src === variant.featured_image.src) {
-                mainSwiper.slideTo(i);
-                foundMatchingSlide = true;
+
+          let targetImage = null;
+          
+          // First try to find the variant's featured image
+          if (variant.featured_image) {
+            targetImage = productMedia.find(m => m.id === variant.featured_image.id);
+          }
+          
+          // If no featured image found, try to find any image associated with this variant
+          if (!targetImage) {
+            targetImage = productMedia.find(m => 
+              m.variant_ids && Array.isArray(m.variant_ids) && m.variant_ids.includes(variant.id)
+            );
+          }
+          
+          // If still no image found, try to match by src
+          if (!targetImage && variant.featured_image && variant.featured_image.src) {
+            targetImage = productMedia.find(m => m.src === variant.featured_image.src);
+          }
+          
+          // Scroll to the target image if found
+          if (targetImage) {
+            console.log('Scrolling to target image:', targetImage.id);
+            // Find the gallery item with the matching media ID
+            const galleryItems = document.querySelectorAll('.item-scroll-target');
+            for (let item of galleryItems) {
+              const mediaId = parseInt(item.getAttribute('data-media-id'));
+              if (mediaId === targetImage.id) {
+                console.log('Found matching gallery item, scrolling...');
+                item.scrollIntoView({ 
+                  behavior: 'smooth', 
+                  block: 'center',
+                  inline: 'center'
+                });
                 break;
               }
             }
           }
-        }
-      }
-    }
-
-    // Set the active color swatch based on the selected color
-    if (variant && variant.option1) {
-      const color = variant.option1.toLowerCase();
-      document.querySelectorAll('.color-btn, .btn-scroll-target, .select-item[data-option="color"]').forEach(btn => {
-        let matches = false;
-        
-        if (btn.classList.contains('color-btn') || btn.classList.contains('btn-scroll-target')) {
-          // For color swatches, check data-scroll
-          if (btn.getAttribute('data-scroll') && btn.getAttribute('data-scroll').toLowerCase() === color) {
-            matches = true;
-          }
         } else {
-          // For color dropdown, check the text content
-          const textElement = btn.querySelector('.text-value-item');
-          if (textElement && textElement.textContent.toLowerCase() === color) {
-            matches = true;
-          }
-        }
-        
-        if (matches) {
-          btn.classList.add('active');
+          // Default layout with Swiper
+          const mainSwiper = document.querySelector('.tf-product-media-main')?.swiper;
           
-          // Add a small delay to ensure the active class persists
-          setTimeout(() => {
-            if (!btn.classList.contains('active')) {
-              console.log('Active class was removed, re-adding it');
-              btn.classList.add('active');
+          if (mainSwiper && mainSwiper.slides) {
+            const slides = mainSwiper.slides;
+            let foundMatchingSlide = false;
+            
+            // First try to find a slide that matches the variant's featured image
+            if (variant.featured_image) {
+              for (let i = 0; i < slides.length; i++) {
+                const mediaId = parseInt(slides[i].getAttribute('data-media-id'));
+                
+                if (mediaId === variant.featured_image.id) {
+                  mainSwiper.slideTo(i);
+                  foundMatchingSlide = true;
+                  break;
+                }
+              }
             }
-          }, 50);
-        } else {
-          btn.classList.remove('active');
+            
+            // If no exact match found, try to find the first image for this variant
+            if (!foundMatchingSlide) {
+              const productMedia = {{ product.media | json }};
+              if (Array.isArray(productMedia)) {
+                for (let i = 0; i < slides.length; i++) {
+                  const mediaId = parseInt(slides[i].getAttribute('data-media-id'));
+                  const media = productMedia.find(m => m.id === mediaId);
+                  
+                  if (media && media.variant_ids && media.variant_ids.includes(variant.id)) {
+                    mainSwiper.slideTo(i);
+                    foundMatchingSlide = true;
+                    break;
+                  }
+                }
+                
+                // Fallback: try matching by src if variant.featured_image.src exists
+                if (!foundMatchingSlide && variant.featured_image && variant.featured_image.src) {
+                  for (let i = 0; i < slides.length; i++) {
+                    const mediaId = parseInt(slides[i].getAttribute('data-media-id'));
+                    const media = productMedia.find(m => m.id === mediaId);
+                    if (media && media.src === variant.featured_image.src) {
+                      mainSwiper.slideTo(i);
+                      foundMatchingSlide = true;
+                      break;
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
-      });
-    }
+      } catch (error) {
+        console.error('Error updating product images:', error);
+      }
 
-    // Set the active size button based on the selected size
-    if (variant && variant.option2) {
-      const size = variant.option2.toLowerCase();
-      document.querySelectorAll('.size-btn, .select-item[data-option="size"]').forEach(btn => {
-        if (btn.getAttribute('data-value') && btn.getAttribute('data-value').toLowerCase() === size) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
-      });
-    }
+      // Set the active color swatch based on the selected color
+      if (variant.option1) {
+        const color = variant.option1.toLowerCase();
+        document.querySelectorAll('.color-btn, .btn-scroll-target, .select-item[data-option="color"]').forEach(btn => {
+          try {
+            let matches = false;
+            
+            if (btn.classList.contains('color-btn') || btn.classList.contains('btn-scroll-target')) {
+              // For color swatches, check data-scroll
+              if (btn.getAttribute('data-scroll') && btn.getAttribute('data-scroll').toLowerCase() === color) {
+                matches = true;
+              }
+            } else {
+              // For color dropdown, check the text content
+              const textElement = btn.querySelector('.text-value-item');
+              if (textElement && textElement.textContent.toLowerCase() === color) {
+                matches = true;
+              }
+            }
+            
+            if (matches) {
+              btn.classList.add('active');
+              
+              // Add a small delay to ensure the active class persists
+              setTimeout(() => {
+                if (!btn.classList.contains('active')) {
+                  console.log('Active class was removed, re-adding it');
+                  btn.classList.add('active');
+                }
+              }, 50);
+            } else {
+              btn.classList.remove('active');
+            }
+          } catch (error) {
+            console.error('Error updating color swatch:', error);
+          }
+        });
+      }
 
-    // Set the active size button based on the selected size
-    if (variant && variant.option2) {
-      const size = variant.option2.toLowerCase();
-      document.querySelectorAll('.size-btn, .select-item[data-option="size"]').forEach(btn => {
-        if (btn.getAttribute('data-value') && btn.getAttribute('data-value').toLowerCase() === size) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
-      });
-    }
+      // Set the active size button based on the selected size
+      if (variant.option2) {
+        const size = variant.option2.toLowerCase();
+        document.querySelectorAll('.size-btn, .select-item[data-option="size"]').forEach(btn => {
+          try {
+            if (btn.getAttribute('data-value') && btn.getAttribute('data-value').toLowerCase() === size) {
+              btn.classList.add('active');
+            } else {
+              btn.classList.remove('active');
+            }
+          } catch (error) {
+            console.error('Error updating size button:', error);
+          }
+        });
+      }
 
-    // Update main add to cart button only
-    updateMainAddToCartButton(variant);
-    // Update dynamic checkout buttons
-    updateDynamicCheckoutButtons(variant);
+      // Update main add to cart button only
+      try {
+        updateMainAddToCartButton(variant);
+      } catch (error) {
+        console.error('Error updating main add to cart button:', error);
+      }
+
+      // Update dynamic checkout buttons
+      try {
+        updateDynamicCheckoutButtons(variant);
+      } catch (error) {
+        console.error('Error updating dynamic checkout buttons:', error);
+      }
+
+      // Update quantity variant ID
+      try {
+        updateQuantityVariantId(variant.id);
+      } catch (error) {
+        console.error('Error updating quantity variant ID:', error);
+      }
+    } catch (error) {
+      console.error('Error in updateVariantSelection:', error);
+    }
   }
+
+  // Add translations at the start of the script
+  const translations = {
+    variantNotAvailable: {{ 'products.product.variant_not_available' | t | json }},
+    colorNotAvailable: {{ 'products.product.color_not_available' | t | json }},
+    sizeNotAvailable: {{ 'products.product.size_not_available' | t | json }},
+    variantError: {{ 'products.product.variant_error' | t | json }}
+  };
 
   // Use event delegation for color swatch clicks
   document.addEventListener('click', function(e) {
-    const btn = e.target.closest('.color-btn, .btn-scroll-target');
-    if (!btn) return;
-    const color = btn.getAttribute('data-scroll');
-    const variant = findVariantByColor(color);
-    if (variant) {
-      updateVariantSelection(variant);
-    } else {
-      console.log('No variant found for color:', color);
+    try {
+      const btn = e.target.closest('.color-btn, .btn-scroll-target');
+      if (!btn) return;
+      
+      const color = btn.getAttribute('data-scroll');
+      if (!color) {
+        console.warn('Color swatch clicked but no data-scroll attribute found');
+        return;
+      }
+
+      const variant = findVariantByColor(color);
+      if (variant) {
+        updateVariantSelection(variant);
+      } else {
+        console.warn('No variant found for color:', color);
+        const selectedSize = getSelectedSize();
+        alert(selectedSize ? translations.variantNotAvailable : translations.colorNotAvailable);
+      }
+    } catch (error) {
+      console.error('Error handling color swatch click:', error);
+      alert(translations.variantError);
     }
   });
 
+  // Helper function to get selected size
+  function getSelectedSize() {
+    try {
+      const activeSizeBtn = document.querySelector('.size-btn.active, .select-item[data-option="size"].active');
+      return activeSizeBtn ? activeSizeBtn.getAttribute('data-value') : null;
+    } catch (error) {
+      console.error('Error getting selected size:', error);
+      return null;
+    }
+  }
+
   // Handle size variant selection
   document.querySelectorAll('.size-btn, .select-item[data-option="size"]').forEach(button => {
-    button.addEventListener('click', function() {
-      const size = this.getAttribute('data-value');
-      // Only remove active class from size-related elements
-      document.querySelectorAll('.size-btn, .select-item[data-option="size"]').forEach(btn => btn.classList.remove('active'));
-      this.classList.add('active');
-
-      // Update selected options
-      selectedOptions['size'] = size;
-
-      // --- NEW: Get the currently selected color ---
-      let color = null;
-      const activeColorBtn = document.querySelector('.color-btn.active, .btn-scroll-target.active, .select-item[data-option="color"].active');
-      if (activeColorBtn) {
-        if (activeColorBtn.classList.contains('color-btn') || activeColorBtn.classList.contains('btn-scroll-target')) {
-          color = activeColorBtn.getAttribute('data-scroll');
-        } else {
-          const textElement = activeColorBtn.querySelector('.text-value-item');
-          color = textElement ? textElement.textContent : activeColorBtn.getAttribute('data-value');
+    button.addEventListener('click', function(e) {
+      try {
+        const size = this.getAttribute('data-value');
+        if (!size) {
+          console.warn('Size button clicked but no data-value attribute found');
+          return;
         }
-      }
 
-      // Find and update variant
-      const variants = {{ product.variants | json }};
-      let variant = null;
-      if (color) {
-        variant = variants.find(v =>
-          v.option1 && v.option1.toLowerCase() === color.toLowerCase() &&
-          v.option2 && v.option2.toLowerCase() === size.toLowerCase()
-        );
-      } else {
-        variant = variants.find(v =>
-          v.option2 && v.option2.toLowerCase() === size.toLowerCase()
-        );
-      }
-      if (variant) {
-        updateVariantSelection(variant);
+        // Only remove active class from size-related elements
+        document.querySelectorAll('.size-btn, .select-item[data-option="size"]').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+
+        // Update selected options
+        selectedOptions['size'] = size;
+
+        // Get the currently selected color
+        let color = null;
+        const activeColorBtn = document.querySelector('.color-btn.active, .btn-scroll-target.active, .select-item[data-option="color"].active');
+        if (activeColorBtn) {
+          if (activeColorBtn.classList.contains('color-btn') || activeColorBtn.classList.contains('btn-scroll-target')) {
+            color = activeColorBtn.getAttribute('data-scroll');
+          } else {
+            const textElement = activeColorBtn.querySelector('.text-value-item');
+            color = textElement ? textElement.textContent : activeColorBtn.getAttribute('data-value');
+          }
+        }
+
+        // Find and update variant
+        const variants = {{ product.variants | json }};
+        if (!Array.isArray(variants)) {
+          console.warn('Variants data is not available');
+          alert(translations.variantError);
+          return;
+        }
+
+        let variant = null;
+        if (color) {
+          variant = variants.find(v =>
+            v && v.option1 && v.option1.toLowerCase() === color.toLowerCase() &&
+            v.option2 && v.option2.toLowerCase() === size.toLowerCase()
+          );
+        } else {
+          variant = variants.find(v =>
+            v && v.option2 && v.option2.toLowerCase() === size.toLowerCase()
+          );
+        }
+
+        if (variant) {
+          updateVariantSelection(variant);
+        } else {
+          console.warn('No variant found for size:', size, 'and color:', color);
+          alert(translations.sizeNotAvailable);
+        }
+      } catch (error) {
+        console.error('Error handling size selection:', error);
+        alert(translations.variantError);
       }
     });
   });

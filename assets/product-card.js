@@ -994,6 +994,11 @@ const ProductCard = {
       if (variantSelect) {
         variantSelect.addEventListener('change', async (e) => {
           try {
+            if (!e.target.value) {
+              console.warn('No variant selected');
+              return;
+            }
+
             const oldVariantId = variantSelect.dataset.variantId;
             const newVariantId = e.target.value;
             
@@ -1002,7 +1007,7 @@ const ProductCard = {
             
             // Update all elements with data-variant-id in this card
             card.querySelectorAll('[data-variant-id]').forEach(el => {
-              el.dataset.variantId = newVariantId;
+              if (el) el.dataset.variantId = newVariantId;
             });
 
             // Update add to cart button
@@ -1027,7 +1032,7 @@ const ProductCard = {
             const colorSwatch = card.querySelector(`.color-swatch[data-variant-id="${newVariantId}"]`);
             if (colorSwatch) {
               card.querySelectorAll('.color-swatch').forEach(swatch => {
-                swatch.classList.remove('active');
+                if (swatch) swatch.classList.remove('active');
               });
               colorSwatch.classList.add('active');
             }
@@ -1035,15 +1040,18 @@ const ProductCard = {
             // Update product image if variant has an image
             const variantImage = colorSwatch?.querySelector('img')?.getAttribute('data-src');
             if (variantImage) {
-              const mainImage = card.querySelector('.img-product');
-              const hoverImage = card.querySelector('.img-hover');
-              if (mainImage) mainImage.src = variantImage;
-              if (hoverImage) hoverImage.src = variantImage;
+              const productImage = card.querySelector('.product-image img');
+              if (productImage) {
+                productImage.setAttribute('data-src', variantImage);
+                productImage.src = variantImage;
+              }
             }
           } catch (error) {
-            console.error('Error changing variant:', error);
-            // Revert the select to the old value
-            e.target.value = oldVariantId;
+            console.error('Error updating variant selection:', error);
+            // Revert to old variant if there's an error
+            if (oldVariantId) {
+              e.target.value = oldVariantId;
+            }
           }
         });
       }
