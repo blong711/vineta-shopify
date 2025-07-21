@@ -2699,7 +2699,7 @@ class Cart {
     const progressBar = document.querySelector('.tf-progress-bar .value');
     if (!progressBar) return;
     
-    const progress = Math.min(98, (totalPrice / threshold) * 98);
+    const progress = Math.min(100, (totalPrice / threshold) * 100);
     progressBar.style.width = progress + '%';
     progressBar.setAttribute('data-progress', progress);
     

@@ -20320,3 +20320,17 @@ html, body {
 .focus .ts-control {
   border-color: none !important;
 }
+.tf-grid-layout .loadItem {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.tf-grid-layout {
+  grid-template-columns: repeat(4, 1fr);
+  display: grid !important;
+}
+
+.tf-grid-layout .loadItem:nth-child(n) {
+  display: block !important;
+}

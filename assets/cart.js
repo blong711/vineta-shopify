@@ -243,7 +243,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     const threshold = 100; // $100 threshold
-    const progress = Math.min(98, (cartTotal / threshold) * 98);
+    // Calculate progress as a proper percentage (0-100)
+    const progress = Math.min(100, (cartTotal / threshold) * 100);
     const progressBar = document.querySelector('.tf-progress-ship .value');
     const progressText = document.querySelector('.tf-cart-head .title');
     

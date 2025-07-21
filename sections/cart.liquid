@@ -16,7 +16,7 @@
                 {% endif %}
               </p>
               <div class="progress-sold tf-progress-ship">
-                <div class="value" style="width: {{ cart.total_price | times: 98.0 | divided_by: settings.free_shipping_threshold | at_most: 98 }}%;" data-progress="{{ cart.total_price | times: 98.0 | divided_by: settings.free_shipping_threshold | at_most: 98 }}">
+                <div class="value" style="width: {{ cart.total_price | times: 100.0 | divided_by: settings.free_shipping_threshold | at_most: 100 }}%;" data-progress="{{ cart.total_price | times: 100.0 | divided_by: settings.free_shipping_threshold | at_most: 100 }}">
                   <i class="icon icon-car"></i>
                 </div>
               </div>
