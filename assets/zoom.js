@@ -42,11 +42,11 @@ if (document.querySelector('.thumbs-slider')) {
     observer: true,
     observeParents: true,
     breakpoints: {
-      0: {
+      [0]: {
         direction: 'horizontal',
         slidesPerView: preview,
       },
-      1200: {
+      [window.themeConstants.BREAKPOINTS.xl]: {
         direction: direction,
       },
     },

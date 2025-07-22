@@ -562,6 +562,7 @@
     {{- grich | strip_newlines | remove: '  ' -}}
   </body>
   <!-- Move all non-critical scripts here -->
+  <script src="{{ 'global-constants.js' | asset_url }}" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js" defer></script>
   <script src="{{ 'bootstrap.min.js' | asset_url }}" defer></script>
   <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>

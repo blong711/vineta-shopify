@@ -64,12 +64,12 @@ if (document.querySelector(".tf-sw-slideshow")) {
     },
     centeredSlides: false,
     breakpoints: {
-      768: {
+      [window.themeConstants.BREAKPOINTS.md]: {
         slidesPerView: tablet,
         spaceBetween: spacing,
         centeredSlides: false,
       },
-      1200: {
+      [window.themeConstants.BREAKPOINTS.xl]: {
         slidesPerView: preview,
         spaceBetween: spacing,
         centeredSlides: centered,
@@ -173,7 +173,7 @@ if (document.querySelector(".flat-thumbs-tes")) {
     effect: effect,
     fadeEffect: effect === "fade" ? { crossFade: true } : undefined,
     breakpoints: {
-      768: {
+      [window.themeConstants.BREAKPOINTS.md]: {
         spaceBetween: spaceThumbLg,
       },
     },
@@ -193,7 +193,7 @@ if (document.querySelector(".flat-thumbs-tes")) {
     },
     spaceBetween: spaceTes,
     breakpoints: {
-      768: {
+      [window.themeConstants.BREAKPOINTS.md]: {
         spaceBetween: spaceTesLg,
       },
     },
@@ -247,7 +247,7 @@ if (document.querySelector(".tf-sw-lb")) {
       prevEl: ".nav-prev-lb",
     },
     breakpoints: {
-      768: {
+      [window.themeConstants.BREAKPOINTS.md]: {
         spaceBetween: 24,
       }
     },
