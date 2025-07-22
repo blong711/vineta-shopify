@@ -689,6 +689,75 @@
             </div>
           `;
           }).join('');
+
+          // Add click handlers for variant buttons
+          variantContainer.querySelectorAll('.color-btn, .type-btn, .size-btn').forEach(button => {
+            button.addEventListener('click', function() {
+              const optionName = this.dataset.optionName;
+              const optionValue = this.dataset.optionValue;
+              
+              // Remove active class from other buttons in the same option group
+              variantContainer.querySelectorAll(`[data-option-name="${optionName}"]`).forEach(btn => {
+                btn.classList.remove('active');
+              });
+              
+              // Add active class to clicked button
+              this.classList.add('active');
+              
+              // Update the label value
+              const label = variantContainer.querySelector(`.value-current${optionName.toLowerCase().replace(/\s+/g, '-')}`);
+              if (label) label.textContent = optionValue;
+              
+              // Find the matching variant based on all selected options
+              const selectedOptions = {};
+              variantContainer.querySelectorAll('.active').forEach(activeBtn => {
+                selectedOptions[activeBtn.dataset.optionName] = activeBtn.dataset.optionValue;
+              });
+              
+              const matchingVariant = currentProduct.variants.find(variant => {
+                return Object.entries(selectedOptions).every(([name, value]) => {
+                  const optionIndex = currentProduct.options.findIndex(o => o.name === name);
+                  return variant[`option${optionIndex + 1}`] === value;
+                });
+              });
+              
+              if (matchingVariant) {
+                selectedVariant = matchingVariant;
+                
+                // Update price
+                const priceContainer = modal.querySelector('.product-info-price');
+                if (priceContainer) {
+                  if (selectedVariant.compare_at_price > selectedVariant.price) {
+                    const discountPercentage = Math.round(((selectedVariant.compare_at_price - selectedVariant.price) / selectedVariant.compare_at_price) * 100);
+                    priceContainer.innerHTML = `
+                      <h6 class="price-new price-on-sale">${formatMoney(selectedVariant.price)}</h6>
+                      <h6 class="price-old">${formatMoney(selectedVariant.compare_at_price)}</h6>
+                      <span class="badge-sale">${discountPercentage}% Off</span>
+                    `;
+                  } else {
+                    priceContainer.innerHTML = `
+                      <h6 class="price-new">${formatMoney(selectedVariant.price)}</h6>
+                    `;
+                  }
+                }
+                
+                // Update add to cart button
+                const addToCartBtn = modal.querySelector('.add-to-cart');
+                if (addToCartBtn) {
+                  addToCartBtn.dataset.variantId = selectedVariant.id;
+                  addToCartBtn.disabled = !selectedVariant.available;
+                  addToCartBtn.textContent = selectedVariant.available ? 
+                    {{ 'products.product.add_to_cart' | t | json }} : 
+                    {{ 'products.product.sold_out' | t | json }};
+                }
+                
+                // Update variant image if it exists
+                if (selectedVariant.featured_image) {
+                  updateProductImage(selectedVariant.featured_image.src);
+                }
+              }
+            });
+          });
         } else {
           variantContainer.innerHTML = '';
         }

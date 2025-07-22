@@ -3052,6 +3052,19 @@ class CartNotificationManager {
   }
 
   /**
+   * Show a notification
+   * @param {string} message - Message to display
+   * @param {string} type - Type of notification ('success', 'error', 'warning')
+   */
+  show(message, type = 'success') {
+    this.displayNotification({
+      message,
+      type,
+      duration: this.notificationTypes[type]?.duration
+    });
+  }
+
+  /**
    * Display a single notification
    * @param {Object} notification - Notification object
    */
@@ -3124,6 +3137,24 @@ class CartNotificationManager {
     setTimeout(() => {
       this.hideNotification(notificationEl);
     }, notification.duration || this.notificationTypes[notification.type].duration);
+  }
+
+  /**
+   * Hide a notification element with animation
+   * @param {HTMLElement} notificationEl - The notification element to hide
+   */
+  hideNotification(notificationEl) {
+    if (!notificationEl) return;
+    
+    // Remove show class to trigger fade out animation
+    notificationEl.classList.remove('show');
+    
+    // Remove element after animation completes
+    setTimeout(() => {
+      if (notificationEl.parentNode) {
+        notificationEl.parentNode.removeChild(notificationEl);
+      }
+    }, 300); // Match this with your CSS animation duration
   }
 }
 
