@@ -17,10 +17,77 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://ajax.googleapis.com" crossorigin>
     
-    <!-- Resource hints for CSS optimization -->
-    <link rel="preload" href="{{ 'fonts.css' | asset_url }}" as="style">
-    <link rel="preload" href="{{ 'bootstrap.min.css' | asset_url }}" as="style">
-    <link rel="preload" href="{{ 'focus-visible.css' | asset_url }}" as="style">
+    <!-- Critical CSS - Inline the most important styles -->
+    <style>
+      /* Critical CSS for above-the-fold content */
+      :root { --primary-button: {{ settings.primary_button }}; }
+      body { margin: 0; padding: 0; }
+      .skip-to-main { 
+        position: absolute;
+        left: -10000px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+      .skip-to-main:focus {
+        position: static;
+        width: auto;
+        height: auto;
+      }
+    </style>
+
+    <!-- Preload critical fonts -->
+    <link rel="preload" href="{{ 'fonts.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'fonts.css' | asset_url }}"></noscript>
+
+    <!-- Preload critical CSS -->
+    <link rel="preload" href="{{ 'bootstrap.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{{ 'theme.css' | asset_url }}?v={{ 'now' | date: '%s' }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- Non-critical CSS loaded asynchronously -->
+    <link rel="stylesheet" href="{{ 'focus-visible.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'font-icons.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'photoswipe.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'animate.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'styles.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'responsive-images.css' | asset_url }}" media="print" onload="this.media='all'">
+
+    <!-- Fallback for browsers that don't support preload -->
+    <noscript>
+      <link rel="stylesheet" href="{{ 'bootstrap.min.css' | asset_url }}">
+      <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}?v={{ 'now' | date: '%s' }}">
+      <link rel="stylesheet" href="{{ 'focus-visible.css' | asset_url }}">
+      <link rel="stylesheet" href="{{ 'font-icons.css' | asset_url }}">
+      <link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}">
+      <link rel="stylesheet" href="{{ 'photoswipe.css' | asset_url }}">
+      <link rel="stylesheet" href="{{ 'animate.css' | asset_url }}">
+      <link rel="stylesheet" href="{{ 'styles.css' | asset_url }}">
+      <link rel="stylesheet" href="{{ 'responsive-images.css' | asset_url }}">
+    </noscript>
+
+    <!-- Conditional CSS loading -->
+    {% if template contains 'product' %}
+      <link rel="stylesheet" href="{{ 'image-compare-viewer.min.css' | asset_url }}" media="print" onload="this.media='all'">
+      <link rel="stylesheet" href="{{ 'product-section.css' | asset_url }}" media="print" onload="this.media='all'">
+      <noscript>
+        <link rel="stylesheet" href="{{ 'image-compare-viewer.min.css' | asset_url }}">
+        <link rel="stylesheet" href="{{ 'product-section.css' | asset_url }}">
+      </noscript>
+    {% endif %}
+
+    <!-- Tom Select CSS loaded conditionally -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.bootstrap5.min.css" media="print" onload="this.media='all'">
+    <noscript>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.bootstrap5.min.css">
+    </noscript>
+
+    <!-- CSS loading polyfill -->
+    <script>
+      // Polyfill for browsers that don't support rel="preload"
+      !function(n){"use strict";n.loadCSS||(n.loadCSS=function(){});var o=loadCSS.relpreload={};if(o.support=function(){var e;try{e=n.document.createElement("link").relList.supports("preload")}catch(t){e=!1}return function(){return e}}(),o.bindMediaToggle=function(t){var e=t.media||"all";function a(){t.addEventListener?t.removeEventListener("load",a):t.attachEvent&&t.detachEvent("onload",a),t.setAttribute("onload",null),t.media=e}t.addEventListener?t.addEventListener("load",a):t.attachEvent&&t.attachEvent("onload",a),setTimeout(function(){t.rel="stylesheet",t.media="only x"}),setTimeout(a,3e3)},o.poly=function(){if(!o.support())for(var t=n.document.getElementsByTagName("link"),e=0;e<t.length;e++){var a=t[e];"preload"!==a.rel||"style"!==a.getAttribute("as")||a.getAttribute("data-loadcss")||(a.setAttribute("data-loadcss",!0),o.bindMediaToggle(a))}},!o.support()){o.poly();var t=n.setInterval(o.poly,500);n.addEventListener?n.addEventListener("load",function(){o.poly(),n.clearInterval(t)}):n.attachEvent&&n.attachEvent("onload",function(){o.poly(),n.clearInterval(t)})}"undefined"!=typeof exports?exports.loadCSS=loadCSS:n.loadCSS=loadCSS}("undefined"!=typeof global?global:this);
+    </script>
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
@@ -78,40 +145,6 @@
 
     <!-- CSRF Protection -->
     <meta name="csrf-token" content="{{ csrf_token }}">
-
-    <!-- Critical CSS - Load immediately for above-the-fold content -->
-    <link rel="stylesheet" href="{{ 'fonts.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'bootstrap.min.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}?v={{ 'now' | date: '%s' }}" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="{{ 'focus-visible.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'font-icons.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'photoswipe.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'animate.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'styles.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'responsive-images.css' | asset_url }}">
-    
-    <!-- Remove duplicate stylesheet_tag loads -->
-    
-    <!-- Fallback for browsers that don't support preload -->
-    <noscript>
-      <link rel="stylesheet" href="{{ 'font-icons.css' | asset_url }}">
-      <link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}">
-      <link rel="stylesheet" href="{{ 'photoswipe.css' | asset_url }}">
-      <link rel="stylesheet" href="{{ 'animate.css' | asset_url }}">
-      <link rel="stylesheet" href="{{ 'styles.css' | asset_url }}">
-      <link rel="stylesheet" href="{{ 'responsive-images.css' | asset_url }}">
-    </noscript>
-    
-    <!-- Conditional CSS loading -->
-    {% if template contains 'product' %}
-      <link rel="preload" href="{{ 'image-compare-viewer.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-      <link rel="preload" href="{{ 'product-section.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-      <noscript>
-        <link rel="stylesheet" href="{{ 'image-compare-viewer.min.css' | asset_url }}">
-        <link rel="stylesheet" href="{{ 'product-section.css' | asset_url }}">
-      </noscript>
-    {% endif %}
 
     <!-- Critical JavaScript - Load with high priority -->
     <!-- <script src="{{ 'jquery.min.js' | asset_url }}" defer></script> -->
