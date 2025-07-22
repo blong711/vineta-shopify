@@ -21,6 +21,7 @@
     <link rel="preload" href="{{ 'fonts.css' | asset_url }}" as="style">
     <link rel="preload" href="{{ 'bootstrap.min.css' | asset_url }}" as="style">
     <link rel="preload" href="{{ 'theme.css' | asset_url }}" as="style">
+    <link rel="preload" href="{{ 'focus-visible.css' | asset_url }}" as="style">
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
@@ -83,6 +84,7 @@
     <link rel="stylesheet" href="{{ 'fonts.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'bootstrap.min.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}?v={{ 'now' | date: '%s' }}">
+    <link rel="stylesheet" href="{{ 'focus-visible.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'font-icons.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'bootstrap-select.min.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}">
@@ -127,6 +129,9 @@
   </head>
 
   <body class="{% if template == 'page.phonecase' %}bg-surface-2{% endif %}">
+    <!-- Skip to main content link for keyboard users -->
+    <a href="#main-content" class="skip-to-main">Skip to main content</a>
+    
     <!-- Scroll Top -->
     <button id="goTop" aria-label="Scroll to top of page">
       <span class="border-progress"></span>

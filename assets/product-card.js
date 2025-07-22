@@ -28,67 +28,116 @@ const ProductCard = {
 
   // Add product row to cart table (similar to gift wrap functionality)
   addProductToCartTable(cartData, addedItem) {
-    if (!this.isCartPage()) return;
-
-    const cartTableBody = document.querySelector('.table-page-cart tbody');
+    const cartTableBody = document.querySelector('.tf-cart-table tbody');
     if (!cartTableBody) return;
 
-    // Check if item already exists in table
-    const existingRow = cartTableBody.querySelector(`[data-variant-id="${addedItem.variant_id}"]`);
-    if (existingRow) {
-      // Update quantity of existing row
-      const quantityInput = existingRow.querySelector('.quantity-product');
-      if (quantityInput) {
-        const currentQuantity = parseInt(quantityInput.value) || 0;
-        const newQuantity = currentQuantity + 1;
-        quantityInput.value = newQuantity;
-        
-        // Update the item's total price
-        const itemTotal = existingRow.querySelector('.cart-total');
-        if (itemTotal) {
-          const linePrice = (addedItem.final_price * newQuantity);
-          itemTotal.textContent = this.formatMoney(linePrice);
-        }
-      }
-      return;
+    const newRow = document.createElement('tr');
+    newRow.className = 'tf-cart-item file-delete';
+    newRow.dataset.variantId = addedItem.variant_id;
+    
+    // Create product cell
+    const productCell = HTMLSanitizer.createElement('td', { class: 'tf-cart-item_product' });
+    const productLink = HTMLSanitizer.createElement('a', {
+      href: HTMLSanitizer.sanitizeUrl(addedItem.url),
+      class: 'img-box'
+    });
+    const productImage = HTMLSanitizer.createElement('img', {
+      src: HTMLSanitizer.sanitizeUrl(addedItem.image),
+      alt: HTMLSanitizer.sanitizeText(addedItem.title),
+      width: '150',
+      height: '150'
+    });
+    productLink.appendChild(productImage);
+    productCell.appendChild(productLink);
+
+    const cartInfo = HTMLSanitizer.createElement('div', { class: 'cart-info' });
+    const nameLink = HTMLSanitizer.createElement('a', {
+      href: HTMLSanitizer.sanitizeUrl(addedItem.url),
+      class: 'name text-md link fw-medium'
+    }, HTMLSanitizer.sanitizeText(addedItem.product_title));
+    cartInfo.appendChild(nameLink);
+
+    if (addedItem.variant_title) {
+      const variantsDiv = HTMLSanitizer.createElement('div', { class: 'variants' }, 
+        HTMLSanitizer.sanitizeText(addedItem.variant_title)
+      );
+      cartInfo.appendChild(variantsDiv);
     }
 
-    // Create new row for the added item
-    const newRow = document.createElement('tr');
-    newRow.className = 'tf-cart-item';
-    newRow.setAttribute('data-item-id', addedItem.key);
-    newRow.setAttribute('data-variant-id', addedItem.variant_id);
-    
-    newRow.innerHTML = `
-      <td class="tf-cart-item_product">
-        <a href="${addedItem.url}" class="img-box">
-          <img src="${addedItem.image}" alt="${addedItem.title}" width="150" height="150">
-        </a>
-        <div class="cart-info">
-          <a href="${addedItem.url}" class="name text-md link fw-medium">${addedItem.product_title}</a>
-          ${addedItem.variant_title ? `<div class="variants">${addedItem.variant_title}</div>` : ''}
-          <div></div>
-          <span class="remove-cart link remove" data-item-id="${addedItem.key}" data-variant-id="${addedItem.variant_id}">Remove</span>
-        </div>
-      </td>
-      <td class="tf-cart-item_price text-center" data-cart-title="Price">
-        <span class="cart-price price-on-sale text-md fw-medium">${this.formatMoney(addedItem.final_price)}</span>
-      </td>
-      <td class="tf-cart-item_quantity" data-cart-title="Quantity">
-        <div class="wg-quantity">
-          <button type="button" class="btn-quantity minus" data-variant-id="${addedItem.variant_id}" data-item-id="${addedItem.key}">-</button>
-          <input class="quantity-product" type="text" name="updates[]" value="${addedItem.quantity || 1}" min="0" data-variant-id="${addedItem.variant_id}" data-item-id="${addedItem.key}">
-          <button type="button" class="btn-quantity plus" data-variant-id="${addedItem.variant_id}" data-item-id="${addedItem.key}">+</button>
-        </div>
-      </td>
-      <td class="tf-cart-item_total text-center" data-cart-title="Total">
-        <div class="cart-total total-price text-md fw-medium">${this.formatMoney(addedItem.final_line_price)}</div>
-      </td>
-    `;
-    
+    const spacerDiv = HTMLSanitizer.createElement('div');
+    cartInfo.appendChild(spacerDiv);
+
+    const removeLink = HTMLSanitizer.createElement('span', {
+      class: 'remove-cart link remove',
+      'data-item-id': addedItem.key,
+      'data-variant-id': addedItem.variant_id
+    }, 'Remove');
+    cartInfo.appendChild(removeLink);
+    productCell.appendChild(cartInfo);
+    newRow.appendChild(productCell);
+
+    // Create price cell
+    const priceCell = HTMLSanitizer.createElement('td', {
+      class: 'tf-cart-item_price text-center',
+      'data-cart-title': 'Price'
+    });
+    const priceSpan = HTMLSanitizer.createElement('span', {
+      class: 'cart-price price-on-sale text-md fw-medium'
+    }, this.formatMoney(addedItem.final_price));
+    priceCell.appendChild(priceSpan);
+    newRow.appendChild(priceCell);
+
+    // Create quantity cell
+    const quantityCell = HTMLSanitizer.createElement('td', {
+      class: 'tf-cart-item_quantity',
+      'data-cart-title': 'Quantity'
+    });
+    const quantityDiv = HTMLSanitizer.createElement('div', { class: 'wg-quantity' });
+
+    const minusButton = HTMLSanitizer.createElement('button', {
+      type: 'button',
+      class: 'btn-quantity minus',
+      'data-variant-id': addedItem.variant_id,
+      'data-item-id': addedItem.key
+    }, '-');
+
+    const quantityInput = HTMLSanitizer.createElement('input', {
+      class: 'quantity-product',
+      type: 'text',
+      name: 'updates[]',
+      value: addedItem.quantity || '1',
+      min: '0',
+      'data-variant-id': addedItem.variant_id,
+      'data-item-id': addedItem.key
+    });
+
+    const plusButton = HTMLSanitizer.createElement('button', {
+      type: 'button',
+      class: 'btn-quantity plus',
+      'data-variant-id': addedItem.variant_id,
+      'data-item-id': addedItem.key
+    }, '+');
+
+    quantityDiv.appendChild(minusButton);
+    quantityDiv.appendChild(quantityInput);
+    quantityDiv.appendChild(plusButton);
+    quantityCell.appendChild(quantityDiv);
+    newRow.appendChild(quantityCell);
+
+    // Create total cell
+    const totalCell = HTMLSanitizer.createElement('td', {
+      class: 'tf-cart-item_total text-center',
+      'data-cart-title': 'Total'
+    });
+    const totalDiv = HTMLSanitizer.createElement('div', {
+      class: 'cart-total total-price text-md fw-medium'
+    }, this.formatMoney(addedItem.final_line_price));
+    totalCell.appendChild(totalDiv);
+    newRow.appendChild(totalCell);
+
     // Add the new row to the table
     cartTableBody.appendChild(newRow);
-    
+
     // Re-bind event listeners for the new item
     this.bindCartItemEventListeners(newRow);
   },
@@ -167,7 +216,7 @@ const ProductCard = {
       button.addEventListener('click', async function() {
         const variantId = this.dataset.variantId;
         const input = this.parentElement.querySelector('.quantity-product');
-        const currentValue = parseInt(input.value);
+        const currentValue = parseInt(input.value) || 0;
         
         if (!variantId) return;
 

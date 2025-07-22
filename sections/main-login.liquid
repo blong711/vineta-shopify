@@ -151,7 +151,8 @@ document.addEventListener('DOMContentLoaded', function() {
       .then(function(html) {
         // Create a temporary div to parse the response
         var tempDiv = document.createElement('div');
-        tempDiv.innerHTML = html;
+        // Use HTMLSanitizer to safely set HTML content
+        HTMLSanitizer.setInnerHTML(tempDiv, html);
         
         // Check if there are any error messages in the response
         var errorMessages = tempDiv.querySelectorAll('.form-message.error');
@@ -161,13 +162,15 @@ document.addEventListener('DOMContentLoaded', function() {
           // Show error message
           var errorContainer = document.createElement('div');
           errorContainer.className = 'form-message error';
-          errorContainer.innerHTML = errorMessages[0].innerHTML;
+          // Sanitize error message content
+          HTMLSanitizer.setInnerHTML(errorContainer, errorMessages[0].innerHTML);
           resetForm.insertBefore(errorContainer, resetForm.firstChild);
         } else if (successMessages.length > 0) {
           // Show success message
           var successContainer = document.createElement('div');
           successContainer.className = 'form-message success';
-          successContainer.innerHTML = successMessages[0].innerHTML;
+          // Sanitize success message content
+          HTMLSanitizer.setInnerHTML(successContainer, successMessages[0].innerHTML);
           resetForm.insertBefore(successContainer, resetForm.firstChild);
           
           // Clear the form
@@ -176,7 +179,28 @@ document.addEventListener('DOMContentLoaded', function() {
           // Generic success message if no specific message found
           var genericSuccess = document.createElement('div');
           genericSuccess.className = 'form-message success';
-          genericSuccess.innerHTML = '<svg class="success-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg><span>{{ "sections.main_login.reset_success" | t }}</span>';
+          // Use HTMLSanitizer.createElement for safe HTML creation
+          const successIcon = HTMLSanitizer.createElement('svg', {
+            class: 'success-icon',
+            xmlns: 'http://www.w3.org/2000/svg',
+            width: '20',
+            height: '20',
+            viewBox: '0 0 20 20',
+            fill: 'currentColor'
+          });
+          const path = HTMLSanitizer.createElement('path', {
+            'fill-rule': 'evenodd',
+            d: 'M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z',
+            'clip-rule': 'evenodd'
+          });
+          successIcon.appendChild(path);
+          genericSuccess.appendChild(successIcon);
+          
+          const messageSpan = HTMLSanitizer.createElement('span', {}, 
+            "{{ 'sections.main_login.reset_success' | t }}"
+          );
+          genericSuccess.appendChild(messageSpan);
+          
           resetForm.insertBefore(genericSuccess, resetForm.firstChild);
           
           // Clear the form

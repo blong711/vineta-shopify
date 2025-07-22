@@ -202,40 +202,81 @@
       
       if (!appliedFilters) return;
       
-      appliedFilters.innerHTML = '';
+      // Clear existing filters
+      while (appliedFilters.firstChild) {
+        appliedFilters.removeChild(appliedFilters.firstChild);
+      }
 
-      // Sanitize all filter values before adding to DOM
+      // Helper function to create filter tag
+      function createFilterTag(filterType, label, value) {
+        const filterTag = HTMLSanitizer.createElement('span', { class: 'filter-tag' });
+        const removeTag = HTMLSanitizer.createElement('span', {
+          class: 'remove-tag icon-close',
+          'data-filter': filterType
+        });
+        const labelText = HTMLSanitizer.createElement('span', {}, `${label}: ${value}`);
+        
+        filterTag.appendChild(removeTag);
+        filterTag.appendChild(labelText);
+        return filterTag;
+      }
+
+      // Add availability filter
       if (filters.availability) {
-        const sanitizedAvailability = document.createElement('div');
-        sanitizedAvailability.textContent = filters.availability;
-        appliedFilters.innerHTML +=
-          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="availability"></span> Availability: ${sanitizedAvailability.innerHTML} </span>`;
+        appliedFilters.appendChild(
+          createFilterTag('availability', 'Availability', filters.availability)
+        );
       }
-      if (filters.brands) { 
-        const sanitizedBrand = document.createElement('div');
-        sanitizedBrand.textContent = filters.brands;
-        appliedFilters.innerHTML +=
-          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="brand"></span>Brand: ${sanitizedBrand.innerHTML}</span>`;
+
+      // Add brand filter
+      if (filters.brands) {
+        appliedFilters.appendChild(
+          createFilterTag('brand', 'Brand', filters.brands)
+        );
       }
+
+      // Add price filter
       if (filters.minPrice > minPrice || filters.maxPrice < maxPrice) {
-        appliedFilters.innerHTML +=
-          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="price"></span>Price: $${filters.minPrice} - $${filters.maxPrice}</span>`;
+        const priceTag = HTMLSanitizer.createElement('span', { class: 'filter-tag' });
+        const removeTag = HTMLSanitizer.createElement('span', {
+          class: 'remove-tag icon-close',
+          'data-filter': 'price'
+        });
+        const priceText = HTMLSanitizer.createElement('span', {}, 
+          `Price: $${filters.minPrice} - $${filters.maxPrice}`
+        );
+        priceTag.appendChild(removeTag);
+        priceTag.appendChild(priceText);
+        appliedFilters.appendChild(priceTag);
       }
+
+      // Add color filter
       if (filters.color) {
-        const sanitizedColor = document.createElement('div');
-        sanitizedColor.textContent = filters.color;
-        appliedFilters.innerHTML +=
-          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="color"></span>Color: ${sanitizedColor.innerHTML}</span>`;
+        appliedFilters.appendChild(
+          createFilterTag('color', 'Color', filters.color)
+        );
       }
+
+      // Add size filter
       if (filters.size) {
-        const sanitizedSize = document.createElement('div');
-        sanitizedSize.textContent = filters.size;
-        appliedFilters.innerHTML +=
-          `<span class="filter-tag"><span class="remove-tag icon-close" data-filter="size"></span>Size: ${sanitizedSize.innerHTML}</span>`;
+        appliedFilters.appendChild(
+          createFilterTag('size', 'Size', filters.size)
+        );
       }
+
+      // Add sale filter
       if (filters.sale) {
-        appliedFilters.innerHTML +=
-          `<span class="filter-tag on-sale d-none">On Sale <span class="remove-tag icon-close" data-filter="sale"></span></span>`;
+        const saleTag = HTMLSanitizer.createElement('span', { 
+          class: 'filter-tag on-sale d-none'
+        });
+        const removeTag = HTMLSanitizer.createElement('span', {
+          class: 'remove-tag icon-close',
+          'data-filter': 'sale'
+        });
+        const saleText = HTMLSanitizer.createElement('span', {}, 'On Sale');
+        saleTag.appendChild(saleText);
+        saleTag.appendChild(removeTag);
+        appliedFilters.appendChild(saleTag);
       }
 
       const hasFiltersApplied = appliedFilters.children.length > 0;

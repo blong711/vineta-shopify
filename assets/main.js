@@ -731,10 +731,12 @@ function setStyle(el, prop, value) {
             // Show success message
             var myAccountContent = qs(".my-acount-content");
             if (myAccountContent) {
-              var successMessage = document.createElement("div");
-              successMessage.className = "alert alert-success";
-              successMessage.textContent = "Address deleted successfully.";
-              myAccountContent.prepend(successMessage);
+              var successMessage = HTMLSanitizer.createElement('div', {
+                class: 'alert alert-success'
+              }, 'Address deleted successfully.');
+              
+              myAccountContent.insertBefore(successMessage, myAccountContent.firstChild);
+              
               setTimeout(function() {
                 if (successMessage && successMessage.parentNode) {
                   successMessage.style.display = 'none';
@@ -747,15 +749,15 @@ function setStyle(el, prop, value) {
           }
         })
         .catch(function(error) {
-          console.error('Error deleting address:', error);
-          
           // Show error message
           var myAccountContent = qs(".my-acount-content");
           if (myAccountContent) {
-            var errorMessage = document.createElement("div");
-            errorMessage.className = "alert alert-danger";
-            errorMessage.textContent = "Failed to delete address. Please try again.";
-            myAccountContent.prepend(errorMessage);
+            var errorMessage = HTMLSanitizer.createElement('div', {
+              class: 'alert alert-danger'
+            }, 'Failed to delete address. Please try again.');
+            
+            myAccountContent.insertBefore(errorMessage, myAccountContent.firstChild);
+            
             setTimeout(function() {
               if (errorMessage && errorMessage.parentNode) {
                 errorMessage.style.display = 'none';

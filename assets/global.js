@@ -3034,40 +3034,21 @@ window.closeCartDrawer = function() {
  */
 class CartNotificationManager {
   constructor() {
-    this.notificationQueue = [];
-    this.isShowing = false;
-    this.addStyles();
-  }
-
-  /**
-   * Show a notification message
-   * @param {string} message - Message to display
-   * @param {string} type - Type of notification ('success', 'error', 'warning', 'info')
-   * @param {number} duration - Duration in milliseconds (default: 4000)
-   */
-  show(message, type = 'success', duration = 4000) {
-    const notification = {
-      id: Date.now() + Math.random(),
-      message,
-      type,
-      duration
+    this.notifications = [];
+    this.notificationTypes = {
+      success: {
+        icon: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>',
+        duration: 3000
+      },
+      error: {
+        icon: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"/></svg>',
+        duration: 5000
+      },
+      warning: {
+        icon: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-8.414l2.293-2.293a1 1 0 011.414 1.414L12.414 10l2.293 2.293a1 1 0 01-1.414 1.414L11 11.414V14a1 1 0 11-2 0v-2.586l-2.293 2.293a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 011.414-1.414L9 8.586V6a1 1 0 112 0v2.586z"/></svg>',
+        duration: 4000
+      }
     };
-
-    this.notificationQueue.push(notification);
-    this.processQueue();
-  }
-
-  /**
-   * Process the notification queue
-   */
-  processQueue() {
-    if (this.isShowing || this.notificationQueue.length === 0) {
-      return;
-    }
-
-    this.isShowing = true;
-    const notification = this.notificationQueue.shift();
-    this.displayNotification(notification);
   }
 
   /**
@@ -3079,22 +3060,52 @@ class CartNotificationManager {
     const existingNotifications = document.querySelectorAll(`.cart-notification.${notification.type}`);
     existingNotifications.forEach(note => note.remove());
 
-    // Create notification element
-    const notificationEl = document.createElement('div');
-    notificationEl.className = `cart-notification ${notification.type}`;
-    notificationEl.innerHTML = `
-      <div class="notification-content">
-        <div class="notification-icon">
-          ${this.getIcon(notification.type)}
-        </div>
-        <div class="notification-message">${notification.message}</div>
-        <button class="notification-close" aria-label="${cartT.close_notification || 'Close notification'}">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
-            <path d="M1 1l10 10M1 11L11 1"/>
-          </svg>
-        </button>
-      </div>
-    `;
+    // Create notification element with HTMLSanitizer
+    const notificationEl = HTMLSanitizer.createElement('div', {
+      class: `cart-notification ${notification.type}`
+    });
+
+    // Create notification content
+    const contentDiv = HTMLSanitizer.createElement('div', {
+      class: 'notification-content'
+    });
+
+    // Create icon container
+    const iconDiv = HTMLSanitizer.createElement('div', {
+      class: 'notification-icon'
+    });
+    
+    // Safely set icon SVG
+    HTMLSanitizer.setInnerHTML(iconDiv, this.notificationTypes[notification.type].icon);
+    contentDiv.appendChild(iconDiv);
+
+    // Create message
+    const messageDiv = HTMLSanitizer.createElement('div', {
+      class: 'notification-message'
+    }, HTMLSanitizer.sanitizeText(notification.message));
+    contentDiv.appendChild(messageDiv);
+
+    // Create close button
+    const closeButton = HTMLSanitizer.createElement('button', {
+      class: 'notification-close',
+      'aria-label': cartT.close_notification || 'Close notification'
+    });
+    
+    // Add close button SVG
+    const closeSvg = HTMLSanitizer.createElement('svg', {
+      width: '12',
+      height: '12',
+      viewBox: '0 0 12 12',
+      fill: 'currentColor'
+    });
+    const path = HTMLSanitizer.createElement('path', {
+      d: 'M1 1l10 10M1 11L11 1'
+    });
+    closeSvg.appendChild(path);
+    closeButton.appendChild(closeSvg);
+    contentDiv.appendChild(closeButton);
+
+    notificationEl.appendChild(contentDiv);
 
     // Add to page
     document.body.appendChild(notificationEl);
@@ -3105,163 +3116,14 @@ class CartNotificationManager {
     });
 
     // Add close button functionality
-    const closeBtn = notificationEl.querySelector('.notification-close');
-    closeBtn.addEventListener('click', () => {
+    closeButton.addEventListener('click', () => {
       this.hideNotification(notificationEl);
     });
 
     // Auto-hide after duration
     setTimeout(() => {
       this.hideNotification(notificationEl);
-    }, notification.duration);
-  }
-
-  /**
-   * Hide a notification
-   * @param {HTMLElement} notificationEl - Notification element
-   */
-  hideNotification(notificationEl) {
-    notificationEl.classList.remove('show');
-    setTimeout(() => {
-      if (notificationEl.parentNode) {
-        notificationEl.remove();
-      }
-      this.isShowing = false;
-      this.processQueue();
-    }, 300);
-  }
-
-  /**
-   * Get icon for notification type
-   * @param {string} type - Notification type
-   * @returns {string} SVG icon
-   */
-  getIcon(type) {
-    const icons = {
-      success: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>',
-      error: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>',
-      warning: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>',
-      info: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>'
-    };
-    return icons[type] || icons.info;
-  }
-
-  /**
-   * Add notification styles
-   */
-  addStyles() {
-    if (document.getElementById('cart-notification-styles')) return;
-    
-    const style = document.createElement('style');
-    style.id = 'cart-notification-styles';
-    style.textContent = `
-      .cart-notification {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: #fff;
-        color: #333;
-        padding: 0;
-        border-radius: 8px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        z-index: 10000;
-        transform: translateX(100%);
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        max-width: 400px;
-        min-width: 300px;
-        border: 1px solid #e5e7eb;
-        overflow: hidden;
-      }
-      
-      .cart-notification.show {
-        transform: translateX(0);
-      }
-      
-      .cart-notification .notification-content {
-        display: flex;
-        align-items: center;
-        padding: 16px;
-        gap: 12px;
-      }
-      
-      .cart-notification .notification-icon {
-        flex-shrink: 0;
-        width: 20px;
-        height: 20px;
-      }
-      
-      .cart-notification .notification-message {
-        flex: 1;
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 1.4;
-      }
-      
-      .cart-notification .notification-close {
-        flex-shrink: 0;
-        background: none;
-        border: none;
-        padding: 4px;
-        cursor: pointer;
-        opacity: 0.6;
-        transition: opacity 0.2s;
-        border-radius: 4px;
-      }
-      
-      .cart-notification .notification-close:hover {
-        opacity: 1;
-        background: rgba(0,0,0,0.05);
-      }
-      
-      .cart-notification.success {
-        border-left: 4px solid #10b981;
-      }
-      
-      .cart-notification.success .notification-icon {
-        color: #10b981;
-      }
-      
-      .cart-notification.error {
-        border-left: 4px solid #ef4444;
-      }
-      
-      .cart-notification.error .notification-icon {
-        color: #ef4444;
-      }
-      
-      .cart-notification.warning {
-        border-left: 4px solid #f59e0b;
-      }
-      
-      .cart-notification.warning .notification-icon {
-        color: #f59e0b;
-      }
-      
-      .cart-notification.info {
-        border-left: 4px solid #3b82f6;
-      }
-      
-      .cart-notification.info .notification-icon {
-        color: #3b82f6;
-      }
-      
-      @media (max-width: 768px) {
-        .cart-notification {
-          top: 10px;
-          right: 10px;
-          left: 10px;
-          max-width: none;
-          min-width: auto;
-          transform: translateY(-100%);
-        }
-        
-        .cart-notification.show {
-          transform: translateY(0);
-        }
-      }
-    `;
-    
-    document.head.appendChild(style);
+    }, notification.duration || this.notificationTypes[notification.type].duration);
   }
 }
 
@@ -3284,3 +3146,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ... existing code ...
+
+// Make HTMLSanitizer available globally
+window.HTMLSanitizer = HTMLSanitizer;

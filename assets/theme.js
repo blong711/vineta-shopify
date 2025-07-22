@@ -42,11 +42,28 @@ document.addEventListener('DOMContentLoaded', () => {
           // Update price
           const priceContainer = form.querySelector('.product-price');
           if (priceContainer && priceElement) {
-            let priceHtml = priceElement.textContent;
+            // Create price elements safely using HTMLSanitizer
+            const priceWrapper = HTMLSanitizer.createElement('div');
+            
+            // Add main price
+            const mainPrice = HTMLSanitizer.createElement('span', {
+              class: 'product-price__main'
+            }, priceElement.textContent);
+            priceWrapper.appendChild(mainPrice);
+            
+            // Add compare price if exists
             if (comparePriceElement && comparePriceElement.textContent) {
-              priceHtml += `<span class="product-price__compare">${comparePriceElement.textContent}</span>`;
+              const comparePrice = HTMLSanitizer.createElement('span', {
+                class: 'product-price__compare'
+              }, comparePriceElement.textContent);
+              priceWrapper.appendChild(comparePrice);
             }
-            priceContainer.innerHTML = priceHtml;
+            
+            // Clear and update price container
+            while (priceContainer.firstChild) {
+              priceContainer.removeChild(priceContainer.firstChild);
+            }
+            priceContainer.appendChild(priceWrapper);
           }
 
           // Update availability and button state

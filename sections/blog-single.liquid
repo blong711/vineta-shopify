@@ -312,13 +312,16 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(html => {
       // Create a temporary div to parse the response
       const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = html;
+      // Use HTMLSanitizer to safely set HTML content
+      HTMLSanitizer.setInnerHTML(tempDiv, html);
       
       // Check for success message
       const successMsg = tempDiv.querySelector('.comment-success');
       if (successMsg) {
         // Insert success message before the form
         const clonedMsg = successMsg.cloneNode(true);
+        // Sanitize the cloned message content
+        HTMLSanitizer.setInnerHTML(clonedMsg, successMsg.innerHTML);
         commentForm.parentNode.insertBefore(clonedMsg, commentForm);
         // Clear the form
         commentForm.reset();
@@ -335,6 +338,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (errorMsg) {
         // Insert error message before the form
         const clonedMsg = errorMsg.cloneNode(true);
+        // Sanitize the cloned message content
+        HTMLSanitizer.setInnerHTML(clonedMsg, errorMsg.innerHTML);
         commentForm.parentNode.insertBefore(clonedMsg, commentForm);
         // Auto-hide after 8 seconds (longer for errors)
         setTimeout(() => {
