@@ -23,6 +23,7 @@
   --body-font-size-desktop: {{ settings.body_font_size_desktop }}px;
   --text-sm-mobile: {{ settings.body_font_size_mobile | minus: 2 }}px;
   --text-sm-desktop: {{ settings.body_font_size_desktop | minus: 2 }}px;
+  --primary-button: {{ settings.primary_button }};
   
   /* Layout */
   --container-width: {{ settings.container_width }};
@@ -203,5 +204,19 @@ h1, h2, h3, h4, h5, h6 {
 /* Optionally, customize the visible outline color */
 :focus-visible {
   outline: none;
+}
+body { margin: 0; padding: 0; }
+.skip-to-main { 
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-to-main:focus {
+  position: static;
+  width: auto;
+  height: auto;
 }
 /* Add more critical CSS as needed */

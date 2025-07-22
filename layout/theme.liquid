@@ -17,26 +17,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://ajax.googleapis.com" crossorigin>
     
-    <!-- Critical CSS - Inline the most important styles -->
-    <style>
-      /* Critical CSS for above-the-fold content */
-      :root { --primary-button: {{ settings.primary_button }}; }
-      body { margin: 0; padding: 0; }
-      .skip-to-main { 
-        position: absolute;
-        left: -10000px;
-        top: auto;
-        width: 1px;
-        height: 1px;
-        overflow: hidden;
-      }
-      .skip-to-main:focus {
-        position: static;
-        width: auto;
-        height: auto;
-      }
-    </style>
-
     <!-- Preload critical fonts -->
     <link rel="preload" href="{{ 'fonts.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="{{ 'fonts.css' | asset_url }}"></noscript>
@@ -51,7 +31,7 @@
     <link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="{{ 'photoswipe.css' | asset_url }}" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="{{ 'animate.css' | asset_url }}" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="{{ 'styles.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'styles.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'responsive-images.css' | asset_url }}" media="print" onload="this.media='all'">
 
     <!-- Fallback for browsers that don't support preload -->
