@@ -98,7 +98,8 @@
                 {%- if block.settings.show_language -%}
                   <div class="tf-languages">
                     {% assign current_language = request.locale.iso_code %}
-                    <select class="image-select center style-default type-languages" name="language">
+                    <label for="language-selector" class="visually-hidden">{{ 'general.accessibility.language_selector' | t }}</label>
+                    <select id="language-selector" class="image-select center style-default type-languages" name="language" aria-label="{{ 'general.accessibility.language_selector' | t }}">
                       {% for locale in shop.published_locales %}
                         <option value="{{ locale.iso_code }}" {% if locale.iso_code == current_language %}selected{% endif %} {% if locale.primary %}data-primary="true"{% endif %}>
                           {{ locale.name }}
@@ -109,7 +110,8 @@
                 {%- endif -%}
                 {%- if block.settings.show_currency -%}
                   <div class="tf-currencies">
-                    <select class="image-select center style-default type-currencies" name="currency">
+                    <label for="currency-selector" class="visually-hidden">{{ 'general.accessibility.currency_selector' | t }}</label>
+                    <select id="currency-selector" class="image-select center style-default type-currencies" name="currency" aria-label="{{ 'general.accessibility.currency_selector' | t }}">
                       {% for currency in shop.enabled_currencies %}
                         <option value="{{ currency.iso_code }}" {% if currency == cart.currency %}selected{% endif %}>
                           {{ currency.name }} ({{ currency.iso_code }} {{ currency.symbol }})
