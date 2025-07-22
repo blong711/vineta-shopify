@@ -96,13 +96,18 @@
     "social": {
       "share_on_facebook": "Share on Facebook",
       "share_on_twitter": "Tweet on Twitter",
-      "share_on_pinterest": "Pin on Pinterest"
+      "share_on_pinterest": "Pin on Pinterest",
+      "facebook": "Visit our Facebook page",
+      "instagram": "Visit our Instagram page",
+      "twitter": "Visit our Twitter page",
+      "pinterest": "Visit our Pinterest page"
     },
     "breadcrumbs": {
       "home": "Home",
       "home_link_title": "Back to the frontpage"
     },
     "search": {
+      "open_search": "Open search",
       "results_with_count": {
         "one": "{{ count }} search result for \"{{ terms }}\"",
         "other": "{{ count }} search results for \"{{ terms }}\""
@@ -119,7 +124,7 @@
       "facebook": "Facebook",
       "twitter": "Twitter",
       "pinterest": "Pinterest"
-    }
+    },
   },
   "blogs": {
     "article": {
@@ -177,7 +182,9 @@
       "empty": "Your cart is currently empty.",
       "continue_browsing_html": "Continue browsing <a href=\"/collections\">here</a>.",
       "cart_error": "There was an error while updating your cart. Please try again.",
-      "cart_quantity_error_html": "You can only add [quantity] of this item to your cart."
+      "cart_quantity_error_html": "You can only add [quantity] of this item to your cart.",
+      "view_cart": "View shopping cart",
+      "item_count": "items in cart"
     },
     "drawer": {
       "title": "Shopping cart",
@@ -557,7 +564,8 @@
       "account": "Account",
       "shop": "Shop",
       "wishlist": "Wishlist",
-      "cart": "Cart"
+      "cart": "Cart",
+      "login": "Sign In"
     },
     "newsletter_popup": {
       "newsletter": "Newsletter",
@@ -685,6 +693,10 @@
       "added": "Added!",
       "free_shipping_unlocked": "Congratulations! You've unlocked <span class='fw-medium'>Free Shipping</span>",
       "free_shipping_progress": "Spend <span class='fw-medium'>[amount]</span> more to get <span class='fw-medium'>Free Shipping</span>",
+      "decrease_quantity": "Decrease quantity",
+      "increase_quantity": "Increase quantity",
+      "add_to_cart_with_title": "Add to cart {{ title }}",
+      "add_to_compare": "Add to compare",
     },
     "main-password": {
       "settings": {
@@ -794,6 +806,9 @@
     }
   },
   "customer": {
+    "login": {
+      "sign_in": "Sign in to your account"
+    },
     "account": {
       "title": "My Account",
       "dashboard": "Dashboard",
@@ -804,6 +819,8 @@
       "welcome": "Hello {{ name }}!",
       "not_you": "not {{ name }}",
       "log_in": "Log in",
+      "my_account": "My Account",
+      "wishlist_count": "items in wishlist",
       "dashboard_notice": "Today is a great day to check your account page. You can check your last orders or have a look to your wishlist. Or maybe you can start to shop our latest offers?",
       "orders_box": {
         "title": "Orders",

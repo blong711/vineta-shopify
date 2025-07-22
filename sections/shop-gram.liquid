@@ -30,9 +30,13 @@
                   {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
                 {% endif %}
               </div>
-              <a href="{{ block.settings.link }}" class="box-icon hover-tooltip">
-                <span class="icon icon-cart2"></span>
-                <span class="tooltip">{{ block.settings.tooltip_text }}</span>
+              <a href="#" 
+                 class="box-icon hover-tooltip tooltip-left add-to-cart" 
+                 data-variant-id="{{ product.variants[0].id }}"
+                 data-quantity="1"
+                 aria-label="{{ block.settings.tooltip_text }}">
+                <span class="icon icon-cart2" aria-hidden="true"></span>
+                <span class="tooltip" aria-hidden="true">{{ block.settings.tooltip_text }}</span>
               </a>
             </div>
           </div>

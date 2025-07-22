@@ -117,8 +117,7 @@
                                   width="400"
                                   height="600"
                                   poster="{{ media.preview_image | image_url: width: 800 }}"
-                                  {% if section.settings.enable_video_loop %}loop{% endif %}
-                                  {% if section.settings.enable_video_autoplay %}autoplay{% endif %}>
+                                  {% if section.settings.enable_video_loop %}loop{% endif %}>
                                   {% for source in media.sources %}
                                     <source src="{{ source.url }}" type="{{ source.mime_type }}">
                                   {% endfor %}
@@ -452,16 +451,29 @@
                   {% if product.available %}
                       <div class="group-btn">
                         <div class="wg-quantity">
-                          <button class="btn-quantity minus-btn">-</button>
-                          <input class="quantity-product font-4" type="text" name="number" value="1" min="1">
-                          <button class="btn-quantity plus-btn">+</button>
+                          <button class="btn-quantity minus-btn" 
+                                  type="button"
+                                  aria-label="{{ 'sections.product.decrease_quantity' | t }}">
+                            <span aria-hidden="true">-</span>
+                          </button>
+                          <input class="quantity-product font-4" 
+                                 type="text" 
+                                 name="number" 
+                                 value="1" 
+                                 min="1"
+                                 aria-label="{{ 'sections.product.quantity' | t }}">
+                          <button class="btn-quantity plus-btn" 
+                                  type="button"
+                                  aria-label="{{ 'sections.product.increase_quantity' | t }}">
+                            <span aria-hidden="true">+</span>
+                          </button>
                         </div>
                         <button type="button"
                                 class="tf-btn hover-primary add-to-cart add-to-cart-btn" 
                                 data-variant-id="{{ product.selected_or_first_available_variant.id }}"
                                 data-quantity="1"
-                                aria-label="Add {{ product.title }} to cart">
-                          Add to cart
+                                aria-label="{{ 'sections.product.add_to_cart_with_title' | t: title: product.title }}">
+                          <span>{{ 'sections.product.add_to_cart' | t }}</span>
                         </button>
                       </div>
                       {% form 'product', product %}
@@ -545,14 +557,14 @@
                                  data-wishlist 
                                  data-id="{{ product.id }}" 
                                  data-action="add"
-                                 aria-label="Add to wishlist">
+                                 aria-label="{{ 'sections.product.add_to_wishlist' | t }}">
                                 <span class="wishlist-content add">
-                                  <i class="icon icon-heart"></i>
-                                  <span style="font-size: 14px" class="text">{{ 'sections.product.add_to_wishlist' | t }}</span>
+                                  <i class="icon icon-heart" aria-hidden="true"></i>
+                                  <span class="text">{{ 'sections.product.add_to_wishlist' | t }}</span>
                                 </span>
                                 <span class="wishlist-content remove">
-                                  <i class="icon icon-trash"></i>
-                                  <span style="font-size: 14px" class="text">{{ 'sections.product.remove_from_wishlist' | t }}</span>
+                                  <i class="icon icon-trash" aria-hidden="true"></i>
+                                  <span class="text">{{ 'sections.product.remove_from_wishlist' | t }}</span>
                                 </span>
                               </a>
                             {% endif %}
@@ -562,19 +574,29 @@
                                  data-compare 
                                  data-id="{{ product.id }}" 
                                  data-action="add"
-                                 aria-label="Add to compare">
-                                <i class="icon icon-compare2"></i>                              
-                                <span style="font-size: 14px" class="text">{{ 'sections.product.compare' | t }}</span>
+                                 aria-label="{{ 'sections.product.add_to_compare' | t }}">
+                                <i class="icon icon-compare2" aria-hidden="true"></i>                              
+                                <span class="text">{{ 'sections.product.compare' | t }}</span>
                               </a>
                             {% endif %}
                             {% if block.settings.show_ask_question %}
-                              <a href="#askQuestion" data-bs-toggle="modal" class="product-extra-icon link"><i class="icon icon-ask"></i>
-                              <span style="font-size: 14px" class="text">{{ 'sections.product.ask_question' | t }}</span>
+                              <a href="#askQuestion" 
+                                 data-bs-toggle="modal" 
+                                 class="product-extra-icon link"
+                                 aria-label="{{ 'sections.product.ask_question' | t }}"
+                                 aria-expanded="false">
+                                <i class="icon icon-ask" aria-hidden="true"></i>
+                                <span class="text">{{ 'sections.product.ask_question' | t }}</span>
                               </a>
                             {% endif %}
                             {% if block.settings.show_share %}
-                              <a href="#shareSocial" data-bs-toggle="modal" class="product-extra-icon link"><i class="icon icon-share"></i>
-                              <span style="font-size: 14px" class="text">{{ 'sections.product.share' | t }}</span>
+                              <a href="#shareSocial" 
+                                 data-bs-toggle="modal" 
+                                 class="product-extra-icon link"
+                                 aria-label="{{ 'sections.product.share' | t }}"
+                                 aria-expanded="false">
+                                <i class="icon icon-share" aria-hidden="true"></i>
+                                <span class="text">{{ 'sections.product.share' | t }}</span>
                               </a>
                             {% endif %}
                           </div>
@@ -942,20 +964,13 @@ document.addEventListener('DOMContentLoaded', function() {
           this.slides.forEach(slide => {
             const video = slide.querySelector('video');
             if (video) {
-              // Pause video initially
+              // Ensure video is paused initially
               video.pause();
-              
-              // Ensure video is loaded and ready
-              video.load();
+              video.currentTime = 0;
               
               // Add error handling
               video.addEventListener('error', function(e) {
                 console.log('Video error:', e);
-              });
-              
-              // Add load event to ensure video is ready
-              video.addEventListener('loadedmetadata', function() {
-                console.log('Video loaded:', video.src);
               });
             }
           });
@@ -1001,18 +1016,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
           });
 
-          // Play video in active slide if it exists
+          // Reset any playing videos when switching slides
           const activeVideo = activeSlide.querySelector('video');
           if (activeVideo) {
-            // Reset video to beginning
             activeVideo.currentTime = 0;
-            
-            // Try to play the video
-            activeVideo.play().catch(error => {
-              console.log('Video playback failed:', error);
-              // If autoplay fails, ensure video is ready for manual play
-              activeVideo.load();
-            });
+            activeVideo.pause();
           }
         }
       }
@@ -3056,13 +3064,6 @@ function updateMainAddToCartButton(variant) {
       "id": "enable_variant_by_image",
       "label": "Enable Variant Selection by Image",
       "info": "Allow customers to select variants by clicking on product images",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_video_autoplay",
-      "label": "Enable Video Autoplay",
-      "info": "Automatically play videos when they become visible (muted)",
       "default": true
     },
     {

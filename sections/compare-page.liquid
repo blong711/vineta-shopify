@@ -45,10 +45,9 @@
                                class="box-icon hover-tooltip tooltip-left add-to-cart"
                                data-variant-id="{{ product.variants[0].id }}"
                                data-quantity="1"
-                               aria-label="Add to cart"
-                               {% unless product.variants[0].available %}style="pointer-events:none;opacity:0.5;"{% endunless %}>
-                                <i class="icon icon-cart"></i>
-                                <span class="tooltip">{% if product.variants[0].available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
+                               aria-label="{% if product.variants[0].available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}">
+                                <i class="icon icon-cart" aria-hidden="true"></i>
+                                <span class="tooltip" aria-hidden="true">{% if product.variants[0].available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
                             </a>
                         </div>
                     </div>
@@ -56,7 +55,7 @@
                         <span class="tf-btn-icon line d-inline-flex" data-compare 
                         data-id="{{ product.id }}" 
                         data-action="remove">
-                            <i class="icon-close"></i>
+                            <i class="icon-close" aria-hidden="true"></i>
                         </span>
                     </div>
                 </div>
@@ -72,7 +71,7 @@
             <div style="font-size: 14px;" class="tf-compare-col tf-compare-field tf-compare-stock {% unless product.variants[0].available %}text-red{% endunless %}" data-product-id="{{ product.id }}">
                 <div class="icon">
                     {% if product.variants[0].available %}
-                        <i class="icon-fill-check-circle"></i>
+                        <i class="icon-fill-check-circle" aria-hidden="true"></i>
                     {% else %}
                         <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_1_34903)">
@@ -150,7 +149,7 @@
       </div>
       <div class="tf-compare-remove">
         <span class="tf-btn-icon line d-inline-flex" data-compare data-id="" data-action="remove">
-          <i class="icon-close"></i>
+          <i class="icon-close" aria-hidden="true"></i>
         </span>
       </div>
     </div>
@@ -297,7 +296,7 @@ async function renderCompareTable() {
         </div>
         <div class="tf-compare-remove">
           <span class="tf-btn-icon line d-inline-flex" data-compare data-id="${product.id}" data-action="remove">
-            <i class="icon-close"></i>
+            <i class="icon-close" aria-hidden="true"></i>
           </span>
         </div>
       </div>
@@ -310,7 +309,7 @@ async function renderCompareTable() {
     return `
       <div style="font-size: 14px;" class="tf-compare-col tf-compare-field tf-compare-stock">
         <div class="icon">
-          <i class="icon-fill-check-circle"></i>
+          <i class="icon-fill-check-circle" aria-hidden="true"></i>
         </div>
         <span>{{ 'sections.compare.in_stock' | t }}</span>
       </div>

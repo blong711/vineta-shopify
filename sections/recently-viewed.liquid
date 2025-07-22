@@ -140,8 +140,8 @@ document.addEventListener('DOMContentLoaded', function() {
                    data-variant-id="${product.variants ? product.variants[0].id : product.id}"
                    data-quantity="1"
                    aria-label="{{ 'sections.recently_viewed.add_to_cart' | t }}">
-                  <i class="icon icon-cart"></i>
-                  <span class="tooltip">{{ 'sections.recently_viewed.add_to_cart' | t }}</span>
+                  <i class="icon icon-cart" aria-hidden="true"></i>
+                  <span class="tooltip" aria-hidden="true">{{ 'sections.recently_viewed.add_to_cart' | t }}</span>
                 </a>
               </li>
               <li class="wishlist">
@@ -151,8 +151,8 @@ document.addEventListener('DOMContentLoaded', function() {
                    data-id="${product.id}" 
                    data-action="add"
                    aria-label="{{ 'sections.recently_viewed.add_to_wishlist' | t }}">
-                  <span class="icon icon-heart2"></span>
-                  <span class="tooltip">{{ 'sections.recently_viewed.add_to_wishlist' | t }}</span>
+                  <span class="icon icon-heart2" aria-hidden="true"></span>
+                  <span class="tooltip" aria-hidden="true">{{ 'sections.recently_viewed.add_to_wishlist' | t }}</span>
                 </a>
               </li>
               <li>
@@ -161,9 +161,11 @@ document.addEventListener('DOMContentLoaded', function() {
                    data-product-handle="${product.handle}"
                    data-product-id="${product.id}"
                    data-bs-toggle="modal" 
-                   data-bs-target="#quickView">
-                  <span class="icon icon-view"></span>
-                  <span class="tooltip">{{ 'sections.recently_viewed.quick_view' | t }}</span>
+                   data-bs-target="#quickView"
+                   aria-label="{{ 'sections.recently_viewed.quick_view' | t }}"
+                   aria-expanded="false">
+                  <span class="icon icon-view" aria-hidden="true"></span>
+                  <span class="tooltip" aria-hidden="true">{{ 'sections.recently_viewed.quick_view' | t }}</span>
                 </a>
               </li>
               <li class="compare">

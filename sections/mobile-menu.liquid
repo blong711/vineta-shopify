@@ -33,13 +33,19 @@
       
       <div class="mb-other-content">
         <div class="group-icon">
-          <a href="/pages/wishlist" class="site-nav-icon">
+          <a href="/pages/wishlist" 
+             class="site-nav-icon"
+             aria-label="{{ 'sections.mobile_menu.wishlist' | t }}">
             <i class="icon icon-heart" aria-hidden="true"></i>
-            {{ 'sections.mobile_menu.wishlist' | t }}
+            <span>{{ 'sections.mobile_menu.wishlist' | t }}</span>
           </a>
-          <a href="#login" data-bs-toggle="offcanvas" class="site-nav-icon" aria-label="{{ 'sections.mobile_menu.sign_in_account' | t }}" aria-expanded="false">
+          <a href="#login" 
+             data-bs-toggle="offcanvas" 
+             class="site-nav-icon" 
+             aria-label="{{ 'sections.mobile_menu.sign_in_account' | t }}" 
+             aria-expanded="false">
             <i class="icon icon-user" aria-hidden="true"></i>
-            {{ 'sections.mobile_menu.login' | t }}
+            <span>{{ 'sections.mobile_menu.login' | t }}</span>
           </a>
         </div>
         

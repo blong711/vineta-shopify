@@ -336,8 +336,8 @@
                  data-variant-id="${product.variants ? product.variants[0].id : product.id}"
                  data-quantity="1"
                  aria-label="${translations.addToCart}">
-                <i class="icon icon-cart"></i>
-                <span class="tooltip">${translations.addToCart}</span>
+                <i class="icon icon-cart" aria-hidden="true"></i>
+                <span class="tooltip" aria-hidden="true">${translations.addToCart}</span>
               </a>
             </li>
             <li class="wishlist">
@@ -347,8 +347,8 @@
                  data-id="${product.id}" 
                  data-action="add"
                  aria-label="${translations.addToWishlist}">
-                <span class="icon icon-heart2"></span>
-                <span class="tooltip">${translations.addToWishlist}</span>
+                <span class="icon icon-heart2" aria-hidden="true"></span>
+                <span class="tooltip" aria-hidden="true">${translations.addToWishlist}</span>
               </a>
             </li>
             <li>
@@ -357,9 +357,11 @@
                  data-product-handle="${product.handle}"
                  data-product-id="${product.id}"
                  data-bs-toggle="modal" 
-                 data-bs-target="#quickView">
-                <span class="icon icon-view"></span>
-                <span class="tooltip">${translations.quickView}</span>
+                 data-bs-target="#quickView"
+                 aria-label="${translations.quickView}"
+                 aria-expanded="false">
+                <span class="icon icon-view" aria-hidden="true"></span>
+                <span class="tooltip" aria-hidden="true">${translations.quickView}</span>
               </a>
             </li>
             <li class="compare">
@@ -369,8 +371,8 @@
                  data-id="${product.id}" 
                  data-action="add"
                  aria-label="${translations.addToCompare}">
-                <span class="icon icon-compare"></span>
-                <span class="tooltip">${translations.addToCompare}</span>
+                <span class="icon icon-compare" aria-hidden="true"></span>
+                <span class="tooltip" aria-hidden="true">${translations.addToCompare}</span>
               </a>
             </li>
           </ul>

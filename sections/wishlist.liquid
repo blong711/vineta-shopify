@@ -321,12 +321,12 @@ document.addEventListener('DOMContentLoaded', function() {
           <ul class="list-product-btn">
             <li>
               <a href="#" 
-                 class="box-icon hover-tooltip add-to-cart" 
-                 data-variant-id="${product.variants[0].id}"
+                 class="box-icon hover-tooltip tooltip-left add-to-cart" 
+                 data-variant-id="${product.variants ? product.variants[0].id : product.id}"
                  data-quantity="1"
                  aria-label="${wishlistTranslations.addToCart}">
-                <span class="icon icon-cart2"></span>
-                <span class="tooltip">${wishlistTranslations.addToCart}</span>
+                <span class="icon icon-cart2" aria-hidden="true"></span>
+                <span class="tooltip" aria-hidden="true">${wishlistTranslations.addToCart}</span>
               </a>
             </li>
             <li>
