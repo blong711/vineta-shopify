@@ -53,6 +53,80 @@
     </div>
 </div>
 <section class="flat-single-product" style="max-width: {{ section.settings.width }}px;">
+  <!-- Video Autoplay Consent Modal -->
+  <div class="modal fade" id="videoAutoplayConsent" tabindex="-1" aria-labelledby="videoAutoplayConsentLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="title text-xl-2 fw-medium">{{ 'sections.product.video_autoplay_settings' | t }}</div>
+          <button type="button" class="icon-close icon-close-popup" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>{{ 'sections.product.video_autoplay_description' | t }}</p>
+          <div class="d-flex justify-content-end gap-2 mt-3">
+            <button type="button" class="tf-btn btn-out-line-dark animate-btn justify-content-center" id="declineAutoplay">{{ 'sections.product.video_autoplay_no_thanks' | t }}</button>
+            <button type="button" class="tf-btn animate-btn justify-content-center" id="acceptAutoplay">{{ 'sections.product.video_autoplay_enable' | t }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Consent Handling -->
+  <script type="text/javascript">
+    console.log('Video consent script loaded');
+
+    // Handle video consent
+    const handleVideoConsent = (consent) => {
+      console.log('Handling consent:', consent);
+      localStorage.setItem('videoAutoplayConsent', consent);
+
+      // Find and close the modal
+      const modal = document.getElementById('videoAutoplayConsent');
+      if (modal) {
+        const bsModal = bootstrap.Modal.getInstance(modal);
+        if (bsModal) {
+          bsModal.hide();
+        }
+      }
+
+      // Handle video playback
+      if (consent && {{ section.settings.enable_video_autoplay }}) {
+        const activeSlide = document.querySelector('.tf-product-media-main .swiper-slide-active');
+        if (activeSlide?.getAttribute('data-media-type') === 'video') {
+          const video = activeSlide.querySelector('video');
+          if (video) {
+            console.log('Playing video after consent');
+            video.play().catch(e => console.log('Video autoplay failed:', e));
+          }
+        }
+      }
+    };
+
+    // Initialize consent handlers
+    const initVideoConsent = () => {
+      console.log('Initializing video consent handlers');
+      
+      // Set up button handlers
+      document.getElementById('acceptAutoplay')?.addEventListener('click', () => {
+        console.log('Accept clicked');
+        handleVideoConsent(true);
+      });
+
+      document.getElementById('declineAutoplay')?.addEventListener('click', () => {
+        console.log('Decline clicked');
+        handleVideoConsent(false);
+      });
+    };
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initVideoConsent);
+    } else {
+      initVideoConsent();
+    }
+  </script>
+
   <div class="tf-main-product section-image-zoom">
     <div class="container" style="padding-left: 15px; padding-right: 15px;">
       <div class="row">
@@ -113,11 +187,16 @@
                                 height="auto">
                             {% when 'video' %}
                               <div class="item position-relative">
-                                <video controls muted playsinline preload="metadata"
+                                <video 
+                                  controls 
+                                  muted 
+                                  playsinline 
+                                  preload="none"
                                   width="400"
                                   height="600"
                                   poster="{{ media.preview_image | image_url: width: 800 }}"
-                                  {% if section.settings.enable_video_loop %}loop{% endif %}>
+                                  {% if section.settings.enable_video_loop %}loop{% endif %}
+                                  {% if section.settings.enable_video_autoplay %}data-autoplay{% endif %}>
                                   {% for source in media.sources %}
                                     <source src="{{ source.url }}" type="{{ source.mime_type }}">
                                   {% endfor %}
@@ -960,6 +1039,25 @@ document.addEventListener('DOMContentLoaded', function() {
       },
       on: {
         init: function() {
+          // Initialize Intersection Observer for videos
+          const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              const video = entry.target;
+              if (entry.isIntersecting) {
+                // Only autoplay if both setting is enabled and user has given consent
+                if ({{ section.settings.enable_video_autoplay }} && getVideoAutoplayConsent()) {
+                  video.play().catch(e => console.log('Video autoplay failed:', e));
+                }
+              } else {
+                video.pause();
+              }
+            });
+          }, {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5
+          });
+
           // Initialize all videos
           this.slides.forEach(slide => {
             const video = slide.querySelector('video');
@@ -972,11 +1070,45 @@ document.addEventListener('DOMContentLoaded', function() {
               video.addEventListener('error', function(e) {
                 console.log('Video error:', e);
               });
+
+              // Observe the video for viewport visibility
+              videoObserver.observe(video);
             }
           });
         },
         slideChange: function() {
           const activeSlide = this.slides[this.activeIndex];
+          const mediaType = activeSlide.getAttribute('data-media-type');
+          const activeVideo = activeSlide.querySelector('video');
+          
+          // Pause all videos first
+          this.slides.forEach(slide => {
+            const video = slide.querySelector('video');
+            if (video && video !== activeVideo) {
+              video.pause();
+            }
+          });
+
+          // Handle video in active slide
+          if (mediaType === 'video') {
+            // Check if consent is needed
+            if ({{ section.settings.enable_video_autoplay }} && localStorage.getItem('videoAutoplayConsent') === null) {
+              const consentModal = document.getElementById('videoAutoplayConsent');
+              if (consentModal) {
+                const modal = new bootstrap.Modal(consentModal);
+                modal.show();
+              }
+            }
+
+            if (activeVideo) {
+              activeVideo.currentTime = 0;
+              if ({{ section.settings.enable_video_autoplay }} && getVideoAutoplayConsent()) {
+                activeVideo.play().catch(e => console.log('Video autoplay failed:', e));
+              }
+            }
+          }
+
+          // Handle variant and media updates
           const mediaId = parseInt(activeSlide.getAttribute('data-media-id'));
           const productMedia = {{ product.media | json }};
           const media = productMedia.find(m => m.id === mediaId);
@@ -1006,21 +1138,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 btn.classList.remove('active');
               }
             });
-          }
-
-          // Pause all videos first
-          this.slides.forEach(slide => {
-            const video = slide.querySelector('video');
-            if (video) {
-              video.pause();
-            }
-          });
-
-          // Reset any playing videos when switching slides
-          const activeVideo = activeSlide.querySelector('video');
-          if (activeVideo) {
-            activeVideo.currentTime = 0;
-            activeVideo.pause();
           }
         }
       }
@@ -2088,7 +2205,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="tf-mini-cart-info">
                   <div class="d-flex justify-content-between">
                     <a class="title link text-md fw-medium" href="${item.url}">${item.title}</a>
-                    <i class="icon icon-close remove fs-12" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
+                    <i class="icon icon-close remove" data-variant-id="${item.variant_id}" aria-label="Remove item"></i>
                   </div>
                   ${variantOptions.length > 1 ? `
                   <div class="info-variant">
@@ -2106,7 +2223,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </p>
                   </div>
                   <div class="tf-mini-cart-item_quantity">
-                    <div class="wg-quantity small">
+                    <div class="wg-quantity small"></div>
                       <button class="btn-quantity btn-decrease" data-variant-id="${item.variant_id}">-</button>
                       <input type="text" class="quantity-product" value="${item.quantity}" min="0" data-variant-id="${item.variant_id}">
                       <button class="btn-quantity btn-increase" data-variant_id="${item.variant_id}">+</button>
@@ -2941,6 +3058,218 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // Video autoplay consent handling
+  window.setVideoAutoplayConsent = function(consent) {
+    console.log('Setting video consent to:', consent);
+    localStorage.setItem('videoAutoplayConsent', consent);
+    
+    // Close modal using Bootstrap
+    const consentModal = document.getElementById('videoAutoplayConsent');
+    if (consentModal) {
+      const bsModal = bootstrap.Modal.getInstance(consentModal);
+      if (bsModal) {
+        bsModal.hide();
+      } else {
+        console.log('Modal instance not found, trying to create new instance');
+        const newModal = new bootstrap.Modal(consentModal);
+        newModal.hide();
+      }
+    }
+
+    // If consent was given, play the current video if it's visible
+    if (consent && {{ section.settings.enable_video_autoplay }}) {
+      const mainSwiper = document.querySelector('.tf-product-media-main')?.swiper;
+      if (mainSwiper) {
+        const activeSlide = mainSwiper.slides[mainSwiper.activeIndex];
+        if (activeSlide && activeSlide.getAttribute('data-media-type') === 'video') {
+          const video = activeSlide.querySelector('video');
+          if (video) {
+            console.log('Playing video after consent');
+            video.play().catch(e => console.log('Video autoplay failed:', e));
+          }
+        }
+      }
+    }
+  };
+
+  window.getVideoAutoplayConsent = function() {
+    return localStorage.getItem('videoAutoplayConsent') === 'true';
+  };
+
+  // Initialize gallery and consent handlers
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing consent handlers');
+    
+    // Set up consent button handlers
+    const acceptBtn = document.getElementById('acceptAutoplay');
+    const declineBtn = document.getElementById('declineAutoplay');
+    
+    if (acceptBtn) {
+      console.log('Found accept button, attaching handler');
+      acceptBtn.addEventListener('click', function(e) {
+        console.log('Accept button clicked');
+        e.preventDefault();
+        window.setVideoAutoplayConsent(true);
+      });
+    } else {
+      console.error('Accept button not found');
+    }
+    
+    if (declineBtn) {
+      console.log('Found decline button, attaching handler');
+      declineBtn.addEventListener('click', function(e) {
+        console.log('Decline button clicked');
+        e.preventDefault();
+        window.setVideoAutoplayConsent(false);
+      });
+    } else {
+      console.error('Decline button not found');
+    }
+
+    // Initialize gallery
+    const galleryThumbs = new Swiper('.tf-product-media-thumbs', {
+      // ... existing swiper config ...
+    });
+
+    const galleryMain = new Swiper('.tf-product-media-main', {
+      slidesPerView: 1,
+      spaceBetween: 0,
+      thumbs: {
+        swiper: galleryThumbs
+      },
+      navigation: {
+        nextEl: '.thumbs-next',
+        prevEl: '.thumbs-prev',
+      },
+      on: {
+        init: function() {
+          console.log('Gallery initialized');
+          // Initialize Intersection Observer for videos
+          const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              const video = entry.target;
+              if (entry.isIntersecting) {
+                console.log('Video intersecting, checking consent');
+                // Only autoplay if both setting is enabled and user has given consent
+                if ({{ section.settings.enable_video_autoplay }} && window.getVideoAutoplayConsent()) {
+                  console.log('Attempting to play video');
+                  video.play().catch(e => console.log('Video autoplay failed:', e));
+                }
+              } else {
+                video.pause();
+              }
+            });
+          }, {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5
+          });
+
+          // Initialize all videos
+          this.slides.forEach(slide => {
+            const video = slide.querySelector('video');
+            if (video) {
+              // Ensure video is paused initially
+              video.pause();
+              video.currentTime = 0;
+              
+              // Add error handling
+              video.addEventListener('error', function(e) {
+                console.log('Video error:', e);
+              });
+
+              // Observe the video for viewport visibility
+              videoObserver.observe(video);
+            }
+          });
+        },
+        slideChange: function() {
+          const activeSlide = this.slides[this.activeIndex];
+          const mediaType = activeSlide.getAttribute('data-media-type');
+          const activeVideo = activeSlide.querySelector('video');
+          
+          console.log('Slide changed to:', mediaType);
+          
+          // Pause all videos first
+          this.slides.forEach(slide => {
+            const video = slide.querySelector('video');
+            if (video && video !== activeVideo) {
+              video.pause();
+            }
+          });
+
+          // Handle video in active slide
+          if (mediaType === 'video') {
+            console.log('Current slide is video');
+            // Check if consent is needed
+            if ({{ section.settings.enable_video_autoplay }} && localStorage.getItem('videoAutoplayConsent') === null) {
+              console.log('Showing consent modal');
+              const consentModal = document.getElementById('videoAutoplayConsent');
+              if (consentModal) {
+                const modal = new bootstrap.Modal(consentModal);
+                modal.show();
+              }
+            }
+
+            if (activeVideo) {
+              activeVideo.currentTime = 0;
+              if ({{ section.settings.enable_video_autoplay }} && window.getVideoAutoplayConsent()) {
+                console.log('Attempting to play video after slide change');
+                activeVideo.play().catch(e => console.log('Video autoplay failed:', e));
+              }
+            }
+          }
+
+          // Rest of your existing slideChange code...
+        }
+      }
+    });
+  });
+
+  function updateVideoObservers() {
+    const hasConsent = getVideoAutoplayConsent();
+    const mainSwiper = document.querySelector('.tf-product-media-main')?.swiper;
+    
+    if (mainSwiper && mainSwiper.slides) {
+      mainSwiper.slides.forEach(slide => {
+        const video = slide.querySelector('video');
+        if (video) {
+          if (!hasConsent) {
+            video.pause();
+          } else if ({{ section.settings.enable_video_autoplay }} && slide.classList.contains('swiper-slide-active')) {
+            video.play().catch(e => console.log('Video autoplay failed:', e));
+          }
+        }
+      });
+    }
+  }
+
+  // Initialize consent check when gallery is loaded
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded');
+    console.log('Video autoplay setting:', {{ section.settings.enable_video_autoplay }});
+    
+    // Check for existing consent
+    const existingConsent = localStorage.getItem('videoAutoplayConsent');
+    console.log('Existing consent:', existingConsent);
+    
+    // Initialize Bootstrap modal
+    const consentModal = document.getElementById('videoAutoplayConsent');
+    if (!consentModal) {
+      console.error('Consent modal element not found');
+      return;
+    }
+    
+    // Only show modal if autoplay is enabled and no consent is stored
+    if ({{ section.settings.enable_video_autoplay }} && existingConsent === null) {
+      console.log('Showing consent modal');
+      const modal = new bootstrap.Modal(consentModal);
+      // Small delay to ensure modal is properly initialized
+      setTimeout(() => {
+        modal.show();
+      }, 100);
+    }
+  });
 
 });
 
@@ -3058,6 +3387,13 @@ function updateMainAddToCartButton(variant) {
       "id": "enable_video_loop",
       "label": "Enable Video Looping",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_video_autoplay",
+      "label": "Enable Video Autoplay",
+      "default": true,
+      "info": "Automatically play videos when they enter the viewport"
     },
     {
       "type": "checkbox",
