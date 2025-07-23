@@ -635,10 +635,10 @@
 
 /* Button text truncation - General styles */
 .tf-btn {
-    max-width: 10;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    max-width: none; /* Allow button to grow as needed */
+    overflow: visible; /* Remove truncation from button */
+    text-overflow: initial;
+    white-space: normal;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -647,7 +647,7 @@
 
 .tf-btn span,
 .tf-btn .collection-title-truncate {
-    max-width: 10;
+    max-width: 100px; /* Only truncate the title */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
