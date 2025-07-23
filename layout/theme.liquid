@@ -7,6 +7,23 @@
     <meta name="theme-color" content="{{ settings.primary_button }}">
     <link rel="canonical" href="{{ canonical_url }}">
     
+    <!-- Meta Description -->
+    {% if template.name == 'index' %}
+      <meta name="description" content="{{ page_description | default: shop.description | default: shop.name | escape }}">
+    {% elsif template.name == 'product' %}
+      <meta name="description" content="{{ product.description | strip_html | truncatewords: 150 | escape | default: shop.description }}">
+    {% elsif template.name == 'collection' %}
+      <meta name="description" content="{{ collection.description | strip_html | truncatewords: 150 | escape | default: shop.description }}">
+    {% elsif template.name == 'article' %}
+      <meta name="description" content="{{ article.excerpt_or_content | strip_html | truncatewords: 150 | escape | default: shop.description }}">
+    {% elsif template.name == 'page' %}
+      <meta name="description" content="{{ page.content | strip_html | truncatewords: 150 | escape | default: shop.description }}">
+    {% elsif template.name == 'blog' %}
+      <meta name="description" content="{{ blog.title | escape }}: {{ blog.description | default: shop.description | escape }}">
+    {% else %}
+      <meta name="description" content="{{ page_description | default: shop.description | default: shop.name | escape }}">
+    {% endif %}
+    
     <!-- Performance optimizations -->
     <link rel="dns-prefetch" href="//cdn.shopify.com">
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
@@ -82,12 +99,6 @@
       {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
-
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
-    {% else %}
-      <meta name="description" content="{{ shop.description | default: shop.name | escape }}">
-    {% endif %}
 
     {% render 'meta-tags' %}
 
