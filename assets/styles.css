@@ -3200,9 +3200,6 @@ header.header-bg {
   padding: 13px;
   border-radius: 50%;
 }
-.footer-default .form-newsletter .subscribe-button .icon {
-  font-size: 17px;
-}
 .footer-default .footer-bottom {
   border-top: 1px solid var(--line);
 }
@@ -11165,11 +11162,6 @@ button.animate-btn::after,
   border-radius: 16px;
   overflow: hidden;
 }
-.wrapper-thumbs-tes-4 .box-testimonial-main .box-content {
-  display: grid;
-  gap: 12px;
-}
-
 .wrapper-thumbs-tes-3 .box-right {
   display: none;
 }
@@ -20409,4 +20401,32 @@ input[type="radio"]:focus-visible {
 :focus:not(:focus-visible) {
   outline: none !important;
   box-shadow: none !important;
-} 
+}
+
+/* Improve touch target size and spacing for swiper pagination bullets */
+
+
+.swiper-pagination-bullet::after {
+  content: "";
+  width: 26px;
+  height: 26px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px solid #ff4747;
+  border-top-color: transparent;
+  -webkit-transition: all .25s cubic-bezier(0,0,.76,1);
+  -khtml-transition: all .25s cubic-bezier(0,0,.76,1);
+  -moz-transition: all .25s cubic-bezier(0,0,.76,1);
+  -ms-transition: all .25s cubic-bezier(0,0,.76,1);
+  -o-transition: all .25s cubic-bezier(0,0,.76,1);
+  transition: all .25s cubic-bezier(0,0,.76,1);
+  opacity: 0;
+  animation: spin-border 1.5s linear infinite;
+}
+.swiper-pagination-bullet {
+  width: 7.6px; /* Minimum touch target size */
+  height: 7.6px;
+  margin: 0 10px !important; /* Adequate spacing between bullets */
+}
