@@ -40,31 +40,26 @@
                   </div>
                 </div>
               {% endif %}
-              {% if settings.show_popular_searches %}
-                <div class="popular-searches justify-content-md-center">
-                  <div class="text fw-medium">{{ section.settings.popular_searches_title }}</div>
-                  {% if section.settings.popular_searches_menu != blank %}
-                    <ul>
-                      {% for link in linklists[section.settings.popular_searches_menu].links %}
-                        <li><a class="link popular-search-link" href="{{ link.url }}" data-search-term="{{ link.title | escape }}">{{ link.title }}</a></li>
-                      {% endfor %}
-                    </ul>
-                  {% else %}
-                    <ul>
-                      {% if section.settings.featured_link_text != blank %}
-                        <li><a class="link popular-search-link" data-search-term="{{ section.settings.featured_link_text | escape }}">{{ section.settings.featured_link_text }}</a></li>
-                      {% endif %}
-                      {% if section.settings.trendy_link_text != blank %}
-                        <li><a class="link popular-search-link" data-search-term="{{ section.settings.trendy_link_text | escape }}">{{ section.settings.trendy_link_text }}</a></li>
-                      {% endif %}
-                      {% if section.settings.new_link_text != blank %}
-                        <li><a class="link popular-search-link" data-search-term="{{ section.settings.new_link_text | escape }}">{{ section.settings.new_link_text }}</a></li>
-                      {% endif %}
-                      {% if section.settings.sale_link_text != blank %}
-                        <li><a class="link popular-search-link" data-search-term="{{ section.settings.sale_link_text | escape }}">{{ section.settings.sale_link_text }}</a></li>
-                      {% endif %}
-                    </ul>
-                  {% endif %}
+              {% if section.settings.show_popular_searches %}
+                <div class="popular-searches">
+                  <h3 class="h6 mb-3">{{ section.settings.popular_searches_title }}</h3>
+                  <ul class="list-unstyled mb-0">
+                    {% for link in linklists[section.settings.popular_links].links %}
+                    <li><a class="link popular-search-link" href="{{ link.url }}" data-search-term="{{ link.title | escape }}">{{ link.title }}</a></li>
+                    {% endfor %}
+                    {% if section.settings.featured_link_text != blank %}
+                    <li><a class="link popular-search-link" href="{{ routes.search_url }}?q={{ section.settings.featured_link_text | url_encode }}&type=product" data-search-term="{{ section.settings.featured_link_text | escape }}">{{ section.settings.featured_link_text }}</a></li>
+                    {% endif %}
+                    {% if section.settings.trendy_link_text != blank %}
+                    <li><a class="link popular-search-link" href="{{ routes.search_url }}?q={{ section.settings.trendy_link_text | url_encode }}&type=product" data-search-term="{{ section.settings.trendy_link_text | escape }}">{{ section.settings.trendy_link_text }}</a></li>
+                    {% endif %}
+                    {% if section.settings.new_link_text != blank %}
+                    <li><a class="link popular-search-link" href="{{ routes.search_url }}?q={{ section.settings.new_link_text | url_encode }}&type=product" data-search-term="{{ section.settings.new_link_text | escape }}">{{ section.settings.new_link_text }}</a></li>
+                    {% endif %}
+                    {% if section.settings.sale_link_text != blank %}
+                    <li><a class="link popular-search-link" href="{{ routes.search_url }}?q={{ section.settings.sale_link_text | url_encode }}&type=product" data-search-term="{{ section.settings.sale_link_text | escape }}">{{ section.settings.sale_link_text }}</a></li>
+                    {% endif %}
+                  </ul>
                 </div>
               {% endif %}
             </div>
