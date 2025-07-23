@@ -85,6 +85,8 @@
 
     {% if page_description %}
       <meta name="description" content="{{ page_description | escape }}">
+    {% else %}
+      <meta name="description" content="{{ shop.description | default: shop.name | escape }}">
     {% endif %}
 
     {% render 'meta-tags' %}
@@ -139,12 +141,13 @@
 
   <body class="{% if template == 'page.phonecase' %}bg-surface-2{% endif %}">
     <!-- Skip to main content link for keyboard users -->
-    <a href="#main-content" class="skip-to-main">Skip to main content</a>
+    <a href="#main-content" class="skip-to-main" aria-label="Skip to main content">Skip to main content</a>
     
     <!-- Scroll Top -->
-    <button id="goTop" aria-label="Scroll to top of page">
+    <button id="goTop" class="scroll-to-top" aria-label="Return to top of page">
       <span class="border-progress"></span>
       <span class="icon icon-arrow-right" aria-hidden="true"></span>
+      <span class="visually-hidden">Return to top of page</span>
     </button>
 
     <!-- Preload - Optimized for performance -->
@@ -555,10 +558,19 @@
         "name": {{ shop.name | json }},
         "url": {{ shop.url | json }},
         "logo": {{ shop.logo | image_url: width: 600 | json }},
+        "description": {{ shop.description | json }},
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": {{ shop.address.country | json }}
+        },
+        "email": {{ shop.email | json }},
+        "telephone": {{ shop.phone | json }},
         "sameAs": [
           {%- if settings.social_facebook_link != blank -%}{{ settings.social_facebook_link | json }}{%- endif -%}
           {%- if settings.social_twitter_link != blank -%}{% if settings.social_facebook_link != blank %},{% endif %}{{ settings.social_twitter_link | json }}{%- endif -%}
           {%- if settings.social_instagram_link != blank -%}{% if settings.social_facebook_link != blank or settings.social_twitter_link != blank %},{% endif %}{{ settings.social_instagram_link | json }}{%- endif -%}
+          {%- if settings.social_pinterest_link != blank -%}{% if settings.social_facebook_link != blank or settings.social_twitter_link != blank or settings.social_instagram_link != blank %},{% endif %}{{ settings.social_pinterest_link | json }}{%- endif -%}
+          {%- if settings.social_youtube_link != blank -%}{% if settings.social_facebook_link != blank or settings.social_twitter_link != blank or settings.social_instagram_link != blank or settings.social_pinterest_link != blank %},{% endif %}{{ settings.social_youtube_link | json }}{%- endif -%}
         ]
       }
     </script>
