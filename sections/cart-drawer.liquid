@@ -196,6 +196,31 @@
     const giftWrapBtn = document.querySelector('.btn-add-gift');
     const giftWrapConfirmBtn = document.querySelector('.btn-add-gift-confirm');
     
+    // Tool panel open functionality
+    const toolBtns = document.querySelectorAll('.tf-mini-cart-tool-btn');
+    toolBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const targetClass = this.classList[1].replace('btn-', '');
+        const panel = document.querySelector(`.tf-mini-cart-tool-openable.${targetClass}`);
+        if (panel) {
+          panel.classList.add('show');
+          panel.classList.add('open');
+        }
+      });
+    });
+    
+    // Tool panel close functionality
+    const closeButtons = document.querySelectorAll('.tf-mini-cart-tool-close');
+    closeButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const panel = this.closest('.tf-mini-cart-tool-openable');
+        if (panel) {
+          panel.classList.remove('show');
+          panel.classList.remove('open');
+        }
+      });
+    });
+    
     if (giftWrapBtn) {
       giftWrapBtn.addEventListener('click', function() {
         // Show the gift wrap confirmation dialog
