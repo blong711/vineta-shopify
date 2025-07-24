@@ -568,7 +568,9 @@
         "@type": "Organization",
         "name": {{ shop.name | json }},
         "url": {{ shop.url | json }},
+        {%- if shop.logo -%}
         "logo": {{ shop.logo | image_url: width: 600 | json }},
+        {%- endif -%}
         "description": {{ shop.description | json }},
         "address": {
           "@type": "PostalAddress",
