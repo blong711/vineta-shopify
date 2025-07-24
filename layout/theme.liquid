@@ -85,8 +85,8 @@
     </script>
 
     {%- if settings.favicon != blank -%}
-      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
-      <img src="{{ settings.favicon | image_url: width: 32, height: 32 }}" width="32" height="32" alt="{{ shop.name }} logo" style="display:none;" />
+      <link rel="icon" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+      <link rel="shortcut icon" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
 
     {%- if settings.apple_touch_icon != blank -%}
