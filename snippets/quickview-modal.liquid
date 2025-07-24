@@ -7,6 +7,35 @@
     .modal-quick-view .modal-dialog {
       z-index: 1060 !important;
     }
+    .modal-quick-view .swiper,
+    .modal-quick-view .swiper-wrapper,
+    .modal-quick-view .swiper-slide {
+      height: 100%;
+    }
+    .modal-quick-view .swiper-slide .item {
+      height: 100%;
+      position: relative;
+    }
+    .modal-quick-view .video-container,
+    .modal-quick-view .model-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .modal-quick-view .video-container video,
+    .modal-quick-view .model-container model-viewer {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .modal-quick-view .video-image,
+    .modal-quick-view .model-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
     </style>
     
     <div class="modal fade modalCentered modal-quick-view" id="quickView">
@@ -19,16 +48,37 @@
                             {%- for media in product.media -%}
                                 <div class="swiper-slide" data-media-id="{{ media.id }}">
                                     <div class="item">
-                                        {%- if media.media_type == 'image' -%}
-                                            <img class="lazyload" 
-                                                data-src="{{ media | image_url }}"
-                                                src="{{ media | image_url: width: 400 }}" 
-                                                width="{{ media.width }}"
-                                                height="{{ media.height }}"
-                                                alt="{{ media.alt | escape }}">
-                                        {%- elsif media.media_type == 'video' -%}
-                                            {{ media | video_tag: controls: true, class: 'w-100' }}
-                                        {%- endif -%}
+                                        {% case media.media_type %}
+                                            {% when 'image' %}
+                                                <img class="lazyload" 
+                                                    data-src="{{ media | image_url }}"
+                                                    src="{{ media | image_url: width: 400 }}" 
+                                                    width="{{ media.width }}"
+                                                    height="{{ media.height }}"
+                                                    alt="{{ media.alt | escape }}">
+                                            {% when 'video' %}
+                                                <div class="wrap-btn-viewer style-video">
+                                                    <i class="icon icon-video"></i>
+                                                </div>
+                                                <img class="lazyload video-image"
+                                                    data-src="{{ media.preview_image | image_url }}"
+                                                    src="{{ media.preview_image | image_url: width: 400 }}"
+                                                    alt="Video thumbnail"
+                                                    width="{{ media.preview_image.width }}"
+                                                    height="{{ media.preview_image.height }}">
+                                                {{ media | video_tag: controls: true, class: 'w-100' }}
+                                            {% when 'model' %}
+                                                <div class="wrap-btn-viewer">
+                                                    <i class="icon icon-btn3d"></i>
+                                                </div>
+                                                <img class="lazyload model-image"
+                                                    data-src="{{ media.preview_image | image_url }}"
+                                                    src="{{ media.preview_image | image_url: width: 400 }}"
+                                                    alt="3D model thumbnail"
+                                                    width="{{ media.preview_image.width }}"
+                                                    height="{{ media.preview_image.height }}">
+                                                {{ media | model_viewer_tag }}
+                                        {% endcase %}
                                     </div>
                                 </div>
                             {%- endfor -%}
@@ -552,16 +602,52 @@
         
         // Update media gallery
         const swiperWrapper = modal.querySelector('.swiper-wrapper');
-        swiperWrapper.innerHTML = currentProduct.media.map(media => `
-          <div class="swiper-slide" data-media-id="${media.id}">
-            <div class="item">
-              ${media.media_type === 'image' 
-                ? `<img class="lazyload" data-src="${media.src}" src="${media.src}" alt="${media.alt || currentProduct.title}">`
-                : `<video controls class="w-100"><source src="${media.sources[0].url}" type="video/mp4"></video>`
-              }
+        swiperWrapper.innerHTML = currentProduct.media.map(media => {
+          let mediaHtml = '';
+          if (media.media_type === 'image') {
+            mediaHtml = `<img class="lazyload" data-src="${media.src}" src="${media.src}" alt="${media.alt || currentProduct.title}">`;
+          } else if (media.media_type === 'video') {
+            mediaHtml = `
+              <div class="wrap-btn-viewer style-video">
+                <i class="icon icon-video"></i>
+              </div>
+              <img class="lazyload video-image" 
+                data-src="${media.preview_image.src}" 
+                src="${media.preview_image.src}" 
+                alt="Video thumbnail">
+              <div class="video-container" style="display: none;">
+                <video controls>
+                  <source src="${media.sources[0].url}" type="video/mp4">
+                </video>
+              </div>
+            `;
+          } else if (media.media_type === 'model') {
+            mediaHtml = `
+              <div class="wrap-btn-viewer">
+                <i class="icon icon-btn3d"></i>
+              </div>
+              <img class="lazyload model-image" 
+                data-src="${media.preview_image.src}" 
+                src="${media.preview_image.src}" 
+                alt="3D model thumbnail">
+              <div class="model-container" style="display: none;">
+                <model-viewer 
+                  src="${media.sources[0].url}"
+                  alt="${media.alt || '3D model'}"
+                  camera-controls
+                  auto-rotate>
+                </model-viewer>
+              </div>
+            `;
+          }
+          return `
+            <div class="swiper-slide" data-media-id="${media.id}">
+              <div class="item">
+                ${mediaHtml}
+              </div>
             </div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
         
         // (Re-)initialize Swiper for the quickview modal
         if (quickviewSwiper) {
@@ -1157,6 +1243,59 @@
           }
         }
       }, true);
+
+      // Handle video and 3D model viewer interaction
+      document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('icon-video')) {
+          const item = e.target.closest('.item');
+          if (!item) return;
+          
+          const videoContainer = item.querySelector('.video-container');
+          const videoImage = item.querySelector('.video-image');
+          const video = item.querySelector('video');
+          
+          if (videoContainer && videoImage) {
+            videoContainer.style.display = 'block';
+            videoImage.style.display = 'none';
+          }
+          
+          if (video) {
+            video.play();
+          }
+          
+          const iconButton = e.target.closest('.wrap-btn-viewer');
+          if (iconButton) {
+            iconButton.style.display = 'none';
+          }
+          
+          // Disable swiper drag when video is playing
+          let swiperEl = item.closest('.swiper');
+          if (swiperEl && quickviewSwiper) {
+            quickviewSwiper.allowTouchMove = false;
+          }
+        } else if (e.target.classList.contains('icon-btn3d')) {
+          const item = e.target.closest('.item');
+          if (!item) return;
+          
+          const modelContainer = item.querySelector('.model-container');
+          const modelImage = item.querySelector('.model-image');
+          if (modelContainer && modelImage) {
+            modelContainer.style.display = 'block';
+            modelImage.style.display = 'none';
+          }
+          
+          const iconButton = e.target.closest('.wrap-btn-viewer');
+          if (iconButton) {
+            iconButton.style.display = 'none';
+          }
+          
+          // Disable swiper drag when 3D is enabled
+          let swiperEl = item.closest('.swiper');
+          if (swiperEl && quickviewSwiper) {
+            quickviewSwiper.allowTouchMove = false;
+          }
+        }
+      });
     });
     
     // Helper function to format money
@@ -1167,26 +1306,3 @@
       }).format(cents / 100);
     }
     </script>
-    <style>
-      .type-btn.active, .type-btn:hover {
-        border-color: var(--dark) !important;
-      }
-      .type-btn {
-        width: unset;
-        height: unset;
-        border-radius: 35px;
-        border: 1px solid rgba(142, 142, 142, 0.2);
-      }
-      .type-btn-text {
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 26px;
-        padding: 2px 12px;
-      }
-      .type-btn-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 3px;
-        align-items: center;
-      }
-    </style>
