@@ -105,16 +105,17 @@ window.addEventListener('load', () => {
       console.log('Currency changed to:', currency);
       
       try {
-        console.log('Sending request to /localization/change');
-        const response = await fetch('/localization/change', {
+        console.log('Updating currency...');
+        const formData = new FormData();
+        formData.append('form_type', 'currency');
+        formData.append('currency', currency);
+        
+        const response = await fetch('/cart/update', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest'
           },
-          body: JSON.stringify({
-            currency: currency
-          })
+          body: formData
         });
         
         console.log('Response status:', response.status);
