@@ -15,37 +15,40 @@
         "slide_y4DUC8": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/woman-1_48e662d8-9f68-4eb3-928e-00a7dcdb2d43.png",
+            "image": "shopify://shop_images/woman-1.png",
             "content_alignment": "left",
             "subtitle": "SUMMER COLLECTION",
             "heading": "Everyday Essentials",
             "subheading": "Versatile pieces for all-day style",
             "button_text": "Shop Collection",
-            "button_link": "shopify://collections/women"
+            "button_link": "shopify://collections/women",
+            "white_text": false
           }
         },
         "slide_D4hkwY": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/woman-2_c0bb19e1-b77a-4ab9-a9b8-ad8c6c005561.png",
+            "image": "shopify://shop_images/woman-2.png",
             "content_alignment": "left",
             "subtitle": "SUMMER COLLECTION",
             "heading": "Bold and Beautiful",
             "subheading": "Stand out with chic, trend-setting women’s fashion.",
             "button_text": "Shop Collection",
-            "button_link": "shopify://collections/women"
+            "button_link": "shopify://collections/women",
+            "white_text": false
           }
         },
         "slide_yWQ7aN": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/woman-3_3fe83e8b-c789-4ab8-9419-9d2e8e992c86.png",
+            "image": "shopify://shop_images/woman-3.png",
             "content_alignment": "left",
             "subtitle": "SUMMER COLLECTION",
             "heading": "Feminine Elegance",
             "subheading": "Find the perfect outfit for any occasion.",
             "button_text": "Shop Collection",
-            "button_link": "shopify://collections/women"
+            "button_link": "shopify://collections/women",
+            "white_text": false
           }
         }
       },
@@ -88,7 +91,7 @@
         "collection_XPFDwG": {
           "type": "collection",
           "settings": {
-            "collection": "accessories-1",
+            "collection": "accessories",
             "tag": "",
             "price_new": "",
             "price_old": "",
@@ -98,7 +101,7 @@
         "collection_tTJMpq": {
           "type": "collection",
           "settings": {
-            "collection": "sportwear-1",
+            "collection": "sportwear",
             "tag": "",
             "price_new": "",
             "price_old": "",
@@ -121,6 +124,7 @@
         "slides_per_group_tablet": 2,
         "slides_per_group_desktop": 3,
         "space_between_mobile": 0,
+        "space_between_tablet": 12,
         "space_between_desktop": 0,
         "speed": 800,
         "enable_navigation": true,
@@ -128,7 +132,9 @@
         "enable_autoplay": false,
         "autoplay_speed": 5000,
         "pause_on_hover": true,
-        "enable_observer": true
+        "enable_observer": true,
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "top_sellers_VRntpt": {
@@ -138,7 +144,6 @@
           "type": "tab",
           "settings": {
             "tab_title": "Top Sellers",
-            "tab_id": "seller",
             "collection": "fashion-women",
             "products_limit": 8
           }
@@ -147,7 +152,6 @@
           "type": "tab",
           "settings": {
             "tab_title": "On Sale",
-            "tab_id": "onSale",
             "collection": "fashion-women",
             "products_limit": 8
           }
@@ -156,7 +160,6 @@
           "type": "tab",
           "settings": {
             "tab_title": "Trending",
-            "tab_id": "trending",
             "collection": "fashion-women",
             "products_limit": 8
           }
@@ -168,7 +171,6 @@
         "tab_88tiNi"
       ],
       "settings": {
-        "default_tab": "seller",
         "width": "boxed"
       }
     },
@@ -189,12 +191,14 @@
         "layout": "default",
         "width": "boxed",
         "banner_product": "",
-        "banner_image": "shopify://shop_images/fashion-woman_1.jpg",
+        "banner_image": "shopify://shop_images/fashion-woman.jpg",
         "banner_link": "",
         "title": "Elevating Your Style Journey",
         "description": "Discover timeless pieces that define elegance and sophistication.",
         "button_text": "Shop Now",
-        "button_link": "shopify://collections/women"
+        "button_link": "shopify://collections/women",
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "testimonials_Xi7XPL": {
@@ -204,8 +208,7 @@
           "type": "testimonial",
           "settings": {
             "name": "Emily T.",
-            "image": "shopify://shop_images/women_fashion_3.webp",
-            "testimonial_image": "shopify://shop_images/women_fashion_3.webp",
+            "image": "shopify://shop_images/tes-women.jpg",
             "product": "Loose Fit Tee",
             "product_url": "shopify://products/loose-fit-tee",
             "price": "$150.00",
@@ -255,42 +258,42 @@
         "brand_mCqf8K": {
           "type": "brand",
           "settings": {
-            "brand_image": "shopify://shop_images/zara_232eddf9-8ce4-4911-a177-8efe9c47dd47.png",
+            "brand_image": "shopify://shop_images/zara.png",
             "brand_link": ""
           }
         },
         "brand_NCttaQ": {
           "type": "brand",
           "settings": {
-            "brand_image": "shopify://shop_images/bear_fde932fe-e47e-434f-89b6-662f0ca27862.png",
+            "brand_image": "shopify://shop_images/bear.png",
             "brand_link": ""
           }
         },
         "brand_4UXjJQ": {
           "type": "brand",
           "settings": {
-            "brand_image": "shopify://shop_images/logo04.png",
+            "brand_image": "shopify://shop_images/nike.png",
             "brand_link": ""
           }
         },
         "brand_aFyGnn": {
           "type": "brand",
           "settings": {
-            "brand_image": "shopify://shop_images/logo03.png",
+            "brand_image": "shopify://shop_images/asos.png",
             "brand_link": ""
           }
         },
         "brand_hxJbeP": {
           "type": "brand",
           "settings": {
-            "brand_image": "shopify://shop_images/logo05.png",
+            "brand_image": "shopify://shop_images/forever.png",
             "brand_link": ""
           }
         },
         "brand_YxchfL": {
           "type": "brand",
           "settings": {
-            "brand_image": "shopify://shop_images/logo06.png",
+            "brand_image": "shopify://shop_images/burberry.png",
             "brand_link": ""
           }
         }
@@ -319,7 +322,7 @@
         "image_8xcXdN": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/instagram01.webp",
+            "image": "shopify://shop_images/gallery-1.jpg",
             "link": "shopify://products/black-sleeves",
             "tooltip_text": "View Product"
           }
@@ -327,7 +330,7 @@
         "image_9HFR9W": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/instagram02.webp",
+            "image": "shopify://shop_images/gallery-2.jpg",
             "link": "shopify://products/classic-sweater",
             "tooltip_text": "View Product"
           }
@@ -335,7 +338,7 @@
         "image_CtTD43": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/instagram03.webp",
+            "image": "shopify://shop_images/gallery-3.jpg",
             "link": "shopify://products/crop-t-shirt",
             "tooltip_text": "View Product"
           }
@@ -343,7 +346,7 @@
         "image_Phft7h": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/instagram04.webp",
+            "image": "shopify://shop_images/gallery-4.jpg",
             "link": "shopify://products/classic-jackets",
             "tooltip_text": "View Product"
           }
@@ -351,7 +354,7 @@
         "image_x9KAKR": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/instagram05.webp",
+            "image": "shopify://shop_images/gallery-5.jpg",
             "link": "shopify://products/colorful-jacket",
             "tooltip_text": "View Product"
           }
@@ -366,9 +369,7 @@
       ],
       "settings": {
         "width": "boxed",
-        "title": "Shop by @Gram",
-        "instagram_user_id": "",
-        "instagram_access_token": ""
+        "title": "Shop by @Gram"
       }
     },
     "icon_boxes_yaaQjQ": {
@@ -416,9 +417,6 @@
       "settings": {
         "layout": "default",
         "slides_per_view_mobile": 1,
-        "slides_per_view_tablet": 3,
-        "slides_per_view_desktop": 4,
-        "space_between": 10,
         "show_pagination": true
       }
     }
