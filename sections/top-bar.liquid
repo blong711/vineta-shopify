@@ -110,7 +110,6 @@
                 {%- endif -%}
                 {%- if block.settings.show_currency -%}
                   <div class="tf-currencies">
-                    {% render 'currency-selector' %}
                     <label for="currency-selector" class="visually-hidden">{{ 'general.accessibility.currency_selector' | t }}</label>
                     <select id="currency-selector" class="image-select center style-default type-currencies" name="currency" aria-label="{{ 'general.accessibility.currency_selector' | t }}">
                       {% for currency in shop.enabled_currencies %}
@@ -184,7 +183,6 @@
     {
       "name": "Top bar",
       "settings": {
-        // No color settings needed, uses global color scheme
       },
       "blocks": [
         {

@@ -96,29 +96,33 @@ window.addEventListener('load', () => {
   }
 
   // Initialize Shopify currency selector
-  const currencySelector = document.querySelector('currency-selector');
-  if (currencySelector) {
-    currencySelector.addEventListener('change', async (event) => {
-      const currency = event.target.value;
-      const formData = new FormData();
-      formData.append('currency_code', currency);
-
+  const currencySelectors = document.querySelectorAll('select[name="currency"]');
+  currencySelectors.forEach(selector => {
+    selector.addEventListener('change', async function(e) {
+      const currency = e.target.value;
+      
       try {
-        const response = await fetch(window.theme.routes.cart_update_url, {
+        const response = await fetch('/localization/change', {
           method: 'POST',
-          body: formData,
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: JSON.stringify({
+            currency: currency
+          })
         });
-
-        if (!response.ok) {
-          throw new Error('Currency update failed');
+        
+        if (response.ok) {
+          window.location.reload();
+        } else {
+          console.error('Failed to change currency');
         }
-
-        window.location.reload();
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error changing currency:', error);
       }
     });
-  }
+  });
 
   // Initialize Shopify language selector
   const languageSelectors = document.querySelectorAll('.type-languages');
