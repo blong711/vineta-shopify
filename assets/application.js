@@ -97,11 +97,15 @@ window.addEventListener('load', () => {
 
   // Initialize Shopify currency selector
   const currencySelectors = document.querySelectorAll('select[name="currency"]');
+  console.log('Found currency selectors:', currencySelectors.length);
+  
   currencySelectors.forEach(selector => {
     selector.addEventListener('change', async function(e) {
       const currency = e.target.value;
+      console.log('Currency changed to:', currency);
       
       try {
+        console.log('Sending request to /localization/change');
         const response = await fetch('/localization/change', {
           method: 'POST',
           headers: {
@@ -113,10 +117,13 @@ window.addEventListener('load', () => {
           })
         });
         
+        console.log('Response status:', response.status);
         if (response.ok) {
-          window.location.reload();
+          console.log('Currency updated successfully, reloading page...');
+          window.location.href = window.location.href;
         } else {
-          console.error('Failed to change currency');
+          const errorData = await response.text();
+          console.error('Failed to change currency. Server response:', errorData);
         }
       } catch (error) {
         console.error('Error changing currency:', error);
