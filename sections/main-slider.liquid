@@ -106,7 +106,7 @@
                                                 {% endif %}
                                             </div>
                                             <div class="box-btn-slider {% if section.settings.layout == 'layout2' %}fade-item fade-item-4{% else %}fade-item fade-item-3{% endif %} {% if section.settings.layout == 'layout2' %}text-center{% endif %}">
-                                                <a href="{{ block.settings.button_link }}" class="tf-btn fw-normal animate-btn {% if section.settings.layout == 'layout3' %}tf-btn btn-space1 btn-green-2{% endif %} {% if block.settings.white_text %}btn-white hover-primary{% endif %}">
+                                                <a href="{{ block.settings.button_link }}" class="tf-btn fw-normal {% unless block.settings.white_text %}animate-btn{% endunless %} {% if section.settings.layout == 'layout3' %}tf-btn btn-space1 btn-green-2{% endif %} {% if block.settings.white_text %}btn-white hover-primary{% endif %}">
                                                     {{ block.settings.button_text }}
                                                     <i class="icon {% if section.settings.layout == 'layout3' %}icon-arr-right3{% elsif section.settings.layout == 'layout4' %}icon-arrow-top-left{% else %}icon-arr-right{% endif %}"></i>
                                                 </a>
