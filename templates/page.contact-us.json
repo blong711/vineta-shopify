@@ -12,12 +12,10 @@
     "page_title": {
       "type": "page-title",
       "settings": {
-        "background_image": "shopify://shop_images/page-title_1.jpg",
-        "custom_title": "",
-        "contact_title": "",
-        "about_title": "",
-        "wishlist_title": "",
-        "compare_title": ""
+        "background_image": "shopify://shop_images/page-title.jpg",
+        "show_description": true,
+        "custom_description": "",
+        "description_truncate_length": 120
       }
     },
     "contact_us": {
@@ -55,7 +53,9 @@
         "contact_info_ekrEDX",
         "contact_form_LPaiFT"
       ],
-      "settings": {}
+      "settings": {
+        "width": "boxed"
+      }
     }
   },
   "order": [
