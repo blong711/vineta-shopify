@@ -108,7 +108,7 @@ window.addEventListener('load', () => {
         formData.append('form_type', 'currency');
         formData.append('currency', currency);
         
-        const response = await fetch(window.theme.routes.cart_update_url, {
+        const response = await fetch(window.routes.cart_update_url, {
           method: 'POST',
           headers: {
             'X-Requested-With': 'XMLHttpRequest'
