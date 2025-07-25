@@ -15,7 +15,7 @@
         "slide_7qCRap": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/slider-phonecase-1_07dda801-6265-4869-b797-3ac4c0dbefed.jpg",
+            "image": "shopify://shop_images/slider-phonecase-1.jpg",
             "content_alignment": "left",
             "subtitle": "",
             "heading": "Protect in Style",
@@ -27,7 +27,7 @@
         "slide_LMWi7T": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/phonecase-slide02.webp",
+            "image": "shopify://shop_images/slider-phonecase-2.jpg",
             "content_alignment": "left",
             "subtitle": "",
             "heading": "Express Your Style",
@@ -39,10 +39,10 @@
         "slide_bHHNbh": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/phonecase-slide03.webp",
+            "image": "shopify://shop_images/slider-phonecase-3.jpg",
             "content_alignment": "left",
             "subtitle": "",
-            "heading": "Ultimate Protection,<br>Sleek Design",
+            "heading": "Ultimate Protection,Sleek Design",
             "subheading": "Durable phone cases that blend protection with elegance.",
             "button_text": "Shop Collection",
             "button_link": "shopify://collections/airpod-cases"
@@ -124,10 +124,10 @@
         "width": "boxed",
         "layout": "phonecase",
         "title": "Categories",
-        "padding_top": 80,
-        "padding_bottom": 120,
         "button_text": "Categories",
         "button_url": "shopify://collections",
+        "padding_top": 80,
+        "padding_bottom": 120,
         "slides_per_view_mobile": 2,
         "slides_per_view_tablet": 3,
         "slides_per_view_desktop": 6,
@@ -199,6 +199,7 @@
           "type": "collection",
           "settings": {
             "collection": "elago-liquid-silicone-1",
+            "custom_image": "shopify://shop_images/phonecase_02.webp",
             "tag": "Sale 50% Off",
             "price_new": "$80.00",
             "price_old": "$130.00",
@@ -228,7 +229,9 @@
         "enable_autoplay": false,
         "autoplay_speed": 5000,
         "pause_on_hover": true,
-        "enable_observer": true
+        "enable_observer": true,
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "banner-countdown": {
@@ -238,13 +241,15 @@
         "layout": "home-phonecase",
         "show_countdown": true,
         "product": "crop-t-shirt",
-        "banner_image": "shopify://shop_images/phonecase_03.webp",
+        "banner_image": "shopify://shop_images/cd-phonecase.jpg",
         "heading": "Limited-Time Sale",
         "subheading": "Get your favorite cases at a discount",
         "season_text": "SUMMER SALE",
         "promo_code": "12D34E",
         "button_label": "Shop Now",
-        "button_link": "/collections"
+        "button_link": "/collections",
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "banner-tagline": {
@@ -291,7 +296,7 @@
       ],
       "settings": {
         "width": "boxed",
-        "image": "shopify://shop_images/phonecase_04.webp",
+        "image": "shopify://shop_images/phonecase.jpg",
         "title": "What Make Us Different?"
       }
     },
@@ -353,7 +358,7 @@
         "width": "boxed",
         "layout": "phonecase",
         "video": "",
-        "image": "shopify://shop_images/phonecase_05.webp",
+        "image": "shopify://shop_images/case.jpg",
         "title": "See Our Cases in Action",
         "subtitle": "Discover the features that make our cases stand out",
         "button_text": "Shop Collection",
@@ -369,7 +374,6 @@
           "type": "testimonial",
           "settings": {
             "name": "Emily T.",
-            "image": "shopify://shop_images/product-1.jpg",
             "product": "Moonlight - iPhone 16 Case",
             "product_url": "shopify://products/apple-iphone-14-silicone-case",
             "price": "$150.00",
@@ -381,7 +385,6 @@
           "type": "testimonial",
           "settings": {
             "name": "Jessica M.",
-            "image": "shopify://shop_images/product-2.jpg",
             "product": "Heatwave - iPhone 16 Case",
             "product_url": "shopify://products/apple-iphone-14-silicone-case-1",
             "price": "$130.00",
@@ -393,7 +396,6 @@
           "type": "testimonial",
           "settings": {
             "name": "Lisa P.",
-            "image": "shopify://shop_images/product-8.jpg",
             "product": "iPhone 14 Pro Max Case",
             "product_url": "shopify://products/iphone-14-pro-butterfly-flutter",
             "price": "$140.00",
@@ -405,7 +407,6 @@
           "type": "testimonial",
           "settings": {
             "name": "Emily T.",
-            "image": "shopify://shop_images/product-4.jpg",
             "product": "Moonlight - iPhone 16                                                        Case",
             "product_url": "shopify://products/apple-iphone-14-silicone-case-2",
             "price": "$120.00",
