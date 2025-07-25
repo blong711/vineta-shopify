@@ -12,22 +12,48 @@
     "page-title": {
       "type": "page-title",
       "settings": {
-        "background_image": "shopify://shop_images/page-title_1.jpg",
-        "custom_title": "",
-        "contact_title": "",
-        "about_title": "",
-        "wishlist_title": "",
-        "compare_title": ""
+        "background_image": "shopify://shop_images/page-title.jpg",
+        "show_description": true,
+        "custom_description": "",
+        "description_truncate_length": 120
       }
     },
     "main": {
       "type": "collection",
       "settings": {
+        "width": "boxed",
+        "padding_top": 36,
+        "padding_bottom": 36,
         "filter_type": "right",
         "default_grid_columns": "4",
         "products_per_page": 16,
-        "default_view": "grid",
-        "default_sort": "best-selling"
+        "pagination_type": "pagination",
+        "show_on_sale": true,
+        "on_sale_title": "On sale",
+        "on_sale_source": "collection",
+        "on_sale_products": [],
+        "show_banner": true,
+        "filter_banner": "shopify://shop_images/sb-banner.jpg",
+        "banner_title": "ElevateYour Style",
+        "banner_button_text": "Shop Now",
+        "banner_button_url": "shopify://collections",
+        "collections_title": "Collections",
+        "categories_mode": "all",
+        "categories_link_list": "",
+        "categories_show_count": false,
+        "show_description": true,
+        "description_padding_top": 0,
+        "description_padding_bottom": 100,
+        "related_collections_text": "Looking for more? Don't miss out on our other exciting collections for",
+        "related_collection_1": "",
+        "related_collection_2": "",
+        "show_icon_box": false,
+        "icon_box_title_1": "Free Shipping",
+        "icon_box_desc_1": "Enjoy free shipping on all orders over $150",
+        "icon_box_title_2": "Easy Returns",
+        "icon_box_desc_2": "Hassle-free returns for a worry-free shopping experience.",
+        "icon_box_title_3": "24/7 Support",
+        "icon_box_desc_3": "We are here for you anytime with 24/7 customer support."
       }
     }
   },

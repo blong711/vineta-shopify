@@ -12,7 +12,10 @@
     "page-title": {
       "type": "page-title",
       "settings": {
-        "background_image": "shopify://shop_images/page-title_1.jpg"
+        "background_image": "shopify://shop_images/page-title.jpg",
+        "show_description": true,
+        "custom_description": "",
+        "description_truncate_length": 120
       }
     },
     "wishlist": {
@@ -24,7 +27,6 @@
     "recently-viewed": {
       "type": "recently-viewed",
       "settings": {
-        "title": "Recently Viewed",
         "width": "boxed",
         "products_to_show": 8,
         "slides_per_view_mobile": 2,
