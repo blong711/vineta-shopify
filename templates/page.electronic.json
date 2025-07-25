@@ -15,7 +15,7 @@
         "slide_3BA9Ka": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/slider-electronic-1.webp",
+            "image": "shopify://shop_images/slider-electronic-1.png",
             "content_alignment": "left",
             "subtitle": "APPLE WATCHES COLLECTION",
             "heading": "Sale up to 15% Off",
@@ -27,7 +27,7 @@
         "slide_xkUpFP": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/slider-electronic-2.webp",
+            "image": "shopify://shop_images/slider-electronic-2.png",
             "content_alignment": "right",
             "subtitle": "APPLE MAGSAFE CHARGER",
             "heading": "Next-Level Tech",
@@ -39,7 +39,7 @@
         "slide_jr9ycA": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/slider-electronic-3.webp",
+            "image": "shopify://shop_images/slider-electronic-3.png",
             "content_alignment": "left",
             "subtitle": "ON-EAR HEADPHONES",
             "heading": "Power Up Your Life",
@@ -97,7 +97,8 @@
         "speed_factor": 20,
         "text_size": 24,
         "text_color": "#000000",
-        "section_padding": 0
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "categories_BpWrEg": {
@@ -220,7 +221,7 @@
         "width": "boxed",
         "layout": "electric",
         "video": "",
-        "image": "shopify://shop_images/phone_fd87091c-31c7-45cc-a9df-9faf0d09f4f8.png",
+        "image": "shopify://shop_images/phone.png",
         "title": "Unmatched Performance",
         "subtitle": "Upgrade your devices with cutting-edge technology.",
         "button_text": "Shop Now",
@@ -270,7 +271,6 @@
           "type": "testimonial",
           "settings": {
             "name": "Emily T.",
-            "image": "shopify://shop_images/Watch-5-02.webp",
             "product": "Samsung Galaxy 5 LTE Smart Watch",
             "product_url": "shopify://products/samsung-galaxy-5-lte-smart-watch",
             "price": "$359.99",
@@ -294,7 +294,6 @@
           "type": "testimonial",
           "settings": {
             "name": "Lisa P.",
-            "image": "shopify://shop_images/author-electric3.jpg",
             "testimonial_image": "shopify://shop_images/fit-pro-01.webp",
             "product": "Fit Pro True Wireless Bluetooth Earbuds",
             "product_url": "shopify://products/fit-pro-true-wireless-bluetooth-earbuds",
@@ -346,42 +345,42 @@
         "brand_zXxLN4": {
           "type": "brand",
           "settings": {
-            "brand_image": "shopify://shop_images/zara_232eddf9-8ce4-4911-a177-8efe9c47dd47.png",
+            "brand_image": "shopify://shop_images/zara.png",
             "brand_link": ""
           }
         },
         "brand_3g4ECQ": {
           "type": "brand",
           "settings": {
-            "brand_image": "shopify://shop_images/bear_fde932fe-e47e-434f-89b6-662f0ca27862.png",
+            "brand_image": "shopify://shop_images/bear.png",
             "brand_link": ""
           }
         },
         "brand_LtaRam": {
           "type": "brand",
           "settings": {
-            "brand_image": "shopify://shop_images/logo04.png",
+            "brand_image": "shopify://shop_images/nike.png",
             "brand_link": ""
           }
         },
         "brand_cpEWLx": {
           "type": "brand",
           "settings": {
-            "brand_image": "shopify://shop_images/logo03.png",
+            "brand_image": "shopify://shop_images/asos.png",
             "brand_link": ""
           }
         },
         "brand_acti9p": {
           "type": "brand",
           "settings": {
-            "brand_image": "shopify://shop_images/logo05.png",
+            "brand_image": "shopify://shop_images/forever.png",
             "brand_link": ""
           }
         },
         "brand_UDptPG": {
           "type": "brand",
           "settings": {
-            "brand_image": "shopify://shop_images/logo06.png",
+            "brand_image": "shopify://shop_images/burberry.png",
             "brand_link": ""
           }
         }
@@ -407,12 +406,6 @@
     "latest_tips_HkyXtE": {
       "type": "blog-carousel",
       "blocks": {
-        "article_ccTn6i": {
-          "type": "article",
-          "settings": {
-            "article": "electronic/tech-trends-2025-must-have-gadgets-innovations-html-sao-chep-chỉnh-sửa"
-          }
-        },
         "article_Cb6y3D": {
           "type": "article",
           "settings": {
@@ -430,13 +423,19 @@
           "settings": {
             "article": "bags/the-ultimate-guide-to-timeless-bags-every-woman-should-own"
           }
+        },
+        "article_8h8z63": {
+          "type": "article",
+          "settings": {
+            "article": "electronic/tech-trends-2025-must-have-gadgets-innovations"
+          }
         }
       },
       "block_order": [
-        "article_ccTn6i",
         "article_Cb6y3D",
         "article_Y78dGf",
-        "article_JpRQBC"
+        "article_JpRQBC",
+        "article_8h8z63"
       ],
       "settings": {
         "width": "boxed",
