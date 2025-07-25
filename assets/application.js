@@ -54,7 +54,7 @@ window.addEventListener('load', () => {
         submitButton.disabled = true;
         submitButton.classList.add('loading');
 
-        const response = await fetch(window.theme.routes.cart_add_url + '.js', {
+        const response = await fetch(window.routes.cart_add_url + '.js', {
           method: 'POST',
           body: formData,
         });
