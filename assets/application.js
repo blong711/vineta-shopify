@@ -102,15 +102,13 @@ window.addEventListener('load', () => {
   currencySelectors.forEach(selector => {
     selector.addEventListener('change', async function(e) {
       const currency = e.target.value;
-      console.log('Currency changed to:', currency);
       
       try {
-        console.log('Updating currency...');
         const formData = new FormData();
         formData.append('form_type', 'currency');
         formData.append('currency', currency);
         
-        const response = await fetch('/cart/update', {
+        const response = await fetch(window.theme.routes.cart_update_url, {
           method: 'POST',
           headers: {
             'X-Requested-With': 'XMLHttpRequest'
@@ -118,9 +116,7 @@ window.addEventListener('load', () => {
           body: formData
         });
         
-        console.log('Response status:', response.status);
         if (response.ok) {
-          console.log('Currency updated successfully, reloading page...');
           window.location.href = window.location.href;
         } else {
           const errorData = await response.text();
