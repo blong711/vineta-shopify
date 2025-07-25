@@ -69,38 +69,38 @@
                                                     <p class="sub text-md fw-medium fade-item fade-item-1">
                                                         {{ block.settings.subtitle }}
                                                     </p>
-                                                    <h2 class="heading fw-medium fade-item fade-item-2 max-heading">
+                                                    <h2 class="heading fw-medium fade-item fade-item-2 max-heading {% if block.settings.white_text %}text-white{% endif %}">
                                                         {{ block.settings.heading }}
                                                     </h2>
                                                 {% elsif section.settings.layout == 'layout2' %}
                                                     <p class="body-text-2 fw-semibold fade-item fade-item-1 font-2">
                                                         {{ block.settings.subtitle }}
                                                     </p>
-                                                    <div class="heading display-lg-3 fade-item fade-item-2 font-2">
+                                                    <div class="heading display-lg-3 fade-item fade-item-2 font-2 {% if block.settings.white_text %}text-white{% endif %}">
                                                         {{ block.settings.heading }}
                                                     </div>
-                                                    <p class="sub text-md fade-item fade-item-3 text-main">
+                                                    <p class="sub text-md fade-item fade-item-3 text-main {% if block.settings.white_text %}text-white{% endif %}">
                                                         {{ block.settings.subheading }}
                                                     </p>
                                                 {% elsif section.settings.layout == 'layout3' %}
-                                                    <h2 class="heading display-xl-2 fw-medium fade-item fade-item-2">
+                                                    <h2 class="heading display-xl-2 fw-medium fade-item fade-item-2 {% if block.settings.white_text %}text-white{% endif %}">
                                                         {{ block.settings.heading }}
                                                     </h2>
-                                                    <p class="sub text-xl-2 text-main fade-item fade-item-3">
+                                                    <p class="sub text-xl-2 text-main fade-item fade-item-3 {% if block.settings.white_text %}text-white{% endif %}">
                                                         {{ block.settings.subheading }}
                                                     </p>
                                                 {% elsif section.settings.layout == 'layout4' %}
-                                                    <h2 class="heading display-xl-2 fw-medium fade-item fade-item-1">
+                                                    <h2 class="heading display-xl-2 fw-medium fade-item fade-item-1 {% if block.settings.white_text %}text-white{% endif %}">
                                                         {{ block.settings.heading }}
                                                     </h2>
-                                                    <p class="sub text-xl fade-item fade-item-2">
+                                                    <p class="sub text-xl fade-item fade-item-2 {% if block.settings.white_text %}text-white{% endif %}">
                                                         {{ block.settings.subheading }}
                                                     </p>
                                                 {% else %}
-                                                    <h2 class="heading fw-medium fade-item fade-item-1">
+                                                    <h2 class="heading fw-medium fade-item fade-item-1 {% if block.settings.white_text %}text-white{% endif %}">
                                                         {{ block.settings.heading }}
                                                     </h2>
-                                                    <p class="sub text-md fade-item fade-item-2">
+                                                    <p class="sub text-md fade-item fade-item-2 {% if block.settings.white_text %}text-white{% endif %}">
                                                         {{ block.settings.subheading }}
                                                     </p>
                                                 {% endif %}
@@ -337,6 +337,13 @@
                     "type": "url",
                     "id": "button_link",
                     "label": "Button link"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "white_text",
+                    "label": "White text color",
+                    "default": false,
+                    "info": "Enable to make heading and subheading text white"
                 }
             ]
         }
