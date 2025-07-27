@@ -1,7 +1,6 @@
 {
   "article": [],
   "blog": [],
-  "brand": [],
   "collection": [],
   "company": [],
   "company_location": [],
@@ -22,279 +21,29 @@
   ],
   "product": [
     {
-      "key": "queries",
-      "namespace": "shopify--discovery--product_search_boost",
-      "name": "Search product boosts",
-      "description": "List of search queries for which a product gets higher rank in search results",
+      "key": "snowboard_length",
+      "namespace": "test_data",
+      "name": "Snowboard length",
+      "description": "The length of the snowboard",
       "type": {
-        "name": "list.single_line_text_field",
-        "category": "TEXT"
+        "name": "dimension",
+        "category": "MEASUREMENT"
       }
     },
     {
-      "key": "related_products",
-      "namespace": "shopify--discovery--product_recommendation",
-      "name": "Related products",
-      "description": "List of related products",
-      "type": {
-        "name": "list.product_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "related_products_display",
-      "namespace": "shopify--discovery--product_recommendation",
-      "name": "Related products settings",
-      "description": "Determines how related products are displayed along with algorithmic product recommendations",
+      "key": "binding_mount",
+      "namespace": "test_data",
+      "name": "Snowboard binding mount",
+      "description": "The type of binding mount used on the snowboard",
       "type": {
         "name": "single_line_text_field",
         "category": "TEXT"
       }
     },
     {
-      "key": "complementary_products",
-      "namespace": "shopify--discovery--product_recommendation",
-      "name": "Complementary products",
-      "description": "List of complementary products",
-      "type": {
-        "name": "list.product_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "color-pattern",
-      "namespace": "shopify",
-      "name": "Color",
-      "description": "Defines the primary color or pattern, such as blue or striped",
-      "type": {
-        "name": "list.metaobject_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "neckline",
-      "namespace": "shopify",
-      "name": "Neckline",
-      "description": "Used to describe the neck shape of a garment, such as V-neck or boat",
-      "type": {
-        "name": "list.metaobject_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "fabric",
-      "namespace": "shopify",
-      "name": "Fabric",
-      "description": "Identifies the type of fabric used in a product, for example, cotton or denim",
-      "type": {
-        "name": "list.metaobject_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "size",
-      "namespace": "shopify",
-      "name": "Size",
-      "description": "Used to specify the size of a product, such as 0-3 months or Extra large (XL)",
-      "type": {
-        "name": "list.metaobject_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "sleeve-length-type",
-      "namespace": "shopify",
-      "name": "Sleeve length type",
-      "description": "Specifies the style of sleeves on clothing items, such as short or sleeveless",
-      "type": {
-        "name": "list.metaobject_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "top-length-type",
-      "namespace": "shopify",
-      "name": "Top length type",
-      "description": "Defines the length of tops or shirts, like crop top or long",
-      "type": {
-        "name": "list.metaobject_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "age-group",
-      "namespace": "shopify",
-      "name": "Age group",
-      "description": "Defines the target age range for a product, such as adults or kids",
-      "type": {
-        "name": "list.metaobject_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "band-color",
-      "namespace": "shopify",
-      "name": "Band color",
-      "description": "Specifies the color of a watch band, e.g. multicolor, rose gold",
-      "type": {
-        "name": "list.metaobject_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "target-gender",
-      "namespace": "shopify",
-      "name": "Target gender",
-      "description": "Identifies the intended gender for a product, such as female, male or unisex",
-      "type": {
-        "name": "list.metaobject_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "case-type",
-      "namespace": "shopify",
-      "name": "Case type",
-      "description": "Specifies the kind of case for electronics and accessories, such as wallet or book style",
-      "type": {
-        "name": "list.metaobject_reference",
-        "category": "REFERENCE"
-      }
-    },
-    {
-      "key": "end_date",
-      "namespace": "countdown",
-      "name": "Countdown",
-      "description": "",
-      "type": {
-        "name": "date_time",
-        "category": "DATE_TIME"
-      }
-    },
-    {
-      "key": "content",
-      "namespace": "size_guide",
-      "name": "Size Guide",
-      "description": "",
-      "type": {
-        "name": "multi_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "composition",
-      "namespace": "material",
-      "name": "Material Composition",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "content",
-      "namespace": "material",
-      "name": "Material Content",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "care",
-      "namespace": "material",
-      "name": "Material Care",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "imported",
-      "namespace": "material",
-      "name": "Material Imported",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "wash",
-      "namespace": "material",
-      "name": "Material Wash",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "iron",
-      "namespace": "material",
-      "name": "Material Iron",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "bleach",
-      "namespace": "material",
-      "name": "Material Bleach",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "dry_clean",
-      "namespace": "material",
-      "name": "Material Dry Clean",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "tumble_dry",
-      "namespace": "material",
-      "name": "Material Tumble Dry",
-      "description": "",
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "url",
-      "namespace": "affiliate",
-      "name": "Affiliate",
-      "description": "",
-      "type": {
-        "name": "url",
-        "category": "URL"
-      }
-    },
-    {
-      "key": "shopping_bag",
+      "key": "cart",
       "namespace": "return_policies",
-      "name": "Shopping bag",
-      "description": "",
-      "type": {
-        "name": "boolean",
-        "category": "TRUE_FALSE"
-      }
-    },
-    {
-      "key": "shipping",
-      "namespace": "return_policies",
-      "name": "Shipping",
+      "name": "Cart",
       "description": "",
       "type": {
         "name": "boolean",
@@ -312,26 +61,156 @@
       }
     },
     {
-      "key": "cart",
+      "key": "shipping",
       "namespace": "return_policies",
-      "name": "Cart",
+      "name": "Shipping",
       "description": "",
       "type": {
         "name": "boolean",
         "category": "TRUE_FALSE"
+      }
+    },
+    {
+      "key": "shopping_bag",
+      "namespace": "return_policies",
+      "name": "Shopping bag",
+      "description": "",
+      "type": {
+        "name": "boolean",
+        "category": "TRUE_FALSE"
+      }
+    },
+    {
+      "key": "url",
+      "namespace": "affiliate",
+      "name": "Affiliate",
+      "description": "",
+      "type": {
+        "name": "url",
+        "category": "URL"
+      }
+    },
+    {
+      "key": "tumble_dry",
+      "namespace": "material",
+      "name": "Material Tumble Dry",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "dry_clean",
+      "namespace": "material",
+      "name": "Material Dry Clean",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "bleach",
+      "namespace": "material",
+      "name": "Material Bleach",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "iron",
+      "namespace": "material",
+      "name": "Material Iron",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "wash",
+      "namespace": "material",
+      "name": "Material Wash",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "imported",
+      "namespace": "material",
+      "name": "Material Imported",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "care",
+      "namespace": "material",
+      "name": "Material Care",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "content",
+      "namespace": "material",
+      "name": "Material Content",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "composition",
+      "namespace": "material",
+      "name": "Material Composition",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "content",
+      "namespace": "size_guide",
+      "name": "Size Guide",
+      "description": "",
+      "type": {
+        "name": "multi_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "end_date",
+      "namespace": "countdown",
+      "name": "Countdown",
+      "description": "",
+      "type": {
+        "name": "date_time",
+        "category": "DATE_TIME"
       }
     }
   ],
   "variant": [],
   "shop": [
     {
-      "key": "menu",
-      "namespace": "home",
-      "name": "Home Menu",
-      "description": "",
+      "key": "alpine_sports",
+      "namespace": "test_data",
+      "name": "Alpine sport types",
+      "description": "The set of alpine sports that this sport shop specializes in",
       "type": {
-        "name": "list.metaobject_reference",
-        "category": "REFERENCE"
+        "name": "list.single_line_text_field",
+        "category": "TEXT"
       }
     }
   ]
