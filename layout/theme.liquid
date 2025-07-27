@@ -226,9 +226,7 @@
       };
       window.theme = {
         settings: {
-          free_shipping_threshold: {{ settings.free_shipping_threshold | default: 10000 }},
-          progress_message: {{ 'cart.free_shipping.progress_message' | t | json }},
-          free_shipping_message: {{ 'cart.free_shipping.congratulations_message' | t | json }}
+          free_shipping_threshold: {{ settings.free_shipping_threshold | default: 10000 }}
         },
         translations: {
           cart: {
