@@ -483,7 +483,6 @@
     {%- elsif request.page_type == 'article' -%}
     <script type="application/ld+json">{{ article | structured_data }}</script>
     {%- endif -%}
-    {%- endcapture -%}
     {{- grich | strip_newlines | remove: '  ' -}}
   </body>
   <!-- Move all non-critical scripts here -->
