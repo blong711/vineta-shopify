@@ -73,9 +73,9 @@
     {% endif %}
 
     <!-- Tom Select CSS loaded conditionally -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.bootstrap5.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'tom-select.bootstrap5.min.css' | asset_url }}" media="print" onload="this.media='all'">
     <noscript>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.bootstrap5.min.css">
+      <link rel="stylesheet" href="{{ 'tom-select.bootstrap5.min.css' | asset_url }}">
     </noscript>
 
     <!-- CSS loading polyfill -->
@@ -147,7 +147,7 @@
     
     <!-- Other scripts moved to end of body -->
     <!-- Tom Select Bootstrap 5 Theme CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+    <link href="{{ 'tom-select.bootstrap5.min.css' | asset_url }}" rel="stylesheet">
   </head>
 
   <body class="{% if template == 'page.phonecase' %}bg-surface-2{% endif %}">
