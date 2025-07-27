@@ -103,7 +103,6 @@
     {% render 'meta-tags' %}
 
     <!-- SEO Meta Tags -->
-    <meta name="robots" content="index, follow">
     <meta name="author" content="{{ shop.name }}">
     <meta name="keywords" content="{{ shop.name }}, {{ page_title | escape }}{% if current_tags %}, {{ current_tags | join: ', ' }}{% endif %}">
     
@@ -134,9 +133,6 @@
 
     {{ content_for_header }}
 
-    <!-- CSRF Protection -->
-    <meta name="csrf-token" content="{{ csrf_token }}">
-
     <!-- Critical JavaScript - Load with high priority -->
     <!-- <script src="{{ 'jquery.min.js' | asset_url }}" defer></script> -->
     
@@ -152,13 +148,13 @@
 
   <body class="{% if template == 'page.phonecase' %}bg-surface-2{% endif %}">
     <!-- Skip to main content link for keyboard users -->
-    <a href="#main-content" class="skip-to-main" aria-label="Skip to main content">Skip to main content</a>
+    <a href="#main-content" class="skip-to-main" aria-label="{{ 'general.accessibility.skip_to_main_content' | t }}">{{ 'general.accessibility.skip_to_main_content' | t }}</a>
     
     <!-- Scroll Top -->
-    <button id="goTop" class="scroll-to-top" aria-label="Return to top of page">
+    <button id="goTop" class="scroll-to-top" aria-label="{{ 'general.accessibility.return_to_top' | t }}">
       <span class="border-progress"></span>
       <span class="icon icon-arrow-right" aria-hidden="true"></span>
-      <span class="visually-hidden">Return to top of page</span>
+      <span class="visually-hidden">{{ 'general.accessibility.return_to_top' | t }}</span>
     </button>
 
     <!-- Preload - Optimized for performance -->
