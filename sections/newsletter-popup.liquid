@@ -209,13 +209,30 @@
       }
     });
 
+    // Function to close popup
+    function closePopup() {
+      if (popup) {
+        popup.style.display = 'none';
+        popup.style.opacity = '0';
+        popup.style.visibility = 'hidden';
+        
+        // If checkbox is checked, store in localStorage
+        if (dontShowAgainCheckbox.checked && !isThemeCustomizer) {
+          localStorage.setItem('newsletterPopupHidden', 'true');
+        }
+      }
+    }
+
     // Handle close buttons
     closeButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        if (dontShowAgainCheckbox.checked && popup && !isThemeCustomizer) {
-          popup.remove();
-        }
-      });
+      button.addEventListener('click', closePopup);
+    });
+
+    // Close when clicking outside the popup
+    popup.addEventListener('click', function(event) {
+      if (event.target === popup) {
+        closePopup();
+      }
     });
   });
 </script>
