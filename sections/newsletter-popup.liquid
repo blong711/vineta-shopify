@@ -58,6 +58,16 @@
 }
 {% endschema %}
 
+<style>
+  .modal-newsletter.show {
+    cursor: url('{{ "cursor-close.svg" | asset_url }}'), auto;
+  }
+  
+  .modal-newsletter .modal-dialog {
+    cursor: default;
+  }
+</style>
+
 <div class="modal modalCentered fade auto-popup modal-newsletter" id="newsletterPopup" tabindex="-1" aria-labelledby="newsletterPopupLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
