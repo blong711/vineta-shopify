@@ -3,6 +3,13 @@
   "name": "Newsletter Popup",
   "settings": [
     {
+      "type": "checkbox",
+      "id": "disable_popup",
+      "label": "Disable Newsletter Popup",
+      "default": false,
+      "info": "When enabled, the newsletter popup will not be displayed to customers"
+    },
+    {
       "type": "image_picker",
       "id": "popup_image",
       "label": "Popup Image"
@@ -158,16 +165,24 @@
     const dontShowAgainCheckbox = document.getElementById('dont-show-again');
     const closeButtons = document.querySelectorAll('.btn-hide-popup, [data-bs-dismiss="modal"]');
     
+    // Check if popup is disabled via section settings
+    const isPopupDisabled = {{ section.settings.disable_popup | json }};
+    
     // Check if we're in theme customizer mode
     const isThemeCustomizer = window.Shopify && window.Shopify.designMode;
     
-    // Only check localStorage if not in theme customizer
-    if (!isThemeCustomizer && localStorage.getItem('newsletterPopupHidden') === 'true') {
+    // If popup is disabled and not in customizer mode, don't show it
+    if (isPopupDisabled && !isThemeCustomizer) {
+      return;
+    }
+    
+    // Only check localStorage if not in theme customizer and popup is not disabled
+    if (!isThemeCustomizer && !isPopupDisabled && localStorage.getItem('newsletterPopupHidden') === 'true') {
       return;
     }
 
-    // Show popup after a delay if not in customizer mode
-    if (!isThemeCustomizer) {
+    // Show popup after a delay if not in customizer mode and not disabled
+    if (!isThemeCustomizer && !isPopupDisabled) {
       setTimeout(function() {
         if (popup) {
           popup.classList.add('show');
