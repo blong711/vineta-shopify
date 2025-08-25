@@ -433,6 +433,16 @@
       "label": "Logo width"
     },
     {
+      "type": "range",
+      "id": "logo_width_mobile",
+      "min": 30,
+      "max": 150,
+      "step": 5,
+      "default": 80,
+      "unit": "px",
+      "label": "Mobile logo width"
+    },
+    {
       "type": "header",
       "content": "Menu"
     },
@@ -759,6 +769,10 @@ document.addEventListener('DOMContentLoaded', function() {
   background-color: #ffffff;
 }
 
+.logo-header img {
+    width: {{ section.settings.logo_width }}px;
+}
+
 /* Responsive Header Height */
 @media (max-width: 1199px) {
   #header {
@@ -767,6 +781,11 @@ document.addEventListener('DOMContentLoaded', function() {
   
   #header.header-visible {
     height: 64px;
+  }
+  
+  /* Mobile Logo Width */
+  .logo-header img {
+    width: {{ section.settings.logo_width_mobile }}px;
   }
 }
 
