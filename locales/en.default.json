@@ -772,6 +772,12 @@
       "compare_button": "Compare",
       "clear_all": "Clear All"
     },
+    "pickup_available": {
+      "title": "Pickup Available",
+      "available_html": "Pickup available at <span class=\"fw-medium\">{{ location_name }} Store</span>. {{ pick_up_time }}",
+      "unavailable_at_html": "Pickup currently unavailable at <span class=\"fw-medium\">{{ location_name }} Store</span>.",
+      "unavailable": "Pickup currently unavailable."
+    },
     "filter_content": {
       "collections": "Collections",
       "availability": "Availability",
@@ -1070,7 +1076,8 @@
         "title": "Contact",
         "address": "123 Main Street, City, State 12345",
         "phone": "+1 (555) 123-4567",
-        "email": "info@example.com"
+        "email": "info@example.com",
+        "map_button_text": "Get direction"
       },
       "newsletter": {
         "title": "Newsletter",
@@ -1157,5 +1164,8 @@
     "sold_out": "Sold Out",
     "empty_wishlist": "No product were added to the wishlist.",
     "back_to_shopping": "Back to Shopping"
-  }
+  },
+  "accessibility": {
+    "close": "Close"
+  },
 } 
