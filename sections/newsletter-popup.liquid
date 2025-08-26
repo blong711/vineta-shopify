@@ -3,6 +3,13 @@
   "name": "Newsletter Popup",
   "settings": [
     {
+      "type": "checkbox",
+      "id": "disable_popup",
+      "label": "Disable Newsletter Popup",
+      "default": false,
+      "info": "When enabled, the newsletter popup will not be displayed to customers"
+    },
+    {
       "type": "image_picker",
       "id": "popup_image",
       "label": "Popup Image"
@@ -57,6 +64,16 @@
   ]
 }
 {% endschema %}
+
+<style>
+  .modal-newsletter.show {
+    cursor: url('{{ "cursor-close.svg" | asset_url }}'), auto;
+  }
+  
+  .modal-newsletter .modal-dialog {
+    cursor: default;
+  }
+</style>
 
 <div class="modal modalCentered fade auto-popup modal-newsletter" id="newsletterPopup" tabindex="-1" aria-labelledby="newsletterPopupLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -148,16 +165,24 @@
     const dontShowAgainCheckbox = document.getElementById('dont-show-again');
     const closeButtons = document.querySelectorAll('.btn-hide-popup, [data-bs-dismiss="modal"]');
     
+    // Check if popup is disabled via section settings
+    const isPopupDisabled = {{ section.settings.disable_popup | json }};
+    
     // Check if we're in theme customizer mode
     const isThemeCustomizer = window.Shopify && window.Shopify.designMode;
     
-    // Only check localStorage if not in theme customizer
-    if (!isThemeCustomizer && localStorage.getItem('newsletterPopupHidden') === 'true') {
+    // If popup is disabled and not in customizer mode, don't show it
+    if (isPopupDisabled && !isThemeCustomizer) {
+      return;
+    }
+    
+    // Only check localStorage if not in theme customizer and popup is not disabled
+    if (!isThemeCustomizer && !isPopupDisabled && localStorage.getItem('newsletterPopupHidden') === 'true') {
       return;
     }
 
-    // Show popup after a delay if not in customizer mode
-    if (!isThemeCustomizer) {
+    // Show popup after a delay if not in customizer mode and not disabled
+    if (!isThemeCustomizer && !isPopupDisabled) {
       setTimeout(function() {
         if (popup) {
           popup.classList.add('show');
@@ -209,13 +234,30 @@
       }
     });
 
+    // Function to close popup
+    function closePopup() {
+      if (popup) {
+        popup.style.display = 'none';
+        popup.style.opacity = '0';
+        popup.style.visibility = 'hidden';
+        
+        // If checkbox is checked, store in localStorage
+        if (dontShowAgainCheckbox.checked && !isThemeCustomizer) {
+          localStorage.setItem('newsletterPopupHidden', 'true');
+        }
+      }
+    }
+
     // Handle close buttons
     closeButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        if (dontShowAgainCheckbox.checked && popup && !isThemeCustomizer) {
-          popup.remove();
-        }
-      });
+      button.addEventListener('click', closePopup);
+    });
+
+    // Close when clicking outside the popup
+    popup.addEventListener('click', function(event) {
+      if (event.target === popup) {
+        closePopup();
+      }
     });
   });
 </script>

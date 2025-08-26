@@ -425,12 +425,22 @@
     {
       "type": "range",
       "id": "logo_width",
-      "min": 50,
-      "max": 250,
-      "step": 10,
-      "default": 100,
+      "min": 100,
+      "max": 200,
+      "step": 2,
+      "default": 128,
       "unit": "px",
       "label": "Logo width"
+    },
+    {
+      "type": "range",
+      "id": "logo_width_mobile",
+      "min": 50,
+      "max": 150,
+      "step": 2,
+      "default": 128,
+      "unit": "px",
+      "label": "Mobile logo width"
     },
     {
       "type": "header",
@@ -759,6 +769,10 @@ document.addEventListener('DOMContentLoaded', function() {
   background-color: #ffffff;
 }
 
+.logo-header img {
+    width: {{ section.settings.logo_width }}px;
+}
+
 /* Responsive Header Height */
 @media (max-width: 1199px) {
   #header {
@@ -767,6 +781,11 @@ document.addEventListener('DOMContentLoaded', function() {
   
   #header.header-visible {
     height: 64px;
+  }
+  
+  /* Mobile Logo Width */
+  .logo-header img {
+    width: {{ section.settings.logo_width_mobile }}px;
   }
 }
 

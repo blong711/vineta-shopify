@@ -330,7 +330,7 @@
 </script>
 
 <!-- Include the search page JavaScript -->
-{{ 'search-page.js' | asset_url | script_tag }}
+<script src="{{ 'search-page.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
