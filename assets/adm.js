@@ -33,19 +33,8 @@ if(Shopify.designMode){
 
       // console.log(ThemeCode,ThemeName,ShopEmail,CookieName,str_temp_active,str_purchase)
   function alert_active_html() {
-    const activeElement = document.querySelector(str_temp_active);
-    if (!activeElement) return '';
-    
-    const section = HTMLSanitizer.createElement('section', {
-      id: str_purchase,
-      style: 'display: flex !important'
-    });
-    
-    // Safely copy content from active element
-    HTMLSanitizer.setInnerHTML(section, activeElement.innerHTML);
-    
-    return section.outerHTML;
-  }
+    return `<section id="${str_purchase}" style="display: flex !important">${ document.querySelector(str_temp_active).innerHTML }</section>`;
+  };
 
   // console.log('ThemeCode', ThemeCode, isTrueSet)
 
