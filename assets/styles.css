@@ -4547,6 +4547,7 @@ header.header-bg {
 .animate-btn {
   position: relative;
   overflow: hidden;
+  contain: layout;
 }
 .animate-btn:hover::after {
   animation: shine-reverse 1s forwards;
@@ -4561,6 +4562,8 @@ header.header-bg {
   top: 0;
   left: -100%;
   opacity: 0.6;
+  pointer-events: none;
+  z-index: 1;
 }
 
 button.animate-btn::after,
@@ -13022,6 +13025,11 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 .popup-shopping-cart .tf-mini-cart-bottom-wrap .tf-mini-cart-view-checkout {
   display: flex;
   gap: 10px;
+  overflow: hidden;
+}
+.popup-shopping-cart .tf-mini-cart-view-checkout .animate-btn {
+  overflow: hidden;
+  contain: layout;
 }
 .popup-shopping-cart.style-2 {
   max-width: 100% !important;
