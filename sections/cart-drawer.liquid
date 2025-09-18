@@ -92,7 +92,13 @@
           <div class="tf-mini-cart-tool-content">
             <div class="tf-mini-cart-tool-text text-sm fw-medium">{{ 'cart.drawer.gift_wrap.title' | t }}</div>
             {% assign gift_wrap_product = all_products[section.settings.gift_wrap_product] %}
-            <div style="font-size: 14px;" class="tf-mini-cart-tool-text1">{{ 'cart.drawer.gift_wrap.message' | t: price: gift_wrap_product.price | money }}
+            <!-- Debug info - remove after fixing -->
+            <!-- Product ID: {{ gift_wrap_product.id }} -->
+            <!-- Product Title: {{ gift_wrap_product.title }} -->
+            <!-- Product Price: {{ gift_wrap_product.price }} -->
+            <!-- First Variant Price: {{ gift_wrap_product.variants.first.price }} -->
+            <!-- Available: {{ gift_wrap_product.available }} -->
+            <div style="font-size: 14px;" class="tf-mini-cart-tool-text1">{{ 'cart.drawer.gift_wrap.message' | t: price: gift_wrap_product.variants.first.price | money }}
             </div>
             <div class="tf-cart-tool-btns">
               <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100 btn-add-gift-confirm">{{ 'cart.drawer.gift_wrap.save' | t }}</button>
