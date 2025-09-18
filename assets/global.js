@@ -1271,7 +1271,7 @@ class WishlistCompare {
     priceWrap.appendChild(newPrice);
     
     if (product.comparePrice) {
-      const oldPrice = HTMLSanitizer.createElement('span', { class: 'old-price text-decoration-line-through text-dark-1' }, formatMoney(product.comparePrice));
+      const oldPrice = HTMLSanitizer.createElement('span', { class: 'old-price text-decoration-line-through text-dark-1', style: 'margin-left: 5px;' }, formatMoney(product.comparePrice));
       priceWrap.appendChild(oldPrice);
     }
     
@@ -2593,7 +2593,7 @@ class Cart {
         priceWrap.appendChild(newPrice);
         
         if (formattedOriginalPrice) {
-          const oldPrice = HTMLSanitizer.createElement('span', { class: 'old-price text-decoration-line-through text-dark-1' }, formattedOriginalPrice);
+          const oldPrice = HTMLSanitizer.createElement('span', { class: 'old-price text-decoration-line-through text-dark-1', style: 'margin-left: 5px;' }, formattedOriginalPrice);
           priceWrap.appendChild(oldPrice);
         }
         infoDiv.appendChild(priceWrap);
