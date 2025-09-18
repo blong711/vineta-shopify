@@ -409,10 +409,10 @@
                 const thresholdText = cartDrawer.querySelector('.tf-mini-cart-threshold .text');
                 if (thresholdText) {
                   if (cartData.total_price >= threshold) {
-                    thresholdText.innerHTML = '{{ 'cart.drawer.free_shipping.unlocked' | t }}';
+                    thresholdText.innerHTML = '{{ section.settings.free_shipping_message }}';
                   } else {
-                    const progressMessage = '{{ 'cart.drawer.free_shipping.progress' | t }}';
-                    thresholdText.innerHTML = progressMessage.replace('{{ amount }}', `$${remaining.toFixed(2)}`);
+                    const progressMessage = '{{ section.settings.progress_message }}';
+                    thresholdText.innerHTML = progressMessage.replace('[amount]', `$${remaining.toFixed(2)}`);
                   }
                 }
               }
