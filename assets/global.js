@@ -2704,7 +2704,7 @@ class Cart {
     progressBar.setAttribute('data-progress', progress);
     
     const remaining = Math.max(0, threshold - totalPrice) / 100;
-    const thresholdText = document.querySelector('.tf-mini-cart-threshold .text');
+    const thresholdText = document.querySelector('.shipping-threshold-text');
     if (thresholdText) {
       thresholdText.innerHTML = '';
       if (totalPrice >= threshold) {
@@ -2990,6 +2990,11 @@ class Cart {
 // Initialize cart when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   window.cart = new Cart();
+  
+  // Make updateShippingThreshold globally accessible
+  window.updateShippingThreshold = function(totalPrice) {
+    return window.cart.updateShippingThreshold(totalPrice);
+  };
   
   // Initialize Bootstrap offcanvas for cart drawer
   const cartDrawer = document.getElementById('shoppingCart');

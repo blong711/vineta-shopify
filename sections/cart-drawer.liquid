@@ -8,15 +8,10 @@
     <div class="wrap">
         <div class="tf-mini-cart-threshold">
           <div class="text">
-          {%- assign free_shipping_threshold = section.settings.free_shipping_threshold | times: 100 -%}
-          {% if cart.total_price >= free_shipping_threshold %}
-            {{ section.settings.free_shipping_message }}
-          {% else %}
-            {{ section.settings.progress_message | replace: '[amount]', free_shipping_threshold | minus: cart.total_price | money }}
-          {% endif %}
+          <div class="shipping-threshold-text"></div>
           </div>
           <div class="tf-progress-bar tf-progress-ship">
-          <div class="value" style="width: {{ cart.total_price | times: 100.0 | divided_by: free_shipping_threshold | at_most: 100 }}%;" data-progress="{{ cart.total_price | times: 100.0 | divided_by: free_shipping_threshold | at_most: 100 }}">
+          <div class="value" style="width: 0%;" data-progress="0">
               <i class="icon icon-car"></i>
             </div>
           </div>
@@ -184,6 +179,10 @@
 
   // Shipping calculator functionality
   document.addEventListener('DOMContentLoaded', function() {
+    // Initialize shipping threshold
+    if (window.updateShippingThreshold) {
+      window.updateShippingThreshold({{ cart.total_price }});
+    }
     const countrySelect = document.getElementById('shipping-country-form');
     const provinceFieldContainer = document.getElementById('province-field-container');
     const provinceSelect = document.getElementById('shipping-province-form');
@@ -397,23 +396,9 @@
                   }
                 {% endif %}
                 
-                // Update shipping threshold
-                const threshold = 100 * 100;
-                const progress = Math.min(100, (cartData.total_price / threshold) * 100);
-                const remaining = Math.max(0, threshold - cartData.total_price) / 100;
-                const progressBar = cartDrawer.querySelector('.tf-progress-bar .value');
-                if (progressBar) {
-                  progressBar.style.width = `${progress}%`;
-                  progressBar.setAttribute('data-progress', progress);
-                }
-                const thresholdText = cartDrawer.querySelector('.tf-mini-cart-threshold .text');
-                if (thresholdText) {
-                  if (cartData.total_price >= threshold) {
-                    thresholdText.innerHTML = '{{ section.settings.free_shipping_message }}';
-                  } else {
-                    const progressMessage = '{{ section.settings.progress_message }}';
-                    thresholdText.innerHTML = progressMessage.replace('[amount]', `$${remaining.toFixed(2)}`);
-                  }
+                // Update shipping threshold using global function
+                if (window.updateShippingThreshold) {
+                  window.updateShippingThreshold(cartData.total_price);
                 }
               }
             } catch (err) {
@@ -798,10 +783,6 @@
 {
   "name": "Cart Drawer",
   "settings": [
-    {
-      "type": "header",
-      "content": "Free Shipping Threshold"
-    },
     {
       "type": "header",
       "content": "Cart Tools"
