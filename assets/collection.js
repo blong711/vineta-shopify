@@ -125,13 +125,13 @@ const noProductsStyles = `
 `;
 
 // Inject styles into head when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function () {
   // Inject styles
-  document.head.insertAdjacentHTML('beforeend', noProductsStyles);
+  document.head.insertAdjacentHTML("beforeend", noProductsStyles);
 
   // Add loading overlay to body
-  const loadingOverlay = document.createElement('div');
-  loadingOverlay.className = 'filter-loading-overlay';
+  const loadingOverlay = document.createElement("div");
+  loadingOverlay.className = "filter-loading-overlay";
   loadingOverlay.innerHTML = `
     <div class="filter-loading-spinner">
       <div class="spinner"></div>
@@ -142,33 +142,35 @@ document.addEventListener('DOMContentLoaded', function() {
   // Global variables for state management
   let isLoading = false;
   let currentPage = 1;
-  let currentSort = document.querySelector('.tf-dropdown-sort')?.dataset.defaultSort || 'best-selling';
+  let currentSort =
+    document.querySelector(".tf-dropdown-sort")?.dataset.defaultSort ||
+    "best-selling";
   let currentFilters = new URLSearchParams(window.location.search);
-  
+
   // Cache DOM elements
-  const productGrid = document.querySelector('.tf-grid-layout');
-  const productList = document.querySelector('.tf-list-layout');
-  const sortDropdown = document.querySelector('.tf-dropdown-sort');
-  const sortValueDisplay = document.querySelector('.text-sort-value');
-  const filterForm = document.getElementById('collection-filters-form');
-  const appliedFiltersContainer = document.getElementById('applied-filters');
-  const productCountGrid = document.getElementById('product-count-grid');
-  const productCountList = document.getElementById('product-count-list');
-  const metaFilterShop = document.querySelector('.meta-filter-shop');
+  const productGrid = document.querySelector(".tf-grid-layout");
+  const productList = document.querySelector(".tf-list-layout");
+  const sortDropdown = document.querySelector(".tf-dropdown-sort");
+  const sortValueDisplay = document.querySelector(".text-sort-value");
+  const filterForm = document.getElementById("collection-filters-form");
+  const appliedFiltersContainer = document.getElementById("applied-filters");
+  const productCountGrid = document.getElementById("product-count-grid");
+  const productCountList = document.getElementById("product-count-list");
+  const metaFilterShop = document.querySelector(".meta-filter-shop");
 
   // Function to show loading spinner
   function showFilterLoading() {
-    const overlay = document.querySelector('.filter-loading-overlay');
+    const overlay = document.querySelector(".filter-loading-overlay");
     if (overlay) {
-      overlay.classList.add('show');
+      overlay.classList.add("show");
     }
   }
 
   // Function to hide loading spinner
   function hideFilterLoading() {
-    const overlay = document.querySelector('.filter-loading-overlay');
+    const overlay = document.querySelector(".filter-loading-overlay");
     if (overlay) {
-      overlay.classList.remove('show');
+      overlay.classList.remove("show");
     }
   }
 
@@ -176,23 +178,23 @@ document.addEventListener('DOMContentLoaded', function() {
   function initializeAll() {
     // Hide any existing loading spinner on page load
     hideFilterLoading();
-    
+
     // Initialize price range slider first
     initializePriceRangeSlider();
-    
+
     // Initialize filter state with a small delay to ensure Liquid-rendered filters are present
     setTimeout(() => {
       initializeFilterState();
     }, 50);
-    
+
     // Initialize product events
     initializeProductEvents();
-    
+
     // Initialize infinite scroll with a delay to ensure DOM is ready
     setTimeout(() => {
       initializeInfiniteScroll();
     }, 200);
-    
+
     // Update availability counts after products are loaded
     setTimeout(() => {
       updateAvailabilityCounts().catch(console.error);
@@ -205,31 +207,61 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize price range slider
   function initializePriceRangeSlider() {
     // Check for all possible price range sliders
-    const priceRangeDrawer = document.getElementById('price-value-range-drawer');
-    const priceRangeSidebar = document.getElementById('price-value-range-sidebar');
-    const priceRangeHorizontal = document.getElementById('price-value-range-horizontal');
-    
+    const priceRangeDrawer = document.getElementById(
+      "price-value-range-drawer"
+    );
+    const priceRangeSidebar = document.getElementById(
+      "price-value-range-sidebar"
+    );
+    const priceRangeHorizontal = document.getElementById(
+      "price-value-range-horizontal"
+    );
+
     // Initialize drawer price range slider
     if (priceRangeDrawer && !priceRangeDrawer.noUiSlider) {
-      initializeSinglePriceSlider(priceRangeDrawer, 'price-min-value-drawer', 'price-max-value-drawer', 'price-min-input', 'price-max-input');
+      initializeSinglePriceSlider(
+        priceRangeDrawer,
+        "price-min-value-drawer",
+        "price-max-value-drawer",
+        "price-min-input",
+        "price-max-input"
+      );
     }
-    
+
     // Initialize sidebar price range slider
     if (priceRangeSidebar && !priceRangeSidebar.noUiSlider) {
-      initializeSinglePriceSlider(priceRangeSidebar, 'price-min-value-sidebar', 'price-max-value-sidebar', 'price-min-input', 'price-max-input');
+      initializeSinglePriceSlider(
+        priceRangeSidebar,
+        "price-min-value-sidebar",
+        "price-max-value-sidebar",
+        "price-min-input",
+        "price-max-input"
+      );
     }
-    
+
     // Initialize horizontal price range slider
     if (priceRangeHorizontal && !priceRangeHorizontal.noUiSlider) {
-      initializeSinglePriceSlider(priceRangeHorizontal, 'price-min-value-horizontal', 'price-max-value-horizontal', 'price-min-input-horizontal', 'price-max-input-horizontal');
+      initializeSinglePriceSlider(
+        priceRangeHorizontal,
+        "price-min-value-horizontal",
+        "price-max-value-horizontal",
+        "price-min-input-horizontal",
+        "price-max-input-horizontal"
+      );
     }
   }
 
   // Helper function to initialize a single price slider
-  function initializeSinglePriceSlider(priceRange, minValueId, maxValueId, minInputId, maxInputId) {
+  function initializeSinglePriceSlider(
+    priceRange,
+    minValueId,
+    maxValueId,
+    minInputId,
+    maxInputId
+  ) {
     // Check if noUiSlider is available
-    if (typeof noUiSlider === 'undefined') {
-      console.warn('noUiSlider not available, retrying in 500ms...');
+    if (typeof noUiSlider === "undefined") {
+      console.warn("noUiSlider not available, retrying in 500ms...");
       setTimeout(() => initializePriceRangeSlider(), 500);
       return;
     }
@@ -238,10 +270,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const maxValue = document.getElementById(maxValueId);
     const minInput = document.getElementById(minInputId);
     const maxInput = document.getElementById(maxInputId);
-    
+
     if (!minValue || !maxValue) return;
 
-    const currency = minValue.dataset.currency || '$';
+    const currency = minValue.dataset.currency || "$";
     const rangeMin = parseInt(priceRange.dataset.rangeMin) || 0;
     const rangeMax = parseInt(priceRange.dataset.rangeMax) || 1000;
     const currentMin = parseInt(priceRange.dataset.min) || rangeMin;
@@ -252,14 +284,14 @@ document.addEventListener('DOMContentLoaded', function() {
         start: [currentMin, currentMax],
         connect: true,
         range: {
-          'min': rangeMin,
-          'max': rangeMax
+          min: rangeMin,
+          max: rangeMax,
         },
-        step: 1
+        step: 1,
       });
 
       // Update display values
-      priceRange.noUiSlider.on('update', function(values) {
+      priceRange.noUiSlider.on("update", function (values) {
         if (minValue) minValue.textContent = currency + Math.round(values[0]);
         if (maxValue) maxValue.textContent = currency + Math.round(values[1]);
         if (minInput) minInput.value = Math.round(values[0]);
@@ -267,34 +299,34 @@ document.addEventListener('DOMContentLoaded', function() {
       });
 
       // Handle change event
-      priceRange.noUiSlider.on('change', function(values) {
+      priceRange.noUiSlider.on("change", function (values) {
         const minVal = Math.round(values[0]);
         const maxVal = Math.round(values[1]);
         const rangeMin = parseInt(priceRange.dataset.rangeMin) || 0;
         const rangeMax = parseInt(priceRange.dataset.rangeMax) || 1000;
-        
+
         // Get or create the hidden inputs
         let currentMinInput = document.getElementById(minInputId);
         let currentMaxInput = document.getElementById(maxInputId);
-        
+
         // Only add price filter if it's different from the full range
         if (minVal > rangeMin || maxVal < rangeMax) {
           // Create the hidden inputs if they don't exist
           if (!currentMinInput) {
-            currentMinInput = document.createElement('input');
-            currentMinInput.type = 'hidden';
-            currentMinInput.name = 'filter.v.price.gte';
+            currentMinInput = document.createElement("input");
+            currentMinInput.type = "hidden";
+            currentMinInput.name = "filter.v.price.gte";
             currentMinInput.id = minInputId;
-            priceRange.closest('.widget-price').appendChild(currentMinInput);
+            priceRange.closest(".widget-price").appendChild(currentMinInput);
           }
           if (!currentMaxInput) {
-            currentMaxInput = document.createElement('input');
-            currentMaxInput.type = 'hidden';
-            currentMaxInput.name = 'filter.v.price.lte';
+            currentMaxInput = document.createElement("input");
+            currentMaxInput.type = "hidden";
+            currentMaxInput.name = "filter.v.price.lte";
             currentMaxInput.id = maxInputId;
-            priceRange.closest('.widget-price').appendChild(currentMaxInput);
+            priceRange.closest(".widget-price").appendChild(currentMaxInput);
           }
-          
+
           // Update the values
           currentMinInput.value = minVal;
           currentMaxInput.value = maxVal;
@@ -303,125 +335,148 @@ document.addEventListener('DOMContentLoaded', function() {
           if (currentMinInput) currentMinInput.remove();
           if (currentMaxInput) currentMaxInput.remove();
         }
-        
+
         // Submit the form
-        const form = document.getElementById('collection-filters-form') || 
-                    document.getElementById('collection-filters-form-sidebar') || 
-                    document.getElementById('collection-filters-form-drawer');
+        const form =
+          document.getElementById("collection-filters-form") ||
+          document.getElementById("collection-filters-form-sidebar") ||
+          document.getElementById("collection-filters-form-drawer");
         if (form) {
           form.submit();
         }
       });
-
     } catch (error) {
-      console.error('Error initializing price range slider:', error);
+      console.error("Error initializing price range slider:", error);
     }
   }
 
   // Initialize filter state from URL parameters
   function initializeFilterState() {
     const urlParams = new URLSearchParams(window.location.search);
-    
+
     // Debug: Log URL parameters
-    console.log('Initializing filter state with URL params:', urlParams.toString());
-    
+    console.log(
+      "Initializing filter state with URL params:",
+      urlParams.toString()
+    );
+
     // Set checkboxes based on URL parameters
-    const checkboxes = document.querySelectorAll('.filter-checkbox');
-    checkboxes.forEach(checkbox => {
+    const checkboxes = document.querySelectorAll(".filter-checkbox");
+    checkboxes.forEach((checkbox) => {
       const paramName = checkbox.name;
       const paramValue = checkbox.value;
-      
+
       if (urlParams.has(paramName)) {
         const urlValue = urlParams.get(paramName);
         if (urlValue === paramValue || urlValue.includes(paramValue)) {
           checkbox.checked = true;
-          console.log('Checked checkbox:', paramName, paramValue);
+          console.log("Checked checkbox:", paramName, paramValue);
         }
       }
     });
 
     // Set color and size filter states
-    const colorFilters = urlParams.getAll('filter.v.option.color');
-    const sizeFilters = urlParams.getAll('filter.v.option.size');
-    
+    const colorFilters = urlParams.getAll("filter.v.option.color");
+    const sizeFilters = urlParams.getAll("filter.v.option.size");
+
     // Initialize color filters
-    colorFilters.forEach(color => {
+    colorFilters.forEach((color) => {
       const decodedColor = decodeURIComponent(color);
-      let colorItem = document.querySelector(`[data-color="${color}"]`) || 
-                     document.querySelector(`[data-color="${decodedColor}"]`);
-      
+      let colorItem =
+        document.querySelector(`[data-color="${color}"]`) ||
+        document.querySelector(`[data-color="${decodedColor}"]`);
+
       if (!colorItem) {
-        const checkbox = document.querySelector(`input[name="filter.v.option.color"][value="${color}"]`) ||
-                        document.querySelector(`input[name="filter.v.option.color"][value="${decodedColor}"]`);
+        const checkbox =
+          document.querySelector(
+            `input[name="filter.v.option.color"][value="${color}"]`
+          ) ||
+          document.querySelector(
+            `input[name="filter.v.option.color"][value="${decodedColor}"]`
+          );
         if (checkbox) {
-          colorItem = checkbox.closest('.color-check');
+          colorItem = checkbox.closest(".color-check");
         }
       }
-      
+
       if (!colorItem) {
-        const colorItems = document.querySelectorAll('.color-check');
-        colorItems.forEach(item => {
-          const colorText = item.querySelector('.color-text');
-          if (colorText && (colorText.textContent.trim() === color || colorText.textContent.trim() === decodedColor)) {
+        const colorItems = document.querySelectorAll(".color-check");
+        colorItems.forEach((item) => {
+          const colorText = item.querySelector(".color-text");
+          if (
+            colorText &&
+            (colorText.textContent.trim() === color ||
+              colorText.textContent.trim() === decodedColor)
+          ) {
             colorItem = item;
           }
         });
       }
-      
+
       if (colorItem) {
-        const checkbox = colorItem.querySelector('.filter-checkbox');
+        const checkbox = colorItem.querySelector(".filter-checkbox");
         if (checkbox) {
           checkbox.checked = true;
-          colorItem.classList.add('active');
+          colorItem.classList.add("active");
         }
       }
     });
-    
+
     // Initialize size filters
-    sizeFilters.forEach(size => {
+    sizeFilters.forEach((size) => {
       const decodedSize = decodeURIComponent(size);
-      let sizeItem = document.querySelector(`[data-size="${size}"]`) || 
-                     document.querySelector(`[data-size="${decodedSize}"]`);
-      
+      let sizeItem =
+        document.querySelector(`[data-size="${size}"]`) ||
+        document.querySelector(`[data-size="${decodedSize}"]`);
+
       if (!sizeItem) {
-        const checkbox = document.querySelector(`input[name="filter.v.option.size"][value="${size}"]`) ||
-                        document.querySelector(`input[name="filter.v.option.size"][value="${decodedSize}"]`);
+        const checkbox =
+          document.querySelector(
+            `input[name="filter.v.option.size"][value="${size}"]`
+          ) ||
+          document.querySelector(
+            `input[name="filter.v.option.size"][value="${decodedSize}"]`
+          );
         if (checkbox) {
-          sizeItem = checkbox.closest('.size-check');
+          sizeItem = checkbox.closest(".size-check");
         }
       }
-      
+
       if (!sizeItem) {
-        const sizeItems = document.querySelectorAll('.size-check');
-        sizeItems.forEach(item => {
-          const sizeText = item.querySelector('.size');
-          if (sizeText && (sizeText.textContent.trim() === size || sizeText.textContent.trim() === decodedSize)) {
+        const sizeItems = document.querySelectorAll(".size-check");
+        sizeItems.forEach((item) => {
+          const sizeText = item.querySelector(".size");
+          if (
+            sizeText &&
+            (sizeText.textContent.trim() === size ||
+              sizeText.textContent.trim() === decodedSize)
+          ) {
             sizeItem = item;
           }
         });
       }
-      
+
       if (sizeItem) {
-        const checkbox = sizeItem.querySelector('.filter-checkbox');
+        const checkbox = sizeItem.querySelector(".filter-checkbox");
         if (checkbox) {
           checkbox.checked = true;
-          sizeItem.classList.add('active');
+          sizeItem.classList.add("active");
         }
       }
     });
 
     // Set price range if exists
-    const minPrice = urlParams.get('filter.v.price.gte');
-    const maxPrice = urlParams.get('filter.v.price.lte');
-    
+    const minPrice = urlParams.get("filter.v.price.gte");
+    const maxPrice = urlParams.get("filter.v.price.lte");
+
     if (minPrice && maxPrice) {
       const priceRanges = [
-        document.getElementById('price-value-range-drawer'),
-        document.getElementById('price-value-range-sidebar'),
-        document.getElementById('price-value-range-horizontal')
+        document.getElementById("price-value-range-drawer"),
+        document.getElementById("price-value-range-sidebar"),
+        document.getElementById("price-value-range-horizontal"),
       ];
-      
-      priceRanges.forEach(priceRange => {
+
+      priceRanges.forEach((priceRange) => {
         if (priceRange && priceRange.noUiSlider) {
           priceRange.noUiSlider.set([parseInt(minPrice), parseInt(maxPrice)]);
         }
@@ -430,78 +485,83 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update applied filters display
     updateAppliedFiltersDisplay();
-    
+
     // Show meta-filter-shop if there are URL parameters
     if (urlParams.toString().length > 0 && metaFilterShop) {
-      metaFilterShop.style.display = 'flex';
+      metaFilterShop.style.display = "flex";
     }
   }
 
   // Update applied filters display
   function updateAppliedFiltersDisplay() {
     if (!appliedFiltersContainer) return;
-    
+
     // Check if applied filters were already rendered by Liquid
-    const existingFilters = appliedFiltersContainer.querySelectorAll('.filter-tag');
+    const existingFilters =
+      appliedFiltersContainer.querySelectorAll(".filter-tag");
     const hasLiquidRenderedFilters = existingFilters.length > 0;
-    
+
     if (!hasLiquidRenderedFilters) {
-      appliedFiltersContainer.innerHTML = '';
+      appliedFiltersContainer.innerHTML = "";
       const urlParams = new URLSearchParams(window.location.search);
       const appliedFilters = [];
 
       // Process availability filters
-      const availability = urlParams.get('filter.v.availability');
+      const availability = urlParams.get("filter.v.availability");
       if (availability) {
         appliedFilters.push({
-          type: 'availability',
-          label: `Availability: ${availability === '1' ? 'In stock' : 'Out of stock'}`,
-          param: 'filter.v.availability',
-          value: availability
+          type: "availability",
+          label: `Availability: ${
+            availability === "1" ? "In stock" : "Out of stock"
+          }`,
+          param: "filter.v.availability",
+          value: availability,
         });
       }
 
       // Process color filters
-      urlParams.getAll('filter.v.option.color').forEach(color => {
+      urlParams.getAll("filter.v.option.color").forEach((color) => {
         const colorItem = document.querySelector(`[data-color="${color}"]`);
-        const colorText = colorItem?.querySelector('.color-text')?.textContent || color;
+        const colorText =
+          colorItem?.querySelector(".color-text")?.textContent || color;
         appliedFilters.push({
-          type: 'filter.v.option.color',
+          type: "filter.v.option.color",
           label: `Color: ${colorText}`,
-          param: 'filter.v.option.color',
-          value: color
+          param: "filter.v.option.color",
+          value: color,
         });
       });
 
       // Process size filters
-      urlParams.getAll('filter.v.option.size').forEach(size => {
+      urlParams.getAll("filter.v.option.size").forEach((size) => {
         const sizeItem = document.querySelector(`[data-size="${size}"]`);
-        const sizeText = sizeItem?.querySelector('.size')?.textContent || size;
+        const sizeText = sizeItem?.querySelector(".size")?.textContent || size;
         appliedFilters.push({
-          type: 'filter.v.option.size',
+          type: "filter.v.option.size",
           label: `Size: ${sizeText}`,
-          param: 'filter.v.option.size',
-          value: size
+          param: "filter.v.option.size",
+          value: size,
         });
       });
 
       // Process price range
-      const minPrice = urlParams.get('filter.v.price.gte');
-      const maxPrice = urlParams.get('filter.v.price.lte');
+      const minPrice = urlParams.get("filter.v.price.gte");
+      const maxPrice = urlParams.get("filter.v.price.lte");
       if (minPrice && maxPrice) {
-        const currency = document.querySelector('#price-min-value')?.dataset.currency || '$';
+        const currency =
+          document.querySelector("#price-min-value")?.dataset.currency || "$";
         appliedFilters.push({
-          type: 'price',
+          type: "price",
           label: `Price: ${currency}${minPrice} - ${currency}${maxPrice}`,
-          param: 'price',
-          value: `${minPrice}-${maxPrice}`
+          param: "price",
+          value: `${minPrice}-${maxPrice}`,
         });
       }
 
       // Render applied filters
-      appliedFilters.forEach(filter => {
-        const filterTag = document.createElement('span');
-        filterTag.className = 'filter-tag';
+      appliedFilters.forEach((filter) => {
+        const filterTag = document.createElement("span");
+        filterTag.className = "filter-tag";
         filterTag.innerHTML = `
           <i class="icon icon-close" data-filter-type="${filter.type}" data-param="${filter.param}" data-value="${filter.value}"></i>
           ${filter.label}
@@ -511,49 +571,55 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Show/hide clear all button based on filter count
-    const totalFilters = appliedFiltersContainer.querySelectorAll('.filter-tag').length;
-    const clearAllBtn = document.getElementById('remove-all');
+    const totalFilters =
+      appliedFiltersContainer.querySelectorAll(".filter-tag").length;
+    const clearAllBtn = document.getElementById("remove-all");
     if (clearAllBtn) {
-      clearAllBtn.style.display = totalFilters > 0 ? 'block' : 'none';
+      clearAllBtn.style.display = totalFilters > 0 ? "block" : "none";
     }
-    
+
     // Show/hide meta-filter-shop container
     if (metaFilterShop) {
-      metaFilterShop.style.display = totalFilters > 0 ? 'flex' : 'none';
+      metaFilterShop.style.display = totalFilters > 0 ? "flex" : "none";
     }
   }
 
   // Main function to update products with filters and sort
-  async function updateProducts(filters = null, sort = null, page = 1, skipFilterDisplayUpdate = false) {
+  async function updateProducts(
+    filters = null,
+    sort = null,
+    page = 1,
+    skipFilterDisplayUpdate = false
+  ) {
     if (isLoading) return;
     isLoading = true;
 
     try {
       // Show loading state
       if (productGrid) {
-        productGrid.style.opacity = '1';
-        productGrid.style.pointerEvents = 'none';
+        productGrid.style.opacity = "1";
+        productGrid.style.pointerEvents = "none";
       }
       if (productList) {
-        productList.style.opacity = '1';
-        productList.style.pointerEvents = 'none';
+        productList.style.opacity = "1";
+        productList.style.pointerEvents = "none";
       }
       showFilterLoading();
 
       const url = new URL(window.location.href);
-      
+
       // Update filters
       if (filters) {
         // Clear existing filter parameters
         for (const param of url.searchParams.keys()) {
-          if (param.startsWith('filter.v.')) {
+          if (param.startsWith("filter.v.")) {
             url.searchParams.delete(param);
           }
         }
-        
+
         // Add new filter parameters
         for (const [key, value] of Object.entries(filters)) {
-          if (value !== null && value !== undefined && value !== '') {
+          if (value !== null && value !== undefined && value !== "") {
             url.searchParams.set(key, value);
           }
         }
@@ -561,54 +627,101 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // Update sort
       if (sort) {
-        url.searchParams.set('sort_by', sort);
+        url.searchParams.set("sort_by", sort);
         currentSort = sort;
       }
 
       // Update page
       if (page > 1) {
-        url.searchParams.set('page', page);
+        url.searchParams.set("page", page);
       } else {
-        url.searchParams.delete('page');
+        url.searchParams.delete("page");
       }
 
       // Fetch updated content
       const response = await fetch(url.toString());
-      if (!response.ok) throw new Error('Network response was not ok');
-      
+      if (!response.ok) throw new Error("Network response was not ok");
+
       const html = await response.text();
       const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
+      const doc = parser.parseFromString(html, "text/html");
 
       // Update product grids
-      const newGrid = doc.querySelector('.tf-grid-layout');
-      const newList = doc.querySelector('.tf-list-layout');
-      
+      const newGrid = doc.querySelector(".tf-grid-layout");
+      const newList = doc.querySelector(".tf-list-layout");
+
+      // Check if there are more pages in the new response
+      const hasMorePages = doc.querySelector("#infiniteScrollLoader") !== null;
+
       if (newGrid && productGrid) {
         if (page > 1) {
           // Append for pagination
-          const loadMoreContainer = productGrid.querySelector('.wd-load');
+          const loadMoreContainer = productGrid.querySelector(".wd-load");
           if (loadMoreContainer) {
-            const newProducts = newGrid.querySelectorAll('.loadItem');
-            newProducts.forEach(product => {
+            const newProducts = newGrid.querySelectorAll(".loadItem");
+            newProducts.forEach((product) => {
               productGrid.insertBefore(product, loadMoreContainer);
             });
+
+            // Hide loader if no more pages
+            if (!hasMorePages) {
+              loadMoreContainer.style.display = "none";
+              loadMoreContainer.classList.add("no-more-pages");
+              // Also remove the infinite scroll observer if it exists
+              if (window.infiniteScrollObserver) {
+                window.infiniteScrollObserver.disconnect();
+              }
+
+              // Also hide load more buttons if they exist
+              const loadMoreListBtn =
+                document.getElementById("loadMoreListBtn");
+              const loadMoreGridBtn =
+                document.getElementById("loadMoreGridBtn");
+              if (loadMoreListBtn) {
+                loadMoreListBtn.closest(".wd-load").style.display = "none";
+              }
+              if (loadMoreGridBtn) {
+                loadMoreGridBtn.closest(".wd-load").style.display = "none";
+              }
+            }
           }
         } else {
           // Replace for filtering/sorting
           productGrid.innerHTML = newGrid.innerHTML;
         }
       }
-      
+
       if (newList && productList) {
         if (page > 1) {
           // Append for pagination
-          const loadMoreContainer = productList.querySelector('.wd-load');
+          const loadMoreContainer = productList.querySelector(".wd-load");
           if (loadMoreContainer) {
-            const newProducts = newList.querySelectorAll('.loadItem');
-            newProducts.forEach(product => {
+            const newProducts = newList.querySelectorAll(".loadItem");
+            newProducts.forEach((product) => {
               productList.insertBefore(product, loadMoreContainer);
             });
+
+            // Hide loader if no more pages
+            if (!hasMorePages) {
+              loadMoreContainer.style.display = "none";
+              loadMoreContainer.classList.add("no-more-pages");
+              // Also remove the infinite scroll observer if it exists
+              if (window.infiniteScrollObserver) {
+                window.infiniteScrollObserver.disconnect();
+              }
+
+              // Also hide load more buttons if they exist
+              const loadMoreListBtn =
+                document.getElementById("loadMoreListBtn");
+              const loadMoreGridBtn =
+                document.getElementById("loadMoreGridBtn");
+              if (loadMoreListBtn) {
+                loadMoreListBtn.closest(".wd-load").style.display = "none";
+              }
+              if (loadMoreGridBtn) {
+                loadMoreGridBtn.closest(".wd-load").style.display = "none";
+              }
+            }
           }
         } else {
           // Replace for filtering/sorting
@@ -617,10 +730,18 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       // Check for no products and show message if needed
-      const gridProducts = productGrid ? productGrid.querySelectorAll('.loadItem') : [];
-      const listProducts = productList ? productList.querySelectorAll('.loadItem') : [];
-      
-      if (gridProducts.length === 0 && listProducts.length === 0 && page === 1) {
+      const gridProducts = productGrid
+        ? productGrid.querySelectorAll(".loadItem")
+        : [];
+      const listProducts = productList
+        ? productList.querySelectorAll(".loadItem")
+        : [];
+
+      if (
+        gridProducts.length === 0 &&
+        listProducts.length === 0 &&
+        page === 1
+      ) {
         const noProductsHTML = `
           <div class="no-products-found">
             <div class="no-products-content">
@@ -641,63 +762,67 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
           </div>
         `;
-        
+
         if (productGrid) {
           productGrid.innerHTML = noProductsHTML;
-          productGrid.className = 'wrapper-shop';
+          productGrid.className = "wrapper-shop";
         }
         if (productList) {
           productList.innerHTML = noProductsHTML;
         }
-        
+
         // Hide shop controls
-        const shopControl = document.querySelector('.tf-shop-control');
-        const metaFilterShop = document.querySelector('.meta-filter-shop');
-        if (shopControl) shopControl.style.display = 'none';
-        if (metaFilterShop) metaFilterShop.style.display = 'none';
+        const shopControl = document.querySelector(".tf-shop-control");
+        const metaFilterShop = document.querySelector(".meta-filter-shop");
+        if (shopControl) shopControl.style.display = "none";
+        if (metaFilterShop) metaFilterShop.style.display = "none";
       } else {
         // Show shop controls
-        const shopControl = document.querySelector('.tf-shop-control');
-        const metaFilterShop = document.querySelector('.meta-filter-shop');
-        if (shopControl) shopControl.style.display = '';
-        if (metaFilterShop) metaFilterShop.style.display = '';
-        
+        const shopControl = document.querySelector(".tf-shop-control");
+        const metaFilterShop = document.querySelector(".meta-filter-shop");
+        if (shopControl) shopControl.style.display = "";
+        if (metaFilterShop) metaFilterShop.style.display = "";
+
         // Restore grid layout classes
-        if (productGrid && !productGrid.classList.contains('tf-grid-layout')) {
-          const defaultColumns = productGrid.dataset.defaultColumns || '4';
+        if (productGrid && !productGrid.classList.contains("tf-grid-layout")) {
+          const defaultColumns = productGrid.dataset.defaultColumns || "4";
           productGrid.className = `wrapper-shop tf-grid-layout tf-col-${defaultColumns}`;
         }
       }
 
       // Update URL without reload for non-infinite scroll or first page
-      const currentPaginationType = document.querySelector('.wrapper-control-shop')?.dataset.paginationType;
-      if (currentPaginationType !== 'infinite_scroll' || page === 1) {
-        window.history.pushState({}, '', url.toString());
+      const currentPaginationType = document.querySelector(
+        ".wrapper-control-shop"
+      )?.dataset.paginationType;
+      if (currentPaginationType !== "infinite_scroll" || page === 1) {
+        window.history.pushState({}, "", url.toString());
       }
-      
+
       // Update current filters
       currentFilters = new URLSearchParams(url.search);
-      
+
       // Update applied filters display
       if (!skipFilterDisplayUpdate) {
         updateAppliedFiltersDisplay();
       }
-      
+
       // Update sort display
       if (sortValueDisplay && sort) {
-        sortValueDisplay.textContent = sort.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        sortValueDisplay.textContent = sort
+          .replace(/-/g, " ")
+          .replace(/\b\w/g, (l) => l.toUpperCase());
       }
 
       // Reinitialize event listeners and update counts
       initializeProductEvents();
       updateAvailabilityCounts().catch(console.error);
       ensurePaginationVisibility();
-
     } catch (error) {
-      console.error('Error updating products:', error);
-      const errorMessage = document.createElement('div');
-      errorMessage.className = 'alert alert-danger';
-      errorMessage.textContent = 'An error occurred while updating the products. Please try again.';
+      console.error("Error updating products:", error);
+      const errorMessage = document.createElement("div");
+      errorMessage.className = "alert alert-danger";
+      errorMessage.textContent =
+        "An error occurred while updating the products. Please try again.";
       errorMessage.style.cssText = `
         position: fixed;
         top: 20px;
@@ -710,26 +835,26 @@ document.addEventListener('DOMContentLoaded', function() {
     } finally {
       isLoading = false;
       if (productGrid) {
-        productGrid.style.opacity = '1';
-        productGrid.style.pointerEvents = 'auto';
+        productGrid.style.opacity = "1";
+        productGrid.style.pointerEvents = "auto";
       }
       if (productList) {
-        productList.style.opacity = '1';
-        productList.style.pointerEvents = 'auto';
+        productList.style.opacity = "1";
+        productList.style.pointerEvents = "auto";
       }
       hideFilterLoading();
     }
   }
 
   // Event Handlers
-  
+
   // Handle sort selection
-  const sortItems = document.querySelectorAll('.select-item');
-  sortItems.forEach(item => {
-    item.addEventListener('click', function() {
+  const sortItems = document.querySelectorAll(".select-item");
+  sortItems.forEach((item) => {
+    item.addEventListener("click", function () {
       const sortValue = this.dataset.sortValue;
-      sortItems.forEach(s => s.classList.remove('active'));
-      this.classList.add('active');
+      sortItems.forEach((s) => s.classList.remove("active"));
+      this.classList.add("active");
       updateProducts(null, sortValue);
       if (sortDropdown) {
         const dropdown = bootstrap.Dropdown.getInstance(sortDropdown);
@@ -739,147 +864,170 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Handle layout switching
-  const layoutSwitches = document.querySelectorAll('.tf-view-layout-switch');
-  const listLayout = document.getElementById('listLayout');
-  const gridLayout = document.getElementById('gridLayout');
+  const layoutSwitches = document.querySelectorAll(".tf-view-layout-switch");
+  const listLayout = document.getElementById("listLayout");
+  const gridLayout = document.getElementById("gridLayout");
 
-  layoutSwitches.forEach(switchEl => {
-    switchEl.addEventListener('click', function() {
+  layoutSwitches.forEach((switchEl) => {
+    switchEl.addEventListener("click", function () {
       const layout = this.dataset.valueLayout;
-      layoutSwitches.forEach(s => s.classList.remove('active'));
-      this.classList.add('active');
+      layoutSwitches.forEach((s) => s.classList.remove("active"));
+      this.classList.add("active");
 
       if (listLayout && gridLayout) {
-        const hasProducts = gridLayout.querySelector('.card-product');
-        listLayout.style.display = layout === 'list' ? 'block' : 'none';
-        gridLayout.style.display = layout === 'list' ? 'none' : '';
-        
-        if (layout !== 'list' && hasProducts) {
-          gridLayout.classList.remove('tf-col-2', 'tf-col-3', 'tf-col-4');
-          if (!gridLayout.classList.contains('tf-grid-layout')) {
-            gridLayout.classList.add('tf-grid-layout');
+        const hasProducts = gridLayout.querySelector(".card-product");
+        listLayout.style.display = layout === "list" ? "block" : "none";
+        gridLayout.style.display = layout === "list" ? "none" : "";
+
+        if (layout !== "list" && hasProducts) {
+          gridLayout.classList.remove("tf-col-2", "tf-col-3", "tf-col-4");
+          if (!gridLayout.classList.contains("tf-grid-layout")) {
+            gridLayout.classList.add("tf-grid-layout");
           }
           gridLayout.classList.add(layout);
         }
-        
+
         // Update product count visibility
-        const hasFilters = new URLSearchParams(window.location.search).toString().includes('filter.v');
+        const hasFilters = new URLSearchParams(window.location.search)
+          .toString()
+          .includes("filter.v");
         if (productCountGrid) {
-          productCountGrid.style.display = (layout !== 'list' && hasFilters) ? 'block' : 'none';
+          productCountGrid.style.display =
+            layout !== "list" && hasFilters ? "block" : "none";
         }
         if (productCountList) {
-          productCountList.style.display = (layout === 'list' && hasFilters) ? 'block' : 'none';
+          productCountList.style.display =
+            layout === "list" && hasFilters ? "block" : "none";
         }
       }
     });
   });
 
   // Handle filter checkbox changes
-  const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
-  filterCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
-      if (this.name === 'filter.v.availability') {
-        const availabilityCheckboxes = document.querySelectorAll('input[name="filter.v.availability"]');
-        availabilityCheckboxes.forEach(cb => {
+  const filterCheckboxes = document.querySelectorAll(".filter-checkbox");
+  filterCheckboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", function () {
+      if (this.name === "filter.v.availability") {
+        const availabilityCheckboxes = document.querySelectorAll(
+          'input[name="filter.v.availability"]'
+        );
+        availabilityCheckboxes.forEach((cb) => {
           if (cb !== this) cb.checked = false;
         });
       }
-      
-      const form = document.getElementById('collection-filters-form') || 
-                  document.getElementById('collection-filters-form-sidebar') || 
-                  document.getElementById('collection-filters-form-drawer');
+
+      const form =
+        document.getElementById("collection-filters-form") ||
+        document.getElementById("collection-filters-form-sidebar") ||
+        document.getElementById("collection-filters-form-drawer");
       if (form) form.submit();
     });
   });
 
   // Handle color and size filter clicks
-  document.addEventListener('click', function(e) {
-    const colorItem = e.target.closest('.color-check');
-    const sizeItem = e.target.closest('.size-check');
-    
+  document.addEventListener("click", function (e) {
+    const colorItem = e.target.closest(".color-check");
+    const sizeItem = e.target.closest(".size-check");
+
     if (colorItem || sizeItem) {
       const item = colorItem || sizeItem;
-      const checkbox = item.querySelector('.filter-checkbox');
-      
+      const checkbox = item.querySelector(".filter-checkbox");
+
       checkbox.checked = !checkbox.checked;
-      item.classList.toggle('active', checkbox.checked);
-      
-      const form = document.getElementById('collection-filters-form') || 
-                  document.getElementById('collection-filters-form-sidebar') || 
-                  document.getElementById('collection-filters-form-drawer');
+      item.classList.toggle("active", checkbox.checked);
+
+      const form =
+        document.getElementById("collection-filters-form") ||
+        document.getElementById("collection-filters-form-sidebar") ||
+        document.getElementById("collection-filters-form-drawer");
       if (form) form.submit();
     }
   });
 
   // Handle reset price button
-  document.querySelectorAll('.reset-price').forEach(resetPriceBtn => {
-    resetPriceBtn.addEventListener('click', function() {
-      const priceRange = this.closest('.widget-price').querySelector('.price-val-range');
+  document.querySelectorAll(".reset-price").forEach((resetPriceBtn) => {
+    resetPriceBtn.addEventListener("click", function () {
+      const priceRange =
+        this.closest(".widget-price").querySelector(".price-val-range");
       if (priceRange && priceRange.noUiSlider) {
         const minPrice = parseInt(priceRange.dataset.rangeMin);
         const maxPrice = parseInt(priceRange.dataset.rangeMax);
-        
+
         priceRange.noUiSlider.set([minPrice, maxPrice]);
-        
-        const minInput = this.closest('.widget-price').querySelector('input[name="filter.v.price.gte"]');
-        const maxInput = this.closest('.widget-price').querySelector('input[name="filter.v.price.lte"]');
-        
+
+        const minInput = this.closest(".widget-price").querySelector(
+          'input[name="filter.v.price.gte"]'
+        );
+        const maxInput = this.closest(".widget-price").querySelector(
+          'input[name="filter.v.price.lte"]'
+        );
+
         if (minInput) minInput.remove();
         if (maxInput) maxInput.remove();
-        
-        const horizontalMinInput = document.getElementById('price-min-input-horizontal');
-        const horizontalMaxInput = document.getElementById('price-max-input-horizontal');
+
+        const horizontalMinInput = document.getElementById(
+          "price-min-input-horizontal"
+        );
+        const horizontalMaxInput = document.getElementById(
+          "price-max-input-horizontal"
+        );
         if (horizontalMinInput) horizontalMinInput.remove();
         if (horizontalMaxInput) horizontalMaxInput.remove();
-        
-        const form = document.getElementById('collection-filters-form') || 
-                    document.getElementById('collection-filters-form-sidebar') || 
-                    document.getElementById('collection-filters-form-drawer');
+
+        const form =
+          document.getElementById("collection-filters-form") ||
+          document.getElementById("collection-filters-form-sidebar") ||
+          document.getElementById("collection-filters-form-drawer");
         if (form) form.submit();
       }
     });
   });
 
   // Handle filter tag removal
-  document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('icon-close') || e.target.closest('.icon-close')) {
-      const closeIcon = e.target.classList.contains('icon-close') ? e.target : e.target.closest('.icon-close');
-      const filterTag = closeIcon.closest('.filter-tag');
-      
+  document.addEventListener("click", function (e) {
+    if (
+      e.target.classList.contains("icon-close") ||
+      e.target.closest(".icon-close")
+    ) {
+      const closeIcon = e.target.classList.contains("icon-close")
+        ? e.target
+        : e.target.closest(".icon-close");
+      const filterTag = closeIcon.closest(".filter-tag");
+
       if (filterTag) {
         const filterType = closeIcon.dataset.filterType;
         const filterParam = closeIcon.dataset.param;
         const filterValue = closeIcon.dataset.value;
-        
+
         showFilterLoading();
         filterTag.remove();
-        
+
         const url = new URL(window.location.href);
-        
-        if (filterType === 'availability') {
-          url.searchParams.delete('filter.v.availability');
-        } else if (filterType === 'price') {
-          url.searchParams.delete('filter.v.price.gte');
-          url.searchParams.delete('filter.v.price.lte');
+
+        if (filterType === "availability") {
+          url.searchParams.delete("filter.v.availability");
+        } else if (filterType === "price") {
+          url.searchParams.delete("filter.v.price.gte");
+          url.searchParams.delete("filter.v.price.lte");
         } else {
           url.searchParams.delete(filterParam);
         }
-        
+
         window.location.href = url.toString();
       }
     }
   });
 
   // Handle clear all filters
-  const clearAllBtn = document.getElementById('remove-all');
+  const clearAllBtn = document.getElementById("remove-all");
   if (clearAllBtn) {
-    clearAllBtn.addEventListener('click', function(e) {
+    clearAllBtn.addEventListener("click", function (e) {
       e.preventDefault();
       showFilterLoading();
 
       const url = new URL(window.location.href);
       for (const param of url.searchParams.keys()) {
-        if (param.startsWith('filter.v.')) {
+        if (param.startsWith("filter.v.")) {
           url.searchParams.delete(param);
         }
       }
@@ -890,11 +1038,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Initialize infinite scroll if enabled
   function initializeInfiniteScroll() {
-    const scrollPaginationType = document.querySelector('.wrapper-control-shop')?.dataset.paginationType;
-    if (scrollPaginationType !== 'infinite_scroll') return;
+    const scrollPaginationType = document.querySelector(".wrapper-control-shop")
+      ?.dataset.paginationType;
+    if (scrollPaginationType !== "infinite_scroll") return;
 
     // Remove filter loading spinner when infinite scroll is active
-    const filterLoadingOverlay = document.querySelector('.filter-loading-overlay');
+    const filterLoadingOverlay = document.querySelector(
+      ".filter-loading-overlay"
+    );
     if (filterLoadingOverlay) {
       filterLoadingOverlay.remove();
     }
@@ -905,28 +1056,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const options = {
       root: null,
-      rootMargin: '200px',
-      threshold: 0.1
+      rootMargin: "200px",
+      threshold: 0.1,
     };
 
     window.infiniteScrollObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting && !isLoading) {
-          const layout = listLayout && listLayout.style.display === 'block' ? 'list' : 'grid';
-          loadMoreProducts(layout);
+          // Check if the loader is still visible and not marked as no-more-pages
+          const loader = document.getElementById("infiniteScrollLoader");
+          if (
+            loader &&
+            !loader.classList.contains("no-more-pages") &&
+            loader.style.display !== "none"
+          ) {
+            const layout =
+              listLayout && listLayout.style.display === "block"
+                ? "list"
+                : "grid";
+            loadMoreProducts(layout);
+          }
         }
       });
     }, options);
 
-    let sentinelElement = document.getElementById('infiniteScrollLoader');
+    let sentinelElement = document.getElementById("infiniteScrollLoader");
     if (!sentinelElement) {
-      sentinelElement = document.createElement('div');
-      sentinelElement.id = 'infiniteScrollLoader';
-      sentinelElement.style.height = '20px';
-      sentinelElement.style.width = '100%';
-      sentinelElement.style.display = 'block';
-      
-      const targetLayout = listLayout && listLayout.style.display === 'block' ? listLayout : gridLayout;
+      sentinelElement = document.createElement("div");
+      sentinelElement.id = "infiniteScrollLoader";
+      sentinelElement.style.height = "20px";
+      sentinelElement.style.width = "100%";
+      sentinelElement.style.display = "block";
+
+      const targetLayout =
+        listLayout && listLayout.style.display === "block"
+          ? listLayout
+          : gridLayout;
       if (targetLayout) {
         targetLayout.appendChild(sentinelElement);
       }
@@ -940,60 +1105,153 @@ document.addEventListener('DOMContentLoaded', function() {
   // Handle load more functionality
   async function loadMoreProducts(layout) {
     if (isLoading) return;
-    
+
     // Remove filter loading spinner when using load more
-    const filterLoadingOverlay = document.querySelector('.filter-loading-overlay');
+    const filterLoadingOverlay = document.querySelector(
+      ".filter-loading-overlay"
+    );
     if (filterLoadingOverlay) {
       filterLoadingOverlay.remove();
     }
-    
+
     currentPage++;
-    
+
     const filters = {};
-    const checkboxes = document.querySelectorAll('.filter-checkbox');
-    checkboxes.forEach(cb => {
+    const checkboxes = document.querySelectorAll(".filter-checkbox");
+    checkboxes.forEach((cb) => {
       if (cb.checked) {
         filters[cb.name] = cb.value;
       }
     });
-    
-    const minPrice = document.getElementById('price-min-input-horizontal')?.value || 
-                    document.getElementById('price-min-input')?.value;
-    const maxPrice = document.getElementById('price-max-input-horizontal')?.value || 
-                    document.getElementById('price-max-input')?.value;
-    
+
+    const minPrice =
+      document.getElementById("price-min-input-horizontal")?.value ||
+      document.getElementById("price-min-input")?.value;
+    const maxPrice =
+      document.getElementById("price-max-input-horizontal")?.value ||
+      document.getElementById("price-max-input")?.value;
+
     if (minPrice && maxPrice) {
-      filters['filter.v.price.gte'] = minPrice;
-      filters['filter.v.price.lte'] = maxPrice;
+      filters["filter.v.price.gte"] = minPrice;
+      filters["filter.v.price.lte"] = maxPrice;
     }
-    
-    await updateProducts(filters, currentSort, currentPage);
+
+    // Show loading state on button (for both infinite scroll and load more)
+    const infiniteLoader = document.getElementById("infiniteScrollLoader");
+    const loadMoreListBtn = document.getElementById("loadMoreListBtn");
+    const loadMoreGridBtn = document.getElementById("loadMoreGridBtn");
+
+    let activeButton = null;
+    if (infiniteLoader) {
+      activeButton = infiniteLoader.querySelector(".tf-btn");
+    } else if (layout === "list" && loadMoreListBtn) {
+      activeButton = loadMoreListBtn;
+    } else if (layout === "grid" && loadMoreGridBtn) {
+      activeButton = loadMoreGridBtn;
+    }
+
+    if (activeButton) {
+      activeButton.classList.add("loading");
+    }
+
+    try {
+      await updateProducts(filters, currentSort, currentPage);
+
+      // After updating products, check if we need to hide load more buttons
+      setTimeout(() => {
+        checkAndHideLoadMoreButtons();
+      }, 100);
+    } catch (error) {
+      console.error("Error loading more products:", error);
+      // Hide loader on error
+      if (infiniteLoader) {
+        infiniteLoader.style.display = "none";
+      } else if (activeButton) {
+        activeButton.closest(".wd-load").style.display = "none";
+      }
+    } finally {
+      // Remove loading state from button
+      if (activeButton) {
+        activeButton.classList.remove("loading");
+      }
+    }
   }
 
-  const loadMoreListBtn = document.getElementById('loadMoreListBtn');
-  const loadMoreGridBtn = document.getElementById('loadMoreGridBtn');
+  // Function to check and hide load more buttons when no more pages
+  function checkAndHideLoadMoreButtons() {
+    // Check if we're on the last page by making a request to next page
+    const url = new URL(window.location.href);
+    url.searchParams.set("page", currentPage + 1);
+
+    fetch(url.toString())
+      .then((response) => response.text())
+      .then((html) => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+
+        // Check if next page has any products
+        const nextPageProducts = doc.querySelectorAll(".loadItem");
+
+        // If no products in next page, hide load more buttons
+        if (nextPageProducts.length === 0) {
+          const currentLoadMoreList =
+            document.getElementById("loadMoreListBtn");
+          const currentLoadMoreGrid =
+            document.getElementById("loadMoreGridBtn");
+
+          if (currentLoadMoreList) {
+            currentLoadMoreList.closest(".wd-load").style.display = "none";
+            currentLoadMoreList
+              .closest(".wd-load")
+              .classList.add("no-more-pages");
+          }
+          if (currentLoadMoreGrid) {
+            currentLoadMoreGrid.closest(".wd-load").style.display = "none";
+            currentLoadMoreGrid
+              .closest(".wd-load")
+              .classList.add("no-more-pages");
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("Error checking for more pages:", error);
+        // On error, also hide buttons to prevent infinite clicking
+        const currentLoadMoreList = document.getElementById("loadMoreListBtn");
+        const currentLoadMoreGrid = document.getElementById("loadMoreGridBtn");
+
+        if (currentLoadMoreList) {
+          currentLoadMoreList.closest(".wd-load").style.display = "none";
+        }
+        if (currentLoadMoreGrid) {
+          currentLoadMoreGrid.closest(".wd-load").style.display = "none";
+        }
+      });
+  }
+
+  const loadMoreListBtn = document.getElementById("loadMoreListBtn");
+  const loadMoreGridBtn = document.getElementById("loadMoreGridBtn");
 
   if (loadMoreListBtn) {
-    loadMoreListBtn.addEventListener('click', () => loadMoreProducts('list'));
+    loadMoreListBtn.addEventListener("click", () => loadMoreProducts("list"));
   }
 
   if (loadMoreGridBtn) {
-    loadMoreGridBtn.addEventListener('click', () => loadMoreProducts('grid'));
+    loadMoreGridBtn.addEventListener("click", () => loadMoreProducts("grid"));
   }
 
   // Initialize product-specific event listeners
   function initializeProductEvents() {
     // Add any product-specific event listeners here
     // For example, quick view, add to cart, etc.
-    
+
     // Handle pagination links
-    const paginationLinks = document.querySelectorAll('.wg-pagination a');
-    paginationLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
+    const paginationLinks = document.querySelectorAll(".wg-pagination a");
+    paginationLinks.forEach((link) => {
+      link.addEventListener("click", function (e) {
         // Allow normal navigation for pagination links
       });
     });
-    
+
     // Re-observe for infinite scroll
     if (document.querySelector('[data-pagination-type="infinite_scroll"]')) {
       initializeInfiniteScroll();
@@ -1002,16 +1260,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Ensure pagination is visible
   function ensurePaginationVisibility() {
-    const pagination = document.querySelector('.wg-pagination');
+    const pagination = document.querySelector(".wg-pagination");
     if (pagination) {
-      if (window.getComputedStyle(pagination).display === 'none') {
-        pagination.style.display = 'flex';
+      if (window.getComputedStyle(pagination).display === "none") {
+        pagination.style.display = "flex";
       }
-      
-      const paginationLinks = pagination.querySelectorAll('a');
-      paginationLinks.forEach(link => {
-        if (window.getComputedStyle(link).pointerEvents === 'none') {
-          link.style.pointerEvents = 'auto';
+
+      const paginationLinks = pagination.querySelectorAll("a");
+      paginationLinks.forEach((link) => {
+        if (window.getComputedStyle(link).pointerEvents === "none") {
+          link.style.pointerEvents = "auto";
         }
       });
     }
@@ -1021,90 +1279,114 @@ document.addEventListener('DOMContentLoaded', function() {
   async function updateAvailabilityCounts() {
     try {
       const url = new URL(window.location.href);
-      url.searchParams.delete('page');
-      url.searchParams.delete('filter.v.availability');
-      
+      url.searchParams.delete("page");
+      url.searchParams.delete("filter.v.availability");
+
       const response = await fetch(url.toString());
       const html = await response.text();
       const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      
-      const inStockElement = doc.querySelector('label[for="Filter-availability-1"] .count');
-      const outOfStockElement = doc.querySelector('label[for="Filter-availability-2"] .count');
-      
-      const inStockText = inStockElement?.textContent || '';
-      const outOfStockText = outOfStockElement?.textContent || '';
-      
+      const doc = parser.parseFromString(html, "text/html");
+
+      const inStockElement = doc.querySelector(
+        'label[for="Filter-availability-1"] .count'
+      );
+      const outOfStockElement = doc.querySelector(
+        'label[for="Filter-availability-2"] .count'
+      );
+
+      const inStockText = inStockElement?.textContent || "";
+      const outOfStockText = outOfStockElement?.textContent || "";
+
       const inStockMatch = inStockText.match(/\((\d+)\)/);
       const outOfStockMatch = outOfStockText.match(/\((\d+)\)/);
-      
-      const inStockCount = inStockMatch?.[1] || '0';
-      const outOfStockCount = outOfStockMatch?.[1] || '0';
-      
+
+      const inStockCount = inStockMatch?.[1] || "0";
+      const outOfStockCount = outOfStockMatch?.[1] || "0";
+
       // Update sidebar counts
-      const inStockLabel = document.querySelector('label[for="Filter-availability-1"] .count');
-      const outOfStockLabel = document.querySelector('label[for="Filter-availability-2"] .count');
-      
+      const inStockLabel = document.querySelector(
+        'label[for="Filter-availability-1"] .count'
+      );
+      const outOfStockLabel = document.querySelector(
+        'label[for="Filter-availability-2"] .count'
+      );
+
       if (inStockLabel) inStockLabel.textContent = `(${inStockCount})`;
       if (outOfStockLabel) outOfStockLabel.textContent = `(${outOfStockCount})`;
-      
-      // Update horizontal filter counts
-      const horizontalInStockLabel = document.querySelector('.dropdown-filter .collapse-body label[for="Filter-availability-1"] .count');
-      const horizontalOutOfStockLabel = document.querySelector('.dropdown-filter .collapse-body label[for="Filter-availability-2"] .count');
-      
-      if (horizontalInStockLabel) horizontalInStockLabel.textContent = `(${inStockCount})`;
-      if (horizontalOutOfStockLabel) horizontalOutOfStockLabel.textContent = `(${outOfStockCount})`;
 
+      // Update horizontal filter counts
+      const horizontalInStockLabel = document.querySelector(
+        '.dropdown-filter .collapse-body label[for="Filter-availability-1"] .count'
+      );
+      const horizontalOutOfStockLabel = document.querySelector(
+        '.dropdown-filter .collapse-body label[for="Filter-availability-2"] .count'
+      );
+
+      if (horizontalInStockLabel)
+        horizontalInStockLabel.textContent = `(${inStockCount})`;
+      if (horizontalOutOfStockLabel)
+        horizontalOutOfStockLabel.textContent = `(${outOfStockCount})`;
     } catch (error) {
-      console.error('Error updating availability counts:', error);
-      
+      console.error("Error updating availability counts:", error);
+
       // Fallback: use the product count display to estimate availability
-      const productCountGrid = document.getElementById('product-count-grid');
-      const productCountList = document.getElementById('product-count-list');
-      
+      const productCountGrid = document.getElementById("product-count-grid");
+      const productCountList = document.getElementById("product-count-list");
+
       let filteredProducts = 0;
       if (productCountGrid) {
-        const countSpan = productCountGrid.querySelector('.count');
+        const countSpan = productCountGrid.querySelector(".count");
         if (countSpan) filteredProducts = parseInt(countSpan.textContent) || 0;
       } else if (productCountList) {
-        const countSpan = productCountList.querySelector('.count');
+        const countSpan = productCountList.querySelector(".count");
         if (countSpan) filteredProducts = parseInt(countSpan.textContent) || 0;
       }
-      
+
       if (filteredProducts > 0) {
-        const gridLayout = document.getElementById('gridLayout');
-        const listLayout = document.getElementById('listLayout');
-        const isListActive = listLayout && listLayout.style.display === 'block';
+        const gridLayout = document.getElementById("gridLayout");
+        const listLayout = document.getElementById("listLayout");
+        const isListActive = listLayout && listLayout.style.display === "block";
         const activeLayout = isListActive ? listLayout : gridLayout;
-        
+
         if (activeLayout) {
-          const products = activeLayout.querySelectorAll('.loadItem');
+          const products = activeLayout.querySelectorAll(".loadItem");
           let inStockCount = 0;
           let outOfStockCount = 0;
-          
-          products.forEach(product => {
+
+          products.forEach((product) => {
             const computedStyle = window.getComputedStyle(product);
-            if (computedStyle.display !== 'none' && computedStyle.visibility !== 'hidden') {
+            if (
+              computedStyle.display !== "none" &&
+              computedStyle.visibility !== "hidden"
+            ) {
               const availability = product.dataset.availability;
-              if (availability === 'true' || availability === 'In stock') {
+              if (availability === "true" || availability === "In stock") {
                 inStockCount++;
               } else {
                 outOfStockCount++;
               }
             }
           });
-          
+
           const totalVisible = inStockCount + outOfStockCount;
           if (totalVisible > 0) {
             const inStockRatio = inStockCount / totalVisible;
-            const estimatedInStock = Math.round(filteredProducts * inStockRatio);
+            const estimatedInStock = Math.round(
+              filteredProducts * inStockRatio
+            );
             const estimatedOutOfStock = filteredProducts - estimatedInStock;
-            
-            const inStockLabel = document.querySelector('label[for="Filter-availability-1"] .count');
-            const outOfStockLabel = document.querySelector('label[for="Filter-availability-2"] .count');
-            
-            if (inStockLabel) inStockLabel.textContent = `(${estimatedInStock})`;
-            if (outOfStockLabel) outOfStockLabel.textContent = `(${estimatedOutOfStock})`;
+
+            const inStockLabel = document.querySelector(
+              'label[for="Filter-availability-1"] .count'
+            );
+            const outOfStockLabel = document.querySelector(
+              'label[for="Filter-availability-2"] .count'
+            );
+
+            if (inStockLabel)
+              inStockLabel.textContent = `(${estimatedInStock})`;
+            if (outOfStockLabel)
+              outOfStockLabel.textContent = `(${estimatedOutOfStock})`;
           }
         }
       }
