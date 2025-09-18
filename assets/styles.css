@@ -13242,6 +13242,8 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   line-height: 24px;
   height: 52px;
   text-transform: none;
+  overflow: hidden;
+  contain: layout;
 }
 .tf-mini-cart-tool-openable .tf-mini-cart-tool-content {
   position: relative;
@@ -13271,6 +13273,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   display: flex;
   gap: 30px;
   align-items: center;
+  overflow: hidden;
 }
 .tf-mini-cart-tool-openable .tf-mini-cart-tool-content .tf-cart-tool-btns .tf-mini-cart-tool-primary {
   font-weight: 500;
@@ -13278,6 +13281,10 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   line-height: 24px;
   height: 52px;
   text-transform: none;
+}
+.tf-mini-cart-tool-openable .tf-cart-tool-btns .animate-btn {
+  overflow: hidden;
+  contain: layout;
 }
 .tf-mini-cart-tool-openable.add-note textarea {
   height: 148px;
