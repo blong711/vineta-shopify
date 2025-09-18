@@ -555,12 +555,6 @@
                         <input type="hidden" name="quantity" value="1">
                         {{ form | payment_button }}
                       {% endform %}
-                      <a href="#" 
-                         style="font-size: 14px" 
-                         class="more-choose-payment link buy-it-now" 
-                         data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-                         data-quantity="1"
-                         aria-label="{{ 'sections.product.more_payment_options' | t }}">{{ 'sections.product.more_payment_options' | t }}</a>
                   {% else %}
                     <button class="tf-btn btn-out-stock w-100">{{ 'sections.product.unavailable' | t }}</button>
                   {% endif %}
