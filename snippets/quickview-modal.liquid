@@ -36,6 +36,26 @@
       height: 100%;
       object-fit: cover;
     }
+    
+    /* Fix scroll bar issue on button hover */
+    .modal-quick-view .modal-content {
+      overflow: hidden !important;
+    }
+    
+    .modal-quick-view .tf-product-info-wrap {
+      overflow: hidden;
+    }
+    
+    .modal-quick-view .animate-btn {
+      overflow: hidden;
+      transform: translateZ(0); /* Force hardware acceleration */
+    }
+    
+    /* Ensure modal body doesn't scroll when button animates */
+    body.modal-open {
+      overflow: hidden !important;
+      padding-right: 0 !important;
+    }
     </style>
     
     <div class="modal fade modalCentered modal-quick-view" id="quickView">
