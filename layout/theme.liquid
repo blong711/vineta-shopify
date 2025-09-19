@@ -144,6 +144,7 @@
     <!-- Other scripts moved to end of body -->
     <!-- Tom Select Bootstrap 5 Theme CSS -->
     <link href="{{ 'tom-select.bootstrap5.min.css' | asset_url }}" rel="stylesheet">
+    <script src="{{ 'shop.vanilla.js' | asset_url }}" defer="defer"></script>
   </head>
 
   <body class="{% if template == 'page.phonecase' %}bg-surface-2{% endif %}">
@@ -505,7 +506,6 @@
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
   <script src="{{ 'main.js' | asset_url }}" defer></script>
   {% comment %} <script src="{{ 'shop.js' | asset_url }}" defer></script> {% endcomment %}
-  <script src="{{ 'shop.vanilla.js' | asset_url }}" defer></script>
   <script src="{{ 'global.js' | asset_url }}" defer></script>
   <script src="{{ 'product-card.js' | asset_url }}" defer></script>
   <script src="{{ 'application.js' | asset_url }}" defer></script>

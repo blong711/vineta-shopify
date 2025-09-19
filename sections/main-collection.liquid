@@ -20,6 +20,12 @@
   <section
     class="flat-spacing color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding"
     data-total-products="{{ total_products }}"
+    data-section-id="{{ section.id }}"
+    data-pagination-type="{{ pagination_type }}"
+    data-max-products-per-page="{{ max_products_per_page }}"
+    data-default-grid-layout="{{ default_grid_layout }}"
+    data-default-layout-type="{{ default_layout_type }}"
+    data-filter-layout="{{ filter_layout }}"
   >
     <div class="{{ section.settings.width }}">
       {% if filter_layout == 'left_sidebar' %}
@@ -464,7 +470,10 @@
 
 {% comment %} <script src="{{ 'shop.vanilla.js' | asset_url }}" defer></script> {% endcomment %}
 <script>
+  // Initialize collection data for this section
   window.collectionData = {
+      sectionId: '{{ section.id }}',
+      totalProducts: {{ total_products }},
       priceMin: {{ collection.price_min | divided_by: 100.0 | round: 0 }},
       priceMax: {{ collection.price_max | divided_by: 100.0 | round: 0 }},
       paginationType: '{{ pagination_type }}',
@@ -473,6 +482,19 @@
       defaultLayoutType: '{{ default_layout_type }}',
       filterLayout: '{{ filter_layout }}'
   };
+  
+  // Initialize collection when this section is ready
+  if (typeof ShopCollection !== 'undefined') {
+    // If ShopCollection is already loaded, initialize immediately
+    ShopCollection.init('{{ section.id }}');
+  } else {
+    // Otherwise, wait for the script to load
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof ShopCollection !== 'undefined') {
+        ShopCollection.init('{{ section.id }}');
+      }
+    });
+  }
 </script>
 {% comment %} Schema for section settings {% endcomment %}
 {% schema %}

@@ -2,174 +2,363 @@
  * Shop functionality in vanilla JavaScript
  * Includes price range, filtering, sorting, layout switching, and loading
  */
-//collection
 
-// Initialize all shop functionality when DOM is ready
-document.addEventListener("DOMContentLoaded", () => {
-  // Initialize global layout state based on theme settings
-  if (
-    window.collectionData &&
-    window.collectionData.defaultLayoutType === "list"
-  ) {
-    isListActive = true;
-  } else {
-    isListActive = false;
-  }
-
-  // Initialize total products count from DOM data attribute
-  const totalProductsElement = document.querySelector(
-    "section[data-total-products]"
-  );
-  if (totalProductsElement) {
-    window.totalProducts =
-      parseInt(totalProductsElement.getAttribute("data-total-products")) || 0;
-  } else {
-    window.totalProducts = 0;
-  }
-
-  // Initialize filters from URL parameters first (this will override defaults)
-  initializeFiltersFromURL();
-
-  // Then initialize other components
-  initializeFilters(); // Initialize filter values
-  initPriceRange();
-  initProductFilters();
-  initSortFunctionality();
-  initLayoutSwitching();
-  // Skip load more if using Shopify pagination
-  if (document.querySelector(".loadmore")) {
-    initLoadMore();
-  }
-  bindProductEvents(); // Initialize product events
-  initBrowserNavigation(); // Initialize browser navigation handler
-
-  // Ensure product count visibility is correct on initial page load
-  setTimeout(() => {
-    updateProductCountVisibility();
-  }, 100);
-
-  // Also ensure it's correct after a longer delay to handle theme customization
-  setTimeout(() => {
-    updateProductCountVisibility();
-  }, 1000);
-
-  // Handle theme customizer changes
-  if (window.Shopify && window.Shopify.designMode) {
-    // Listen for theme customizer events
-    document.addEventListener("shopify:section:load", () => {
-      // Force mobile layout immediately
-      forceMobileLayoutImmediate();
-
-      setTimeout(() => {
-        // Reinitialize price slider if it exists
-        reinitializePriceSlider();
-        // Update layout based on current settings
-        updateLayoutFromSettings();
-        // Force mobile layout after settings update
-        enforceMobileLayout();
-        updateProductCountVisibility();
-      }, 100);
-    });
-
-    document.addEventListener("shopify:section:reorder", () => {
-      // Force mobile layout immediately
-      forceMobileLayoutImmediate();
-
-      setTimeout(() => {
-        // Reinitialize price slider if it exists
-        reinitializePriceSlider();
-        // Update layout based on current settings
-        updateLayoutFromSettings();
-        // Force mobile layout after settings update
-        enforceMobileLayout();
-        updateProductCountVisibility();
-      }, 100);
-    });
-
-    // Listen for section setting changes
-    document.addEventListener("shopify:section:select", () => {
-      // Force mobile layout immediately
-      forceMobileLayoutImmediate();
-
-      setTimeout(() => {
-        // Update layout based on current settings when section is selected
-        updateLayoutFromSettings();
-        // Force mobile layout after settings update
-        enforceMobileLayout();
-      }, 100);
-    });
-
-    // Watch for changes in the collectionData script tag
-    const collectionDataScript = document.querySelector("script");
-    if (
-      collectionDataScript &&
-      collectionDataScript.textContent.includes("collectionData")
-    ) {
-      const observer = new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
-          if (
-            mutation.type === "childList" ||
-            mutation.type === "characterData"
-          ) {
-            // Check if the script content has changed
-            if (
-              mutation.target.textContent &&
-              mutation.target.textContent.includes("collectionData")
-            ) {
-              // Parse the new collectionData
-              try {
-                const scriptContent = mutation.target.textContent;
-                const match = scriptContent.match(
-                  /window\.collectionData\s*=\s*({[^}]+})/
-                );
-                if (match) {
-                  const newCollectionData = JSON.parse(match[1]);
-                  window.collectionData = newCollectionData;
-
-                  // Force mobile layout immediately
-                  forceMobileLayoutImmediate();
-
-                  // Update layout based on new settings
-                  setTimeout(() => {
-                    updateLayoutFromSettings();
-                    // Force mobile layout after settings update
-                    enforceMobileLayout();
-                  }, 50);
-                }
-              } catch (e) {
-                // Ignore parsing errors
-              }
-            }
+// Section-specific initialization to avoid conflicts
+const ShopCollection = {
+  initialized: new Set(),
+  eventListeners: new Map(),
+  
+  // Initialize collection functionality for a specific section
+  init: function(sectionId) {
+    try {
+      // Clean up previous initialization if exists
+      if (this.initialized.has(sectionId)) {
+        this.cleanup(sectionId);
+      }
+      
+      const section = document.querySelector(`#shopify-section-${sectionId}`) || 
+                     document.querySelector(`.section-${sectionId}-padding`) ||
+                     document.querySelector('section[data-total-products]') ||
+                     document.querySelector('.flat-spacing.gradient'); // Fallback
+      
+      if (!section) {
+        return false;
+      }
+      
+      // Read section data with fallbacks
+      const sectionData = this.getSectionData(section);
+      
+      // Initialize global layout state based on section settings
+      isListActive = sectionData.defaultLayoutType === "list";
+      
+      // Set global data for compatibility with existing functions
+      window.collectionData = sectionData;
+      window.totalProducts = sectionData.totalProducts;
+      
+      // Initialize components with error handling
+      try {
+        initializeFiltersFromURL();
+      } catch (e) {
+        // Silent fail
+      }
+      
+      try {
+        initializeFilters();
+      } catch (e) {
+        // Silent fail
+      }
+      
+      try {
+        initPriceRange();
+      } catch (e) {
+        // Silent fail
+      }
+      
+      try {
+        initProductFilters();
+      } catch (e) {
+        // Silent fail
+      }
+      
+      try {
+        initSortFunctionality();
+      } catch (e) {
+        // Silent fail
+      }
+      
+      try {
+        initLayoutSwitching();
+      } catch (e) {
+        // Silent fail
+      }
+      
+      // Initialize load more if enabled
+      try {
+        if (sectionData.paginationType !== 'pagination') {
+          initLoadMore();
+          
+          // Special handling for infinity scroll to ensure products are hidden initially
+          if (sectionData.paginationType === "infinity_scroll") {
+            setTimeout(() => {
+              this.handleInfinityScrollInitialization(sectionData);
+            }, 150);
           }
-        });
-      });
-
-      observer.observe(collectionDataScript, {
-        childList: true,
-        characterData: true,
-        subtree: true,
+        }
+      } catch (e) {
+        // Silent fail
+      }
+      
+      try {
+        bindProductEvents();
+      } catch (e) {
+        // Silent fail
+      }
+      
+      // Initialize browser navigation only once
+      try {
+        if (!this.eventListeners.has('popstate')) {
+          initBrowserNavigation();
+          this.eventListeners.set('popstate', true);
+        }
+      } catch (e) {
+        // Silent fail
+      }
+      
+      // Ensure product count visibility is correct
+      setTimeout(() => {
+        try {
+          updateProductCountVisibility();
+        } catch (e) {
+          // Silent fail
+        }
+      }, 100);
+      
+      // Mark as initialized
+      this.initialized.add(sectionId);
+      return true;
+      
+    } catch (error) {
+      return false;
+    }
+  },
+  
+  // Clean up section when unloaded
+  cleanup: function(sectionId) {
+    this.initialized.delete(sectionId);
+    
+    // Clean up price slider if it exists
+    const priceSlider = document.getElementById('price-value-range');
+    if (priceSlider && priceSlider.noUiSlider) {
+      try {
+        priceSlider.noUiSlider.destroy();
+      } catch (e) {
+        // Silent fail
+      }
+    }
+    
+    // Remove global state if this was the active section
+    if (window.collectionData && window.collectionData.sectionId === sectionId) {
+      window.collectionData = null;
+      window.totalProducts = 0;
+    }
+  },
+  
+  // Extract data from section element with fallbacks
+  getSectionData: function(section) {
+    const data = {
+      sectionId: section.id || 'main-collection',
+      totalProducts: 0,
+      paginationType: 'pagination',
+      maxProductsPerPage: 8,
+      defaultGridLayout: 'tf-col-4',
+      defaultLayoutType: 'grid',
+      filterLayout: 'default',
+      priceMin: 0,
+      priceMax: 500
+    };
+    
+    // Read from section data attributes first (highest priority)
+    if (section.dataset.sectionId) {
+      data.sectionId = section.dataset.sectionId;
+    }
+    if (section.dataset.totalProducts) {
+      data.totalProducts = parseInt(section.dataset.totalProducts, 10) || 0;
+    }
+    if (section.dataset.paginationType) {
+      data.paginationType = section.dataset.paginationType;
+    }
+    if (section.dataset.maxProductsPerPage) {
+      data.maxProductsPerPage = parseInt(section.dataset.maxProductsPerPage, 10) || 8;
+    }
+    if (section.dataset.defaultGridLayout) {
+      data.defaultGridLayout = section.dataset.defaultGridLayout;
+    }
+    if (section.dataset.defaultLayoutType) {
+      data.defaultLayoutType = section.dataset.defaultLayoutType;
+    }
+    if (section.dataset.filterLayout) {
+      data.filterLayout = section.dataset.filterLayout;
+    }
+    
+    // Try to get data from window.collectionData if available (medium priority)
+    if (window.collectionData) {
+      Object.assign(data, window.collectionData);
+    }
+    
+    // Try to get data from script tag in section (low priority)
+    const scriptTag = section.querySelector('script');
+    if (scriptTag && scriptTag.textContent.includes('window.collectionData')) {
+      try {
+        // Extract collectionData from script
+        const scriptContent = scriptTag.textContent;
+        const dataMatch = scriptContent.match(/window\.collectionData\s*=\s*({[^}]+})/);
+        if (dataMatch) {
+          const extractedData = JSON.parse(dataMatch[1]);
+          // Only use script data if not already set from data attributes
+          Object.keys(extractedData).forEach(key => {
+            if (data[key] === undefined || (key === 'totalProducts' && data[key] === 0)) {
+              data[key] = extractedData[key];
+            }
+          });
+        }
+      } catch (e) {
+        // Silent fail
+      }
+    }
+    
+    // Try to read price data from collection elements (fallback)
+    const priceSlider = section.querySelector('#price-value-range');
+    if (priceSlider) {
+      if (priceSlider.dataset.min && data.priceMin === 0) {
+        data.priceMin = parseInt(priceSlider.dataset.min, 10) || 0;
+      }
+      if (priceSlider.dataset.max && data.priceMax === 500) {
+        data.priceMax = parseInt(priceSlider.dataset.max, 10) || 500;
+      }
+    }
+    
+    return data;
+  },
+  
+  // Special handling for infinity scroll initialization
+  handleInfinityScrollInitialization: function(sectionData) {
+    const maxProductsPerPage = sectionData?.maxProductsPerPage || 8;
+    
+    // Hide extra products for both layouts
+    const listLayout = document.getElementById("listLayout");
+    const gridLayout = document.getElementById("gridLayout");
+    
+    if (listLayout) {
+      const listProducts = listLayout.querySelectorAll(".card-product");
+      listProducts.forEach((product, index) => {
+        if (index >= maxProductsPerPage) {
+          product.style.display = "none";
+        } else {
+          product.style.display = "";
+        }
       });
     }
+    
+    if (gridLayout) {
+      const gridProducts = gridLayout.querySelectorAll(".card-product");
+      gridProducts.forEach((product, index) => {
+        if (index >= maxProductsPerPage) {
+          product.style.display = "none";
+        } else {
+          product.style.display = "";
+        }
+      });
+    }
+    
+    // Update infinity scroll visibility
+    const infiniteScrollList = document.getElementById("infiniteScrollList");
+    const infiniteScrollGrid = document.getElementById("infiniteScrollGrid");
+    
+    if (infiniteScrollList && listLayout) {
+      const hiddenListProducts = listLayout.querySelectorAll('.card-product[style*="display: none"]');
+      infiniteScrollList.style.display = hiddenListProducts.length > 0 ? "" : "none";
+    }
+    
+    if (infiniteScrollGrid && gridLayout) {
+      const hiddenGridProducts = gridLayout.querySelectorAll('.card-product[style*="display: none"]');
+      infiniteScrollGrid.style.display = hiddenGridProducts.length > 0 ? "" : "none";
+    }
+    
+    console.log('Infinity scroll initialized with', maxProductsPerPage, 'products per page');
+  },
 
-    // Also listen for window resize events in theme customizer
-    let customizerResizeTimeout;
-    window.addEventListener("resize", () => {
-      // Force mobile layout immediately on resize
-      forceMobileLayoutImmediate();
-
-      clearTimeout(customizerResizeTimeout);
-      customizerResizeTimeout = setTimeout(() => {
-        // Reinitialize price slider if it exists
-        reinitializePriceSlider();
-        // Update layout based on current settings
-        updateLayoutFromSettings();
-        // Force mobile layout after settings update
-        enforceMobileLayout();
-        updateProductCountVisibility();
-      }, 200);
-    });
+  // Reinitialize section (for theme editor updates)
+  reinit: function(sectionId) {
+    this.cleanup(sectionId);
+    // Small delay to ensure cleanup is complete
+    setTimeout(() => {
+      this.init(sectionId);
+    }, 50);
   }
+};
+
+// Initialize when DOM is ready
+document.addEventListener("DOMContentLoaded", () => {
+  // Small delay to ensure all elements are rendered
+  setTimeout(() => {
+    // Find all collection sections and initialize them
+    const collectionSections = document.querySelectorAll('section[data-total-products], [class*="main-collection"], .flat-spacing.gradient');
+    
+    if (collectionSections.length === 0) {
+      // Fallback: try to initialize with default section ID if we're on a collection page
+      if (window.location.pathname.includes('/collections/') || document.body.classList.contains('template-collection')) {
+        ShopCollection.init('main-collection');
+      }
+    } else {
+      collectionSections.forEach(section => {
+        let sectionId = 'main-collection'; // default
+        
+        // Try to extract section ID from various sources
+        if (section.closest('[id^="shopify-section-"]')) {
+          sectionId = section.closest('[id^="shopify-section-"]').id.replace('shopify-section-', '');
+        } else if (section.classList.contains('section-main-collection-padding')) {
+          sectionId = 'main-collection';
+        } else if (section.dataset.sectionId) {
+          sectionId = section.dataset.sectionId;
+        } else if (section.id) {
+          sectionId = section.id;
+        }
+        
+        ShopCollection.init(sectionId);
+      });
+    }
+  }, 100);
 });
+
+// Handle theme editor events
+if (window.Shopify && window.Shopify.designMode) {
+  document.addEventListener("shopify:section:load", function (event) {
+    const sectionId = event.detail.sectionId;
+    
+    if (sectionId.includes("main-collection") || sectionId.includes("collection")) {
+      // Small delay to ensure DOM is updated
+      setTimeout(() => {
+        ShopCollection.reinit(sectionId);
+      }, 150);
+    }
+  });
+
+  document.addEventListener("shopify:section:unload", function (event) {
+    const sectionId = event.detail.sectionId;
+    
+    if (sectionId.includes("main-collection") || sectionId.includes("collection")) {
+      ShopCollection.cleanup(sectionId);
+    }
+  });
+
+  document.addEventListener("shopify:section:select", function (event) {
+    const sectionId = event.detail.sectionId;
+    if (sectionId.includes("main-collection") || sectionId.includes("collection")) {
+      // Ensure section is properly initialized when selected
+      if (!ShopCollection.initialized.has(sectionId)) {
+        setTimeout(() => ShopCollection.init(sectionId), 100);
+      } else {
+        // Re-initialize to ensure latest settings are applied
+        setTimeout(() => ShopCollection.reinit(sectionId), 100);
+      }
+    }
+  });
+
+  // Handle section reorder and other events
+  ['shopify:section:reorder', 'shopify:block:select', 'shopify:block:deselect'].forEach(eventType => {
+    document.addEventListener(eventType, function (event) {
+      const sectionId = event.detail.sectionId;
+      if (sectionId && (sectionId.includes("main-collection") || sectionId.includes("collection"))) {
+        // Re-initialize if section exists
+        setTimeout(() => {
+          if (document.querySelector(`#shopify-section-${sectionId}`)) {
+            ShopCollection.reinit(sectionId);
+          }
+        }, 100);
+      }
+    });
+  });
+}
 
 // Price Range Slider
 function initPriceRange() {
@@ -384,6 +573,9 @@ const filters = {
 
 // Global layout state
 let isListActive = false;
+
+// Expose ShopCollection globally for debugging and manual initialization
+window.ShopCollection = window.ShopCollection || ShopCollection;
 
 // Initialize filters with price slider values
 function initializeFilters() {
@@ -1801,23 +1993,29 @@ function initLoadMore() {
     }
   }
 
-  // Hide initial items
-  hideExtraItems(document.getElementById("listLayout"), listItemsDisplayed);
-  hideExtraItems(document.getElementById("gridLayout"), gridItemsDisplayed);
+  // For load_more type, hide initial items and show load more buttons
+  if (
+    window.collectionData &&
+    window.collectionData.paginationType === "load_more"
+  ) {
+    // Hide initial items
+    hideExtraItems(document.getElementById("listLayout"), listItemsDisplayed);
+    hideExtraItems(document.getElementById("gridLayout"), gridItemsDisplayed);
 
-  // Show load more buttons if there are hidden items
-  checkLoadMoreButton(document.getElementById("listLayout"));
-  checkLoadMoreButton(document.getElementById("gridLayout"));
+    // Show load more buttons if there are hidden items
+    checkLoadMoreButton(document.getElementById("listLayout"));
+    checkLoadMoreButton(document.getElementById("gridLayout"));
 
-  // Ensure grid load more button is visible if there are hidden products
-  const gridLayout = document.getElementById("gridLayout");
-  const gridLoadMoreBtn = document.getElementById("loadMoreGridBtn");
-  if (gridLayout && gridLoadMoreBtn) {
-    const hiddenProducts = gridLayout.querySelectorAll(
-      '.card-product[style*="display: none"]'
-    );
-    if (hiddenProducts.length > 0) {
-      gridLoadMoreBtn.style.display = "";
+    // Ensure grid load more button is visible if there are hidden products
+    const gridLayout = document.getElementById("gridLayout");
+    const gridLoadMoreBtn = document.getElementById("loadMoreGridBtn");
+    if (gridLayout && gridLoadMoreBtn) {
+      const hiddenProducts = gridLayout.querySelectorAll(
+        '.card-product[style*="display: none"]'
+      );
+      if (hiddenProducts.length > 0) {
+        gridLoadMoreBtn.style.display = "";
+      }
     }
   }
 
@@ -1826,6 +2024,11 @@ function initLoadMore() {
     window.collectionData &&
     window.collectionData.paginationType === "infinity_scroll"
   ) {
+    // For infinity scroll, we still need to hide extra items initially
+    // The products will be shown progressively as user scrolls
+    hideExtraItems(document.getElementById("listLayout"), listItemsDisplayed);
+    hideExtraItems(document.getElementById("gridLayout"), gridItemsDisplayed);
+    
     initInfinityScroll();
   }
 
@@ -1844,9 +2047,19 @@ function initLoadMore() {
     if (loadMoreListBtn) loadMoreListBtn.style.display = "none";
     if (loadMoreGridBtn) loadMoreGridBtn.style.display = "none";
 
-    // Show infinity scroll elements
-    if (infiniteScrollList) infiniteScrollList.style.display = "";
-    if (infiniteScrollGrid) infiniteScrollGrid.style.display = "";
+    // Show infinity scroll elements only if there are hidden products
+    const listLayout = document.getElementById("listLayout");
+    const gridLayout = document.getElementById("gridLayout");
+    
+    if (infiniteScrollList && listLayout) {
+      const hiddenListProducts = listLayout.querySelectorAll('.card-product[style*="display: none"]');
+      infiniteScrollList.style.display = hiddenListProducts.length > 0 ? "" : "none";
+    }
+    
+    if (infiniteScrollGrid && gridLayout) {
+      const hiddenGridProducts = gridLayout.querySelectorAll('.card-product[style*="display: none"]');
+      infiniteScrollGrid.style.display = hiddenGridProducts.length > 0 ? "" : "none";
+    }
   }
 
   // Load More button handlers
@@ -1872,40 +2085,7 @@ function initLoadMore() {
     });
   }
 
-  // Infinite Scrolling
-  function onScroll() {
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(function () {
-      const infiniteScrollList = document.getElementById("infiniteScrollList");
-      const infiniteScrollGrid = document.getElementById("infiniteScrollGrid");
-
-      if (
-        infiniteScrollList &&
-        infiniteScrollList.style.display !== "none" &&
-        isElementInViewport(infiniteScrollList)
-      ) {
-        listItemsDisplayed = showMoreItems(
-          document.getElementById("listLayout"),
-          listItemsPerPage,
-          listItemsDisplayed
-        );
-      }
-
-      if (
-        infiniteScrollGrid &&
-        infiniteScrollGrid.style.display !== "none" &&
-        isElementInViewport(infiniteScrollGrid)
-      ) {
-        gridItemsDisplayed = showMoreItems(
-          document.getElementById("gridLayout"),
-          gridItemsPerPage,
-          gridItemsDisplayed
-        );
-      }
-    }, 300);
-  }
-
-  window.addEventListener("scroll", onScroll);
+  // Note: Infinite scrolling logic is now handled in initInfinityScroll() function
 }
 
 function initInfinityScroll() {
@@ -1919,14 +2099,14 @@ function initInfinityScroll() {
   if (loadMoreListBtn) loadMoreListBtn.style.display = "none";
   if (loadMoreGridBtn) loadMoreGridBtn.style.display = "none";
 
-  // Show infinity scroll elements
-  if (infiniteScrollList) infiniteScrollList.style.display = "";
-  if (infiniteScrollGrid) infiniteScrollGrid.style.display = "";
-
   // Initialize scroll event for infinity scroll
   let scrollTimeout;
+  let isLoadingMore = false; // Prevent multiple simultaneous loads
 
   function onScroll() {
+    // Don't trigger if already loading
+    if (isLoadingMore) return;
+    
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(function () {
       // Check if user is near bottom of page
@@ -1938,9 +2118,9 @@ function initInfinityScroll() {
       // If user is within 200px of bottom, trigger load more
       if (scrollTop + windowHeight >= documentHeight - 200) {
         // Determine which layout is active
-        if (isListActive && infiniteScrollList) {
+        if (isListActive && infiniteScrollList && infiniteScrollList.style.display !== "none") {
           loadMoreProducts("list");
-        } else if (!isListActive && infiniteScrollGrid) {
+        } else if (!isListActive && infiniteScrollGrid && infiniteScrollGrid.style.display !== "none") {
           loadMoreProducts("grid");
         }
       }
@@ -1952,31 +2132,67 @@ function initInfinityScroll() {
       layout === "list"
         ? document.getElementById("listLayout")
         : document.getElementById("gridLayout");
+    const infiniteScroll = 
+      layout === "list" ? infiniteScrollList : infiniteScrollGrid;
+    
     const hiddenProducts = layoutEl.querySelectorAll(
       '.card-product[style*="display: none"]'
     );
 
     if (hiddenProducts.length > 0) {
-      // Show next batch of products
+      // Set loading state
+      isLoadingMore = true;
+      if (infiniteScroll) {
+        infiniteScroll.style.display = "";
+      }
+
+      // Show next batch of products with animation delay
       const productsPerPage = window.collectionData?.maxProductsPerPage || 8;
       const productsToShow = Array.from(hiddenProducts).slice(
         0,
         productsPerPage
       );
 
-      productsToShow.forEach((product) => {
-        product.style.display = "";
-      });
+      setTimeout(() => {
+        productsToShow.forEach((product) => {
+          product.style.display = "";
+        });
 
-      // Hide infinity scroll if no more products
-      if (
-        layoutEl.querySelectorAll('.card-product[style*="display: none"]')
-          .length === 0
-      ) {
-        const infiniteScroll =
-          layout === "list" ? infiniteScrollList : infiniteScrollGrid;
-        if (infiniteScroll) infiniteScroll.style.display = "none";
-      }
+        // Check if there are more products to load
+        const remainingHiddenProducts = layoutEl.querySelectorAll('.card-product[style*="display: none"]');
+        
+        if (remainingHiddenProducts.length === 0) {
+          // No more products, hide infinity scroll
+          if (infiniteScroll) infiniteScroll.style.display = "none";
+        }
+        
+        // Reset loading state
+        isLoadingMore = false;
+        
+        // Update last visible item for list layout
+        if (layout === "list") {
+          updateLastVisible(layoutEl);
+        }
+        
+        // Bind events for new products
+        bindProductEvents();
+      }, 600); // Small delay for better UX
+    } else {
+      // No more products, hide infinity scroll
+      if (infiniteScroll) infiniteScroll.style.display = "none";
+    }
+  }
+
+  function updateLastVisible(layout) {
+    layout
+      .querySelectorAll(".card-product")
+      .forEach((item) => item.classList.remove("last-visible"));
+    const visibleItems = layout.querySelectorAll(
+      '.card-product:not([style*="display: none"])'
+    );
+    const lastVisible = visibleItems[visibleItems.length - 1];
+    if (lastVisible) {
+      lastVisible.classList.add("last-visible");
     }
   }
 
