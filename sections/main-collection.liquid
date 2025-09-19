@@ -258,7 +258,6 @@
               {% render 'card-product',
                 product: product,
                 show_progress_sale: false,
-                card_style: section.settings.card_style,
                 show_color_swatches: true
               %}
             {% endfor %}
@@ -461,20 +460,20 @@
   {% endstyle %}
 
   {% comment %} Add necessary data for JavaScript {% endcomment %}
-  <script>
-    window.collectionData = {
-        priceMin: {{ collection.price_min | divided_by: 100.0 | round: 0 }},
-        priceMax: {{ collection.price_max | divided_by: 100.0 | round: 0 }},
-        paginationType: '{{ pagination_type }}',
-        maxProductsPerPage: {{ max_products_per_page }},
-        defaultGridLayout: '{{ default_grid_layout }}',
-        defaultLayoutType: '{{ default_layout_type }}',
-        filterLayout: '{{ filter_layout }}'
-    };
-  </script>
 {% endpaginate %}
 
-<script src="{{ 'shop.vanilla.js' | asset_url }}" defer></script>
+{% comment %} <script src="{{ 'shop.vanilla.js' | asset_url }}" defer></script> {% endcomment %}
+<script>
+  window.collectionData = {
+      priceMin: {{ collection.price_min | divided_by: 100.0 | round: 0 }},
+      priceMax: {{ collection.price_max | divided_by: 100.0 | round: 0 }},
+      paginationType: '{{ pagination_type }}',
+      maxProductsPerPage: {{ max_products_per_page }},
+      defaultGridLayout: '{{ default_grid_layout }}',
+      defaultLayoutType: '{{ default_layout_type }}',
+      filterLayout: '{{ filter_layout }}'
+  };
+</script>
 {% comment %} Schema for section settings {% endcomment %}
 {% schema %}
 {
@@ -646,20 +645,6 @@
       "label": "t:sections.main_collection.settings.show_brand_filter.label",
       "default": true,
       "info": "t:sections.main_collection.settings.show_brand_filter.info"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.main_collection.settings.card_style.header"
-    },
-    {
-      "type": "select",
-      "id": "card_style",
-      "label": "t:sections.main_collection.settings.card_style.label",
-      "options": [
-        { "value": "style-1", "label": "t:sections.main_collection.settings.card_style_options.style-1" },
-        { "value": "style-2", "label": "t:sections.main_collection.settings.card_style_options.style-2" }
-      ],
-      "default": "style-2"
     },
     {
       "type": "header",

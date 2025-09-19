@@ -504,7 +504,8 @@
   {% endif %}
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
   <script src="{{ 'main.js' | asset_url }}" defer></script>
-  <script src="{{ 'shop.js' | asset_url }}" defer></script>
+  {% comment %} <script src="{{ 'shop.js' | asset_url }}" defer></script> {% endcomment %}
+  <script src="{{ 'shop.vanilla.js' | asset_url }}" defer></script>
   <script src="{{ 'global.js' | asset_url }}" defer></script>
   <script src="{{ 'product-card.js' | asset_url }}" defer></script>
   <script src="{{ 'application.js' | asset_url }}" defer></script>
