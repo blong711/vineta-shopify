@@ -18,12 +18,11 @@
         "description_truncate_length": 120
       }
     },
-   "main_collection": {
+    "main_collection": {
       "type": "main-collection",
       "settings": {
         "width": "container",
         "max_products_per_page": 8,
-        "default_layout_type": "grid",
         "default_grid_layout": "tf-col-4",
         "pagination_type": "pagination",
         "filter_layout": "left_sidebar",
@@ -36,9 +35,9 @@
         "collection_banner_button_url": "",
         "show_availability_filter": true,
         "show_price_filter": true,
-        "show_color_filter": true,
-        "show_size_filter": true,
-        "show_brand_filter": true,
+        "show_color_filter": false,
+        "show_size_filter": false,
+        "show_brand_filter": false,
         "padding_top": 64,
         "padding_bottom": 80,
         "padding_mobile_rate": 75
@@ -47,7 +46,6 @@
     "collection_description": {
       "type": "collection-description",
       "settings": {
-        "color_scheme": "",
         "width": "container",
         "show_collection_description": true,
         "fallback_text": "Our collection brings you a unique blend of classic sophistication and the latest fashion trends. Whether you're looking for versatile daywear, stylish work attire, or statement pieces for special occasions, this collection has it all. Each garment is thoughtfully crafted with attention to detail, using high-quality fabrics to ensure lasting comfort and a flawless fit.",
@@ -61,7 +59,7 @@
         "padding_bottom": 100,
         "padding_mobile_rate": 75
       }
-    },
+    }
   },
   "order": [
     "page-title",
