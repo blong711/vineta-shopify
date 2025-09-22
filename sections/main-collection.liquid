@@ -529,16 +529,6 @@
     },
     {
       "type": "select",
-      "id": "default_layout_type",
-      "label": "t:sections.main_collection.settings.default_layout_type.label",
-      "options": [
-        { "value": "grid", "label": "t:sections.main_collection.settings.default_layout_type_options.grid" },
-        { "value": "list", "label": "t:sections.main_collection.settings.default_layout_type_options.list" }
-      ],
-      "default": "grid"
-    },
-    {
-      "type": "select",
       "id": "default_grid_layout",
       "label": "t:sections.main_collection.settings.default_grid_layout.label",
       "options": [
@@ -547,7 +537,6 @@
         { "value": "tf-col-4", "label": "t:sections.main_collection.settings.default_grid_layout_options.tf-col-4" }
       ],
       "default": "tf-col-4",
-      "visible_if": "{{ section.settings.default_layout_type == 'grid' }}"
     },
     {
       "type": "select",
