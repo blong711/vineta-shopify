@@ -42,10 +42,29 @@
         "padding_bottom": 80,
         "padding_mobile_rate": 60
       }
+    },
+    "collection_description_fCddeb": {
+      "type": "collection-description",
+      "name": "t:sections.collection-description.name",
+      "settings": {
+        "width": "container",
+        "show_collection_description": true,
+        "fallback_text": "",
+        "text_alignment": "center",
+        "show_extra_links": true,
+        "links_prefix_text": "Looking for more? Don't miss out on our other exciting collections for",
+        "and_text": "and",
+        "collection1_link_url": "dress",
+        "collection2_link_url": "accessories",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_mobile_rate": 75
+      }
     }
   },
   "order": [
     "page-title",
-    "main_collection"
+    "main_collection",
+    "collection_description_fCddeb"
   ]
 }
