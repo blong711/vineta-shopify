@@ -31,14 +31,7 @@
          data-zoom="{{ media | image_url: width: 1200, format: 'webp' }}"
        {%- endif -%}>
       
-      {%- render 'responsive-image',
-        image: media,
-        alt: media.alt | default: product.title,
-        class: image_class | append: ' tf-image-zoom',
-        sizes: image_sizes,
-        lazy: lazy_loading,
-        preload: false,
-        max_width: 1200 -%}
+      {%- render 'responsive-image', image: media, alt: media.alt, default: product.title, class: image_class, append: ' tf-image-zoom', sizes: image_sizes, lazy: lazy_loading, preload: false, max_width: 1200 -%}
     </a>
     
   {%- when 'video' -%}
@@ -54,14 +47,7 @@
       </div>
       
       {%- if media.preview_image != blank -%}
-        {%- render 'responsive-image',
-          image: media.preview_image,
-          alt: 'Video thumbnail',
-          class: image_class | append: ' tf-image-zoom',
-          sizes: image_sizes,
-          lazy: lazy_loading,
-          preload: false,
-          max_width: 1200 -%}
+        {%- render 'responsive-image', image: media.preview_image, alt: 'Video thumbnail', class: image_class, append: ' tf-image-zoom', sizes: image_sizes, lazy: lazy_loading, preload: false, max_width: 1200 -%}
       {%- endif -%}
     </a>
     
@@ -78,14 +64,7 @@
       </div>
       
       {%- if media.preview_image != blank -%}
-        {%- render 'responsive-image',
-          image: media.preview_image,
-          alt: '3D model thumbnail',
-          class: image_class | append: ' tf-image-zoom',
-          sizes: image_sizes,
-          lazy: lazy_loading,
-          preload: false,
-          max_width: 1200 -%}
+        {%- render 'responsive-image', image: media.preview_image, alt: '3D model thumbnail', class: image_class, append: ' tf-image-zoom', sizes: image_sizes, lazy: lazy_loading, preload: false, max_width: 1200 -%}
       {%- endif -%}
     </a>
     
@@ -102,15 +81,66 @@
       </div>
       
       {%- if media.preview_image != blank -%}
-        {%- render 'responsive-image',
-          image: media.preview_image,
-          alt: 'External video thumbnail',
-          class: image_class | append: ' tf-image-zoom',
-          sizes: image_sizes,
-          lazy: lazy_loading,
-          preload: false,
-          max_width: 1200 -%}
+        {%- render 'responsive-image', image: media.preview_image, alt: 'External video thumbnail', class: image_class, append: ' tf-image-zoom', sizes: image_sizes, lazy: lazy_loading, preload: false, max_width: 1200 -%}
       {%- endif -%}
     </a>
     
-{%- endcase -%} 
+{%- endcase -%} {%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%- render 'responsive-image',
+            image: media,
+            alt: media.alt | default: product.title,
+            class: image_class | append: ' tf-image-zoom',
+            sizes: image_sizes,
+            lazy: lazy_loading,
+            preload: false,
+            max_width: 1200 -%}
+  to: "{%- render 'responsive-image', image: media, alt: media.alt, default: product.title,
+    class: image_class, append: ' tf-image-zoom', sizes: image_sizes, lazy: lazy_loading,
+    preload: false, max_width: 1200 -%}"
+  position: 1282..1488
+- from: |-
+    {%- render 'responsive-image',
+              image: media.preview_image,
+              alt: 'Video thumbnail',
+              class: image_class | append: ' tf-image-zoom',
+              sizes: image_sizes,
+              lazy: lazy_loading,
+              preload: false,
+              max_width: 1200 -%}
+  to: "{%- render 'responsive-image', image: media.preview_image, alt: 'Video thumbnail',
+    class: image_class, append: ' tf-image-zoom', sizes: image_sizes, lazy: lazy_loading,
+    preload: false, max_width: 1200 -%}"
+  position: 1959..2163
+- from: |-
+    {%- render 'responsive-image',
+              image: media.preview_image,
+              alt: '3D model thumbnail',
+              class: image_class | append: ' tf-image-zoom',
+              sizes: image_sizes,
+              lazy: lazy_loading,
+              preload: false,
+              max_width: 1200 -%}
+  to: "{%- render 'responsive-image', image: media.preview_image, alt: '3D model thumbnail',
+    class: image_class, append: ' tf-image-zoom', sizes: image_sizes, lazy: lazy_loading,
+    preload: false, max_width: 1200 -%}"
+  position: 2642..2849
+- from: |-
+    {%- render 'responsive-image',
+              image: media.preview_image,
+              alt: 'External video thumbnail',
+              class: image_class | append: ' tf-image-zoom',
+              sizes: image_sizes,
+              lazy: lazy_loading,
+              preload: false,
+              max_width: 1200 -%}
+  to: "{%- render 'responsive-image', image: media.preview_image, alt: 'External video
+    thumbnail', class: image_class, append: ' tf-image-zoom', sizes: image_sizes,
+    lazy: lazy_loading, preload: false, max_width: 1200 -%}"
+  position: 3349..3562
+{%- endcomment -%}

@@ -68,15 +68,7 @@
                                 <div class="swiper-wrapper">
                                     {% for product in collections[block.settings.collection].products limit: block.settings.products_to_show %}
                                         <div class="swiper-slide">
-                                            {% render 'card-product',
-                                                product: product,
-                                                class: 'text-center',
-                                                show_sale_badge: true,
-                                                sale_badge_text: discount_percentage | append: '% Off',
-                                                show_color_swatches: true,
-                                                show_case_type: true,
-                                                selected_variant: product.selected_or_first_available_variant
-                                            %}
+                                            {% render 'card-product', product: product, class: 'text-center', show_sale_badge: true, sale_badge_text: discount_percentage, append: '% Off', show_color_swatches: true, show_case_type: true, selected_variant: product.selected_or_first_available_variant %}
                                         </div>
                                     {% endfor %}
                                 </div>
@@ -286,4 +278,25 @@
         }
     ]
 }
-{% endschema %} 
+{% endschema %} {%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'card-product',
+                                                    product: product,
+                                                    class: 'text-center',
+                                                    show_sale_badge: true,
+                                                    sale_badge_text: discount_percentage | append: '% Off',
+                                                    show_color_swatches: true,
+                                                    show_case_type: true,
+                                                    selected_variant: product.selected_or_first_available_variant
+                                                %}
+  to: "{% render 'card-product', product: product, class: 'text-center', show_sale_badge:
+    true, sale_badge_text: discount_percentage, append: '% Off', show_color_swatches:
+    true, show_case_type: true, selected_variant: product.selected_or_first_available_variant
+    %}"
+  position: 4746..5003
+{%- endcomment -%}

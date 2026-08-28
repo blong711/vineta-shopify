@@ -32,13 +32,7 @@
                 {%- assign collection = collections[tab.settings.collection] -%}
                 {%- assign product_limit = tab.settings.products_limit | default: 8 -%}
                 {% for product in collection.products limit: product_limit %}
-                  {% render 'card-product',
-                    product: product,
-                    class: 'card-product-size',
-                    show_sale_badge: true,
-                    sale_badge_text: product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round | append: '% Off',
-                    show_color_swatches: true
-                  %}
+                  {% render 'card-product', product: product, class: 'card-product-size', show_sale_badge: true, sale_badge_text: product.compare_at_price, minus: product.price, times: 100.0, divided_by: product.compare_at_price, append: '% Off', show_color_swatches: true %}
                 {% endfor %}
               </div>
               <div class="text-center box-btn mt-4">
@@ -143,4 +137,23 @@
     // The card-product snippet handles all the product interactions
     // No need for additional JavaScript here
   });
-{% endjavascript %} 
+{% endjavascript %} {%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'card-product',
+                        product: product,
+                        class: 'card-product-size',
+                        show_sale_badge: true,
+                        sale_badge_text: product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round | append: '% Off',
+                        show_color_swatches: true
+                      %}
+  to: "{% render 'card-product', product: product, class: 'card-product-size', show_sale_badge:
+    true, sale_badge_text: product.compare_at_price, minus: product.price, times:
+    100.0, divided_by: product.compare_at_price, append: '% Off', show_color_swatches:
+    true %}"
+  position: 1554..1811
+{%- endcomment -%}
